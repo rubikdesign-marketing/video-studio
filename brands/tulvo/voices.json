@@ -1,0 +1,89 @@
+{
+ "_about": "Named voices the studio can use. A maker asks for a voice by name; tools/audio/voice.mjs looks up its ElevenLabs id here. These are the voices saved on the team's ElevenLabs account on 11 Nov 2026. Add a voice by saving it on the account, then adding a row.",
+ "default": "Ray",
+ "voices": [
+  {
+   "name": "Ray",
+   "voice_id": "z3FNMrCvtM1IHj84qvbr",
+   "library_name": "Ray D - Adult Male Energetic and Engaging American",
+   "gender": "male",
+   "suits": [
+    "promo",
+    "demo"
+   ],
+   "settings": {},
+   "note": "The Black Friday voice. Confirmed: it is the only Ray saved on the account."
+  },
+  {
+   "name": "Justin",
+   "voice_id": "DtQLDxHbTiQTpVVanTy1",
+   "library_name": "Justin Case - Warm, Trustworthy, and Clear",
+   "gender": "male",
+   "suits": [
+    "tutorial",
+    "demo"
+   ],
+   "settings": {},
+   "note": "Used on the After Effects cut. Calmer than Ray."
+  },
+  {
+   "name": "Jerry",
+   "voice_id": "UBZMF8M0D0idRqxTQDY7",
+   "library_name": "Jerry B. - Upbeat, Energetic Commercial Voice",
+   "gender": "male",
+   "suits": [
+    "promo"
+   ],
+   "settings": {},
+   "note": "Auditioned for the Black Friday film."
+  },
+  {
+   "name": "Sia",
+   "voice_id": "qTRV75fy2dUja4REMifv",
+   "library_name": "Sia - Energetic, Confident and Commercial",
+   "gender": "female",
+   "suits": [
+    "promo",
+    "demo"
+   ],
+   "settings": {},
+   "note": "Auditioned for the Black Friday film."
+  },
+  {
+   "name": "Beth",
+   "voice_id": "FLj50PrMa40MhGHappOt",
+   "library_name": "Beth - Commercial, Upbeat, Engaging",
+   "gender": "female",
+   "suits": [
+    "promo"
+   ],
+   "settings": {},
+   "note": "Auditioned for the Black Friday film."
+  },
+  {
+   "name": "Jessa",
+   "voice_id": "yj30vwTGJxSHezdAGsv9",
+   "library_name": "Jessa - Authentic, friendly and grounded - perfect for explainers and social media",
+   "gender": "female",
+   "suits": [
+    "tutorial",
+    "demo"
+   ],
+   "settings": {},
+   "note": "Saved on the account; not yet heard in a Tulvo video."
+  },
+  {
+   "name": "Hazel",
+   "voice_id": "YyqkX0AHv8W5D1vxG9lR",
+   "library_name": "Hazel X - Warm, Conversational & Authentic",
+   "gender": "female",
+   "suits": [
+    "tutorial",
+    "edit"
+   ],
+   "settings": {},
+   "note": "Saved on the account; not yet heard in a Tulvo video."
+  }
+ ],
+ "also_on_the_account": "Laura, Eliza, Lara, Riley, Siren, SAMI Real, Kendra. Add a row here to use one by name."
+}

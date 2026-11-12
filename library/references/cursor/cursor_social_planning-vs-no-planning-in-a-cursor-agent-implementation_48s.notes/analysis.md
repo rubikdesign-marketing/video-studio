@@ -1,0 +1,39 @@
+# spreshapp_13342141422405428 — analysis (transcript-integrated)
+
+**Duration / format:** 47.5 seconds, vertical 9:16, 360×640 source. This is a creator-led Cursor Agent demonstration centered on planning before implementation. The file is in the Cursor collection; that folder label alone does not verify who published it or whether the speaker is a Cursor employee.
+
+## What the sample does
+
+A seated creator appears at a desk with a colorful mechanical keyboard and demonstrates a contrast between starting an AI coding task without planning and first asking the agent to produce a plan. The apparent audience is developers already comfortable looking at a coding agent interface, especially people who want an agent to make a larger feature change with less back-and-forth. The visible sequence moves from an empty prompt, to a drafted task, to a plan, to generated code and a working-looking project view. The screen evidence supports a process demonstration; it does not independently verify the implementation's quality or the creator's spoken claims.
+
+## Hook and promise
+
+The visual hook is immediate: at 00:00 the creator is already on screen, typing, with the labels “WITHOUT PLANNING” and “WITH PLANNING” bracketing the image. Red emphasizes the first phrase, white the second. This establishes a comparison rather than a title card. At around 00:24, the first side is checked and an overlay says, “Btw I'm using Cursor Agents to implement these,” which clarifies the tool and frames the rest as a practical workflow. The spoken opening is an immediate product test, although the local ASR is uncertain on the first phrase: “Fill a clone of length in.” The phrase is likely misrecognized, so do not quote it as reliable copy. The next clearer line at 00:00–00:06 is “Here we are using Opus 4.6 and we’re going to start with our planning.” This changes the interpretation: the short overlay names Cursor Agents, while the speaker narrates a controlled comparison of building the same app with and without planning. The implied promise is that a little upfront planning can make an ambitious agent request more complete and organized; the payoff is a visible implementation sequence and a populated app/task interface.
+
+## Beat map from sampled frames
+
+- **00:00–00:06:** Medium vertical shot of the creator at the desk, fingers on keyboard, with the two-part comparison labels persistent. A Cursor chat panel is overlaid across the lower half. The prompt begins in a sparse composer and becomes a fuller request by 00:03–00:06.
+- **00:09–00:21:** The computer UI changes from a mostly empty dark panel to a light project/task interface. The presenter remains in the same room and position, speaking while the screen insert occupies the lower-center area. At 00:12–00:18, the interface looks like a plan or task list is taking shape; exact small UI text is not safely legible at the contact-sheet scale.
+- **00:24–00:30:** A checkmark appears beside “WITHOUT PLANNING” even though the spoken comparison now shifts to planning; this may reflect the first phase label remaining checked or a rough editorial cue, so interpret cautiously. The speaker says, “I’m going to paste the same prompt. So this time we’re going to start with planning” (00:18.96–00:28.64). He then says the plan is done and taps build. At 00:29.92 he reacts, “What the hell is actually implementing payments to?”—an ASR-sensitive phrase whose last word may be wrong. This shows a surprising scope interpretation rather than a clean success story.
+- **00:33–00:45:** The checked comparison remains on screen while the lower insert shows the generated app. The speaker says, “Let’s test it,” then praises the colors and inline post input. At 00:39.84–00:41.80: “I mean, I think this UI is way more accurate.” He immediately qualifies it: “It looks like it only made a tiny difference, but the reason I would still say you should use planning is that you can actually see what it’s going to do” (00:41.80–00:47.88). This is the clearest payoff and nuance: modest visible improvement, plus inspectability before execution.
+
+These are nominal three-second samples, not a frame-accurate edit log. The candidate scene-change metadata is only a guide; it does not establish exact cuts or transitions. The contact sheets show changes in overlaid screen content and some shifts in the underlying camera framing, but precise cut counts and easing cannot be inferred from stills.
+
+## Visual system and editing observations
+
+The composition uses a consistent vertical split of attention: a warm, lived-in room and person in the upper portion, with a large software capture occupying the lower portion. The pale wall, small shelf plant, desk lamp, and saturated keyboard make the recording feel personal and home-made. The creator wears a blue top and glasses; the camera is stable at a medium shot. Software inserts switch between Cursor's dark interface and a light project/task view, creating contrast without a separate branded graphic package. Typography is simple, high-contrast overlay text: all-caps comparison labels in small type near mid-frame, red for “WITHOUT PLANNING,” white for the other option, and a white subtitle card with black lettering for the Agent clarification. UI text is too small in several sampled frames to quote reliably.
+
+The demonstrated pacing appears to let the interface remain visible for multiple seconds while the presenter narrates, rather than cutting to a new visual at every beat. The changing screen state is the main motion. The presenter supplies human presence and gestures; no voiceover-only section is apparent from the sampled images. The local transcript ends with the planning rationale at 00:47.88; no explicit CTA appears. Vocal delivery, music, and sound effects are not analyzed from the transcript or stills.
+
+## Proof, limitations, and replication
+
+The persuasive device is a simple before/after-style comparison label followed by a product workflow: request, plan, implementation view. That makes an abstract behavior—planning with an agent—visually concrete. A beginner could reproduce the structure with a fixed vertical talking-head shot, one persistent comparison label, a screen recording placed large enough to read, and a visible plan-to-output progression. The strongest improvement opportunity is legibility: the inserted application occupies substantial area but its fine interface text is difficult to read at the sampled 360-pixel source width. A deliberate close crop or one brief full-screen product capture would strengthen proof. The sample stops on the workflow rather than a clear next action; the transcript contains no explicit CTA.
+
+**Transcript note:** The local MLX Whisper small transcript is unverified, and its final timestamp (00:47.88) slightly exceeds the measured 47.53-second file duration. Its first phrase (“Fill a clone of length in”) and the ending of the “implementing payments to?” line appear uncertain and should be treated as possible ASR gibberish. Other quoted passages above match the transcript. The sample does not claim a dramatic improvement: the speaker calls the visible difference “a tiny difference,” while arguing planning lets the user inspect what the agent intends to do. No music or precise sound design is claimed.
+
+## Source and evidence files
+
+- [Original MP4](../../../Cursor/spreshapp_13342141422405428.mp4).
+- [Spoken machine transcript](transcript.md), [raw recognition and segment confidence](transcript.json), [subtitles](transcript.srt), and [automatic review notes](transcript-review.md).
+- [Source metadata](metadata.json), [structured observations](evidence.json), and [local audio signal measurements](audio-signal.json).
+- Contact sheets: [contact_01.jpg](contact_01.jpg), [contact_02.jpg](contact_02.jpg). Individual three-second frames are in `frames/`.

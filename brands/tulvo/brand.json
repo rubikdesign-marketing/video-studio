@@ -1,0 +1,257 @@
+{
+  "_about": "Tulvo's brand for video, by role. The engine reads this file; scenes never name a colour or a font themselves. Keys that start with an underscore are notes for people and are ignored by the engine. How to use these values is in brand.md. After any edit run: node tools/brand/sync.mjs, then node tools/brand/check.mjs tulvo",
+  "_checked": "2026-11-11",
+  "name": "Tulvo",
+  "colours": {
+    "_about": "The same seven roles on a light page and a dark page. Tulvo's own colour names are in the notes beside each value.",
+    "_source": "Desktop/Tulvo/DESIGN.md (marketing site design system), the Product Hunt launch kit social style, and the film partners approved during the Black Friday film on 10 Nov 2026",
+    "light": {
+      "_about": "Pure white, like tulvo.io (owner decision 11 Nov 2026). Warm paper #F5F3EF and its warm line #E4E2DE stay in colours.other for the social style only.",
+      "page": "#FFFFFF",
+      "_page": "paper",
+      "ink": "#101113",
+      "_ink": "ink",
+      "second": "#8A8F98",
+      "_second": "muted: the second clause of a headline and supporting text",
+      "accent": "#2B5CE6",
+      "_accent": "action_blue",
+      "warm": "#F7A878",
+      "_warm": "warm_peach: old prices, deadlines, one warm note per scene",
+      "soft": "#E7EFFD",
+      "_soft": "blue_surface",
+      "line": "#D9DDE5",
+      "_line": "border",
+      "on_accent": "#FFFFFF",
+      "_on_accent": "paper: text on an action blue button"
+    },
+    "dark": {
+      "_about": "Night.",
+      "page": "#060608",
+      "_page": "night",
+      "ink": "#FFFFFF",
+      "_ink": "paper (pure white)",
+      "second": "#A9C8FF",
+      "_second": "ice_blue",
+      "accent": "#4D8DFF",
+      "_accent": "bright_blue",
+      "warm": "#F7A878",
+      "_warm": "warm_peach",
+      "soft": "#10235E",
+      "_soft": "deep_blue",
+      "line": "#FFFFFF24",
+      "_line": "white at 14%",
+      "on_accent": "#FFFFFF",
+      "_on_accent": "paper: text on a bright blue button"
+    },
+    "confetti": [
+      "#4D8DFF",
+      "#A9C8FF",
+      "#FFFFFF",
+      "#F7A878",
+      "#2B5CE6",
+      "#DCE9FF"
+    ],
+    "_confetti": "bright_blue, ice_blue, paper, warm_peach, action_blue, pale_blue",
+    "other": {
+      "_about": "Tulvo colours with no role in the kit yet, kept so nothing is lost. A scene may not use them by name; give one a role first.",
+      "body": "#626670",
+      "alternate": "#F7F7F6",
+      "link_blue": "#244CA6",
+      "pale_blue": "#DCE9FF",
+      "night_lift": "#0F1117",
+      "navy": "#0A1430",
+      "paper_warm": "#F5F3EF",
+      "line_warm": "#E4E2DE"
+    }
+  },
+  "stages": {
+    "_about": "How each page is lit when it fills the frame. A light is a soft pool of colour: x and y are shares of the frame (0 is left or top, 1 is right or bottom), radius is a share of frame height, opacity is 0 to 1. Grain and vignette are strengths from 0 to 1. screen_glow is how strongly the accent glows around a product window.",
+    "light": {
+      "_about": "One soft white light from the upper left, fine grain, no glow.",
+      "lights": [
+        {
+          "x": 0.16,
+          "y": 0.06,
+          "radius": 1,
+          "colour": "#FFFFFF",
+          "opacity": 0.9
+        }
+      ],
+      "grain": 0.4,
+      "vignette": 0,
+      "screen_glow": 0
+    },
+    "dark": {
+      "_about": "Slow pools of deep blue, navy and bright blue, grain, a vignette. The light comes from the product.",
+      "lights": [
+        {
+          "x": 0.2,
+          "y": 0.14,
+          "radius": 0.9,
+          "colour": "#10235E",
+          "opacity": 0.85
+        },
+        {
+          "x": 0.86,
+          "y": 0.92,
+          "radius": 0.8,
+          "colour": "#0A1430",
+          "opacity": 0.9
+        },
+        {
+          "x": 0.72,
+          "y": 0.22,
+          "radius": 0.5,
+          "colour": "#4D8DFF",
+          "opacity": 0.2
+        }
+      ],
+      "grain": 0.06,
+      "vignette": 0.55,
+      "screen_glow": 0.28
+    }
+  },
+  "fonts": {
+    "_about": "One typeface per voice. Each says where its file comes from: \"file\" is a file in this brand's fonts/ folder, \"package\" is a file of an npm package installed in engine/.",
+    "_rules": [
+      "At most three type voices in one frame: headline, the accent, and product UI if a screen is showing.",
+      "Never set product UI in Instrument Sans, and never set film type in Inter.",
+      "No coding-style (monospaced) typeface anywhere in a film or on the review page. Owner's rule, 11 Nov 2026.",
+      "Numbers that change use fixed-width figures of Instrument Sans."
+    ],
+    "headline": {
+      "_role": "Every headline, title and caption in the film",
+      "_status": "in the folder",
+      "family": "Instrument Sans",
+      "file": "fonts/InstrumentSans-var.woff2",
+      "weight_range": "400 700",
+      "weight": 600,
+      "body_weight": 400,
+      "tracking_em": -0.045,
+      "line_height": 1.07
+    },
+    "accent": {
+      "_role": "One emphasis word in a headline. At most once per line and three times per film",
+      "_status": "approved by the owner 11 Nov 2026; the file comes from the installed package, and the installer confirms the licence",
+      "family": "Instrument Serif",
+      "package": "@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2",
+      "style": "italic",
+      "weight": 400,
+      "scale": 1.08,
+      "tracking_em": -0.01
+    },
+    "label": {
+      "_role": "Small labels, prices, counters and timers. Sentence case, medium weight. Numbers that change use fixed-width figures",
+      "_status": "in the folder",
+      "family": "Instrument Sans",
+      "file": "fonts/InstrumentSans-var.woff2",
+      "weight_range": "400 700",
+      "weight": 500,
+      "tracking_em": -0.005
+    },
+    "product": {
+      "_role": "Product UI only. The live app is set in Inter; any rebuilt screen must use it",
+      "_status": "the file comes from the installed package",
+      "family": "Inter",
+      "package": "@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2",
+      "weight_range": "100 900",
+      "weight": 400
+    }
+  },
+  "logo": {
+    "_about": "Files in logo/. The wordmark opens and closes a film. The mark is the symbol alone.",
+    "light": {
+      "wordmark": "logo/tulvo-wordmark.png",
+      "mark": "logo/tulvo-tile.png"
+    },
+    "dark": {
+      "wordmark": "logo/wordmark-white.png",
+      "mark": "logo/tulvo-mark.svg"
+    }
+  },
+  "shape": {
+    "_about": "Corner radii as shares of frame height.",
+    "_source": "Marketing site: 12 px controls and panels. Social kit: 16 px app windows.",
+    "control_radius": 0.011,
+    "window_radius": 0.015,
+    "pill_radius": "full",
+    "_window_border": "1 px line colour",
+    "_button": "ink fill, white text; action blue on emphasis"
+  },
+  "captions": {
+    "_about": "The caption design is the same for every brand: a dark glass bar with words arriving as they are spoken. Only these values may differ. The typeface is the headline voice.",
+    "weight": 600,
+    "text": "#FFFFFF",
+    "_text": "paper",
+    "highlight": "#4D8DFF",
+    "_highlight": "bright_blue: the one highlighted phrase in a line",
+    "glass_top": "#0F1117",
+    "_glass_top": "night_lift",
+    "glass_bottom": "#060608",
+    "_glass_bottom": "night"
+  },
+  "product_ui": {
+    "_about": "The product's own colours. Product UI is staged, never restyled. The kit reads only \"background\"; the rest is for rebuilt screens.",
+    "_source": "Live app.tulvo.io light-mode CSS, captured 2026-10-20. Re-capture before relying on it; the product changes.",
+    "background": "#FFFFFF",
+    "background_gray": "#F3F3F2",
+    "foreground": "#0A0A0A",
+    "primary": "#171717",
+    "muted": "#F5F5F5",
+    "muted_text": "#737373",
+    "label": "#525252",
+    "border": "#E5E5E5",
+    "sidebar": "#FCFCFC",
+    "sidebar_active": "#F0F0F0",
+    "success": "#22C55E",
+    "destructive": "#EF4444",
+    "selection": "#6229FF",
+    "selection_soft": "#EFEEFF",
+    "radius_px": 8,
+    "status_chips": [
+      "#3B82F6",
+      "#8B5CF6",
+      "#14B8A6",
+      "#F59E0B",
+      "#D946EF",
+      "#0EA5E9",
+      "#EF4444"
+    ],
+    "chip_fills_from_workspace": {
+      "_source": "Dropdown option colours returned by the Tulvo connector for the demo workspace",
+      "blue": "#D6E4FF",
+      "green": "#D4EEE0",
+      "peach": "#FFD9C2",
+      "amber": "#FFE6B8",
+      "rose": "#FAD4D8",
+      "violet": "#E4DCFB",
+      "teal": "#CDEEEA",
+      "sky": "#D3ECFA",
+      "grey": "#E8E7E3",
+      "slate": "#DDE3EA"
+    }
+  },
+  "rejected": {
+    "_source": "Feedback on the Black Friday storyboards",
+    "_note": "The social kit's lilac, orchid and blush gradient was rejected for film. Product UI keeps its own purple and pink status chips; the rule applies to stages, type and effects.",
+    "colours": [
+      "purple",
+      "pink",
+      "ash grey"
+    ],
+    "patterns": [
+      "dot grids",
+      "generic mesh blobs",
+      "dots used as separators between words",
+      "dots inside pills and badges",
+      "bullet dots"
+    ],
+    "type": [
+      "coding-style (monospaced) typefaces"
+    ]
+  },
+  "_headline_pattern": {
+    "_source": "Social kit",
+    "two_part": "First clause in ink (or white on dark), second clause in the second colour (muted on light, ice blue on dark). 'Same business. One app instead of twelve.'"
+  }
+}

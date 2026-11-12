@@ -1,0 +1,45 @@
+{
+  "lines": [
+    {
+      "start": 0.4,
+      "end": 1.45,
+      "words": [
+        { "text": "This", "start": 0.4, "end": 0.62 },
+        { "text": "is", "start": 0.62, "end": 0.78 },
+        { "text": "the", "start": 0.78, "end": 0.94 },
+        { "text": "engine.", "start": 0.94, "end": 1.45 }
+      ]
+    },
+    {
+      "start": 1.55,
+      "end": 2.6,
+      "words": [
+        { "text": "Fonts", "start": 1.55, "end": 1.88 },
+        { "text": "and", "start": 1.88, "end": 2.02 },
+        { "text": "tokens", "start": 2.02, "end": 2.38 },
+        { "text": "load,", "start": 2.38, "end": 2.6 }
+      ]
+    },
+    {
+      "start": 2.7,
+      "end": 3.9,
+      "words": [
+        { "text": "one", "start": 2.7, "end": 2.92, "highlight": true },
+        { "text": "preset", "start": 2.92, "end": 3.28, "highlight": true },
+        { "text": "sets", "start": 3.28, "end": 3.5 },
+        { "text": "the", "start": 3.5, "end": 3.62 },
+        { "text": "feel.", "start": 3.62, "end": 3.9 }
+      ]
+    },
+    {
+      "start": 4.95,
+      "end": 5.8,
+      "words": [
+        { "text": "Captions", "start": 4.95, "end": 5.35 },
+        { "text": "follow", "start": 5.35, "end": 5.58 },
+        { "text": "the", "start": 5.58, "end": 5.68 },
+        { "text": "voice.", "start": 5.68, "end": 5.8 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "_sample",
+  "brand": "tulvo",
+  "type": "promo",
+  "created": "2026-11-11",
+  "maker": "studio",
+  "size": "16:9",
+  "length_cap_seconds": 15,
+  "energy_preset": "confident",
+  "voice": "Ray",
+  "stage_next": "none",
+  "approvals": {
+    "idea": null,
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "figma_file": null,
+  "offer_wording": null,
+  "facts": [],
+  "planned_instant_changes": [],
+  "planned_holds": [],
+  "new_library_entry": null,
+  "usage_by_stage": {},
+  "notes": [
+    "Not a real video. A fixed sample that proves tools/film works: captions.mjs, scaffold.mjs, render.sh.",
+    "audio/voice.wav is three beeps standing in for three voice lines. words.json and lines.json were written by hand to match it."
+  ]
+}

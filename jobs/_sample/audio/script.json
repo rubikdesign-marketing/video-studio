@@ -1,0 +1,5 @@
+[
+ { "id": "01", "text": "[calm] This is the sample film for the Toolvo video studio.", "gap_after": 0.7, "highlight": "sample film" },
+ { "id": "02", "text": "Three beeps stand in for three voice lines, so the picture can be fitted to the sound.", "gap_after": 0.7, "highlight": "fitted to the sound" },
+ { "id": "03", "text": "Change one scene, and render it alone.", "highlight": "one scene" }
+]

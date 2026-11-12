@@ -1,0 +1,14 @@
+{
+ "_about": "Named voices this brand may use. A maker asks for a voice by name in job.json (\"voice\": \"Name\"); tools/audio/voice.mjs looks up its ElevenLabs id here. Add a voice by saving it on the team's ElevenLabs account, then adding a row to \"voices\". \"default\" is the voice used when a job names none.",
+ "_example_row": {
+  "name": "The short name makers will use",
+  "voice_id": "The voice's id on ElevenLabs",
+  "library_name": "Its full name in the ElevenLabs library",
+  "gender": "male or female",
+  "suits": ["promo", "demo", "tutorial", "edit"],
+  "settings": {},
+  "note": "Where it was used, how it sounds"
+ },
+ "default": "",
+ "voices": []
+}

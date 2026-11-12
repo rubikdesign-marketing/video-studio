@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 64" width="400" height="128" fill="none">
+  <!-- A placeholder, not a logo. Replace this file with the brand's wordmark for a light page (.svg or .png with a clear background), and name the new file in brand.json under "logo". -->
+  <title>placeholder wordmark</title>
+  <circle cx="32" cy="32" r="20" fill="#111111"/>
+  <rect x="68" y="20" width="120" height="24" rx="12" fill="#111111"/>
+</svg>

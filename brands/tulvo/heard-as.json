@@ -1,0 +1,6 @@
+{
+  "_about": "The transcriber sometimes mishears product words even when the voice says them correctly. Each entry maps what it writes to the word that was actually said, so the voice check does not raise a false difference. Add an entry only after a person has listened and confirmed the voice was right.",
+  "tool those": "tulvo's",
+  "tool vo": "tulvo",
+  "tool vos": "tulvo's"
+}

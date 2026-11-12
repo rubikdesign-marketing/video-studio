@@ -1,0 +1,991 @@
+{
+  "_about": "How much each background moves at each energy, measured on 2026-11-11. One clip per background, page and energy: the composition bg-<name>, 4 seconds at 60 frames a second, brand tulvo, with the sample headline and card in the middle, rendered at half size (--scale=0.5 --crf=22) and measured with tools/study/profile.py and tools/checks/smoothness.py. Paper is measured on the light page only and Night on the dark page only: those are the pages they are made for.",
+  "_how_to_read": "profile.py scores each quarter-second: under 0.15 is still, and a film's typical movement is about 1. share_of_time_moving is the share of quarter-seconds at or over 0.15; typical_movement is the middle score of those (0 when there are none); peak_movement is the highest quarter-second; mean_movement is the average over the whole clip, the fairest single figure for a background because most never reach 0.15.",
+  "_what_it_shows": [
+    "At rest every background measures as still (share_of_time_moving 0, highest quarter-second 0.08 or less), on both pages.",
+    "Colour field on the light page used to read 0.17 to 0.24 at every energy because of the Stage's grain, which is set for a near-white page. Since 11 Nov (evening) Colour field takes a fifth of the light page's grain (useGrainShare in engine/src/kit/ui.tsx); its light-page figures were measured again after that change.",
+    "At alive and peak the movement is real and ordered (mean_movement rises from rest to alive to peak, by two to five times in all for most; less where the page's grain is most of the figure), but for almost every background it stays under profile.py's 0.15 line. That line needs the average pixel to change about four and a half levels of 255 every second; a soft, low-contrast drift would have to turn over every few seconds to reach it, which would no longer be a slow drift. Only Waves and Glass on the dark page touch the line at peak. So a hold on any of these backgrounds, at any energy, still counts as rest in a film's profile.",
+    "Blueprint reads the same at alive and at peak: the only thing that moves is the head of one thin path.",
+    "No clip has a jump or a judder window. The reel has no jumps other than its 21 cuts and no judder windows, for tulvo and for demo, at rest, alive and peak."
+  ],
+  "_tools": "Every figure is what tools/study/profile.py and tools/checks/smoothness.py print as they stand. (Earlier on the same day profile.py misread a frame difference that ffmpeg prints as 6.94e-05 as 6.94, which showed false jumps on still clips; it was corrected at 18:20, and these figures were taken after that.)",
+  "measured_on": "2026-11-11",
+  "brand": "tulvo",
+  "stillness_line": 0.15,
+  "table": [
+    {
+      "background": "paper",
+      "page": "light",
+      "rest": 0.007,
+      "alive": 0.012,
+      "peak": 0.018,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "night",
+      "page": "dark",
+      "rest": 0.016,
+      "alive": 0.043,
+      "peak": 0.071,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "glass",
+      "page": "light",
+      "rest": 0.025,
+      "alive": 0.058,
+      "peak": 0.081,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "glass",
+      "page": "dark",
+      "rest": 0.025,
+      "alive": 0.091,
+      "peak": 0.139,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.12
+      }
+    },
+    {
+      "background": "colour-field",
+      "page": "light",
+      "rest": 0.171,
+      "alive": 0.209,
+      "peak": 0.242,
+      "still_at_rest": false,
+      "registers_as_moving": {
+        "rest": 0.65,
+        "alive": 0.88,
+        "peak": 0.94
+      }
+    },
+    {
+      "background": "colour-field",
+      "page": "dark",
+      "rest": 0.011,
+      "alive": 0.017,
+      "peak": 0.025,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "editorial",
+      "page": "light",
+      "rest": 0.012,
+      "alive": 0.034,
+      "peak": 0.054,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "editorial",
+      "page": "dark",
+      "rest": 0.017,
+      "alive": 0.05,
+      "peak": 0.077,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "blueprint",
+      "page": "light",
+      "rest": 0.012,
+      "alive": 0.022,
+      "peak": 0.019,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "blueprint",
+      "page": "dark",
+      "rest": 0.005,
+      "alive": 0.015,
+      "peak": 0.012,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "aurora",
+      "page": "light",
+      "rest": 0.028,
+      "alive": 0.07,
+      "peak": 0.095,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "aurora",
+      "page": "dark",
+      "rest": 0.025,
+      "alive": 0.08,
+      "peak": 0.106,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "horizon",
+      "page": "light",
+      "rest": 0.016,
+      "alive": 0.021,
+      "peak": 0.036,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "horizon",
+      "page": "dark",
+      "rest": 0.008,
+      "alive": 0.018,
+      "peak": 0.029,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "waves",
+      "page": "light",
+      "rest": 0.026,
+      "alive": 0.067,
+      "peak": 0.092,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "waves",
+      "page": "dark",
+      "rest": 0.033,
+      "alive": 0.083,
+      "peak": 0.115,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "spotlight",
+      "page": "light",
+      "rest": 0.024,
+      "alive": 0.034,
+      "peak": 0.049,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "spotlight",
+      "page": "dark",
+      "rest": 0.009,
+      "alive": 0.021,
+      "peak": 0.035,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "perspective-lines",
+      "page": "light",
+      "rest": 0.022,
+      "alive": 0.029,
+      "peak": 0.038,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "perspective-lines",
+      "page": "dark",
+      "rest": 0.013,
+      "alive": 0.023,
+      "peak": 0.027,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "soft-shapes",
+      "page": "light",
+      "rest": 0.024,
+      "alive": 0.021,
+      "peak": 0.027,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    },
+    {
+      "background": "soft-shapes",
+      "page": "dark",
+      "rest": 0.007,
+      "alive": 0.019,
+      "peak": 0.027,
+      "still_at_rest": true,
+      "registers_as_moving": {
+        "rest": 0.0,
+        "alive": 0.0,
+        "peak": 0.0
+      }
+    }
+  ],
+  "_table": "mean_movement at each energy, whether the rest clip is still, and the share of quarter-seconds profile.py counts as moving at each energy.",
+  "backgrounds": {
+    "paper": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.03,
+          "mean_movement": 0.007,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.03,
+          "mean_movement": 0.012,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.018,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "night": {
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.016,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.043,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.1,
+          "mean_movement": 0.071,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "glass": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.025,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.09,
+          "mean_movement": 0.058,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.1,
+          "mean_movement": 0.081,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.025,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.1,
+          "mean_movement": 0.091,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.12,
+          "typical_movement": 0.15,
+          "peak_movement": 0.15,
+          "mean_movement": 0.139,
+          "still_seconds": 3.75,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "colour-field": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.01,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.027,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.038,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.011,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.017,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.025,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "editorial": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.012,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.034,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.054,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.017,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.05,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.11,
+          "mean_movement": 0.077,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "blueprint": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.012,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.022,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.019,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.005,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.015,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.012,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "aurora": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.028,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.09,
+          "mean_movement": 0.07,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.12,
+          "mean_movement": 0.095,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.025,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.1,
+          "mean_movement": 0.08,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.12,
+          "mean_movement": 0.106,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "horizon": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.016,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.021,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.036,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.04,
+          "mean_movement": 0.008,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.018,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.029,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "waves": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.026,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.09,
+          "mean_movement": 0.067,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.11,
+          "mean_movement": 0.092,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.08,
+          "mean_movement": 0.033,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.12,
+          "mean_movement": 0.083,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.15,
+          "mean_movement": 0.115,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "spotlight": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.024,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.034,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.049,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.009,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.021,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.08,
+          "mean_movement": 0.035,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "perspective-lines": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.022,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.08,
+          "mean_movement": 0.029,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.09,
+          "mean_movement": 0.038,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.013,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.11,
+          "mean_movement": 0.023,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.1,
+          "mean_movement": 0.027,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    },
+    "soft-shapes": {
+      "light": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.024,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.021,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.027,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      },
+      "dark": {
+        "rest": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.05,
+          "mean_movement": 0.007,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "alive": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.06,
+          "mean_movement": 0.019,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        },
+        "peak": {
+          "share_of_time_moving": 0.0,
+          "typical_movement": 0,
+          "peak_movement": 0.07,
+          "mean_movement": 0.027,
+          "still_seconds": 4.25,
+          "jumps": 0,
+          "judder_windows": 0
+        }
+      }
+    }
+  },
+  "reel": {
+    "_about": "The Backgrounds reel at half size, 66 seconds, 22 shots, checked with tools/checks/smoothness.py and its 21 cuts planned. cuts_found is how many of those 21 cuts change the picture enough for profile.py to call them hard cuts; the rest are cuts between two similar pages. reel-tulvo at alive is the one saved here as backgrounds-tulvo.mp4.",
+    "reel-tulvo.mp4": {
+      "cuts_found": 8,
+      "unplanned_jumps": 0,
+      "judder_windows": 0
+    },
+    "reel-demo.mp4": {
+      "cuts_found": 8,
+      "unplanned_jumps": 0,
+      "judder_windows": 0
+    },
+    "reel-tulvo-rest.mp4": {
+      "cuts_found": 7,
+      "unplanned_jumps": 0,
+      "judder_windows": 0
+    },
+    "reel-tulvo-peak.mp4": {
+      "cuts_found": 8,
+      "unplanned_jumps": 0,
+      "judder_windows": 0
+    }
+  }
+}

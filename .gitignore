@@ -1,0 +1,36 @@
+.env
+node_modules/
+jobs/*/out/
+jobs/*/renders/
+jobs/*/footage/
+*.voicecheck/
+__pycache__/
+.DS_Store
+# Product capture: the sign-in stays on this Mac; recordings are large, like renders.
+.capture/
+jobs/*/capture/*/recording.mp4
+jobs/*/capture/*/take-*/recording.mp4
+jobs/*/capture/*/failure/
+jobs/*/capture/.*.new/
+jobs/*/capture/*/check/
+engine/public/jobs/*/capture/
+engine/public/captures.json
+
+# Renders and copies the tools make again on their own.
+engine/out/
+engine/public/jobs/
+*.log
+
+# Reference videos are other companies' films: never in the public repository. Their links, measurements and study
+# cards are kept; the team shares the files privately (library/references/README.md).
+library/references/**/*.mp4
+library/references/**/*.mov
+library/references/**/*.webm
+library/references/**/*.mkv
+
+# Remotion's skills do not state a licence, so they are not republished here: setup/install.sh fetches them from
+# Remotion on each Mac (bash setup/update-skills.sh --missing).
+.claude/skills/remotion-*/
+
+# Each person's own Claude permissions.
+.claude/settings.local.json

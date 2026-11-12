@@ -1,0 +1,105 @@
+{
+  "_about": [
+    "The shot list as data: copy to jobs/<job>/shots.json and fill it from the approved shot-list.md.",
+    "tools/film/scaffold.mjs turns it into the film skeleton. Scene times are not written here: they come from the voice (audio/lines.json).",
+    "scene.lines: ids of the voice lines the scene covers, from audio/script.json. Every voice line belongs to exactly one scene, in order.",
+    "scene.transition_in: number and name from knowledge/craft/03-transitions.md; null for the first scene. scene.hand_off: the object that carries the change, or null.",
+    "shot.text: the on-screen text, at most seven words. \\n starts the second clause, *word* sets one word in the italic serif. Empty when the shot has no text.",
+    "shot.line (optional): the voice line the text arrives with. Left out, shots follow the scene's lines in order.",
+    "shot.size: wide | medium | macro | abstract. shot.capture: a file inside the job folder, or null.",
+    "stage: light | dark, the look approved at the moodboard.",
+    "scene.silent and scene.seconds (optional): a scene with no voice, such as an end card with the logo, the web address and a button. Write \"silent\": true and \"seconds\": 2.5 and leave out \"lines\". It starts after the sound has ended and adds its seconds to the film, so it holds in silence. Between 1.5 and 6 seconds reads well; outside that the scaffold warns you.",
+    "Silent scenes can only come at the end, after the last voice line. The film's sound is one track with the voice, music and effects mixed together, so a pause in the middle would cut the music and push later lines out of step. For a silent beat between lines, leave a pause in the voice script instead.",
+    "The example below is a three-scene film whose script has the lines 01, 02 and 03, then a silent end card."
+  ],
+  "stage": "dark",
+  "planned_instant_changes": [
+    { "scene": "S03", "what": "match cut into the closing line" }
+  ],
+  "planned_holds": [
+    { "scene": "S02", "seconds": 1.3, "what": "proof hold on the finished board" }
+  ],
+  "scenes": [
+    {
+      "id": "S01",
+      "title": "The promise",
+      "lines": ["01"],
+      "energy": 3,
+      "transition_in": null,
+      "hand_off": null,
+      "shots": [
+        {
+          "text": "Work, *finally*\nin one place.",
+          "size": "abstract",
+          "capture": null,
+          "focal_point": "centre",
+          "move": "words rise, slow drift left",
+          "sound": "soft pad starts"
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "title": "The proof",
+      "lines": ["02"],
+      "energy": 4,
+      "transition_in": { "number": 1, "name": "hand-off object" },
+      "hand_off": "the full stop of the headline becomes the cursor",
+      "shots": [
+        {
+          "text": "Plan the week.",
+          "size": "medium",
+          "capture": "captures/board.png",
+          "focal_point": "left third, the first column",
+          "move": "cursor drags a card to Done",
+          "sound": "tick on the drop"
+        },
+        {
+          "text": "See who is on it.",
+          "size": "macro",
+          "capture": "captures/board.png",
+          "focal_point": "the card's avatar",
+          "move": "hero push into the card, then hold",
+          "sound": "low swell into the hold"
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "title": "The close",
+      "lines": ["03"],
+      "energy": 5,
+      "transition_in": { "number": 5, "name": "match cut" },
+      "hand_off": "the card's rounded corner matches the wordmark tile",
+      "shots": [
+        {
+          "text": "Start with *one* board.",
+          "size": "wide",
+          "capture": null,
+          "focal_point": "centre",
+          "move": "wordmark settles, text rises under it",
+          "sound": "hit on the cut, pad resolves"
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "title": "End card",
+      "silent": true,
+      "seconds": 2.5,
+      "energy": 2,
+      "transition_in": { "number": 9, "name": "type bridge" },
+      "hand_off": "the wordmark stays while the background settles",
+      "shots": [
+        {
+          "text": "example.com",
+          "size": "wide",
+          "capture": null,
+          "focal_point": "centre",
+          "move": "wordmark holds, web address and button fade in under it",
+          "sound": "none, the sound has ended"
+        }
+      ]
+    }
+  ]
+}

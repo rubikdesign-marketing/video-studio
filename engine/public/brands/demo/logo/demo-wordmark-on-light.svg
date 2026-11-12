@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 64" width="400" height="128" fill="none" stroke="#10201A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Demo brand, a test brand. Wordmark for a light page. The letters are drawn as lines, so the file needs no font. -->
+  <title>demo</title>
+  <circle cx="24" cy="40" r="16"/>
+  <path d="M40 8V56"/>
+  <path d="M56 40H88A16 16 0 1 0 83.3 51.3"/>
+  <path d="M104 24V56M104 34A10 10 0 0 1 124 34V56M124 34A10 10 0 0 1 144 34V56"/>
+  <circle cx="176" cy="40" r="16"/>
+</svg>

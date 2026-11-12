@@ -1,0 +1,91 @@
+{
+ "job": "_sample",
+ "brand": "tulvo",
+ "duration": 12.2,
+ "frames": [
+  {
+   "shot": 1,
+   "scene": "S01",
+   "scene_title": "What this is",
+   "file": "storyboard/shot-01.jpg",
+   "start": 0.3,
+   "length": 2.85,
+   "shown_at": 2.01,
+   "voice": [
+    "This is the sample film for the Toolvo video studio."
+   ],
+   "on_screen_text": "A sample film.",
+   "shot_size": "abstract",
+   "focal_point": "centre",
+   "move": "words rise, slow drift left",
+   "sound": "first beep",
+   "transition_in": null,
+   "hand_off": null,
+   "energy": 3,
+   "capture": null
+  },
+  {
+   "shot": 2,
+   "scene": "S02",
+   "scene_title": "Picture follows sound",
+   "file": "storyboard/shot-02.jpg",
+   "start": 3.8,
+   "length": 2.05,
+   "shown_at": 5.03,
+   "voice": [
+    "Three beeps stand in for three voice lines, so the picture can be fitted to the sound."
+   ],
+   "on_screen_text": "Three beeps.",
+   "shot_size": "medium",
+   "focal_point": "left third",
+   "move": "three dots pop in, one per beat",
+   "sound": "second beep",
+   "transition_in": "1 (hand-off object)",
+   "hand_off": "the full stop of the headline becomes the first beep's dot",
+   "energy": 4,
+   "capture": null
+  },
+  {
+   "shot": 3,
+   "scene": "S02",
+   "scene_title": "Picture follows sound",
+   "file": "storyboard/shot-03.jpg",
+   "start": 6.2,
+   "length": 2.05,
+   "shown_at": 7.43,
+   "voice": [
+    "Three beeps stand in for three voice lines, so the picture can be fitted to the sound."
+   ],
+   "on_screen_text": "Picture fitted / to the sound.",
+   "shot_size": "macro",
+   "focal_point": "centre",
+   "move": "push in on the dots, then hold",
+   "sound": "low swell into the hold",
+   "transition_in": null,
+   "hand_off": null,
+   "energy": 4,
+   "capture": null
+  },
+  {
+   "shot": 4,
+   "scene": "S03",
+   "scene_title": "One scene at a time",
+   "file": "storyboard/shot-04.jpg",
+   "start": 8.9,
+   "length": 2.95,
+   "shown_at": 10.67,
+   "voice": [
+    "Change one scene, and render it alone."
+   ],
+   "on_screen_text": "Change one scene.",
+   "shot_size": "wide",
+   "focal_point": "centre",
+   "move": "text rises, wordmark settles under it",
+   "sound": "third beep, hit on the cut",
+   "transition_in": "5 (match cut)",
+   "hand_off": "the last dot matches the wordmark tile",
+   "energy": 5,
+   "capture": null
+  }
+ ]
+}

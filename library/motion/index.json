@@ -1,0 +1,4098 @@
+{
+  "about": "The motion library: reusable animations (moves) for any brand. One entry per move. A move is in this file only if it has a working example in the gallery.",
+  "moves_folder": "engine/src/kit/moves",
+  "gallery_folder": "engine/src/library/motion",
+  "techniques_file": "knowledge/craft/03-transitions.md",
+  "reel": {
+    "composition": "Motion",
+    "preview": "library/motion/motion-tulvo.mp4",
+    "does": "Plays every move one after another. One file per brand: motion-<brand>.mp4."
+  },
+  "gallery_props": {
+    "brand": "A folder name in brands/.",
+    "preset": "calm, confident or hype.",
+    "page": "light or dark."
+  },
+  "families": {
+    "type": "How words and numbers arrive and change.",
+    "emphasis": "Drawing the eye on a product screen.",
+    "data": "Numbers with their shapes.",
+    "camera": "Moves of the whole shot.",
+    "transition": "Getting from one scene to the next.",
+    "capture-pointer": "Pointer styles drawn over a product capture (CaptureClip).",
+    "capture-effect": "Click, hover and typing effects on a product capture.",
+    "capture-camera": "Camera moves over a product capture, from tracks.json and hand-set cues.",
+    "capture-time": "Speed ramps, freezes, jumps, rewinds, pins and loops, all through one time map.",
+    "capture-look": "Look presets: one word sets the pointer, click, camera and pace of a capture.",
+    "capture-staging": "Where the screen sits: frames and layouts around a product capture (CaptureShot, staging.tsx).",
+    "capture-product": "Animations on the product, glued to tracked things (CaptureClip's emphasis, emphasis.tsx).",
+    "capture-sound": "Interface sounds placed from a capture's event log (sound.ts, tools/audio/capture_sounds.mjs).",
+    "capture-transition": "Transitions between two captures, or two parts of one, on one film clock (CaptureJoin, transitions.tsx; the plan is joins.ts).",
+    "capture-relayout": "A wide capture re-laid out for 9:16, 1:1 and 4:5, the camera following the action inside the recording; a phone-size take full frame (relayout.ts, CaptureShot in a tall or square frame)."
+  },
+  "moves": [
+    {
+      "name": "blur-in",
+      "family": "type",
+      "component": "BlurIn",
+      "file": "engine/src/kit/moves/BlurIn.tsx",
+      "does": "Each word of a headline is there, soft, at once; it reaches its place first and comes into focus last.",
+      "use_when": "Calm films, and headlines that should arrive gently.",
+      "avoid_when": "Fast or hype passages, and any line that must be read the instant it appears.",
+      "technique": null,
+      "props": {
+        "lines": "One or two clauses. The first is in ink, the second in the second colour. Star one word to set it in the accent voice.",
+        "at": "Seconds on the scene clock when the move starts.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "size": "Type size as a percentage of frame height. Optional.",
+        "align": "\"left\" or \"center\". Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-blur-in",
+      "preview": "library/motion/blur-in.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "tracking-settle",
+      "family": "type",
+      "component": "TrackingSettle",
+      "file": "engine/src/kit/moves/TrackingSettle.tsx",
+      "does": "The letters of one line start a little wider apart and close up, from rest, slowing into the brand's own spacing.",
+      "use_when": "The opening line or the closing line of a film.",
+      "avoid_when": "Sentences in the middle of a film, and more than one line at a time.",
+      "technique": null,
+      "props": {
+        "text": "The line.",
+        "at": "Seconds on the scene clock when the move starts.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "size": "Type size as a percentage of frame height. Optional.",
+        "align": "\"left\" or \"center\". Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-tracking-settle",
+      "preview": "library/motion/tracking-settle.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "rotating-word",
+      "family": "type",
+      "component": "RotatingWord",
+      "file": "engine/src/kit/moves/RotatingWord.tsx",
+      "does": "The last word of a line swaps for another inside a box that resizes to fit, while the rest of the line holds still. The words are on one roll: the old one leaves through the top as the new one comes up, and nothing fades.",
+      "use_when": "One line that is true for several audiences or uses.",
+      "avoid_when": "More than four words in the rotation, or when the changing word is not the last on the line.",
+      "technique": null,
+      "props": {
+        "lead": "The words before the box. Optional.",
+        "words": "Two or more words, shown one at a time.",
+        "at": "Seconds when the line and its first word arrive.",
+        "every": "Seconds each word stays, taken from the voice: about half a second of reading plus the swap.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "size": "Type size as a percentage of frame height. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-rotating-word",
+      "preview": "library/motion/rotating-word.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "number-roll",
+      "family": "type",
+      "component": "NumberRoll",
+      "file": "engine/src/kit/moves/NumberRoll.tsx",
+      "does": "The digits of a number roll to their value in fixed-width figures, the last digit landing last. A number that arrives comes up from empty through a few digits per wheel, blurred while fast; it never spins a full turn and never shows a leading zero.",
+      "use_when": "Prices, counts and percentages, and a value that updates from an old number to a new one.",
+      "avoid_when": "Numbers that must be compared with a bar or a ring (use count-with-bar), and an old value that is longer than the new one.",
+      "technique": null,
+      "props": {
+        "value": "The number it lands on.",
+        "at": "Seconds when the roll starts. It ends one scene length later.",
+        "from": "The old value, on screen before the roll. Optional. Without it the number arrives rolling.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "decimals": "Decimal places. Optional.",
+        "prefix": "Text before the number, such as a currency sign. Optional.",
+        "unit": "Text after the number at 60% of its size, such as %. Optional.",
+        "size": "Type size as a percentage of frame height. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-number-roll",
+      "preview": "library/motion/number-roll.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "type-on",
+      "family": "type",
+      "component": "TypeOn",
+      "file": "engine/src/kit/moves/TypeOn.tsx",
+      "does": "Characters appear at a human rhythm: bursts of a few letters, with small pauses at spaces and punctuation.",
+      "use_when": "Prompts and search fields in product UI.",
+      "avoid_when": "Film headlines, and long text that nobody needs to watch being typed.",
+      "technique": null,
+      "props": {
+        "text": "What is typed.",
+        "at": "Seconds when the first key is pressed.",
+        "over": "Seconds the typing takes in all. Optional. A prompt takes 2 to 3 seconds whatever its length.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "voice": "\"product\", \"label\" or \"headline\". Optional; product by default.",
+        "size": "Type size as a percentage of frame height. Optional.",
+        "caret": "Show the caret, a line in the accent colour. Optional; on by default.",
+        "seed": "A number that picks the rhythm. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-type-on",
+      "preview": "library/motion/type-on.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "swap-word",
+      "family": "type",
+      "component": "SwapWord",
+      "file": "engine/src/kit/moves/SwapWord.tsx",
+      "does": "One word rolls out through the top of the line and its replacement rolls in from below, while the rest of the line holds. The two are never printed over each other.",
+      "use_when": "Before and after in one line.",
+      "avoid_when": "More than one swap in a line, or when the swapped word is not the last on its line.",
+      "technique": null,
+      "props": {
+        "lead": "The words before the swapped word. Optional.",
+        "from": "The old word, in the warm colour.",
+        "to": "The new word, in the accent.",
+        "at": "Seconds when the line arrives.",
+        "swapAt": "Seconds when the word is swapped.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "size": "Type size as a percentage of frame height. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-swap-word",
+      "preview": "library/motion/swap-word.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "drawn-mark",
+      "family": "type",
+      "component": "DrawnMark",
+      "file": "engine/src/kit/moves/DrawnMark.tsx",
+      "does": "An underline, or a ring drawn as a hand draws one (a little square, a little uneven, its end passing outside its start), is drawn on its child in the accent colour.",
+      "use_when": "Pointing at one word, number or control without adding text.",
+      "avoid_when": "With another emphasis on the same beat (a lift, a focus pull), or more than one mark on screen at once.",
+      "technique": null,
+      "props": {
+        "children": "The word, number or control to mark.",
+        "at": "Seconds when the mark is drawn: an underline in a quick length, a ring in a base length.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "kind": "\"underline\" or \"ring\". Optional; underline by default.",
+        "weight": "Thickness of the stroke as a percentage of frame height. Optional.",
+        "gap": "Space between the child and an underline, as a percentage of frame height. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-drawn-mark",
+      "preview": "library/motion/drawn-mark.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "focus-pull",
+      "family": "emphasis",
+      "component": "FocusPull",
+      "file": "engine/src/kit/moves/FocusPull.tsx",
+      "does": "Everything except the chosen child dims and softens.",
+      "use_when": "One thing in a group matters for this beat.",
+      "avoid_when": "More than five things in the group, or with another emphasis on the same beat.",
+      "technique": null,
+      "props": {
+        "children": "The group. Each child sits in a box of its own.",
+        "keep": "Which child stays sharp, counting from 0.",
+        "at": "Seconds when focus is pulled.",
+        "out": "Seconds when focus is given back. Optional.",
+        "style": "CSS that lays the group out. Optional.",
+        "itemStyle": "CSS for each child's box. Optional."
+      },
+      "composition": "move-focus-pull",
+      "preview": "library/motion/focus-pull.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "lift",
+      "family": "emphasis",
+      "component": "Lift",
+      "file": "engine/src/kit/moves/Lift.tsx",
+      "does": "A card rises off the surface: it grows 2 to 3% and its shadow grows and softens. On a dark page, where a shadow hardly shows, it also catches light along its top edge and rim and a soft glow of the accent spreads under it.",
+      "use_when": "A selected card or row, on either page.",
+      "avoid_when": "With another emphasis on the same beat.",
+      "technique": null,
+      "props": {
+        "children": "The card. Give it no shadow of its own.",
+        "at": "Seconds when it lifts.",
+        "out": "Seconds when it is set down again. Optional.",
+        "radius": "Corner radius of the card as a percentage of frame height. Optional; the brand's window radius by default.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-lift",
+      "preview": "library/motion/lift.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stagger",
+      "family": "emphasis",
+      "component": "Stagger",
+      "file": "engine/src/kit/moves/Stagger.tsx",
+      "does": "The items of a group arrive in order from a source: the left, the centre, or a point.",
+      "use_when": "Rows, tiles and lists arriving as a result.",
+      "avoid_when": "Groups of more than about twelve, and a single item.",
+      "technique": null,
+      "props": {
+        "children": "The items. Each sits in a box of its own.",
+        "at": "Seconds when the first item arrives.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "from": "\"left\", \"centre\", or the position (counting from 0) of the item at the point, such as the one the cursor clicked. Optional; left by default.",
+        "columns": "How many items per row, when the group is a grid. Optional.",
+        "style": "CSS that lays the group out. Optional.",
+        "itemStyle": "CSS for each item's box. Optional."
+      },
+      "composition": "move-stagger",
+      "preview": "library/motion/stagger.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "count-with-bar",
+      "family": "data",
+      "component": "CountWithBar",
+      "file": "engine/src/kit/moves/CountWithBar.tsx",
+      "does": "A number counts up while its bar grows. The last step of the count lands as the bar comes to rest.",
+      "use_when": "One number that matters, shown against a whole or a target.",
+      "avoid_when": "Several numbers at once, and a number with no meaningful maximum (use number-roll).",
+      "technique": null,
+      "props": {
+        "value": "The number it counts to.",
+        "max": "The value of a full bar.",
+        "at": "Seconds when the label and the faint track arrive.",
+        "countAt": "Seconds when the count and the bar start. Optional; just after the label by default.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "label": "A short label above the number. Optional.",
+        "prefix": "Text before the number. Optional.",
+        "unit": "Text after the number at 60% of its size. Optional.",
+        "decimals": "Decimal places. Optional.",
+        "width": "Width as a percentage of frame height. Optional.",
+        "size": "Type size as a percentage of frame height. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-count-with-bar",
+      "preview": "library/motion/count-with-bar.mp4",
+      "also_exports": {
+        "Count": "The counting number on its own, for the middle of a ring or beside a line. Props: value, at, from, over, decimals."
+      },
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "bar-grow",
+      "family": "data",
+      "component": "BarGrow",
+      "file": "engine/src/kit/moves/BarGrow.tsx",
+      "does": "One bar grows from its baseline to its value and slows into place.",
+      "use_when": "Before against after, or a small chart of up to about six bars, each started a little after the last.",
+      "avoid_when": "Charts that need a legend, and bars that do not start at zero.",
+      "technique": null,
+      "props": {
+        "share": "The bar's value as a share of the full length, 0 to 1.",
+        "at": "Seconds when it starts to grow.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "grow": "\"up\" or \"right\". Optional; up by default.",
+        "length": "Full length as a percentage of frame height.",
+        "thickness": "Thickness as a percentage of frame height. Optional.",
+        "over": "How long it grows: a timing token. Optional; base by default.",
+        "track": "Show the full length, faint, before the bar arrives. Optional.",
+        "emphasis": "Paint the bar in the accent: the one bar the chart is about. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-bar-grow",
+      "preview": "library/motion/bar-grow.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "line-draw",
+      "family": "data",
+      "component": "LineDraw",
+      "file": "engine/src/kit/moves/LineDraw.tsx",
+      "does": "A line draws itself along a path, and its end mark appears last.",
+      "use_when": "Change over time as one line, or connecting two things on screen.",
+      "avoid_when": "Several lines at once, and before the viewer has seen both ends.",
+      "technique": null,
+      "props": {
+        "points": "Two or more places the line passes through, in pixels of the frame.",
+        "at": "Seconds when it starts to draw.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "over": "How long it draws: a timing token. Optional; scene by default, base or quick for a connector.",
+        "curve": "Draw one smooth curve through the points. Optional.",
+        "weight": "Thickness as a percentage of frame height. Optional.",
+        "mark": "Show the end mark, a short stroke across the end. Optional; on by default.",
+        "label": "A value shown above the end when the line arrives, in the accent. Optional."
+      },
+      "composition": "move-line-draw",
+      "preview": "library/motion/line-draw.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "ring-sweep",
+      "family": "data",
+      "component": "RingSweep",
+      "file": "engine/src/kit/moves/RingSweep.tsx",
+      "does": "A ring fills clockwise from the top to its share of a whole.",
+      "use_when": "A share of a whole, with its number in the middle.",
+      "avoid_when": "More than one ring on screen, and shares that need comparing with each other.",
+      "technique": null,
+      "props": {
+        "share": "How much of the ring fills, 0 to 1.",
+        "at": "Seconds when the sweep starts.",
+        "out": "Seconds when it leaves. Optional. The exit is shorter than the entry.",
+        "size": "Diameter as a percentage of frame height. Optional.",
+        "weight": "Thickness as a percentage of frame height. Optional.",
+        "over": "How long it sweeps: a timing token. Optional; scene by default.",
+        "children": "What sits in the middle, such as a Count with the same start. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-ring-sweep",
+      "preview": "library/motion/ring-sweep.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera",
+      "family": "camera",
+      "component": "Camera",
+      "file": "engine/src/kit/moves/Camera.tsx",
+      "does": "A wrapper that moves a whole shot one way: a slow drift, a push in on a point, or a follow behind the pointer. A push closes in at one steady rate, by a constant factor.",
+      "use_when": "Going from the whole window to the one element the beat is about, or keeping a held shot alive with a drift.",
+      "avoid_when": "More than one move in a shot (never in, out, in), and slow moves across small text.",
+      "technique": 7,
+      "props": {
+        "children": "The content of the shot. Keep the Stage outside it.",
+        "move": "\"drift\", \"push\" or \"follow\".",
+        "direction": "For a drift: \"in\", \"out\", \"up\", \"down\", \"left\" or \"right\". Optional; in by default. Its size comes from the preset.",
+        "to": "For a push or a follow: the point to go to, in pixels of the frame.",
+        "at": "For a push: seconds when it starts. For a follow: seconds when the pointer clicks, which is when the camera lands.",
+        "scale": "How far it zooms. Optional; at most 2.5.",
+        "over": "For a push: \"scene\" or \"hero\". Optional; scene by default."
+      },
+      "composition": "move-camera",
+      "preview": "library/motion/camera.mp4",
+      "technique_note": "The follow move is technique 7, cursor lead; cursor-lead is that move with its cursor. Drift and push are moves inside a shot, not scene changes.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "container-transform",
+      "family": "transition",
+      "component": "ContainerTransform",
+      "file": "engine/src/kit/moves/ContainerTransform.tsx",
+      "does": "A small card grows to become the whole frame, its content appearing in the last third; reversed, the frame shrinks back into the card.",
+      "use_when": "Going into a detail, or back out to the bigger picture.",
+      "avoid_when": "Twice in a row, and when the card and the next scene are on the same page colour as the stage.",
+      "technique": 2,
+      "props": {
+        "children": "The full-frame scene inside the container.",
+        "from": "Where the small card sits: x, y, width and height in pixels of the frame.",
+        "at": "Seconds when it starts to grow (or to shrink).",
+        "page": "The brand page the container is painted in: \"light\" or \"dark\".",
+        "card": "What the small card shows, such as a label. Optional.",
+        "reverse": "Start full and shrink to the card. Optional.",
+        "radius": "Corner radius of the card as a percentage of frame height. Optional."
+      },
+      "composition": "move-container-transform",
+      "preview": "library/motion/container-transform.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "push-through",
+      "family": "transition",
+      "component": "PushThrough",
+      "file": "engine/src/kit/moves/PushThrough.tsx",
+      "does": "The camera pushes into one element until its colour fills the frame, and that colour is the page of the next scene. What grows is a plain plate over the element; the rest of the outgoing scene softens and is gone before it is enlarged, and the next scene starts on the frame after the colour covers the frame.",
+      "use_when": "Entering a new world: product to brand, light to dark.",
+      "avoid_when": "The element has fine detail, or the two scenes are on the same page.",
+      "technique": 4,
+      "props": {
+        "children": "The outgoing scene, with the element in it.",
+        "next": "The next scene. Its clock starts at 0 on the frame after the colour covers the frame.",
+        "target": "The element to enter: x, y, width and height in pixels of the frame.",
+        "at": "Seconds when the push starts.",
+        "page": "The brand page of the element and of the next scene: \"light\" or \"dark\".",
+        "radius": "Corner radius of the element as a percentage of frame height. Optional; the brand's control radius by default."
+      },
+      "composition": "move-push-through",
+      "preview": "library/motion/push-through.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": [
+        2.45
+      ],
+      "planned_note": "At 2.45 s the plate hands over to the page it has become; the picture does not change on that frame."
+    },
+    {
+      "name": "relay-scroll",
+      "family": "transition",
+      "component": "RelayScroll",
+      "file": "engine/src/kit/moves/RelayScroll.tsx",
+      "does": "The outgoing content speeds up and off, blurring along its way, is swapped in one frame, and the incoming content starts a little low and slows to rest. No fade, and no empty page between.",
+      "use_when": "Moving to the next step in a sequence.",
+      "avoid_when": "Unrelated scenes, and changing direction between steps of one film.",
+      "technique": 14,
+      "props": {
+        "children": "The outgoing content.",
+        "next": "The incoming content. Its clock starts at 0 on the swap; give it no entrance of its own.",
+        "at": "Seconds when the outgoing content starts to leave.",
+        "to": "\"up\", \"down\", \"left\" or \"right\". Optional; up by default.",
+        "reach": "How far the outgoing content must travel to be out of the frame, as a share of the frame: 1 for content that fills it, about 0.6 for a line or a card in the middle. Optional; 1 by default."
+      },
+      "composition": "move-relay-scroll",
+      "preview": "library/motion/relay-scroll.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": [
+        2.383
+      ]
+    },
+    {
+      "name": "zoom-through-swap",
+      "family": "transition",
+      "component": "ZoomThroughSwap",
+      "file": "engine/src/kit/moves/ZoomThroughSwap.tsx",
+      "does": "The outgoing group shrinks, speeding up, and dissolves over one tick into the next, which is already shrinking from large and slows to its size. It reads as one pull-back; there is no empty frame.",
+      "use_when": "A full change of content inside one world.",
+      "avoid_when": "Text that must be read during the swap, and next to another zoom.",
+      "technique": 15,
+      "props": {
+        "children": "The outgoing group.",
+        "next": "The incoming group. Its clock starts at 0 as it appears, half a tick before the middle of the join; give it no entrance of its own.",
+        "at": "Seconds when the outgoing group starts to shrink."
+      },
+      "composition": "move-zoom-through-swap",
+      "preview": "library/motion/zoom-through-swap.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": [],
+      "planned_note": "The join at 2.11 s is a dissolve one tick long, not an instant change."
+    },
+    {
+      "name": "slide-off-reveal",
+      "family": "transition",
+      "component": "SlideOffReveal",
+      "file": "engine/src/kit/moves/SlideOffReveal.tsx",
+      "does": "Finished content speeds up and off one side, blurring along its way, while the next title, already beneath it, comes up.",
+      "use_when": "Ending a section and naming the next.",
+      "avoid_when": "The middle of a section, and when the next thing is not a title.",
+      "technique": 17,
+      "props": {
+        "children": "The finished content.",
+        "next": "The title beneath. Give it no entrance of its own.",
+        "at": "Seconds when the content starts to leave.",
+        "to": "\"left\", \"right\", \"up\" or \"down\". Optional; left by default."
+      },
+      "composition": "move-slide-off-reveal",
+      "preview": "library/motion/slide-off-reveal.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "light-sweep",
+      "family": "transition",
+      "component": "LightSweep",
+      "file": "engine/src/kit/moves/LightSweep.tsx",
+      "does": "One soft band of light crosses a surface once. The band carries a faint wash of the accent, so it also shows on near-white cards.",
+      "use_when": "A reveal: the moment a result or a new state appears.",
+      "avoid_when": "More than once in a film, and on a loop.",
+      "technique": 10,
+      "props": {
+        "children": "The surface: a card, a window or a button.",
+        "at": "Seconds when the band starts to cross.",
+        "radius": "Corner radius of the surface as a percentage of frame height. Optional.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "composition": "move-light-sweep",
+      "preview": "library/motion/light-sweep.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "parallax-camera",
+      "family": "camera",
+      "component": "ParallaxCamera",
+      "file": "engine/src/kit/moves/ParallaxCamera.tsx",
+      "does": "Three planes at different depths slide at different speeds as the camera moves: the far plane 35% as far as the product and out of focus, the near plane 150% as far.",
+      "use_when": "A camera move that should feel like a space: arriving at a product screen, or travelling across a workspace.",
+      "avoid_when": "The near plane would cross what is being read, and shots with nothing behind or in front of the product.",
+      "technique": null,
+      "props": {
+        "children": "The product plane, laid out as it should be when the camera has arrived.",
+        "far": "What sits far behind it, softened and dimmed. Optional.",
+        "near": "A foreground detail in front of it. Optional. Keep it clear of what is read.",
+        "at": "Seconds when the camera starts to move.",
+        "by": "How far the product plane slides, as shares of the frame's width and height (x and y). The camera moves the other way.",
+        "over": "\"scene\" or \"hero\". Optional; scene by default."
+      },
+      "composition": "move-parallax-camera",
+      "preview": "library/motion/parallax-camera.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "momentum-cut",
+      "family": "transition",
+      "component": "MomentumCut",
+      "file": "engine/src/kit/moves/MomentumCut.tsx",
+      "does": "The outgoing shot starts to slide, speeding up; a hard cut; the incoming shot is already moving the same way, at the same speed, and settles in about 300 ms.",
+      "use_when": "Joining two zoom levels of the same screen (the whole view, then one element close up) without zooming across small text.",
+      "avoid_when": "The two shots are on different pages or in different worlds, and calm passages where a carried move would do.",
+      "technique": 13,
+      "props": {
+        "children": "The outgoing shot.",
+        "next": "The incoming shot. Its clock starts at 0 on the cut; give it no entrance of its own.",
+        "at": "Seconds when the outgoing shot starts to move. The cut is one quick length later.",
+        "to": "\"left\", \"right\", \"up\" or \"down\". Optional; left by default."
+      },
+      "composition": "move-momentum-cut",
+      "preview": "library/motion/momentum-cut.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": [
+        1.817
+      ]
+    },
+    {
+      "name": "shared-element",
+      "family": "transition",
+      "component": "SharedElement",
+      "file": "engine/src/kit/moves/SharedElement.tsx",
+      "does": "One element travels on a shallow arc from its place in one layout to its place in the next, changing size and corner radius. Its place sets off first and its size lands last; its text changes over only at the midpoint and is never stretched.",
+      "use_when": "Two layouts share one thing: a row that becomes a card, a button that becomes a header. The default way to change scene inside a product.",
+      "avoid_when": "The two layouts share nothing, and more than one shared element at a time.",
+      "technique": 1,
+      "props": {
+        "from": "Where the element is in the first layout: x, y, width and height in pixels of the frame.",
+        "to": "Where it is in the second layout.",
+        "at": "Seconds when it sets off. The move takes a base and a tick.",
+        "before": "What it holds in the first layout, laid out at that size. Optional.",
+        "after": "What it holds in the second layout, laid out at that size. Optional.",
+        "radius": "Corner radius before and after, as percentages of frame height. Optional; the brand's control and window radii by default.",
+        "style": "Extra CSS for the surface. Optional."
+      },
+      "composition": "move-shared-element",
+      "preview": "library/motion/shared-element.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-lead",
+      "family": "camera",
+      "component": "CursorLead",
+      "file": "engine/src/kit/moves/CursorLead.tsx",
+      "does": "A large cursor travels on an arc and clicks; the camera sets off a quick length after it, covers 70% of the way while pushing in, and lands with the click. Pressed, exported beside it, dips the control under the click.",
+      "use_when": "Tutorials and demos: the next thing happens where the cursor goes.",
+      "avoid_when": "No interaction is happening, and anything on screen that changes before the click.",
+      "technique": 7,
+      "props": {
+        "children": "The screen. Put the clicked control in a Pressed with the same at.",
+        "from": "Where the cursor starts, in pixels of the frame.",
+        "to": "The point it clicks, in pixels of the frame.",
+        "at": "Seconds when it clicks, which is when the camera lands. Show the result one frame later.",
+        "scale": "How far the camera pushes in. Optional.",
+        "bend": "How far the cursor's path bows, as a share of the distance. Optional.",
+        "out": "Seconds when the cursor leaves. Optional."
+      },
+      "composition": "move-cursor-lead",
+      "preview": "library/motion/cursor-lead.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": [
+        2.317
+      ]
+    },
+    {
+      "name": "icon-door",
+      "family": "transition",
+      "component": "IconDoor",
+      "file": "engine/src/kit/moves/IconDoor.tsx",
+      "does": "An icon tile sits in front of a miniature of a live screen. The camera pushes through in about 600 ms as the tile slides away, and the miniature is the screen; run back, in about 850 ms, the screen shrinks to a card and the tile slides back over it.",
+      "use_when": "Entering and leaving an app or a feature from a menu, a hub or a dashboard.",
+      "avoid_when": "Any other meaning in the same film, and a screen that cannot be shown small without looking broken.",
+      "technique": 16,
+      "props": {
+        "children": "The screen behind the door, laid out at full size. Its clock starts at 0 on at, so it builds while the camera travels.",
+        "icon": "What the tile shows, in the middle of it.",
+        "tile": "Where the tile sits: x, y, width and height in pixels of the frame.",
+        "at": "Seconds when the camera starts through.",
+        "back": "Seconds when it comes back out. Optional.",
+        "around": "The rest of the menu. It goes as the camera passes and returns on the way back. Optional.",
+        "page": "The brand page of the screen, if it is not the page the menu is on. Optional."
+      },
+      "composition": "move-icon-door",
+      "preview": "library/motion/icon-door.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-11",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-classic",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "A clean, generic arrow with a soft shadow, about 1.5 times a real pointer, in the brand's pointer colours. It turns into a hand over buttons and a text bar over fields, and presses to 90% on each click.",
+      "use_when": "Most demos and tutorials.",
+      "avoid_when": "Films that want no pointer at all (use hidden).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"classic\""
+      },
+      "composition": "move-cursor-classic",
+      "preview": "library/motion/cursor-classic.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-brand",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "The same arrow filled with the brand's accent colour and a rounder, heavier outline.",
+      "use_when": "Branded launches and social cuts.",
+      "avoid_when": "Screens where the accent colour is everywhere already, so the pointer would get lost.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo",
+        "demo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"brand\""
+      },
+      "composition": "move-cursor-brand",
+      "preview": "library/motion/cursor-brand.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-dot",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "A small solid dot with a light ring.",
+      "use_when": "Montages and calm films, where the pointer should hardly be noticed.",
+      "avoid_when": "Tutorials: a dot does not show where exactly the click lands.",
+      "energies": [
+        "calm",
+        "hype"
+      ],
+      "video_types": [
+        "promo",
+        "demo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"dot\""
+      },
+      "composition": "move-cursor-dot",
+      "preview": "library/motion/cursor-dot.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-halo",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "A small accent dot inside a soft ring of light.",
+      "use_when": "Dark product screens and dark stages.",
+      "avoid_when": "Light, busy screens, where the ring reads as a stain.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"halo\""
+      },
+      "composition": "move-cursor-halo",
+      "preview": "library/motion/cursor-halo.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-spotlight",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "The classic arrow lights a soft circle around itself while the rest of the screen dims slightly.",
+      "use_when": "Busy screens where the eye needs guiding.",
+      "avoid_when": "Shots where something else on the screen must be read, and together with a focus pull (one emphasis per beat).",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"spotlight\""
+      },
+      "composition": "move-cursor-spotlight",
+      "preview": "library/motion/cursor-spotlight.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-presenter",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "A larger arrow with a bold outline that still reads on a phone.",
+      "use_when": "Social cuts and tutorials watched on phones.",
+      "avoid_when": "Wide desktop films, where it looks oversized.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"presenter\""
+      },
+      "composition": "move-cursor-presenter",
+      "preview": "library/motion/cursor-presenter.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-named",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "An accent arrow with a name tag, as in shared editors.",
+      "use_when": "Two-person and collaboration moments.",
+      "avoid_when": "Films with one person: a name tag invents a second user.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"named\"",
+        "cursorName": "The name on the tag, made up and safe to show."
+      },
+      "composition": "move-cursor-named",
+      "preview": "library/motion/cursor-named.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-touch",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "A soft see-through dot that presses down, with a ring on each tap and a short fading line while dragging.",
+      "use_when": "Phone-sized takes.",
+      "avoid_when": "Desktop takes: there is no finger on a desktop.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"touch\""
+      },
+      "composition": "move-cursor-touch",
+      "preview": "library/motion/cursor-touch.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "cursor-hidden",
+      "family": "capture-pointer",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "No pointer; the camera and the click effects lead.",
+      "use_when": "Cinematic shots and hero moments.",
+      "avoid_when": "Tutorials: people need to see where to click.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "cursorStyle": "\"hidden\""
+      },
+      "composition": "move-cursor-hidden",
+      "preview": "library/motion/cursor-hidden.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "click-ring",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "A thin accent ring spreads from the click point and fades, starting as the button goes down.",
+      "use_when": "Most films: the default click.",
+      "avoid_when": "More than one click effect in a film.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "click": "\"ring\""
+      },
+      "composition": "move-click-ring",
+      "preview": "library/motion/click-ring.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "click-pulse",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "A soft accent fill pulses over the button that was clicked (its tracked box), or a soft disc where nothing is tracked.",
+      "use_when": "Launches and demos where the button itself is the point.",
+      "avoid_when": "Small icons and dense rows, where the fill covers the neighbours.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo",
+        "demo"
+      ],
+      "technique": null,
+      "props": {
+        "click": "\"pulse\""
+      },
+      "composition": "move-click-pulse",
+      "preview": "library/motion/click-pulse.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "click-burst",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "Eight short accent lines burst out from the click and fade. In a film that is not hype it becomes a ring.",
+      "use_when": "Hype films and social cuts.",
+      "avoid_when": "Calm and confident films.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "click": "\"burst\""
+      },
+      "composition": "move-click-burst",
+      "preview": "library/motion/click-burst.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "click-squish",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "No mark on the screen: the pointer presses deeper (to 82%) and springs back.",
+      "use_when": "Films with sound on, where the click sound carries the moment.",
+      "avoid_when": "Sound-off social cuts: a squish alone is easy to miss.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "click": "\"squish\""
+      },
+      "composition": "move-click-squish",
+      "preview": "library/motion/click-squish.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "hover-magnet",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/pointer.ts",
+      "does": "In the last fifth of a move the pointer is pulled onto its target a little faster, as if drawn in. The click still lands at the recorded place and time.",
+      "use_when": "Demos and launches.",
+      "avoid_when": "Calm and documentary films.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "magnet": "true"
+      },
+      "composition": "move-hover-magnet",
+      "preview": "library/motion/hover-magnet.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "hover-glow",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "The tracked thing under a resting pointer gets a soft accent glow; it fades as the pointer moves on.",
+      "use_when": "Guiding the eye to the button about to be clicked.",
+      "avoid_when": "Untracked captures (nothing to glow), and beats that already carry another emphasis.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "tutorial",
+        "demo"
+      ],
+      "technique": null,
+      "props": {
+        "glow": "true"
+      },
+      "composition": "move-hover-glow",
+      "preview": "library/motion/hover-glow.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "typing-caret-glow",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "The field being typed in glows with an accent edge that brightens on each key. The engine does not know the caret's exact place, so the whole field glows.",
+      "use_when": "Any typing worth watching.",
+      "avoid_when": "Pasted text that is not the point of the shot.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "caretGlow": "true"
+      },
+      "composition": "move-typing-caret-glow",
+      "preview": "library/motion/typing-caret-glow.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "typing-key-caps",
+      "family": "capture-effect",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/draw.tsx",
+      "does": "Shortcuts (or every key, in tutorials) show as key caps near the bottom of the screen; each cap presses as its key goes down.",
+      "use_when": "Shortcuts the viewer should learn.",
+      "avoid_when": "Ordinary typing: key caps for every letter are noise.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "tutorial",
+        "demo"
+      ],
+      "technique": null,
+      "props": {
+        "keyCaps": "\"shortcuts\", \"all\" or \"none\""
+      },
+      "composition": "move-typing-key-caps",
+      "preview": "library/motion/typing-key-caps.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [
+        1.15,
+        2.03
+      ]
+    },
+    {
+      "name": "camera-auto-zoom",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "Before each action the camera eases in on the real thing it happens to (from tracks.json) with room around it, holds through the action and a proof moment, and eases out. Actions close in time and place share one shot. Never past 2x, never during a reading hold.",
+      "use_when": "Every demo: the default camera.",
+      "avoid_when": "Captures where the whole screen must stay in view, and documentary films.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "camera": "{ \"auto\": true, \"most\": 2, \"over\": \"scene\", \"holdAfter\": 0.8 }"
+      },
+      "composition": "move-camera-auto-zoom",
+      "preview": "library/motion/camera-auto-zoom.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-follow",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "While zoomed in, the camera drifts towards the pointer 150 ms behind it and covers 30% of the way, never so far that the thing leaves the shot.",
+      "use_when": "Demos with travel inside one zoomed area.",
+      "avoid_when": "Tutorials, where a steady frame is easier to follow.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "camera": "{ \"follow\": true }"
+      },
+      "composition": "move-camera-follow",
+      "preview": "library/motion/camera-follow.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-push-in",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "A slow move in on a thing, a click or a box, by hand.",
+      "use_when": "Landing a proof moment.",
+      "avoid_when": "Pushing in, out and in again in one shot.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"push-in\", \"to\": { \"thing\": \"save\" }, \"at\": 1.2, \"over\": \"hero\" }]"
+      },
+      "composition": "move-camera-push-in",
+      "preview": "library/motion/camera-push-in.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-pull-out",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "Starts close on a detail and reveals the whole screen.",
+      "use_when": "Opening a scene on the result, then showing where it lives.",
+      "avoid_when": "Text that is being read while the camera moves.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"pull-out\", \"from\": { \"click\": 2 }, \"at\": 2 }]"
+      },
+      "composition": "move-camera-pull-out",
+      "preview": "library/motion/camera-pull-out.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-snap-zoom",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "A fast zoom with a tiny settle, for beats. In a film that is not hype it is an ordinary push in.",
+      "use_when": "Hype films, on a beat.",
+      "avoid_when": "Calm and confident films.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"snap-zoom\", \"to\": { \"click\": 2 }, \"at\": 0.9 }]"
+      },
+      "composition": "move-camera-snap-zoom",
+      "preview": "library/motion/camera-snap-zoom.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-dolly-tilt",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "The screen starts turned in depth (at most 10 degrees) and straightens as the camera moves in a little. Turns fade away as the camera closes in: wides only.",
+      "use_when": "Openings and wide establishing shots.",
+      "avoid_when": "Any screen that must be read while it is turned.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"dolly-tilt\", \"at\": 0.3, \"turn\": 8 }]"
+      },
+      "composition": "move-camera-dolly-tilt",
+      "preview": "library/motion/camera-dolly-tilt.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-float",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "The screen drifts very slowly in depth (about 2 degrees), alive through holds. Wides only.",
+      "use_when": "Launch hero shots and long holds on a wide screen.",
+      "avoid_when": "Tutorials and zoomed shots.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "camera": "{ \"float\": true }"
+      },
+      "composition": "move-camera-float",
+      "preview": "library/motion/camera-float.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-crane-reveal",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "Starts tight on one thing and rises to the whole page, leaning back a little in depth on the way.",
+      "use_when": "Revealing the whole product after a detail.",
+      "avoid_when": "Short shots: it needs a hero length.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"crane-reveal\", \"from\": { \"click\": 1 }, \"at\": 0.8 }]"
+      },
+      "composition": "move-camera-crane-reveal",
+      "preview": "library/motion/camera-crane-reveal.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-orbit",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "A small turn around the floating screen, from one side to the other (at most 10 degrees). Wides only.",
+      "use_when": "Launch hero shots.",
+      "avoid_when": "Anything that must be read.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"orbit\", \"at\": 0.2 }]"
+      },
+      "composition": "move-camera-orbit",
+      "preview": "library/motion/camera-orbit.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-rack-focus",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "One thing is sharp and the rest softens and dims; the sharp area moves to a second thing.",
+      "use_when": "Moving the eye from a cause to its result on one screen.",
+      "avoid_when": "Together with a spotlight pointer (one emphasis per beat).",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"rack-focus\", \"from\": { \"thing\": \"title\" }, \"to\": { \"thing\": \"save\" }, \"at\": 1.4 }]"
+      },
+      "composition": "move-camera-rack-focus",
+      "preview": "library/motion/camera-rack-focus.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "camera-pan-across",
+      "family": "capture-camera",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/camera.ts",
+      "does": "A smooth slide across the screen at a set zoom, from one thing to another.",
+      "use_when": "Showing a long row of things, or two related places on one screen.",
+      "avoid_when": "Fast films: it needs a hero length.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "moves": "[{ \"move\": \"pan-across\", \"from\": { \"click\": 1 }, \"to\": { \"click\": 2 }, \"at\": 0.6, \"zoom\": 1.6 }]"
+      },
+      "composition": "move-camera-pan-across",
+      "preview": "library/motion/camera-pan-across.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "time-speed-ramp",
+      "family": "capture-time",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/timemap.ts",
+      "does": "A long real wait (marked by the capture tool) or long typing plays faster, easing into and out of the faster speed, with a \"Sped up\" label in the brand's label style. The pointer, the tracked things and the camera follow the same clock.",
+      "use_when": "Any real wait over 0.6 s, and long typing.",
+      "avoid_when": "Waits that are the point of the story (show them, or cut them with a jump).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "time": "{ \"speedUp\": { \"waits\": true, \"typing\": 4 }, \"ramps\": [{ \"from\": 15, \"to\": 17.2, \"speed\": 4 }] }"
+      },
+      "composition": "move-time-speed-ramp",
+      "preview": "library/motion/time-speed-ramp.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [
+        3.13
+      ]
+    },
+    {
+      "name": "time-freeze",
+      "family": "capture-time",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/timemap.ts",
+      "does": "One moment of the recording holds while the camera pushes in slowly (5%), then eases back as the picture plays on.",
+      "use_when": "Proof moments: a result the viewer should believe.",
+      "avoid_when": "More than once or twice a film.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "time": "{ \"freezes\": [{ \"at\": 17.4, \"hold\": 1.4 }] }"
+      },
+      "composition": "move-time-freeze",
+      "preview": "library/motion/time-freeze.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "time-jump",
+      "family": "capture-time",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/timemap.ts",
+      "does": "A dead stretch is left out with a clean cut.",
+      "use_when": "Long waits where nothing changes on screen.",
+      "avoid_when": "Stretches where the pointer or the page is moving (the cut would show).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "time": "{ \"jumps\": [{ \"from\": 15.2, \"to\": 17.1 }] }"
+      },
+      "composition": "move-time-jump",
+      "preview": "library/motion/time-jump.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [
+        1.75,
+        2.58
+      ]
+    },
+    {
+      "name": "time-rewind",
+      "family": "capture-time",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/timemap.ts",
+      "does": "The recording runs backwards for a moment, easing in and out, then plays on from there or cuts back to where it was.",
+      "use_when": "Undo stories and \"let us see that again\".",
+      "avoid_when": "More than once a film.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo",
+        "demo"
+      ],
+      "technique": null,
+      "props": {
+        "time": "{ \"rewinds\": [{ \"at\": 6.4, \"back\": 1.6, \"speed\": 2.5, \"then\": \"resume\" }] }"
+      },
+      "composition": "move-time-rewind",
+      "preview": "library/motion/time-rewind.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [
+        4.54
+      ]
+    },
+    {
+      "name": "time-pin",
+      "family": "capture-time",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/timemap.ts",
+      "does": "An event (a click, a mark, a step) lands on a chosen film time, such as a word of the voice. The pauses between actions are stretched or squeezed to fit; actions are never retimed.",
+      "use_when": "Fitting a capture to the voice.",
+      "avoid_when": "Pins that need the pauses to play more than 8 times faster or 4 times slower (the engine refuses, with a plain message).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "time": "{ \"pins\": [{ \"event\": { \"click\": 3 }, \"at\": 6.0 }] }"
+      },
+      "composition": "move-time-pin",
+      "preview": "library/motion/time-pin.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "time-loop",
+      "family": "capture-time",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/timemap.ts",
+      "does": "In its last stretch the clip dissolves back to its first frame while the camera and the pointer go back, so it can play in a loop.",
+      "use_when": "Social loops and website heroes.",
+      "avoid_when": "Films that end on a call to action.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "time": "{ \"loop\": true }"
+      },
+      "composition": "move-time-loop",
+      "preview": "library/motion/time-loop.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "look-calm-explainer",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "Unhurried and premium: classic pointer on slow arcs, soft hover glow, slow eased zooms that go less far (1.6x), long holds, no tilt, calm pace. Staged as a flat card (CaptureShot). Joins its shots with cross-dissolve and container grow (CaptureJoin).",
+      "use_when": "Explainers and calm product stories.",
+      "avoid_when": "Launches and social cuts.",
+      "energies": [
+        "calm"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"calm-explainer\""
+      },
+      "composition": "move-look-calm-explainer",
+      "preview": "library/motion/look-calm-explainer.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "look-product-demo",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "The default. Clear and confident: classic pointer with a magnet pull and blur on fast moves, ring clicks, auto-zoom on each action with a gentle follow, sped-up waits. Staged as a flat card (or the browser frame) (CaptureShot). Joins its shots with zoom through, match cut and push (CaptureJoin).",
+      "use_when": "Most product demos.",
+      "avoid_when": "Films that need a cinematic or a raw feel.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"product-demo\""
+      },
+      "composition": "move-look-product-demo",
+      "preview": "library/motion/look-product-demo.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "look-launch",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "Big and cinematic: the brand's arrow, a soft pulse on clicks, hover glow, zooms that land with a soft spring, and a slow float in depth on wides. Staged as the floating screen (CaptureShot). Joins its shots with shared element, depth push and whip (CaptureJoin).",
+      "use_when": "Launches and big announcements.",
+      "avoid_when": "Tutorials.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"launch\""
+      },
+      "composition": "move-look-launch",
+      "preview": "library/motion/look-launch.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "look-tutorial",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "Patient and precise: a large classic pointer, rings, every key as a cap, a steady zoom on every click with no follow, long holds. Staged as the browser frame, with a numbered badge on each step (CaptureShot). Joins its shots with straight cuts and soft slides (CaptureJoin).",
+      "use_when": "Tutorials and how-tos.",
+      "avoid_when": "Short promos.",
+      "energies": [
+        "calm"
+      ],
+      "video_types": [
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"tutorial\""
+      },
+      "composition": "move-look-tutorial",
+      "preview": "library/motion/look-tutorial.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "look-social-vertical",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "Fast and bold for sound-off feeds: a large brand arrow, a line burst on clicks, tight following zooms that snap in with a spring, typing sped up early. The phone-shaped crop comes in part B; for now it is a flat card. Staged as a tall crop of the action (CaptureShot). Joins its shots with snap cut and whip (CaptureJoin).",
+      "use_when": "Social cuts.",
+      "avoid_when": "Desktop demos watched at full size.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"social-vertical\""
+      },
+      "composition": "move-look-social-vertical",
+      "preview": "library/motion/look-social-vertical.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "look-feature-montage",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "Many things quickly: a small dot, no zooms, a slow 6% push through each clip. Staged as a grid of screens (CaptureShot). Joins its shots with grid zoom and stack shuffle (CaptureJoin).",
+      "use_when": "Montages of several features.",
+      "avoid_when": "Explaining one flow step by step.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"feature-montage\""
+      },
+      "composition": "move-look-feature-montage",
+      "preview": "library/motion/look-feature-montage.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "look-documentary",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "Honest and raw: the real recorded pointer path, no click effect, no key caps, an almost still camera (a 2% push). Real waits are still labelled when sped up. Staged as the full screen, no frame (CaptureShot). Joins its shots with straight cuts (CaptureJoin).",
+      "use_when": "Proof films and honest walkthroughs.",
+      "avoid_when": "Polished launches.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"documentary\""
+      },
+      "composition": "move-look-documentary",
+      "preview": "library/motion/look-documentary.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "look-two-people",
+      "family": "capture-look",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/looks.ts",
+      "does": "Collaboration: a named pointer in the accent colour, ring clicks, auto-zoom with follow. Staged as two takes side by side, marks aligned (CaptureShot). Joins its shots with window split (CaptureJoin).",
+      "use_when": "Moments about working together.",
+      "avoid_when": "Films with one person.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "look": "\"two-people\"",
+        "cursorName": "The name on the tag.",
+        "others": "[the second person's take]"
+      },
+      "composition": "move-look-two-people",
+      "preview": "library/motion/look-two-people.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-12",
+      "planned_instant_changes": [],
+      "checked": "Preview re-rendered 12 Nov 2026 (night) with its staging, on Tulvo's boards take (two people: two practice takes); contact sheet looked at, not watched frame by frame again."
+    },
+    {
+      "name": "stage-card",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A flat card on the stage: rounded, a line border and a soft shadow (craft file 05, Staging a screen).",
+      "use_when": "The default for most beats.",
+      "avoid_when": "Never wrong; vary with the browser frame across a film.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"card\""
+      },
+      "composition": "move-stage-card",
+      "preview": "library/motion/stage-card.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-browser",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A clean browser frame drawn by the engine, light: back, forward and reload as plain lines and the address from capture.json, no window dots or company controls.",
+      "use_when": "Tutorials and demos where the viewer should know it is a web app.",
+      "avoid_when": "Hype social cuts, where the bar eats room.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"browser\"",
+        "address": "\"app.example.com\" (the take's capture.json address), or none"
+      },
+      "composition": "move-stage-browser",
+      "preview": "library/motion/stage-browser.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-browser-dark",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "The browser frame in the brand's dark stage colours.",
+      "use_when": "A dark stage, or a dark product.",
+      "avoid_when": "A light product on a light stage (the dark bar draws the eye).",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"browser-dark\"",
+        "address": "as browser"
+      },
+      "composition": "move-stage-browser-dark",
+      "preview": "library/motion/stage-browser-dark.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-frameless",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "The capture fills the frame, no window.",
+      "use_when": "Documentary and walkthroughs that must be read.",
+      "avoid_when": "Promos: it reads as a screen recording.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"frameless\""
+      },
+      "composition": "move-stage-frameless",
+      "preview": "library/motion/stage-frameless.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-float",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A floating screen in depth, turned up to 12 degrees, drifting slowly on the film's clock over a soft depth shadow.",
+      "use_when": "Launch wides and openers.",
+      "avoid_when": "Any shot that must be read (craft file 05: never tilt a screen that must be read).",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"float\""
+      },
+      "composition": "move-stage-float",
+      "preview": "library/motion/stage-float.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-isometric",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "The screen laid back in an isometric view with a solid edge.",
+      "use_when": "A wide establishing beat, a montage frame.",
+      "avoid_when": "Anything to be read.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"isometric\""
+      },
+      "composition": "move-stage-isometric",
+      "preview": "library/motion/stage-isometric.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-laptop",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A generic laptop: dark bezel, a plain metal deck, no logo, no notch.",
+      "use_when": "Where a computer context helps (desktop software, office work).",
+      "avoid_when": "Every shot: devices add weight; one per film.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"laptop\""
+      },
+      "composition": "move-stage-laptop",
+      "preview": "library/motion/stage-laptop.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-monitor",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A generic desktop monitor with a plain stand.",
+      "use_when": "Desktop software, dashboards.",
+      "avoid_when": "Mobile stories.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"monitor\""
+      },
+      "composition": "move-stage-monitor",
+      "preview": "library/motion/stage-monitor.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-tablet",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A generic tablet slab, landscape.",
+      "use_when": "Products used on tablets.",
+      "avoid_when": "Desktop-only products (it implies a tablet app).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"tablet\""
+      },
+      "composition": "move-stage-tablet",
+      "preview": "library/motion/stage-tablet.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-phone",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A generic phone slab (no notch, no island) showing a tall crop of a wide take that follows the action.",
+      "use_when": "A phone story when there is no phone-size take.",
+      "avoid_when": "Products with a real mobile layout: record a phone-size take instead (plan 7.7).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"phone\""
+      },
+      "composition": "move-stage-phone",
+      "preview": "library/motion/stage-phone.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-phone-crop",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A tall card cropping the wide take around the action (social vertical).",
+      "use_when": "Sound-off vertical cuts.",
+      "avoid_when": "Text that runs off the crop.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"phone-crop\""
+      },
+      "composition": "move-stage-phone-crop",
+      "preview": "library/motion/stage-phone-crop.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Re-rendered 12 Nov 2026 (phase 8): the tall crop now uses the follow camera of relayout.ts (it keeps the acted-on thing and the pointer inside the crop and pulls back for long moves) instead of a crop that followed the pointer's average place. smoothness.py: no jumps or judder. Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg, the older still); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-stacked",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "Stacked windows: the live take in front, two stills of the take's own marks (or other takes) behind, offset up and right.",
+      "use_when": "Showing that there is more behind (several boards, several steps).",
+      "avoid_when": "Busy screens: three windows of a busy UI is noise.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"stacked\"",
+        "others": "Takes behind; without them, stills of the take's own marks"
+      },
+      "composition": "move-stage-stacked",
+      "preview": "library/motion/stage-stacked.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-split",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "Two takes side by side on one clock; align \"marks\" lands their shared marks on the same film frame.",
+      "use_when": "Two people, light and dark, before and after, two plans.",
+      "avoid_when": "Takes whose actions do not share marks.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"split\"",
+        "others": "[the second take]",
+        "align": "\"marks\" (default \"clock\")"
+      },
+      "composition": "move-stage-split",
+      "preview": "library/motion/stage-split.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-split-three",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "Three takes side by side on one clock.",
+      "use_when": "Three variants of one flow.",
+      "avoid_when": "Small screens: each take is under a third of the width.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"split-three\"",
+        "others": "[two more takes]"
+      },
+      "composition": "move-stage-split-three",
+      "preview": "library/motion/stage-split-three.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-pip",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "Picture in picture: a second take in a small window on the main one's corner.",
+      "use_when": "A second view of the same moment (another user, another device).",
+      "avoid_when": "When the small window covers the action.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"pip\"",
+        "others": "[the inset take]"
+      },
+      "composition": "move-stage-pip",
+      "preview": "library/motion/stage-pip.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-grid",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A grid of screens, all playing on one clock: other takes, or stretches of the same take around its marks.",
+      "use_when": "Feature montages (look feature-montage).",
+      "avoid_when": "A beat that needs one thing read.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"grid\"",
+        "others": "[up to five more takes]"
+      },
+      "composition": "move-stage-grid",
+      "preview": "library/motion/stage-grid.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-wall",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A wall of screens, turned a little, columns drifting up and down; tiles are frozen frames of the takes' marks (real pixels).",
+      "use_when": "Openers and \"all in one place\" beats.",
+      "avoid_when": "Anything to be read.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"wall\"",
+        "others": "[more takes]"
+      },
+      "composition": "move-stage-wall",
+      "preview": "library/motion/stage-wall.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-before-after",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A line wipes between two takes of the same screen, with a handle and \"Before\" and \"After\" labels (sentence case, the film's words).",
+      "use_when": "A redesign, a setting switched, light and dark.",
+      "avoid_when": "Two takes with different layouts (the wipe shows a mismatch).",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"before-after\"",
+        "others": "[the after take]",
+        "wipe": "{ \"at\": 0.8, \"to\": 0.5, \"labels\": [\"Before\", \"After\"] }"
+      },
+      "composition": "move-stage-before-after",
+      "preview": "library/motion/stage-before-after.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-email",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A neutral mail window; its header shows the real mail's subject and sender when given, and no words otherwise.",
+      "use_when": "Showing an e-mail the product sends.",
+      "avoid_when": "Made-up subjects: give only the real one.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"email\"",
+        "email": "{ \"subject\": \"...\", \"from\": \"...\" } from the real mail"
+      },
+      "composition": "move-stage-email",
+      "preview": "library/motion/stage-email.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "stage-terminal",
+      "family": "capture-staging",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/staging.tsx",
+      "does": "A neutral terminal window in the brand's dark stage, with a title or none.",
+      "use_when": "Command-line products (recordings come from phase 6, VHS).",
+      "avoid_when": "Web products.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "technique": null,
+      "props": {
+        "staging": "\"terminal\"",
+        "title": "\"Install\" or none"
+      },
+      "composition": "move-stage-terminal",
+      "preview": "library/motion/stage-terminal.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026 (library/motion/product-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-lift",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "The thing's own layer (cut from the recording at its tracked rectangle) rises: 2.8% larger, a deeper shadow, raised by less than it grows so the thing never shows below it.",
+      "use_when": "Selecting one card from many.",
+      "avoid_when": "Next to a push in on the same beat.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Real layer",
+      "props": {
+        "emphasis": "[{\"kind\": \"lift\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-lift",
+      "preview": "library/motion/product-lift.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame. Glue measured on a render (tools/checks/capture_glue.mjs): within 1.4 px (outline) and 1.5 px (lift) of the real thing in every frame, across a camera move and a scroll.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-isolate",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "The thing stays; everything else fades to the stage colour.",
+      "use_when": "Naming one thing on a busy screen.",
+      "avoid_when": "When the context matters to the line.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Real layer",
+      "props": {
+        "emphasis": "[{\"kind\": \"isolate\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-isolate",
+      "preview": "library/motion/product-isolate.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-fly-out",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "The thing comes forward to the middle (no further than the recording's sharpness allows, at most 62% of the width) while the screen blurs and dims behind.",
+      "use_when": "The proof object of a beat.",
+      "avoid_when": "More than once a scene.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Real layer",
+      "props": {
+        "emphasis": "[{\"kind\": \"fly-out\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-fly-out",
+      "preview": "library/motion/product-fly-out.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-focus",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "The rest dims (38%) and softens; the thing stays sharp (craft 05: 30 to 50%).",
+      "use_when": "Pointing at an area without a mark.",
+      "avoid_when": "A screen already dim.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"focus\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-focus",
+      "preview": "library/motion/product-focus.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-outline",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A rounded line traces itself around the thing in the accent colour.",
+      "use_when": "A card or panel the line names.",
+      "avoid_when": "Small buttons (use ring).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"outline\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-outline",
+      "preview": "library/motion/product-outline.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame. Glue measured on a render (tools/checks/capture_glue.mjs): within 1.4 px (outline) and 1.5 px (lift) of the real thing in every frame, across a camera move and a scroll.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-underline",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A line draws under the words.",
+      "use_when": "A title or label the voice says.",
+      "avoid_when": "Words that wrap.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"underline\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-underline",
+      "preview": "library/motion/product-underline.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-ring",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A clean ellipse draws round the thing from its top left.",
+      "use_when": "A button or chip.",
+      "avoid_when": "Large panels.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"ring\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-ring",
+      "preview": "library/motion/product-ring.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-sweep",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A soft band of light crosses the thing once (the light sweep, glued).",
+      "use_when": "A reveal or a result arriving.",
+      "avoid_when": "Text being read.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"sweep\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-sweep",
+      "preview": "library/motion/product-sweep.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-magnifier",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A round loupe over a small detail, enlarged up to what the recording's sharpness allows.",
+      "use_when": "A small number, chip or icon.",
+      "avoid_when": "Large areas.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"magnifier\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-magnifier",
+      "preview": "library/motion/product-magnifier.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-callout",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A short label in the film's words with a straight leader line to the thing; flips side near an edge.",
+      "use_when": "One per beat, a name the voice does not say.",
+      "avoid_when": "Captions on screen at the same moment.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "One per beat",
+      "props": {
+        "emphasis": "[{\"kind\": \"callout\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-callout",
+      "preview": "library/motion/product-callout.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-arrow",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A clean drawn arrow from one thing to another, drawn on, head last.",
+      "use_when": "Cause and effect between two things.",
+      "avoid_when": "Hand-drawn looks (never).",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Not hand-drawn",
+      "props": {
+        "emphasis": "[{\"kind\": \"arrow\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-arrow",
+      "preview": "library/motion/product-arrow.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-connect",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A line from one thing to another with a bright stretch running along it, to show data moving.",
+      "use_when": "A form filling a table.",
+      "avoid_when": "Things far apart in a zoomed view.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Both things real",
+      "props": {
+        "emphasis": "[{\"kind\": \"connect\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-connect",
+      "preview": "library/motion/product-connect.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-steps",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "Numbered badges on the things of each step; the tutorial look adds one on each click by itself.",
+      "use_when": "Tutorials.",
+      "avoid_when": "Promos.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"steps\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-steps",
+      "preview": "library/motion/product-steps.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-retype",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "The field's own typing, cut from the recording, plays again from the cue at any speed, with the field glowing on each key.",
+      "use_when": "Showing what was typed after the fact.",
+      "avoid_when": "Fields that moved since.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Real text",
+      "props": {
+        "emphasis": "[{\"kind\": \"retype\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-retype",
+      "preview": "library/motion/product-retype.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-toast",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "The product's own message gets a gentle extra pop (its real layer, 5.5% at most) and a shadow, when it appears.",
+      "use_when": "A save or send confirmation.",
+      "avoid_when": "Messages that the product animates strongly already.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Real message",
+      "props": {
+        "emphasis": "[{\"kind\": \"toast\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-toast",
+      "preview": "library/motion/product-toast.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-success",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A brand-coloured check on the thing's corner, or confetti, when a result lands. Hype and launch only: elsewhere it draws nothing.",
+      "use_when": "The payoff of a launch film.",
+      "avoid_when": "Calm and confident films; more than once.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": "Sparingly",
+      "props": {
+        "emphasis": "[{\"kind\": \"success\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-success",
+      "preview": "library/motion/product-success.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-blur-reveal",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "The thing starts blurred and sharpens into view.",
+      "use_when": "A result appearing.",
+      "avoid_when": "Text the viewer should already read.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"blur-reveal\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-blur-reveal",
+      "preview": "library/motion/product-blur-reveal.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "product-privacy",
+      "family": "capture-product",
+      "component": "CaptureClip",
+      "file": "engine/src/kit/CaptureClip.tsx",
+      "module": "engine/src/kit/capture/emphasis.tsx",
+      "does": "A strong blur on a thing (real layer) that follows it through scrolls and camera moves, from the first frame.",
+      "use_when": "Names, e-mails, numbers that must not be read.",
+      "avoid_when": "In place of masking at capture time when a mask was possible.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "emphasis": "[{\"kind\": \"privacy\", \"target\": \"save\", \"at\": 1.2, \"out\": 3.6}]"
+      },
+      "composition": "move-product-privacy",
+      "preview": "library/motion/product-privacy.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Contact sheet looked at 12 Nov 2026; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "capture-sounds",
+      "family": "capture-sound",
+      "component": null,
+      "file": "engine/src/kit/capture/sound.ts",
+      "module": "tools/audio/capture_sounds.mjs",
+      "does": "Places the brand's interface sounds from a capture's event log on the film's clock (through the time map): a click on the frame the button goes down, key taps (no two within 0.3 s), drag lift and drop, a small whoosh peaking on a jump or scene change, a toast pop, a success chime. Levels a third to two thirds of the voice. Writes the job's audio/sfx.json for tools/audio/mix.py; a slot with no file in brands/<brand>/sounds/ is placed nowhere and listed as missing.",
+      "use_when": "Every capture scene, once the brand's sound kit exists.",
+      "avoid_when": "Before the owner has approved the paid call that makes the kit.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "props": {
+        "slots": "soft-click, crisp-click, soft-keyboard, crisp-keyboard, small-whoosh, large-whoosh, success-chime, toast-pop, drag-lift, drag-drop",
+        "command": "node tools/audio/capture_sounds.mjs engine/public/jobs/<job>/capture/<id> --brand <brand> --options '<clip settings>' --offset <film s> --job jobs/<job> --write"
+      },
+      "composition": null,
+      "preview": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Placement printed and written for a practice take; tools/audio/mix.py read the sfx.json and mixed it (loudest effect 36% of the voice). Nobody has listened.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-zoom-through",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The camera dives into the clicked thing and comes out on the next page: both shots grow about the pointer at one steady rate (A to 1.8x, B from 0.8x), B starting on A's camera view so the clicked thing lies on itself through the one-tick dissolve; then B's camera eases out to the page. The pointer is carried across.",
+      "use_when": "Opening a page from a button or link: the default product-demo join.",
+      "avoid_when": "Text to read during the join; next to another zoom.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 15,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"zoom-through\"",
+        "from": "The thing clicked: a tracked name or a page rectangle (default: the tracked thing under the click)."
+      },
+      "composition": "move-join-zoom-through",
+      "preview": "library/motion/join-zoom-through.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.13 px; clicked thing 0 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-shared-element",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The clicked thing's own pixels lift off shot A and fly on a shallow arc, changing size, into its place in shot B (B's own pixels from the midpoint). B fades in underneath while both cameras ease out together from A's view, so the same page lies on itself and only what changed dissolves; the pointer is carried across.",
+      "use_when": "Something in one screen becomes something in the next (a link becomes the page title, a card becomes its detail).",
+      "avoid_when": "The two things share nothing; without real places for both.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 1,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"shared-element\"",
+        "from": "The thing in A.",
+        "to": "Where it lands in B (default: the same place)."
+      },
+      "composition": "move-join-shared-element",
+      "preview": "library/motion/join-shared-element.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; clicked thing 0.09 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-match-cut",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "A cut on the click's exact frame (cursor.json), with shot B starting on shot A's camera view and easing out after a short hold, so the pointer and the clicked thing do not move.",
+      "use_when": "A strong beat on a click; energy 4 to 5.",
+      "avoid_when": "Shapes that differ by more than a quarter of the frame.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 5,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"match-cut\""
+      },
+      "composition": "move-join-match-cut",
+      "preview": "library/motion/join-match-cut.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): A cut on one frame; pointer jump at the hand-over 0 px; clicked thing 0 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": [
+        2.4333
+      ]
+    },
+    {
+      "name": "join-snap-cut",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "A cut with the incoming shot snapping in from 105% over a quick length. Hype only; elsewhere a straight cut.",
+      "use_when": "Social cuts on the beat.",
+      "avoid_when": "Calm films.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 6,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"snap-cut\""
+      },
+      "composition": "move-join-snap-cut",
+      "preview": "library/motion/join-snap-cut.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): A cut on one frame; pointer jump at the hand-over 149.91 px; clicked thing 161.03 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": [
+        2.5167
+      ]
+    },
+    {
+      "name": "join-cut",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "A straight cut at the button's release.",
+      "use_when": "Documentary and tutorial films; a strong next frame with a sound.",
+      "avoid_when": "As a default elsewhere.",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 12,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"cut\""
+      },
+      "composition": "move-join-cut",
+      "preview": "library/motion/join-cut.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): A cut on one frame; pointer jump at the hand-over 126.18 px; clicked thing 136.32 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": [
+        2.5167
+      ]
+    },
+    {
+      "name": "join-container-grow",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The clicked thing becomes a rounded container (its own pixels at first) that grows into the next full screen; the next screen shows inside it from a fifth of the way to a little past half, on shot A's camera view, cropped and never stretched, then eases out.",
+      "use_when": "Going into a detail.",
+      "avoid_when": "Twice in a row.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 2,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"container-grow\"",
+        "from": "The thing that grows."
+      },
+      "composition": "move-join-container-grow",
+      "preview": "library/motion/join-container-grow.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-push",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The next screen pushes the last one out, as one strip, the way the pointer last moved before the click.",
+      "use_when": "Moving sideways in the same product.",
+      "avoid_when": "Moves that change world.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 3,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"push\"",
+        "direction": "left, right, up or down (default: the pointer's way)."
+      },
+      "composition": "move-join-push",
+      "preview": "library/motion/join-push.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-slide",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "A soft slide: the last screen drifts 6% the pointer's way while the next comes in from 6% the other side and fades up over it.",
+      "use_when": "Tutorials: the next step, quietly.",
+      "avoid_when": "Hype films.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 14,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"slide\""
+      },
+      "composition": "move-join-slide",
+      "preview": "library/motion/join-slide.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-depth-push",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The screen recedes to 84%, darkens and softens while the next comes forward from 90% in front of it.",
+      "use_when": "Launches: one feature after another.",
+      "avoid_when": "Text to read during the join.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"depth-push\""
+      },
+      "composition": "move-join-depth-push",
+      "preview": "library/motion/join-depth-push.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-circle-reveal",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The next screen opens as a circle from the click point, on shot A's camera view, with a hairline edge that fades as it opens.",
+      "use_when": "A click that opens something.",
+      "avoid_when": "More than once per film.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"circle-reveal\""
+      },
+      "composition": "move-join-circle-reveal",
+      "preview": "library/motion/join-circle-reveal.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-card-flip",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The screen turns over in depth (180 degrees, dipping to 90%) to show the next one on its back.",
+      "use_when": "Before and after, two sides of one thing.",
+      "avoid_when": "More than once per film; text to read.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"card-flip\""
+      },
+      "composition": "move-join-card-flip",
+      "preview": "library/motion/join-card-flip.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-stack-shuffle",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The two screens slide past each other like cards (both shrink to 68% as they pass, far enough apart that the one in front changes with no overlap).",
+      "use_when": "Feature montages.",
+      "avoid_when": "Calm films.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"stack-shuffle\""
+      },
+      "composition": "move-join-stack-shuffle",
+      "preview": "library/motion/join-stack-shuffle.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 637 ms at hype (scene token); pointer jump at the hand-over 0.02 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-grid-zoom",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "Zoom out from the screen to a 3 x 3 wall of screens (the others are stills of the takes' own marks), then into the neighbour the pointer was heading for. The screens at the frame's edges come and go softly.",
+      "use_when": "Feature montages.",
+      "avoid_when": "Explaining one flow step by step.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"grid-zoom\""
+      },
+      "composition": "move-join-grid-zoom",
+      "preview": "library/motion/join-grid-zoom.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 637 ms at hype (scene token); pointer jump at the hand-over 0.02 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-scroll-relay",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "One page scrolls out as the next scrolls in on one strip, starting at the speed the take was scrolling at the join (tracks.json scroll column) and slowing to rest.",
+      "use_when": "The next step in a sequence.",
+      "avoid_when": "Joins that change world.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 14,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"scroll-relay\""
+      },
+      "composition": "move-join-scroll-relay",
+      "preview": "library/motion/join-scroll-relay.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-cursor-drag",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The pointer goes to the next screen peeking at the edge, grabs it and drags it into place over the last one, then goes on to where the next screen's own pointer is.",
+      "use_when": "Tutorials and demos where a hand moves things.",
+      "avoid_when": "Fast films: it is the longest join (a pointer move either side of the drag).",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 7,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"cursor-drag\""
+      },
+      "composition": "move-join-cursor-drag",
+      "preview": "library/motion/join-cursor-drag.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-whip",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "A fast pan with motion blur, the pointer's way. Hype only; elsewhere a push.",
+      "use_when": "Hype films, once or twice.",
+      "avoid_when": "Text to read within 0.3 s; calm and confident films.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": 11,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"whip\""
+      },
+      "composition": "move-join-whip",
+      "preview": "library/motion/join-whip.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 637 ms at hype (scene token); pointer jump at the hand-over 0.02 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-window-split",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "One window becomes two: the screen shrinks to the left half of a split while the next comes out from behind it to the right; both stay, on one clock.",
+      "use_when": "Two people, before and after.",
+      "avoid_when": "Films with one person and one screen.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"window-split\""
+      },
+      "composition": "move-join-window-split",
+      "preview": "library/motion/join-window-split.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-device-swap",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The same moment moves from a laptop to a phone: the laptop slides away left and fades while the phone comes in from the right.",
+      "use_when": "Showing the same product on two devices.",
+      "avoid_when": "Without a phone-size take or crop that reads.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"device-swap\"",
+        "staging": "Default laptop; stagingB default phone."
+      },
+      "composition": "move-join-device-swap",
+      "preview": "library/motion/join-device-swap.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-blur-dissolve",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "A soft blur through to the next shot: the last softens, the next fades up sharpening over it, both cameras easing out together.",
+      "use_when": "Calm joins inside one product.",
+      "avoid_when": "Between two worlds.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"blur-dissolve\""
+      },
+      "composition": "move-join-blur-dissolve",
+      "preview": "library/motion/join-blur-dissolve.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "join-cross-dissolve",
+      "family": "capture-transition",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/joins.ts",
+      "does": "The next shot fades up over the last while both cameras ease out together from the last shot's view, so the same page lies on itself and only what changed dissolves. The fallback.",
+      "use_when": "When nothing else carries the change.",
+      "avoid_when": "Between two worlds; as a default.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "technique": null,
+      "truth": null,
+      "props": {
+        "a": "Shot A (a CaptureClip's settings).",
+        "b": "Shot B.",
+        "transition": "\"cross-dissolve\""
+      },
+      "composition": "move-join-cross-dissolve",
+      "preview": "library/motion/join-cross-dissolve.mp4",
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo boards take 2 (tools/checks/capture_transitions.mjs, 1920 x 1080): 750 ms at confident (scene token); pointer jump at the hand-over 0.01 px; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/transition-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-follow",
+      "does": "9:16 full bleed for the social vertical look: the frame is the screen, the camera tracks the action inside the wide take at the sharpest the recording allows, pulls back while the pointer rests when its next move is longer than a close view holds, and lands each follow with a spring that settles back once.",
+      "use_when": "Reels, TikTok and Shorts cut from an approved 16:9 master.",
+      "avoid_when": "Anything that must show the whole screen at once; before the 16:9 master is approved.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo",
+        "demo"
+      ],
+      "props": {
+        "look": "\"social-vertical\""
+      },
+      "composition": "move-relayout-vertical-follow",
+      "preview": "library/motion/relayout-vertical-follow.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (9:16, 472 frames): the acted-on thing (343 frames) and the pointer (344 frames) inside the safe area with its 38 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.04% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 1.3 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame. A full-size render (engine/out) measured the same: thing within 1.4 px of the plan, the words 20 px (1.04%) in the picture, smoothness.py one jump at 3.15 s that is Tulvo's own board replacing its placeholder (in the raw recording too).",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-card",
+      "does": "9:16 with the screen as a card on the stage (product demo): the card reaches up under the apps' top bars and down to the caption slot; the action stays in the band all three platforms leave free.",
+      "use_when": "A vertical cut of a demo that should still read as a product on the brand's stage.",
+      "avoid_when": "When the product must fill the phone: use vertical-follow.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "look": "\"product-demo\""
+      },
+      "composition": "move-relayout-vertical-card",
+      "preview": "library/motion/relayout-vertical-card.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (9:16, 472 frames): the acted-on thing (337 frames) and the pointer (348 frames) inside the safe area with its 31 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.04% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 2 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame. A full-size render measured the thing within 1.0 px of the plan (after the page-box fix; 5 px off before it).",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-browser",
+      "does": "9:16 in a clean browser window (tutorial look, step badges kept), the address from capture.json.",
+      "use_when": "Vertical tutorials and how-tos where the browser frame tells people it is a web app.",
+      "avoid_when": "Short hype clips.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "tutorial"
+      ],
+      "props": {
+        "look": "\"tutorial\""
+      },
+      "composition": "move-relayout-vertical-browser",
+      "preview": "library/motion/relayout-vertical-browser.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (9:16, 472 frames): the acted-on thing (334 frames) and the pointer (351 frames) inside the safe area with its 29 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.04% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 1.9 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-phone-frame",
+      "does": "A wide take followed inside a generic phone frame on a 9:16 stage.",
+      "use_when": "When the story is \"on your phone too\" but only a desktop take exists.",
+      "avoid_when": "When a real phone-size take exists: use phone-take-framed.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "look": "\"product-demo\"",
+        "staging": "\"phone\""
+      },
+      "composition": "move-relayout-vertical-phone-frame",
+      "preview": "library/motion/relayout-vertical-phone-frame.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Plan check (capture_relayout.mjs --staging phone): thing and pointer inside the safe area with its margin on every frame, no camera jumps, clicked words 1.21% of frame height; smoothness.py: no jumps or judder. Contact sheet looked at; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-calm",
+      "does": "The calm explainer look re-laid for 9:16: card staging, slower follows, longer holds, closest view 1.6 frame px per page px.",
+      "use_when": "Unhurried vertical explainers.",
+      "avoid_when": "Hype clips.",
+      "energies": [
+        "calm"
+      ],
+      "video_types": [
+        "demo",
+        "tutorial"
+      ],
+      "props": {
+        "look": "\"calm-explainer\""
+      },
+      "composition": "move-relayout-vertical-calm",
+      "preview": "library/motion/relayout-vertical-calm.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (9:16, 472 frames): the acted-on thing (334 frames) and the pointer (351 frames) inside the safe area with its 31 px margin on every frame; 0 camera jumps; closest view 1.6 frame px per page px; clicked words 0.83% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 2.7 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-launch",
+      "does": "The launch look re-laid for 9:16: a flat card (a screen that must be read is never tilted), springy follows.",
+      "use_when": "Vertical launch teasers.",
+      "avoid_when": "Long reading moments.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "props": {
+        "look": "\"launch\""
+      },
+      "composition": "move-relayout-vertical-launch",
+      "preview": "library/motion/relayout-vertical-launch.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (9:16, 472 frames): the acted-on thing (343 frames) and the pointer (344 frames) inside the safe area with its 31 px margin on every frame; 0 camera jumps; closest view 1.8 frame px per page px; clicked words 0.94% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 2 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-documentary",
+      "does": "The documentary look re-laid for 9:16: the real recorded pointer path, full bleed; it holds one scale only when that still reads, otherwise it follows without springs.",
+      "use_when": "Honest, raw vertical cuts.",
+      "avoid_when": "Polished promos.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "edit"
+      ],
+      "props": {
+        "look": "\"documentary\""
+      },
+      "composition": "move-relayout-vertical-documentary",
+      "preview": "library/motion/relayout-vertical-documentary.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (9:16, 472 frames): the acted-on thing (337 frames) and the pointer (348 frames) inside the safe area with its 38 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.04% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 1.6 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-montage",
+      "does": "The feature montage look re-laid for 9:16: two stretches of the take stacked (three would leave each too small to read), each with its own follow camera.",
+      "use_when": "Many features in one vertical beat.",
+      "avoid_when": "One feature that needs reading.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo"
+      ],
+      "props": {
+        "look": "\"feature-montage\""
+      },
+      "composition": "move-relayout-vertical-montage",
+      "preview": "library/motion/relayout-vertical-montage.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Two stacked stretches, each its own follow camera; pointer drawn at 70% in a tile so it never hides the word it points at; smoothness.py: no jumps or judder. Per-tile safe-area numbers not measured (the check measures one region). Contact sheet looked at; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-two-people",
+      "does": "The two people look re-laid for 9:16: two takes stacked on one clock, named pointers.",
+      "use_when": "Collaboration features in a vertical cut.",
+      "avoid_when": "A single user's flow.",
+      "energies": [
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "look": "\"two-people\"",
+        "others": "[the second take]"
+      },
+      "composition": "move-relayout-vertical-two-people",
+      "preview": "library/motion/relayout-vertical-two-people.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Two stacked takes on one clock with named pointers; pointer drawn at 70% in a tile so it never hides the word it points at; smoothness.py: no jumps or judder. Per-tile safe-area numbers not measured (the check measures one region). Contact sheet looked at; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-emphasis",
+      "does": "An outline on the clicked thing in a 9:16 follow: part B's product animations take their place through the follow camera (anchorOf), so they stay on the real thing.",
+      "use_when": "Pointing at the one thing that matters in a vertical cut.",
+      "avoid_when": "More than one emphasis per beat.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo",
+        "tutorial"
+      ],
+      "props": {
+        "look": "\"social-vertical\"",
+        "emphasis": "[{\"kind\": \"outline\", \"target\": \"link\", \"at\": ..., \"out\": ...}]"
+      },
+      "composition": "move-relayout-vertical-emphasis",
+      "preview": "library/motion/relayout-vertical-emphasis.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "The outline takes its place through the follow camera (anchorOf); smoothness.py: no jumps or judder. Its glue was not measured frame by frame on this render (capture_glue.mjs is for 16:9). Contact sheet looked at; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-join",
+      "does": "A zoom through join at the click in 9:16: each shot is planned with the region it is drawn in, so the clicked thing and the pointer line up across the join.",
+      "use_when": "Joining two vertical shots at a click.",
+      "avoid_when": "",
+      "energies": [
+        "hype",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "a": "Shot A",
+        "b": "Shot B",
+        "transition": "\"zoom-through\""
+      },
+      "composition": "move-relayout-vertical-join",
+      "preview": "library/motion/relayout-vertical-join.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureJoin",
+      "file": "engine/src/kit/capture/transitions.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 with tools/checks/capture_transitions.mjs --size 9:16 on Tulvo's boards take split at its click: zoom through 750 ms, pointer jump at the hand-over 0.01 px, clicked thing 0.00 px (shared element 0.00 and 0.01 px, match cut 0.00 px); smoothness.py on the preview: no jumps or judder. Contact sheet looked at; not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-vertical-safe-areas",
+      "does": "The social vertical follow with the three platforms' buttons and captions drawn over it: a preview aid only (SafeAreaOverlay), never in a film.",
+      "use_when": "Checking a vertical cut by eye before export.",
+      "avoid_when": "Any film render.",
+      "energies": [
+        "hype"
+      ],
+      "video_types": [
+        "promo",
+        "demo"
+      ],
+      "props": {
+        "safeAreas": "\"all\" | \"instagram\" | \"tiktok\" | \"shorts\""
+      },
+      "composition": "move-relayout-vertical-safe-areas",
+      "preview": "library/motion/relayout-vertical-safe-areas.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot, SafeAreaOverlay",
+      "file": "engine/src/kit/capture/safeareas.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (9:16, 472 frames): the acted-on thing (343 frames) and the pointer (344 frames) inside the safe area with its 38 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.04% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 1.3 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-square",
+      "does": "1:1 card, the camera following the action.",
+      "use_when": "Feed posts on LinkedIn, Instagram and Facebook.",
+      "avoid_when": "",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "look": "\"product-demo\""
+      },
+      "composition": "move-relayout-square",
+      "preview": "library/motion/relayout-square.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (1:1, 472 frames): the acted-on thing (337 frames) and the pointer (348 frames) inside the safe area with its 30 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.85% of frame height; in the half-size preview the thing sat within 2.1 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-portrait",
+      "does": "4:5 card, the camera following the action.",
+      "use_when": "Instagram and Facebook feed posts that take more of the screen than 1:1.",
+      "avoid_when": "",
+      "energies": [
+        "calm",
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "look": "\"product-demo\""
+      },
+      "composition": "move-relayout-portrait",
+      "preview": "library/motion/relayout-portrait.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take with tools/checks/capture_relayout.mjs (4:5, 472 frames): the acted-on thing (337 frames) and the pointer (348 frames) inside the safe area with its 34 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.48% of frame height; in the half-size preview the thing sat within 2.1 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-phone-take",
+      "does": "A take recorded at phone size (capture.json page taller than wide) placed full frame in 9:16 with the touch pointer; the camera follows up and down and never crops the take's sides.",
+      "use_when": "Mobile web flows recorded at phone size.",
+      "avoid_when": "Desktop takes.",
+      "energies": [
+        "confident",
+        "hype"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "look": "\"social-vertical\""
+      },
+      "composition": "move-relayout-phone-take",
+      "preview": "library/motion/relayout-phone-take.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "Measured 12 Nov 2026 on Tulvo's boards take (phone-size stand-in) with tools/checks/capture_relayout.mjs (9:16, 234 frames): the acted-on thing (133 frames) and the pointer (214 frames) inside the safe area with its 38 px margin on every frame; 0 camera jumps; closest view 2 frame px per page px; clicked words 1.04% of frame height; Instagram, TikTok and Shorts: all key-moment frames clear; in the half-size preview the thing sat within 1.1 px of the plan; smoothness.py: no jumps or judder. Contact sheet looked at (library/motion/relayout-sheet.jpg); not watched frame by frame.",
+      "planned_instant_changes": []
+    },
+    {
+      "name": "relayout-phone-take-framed",
+      "does": "A phone-size take in a generic phone frame (no company's shape), as tall as the frame allows above the caption slot.",
+      "use_when": "When the phone itself should be seen.",
+      "avoid_when": "When the screen must be read closely: use phone-take.",
+      "energies": [
+        "calm",
+        "confident"
+      ],
+      "video_types": [
+        "demo",
+        "promo"
+      ],
+      "props": {
+        "look": "\"product-demo\"",
+        "staging": "\"phone\""
+      },
+      "composition": "move-relayout-phone-take-framed",
+      "preview": "library/motion/relayout-phone-take-framed.mp4",
+      "family": "capture-relayout",
+      "component": "CaptureShot",
+      "file": "engine/src/kit/capture/staging.tsx",
+      "module": "engine/src/kit/capture/relayout.ts",
+      "technique": null,
+      "truth": null,
+      "reviewed": false,
+      "reviewed_on": null,
+      "checked": "The take's shape fills the phone screen, so the camera holds still (no follow needed); smoothness.py: no jumps or judder. Tested on a stand-in cropped from the wide take, not a real phone-size take. Contact sheet looked at; not watched frame by frame.",
+      "planned_instant_changes": []
+    }
+  ],
+  "review": {
+    "about": "Every move was watched frame by frame at 60 frames a second, fixed and rendered again before it was marked reviewed. \"planned_instant_changes\" lists, in seconds of the move's own preview, each change that is meant to happen in one frame (a cut or a swap), so tools/checks/smoothness.py can be given them with --planned-cuts and report only the unplanned ones.",
+    "date": "2026-11-11",
+    "known_limit": "The browser places every line of text on a whole pixel from top to bottom. A slow vertical settle of text therefore ends in steps of one pixel at full size (two in half-size previews). Moves keep small overshoots off text for this reason."
+  },
+  "shared": {
+    "about": "Helpers every move can use, exported from engine/src/kit/moves.",
+    "MotionBlur": "Wraps anything that moves fast and blurs it along its way, matched to its speed (half-frame shutter). Nothing blurs below reading speed. Give it x and y, the pixels travelled this frame.",
+    "useTravel": "Gives the pixels travelled this frame for any place written as a function of scene time."
+  },
+  "capture": {
+    "about": "Entries in the capture families are settings of CaptureClip, not components of their own. Their previews play a stretch of a real capture chosen from its own events (engine/src/library/motion/capture.tsx); the compositions take a \"capture\" prop (\"<job>/<id>\", empty for the newest). Check them with tools/checks/capture_motion.mjs as well as tools/checks/smoothness.py.",
+    "checks": "node tools/checks/capture_motion.mjs engine/public/jobs/<job>/capture/<id> --options '{\"look\": \"launch\"}'",
+    "practice_page_note": "Previews were rendered at half size from a practice capture whose search box opens and closes in one frame, with no animation of its own. Those one-frame changes are in the recording itself and are listed in planned_instant_changes (typing-key-caps, time-speed-ramp, time-jump); a preview made from another capture has other ones.",
+    "staging_and_product": "Stagings are CaptureShot (engine/src/kit/capture/staging.tsx), product animations are CaptureClip's emphasis (emphasis.tsx), glued through glue.ts. Their previews (engine/src/library/motion/product.tsx) take \"capture\", \"second\", \"things\" (fixed places for a take that tracked nothing), \"roles\" and \"address\". Rendered at half size 12 Nov 2026: Tulvo's boards take (with its cards given as things, measured from the marks) for most, a practice take where typing, a message, a scroll or a second take was needed. Check glue with tools/checks/capture_glue.mjs on a GlueProbe render; measure where the picture really scrolled first with tools/film/seen_scroll.mjs.",
+    "transitions": "Entries in the capture-transition family are CaptureJoin with one \"transition\" name. Their previews join the two parts of Tulvo's boards take 2 at the click on \"Campaign Launch Board\" (splitAtClick), rendered at half size with the props {\"capture\": \"tulvo-capture-test/boards-take-2\", \"options\": {\"join\": {\"from\": {\"x\": 12, \"y\": 381, \"width\": 223, \"height\": 33}}, \"b\": {\"from\": 7.25}}} (the link measured from the mark still; the second part starts after Tulvo's placeholders have gone); shared element adds \"to\": the breadcrumb title {\"x\": 365, \"y\": 17, \"width\": 151, \"height\": 19}. \"second\" names another take for the second part. The contact sheet is library/motion/transition-sheet.jpg. Check them with tools/checks/capture_transitions.mjs (pointer and clicked thing across the join, lengths) as well as tools/checks/smoothness.py and tools/checks/capture_motion.mjs.",
+    "relayout": "Entries in the capture-relayout family are CaptureShot in a 9:16, 1:1 or 4:5 frame: the staging is re-laid for the frame (relayout.ts, sizedStaging) and the camera follows the action inside the wide recording (planFollow), keeping the acted-on thing and the pointer inside the safe area with a margin on every frame. On 9:16 the safe area is the band Instagram, TikTok and YouTube Shorts all leave free (top 14%, bottom 35%, right-hand buttons), less the caption slot. Previews (engine/src/library/motion/relayout.tsx, \"move-relayout-<name>\") were rendered at half size 12 Nov 2026 from Tulvo's boards take (take 5) with the link and the New button given as things from capture.json's step targets: {\"capture\": \"tulvo-capture-test/boards\", \"things\": {\"link\": {\"rect\": [12, 381.5, 223, 32], \"from\": 4.4, \"to\": 7.4}, \"new\": {\"rect\": [1807.7, 80, 80.3, 34], \"from\": 8.9}}}; the join adds {\"options\": {\"join\": {\"from\": {\"x\": 12, \"y\": 381, \"width\": 223, \"height\": 33}}, \"b\": {\"from\": 7.25}}}. The phone-size take previews use a stand-in (engine/public/jobs/_relayout-test/capture/phone-stand-in: the left 390 x 844 page pixels of the same take), not a real phone take. The contact sheet is library/motion/relayout-sheet.jpg. Check them with tools/checks/capture_relayout.mjs (safe area every frame, moves, holds, sharpness, text at the click, the three platforms, and the picture in a render) as well as tools/checks/smoothness.py and tools/checks/capture_motion.mjs (with the options the relayout check prints); joins with tools/checks/capture_transitions.mjs --size 9:16."
+  }
+}

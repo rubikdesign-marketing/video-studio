@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Black Friday 2026 promo",
+    "type": "promo",
+    "date": "2026-11-11",
+    "made_before_the_studio": true,
+    "versions": {
+      "remotion_v4": "69.7 s, 60 fps",
+      "after_effects_v8": "62.3 s, 30 fps"
+    },
+    "hook": "Offer first: the sale is live, half price, spoken and on a ticket",
+    "look": "Night sale: near-black stage, drifting blue light, grain, ice blue and peach accents",
+    "signature_move": "Price roll landing on the half-price figure; horizon of light on the close",
+    "voice": "Ray (Remotion), Justin Case (After Effects)",
+    "measured": {
+      "share_of_time_moving": "97-99%",
+      "still_seconds": 0,
+      "typical_movement": 2.0
+    },
+    "results": []
+  }
+]

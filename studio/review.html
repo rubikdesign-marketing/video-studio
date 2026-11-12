@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tulvo review</title>
+<style>
+  @font-face { font-family: "Instrument Sans"; src: url("/font/InstrumentSans-var.woff2") format("woff2"); font-weight: 400 700; }
+  :root {
+    --page: #F5F3EF; --card: #FFFFFF; --ink: #101113; --body: #626670; --muted: #8A8F98; --line: #E4E2DE;
+    --blue: #2B5CE6; --blue-soft: #E7EFFD; --peach: #F7A878; --peach-soft: #FDEBDD; --night: #0B0C10;
+    --green: #1F8A4C; --green-soft: #DDF3E6; --r: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--page); color: var(--ink); font-family: "Instrument Sans", system-ui, sans-serif; font-size: 15px; line-height: 1.45; font-variant-numeric: tabular-nums; }
+  button, textarea, select, input { font: inherit; color: inherit; }
+  h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 10px; }
+  header { display: flex; align-items: center; gap: 14px; padding: 12px 24px; border-bottom: 1px solid var(--line); background: var(--page); position: sticky; top: 0; z-index: 5; flex-wrap: wrap; }
+  header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+  .pick { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  select, input[type=text] { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 8px 12px; max-width: 44vw; }
+  input[type=text] { width: 150px; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 24px; padding: 24px; max-width: 1600px; margin: 0 auto; }
+  @media (max-width: 1080px) { main { grid-template-columns: minmax(0, 1fr); padding: 16px; } }
+  .frame { background: var(--night); border-radius: var(--r); display: flex; justify-content: center; }
+  .stage { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; transition: width 0.25s; }
+  .frame.phone .stage { width: 390px; max-width: 100%; border-radius: 0; margin: 28px 0; }
+  video { width: 100%; height: 100%; display: block; background: var(--night); }
+  #draw { position: absolute; inset: 0; } #draw.on { cursor: crosshair; }
+  #box { position: absolute; border: 2px solid var(--blue); background: rgba(43, 92, 230, 0.14); border-radius: 4px; display: none; pointer-events: none; }
+  .said { margin-top: 12px; min-height: 46px; padding: 11px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); color: var(--body); }
+  .said b { color: var(--ink); font-weight: 600; }
+  .bar { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
+  .btn:hover { border-color: var(--ink); }
+  .btn.ink { background: var(--ink); color: #fff; border-color: var(--ink); font-weight: 600; }
+  .btn.ink:hover { background: var(--blue); border-color: var(--blue); }
+  .btn.on { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); font-weight: 600; }
+  .btn.good.on { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+  .btn:focus-visible, textarea:focus, select:focus, input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .time { font-weight: 600; margin: 0 6px; min-width: 11ch; }
+  .spacer { flex: 1; }
+  .timeline { position: relative; height: 68px; margin-top: 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); cursor: pointer; overflow: hidden; touch-action: none; }
+  .scene { position: absolute; top: 0; bottom: 0; border-right: 1px solid var(--line); padding: 8px 10px; overflow: hidden; white-space: nowrap; }
+  .scene:nth-child(even) { background: #FAF9F6; }
+  .scene.good { background: var(--green-soft); }
+  .scene small { display: block; color: var(--muted); font-size: 12px; }
+  .scene span { font-size: 13px; font-weight: 600; }
+  .energy { position: absolute; left: 0; right: 0; bottom: 0; background: var(--blue); opacity: 0.16; }
+  .pin { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--blue); }
+  .pin::after { content: ""; position: absolute; top: 4px; left: -5px; width: 12px; height: 12px; border-radius: 3px; background: var(--blue); transform: rotate(45deg); }
+  .pin.keep, .pin.keep::after { background: var(--green); }
+  .pin.sent, .pin.sent::after { background: var(--muted); }
+  #head { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); pointer-events: none; }
+  .keys { color: var(--muted); font-size: 13px; margin-top: 10px; }
+  .keys b { color: var(--body); font-weight: 600; border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 0 6px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
+  .card + .card, .card + h2, .notes + h2 { margin-top: 18px; }
+  textarea { width: 100%; min-height: 84px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: #fff; }
+  .row { display: flex; gap: 6px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  .row label { color: var(--body); font-size: 13.5px; margin-right: 2px; }
+  .chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 4px 11px; cursor: pointer; font-size: 13.5px; }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #fff; }
+  .seg button { border: 0; background: none; padding: 7px 14px; cursor: pointer; }
+  .seg button.on { background: var(--ink); color: #fff; font-weight: 600; }
+  .seg button.keep.on { background: var(--green); }
+  .notes { display: grid; gap: 10px; margin: 14px 0 0; }
+  .note { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; cursor: pointer; }
+  .note:hover { border-color: var(--ink); }
+  .note.keep { border-left: 4px solid var(--green); } .note.must { border-left: 4px solid var(--peach); }
+  .note img, .note .noimg { width: 104px; aspect-ratio: 16 / 9; border-radius: 7px; background: var(--night); object-fit: cover; display: block; }
+  .meta { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .meta strong { color: var(--ink); }
+  .meta button { margin-left: auto; border: 0; background: none; color: var(--muted); cursor: pointer; padding: 0; text-decoration: underline; }
+  .tag { padding: 1px 8px; border-radius: 999px; background: var(--line); color: var(--body); font-size: 12.5px; }
+  .tag.keep { background: var(--green-soft); color: var(--green); } .tag.must { background: var(--peach-soft); color: #A3501C; }
+  .tag.work { background: var(--peach-soft); color: #A3501C; } .tag.done { background: var(--green-soft); color: var(--green); }
+  .note p { margin: 4px 0 0; overflow-wrap: anywhere; }
+  .reply { margin-top: 6px; padding: 7px 10px; border-radius: 9px; background: var(--blue-soft); font-size: 14px; }
+  .empty { color: var(--muted); padding: 10px 2px 0; }
+  .sendbox { margin-top: 14px; display: grid; gap: 8px; }
+  .sendbox .btn { width: 100%; padding: 13px; font-size: 16px; }
+  #toast { padding: 10px 12px; border-radius: 10px; background: var(--green-soft); color: #14532D; display: none; }
+  details { margin-top: 18px; } summary { cursor: pointer; font-weight: 600; }
+  .checks { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .checks li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+  .checks input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--ink); }
+  .checks small { color: var(--body); display: block; }
+  .batch { margin-top: 18px; } .batch > header { all: unset; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; color: var(--body); font-size: 14px; }
+  .none { padding: 60px 24px; max-width: 640px; margin: 0 auto; color: var(--body); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Tulvo review</h1>
+  <div class="pick">
+    <input type="text" id="who" placeholder="Your name" aria-label="Your name">
+    <select id="job" aria-label="Video"></select>
+    <select id="version" aria-label="Version"></select>
+  </div>
+</header>
+
+<div id="nothing" class="none" hidden>
+  <h2>No videos to review yet</h2>
+  <p>A video shows up here once a preview has been rendered. Ask for a preview render, then reload this page.</p>
+</div>
+
+<main id="app" hidden>
+  <section>
+    <div class="frame" id="frame">
+      <div class="stage">
+        <video id="v" playsinline preload="auto"></video>
+        <div id="draw"><div id="box"></div></div>
+      </div>
+    </div>
+    <div class="said" id="said"></div>
+    <div class="bar">
+      <button class="btn ink" id="play">Play</button>
+      <button class="btn" id="back">Back one frame</button>
+      <button class="btn" id="fwd">Forward one frame</button>
+      <span class="time" id="time">0:00.00</span>
+      <span class="spacer"></span>
+      <select id="speed" aria-label="Speed"><option value="1">Normal speed</option><option value="0.5">Half speed</option><option value="0.25">Quarter speed</option></select>
+      <button class="btn" id="mute">Sound on</button>
+      <button class="btn" id="phone">Phone size</button>
+    </div>
+    <div class="timeline" id="tl" aria-label="Timeline"><div id="head"></div></div>
+    <div class="bar">
+      <button class="btn" id="prev">Previous scene</button>
+      <button class="btn" id="loop">Repeat this scene</button>
+      <button class="btn" id="next">Next scene</button>
+      <span class="spacer"></span>
+      <button class="btn good" id="good">This scene is good</button>
+      <button class="btn" id="older" hidden>Show the earlier version</button>
+    </div>
+    <p class="keys"><b>Space</b> play or pause &nbsp; <b>←</b> <b>→</b> one frame &nbsp; <b>Shift</b> with an arrow, one second &nbsp; <b>N</b> write a note here</p>
+  </section>
+
+  <aside>
+    <h2>Your note at <span id="at">0:00.00</span></h2>
+    <div class="card">
+      <div class="seg" role="group" aria-label="Kind of note">
+        <button id="kChange" class="on">Change this</button><button id="kKeep" class="keep">Keep this</button>
+      </div>
+      <textarea id="text" placeholder="What should change here, and how would you like it instead?" style="margin-top:10px"></textarea>
+      <div class="row" id="topics"><label>About</label></div>
+      <div class="row">
+        <button class="btn" id="mark">Point at an area</button>
+        <button class="chip" id="must">Must fix</button>
+        <span class="spacer"></span>
+        <button class="btn ink" id="add">Add note</button>
+      </div>
+    </div>
+
+    <div class="notes" id="drafts"></div>
+    <div class="sendbox">
+      <button class="btn ink" id="send" disabled>Send notes</button>
+      <button class="btn" id="approve">Approve this version as it is</button>
+      <div id="toast"></div>
+    </div>
+
+    <details id="guide">
+      <summary>Four things worth checking before you send</summary>
+      <ul class="checks">
+        <li><input type="checkbox"><span>The first three seconds<small>Would someone scrolling past stop? Is the offer or the hook on screen and spoken?</small></span></li>
+        <li><input type="checkbox"><span>Once with the sound off<small>Does the story still land from the picture and captions alone?</small></span></li>
+        <li><input type="checkbox"><span>Once at phone size<small>Can every word that matters be read?</small></span></li>
+        <li><input type="checkbox"><span>Anything to take out<small>A moment that repeats, waits too long, or says what the voice already said.</small></span></li>
+      </ul>
+    </details>
+
+    <div id="batches"></div>
+  </aside>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const v = $('v'), tl = $('tl'), draw = $('draw'), boxEl = $('box');
+const TOPICS = ['Pacing', 'Words', 'Design', 'Motion', 'Sound', 'Product screen'];
+let jobs = [], job = null, notes = [], good = [], batches = [], box = null, marking = false, kind = 'change', topic = null, must = false, looping = false;
+const fps = 60;
+
+const fmt = (t) => { t = Math.max(0, t); const m = Math.floor(t / 60); return `${m}:${(t - m * 60).toFixed(2).padStart(5, '0')}`; };
+const dur = () => (job && job.duration) || v.duration || 1;
+const sceneAt = (t) => (job.scenes || []).find((s) => t >= s.start && t < s.end) || null;
+const sceneName = (id) => { const i = (job.scenes || []).findIndex((s) => s.id === id); return i < 0 ? '' : `Scene ${i + 1}`; };
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const when = (ms) => new Date(ms).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+const api = (path, body) => fetch(`${path}?job=${encodeURIComponent(job.job)}`, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : undefined).then((r) => r.json());
+
+async function start() {
+  jobs = (await fetch('/api/jobs').then((r) => r.json())).jobs;
+  if (!jobs.length) { $('nothing').hidden = false; return; }
+  $('app').hidden = false;
+  $('who').value = localStorage.getItem('tulvo-reviewer') || '';
+  $('job').innerHTML = jobs.map((j) => `<option value="${esc(j.job)}">${esc(j.name)}</option>`).join('');
+  const wanted = new URLSearchParams(location.search).get('job');
+  $('job').value = jobs.some((j) => j.job === wanted) ? wanted : jobs[0].job;
+  $('topics').insertAdjacentHTML('beforeend', TOPICS.map((t) => `<button class="chip" data-topic="${t}">${t}</button>`).join(''));
+  await openJob();
+  setInterval(refresh, 5000);
+}
+function versions() {
+  $('version').innerHTML = job.videos.map((f, i) => `<option value="${esc(f.file)}">${i === 0 ? 'Latest version' : 'Earlier version'}, ${when(f.modified)}</option>`).join('');
+  $('older').hidden = job.videos.length < 2;
+}
+async function openJob() {
+  job = jobs.find((j) => j.job === $('job').value);
+  versions(); loadVideo();
+  const r = await api('/api/review');
+  notes = (r.draft.notes || []).map((n) => ({ ...n })); good = r.draft.good_scenes || []; batches = r.batches || [];
+  drawTimeline(); renderNotes(); renderBatches();
+}
+function loadVideo() { const keep = v.currentTime || 0; v.src = `/media/${encodeURIComponent(job.job)}/${encodeURIComponent($('version').value)}`; v.addEventListener('loadedmetadata', () => { v.currentTime = Math.min(keep, v.duration || keep); drawTimeline(); }, { once: true }); }
+
+function drawTimeline() {
+  const d = dur();
+  tl.querySelectorAll('.scene, .pin').forEach((e) => e.remove());
+  (job.scenes || []).forEach((s, i) => {
+    const el = document.createElement('div'); el.className = 'scene' + (good.includes(s.id) ? ' good' : '');
+    el.style.left = (s.start / d * 100) + '%'; el.style.width = ((s.end - s.start) / d * 100) + '%';
+    el.innerHTML = `<small>Scene ${i + 1}${good.includes(s.id) ? ', good' : ''}</small><span>${esc(s.title || '')}</span><div class="energy" style="height:${(s.energy || 0) * 4}px"></div>`;
+    tl.insertBefore(el, $('head'));
+  });
+  const pin = (n, sent) => { const el = document.createElement('div'); el.className = 'pin' + (sent ? ' sent' : n.kind === 'keep' ? ' keep' : ''); el.style.left = (n.time / d * 100) + '%'; tl.appendChild(el); };
+  batches.flatMap((b) => b.notes).forEach((n) => pin(n, true));
+  notes.forEach((n) => pin(n, false));
+}
+function tick() {
+  if (job) {
+    const t = v.currentTime || 0, s = sceneAt(t);
+    if (looping && s && !v.paused && t >= s.end - 0.03) v.currentTime = s.start;
+    $('time').textContent = `${fmt(t)} of ${fmt(dur())}`; $('at').textContent = fmt(t);
+    $('head').style.left = (t / dur() * 100) + '%';
+    $('play').textContent = v.paused ? 'Play' : 'Pause';
+    const line = s && (s.lines || []).find((l) => t >= l.start - 0.2 && t <= l.end + 0.3);
+    $('said').innerHTML = s ? `<b>${esc(sceneName(s.id))}, ${esc(s.title || '')}.</b> ${line ? 'Being said: “' + esc(line.text) + '”' : 'Nothing is being said here.'}` : '';
+    $('good').classList.toggle('on', !!s && good.includes(s.id));
+    $('good').textContent = s && good.includes(s.id) ? 'Marked as good' : 'This scene is good';
+  }
+  requestAnimationFrame(tick);
+}
+
+// playback
+const seek = (t) => { v.currentTime = Math.min(Math.max(0, t), dur() - 0.001); };
+$('play').onclick = () => (v.paused ? v.play() : v.pause());
+$('back').onclick = () => { v.pause(); seek(v.currentTime - 1 / fps); };
+$('fwd').onclick = () => { v.pause(); seek(v.currentTime + 1 / fps); };
+$('speed').onchange = (e) => { v.playbackRate = Number(e.target.value); };
+$('mute').onclick = () => { v.muted = !v.muted; $('mute').textContent = v.muted ? 'Sound off' : 'Sound on'; $('mute').classList.toggle('on', v.muted); };
+$('phone').onclick = () => { const on = $('frame').classList.toggle('phone'); $('phone').classList.toggle('on', on); };
+$('loop').onclick = () => { looping = !looping; $('loop').classList.toggle('on', looping); };
+const jump = (step) => { const sc = job.scenes || [], i = sc.indexOf(sceneAt(v.currentTime)); const to = sc[Math.min(sc.length - 1, Math.max(0, i + step))]; if (to) seek(to.start + 0.001); };
+$('prev').onclick = () => jump(-1); $('next').onclick = () => jump(1);
+$('good').onclick = () => { const s = sceneAt(v.currentTime); if (!s) return; good = good.includes(s.id) ? good.filter((x) => x !== s.id) : [...good, s.id]; saveDraft(); drawTimeline(); renderNotes(); };
+$('older').onclick = () => { const sel = $('version'); sel.selectedIndex = sel.selectedIndex === 0 ? 1 : 0; $('older').textContent = sel.selectedIndex === 0 ? 'Show the earlier version' : 'Back to the latest version'; $('older').classList.toggle('on', sel.selectedIndex !== 0); loadVideo(); };
+$('job').onchange = openJob; $('version').onchange = loadVideo;
+$('who').onchange = () => localStorage.setItem('tulvo-reviewer', $('who').value.trim());
+const scrub = (e) => { const r = tl.getBoundingClientRect(); seek((e.clientX - r.left) / r.width * dur()); };
+tl.addEventListener('pointerdown', (e) => { v.pause(); tl.setPointerCapture(e.pointerId); scrub(e); tl.onpointermove = scrub; });
+tl.addEventListener('pointerup', () => { tl.onpointermove = null; });
+document.addEventListener('keydown', (e) => {
+  if (['TEXTAREA', 'SELECT', 'INPUT'].includes(document.activeElement.tagName)) { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) $('add').click(); return; }
+  if (e.code === 'Space') { e.preventDefault(); $('play').click(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); v.pause(); seek(v.currentTime - (e.shiftKey ? 1 : 1 / fps)); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); v.pause(); seek(v.currentTime + (e.shiftKey ? 1 : 1 / fps)); }
+  else if (e.key.toLowerCase() === 'n') { e.preventDefault(); v.pause(); $('text').focus(); }
+});
+
+// the note being written
+function setKind(k) { kind = k; $('kChange').classList.toggle('on', k === 'change'); $('kKeep').classList.toggle('on', k === 'keep');
+  $('text').placeholder = k === 'keep' ? 'What works here, so it is kept and used again?' : 'What should change here, and how would you like it instead?';
+  $('must').hidden = k === 'keep'; if (k === 'keep') { must = false; $('must').classList.remove('on'); } }
+$('kChange').onclick = () => setKind('change'); $('kKeep').onclick = () => setKind('keep');
+$('must').onclick = () => { must = !must; $('must').classList.toggle('on', must); };
+$('topics').onclick = (e) => { const b = e.target.closest('[data-topic]'); if (!b) return; topic = topic === b.dataset.topic ? null : b.dataset.topic; $('topics').querySelectorAll('[data-topic]').forEach((x) => x.classList.toggle('on', x.dataset.topic === topic)); };
+$('mark').onclick = () => { marking = !marking; if (marking) v.pause(); else setBox(null); $('mark').classList.toggle('on', marking); draw.classList.toggle('on', marking); $('mark').textContent = marking ? 'Remove the area' : 'Point at an area'; };
+function setBox(b) { box = b; if (!b) { boxEl.style.display = 'none'; return; } Object.assign(boxEl.style, { display: 'block', left: b.x * 100 + '%', top: b.y * 100 + '%', width: b.w * 100 + '%', height: b.h * 100 + '%' }); }
+draw.addEventListener('pointerdown', (e) => {
+  if (!marking) { $('play').click(); return; }
+  const r = draw.getBoundingClientRect(), x0 = (e.clientX - r.left) / r.width, y0 = (e.clientY - r.top) / r.height;
+  draw.setPointerCapture(e.pointerId);
+  draw.onpointermove = (m) => { const x1 = Math.min(1, Math.max(0, (m.clientX - r.left) / r.width)), y1 = Math.min(1, Math.max(0, (m.clientY - r.top) / r.height)); setBox({ x: Math.min(x0, x1), y: Math.min(y0, y1), w: Math.abs(x1 - x0), h: Math.abs(y1 - y0) }); };
+  draw.onpointerup = () => { draw.onpointermove = null; if (box && (box.w < 0.01 || box.h < 0.01)) setBox(null); };
+});
+function capture(b) {
+  const c = document.createElement('canvas'); c.width = 960; c.height = Math.round(960 * (v.videoHeight || 9) / (v.videoWidth || 16));
+  const g = c.getContext('2d'); g.drawImage(v, 0, 0, c.width, c.height);
+  if (b) { g.lineWidth = 4; g.strokeStyle = '#2B5CE6'; g.fillStyle = 'rgba(43,92,230,0.16)'; g.fillRect(b.x * c.width, b.y * c.height, b.w * c.width, b.h * c.height); g.strokeRect(b.x * c.width, b.y * c.height, b.w * c.width, b.h * c.height); }
+  return c.toDataURL('image/jpeg', 0.82);
+}
+const captureAt = (t, b) => new Promise((done) => { v.pause(); v.addEventListener('seeked', () => requestAnimationFrame(() => done(capture(b))), { once: true }); seek(t); });
+$('add').onclick = () => {
+  const text = $('text').value.trim(); if (!text) { $('text').focus(); return; }
+  v.pause();
+  notes.push({ time: Number(v.currentTime.toFixed(3)), text, kind, topic, must, box, frame: capture(box) });
+  notes.sort((a, b) => a.time - b.time);
+  $('text').value = ''; if (marking) $('mark').click(); if (must) $('must').click();
+  topic = null; $('topics').querySelectorAll('[data-topic]').forEach((x) => x.classList.remove('on'));     // each note starts clean
+  saveDraft(); renderNotes(); drawTimeline();
+};
+const saveDraft = () => api('/api/draft', { notes, good_scenes: good });
+
+function noteCard(n, i, sent) {
+  const img = n.frame ? (n.frame.startsWith('data:') ? n.frame : `/frames/${encodeURIComponent(job.job)}/${n.frame.split('/').pop()}`) : null;
+  const s = sceneAt(n.time);
+  return `<div class="note ${n.kind === 'keep' ? 'keep' : n.must ? 'must' : ''}" data-t="${n.time}">${img ? `<img src="${img}" alt="">` : '<div class="noimg"></div>'}
+    <div><div class="meta"><strong>${fmt(n.time)}</strong><span>${esc(sceneName(n.scene || (s && s.id)))}</span>
+      ${n.kind === 'keep' ? '<span class="tag keep">Keep</span>' : ''}${n.must ? '<span class="tag must">Must fix</span>' : ''}${n.topic ? `<span class="tag">${esc(n.topic)}</span>` : ''}${n.box ? '<span class="tag">Area marked</span>' : ''}
+      ${sent ? '' : `<button data-del="${i}">Remove</button>`}</div>
+    <p>${esc(n.text)}</p>${n.reply ? `<div class="reply">${esc(n.reply)}</div>` : ''}</div></div>`;
+}
+function renderNotes() {
+  $('drafts').innerHTML = notes.length ? notes.map((n, i) => noteCard(n, i, false)).join('')
+    : '<div class="empty">Pause where something should change, say what you would like instead, and add the note. Collect a few, then send them together. You can also mark what already works, so it is kept.</div>';
+  const parts = []; if (notes.length) parts.push(`${notes.length} note${notes.length > 1 ? 's' : ''}`); if (good.length) parts.push(`${good.length} good scene${good.length > 1 ? 's' : ''}`);
+  $('send').disabled = !parts.length; $('send').textContent = parts.length ? `Send ${parts.join(' and ')}` : 'Send notes';
+}
+function renderBatches() {
+  const label = { sent: ['Sent, waiting', ''], 'picked up': ['Being worked on', 'work'], done: ['Done', 'done'] };
+  $('batches').innerHTML = (batches.length ? '<h2 style="margin-top:24px">Sent earlier</h2>' : '') + [...batches].reverse().map((b) => { const [text, cls] = label[b.status] || [b.status, ''];
+    return `<div class="batch"><header><strong>${when(b.sent_at)}</strong>${b.reviewer ? `<span>from ${esc(b.reviewer)}</span>` : ''}<span class="tag ${cls}">${text}</span>${b.approved ? '<span class="tag done">Approved</span>' : ''}${(b.good_scenes || []).length ? `<span class="tag keep">${b.good_scenes.map(sceneName).join(', ')} good</span>` : ''}</header>
+      <div class="notes" style="margin:0">${b.notes.map((n) => noteCard(n, 0, true)).join('')}</div></div>`; }).join('');
+}
+document.addEventListener('click', (e) => {
+  const del = e.target.closest('[data-del]');
+  if (del) { notes.splice(Number(del.dataset.del), 1); saveDraft(); renderNotes(); drawTimeline(); return; }
+  const card = e.target.closest('.note'); if (card) { v.pause(); seek(Number(card.dataset.t)); }
+});
+function toast(text) { $('toast').style.display = 'block'; $('toast').textContent = text; }
+async function sendAll(approved) {
+  if (!$('who').value.trim()) { $('who').focus(); toast('Add your name at the top first, so it is clear who the notes are from.'); return; }
+  $('send').disabled = true;
+  for (const n of notes) if (!n.frame) n.frame = await captureAt(n.time, n.box);
+  const r = await api('/api/send', { video: $('version').value, reviewer: $('who').value.trim(), notes, good_scenes: good, approved });
+  if (r.ok) { notes = []; good = []; batches.push(r.batch); toast(approved ? 'Approved. This version is recorded as approved.' : 'Sent. Only the scenes your notes touch will be changed, and the new version will appear here.'); }
+  else toast('That did not send: ' + (r.error || 'please try again'));
+  renderNotes(); renderBatches(); drawTimeline();
+}
+$('send').onclick = () => sendAll(false);
+$('approve').onclick = () => { if (notes.length && !confirm('You still have notes that are not sent. Approve this version anyway and send them along?')) return; sendAll(true); };
+async function refresh() {
+  if (!job) return; const r = await api('/api/review'); const before = JSON.stringify(batches); batches = r.batches || [];
+  if (JSON.stringify(batches) === before) return;
+  renderBatches(); drawTimeline();
+  const fresh = (await fetch('/api/jobs').then((x) => x.json())).jobs.find((j) => j.job === job.job);
+  if (fresh && JSON.stringify(fresh.videos) !== JSON.stringify(job.videos)) { const cur = $('version').value; job.videos = fresh.videos; versions(); if (job.videos.some((f) => f.file === cur)) $('version').value = cur; toast('A new version has arrived. Choose "Latest version" at the top to watch it.'); }
+}
+start(); requestAnimationFrame(tick);
+</script>
+</body>
+</html>

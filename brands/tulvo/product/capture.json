@@ -1,0 +1,13 @@
+{
+  "_about": "Where Tulvo's product lives, for the capture tool (tools/capture/README.md). Keys that start with _ are notes for people.",
+  "address": "https://app.tulvo.io",
+  "demo_account": "Kestrel Studio",
+  "signs_in": "The studio owner, by hand: node tools/capture/capture.mjs signin tulvo",
+  "safe_to_show": ["Kestrel Studio"],
+  "recipes": { "setup": "recipes/setup.json", "tidy": "recipes/tidy.json", "_note": "Look-only placeholders (12 Nov 2026): no steps yet, so nothing in Kestrel Studio is changed. What to add is written in each file, for when the owner says yes." },
+  "never_show": [
+    { "what": "Billing pages", "paths": ["/billing", "/settings/billing", "/plans", "/subscription"] },
+    { "what": "Real e-mail addresses", "pattern": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", "allow": ["@example.com"], "_note": "Add the made-up addresses the Kestrel Studio demo uses to allow, like \"@kestrel.studio\", once they are checked." },
+    { "what": "The Client mix chart on the home page (not used in films for now)", "text": ["Client mix"] }
+  ]
+}

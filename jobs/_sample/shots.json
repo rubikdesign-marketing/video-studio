@@ -1,0 +1,74 @@
+{
+  "_about": "The sample job's shot list. The fields are explained in templates/shots.json.",
+  "stage": "dark",
+  "planned_instant_changes": [
+    { "scene": "S03", "what": "match cut into the closing line" }
+  ],
+  "planned_holds": [
+    { "scene": "S02", "seconds": 1.3, "what": "hold on the second line of text" }
+  ],
+  "scenes": [
+    {
+      "id": "S01",
+      "title": "What this is",
+      "lines": ["01"],
+      "energy": 3,
+      "transition_in": null,
+      "hand_off": null,
+      "shots": [
+        {
+          "text": "A *sample* film.",
+          "size": "abstract",
+          "capture": null,
+          "focal_point": "centre",
+          "move": "words rise, slow drift left",
+          "sound": "first beep"
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "title": "Picture follows sound",
+      "lines": ["02"],
+      "energy": 4,
+      "transition_in": { "number": 1, "name": "hand-off object" },
+      "hand_off": "the full stop of the headline becomes the first beep's dot",
+      "shots": [
+        {
+          "text": "Three beeps.",
+          "size": "medium",
+          "capture": null,
+          "focal_point": "left third",
+          "move": "three dots pop in, one per beat",
+          "sound": "second beep"
+        },
+        {
+          "text": "Picture fitted\nto the *sound*.",
+          "size": "macro",
+          "capture": null,
+          "focal_point": "centre",
+          "move": "push in on the dots, then hold",
+          "sound": "low swell into the hold"
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "title": "One scene at a time",
+      "lines": ["03"],
+      "energy": 5,
+      "transition_in": { "number": 5, "name": "match cut" },
+      "hand_off": "the last dot matches the wordmark tile",
+      "shots": [
+        {
+          "text": "Change *one* scene.",
+          "size": "wide",
+          "capture": null,
+          "focal_point": "centre",
+          "move": "text rises, wordmark settles under it",
+          "sound": "third beep, hit on the cut"
+        }
+      ]
+    }
+  ]
+}

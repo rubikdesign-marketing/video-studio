@@ -1,0 +1,147 @@
+{
+  "_about": "One brand's look for video, by role. The engine reads this file; nobody edits engine code to add a brand. Every key that starts with an underscore (like this one) is a note for people: the engine ignores it, so you may keep, change or delete the notes. The values below are neutral placeholders that already work. Replace them with the brand's own, one group at a time.",
+  "_after_editing": "Run: node tools/brand/sync.mjs   then: node tools/brand/check.mjs <your-brand-folder>   then render the brand sheet (see README.md) and look at it.",
+  "_colour_format": "Colours are written as six digits after a hash, like #1A2B3C. Where a see-through colour is allowed, add two more digits for how solid it is: #FFFFFF24 is white at 14%.",
+
+  "name": "Your brand name",
+  "_name": "The brand's name as it should be shown. The folder name (lower-case, no spaces) is what job.json uses; this is the display name.",
+
+  "colours": {
+    "_about": "The same seven roles on a light page and on a dark page. Scenes ask for a role (\"accent\"), never for a colour, so a film can move between pages and brands without changes.",
+
+    "light": {
+      "_about": "The brand on a light background.",
+      "page": "#FFFFFF",
+      "_page": "The background of the whole frame. Solid colour.",
+      "ink": "#111111",
+      "_ink": "Main text, and the fill of buttons. Solid. Must read clearly on the page: contrast of at least 4.5 to 1 (check.mjs measures it).",
+      "second": "#6B6F76",
+      "_second": "Quieter text: the second clause of a two-part headline, labels, supporting words.",
+      "accent": "#2457C5",
+      "_accent": "The one colour that draws the eye: a highlighted word, a click ring, an emphasised button. Solid. Contrast with the page of at least 3 to 1.",
+      "warm": "#D9822B",
+      "_warm": "A second, warmer note used sparingly: an old price, a deadline, one warm detail in a scene.",
+      "soft": "#EEF2FA",
+      "_soft": "A soft fill behind things: a tinted card or band. Usually a pale tint of the accent.",
+      "line": "#DDDDDD",
+      "_line": "Thin borders and dividers.",
+      "_on_accent": "Optional. Add \"on_accent\": \"#FFFFFF\" to fix the text colour on an accent-coloured button. Left out, the engine picks whichever ink reads better."
+    },
+
+    "dark": {
+      "_about": "The same roles on a dark background. Usually: a near-black page, white ink, and a brighter version of the accent.",
+      "page": "#0B0B0D",
+      "ink": "#FFFFFF",
+      "second": "#A0A4AD",
+      "accent": "#7FA8FF",
+      "warm": "#F2B36B",
+      "soft": "#1B2233",
+      "line": "#FFFFFF24"
+    },
+
+    "_confetti": "Optional. Add \"confetti\": [\"#...\", \"#...\"] to choose the colours of the confetti burst. Left out, it is made from the roles above.",
+    "_other": "Optional. Add \"other\": { \"a name\": \"#...\" } to keep brand colours that have no role yet. The kit does not use them."
+  },
+
+  "stages": {
+    "_about": "How each page is lit when it fills the frame, so a background is never flat. A light is a soft pool of colour that drifts slowly. x and y say where it sits, as shares of the frame (0 is left or top, 1 is right or bottom). radius is its size as a share of frame height. opacity is its strength, 0 to 1.",
+    "light": {
+      "lights": [{ "x": 0.16, "y": 0.06, "radius": 1, "colour": "#FFFFFF", "opacity": 0.8 }],
+      "_lights": "Zero to three lights. On a light page, one pale light from a corner is enough. On a white page it will not show; that is fine.",
+      "grain": 0.3,
+      "_grain": "Film grain over the page, 0 (none) to 1. Light pages take more (0.2 to 0.4) than dark ones (about 0.06).",
+      "vignette": 0,
+      "_vignette": "How much the corners darken, 0 to 1. Usually 0 on a light page and about 0.5 on a dark one.",
+      "screen_glow": 0,
+      "_screen_glow": "How strongly the accent glows around a product window, 0 to 1. Usually 0 on light and about 0.25 on dark."
+    },
+    "dark": {
+      "lights": [
+        { "x": 0.2, "y": 0.14, "radius": 0.9, "colour": "#1B2233", "opacity": 0.85 },
+        { "x": 0.72, "y": 0.22, "radius": 0.5, "colour": "#7FA8FF", "opacity": 0.18 }
+      ],
+      "_lights": "Typically one or two deep tints of the accent, and a faint pool of the accent itself.",
+      "grain": 0.06,
+      "vignette": 0.5,
+      "screen_glow": 0.25
+    }
+  },
+
+  "fonts": {
+    "_about": "One typeface per voice. A film has at most three voices in a frame: headline, the accent word, and product UI if a screen is showing. Fonts are loaded from files on this computer only; a render never goes online for them.",
+    "_where_the_file_comes_from": "Each voice names its font file in exactly one of two ways. \"file\": a file you put in this brand's fonts/ folder, written like \"fonts/MyFont.woff2\" (.woff2, .woff, .ttf or .otf). Or \"package\": a file inside an npm package installed in engine/, written like \"@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2\".",
+
+    "headline": {
+      "_about": "Headlines, titles, buttons and captions.",
+      "family": "Inter",
+      "_family": "The typeface's name.",
+      "package": "@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2",
+      "_package": "A placeholder that works because Inter is already installed. For your own font, delete this line and add \"file\": \"fonts/YourFont.woff2\".",
+      "weight_range": "100 900",
+      "_weight_range": "Only for a variable font (one file holding many weights): the lightest and heaviest weight in the file. Leave it out for a single-weight file.",
+      "weight": 600,
+      "_weight": "The weight headlines are set in. 400 is regular, 600 semibold, 700 bold.",
+      "tracking_em": -0.03,
+      "_tracking_em": "Letter spacing, as a share of the type size. Negative is tighter. Large headlines usually want -0.02 to -0.05.",
+      "line_height": 1.08,
+      "_line_height": "Distance between lines, as a multiple of the type size. Headlines usually want 1.05 to 1.15."
+    },
+
+    "accent": null,
+    "_accent": "Optional. A second typeface for the one *starred* word in a headline, often an italic serif. Write it like the headline group, plus \"style\": \"italic\" for an italic file and \"scale\": 1.08 if the face looks small beside the headline. With null, the starred word stays in the headline typeface, set heavier (or in italic if the file has no heavier weight).",
+
+    "label": {
+      "_about": "Small labels, prices, counters and timers. Often the headline typeface at a lighter weight. Never a coding-style (monospaced) typeface.",
+      "family": "Inter",
+      "package": "@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2",
+      "weight_range": "100 900",
+      "weight": 500,
+      "tracking_em": -0.01
+    },
+
+    "product": null,
+    "_product": "Only if the brand has a product whose screens appear in videos: the typeface the product itself is set in, written like the headline group. Otherwise null."
+  },
+
+  "logo": {
+    "_about": "Files in this brand's logo/ folder (.svg, or .png with a clear background). For each page: the wordmark (the full logo, which opens and closes a film) and the mark (the symbol alone). If one file works on both pages, name it twice.",
+    "light": { "wordmark": "logo/wordmark-on-light.svg", "mark": "logo/mark-on-light.svg" },
+    "dark": { "wordmark": "logo/wordmark-on-dark.svg", "mark": "logo/mark-on-dark.svg" }
+  },
+
+  "shape": {
+    "_about": "Corner radii, as shares of frame height so they hold at any frame size. On a 1080 pixel tall frame, 0.011 is about 12 pixels.",
+    "control_radius": 0.011,
+    "_control_radius": "Buttons, cards and small controls.",
+    "window_radius": 0.015,
+    "_window_radius": "App windows and large panels.",
+    "pill_radius": "full",
+    "_pill_radius": "Pills and badges. \"full\" makes fully rounded ends; a number makes a set radius."
+  },
+
+  "captions": {
+    "_about": "The caption design is the same for every brand: a dark glass bar at the bottom, with words arriving as they are spoken, in the headline typeface. Only these five values may differ.",
+    "weight": 600,
+    "_weight": "The weight of caption text.",
+    "text": "#FFFFFF",
+    "_text": "Caption text. Keep it white or very nearly.",
+    "highlight": "#7FA8FF",
+    "_highlight": "The one highlighted phrase in a caption line. Usually the dark page's accent.",
+    "glass_top": "#14161C",
+    "glass_bottom": "#08090B",
+    "_glass": "The tint of the glass, top and bottom. Two near-blacks, optionally leaning towards the brand's colour."
+  },
+
+  "product_ui": null,
+  "_product_ui": "Only if the brand has a product: its own screen colours, so rebuilt screens stay true. Write { \"background\": \"#FFFFFF\" } at least (the page colour of the product); add any other named colours you want to keep with it. Otherwise null.",
+
+  "rejected": {
+    "_about": "What the brand's owner has said no to, in plain words. People and Claude read these before a moodboard; add to them whenever feedback rules something out.",
+    "colours": [],
+    "_colours": "For example: [\"purple\", \"pink\"]",
+    "patterns": [],
+    "_patterns": "For example: [\"dot grids\", \"generic mesh blobs\"]",
+    "type": [],
+    "_type": "For example: [\"coding-style (monospaced) typefaces\"]"
+  }
+}

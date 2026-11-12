@@ -1,0 +1,10 @@
+{
+  "_about": "Tulvo's tidy script: runs after every capture take, and after a take that stopped, so rows a take adds do not pile up in Kestrel Studio (tools/capture/README.md, \"Demo data: setup and tidy\"). LOOK-ONLY PLACEHOLDER, 12 Nov 2026: it has no steps, so it does nothing. Nothing in Tulvo is deleted until the owner says yes.",
+  "_what_to_add_once_the_owner_approves": [
+    "1. For each record a capture adds (for example the \"Morrowby Coffee\" lead), the steps that remove it through Tulvo itself: open the board, right-click or open the row's menu, choose Delete, confirm ({\"right-click\": \"Morrowby Coffee\"}, {\"click\": \"Delete\"}, {\"click\": \"Delete\", \"in\": \"Delete record\"}). The Tulvo connector cannot delete, so this is the way.",
+    "2. Remove only what the setup script or the capture added, found by its made-up name. Never a step that deletes a whole board, a page or anything the brand did not add for the video.",
+    "3. End with a wait that proves it is gone ({\"wait for\": \"Morrowby Coffee\", \"gone\": true}), so a second take starts from the same board.",
+    "4. Test it with a dry run, then look at Kestrel Studio by hand."
+  ],
+  "steps": []
+}

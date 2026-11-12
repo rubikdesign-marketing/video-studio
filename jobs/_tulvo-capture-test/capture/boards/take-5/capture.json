@@ -1,0 +1,193 @@
+{
+  "captured": "2026-11-12T14:08:06+06:00",
+  "brand": "tulvo",
+  "take": 5,
+  "from": null,
+  "address": "https://app.tulvo.io",
+  "script": "jobs/_tulvo-capture-test/capture/boards.json",
+  "chrome": "Chrome/157.0.8103.51",
+  "browser_kind": "studio",
+  "browser": "the studio's own Chrome window",
+  "setting": {
+    "language": "en",
+    "time_zone": "Asia/Dhaka",
+    "theme": "light",
+    "reduced_motion": false
+  },
+  "clock": {
+    "frozen": true,
+    "demo_time": "2026-11-20 10:30",
+    "time_zone": "Asia/Dhaka",
+    "page_time_at_start": 1795149003462,
+    "note": "The product's clock was set to the demo time before the first page opened and ran on from there. Times the product takes from its own server are not changed."
+  },
+  "clean_screen": {
+    "studio_defaults": true,
+    "hidden": {
+      "cookie or consent banner": 1
+    },
+    "dismissed": [],
+    "masked": []
+  },
+  "frame": {
+    "page": {
+      "width": 1920,
+      "height": 1080
+    },
+    "scale": 2,
+    "recording": {
+      "width": 3840,
+      "height": 2160
+    },
+    "fps": 60,
+    "crf": 12,
+    "started_epoch": 1794470895.1347
+  },
+  "seconds": 12.867,
+  "pictures_from_chrome": {
+    "count": 124,
+    "received": 436,
+    "format": "jpeg",
+    "longest_gap_seconds": 2.017,
+    "full_sharpness": 124,
+    "out_of_order": 2,
+    "note": "count: pictures kept (each one different from the one before); received: all Chrome sent, including repeats while the page might be changing. full_sharpness: pictures Chrome sent at double sharpness (the rest were scaled up). out_of_order: pictures that arrived after one drawn later than them; they are put back in the order they were drawn."
+  },
+  "marks": {
+    "lead-pipeline": 4.365,
+    "campaign-board": 8.872,
+    "campaign-board-new": 11.868
+  },
+  "mark_details": {
+    "lead-pipeline": {
+      "t": 4.365,
+      "url": "https://app.tulvo.io/pages/1950f20b-fbb2-4428-8b31-a5dc809793a4?tab=04b712fc-c2f8-4fe2-bc17-6eb78dd44838",
+      "tracked": {},
+      "privacy_flags": 0
+    },
+    "campaign-board": {
+      "t": 8.872,
+      "url": "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e",
+      "tracked": {},
+      "privacy_flags": 0
+    },
+    "campaign-board-new": {
+      "t": 11.868,
+      "url": "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e",
+      "tracked": {},
+      "privacy_flags": 0
+    }
+  },
+  "privacy_flags": [],
+  "warnings": [],
+  "steps": [
+    {
+      "n": 1,
+      "step": {
+        "open": "/pages/1950f20b-fbb2-4428-8b31-a5dc809793a4"
+      },
+      "start": 0,
+      "end": 0,
+      "note": "opened before the recording started"
+    },
+    {
+      "n": 2,
+      "step": {
+        "wait for": "settled"
+      },
+      "start": 0.504,
+      "end": 4.178
+    },
+    {
+      "n": 3,
+      "step": {
+        "mark": "lead-pipeline"
+      },
+      "start": 4.199,
+      "end": 4.497
+    },
+    {
+      "n": 4,
+      "step": {
+        "hover": "Campaign Launch Board",
+        "near": "Recents"
+      },
+      "target": {
+        "x": 12,
+        "y": 381.5,
+        "w": 223,
+        "h": 32
+      },
+      "start": 4.506,
+      "end": 5.821,
+      "settled": 0.01
+    },
+    {
+      "n": 5,
+      "step": {
+        "click": "Campaign Launch Board",
+        "near": "Recents"
+      },
+      "target": {
+        "x": 12,
+        "y": 381.5,
+        "w": 223,
+        "h": 32
+      },
+      "start": 6.105,
+      "end": 7.098,
+      "settled": 1.29
+    },
+    {
+      "n": 6,
+      "step": {
+        "wait for": "settled"
+      },
+      "start": 8.657,
+      "end": 8.696
+    },
+    {
+      "n": 7,
+      "step": {
+        "mark": "campaign-board"
+      },
+      "start": 8.711,
+      "end": 9.085
+    },
+    {
+      "n": 8,
+      "step": {
+        "hover": "New"
+      },
+      "target": {
+        "x": 1807.7,
+        "y": 80,
+        "w": 80.3,
+        "h": 34
+      },
+      "start": 9.093,
+      "end": 10.564,
+      "settled": 0.02
+    },
+    {
+      "n": 9,
+      "step": {
+        "wait": 0.8
+      },
+      "start": 10.889,
+      "end": 11.69
+    },
+    {
+      "n": 10,
+      "step": {
+        "mark": "campaign-board-new"
+      },
+      "start": 11.71,
+      "end": 12.051
+    }
+  ],
+  "tabs": [
+    "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e"
+  ],
+  "ended_on": "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e"
+}

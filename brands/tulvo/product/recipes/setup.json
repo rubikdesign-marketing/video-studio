@@ -1,0 +1,10 @@
+{
+  "_about": "Tulvo's setup script: runs before every capture take (tools/capture/README.md, \"Demo data: setup and tidy\"). LOOK-ONLY PLACEHOLDER, 12 Nov 2026: it has no steps, so it does nothing. Tulvo's demo workspace (Kestrel Studio) is not changed until the owner says yes.",
+  "_what_to_add_once_the_owner_approves": [
+    "1. A capture that adds a record (a new lead, a board row, a client) first needs a clean place to add it: for example open the Leads board of Kestrel Studio and check that no row called \"Morrowby Coffee\" is there yet ({\"open\": \"/pages/...\"}, {\"wait for\": \"Morrowby Coffee\", \"gone\": true}).",
+    "2. If the video needs records that are not in Kestrel Studio yet, add them here as steps through Tulvo itself (open the board, click New, type the made-up name from the brand's cleared list, save), or make them once with the Tulvo connector and leave this file looking only.",
+    "3. Only made-up names the brand has cleared (safe_to_show in capture.json). Never a real client, e-mail or invoice.",
+    "4. Then put the steps under \"steps\", run a dry run (node tools/capture/capture.mjs dry jobs/<job> <capture>) and check Kestrel Studio by hand afterwards."
+  ],
+  "steps": []
+}

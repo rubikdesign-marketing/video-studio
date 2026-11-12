@@ -1,0 +1,186 @@
+{
+  "captured": "2026-11-11T23:53:13+06:00",
+  "brand": "tulvo",
+  "take": 1,
+  "from": null,
+  "address": "https://app.tulvo.io",
+  "script": "jobs/_tulvo-capture-test/capture/boards.json",
+  "chrome": "Chrome/157.0.8103.39",
+  "setting": {
+    "language": "en",
+    "time_zone": "Asia/Dhaka",
+    "theme": "light",
+    "reduced_motion": false
+  },
+  "clock": {
+    "frozen": true,
+    "demo_time": "2026-11-20 10:30",
+    "time_zone": "Asia/Dhaka",
+    "page_time_at_start": 1795149002597,
+    "note": "The product's clock was set to the demo time before the first page opened and ran on from there. Times the product takes from its own server are not changed."
+  },
+  "clean_screen": {
+    "studio_defaults": true,
+    "hidden": {
+      "cookie or consent banner": 1
+    },
+    "dismissed": [],
+    "masked": []
+  },
+  "frame": {
+    "page": {
+      "width": 1920,
+      "height": 1080
+    },
+    "scale": 2,
+    "recording": {
+      "width": 3840,
+      "height": 2160
+    },
+    "fps": 60,
+    "crf": 12
+  },
+  "seconds": 10.358,
+  "pictures_from_chrome": {
+    "count": 173,
+    "format": "jpeg",
+    "longest_gap_seconds": 2.267
+  },
+  "marks": {
+    "lead-pipeline": 3.199,
+    "campaign-board": 6.677,
+    "campaign-board-new": 9.426
+  },
+  "mark_details": {
+    "lead-pipeline": {
+      "t": 3.199,
+      "url": "https://app.tulvo.io/pages/1950f20b-fbb2-4428-8b31-a5dc809793a4?tab=04b712fc-c2f8-4fe2-bc17-6eb78dd44838",
+      "tracked": {},
+      "privacy_flags": 0
+    },
+    "campaign-board": {
+      "t": 6.677,
+      "url": "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e",
+      "tracked": {},
+      "privacy_flags": 0
+    },
+    "campaign-board-new": {
+      "t": 9.426,
+      "url": "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e",
+      "tracked": {},
+      "privacy_flags": 0
+    }
+  },
+  "privacy_flags": [],
+  "warnings": [],
+  "steps": [
+    {
+      "n": 1,
+      "step": {
+        "open": "/pages/1950f20b-fbb2-4428-8b31-a5dc809793a4"
+      },
+      "start": 0,
+      "end": 0,
+      "note": "opened before the recording started"
+    },
+    {
+      "n": 2,
+      "step": {
+        "wait for": "settled"
+      },
+      "start": 0.501,
+      "end": 3.037
+    },
+    {
+      "n": 3,
+      "step": {
+        "mark": "lead-pipeline"
+      },
+      "start": 3.043,
+      "end": 3.347
+    },
+    {
+      "n": 4,
+      "step": {
+        "hover": "Campaign Launch Board",
+        "near": "Recents"
+      },
+      "target": {
+        "x": 12,
+        "y": 381.5,
+        "w": 223,
+        "h": 32
+      },
+      "start": 3.35,
+      "end": 4.519,
+      "settled": 0
+    },
+    {
+      "n": 5,
+      "step": {
+        "click": "Campaign Launch Board",
+        "near": "Recents"
+      },
+      "target": {
+        "x": 12,
+        "y": 381.5,
+        "w": 223,
+        "h": 32
+      },
+      "start": 4.777,
+      "end": 5.485,
+      "settled": 0.78
+    },
+    {
+      "n": 6,
+      "step": {
+        "wait for": "settled"
+      },
+      "start": 6.521,
+      "end": 6.521
+    },
+    {
+      "n": 7,
+      "step": {
+        "mark": "campaign-board"
+      },
+      "start": 6.523,
+      "end": 6.811
+    },
+    {
+      "n": 8,
+      "step": {
+        "hover": "New"
+      },
+      "target": {
+        "x": 1807.7,
+        "y": 80,
+        "w": 80.3,
+        "h": 34
+      },
+      "start": 6.818,
+      "end": 8.21,
+      "settled": 0
+    },
+    {
+      "n": 9,
+      "step": {
+        "wait": 0.8
+      },
+      "start": 8.465,
+      "end": 9.266
+    },
+    {
+      "n": 10,
+      "step": {
+        "mark": "campaign-board-new"
+      },
+      "start": 9.27,
+      "end": 9.556
+    }
+  ],
+  "tabs": [
+    "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e"
+  ],
+  "ended_on": "https://app.tulvo.io/pages/d9094425-604b-4d35-8b76-dfb988d93987?tab=82e5ee69-be64-4f7b-8559-758cfbcac07e"
+}

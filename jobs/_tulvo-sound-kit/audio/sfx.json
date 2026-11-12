@@ -1,0 +1,79 @@
+[
+  {
+    "id": "soft-click",
+    "prompt": "a single soft, muted mouse click on a laptop trackpad for a calm software app, clean, close, no reverb, no echo",
+    "seconds": 0.5,
+    "at": 0,
+    "gain": 0.5
+  },
+  {
+    "id": "crisp-click",
+    "prompt": "a single clearly audible, crisp plastic button click, like pressing a modern mouse button, sharp transient, clean, close microphone, no reverb",
+    "seconds": 0.5,
+    "at": 0,
+    "gain": 0.5
+  },
+  {
+    "id": "soft-keyboard",
+    "prompt": "soft laptop keyboard typing, six gentle keystrokes at a calm pace, quiet and clean, no room echo",
+    "seconds": 1.5,
+    "at": 0,
+    "gain": 0.4
+  },
+  {
+    "id": "crisp-keyboard",
+    "prompt": "crisp low-profile keyboard typing, a quick burst of eight keystrokes, clean and close, no room echo",
+    "seconds": 1.5,
+    "at": 0,
+    "gain": 0.4
+  },
+  {
+    "id": "small-whoosh",
+    "prompt": "a short, subtle, airy whoosh for a smooth on-screen transition in a software video, soft, no hiss",
+    "seconds": 0.6,
+    "at": 0,
+    "gain": 0.4
+  },
+  {
+    "id": "large-whoosh",
+    "prompt": "a smooth, deep, cinematic air whoosh for a scene change in a premium product video, clean tail, no rumble",
+    "seconds": 1.2,
+    "at": 0,
+    "gain": 0.4
+  },
+  {
+    "id": "success-chime",
+    "prompt": "a warm, gentle two-note success chime for a modern software app, soft glassy bell, short and calm, not cheesy",
+    "seconds": 1.0,
+    "at": 0,
+    "gain": 0.45
+  },
+  {
+    "id": "toast-pop",
+    "prompt": "a soft, rounded notification pop for a modern web app, subtle and friendly, very short",
+    "seconds": 0.5,
+    "at": 0,
+    "gain": 0.4
+  },
+  {
+    "id": "drag-lift",
+    "prompt": "a very subtle soft lift sound as a card is picked up on screen, light air and a faint paper touch, clean",
+    "seconds": 0.5,
+    "at": 0,
+    "gain": 0.35
+  },
+  {
+    "id": "drag-drop",
+    "prompt": "a soft, satisfying muted thud as a card drops neatly into place in a software app, clean, no echo",
+    "seconds": 0.5,
+    "at": 0,
+    "gain": 0.4
+  },
+  {
+    "id": "logo-sting",
+    "prompt": "a short modern logo sting for a calm, premium software brand: a soft rising shimmer that resolves into one warm, clean, confident tone, airy, no voice, no drums",
+    "seconds": 2.2,
+    "at": 0,
+    "gain": 0.6
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "_about": "TEST BRAND. \"Demo brand\" is invented. It exists only to prove that the studio can switch brands: different colours, a different typeface, no accent typeface, no product. Never use it for a real video. Keys that start with an underscore are notes for people and are ignored by the engine.",
+  "_checked": "2026-11-11",
+
+  "name": "Demo brand",
+
+  "colours": {
+    "_about": "A deep green accent on an off-white page, and a dark green night page.",
+    "light": {
+      "page": "#F6F4EC",
+      "ink": "#10201A",
+      "second": "#6F7A72",
+      "accent": "#1F6B45",
+      "warm": "#C9822B",
+      "soft": "#DDEBDD",
+      "line": "#DAD9CC",
+      "_on_accent": "Left out on purpose, to prove the engine picks the ink that reads better on the accent."
+    },
+    "dark": {
+      "page": "#08130E",
+      "ink": "#F3F5EE",
+      "second": "#A8CBB5",
+      "accent": "#4CC38A",
+      "warm": "#F0B45A",
+      "soft": "#12392A",
+      "line": "#F3F5EE24"
+    },
+    "_confetti": "Left out on purpose: the engine then makes confetti from the roles above."
+  },
+
+  "stages": {
+    "light": {
+      "lights": [{ "x": 0.16, "y": 0.06, "radius": 1, "colour": "#FFFFFF", "opacity": 0.8 }],
+      "grain": 0.3,
+      "vignette": 0,
+      "screen_glow": 0
+    },
+    "dark": {
+      "lights": [
+        { "x": 0.2, "y": 0.14, "radius": 0.9, "colour": "#12392A", "opacity": 0.85 },
+        { "x": 0.86, "y": 0.92, "radius": 0.8, "colour": "#0B2419", "opacity": 0.9 },
+        { "x": 0.72, "y": 0.22, "radius": 0.5, "colour": "#4CC38A", "opacity": 0.18 }
+      ],
+      "grain": 0.06,
+      "vignette": 0.5,
+      "screen_glow": 0.25
+    }
+  },
+
+  "fonts": {
+    "_about": "Inter for everything, from the npm package already installed in engine/. There is no accent typeface, to prove that voice is optional: a *starred* headline word is set in Inter at a heavier weight.",
+    "headline": {
+      "family": "Inter",
+      "package": "@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2",
+      "weight_range": "100 900",
+      "weight": 600,
+      "tracking_em": -0.035,
+      "line_height": 1.08
+    },
+    "accent": null,
+    "label": {
+      "family": "Inter",
+      "package": "@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2",
+      "weight_range": "100 900",
+      "weight": 500,
+      "tracking_em": -0.01
+    },
+    "product": null
+  },
+
+  "logo": {
+    "_about": "A simple wordmark drawn for this test. The letters are lines, so the files need no font.",
+    "light": { "wordmark": "logo/demo-wordmark-on-light.svg", "mark": "logo/demo-mark-on-light.svg" },
+    "dark": { "wordmark": "logo/demo-wordmark-on-dark.svg", "mark": "logo/demo-mark-on-dark.svg" }
+  },
+
+  "shape": {
+    "_about": "Squarer controls than Tulvo, to show that shapes switch with the brand too.",
+    "control_radius": 0.006,
+    "window_radius": 0.012,
+    "pill_radius": "full"
+  },
+
+  "captions": {
+    "weight": 600,
+    "text": "#FFFFFF",
+    "highlight": "#6FE0A8",
+    "glass_top": "#0F1A14",
+    "glass_bottom": "#060B08"
+  },
+
+  "product_ui": null,
+
+  "rejected": {
+    "colours": ["red"],
+    "patterns": ["dot grids"],
+    "type": ["coding-style (monospaced) typefaces"]
+  }
+}
