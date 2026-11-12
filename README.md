@@ -22,6 +22,7 @@ Follow `ONBOARDING.md`: paste one prompt into the Claude desktop app's Code tab,
 | `.claude/skills/video-studio/` | The skill Claude follows, one stage file per step |
 | `DESIGN.md` | How the studio works, what is built, and what is left (section 14) |
 | `CAPTURE-PLAN.md` | The plan for the product capture tool |
+| `FOOTAGE-PLAN.md` | The plan for editing raw footage: transcript editing, face tracking, clean-up |
 
 ## Never in this repository
 

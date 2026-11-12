@@ -93,15 +93,23 @@ Status key: **have** = already used in the Black Friday build; **add** = new. Ev
 | Spectrogram images | A picture of every cut point that Claude can inspect | add |
 | A speech-quality scorer (DNSMOS or NISQA) | A naturalness score per voice line | add |
 | Beat and bar detection | Lands big moments on the music | have |
-| A voice clean-up filter | Noise removal for raw footage | add |
+| A voice clean-up filter | Noise removal for raw footage | planned (`FOOTAGE-PLAN.md` 7) |
 
 ### Raw footage
 
+The full plan is `FOOTAGE-PLAN.md` (12 Nov 2026), approved by the owner the same day (its section 13), with picture post-processing (section 6) and sound engineering (section 7) added at the owner's request.
+
 | Tool | What it gives | Status |
 |---|---|---|
-| auto-editor | Cuts dead air | add |
-| whisper.cpp | Edit by transcript: cut by sentence, not by guesswork | have |
-| PySceneDetect | Finds every cut in supplied footage | add |
+| Footage tool (`tools/footage/`) | Ingest and log, edit by transcript, dead-air and filler cutting with a meaning guard, the cut list | planned (`FOOTAGE-PLAN.md`) |
+| whisper.cpp (larger model, exact word times) or Parakeet | Word-level transcript including fillers, to cut on | have the small model; larger one planned |
+| PySceneDetect | Finds every cut in supplied footage | planned |
+| MediaPipe face landmarker | Face tracking for framing, punch-ins, other sizes and who speaks; detection only, never recognition | planned |
+| DeepFilterNet, or ElevenLabs voice isolator | Voice clean-up | planned |
+| Sound repair and dialogue chain (ffmpeg, Demucs, DNSMOS) | Hum, clicks, clipping, pops, echo, music separation, mic and tone matching, levelling, a speech-quality score before and after | planned (`FOOTAGE-PLAN.md` 7) |
+| Picture post-processing (ffmpeg) | Denoise, deflicker, lens, exposure, skin-based matching, grade with skin protected, sharpening, debanding, grain, scopes Claude can inspect | planned (`FOOTAGE-PLAN.md` 6) |
+| HyperFrames `remove-background`, SAM 2 | Cutouts of the person | fast one have; clean one an owner decision |
+| `FootageCut` and `framing.ts` in the engine | Plays a cut list with framing, split sound and picture cuts, inserts and titles | planned |
 
 ### Product capture
 
@@ -436,7 +444,7 @@ The order to finish in, so the Tulvo team can be given the studio, then other co
 20. Let the review page be opened by people who do not have the folder.
 
 ### Lanes not built
-21. Editing raw footage: dead-air cutting, noise clean-up, edit by transcript.
+21. Editing raw footage: dead-air cutting, noise clean-up, edit by transcript. **Planned 12 Nov 2026, not built.** `FOOTAGE-PLAN.md` adds face tracking and framing in every size, punch-ins on jump cuts, retake finding, full picture post-processing, sound repair, dialogue, mix and master, cutouts, a consent check and an editor timeline export, in eight phases. Approved by the owner 12 Nov (its section 13); phase 1 waits for three test clips.
 22. **Built and tested on a local test page, 11 Nov (night); not yet tried on a real product.** The capture tool, `tools/capture/capture.mjs` (how to use it: `tools/capture/README.md`). It drives the installed Google Chrome with `playwright-core` (its own small package in `tools/capture/`, installed by `setup/install.sh`, checked by the health check). A person signs in once per brand by hand (`capture.mjs signin <brand>`, kept in `.capture/<brand>/`, never synced); the tool never types, reads or keeps a password or code. Each capture is a plain list of steps in the job (`jobs/<job>/capture/<id>.json`: open, click, type, press, hover, scroll, wait, mark), found by the words on screen with optional `in`/`near`. `run` records a 1920 x 1080 window at double sharpness with Chrome's own screencast (real frame times), made into a steady 60 fps 3840 x 2160 video (x264, quality 12), moves the real mouse on eased curves so hovers happen, and writes `cursor.json`, a still per mark and `capture.json`. `check` runs the steps again and names the moments that changed, with side-by-side pictures. Where the product lives and what never to show is `brands/<brand>/product/capture.json` (Tulvo's is filled in). In the engine, `CaptureClip` (`engine/src/kit/CaptureClip.tsx`) plays a capture in a frame region with the brand's pointer and click rings drawn from `cursor.json`, with a seconds range and an optional zoom; `CapturePreview` shows one in Remotion Studio. By default every capture hides the product loading: the clip starts 0.2 s before the first page load ends (or at the first mark, if earlier), and each later load over 0.6 s is sped up to last 0.6 s with the "Sped up" label (`trimLoads={false}` turns it off; hand-set time effects still win). Hand recording with Cap goes into `footage/` (README). The enhancement plan (browsers, product kinds, set dressing, motion data, engine motion, transitions, checks, edge cases, build phases 2 to 8) is in `CAPTURE-PLAN.md`, waiting for the owner's decisions in its section 12.
     - Tested on the test page: sign-in window opens and closes cleanly; a 12.2 s, 13-step capture gave 3840 x 2160, 60 fps, length matching the steps to within one frame; the pointer path has no jumps; every click shows on screen within 50 ms of the button; mark stills are 3840 x 2160 and the video frames match them at about 41 dB; check said "no change" on a re-run (0.000% different) and caught a renamed and an added row (0.08%); password and sign-in code steps, a sign-in page, a never-show page, a never-show e-mail and a link to another site were all refused with plain messages; one preview still rendered with the pointer and ring.
     - Not tested: a real product (Tulvo not signed in yet), long captures (over a minute), pages with heavy animation (Chrome may send fewer than 60 pictures a second there: `capture.json` records how many it sent), sites that block automated browsers, playing a 4K capture through a full film render. Not built: the page-code snapshot for moving single rows on cue (use the rebuilt product screens for that), and a way to undo rows a capture adds in the demo account.
