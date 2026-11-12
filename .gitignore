@@ -3,6 +3,10 @@ node_modules/
 jobs/*/out/
 jobs/*/renders/
 jobs/*/footage/
+# Footage editing: working copies, sound, transcripts, the log and sheets are made from footage of real people, so
+# they stay on the Mac like the footage itself.
+jobs/*/edit/
+tools/footage/.venv/
 *.voicecheck/
 __pycache__/
 .DS_Store

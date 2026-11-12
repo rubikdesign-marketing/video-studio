@@ -47,6 +47,17 @@ MISSING=""; for s in $SKILL_ROWS; do n=$(grep -m1 '^name:' ".claude/skills/$s/SK
 if [ -z "$MISSING" ] && [ -n "$SKILL_ROWS" ]; then pass "bundled skills: $(echo $SKILL_ROWS | wc -w | tr -d ' ') present (.claude/skills/THIRD-PARTY.md)"
 else fail "bundled skills missing or misnamed:$MISSING" "bash setup/update-skills.sh --missing"; fi
 
+echo "Footage editing"
+FMODEL="$HOME/.cache/hyperframes/whisper/models/ggml-large-v3-turbo-q5_0.bin"
+[ -f "$FMODEL" ] && pass "footage transcription model (whisper large-v3-turbo)" || fail "the footage transcription model is missing" "bash setup/install.sh downloads it"
+if [ -x tools/footage/.venv/bin/python ] && tools/footage/.venv/bin/python -I -c "import cv2, scenedetect, numpy, scipy, PIL" >/dev/null 2>&1; then
+  pass "the footage tool's Python ($(tools/footage/.venv/bin/python -V 2>&1 | cut -d' ' -f2), OpenCV, PySceneDetect)"
+else fail "the footage tool's Python is not set up" "bash setup/install.sh   (needs uv: brew install uv)"; fi
+for f in zscale tonemap scdet; do "$FF" -hide_banner -filters 2>/dev/null | grep -q " $f " || fail "ffmpeg lacks the '$f' filter (HDR footage needs it)" "brew install ffmpeg-full"; done
+node --test tools/footage/tests/*.test.mjs >/dev/null 2>&1 && pass "the footage tool's tests pass" || fail "the footage tool's tests fail" "run: node --test tools/footage/tests/*.test.mjs"
+[ -d "$HOME/.cache/hyperframes/parakeet" ] && pass "Parakeet (a second transcriber, for comparing)" \
+  || note "Parakeet is not installed" "only needed to compare transcribers (footage.mjs compare): cd engine && npx hyperframes models install parakeet"
+
 echo "Product capture"
 if [ -d tools/capture/node_modules/playwright-core ]; then
   pass "capture tool installed (playwright-core $(node -p "require('./tools/capture/node_modules/playwright-core/package.json').version" 2>/dev/null))"

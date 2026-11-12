@@ -23,8 +23,8 @@ The approvals stay, with different contents:
 
 ## Steps
 
-1. **Ingest.** Footage goes into the job's `footage/` folder. Each clip is measured (length, size, sound level) and transcribed.
-2. **Log.** A table of every clip: what is said, what is seen, quality notes (soft focus, noise, shaky).
+1. **Ingest.** Footage goes into the job's `footage/` folder. Run `node tools/footage/footage.mjs ingest jobs/<job>`: each clip is measured, given a working copy (steady frame rate, upright, normal colour), transcribed word by word with fillers kept, and checked for picture and sound problems (`tools/footage/README.md`).
+2. **Log.** `jobs/<job>/edit/log.md`, written by ingest: every clip with what is said, what is seen, picture and sound notes, and the repair proposed for each. Look at each clip's contact sheet (`edit/clips/<clip>/sheet.jpg`) too.
 3. **Paper edit.** Cut by the words. Choose the strongest opening line first; it becomes the hook even if it was said last.
 4. **Tighten.** Remove dead air, filler words and repeats. Leave a breath between thoughts; do not cut every pause.
 5. **Clean the sound.** Reduce noise, level the voice, then run the voice checks.

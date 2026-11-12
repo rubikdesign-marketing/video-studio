@@ -22,6 +22,7 @@ have whisper-cli || need+=(whisper-cpp)
 have yt-dlp || need+=(yt-dlp)
 have tesseract || need+=(tesseract)
 have gh || need+=(gh)
+have uv || need+=(uv)
 if [ ${#need[@]} -gt 0 ]; then
   echo "Installing: ${need[*]}"
   brew install "${need[@]}" || echo "Some programs did not install. The health check at the end will say which."
@@ -37,6 +38,24 @@ else
   echo "Downloading the speech-to-text model (about 490 MB), used to check every voice line..."
   curl -L --fail -o "$MODEL.part" "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin" \
     && mv "$MODEL.part" "$MODEL" || { rm -f "$MODEL.part"; echo "Download failed. Voice checks will skip the word comparison until it is present."; }
+fi
+
+# The footage tool (FOOTAGE-PLAN.md): transcripts precise enough to cut on, and its own Python 3.12 (the Mac's newer
+# Python has no face, video and sound packages yet). Both live outside the repository.
+FMODEL="$MODEL_DIR/ggml-large-v3-turbo-q5_0.bin"
+if [ -f "$FMODEL" ]; then echo "Footage transcription model already present."
+else
+  echo "Downloading the footage transcription model (about 570 MB), used to cut raw footage by its words..."
+  curl -L --fail -o "$FMODEL.part" "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin" \
+    && mv "$FMODEL.part" "$FMODEL" || { rm -f "$FMODEL.part"; echo "Download failed. Editing raw footage needs it; run this script again later."; }
+fi
+if have uv; then
+  echo "Setting up the footage tool's Python..."
+  { [ -x tools/footage/.venv/bin/python ] || uv venv --quiet --python 3.12 tools/footage/.venv; } \
+    && uv pip install --quiet --python tools/footage/.venv/bin/python -r tools/footage/requirements.txt \
+    || echo "The footage tool's Python did not install. The health check at the end will say so."
+else
+  echo "uv is missing, so the footage tool's Python was not set up. The health check at the end will say so."
 fi
 
 say "3 of 5  Engine packages"
