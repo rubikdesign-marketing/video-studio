@@ -58,6 +58,12 @@ fi
 echo "Fetching the skills that are not kept in the repository (Remotion's), and any others missing..."
 bash setup/update-skills.sh --missing || echo "Some skills did not download. The health check at the end will say which."
 
+echo "Preparing each video's engine files (they are made on this Mac, never kept in the repository)..."
+for j in jobs/*/; do
+  [ -f "$j/shots.json" ] && { node tools/film/scaffold.mjs "$j" >/dev/null 2>&1 || echo "Could not prepare $j; the health check will say more."; }
+done
+node tools/capture/capture.mjs relist >/dev/null 2>&1 || true
+
 say "4 of 5  Your key file"
 if [ -f .env ]; then
   echo ".env already exists; left as it is."
