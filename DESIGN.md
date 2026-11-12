@@ -490,6 +490,9 @@ The order to finish in, so the Tulvo team can be given the studio, then other co
 - Product screens: changed later the same night. Screens are captured fresh for each video with the capture tool (item 22, `CAPTURE-PLAN.md`); the rebuilt kit is a pattern library only.
 - The unsent draft note on the review page stays as it is.
 
+### Footage editing, first real edit (13 Nov 2026)
+The Product Hunt launch reel (`jobs/ph-launch-reel/`) was built from 43 raw clips in one session, ahead of the footage plan's phases 2 to 8, in the simple form that video needed: picks by measurement (`edit/listen/`), DeepFilterNet voice cleaning and a joined dialogue with room tone (`edit/assemble.py`), MediaPipe face tracks (`tools/footage/py/faces.py`), skin-matched plates (`tools/footage/py/plates.py`), Robust Video Matting cutouts (`tools/footage/py/matte.py`), and the engine's `kit/footage/footage.tsx` (a shot with a face-anchored camera and a layer behind the person). Models live in `tools/footage/models/`, downloaded per Mac and kept out of git. Not yet folded into `footage.mjs`; the phase 2 paper-edit tool from the other session was left untouched.
+
 ### Housekeeping
 - `engine/out/` holds test renders that can be deleted.
 - About 60 browser snapshot files were left in `Desktop/Marketer/.playwright-mcp` by a helper.

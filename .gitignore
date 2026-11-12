@@ -38,3 +38,8 @@ library/references/**/*.mkv
 
 # Each person's own Claude permissions.
 .claude/settings.local.json
+
+# Footage models (face finder, cutout, noise removal, speech score): downloaded per Mac, not shipped.
+tools/footage/models/
+# The Product Hunt reel's engine data holds a real person's face positions and words: kept on this Mac, like the job's edit folder.
+engine/src/jobs/ph-launch-reel/
