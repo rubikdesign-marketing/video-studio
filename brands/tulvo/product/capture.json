@@ -10,5 +10,5 @@
     { "what": "Real e-mail addresses", "pattern": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", "allow": ["@example.com"], "_note": "Add the made-up addresses the Kestrel Studio demo uses to allow, like \"@kestrel.studio\", once they are checked." },
     { "what": "The Client mix chart on the home page (not used in films for now)", "text": ["Client mix"] }
   ],
-  "clean_screen": { "keep": [ { "what": "The new-workspace page (onboarding), shown full screen: it is the product, not something covering it", "text": "Tell us about your work" } ] }
+  "clean_screen": { "keep": [ { "what": "The new-workspace page (onboarding), shown full screen: it is the product, not something covering it", "text": "Tell us about your work" }, { "what": "Tulvo AI, full screen on phone-size pages: it is the product", "text": "How can I help you today?" } ] }
 }

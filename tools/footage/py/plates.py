@@ -35,11 +35,13 @@ def main():
     job, spec = sys.argv[1], json.load(open(sys.argv[2]))
     clips = os.path.join(job, 'edit', 'clips'); out_dir = os.path.join(job, 'edit', 'plates'); os.makedirs(out_dir, exist_ok=True)
     shots = spec['shots']; fps = spec.get('fps', 30); look = spec.get('look', {})
-    stats = {s['id']: skin(os.path.join(clips, s['clip']), s['in'], s['out']) for s in shots}
+    only = set(sys.argv[3].split(',')) if len(sys.argv) > 3 else None
+    stats = {s['id']: skin(os.path.join(clips, s['clip']), s['in'], s['out']) for s in shots if not only or s['id'] in only or s['id'] == spec['reference']}
     ref = stats[spec['reference']]
     lum = lambda c: 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
     report = {}
     for s in shots:
+        if only and s['id'] not in only: continue
         c = stats[s['id']]; m = s.get('match', 0.8)
         # White balance on skin: per-channel gains that make the cheek colour match the reference's, at equal brightness.
         wb = (ref / lum(ref)) / (c / lum(c)); wb = wb / lum(wb * np.ones(3)) if False else wb / wb[1]
