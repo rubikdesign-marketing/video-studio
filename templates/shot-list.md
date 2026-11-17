@@ -2,12 +2,13 @@
 
 Built at the storyboard stage. One row per shot. The same rows become the frames on the storyboard canvas and the scenes in the engine.
 
-| # | Time | Length | Voice line | On-screen text | Shot size | What is shown (capture file) | Focal point | Move | Transition in (number from craft/03) | Hand-off object | Sound | Energy 1–5 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 0.0 | 3.2 | | | abstract | | centre | | — | | | 5 |
+| # | Time | Length | Beat | Voice line | On-screen text | Shot size | What is shown (capture file) | Focal point | Move | Transition in (number from craft/03) | Hand-off object | Sound | Energy 1–5 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 0.0 | 3.2 | hook | | | abstract | | centre | | — | | | 5 |
 
 ## Checks on the list before any key frame is built
 
+- [ ] `node tools/plan/beats.mjs jobs/<job>` reports nothing to fix, or each finding has a reason written here (`knowledge/craft/16-structure-and-retention.md`).
 - [ ] Total length is at or under the cap.
 - [ ] Energy follows the rules in `craft/01-direction.md`: no three beats alike, a rest before the peak, one peak.
 - [ ] No two neighbouring shots share a shot size and layout.

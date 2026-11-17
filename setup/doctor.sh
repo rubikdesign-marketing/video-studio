@@ -79,6 +79,7 @@ else fail "earshot is not installed (Claude's ears: tools/audio/listen.mjs)" "ba
 for s in real-sfx hyperframes-to-after-effects; do [ -f ".claude/skills/$s/SKILL.md" ] && pass "skill $s (fetched, not kept in the repository)" || fail "skill $s is missing" "bash setup/update-skills.sh --missing"; done
 [ -f tools/media/openverse.mjs ] && pass "Openverse search (tools/media/openverse.mjs)" || fail "tools/media/openverse.mjs is missing" "pull the latest studio from GitHub"
 node tools/hooks/hooks.mjs check >/dev/null 2>&1 && pass "the hook library is sound (library/hooks/)" || fail "the hook library has a problem" "run: node tools/hooks/hooks.mjs check"
+node --test tools/plan/tests/*.test.mjs >/dev/null 2>&1 && pass "the planning tools' tests pass (beat sheet, retention reader)" || fail "the planning tools' tests fail" "run: node --test tools/plan/tests/*.test.mjs"
 node --test tools/hooks/tests/*.test.mjs >/dev/null 2>&1 && pass "the hook tools' tests pass" || fail "the hook tools' tests fail" "run: node --test tools/hooks/tests/*.test.mjs"
 node --test tools/media/tests/*.test.mjs >/dev/null 2>&1 && pass "the Openverse and listening tests pass" || fail "the Openverse or listening tests fail" "run: node --test tools/media/tests/*.test.mjs"
 

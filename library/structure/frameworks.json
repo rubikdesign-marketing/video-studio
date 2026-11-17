@@ -1,0 +1,980 @@
+{
+ "about": "Beat frameworks for planning a film (LIBRARY-PLAN.md phase 2). The studio's playbook shapes are the defaults for their film types; the others are alternatives. Use: node tools/plan/beats.mjs jobs/<job>. Credits: CREDITS.md.",
+ "sources": [
+  {
+   "id": "studio",
+   "name": "The studio's own playbooks (knowledge/playbooks/)",
+   "url": "https://github.com/rubikdesign-marketing/video-studio",
+   "licence": "own",
+   "commit": "",
+   "copyright": "Copyright 2026 the owners of this repository",
+   "notice": ""
+  },
+  {
+   "id": "shotkit",
+   "name": "Shotkit (storyboard-architect references)",
+   "url": "https://github.com/whystrohm/shotkit",
+   "licence": "Apache-2.0",
+   "commit": "e6d66a3ec1ce0fa269a9add512d51e4a6e09bbf7",
+   "copyright": "Copyright 2026 Yuri Strohm / WhyStrohm",
+   "notice": "Shotkit\nCopyright 2026 Yuri Strohm / WhyStrohm\n\nThis product includes software developed by WhyStrohm (https://whystrohm.com).\n\nThe Apache License 2.0 covers the code and documentation in this repository. It does not grant rights to the Shotkit name or the WhyStrohm name."
+  },
+  {
+   "id": "ig-agent",
+   "name": "instagram-agent-skill (ig-reel)",
+   "url": "https://github.com/Jakeschincariol/instagram-agent-skill",
+   "licence": "MIT",
+   "commit": "d03c56bb598be770c60b201f94237e5d1a4268a6",
+   "copyright": "Copyright (c) 2026 Jake Schincariol",
+   "notice": ""
+  },
+  {
+   "id": "tiktok-skills",
+   "name": "tiktok-video-skills (short-form-video)",
+   "url": "https://github.com/iart-ai/tiktok-video-skills",
+   "licence": "MIT",
+   "commit": "88e7152fc2710fa16852d013959cfd988a8adc8b",
+   "copyright": "Copyright (c) 2026 iart.ai",
+   "notice": ""
+  },
+  {
+   "id": "storytelling",
+   "name": "storytelling-skills (long-form-youtube, retention-audit)",
+   "url": "https://github.com/yaxeen/storytelling-skills",
+   "licence": "MIT",
+   "commit": "24ef3c1e3d7fde66cc5f1c5953cd6c1d7afc0b4f",
+   "copyright": "Copyright (c) 2026 Muhammad Yasin",
+   "notice": ""
+  },
+  {
+   "id": "yt-agent",
+   "name": "youtube-agent-skill (yt-retention, yt-script)",
+   "url": "https://github.com/Jakeschincariol/youtube-agent-skill",
+   "licence": "MIT",
+   "commit": "a2feb2104981a375ffd4f87ee04f4f5344ac43c6",
+   "copyright": "Copyright (c) 2026 Jake Schincariol",
+   "notice": ""
+  },
+  {
+   "id": "yt-skills",
+   "name": "youtube-skills (yt-hook-scripter)",
+   "url": "https://github.com/sergebulaev/youtube-skills",
+   "licence": "MIT",
+   "commit": "73cd16a05b589d755bf2eef3e4ee9db9e2df5494",
+   "copyright": "Copyright (c) 2026 Sergey Bulaev",
+   "notice": ""
+  }
+ ],
+ "frameworks": [
+  {
+   "id": "studio-promo",
+   "name": "Promo (the playbook)",
+   "what": "A promo or launch film: the offer or a tension, proof of the product doing the thing, the signature moment, the offer, the close",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "lengths": [
+     30,
+     45,
+     60
+    ]
+   },
+   "source": "studio",
+   "beats": [
+    {
+     "id": "hook",
+     "name": "Hook",
+     "job": "The offer, or a tension the viewer recognises, spoken and on screen",
+     "size": null,
+     "seconds": [
+      3,
+      5
+     ],
+     "required": true
+    },
+    {
+     "id": "turn",
+     "name": "Turn",
+     "job": "Why now, or what changes",
+     "size": [
+      0.05,
+      0.1
+     ],
+     "seconds": null,
+     "required": false
+    },
+    {
+     "id": "proof",
+     "name": "Proof",
+     "job": "Three moments of the product doing the thing, each an ask, a result and a hold",
+     "size": [
+      0.5,
+      0.6
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "peak",
+     "name": "Peak",
+     "job": "The signature moment",
+     "size": [
+      0.05,
+      0.08
+     ],
+     "seconds": null,
+     "required": false
+    },
+    {
+     "id": "offer",
+     "name": "Offer",
+     "job": "Price or promise, once, in the fixed wording",
+     "size": [
+      0.1,
+      0.15
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "close",
+     "name": "Close",
+     "job": "Call to action, a deadline if any, the logo",
+     "size": null,
+     "seconds": [
+      4,
+      6
+     ],
+     "required": true
+    }
+   ],
+   "notes": "From knowledge/playbooks/promo.md. Under about 25 s the hook and close take most of the film: use a short-form framework instead."
+  },
+  {
+   "id": "studio-demo",
+   "name": "Demo (the playbook)",
+   "what": "A product demo: the finished result first, the job, three steps of one continuous story, the payoff, the close",
+   "suits": {
+    "types": [
+     "demo"
+    ],
+    "lengths": [
+     45,
+     60,
+     90
+    ]
+   },
+   "source": "studio",
+   "beats": [
+    {
+     "id": "result",
+     "name": "Result first",
+     "job": "Show the finished outcome, then say here is how",
+     "size": null,
+     "seconds": [
+      3,
+      5
+     ],
+     "required": true
+    },
+    {
+     "id": "job",
+     "name": "The job",
+     "job": "Who needs this and what they are trying to get done, in one line",
+     "size": [
+      0.05,
+      0.1
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "steps",
+     "name": "Three steps",
+     "job": "Each step an ask, a result and a hold; one story, one set of data",
+     "size": [
+      0.6,
+      0.7
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "payoff",
+     "name": "Payoff",
+     "job": "Return to the finished outcome, now understood",
+     "size": [
+      0.08,
+      0.1
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "close",
+     "name": "Close",
+     "job": "What to do next, the logo",
+     "size": null,
+     "seconds": [
+      4,
+      6
+     ],
+     "required": true
+    }
+   ],
+   "notes": "From knowledge/playbooks/demo.md."
+  },
+  {
+   "id": "studio-tutorial",
+   "name": "Tutorial (the playbook)",
+   "what": "A tutorial: the promise shown finished, what you need, chapters of one sub-task each, the recap, what next",
+   "suits": {
+    "types": [
+     "tutorial"
+    ],
+    "lengths": [
+     60,
+     120,
+     180
+    ]
+   },
+   "source": "studio",
+   "beats": [
+    {
+     "id": "promise",
+     "name": "Promise",
+     "job": "What you will have made by the end, shown finished",
+     "size": null,
+     "seconds": [
+      5,
+      8
+     ],
+     "required": true
+    },
+    {
+     "id": "need",
+     "name": "What you need",
+     "job": "Only if something is needed first",
+     "size": null,
+     "seconds": [
+      3,
+      5
+     ],
+     "required": false
+    },
+    {
+     "id": "chapters",
+     "name": "Chapters",
+     "job": "One sub-task each, 20 to 45 s, each with a title card of two to four words",
+     "size": null,
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "recap",
+     "name": "Recap",
+     "job": "The finished thing again, and the steps named",
+     "size": null,
+     "seconds": [
+      5,
+      8
+     ],
+     "required": true
+    },
+    {
+     "id": "next",
+     "name": "Next",
+     "job": "Where to go from here, the logo",
+     "size": null,
+     "seconds": [
+      3,
+      5
+     ],
+     "required": true
+    }
+   ],
+   "notes": "From knowledge/playbooks/tutorial.md. Chapters take whatever the other beats leave."
+  },
+  {
+   "id": "studio-edit",
+   "name": "Edit of footage (minimal)",
+   "what": "An edit of raw footage: the hook taken from the footage, the story, a close. The edit playbook sets the approvals, not a shape, so this is only the frame around the story",
+   "suits": {
+    "types": [
+     "edit"
+    ],
+    "lengths": [
+     30,
+     60,
+     90
+    ]
+   },
+   "source": "studio",
+   "beats": [
+    {
+     "id": "hook",
+     "name": "Hook",
+     "job": "The angle: the strongest moment or line of the footage, first",
+     "size": null,
+     "seconds": [
+      3,
+      5
+     ],
+     "required": true
+    },
+    {
+     "id": "story",
+     "name": "Story",
+     "job": "The kept lines in order, covered with inserts and titles",
+     "size": null,
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "close",
+     "name": "Close",
+     "job": "What to do next, the logo",
+     "size": null,
+     "seconds": [
+      3,
+      6
+     ],
+     "required": true
+    }
+   ],
+   "notes": "The edit playbook gives no shape; the paper edit decides the story. A borrowed framework can be used when the footage allows it."
+  },
+  {
+   "id": "pain-reframe-promise",
+   "name": "Pain, reframe, promise",
+   "what": "Conversion films: ads, landing-page hero videos, conversion-focused social.",
+   "suits": {
+    "types": [
+     "ad",
+     "promo"
+    ],
+    "lengths": [
+     15,
+     30,
+     60
+    ]
+   },
+   "source": "shotkit",
+   "beats": [
+    {
+     "id": "pain",
+     "name": "Pain",
+     "job": "Name the audience's real problem in their own words; the hook is its first 2 s.",
+     "size": [
+      0.2,
+      0.334
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "reframe",
+     "name": "Reframe",
+     "job": "Flip the problem so the viewer sees it differently.",
+     "size": [
+      0.349,
+      0.583
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "promise",
+     "name": "Promise",
+     "job": "Show life on the other side, specific and time-bound; the CTA is its last seconds.",
+     "size": [
+      0.2,
+      0.334
+     ],
+     "seconds": null,
+     "required": true
+    }
+   ],
+   "notes": "Shares are the 30 s version; the CTA window comes from timing-rules (3-4 s at 15, 4-6 s at 30, 6-10 s at 60). Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "hero-trilogy",
+   "name": "World, hero, transformation",
+   "what": "Product launches, brand films and anchor pieces.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo"
+    ],
+    "lengths": [
+     15,
+     60,
+     90
+    ]
+   },
+   "source": "shotkit",
+   "beats": [
+    {
+     "id": "world",
+     "name": "World",
+     "job": "Set the context: who lives here and what is broken.",
+     "size": [
+      0.25,
+      0.416
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "hero",
+     "name": "Hero",
+     "job": "The product, founder or method arrives; show what it does.",
+     "size": [
+      0.251,
+      0.418
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "transformation",
+     "name": "Transformation",
+     "job": "The world changes; before and after at scale, carrying the CTA.",
+     "size": [
+      0.25,
+      0.416
+     ],
+     "seconds": null,
+     "required": true
+    }
+   ],
+   "notes": "No 30 s timing is given; shares are the equal thirds of the 60 and 90 s versions, and the 15 s version is front-loaded. Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "founder-explainer",
+   "name": "Founder explainer",
+   "what": "A person speaking to camera: founder content, thought leadership, personal brand.",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "edit"
+    ],
+    "lengths": [
+     15,
+     30,
+     60
+    ]
+   },
+   "source": "shotkit",
+   "beats": [
+    {
+     "id": "hook",
+     "name": "Hook",
+     "job": "One-line provocation.",
+     "size": [
+      0.05,
+      0.084
+     ],
+     "seconds": [
+      0,
+      2
+     ],
+     "required": true
+    },
+    {
+     "id": "stakes",
+     "name": "Stakes",
+     "job": "Why this matters.",
+     "size": [
+      0.15,
+      0.25
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "insight",
+     "name": "Insight",
+     "job": "The actual point.",
+     "size": [
+      0.3,
+      0.5
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "proof",
+     "name": "Proof",
+     "job": "One concrete example or data point.",
+     "size": [
+      0.1,
+      0.166
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "cta",
+     "name": "CTA",
+     "job": "What to do next, narrow and specific.",
+     "size": [
+      0.15,
+      0.25
+     ],
+     "seconds": null,
+     "required": true
+    }
+   ],
+   "notes": "The source times hook, stakes and insight only; proof and CTA spans are my fill using its CTA length rule, and at 15 s five beats compress to four. Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "content-spiral",
+   "name": "Content spiral",
+   "what": "Kinetic typography and opinion pieces that zoom inward then snap back.",
+   "suits": {
+    "types": [
+     "edit",
+     "promo"
+    ],
+    "lengths": [
+     15
+    ]
+   },
+   "source": "shotkit",
+   "beats": [
+    {
+     "id": "wide-claim",
+     "name": "Wide claim",
+     "job": "State the headline take.",
+     "size": [
+      0.25,
+      0.416
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "zoom-1",
+     "name": "Zoom one",
+     "job": "One layer of nuance.",
+     "size": [
+      0.2,
+      0.334
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "zoom-2",
+     "name": "Zoom two",
+     "job": "The layer underneath that.",
+     "size": [
+      0.125,
+      0.209
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "snap-back",
+     "name": "Snap-back",
+     "job": "Return to the wide claim, reframed by the zooms.",
+     "size": [
+      0.175,
+      0.291
+     ],
+     "seconds": null,
+     "required": true
+    }
+   ],
+   "notes": "Each zoom runs 1.5 to 2 times faster than the one before; only the 15 s timing is given, so scaling to other lengths is unverified. Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "educational-demo",
+   "name": "Educational demo",
+   "what": "How-to, tutorial and training films built around one technique.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo"
+    ],
+    "lengths": [
+     15
+    ]
+   },
+   "source": "shotkit",
+   "beats": [
+    {
+     "id": "problem-state",
+     "name": "Problem state",
+     "job": "Show what someone is stuck on.",
+     "size": [
+      0.15,
+      0.25
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "reveal",
+     "name": "Reveal",
+     "job": "Show the technique or trick.",
+     "size": [
+      0.15,
+      0.25
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "walk-through",
+     "name": "Walk-through",
+     "job": "Apply it step by step.",
+     "size": [
+      0.3,
+      0.5
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "result",
+     "name": "Result",
+     "job": "The after-state, side by side with before.",
+     "size": [
+      0.15,
+      0.25
+     ],
+     "seconds": null,
+     "required": true
+    }
+   ],
+   "notes": "One technique per 15 s; a second technique needs a longer cut. Only the 15 s timing is given. Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "energy-curve",
+   "name": "Energy curve (hook, build, apex, release, CTA)",
+   "what": "A pacing overlay for any short film, placing the energy peak two-thirds in.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad",
+     "demo",
+     "edit"
+    ],
+    "lengths": [
+     15,
+     30
+    ]
+   },
+   "source": "shotkit",
+   "beats": [
+    {
+     "id": "hook",
+     "name": "Hook",
+     "job": "First 2 s, high contrast with the shot that follows.",
+     "size": [
+      0.05,
+      0.084
+     ],
+     "seconds": [
+      0,
+      2
+     ],
+     "required": true
+    },
+    {
+     "id": "build",
+     "name": "Build",
+     "job": "Energy rises through the setup.",
+     "size": [
+      0.25,
+      0.416
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "apex",
+     "name": "Apex",
+     "job": "Peak intensity of the film.",
+     "size": [
+      0.2,
+      0.334
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "release",
+     "name": "Release",
+     "job": "Energy falls away.",
+     "size": [
+      0.15,
+      0.25
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "cta",
+     "name": "CTA",
+     "job": "A release, not a peak; hold still so the text can be read.",
+     "size": [
+      0.1,
+      0.166
+     ],
+     "seconds": [
+      0,
+      6
+     ],
+     "required": true
+    }
+   ],
+   "notes": "For 60 s the source only says apex near 0:40 and CTA from 0:50; its text says apex is two-thirds in, though the 30 s apex window ends there rather than centres on it. Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "short-form-retention-arc",
+   "name": "Short-form retention arc",
+   "what": "Vertical shorts (Reels, TikTok, Shorts) built around one idea and an open loop.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad",
+     "tutorial",
+     "edit"
+    ],
+    "lengths": [
+     20
+    ]
+   },
+   "source": "tiktok-skills",
+   "beats": [
+    {
+     "id": "hook",
+     "name": "Hook",
+     "job": "One frame plus one line that opens a loop.",
+     "size": [
+      0.038,
+      0.062
+     ],
+     "seconds": [
+      0,
+      1
+     ],
+     "required": true
+    },
+    {
+     "id": "setup",
+     "name": "Setup",
+     "job": "Say why to watch: promise, stakes or the gap.",
+     "size": [
+      0.113,
+      0.188
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "body",
+     "name": "Body",
+     "job": "Deliver value one idea per beat with a visual change every 2-4 s.",
+     "size": [
+      0.487,
+      0.812
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "payoff-loop",
+     "name": "Payoff and loop",
+     "job": "Close the loop, or feed the last frame back to frame one.",
+     "size": [
+      0.113,
+      0.188
+     ],
+     "seconds": null,
+     "required": true
+    }
+   ],
+   "notes": "Budget is for a 20 s short; the source says scale the body and keep the 1 s hook, so shares for 60 s would differ. Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "reel-shape",
+   "name": "Reel shape (hook, stake, body, payoff)",
+   "what": "15 to 45 s vertical Reels or similar shorts from one spoken script.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad",
+     "tutorial",
+     "edit"
+    ],
+    "lengths": [
+     15,
+     30,
+     45
+    ]
+   },
+   "source": "ig-agent",
+   "beats": [
+    {
+     "id": "hook",
+     "name": "Hook",
+     "job": "The claim, with motion in the first frame and its text up at frame one.",
+     "size": [
+      0.05,
+      0.084
+     ],
+     "seconds": [
+      0,
+      3
+     ],
+     "required": true
+    },
+    {
+     "id": "stake",
+     "name": "The stake",
+     "job": "Why this matters to the viewer, one line.",
+     "size": [
+      0.124,
+      0.208
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "body",
+     "name": "Body",
+     "job": "One idea per beat and a changing frame each beat.",
+     "size": [
+      0.5,
+      0.834
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "payoff",
+     "name": "Payoff, ask and loop",
+     "job": "Deliver the hook's promise, one ask, and echo a word from the hook.",
+     "size": [
+      0.075,
+      0.125
+     ],
+     "seconds": null,
+     "required": true
+    }
+   ],
+   "notes": "Source gives hook 0-2 s, stake 2-7 s and a payoff in the last 3 s; the script flags a hook past 3 s and any single beat past 4 s. beats.py itself is a script timer, not a template. Sizes are the source's timings, allowed 25% either way."
+  },
+  {
+   "id": "long-form-skeleton",
+   "name": "Long-form skeleton with sag re-hook",
+   "what": "Long YouTube films of about 10 to 12 minutes built as a chain of open loops.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "promo",
+     "demo"
+    ],
+    "lengths": [
+     600,
+     720
+    ]
+   },
+   "source": "storytelling",
+   "beats": [
+    {
+     "id": "hook",
+     "name": "Hook",
+     "job": "Stop the click-away and make a promise within the first 30 s.",
+     "size": [
+      0.034,
+      0.056
+     ],
+     "seconds": [
+      0,
+      30
+     ],
+     "required": true
+    },
+    {
+     "id": "setup",
+     "name": "Setup",
+     "job": "Frame the stakes and preview the payoff.",
+     "size": [
+      0.068,
+      0.114
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "body-first",
+     "name": "Body, first chapters",
+     "job": "Deliver value as a loop chain; open the next loop before closing one.",
+     "size": [
+      0.198,
+      0.33
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "sag-rehook",
+     "name": "Sag point re-hook",
+     "job": "Re-hook before the 40-60% drop with a twist, raised stakes or restated promise.",
+     "size": [
+      0.15,
+      0.25
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "body-second",
+     "name": "Body, later chapters",
+     "job": "Keep chaining loops; alternate dense information with story.",
+     "size": [
+      0.225,
+      0.375
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "payoff",
+     "name": "Payoff",
+     "job": "Resolve the opening loop explicitly and echo the hook.",
+     "size": [
+      0.058,
+      0.096
+     ],
+     "seconds": null,
+     "required": true
+    },
+    {
+     "id": "outro",
+     "name": "Outro and CTA",
+     "job": "One action only plus a next-video tease.",
+     "size": [
+      0.017,
+      0.029
+     ],
+     "seconds": [
+      0,
+      15
+     ],
+     "required": true
+    }
+   ],
+   "notes": "Source times assume 10-12 min; hook at most 30 s and outro at most 15 s at any length. The payoff start (0.9) is my assumption; source says only near the end. Sizes are the source's timings, allowed 25% either way."
+  }
+ ]
+}

@@ -12,7 +12,8 @@ Ends with the **Script and voice read** approval. A person listens to the voice 
 ## 1. Script
 
 - If a script was supplied, tighten it; do not rewrite its meaning. Otherwise write it.
-- Follow the playbook's shape. Give every line its beat and an energy number from 1 to 5.
+- Follow the playbook's shape. Give every line its beat and an energy number from 1 to 5, and store them on the line in `audio/script.json` (`"beat": "proof", "energy": 3`; the beat names are the framework's, `node tools/plan/beats.mjs frameworks`).
+- Run `node tools/plan/beats.mjs jobs/<job>` before handing over: it lays the script against the framework and names a late hook, beats too long or short or missing, lines too long to say, and breaks in the energy map (`knowledge/craft/16-structure-and-retention.md`). Fix each finding or say why it stays. Run it again once the voice is made: then it uses the voice's own timings.
 - Full sentences spoken to one person. Outcomes, not feature names. The hook or offer inside the first 3–5 seconds.
 - Fix the offer wording once and use it identically everywhere.
 - Estimate length at about 2.5 words a second and stay under the cap with room for holds.
@@ -33,4 +34,4 @@ Ends with the **Script and voice read** approval. A person listens to the voice 
 
 ## 3. Hand-over
 
-Give the script as a table (line, beat, energy, seconds), the joined voice file to listen to, the check results and earshot's numbers. State that nobody has listened yet. Stop for approval. After approval the voice is locked: scene lengths come from its timings.
+Give the script as a table (line, beat, energy, seconds) with the beat sheet's findings, the joined voice file to listen to, the check results and earshot's numbers. State that nobody has listened yet. Stop for approval. After approval the voice is locked: scene lengths come from its timings.

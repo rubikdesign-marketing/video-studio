@@ -19,7 +19,7 @@ Ends with the **Storyboard** approval. The storyboard is made of the film's own 
 
 ## 1. Shot list
 
-Fill `templates/shot-list.md` into `jobs/<job>/shot-list.md`, then write it as `jobs/<job>/shots.json` (format in `templates/shots.json`). Lengths come from the voice timings. Run every check at the bottom of the template before building anything.
+Fill `templates/shot-list.md` into `jobs/<job>/shot-list.md`, then write it as `jobs/<job>/shots.json` (format in `templates/shots.json`), with each scene's `beat`. Lengths come from the voice timings. Run every check at the bottom of the template before building anything, including `node tools/plan/beats.mjs jobs/<job>`, which now also checks each scene's beat and whether every shot's text has time to be read (`knowledge/craft/16-structure-and-retention.md` sections 4 and 5).
 
 ## 2. Film skeleton
 

@@ -20,6 +20,8 @@ Into `jobs/<job>/deliver/`:
 
 ## Record
 
+When the film has been published on YouTube for a day or two, export its audience retention (YouTube Studio: Analytics, the video, Engagement, the retention chart, the download icon) into the job folder and run `node tools/plan/retention.mjs <export.csv> --job jobs/<job>`. It names where viewers left and where they rewatched, with the beat and line playing at each, and writes `learn/retention.json`. Put what it found in the ledger record and the lessons (`knowledge/craft/16-structure-and-retention.md` section 7). It has not yet been checked on a real export: look at the export's two columns the first time.
+
 1. **Ledger.** Add a record to `brands/<brand>/ledger.json`: type, date, length, hook, `hook_formula` (the hook library's id for the opening that shipped, from `job.json`), look, signature move, stage, voice, references used, and the measured profile summary. When results come in they go in the same record: the ledger is the only place a hook formula earns "worked for this brand" (`knowledge/craft/15-hooks.md` section 9).
 2. **Library.** Add the new move, effect or background to `library/` with its code, a preview clip, and the video types it suits.
 3. **Product knowledge.** Write anything learned about the product to `brands/<brand>/product/` with the date and a screenshot.
