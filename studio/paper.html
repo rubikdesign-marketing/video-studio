@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper edit</title>
+<style>
+  @font-face { font-family: "Instrument Sans"; src: url("/font/InstrumentSans-var.woff2") format("woff2"); font-weight: 400 700; }
+  :root {
+    --page: #F5F3EF; --card: #FFFFFF; --ink: #101113; --body: #626670; --muted: #8A8F98; --line: #E4E2DE;
+    --blue: #2B5CE6; --blue-soft: #E7EFFD; --peach: #F7A878; --peach-soft: #FDEBDD; --night: #0B0C10;
+    --green: #1F8A4C; --green-soft: #DDF3E6; --r: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--page); color: var(--ink); font-family: "Instrument Sans", system-ui, sans-serif; font-size: 15px; line-height: 1.45; font-variant-numeric: tabular-nums; }
+  button, textarea, select, input { font: inherit; color: inherit; }
+  h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 10px; }
+  header { display: flex; align-items: center; gap: 14px; padding: 12px 24px; border-bottom: 1px solid var(--line); background: var(--page); position: sticky; top: 0; z-index: 5; flex-wrap: wrap; }
+  header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+  .pick { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  select, input[type=text] { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 8px 12px; max-width: 44vw; }
+  input[type=text] { width: 150px; }
+  .length { font-weight: 600; } .length small { color: var(--muted); font-weight: 400; }
+  .length.over { color: #A3501C; }
+  .saved { color: var(--muted); font-size: 13px; min-width: 7ch; }
+  main { display: grid; grid-template-columns: 440px minmax(0, 1fr); gap: 24px; padding: 24px; max-width: 1600px; margin: 0 auto; align-items: start; }
+  @media (max-width: 1080px) { main { grid-template-columns: minmax(0, 1fr); padding: 16px; } .side { position: static !important; } }
+  .side { position: sticky; top: 78px; display: grid; gap: 14px; }
+  .frame { background: var(--night); border-radius: var(--r); overflow: hidden; aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; }
+  @media (max-width: 1080px) { .frame { max-width: 520px; width: 100%; } }
+  video { width: 100%; height: 100%; display: block; background: var(--night); object-fit: contain; }
+  .bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .btn { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
+  .btn:hover { border-color: var(--ink); }
+  .btn.ink { background: var(--ink); color: #fff; border-color: var(--ink); font-weight: 600; }
+  .btn.ink:hover { background: var(--blue); border-color: var(--blue); }
+  .btn.small { padding: 3px 10px; font-size: 13px; }
+  .btn:focus-visible, textarea:focus, select:focus, input:focus, .w:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
+  .now-said { color: var(--body); min-height: 22px; }
+  .keys { color: var(--muted); font-size: 13px; margin: 0; }
+  .keys b { color: var(--body); font-weight: 600; border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 0 6px; }
+  .ideas { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .ideas li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+  .ideas small { color: var(--muted); display: block; }
+  textarea { width: 100%; min-height: 70px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: #fff; }
+  .sendbox { display: grid; gap: 8px; }
+  .sendbox .btn { width: 100%; padding: 12px; font-size: 15px; }
+  #toast { padding: 10px 12px; border-radius: 10px; background: var(--green-soft); color: #14532D; display: none; }
+  .blocks { display: grid; gap: 10px; }
+  .block { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; }
+  .block.out { background: #FAF9F6; }
+  .block.playing { border-color: var(--blue); }
+  .bhead { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .bhead .tools { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+  .tag { padding: 1px 8px; border-radius: 999px; background: var(--line); color: var(--body); font-size: 12.5px; }
+  .tag.take { background: var(--peach-soft); color: #A3501C; }
+  .tag.hook { background: var(--blue-soft); color: var(--blue); }
+  .text { font-size: 17px; line-height: 1.75; }
+  .w { cursor: pointer; border-radius: 4px; padding: 1px 1px; }
+  .w:hover { background: var(--blue-soft); }
+  .w.cut { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--peach); text-decoration-thickness: 2px; }
+  .w.filler:not(.cut) { background: var(--peach-soft); }
+  .w.maybe:not(.cut) { text-decoration: underline dotted var(--peach); text-underline-offset: 4px; }
+  .w.now { background: var(--blue); color: #fff; }
+  .chip { display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 0 9px; font-size: 12.5px; color: var(--body); cursor: pointer; vertical-align: 2px; margin: 0 3px; line-height: 22px; }
+  .chip.kept { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .flag { display: block; margin: 8px 0 2px; padding: 8px 10px; border-radius: 10px; background: var(--peach-soft); color: #7A3A12; font-size: 14px; }
+  .flag.ok { background: var(--green-soft); color: #14532D; }
+  .flag .btn { margin-left: 8px; }
+  .none { padding: 60px 24px; max-width: 640px; margin: 0 auto; color: var(--body); }
+  .none code { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Paper edit</h1>
+  <span class="length" id="length"></span>
+  <span class="saved" id="saved"></span>
+  <div class="pick">
+    <input type="text" id="who" placeholder="Your name" aria-label="Your name">
+    <select id="job" aria-label="Video"></select>
+  </div>
+</header>
+
+<div id="nothing" class="none" hidden>
+  <h2>No paper edits yet</h2>
+  <p>A video shows up here once its footage is ingested and the first paper edit is made: <code>node tools/footage/footage.mjs ingest jobs/&lt;job&gt;</code>, then <code>node tools/footage/footage.mjs paper jobs/&lt;job&gt;</code>. Then reload this page.</p>
+</div>
+
+<main id="app" hidden>
+  <aside class="side">
+    <div class="frame"><video id="v" playsinline preload="auto"></video></div>
+    <div class="now-said" id="nowSaid"></div>
+    <div class="bar">
+      <button class="btn ink" id="playEdit">Play the edit</button>
+      <button class="btn" id="stop">Stop</button>
+      <span class="time" id="time"></span>
+    </div>
+    <p class="keys"><b>Click</b> a word to cut it or bring it back &nbsp; <b>Shift</b>-click to hear it &nbsp; <b>Space</b> play or stop the edit</p>
+    <div class="card">
+      <h2>Ideas for the opening line</h2>
+      <ul class="ideas" id="hooks"></ul>
+    </div>
+    <div class="card" id="retakeCard" hidden>
+      <h2>Lines said more than once</h2>
+      <div id="retakes"></div>
+    </div>
+    <div class="card sendbox">
+      <h2>When it reads right</h2>
+      <textarea id="note" placeholder="Anything for the editor (optional): the feel, what must stay, what to try"></textarea>
+      <button class="btn ink" id="sendOk">Send: ready for the rough cut</button>
+      <button class="btn" id="sendNotes">Send with notes, not ready yet</button>
+      <div id="toast"></div>
+    </div>
+  </aside>
+  <section>
+    <div class="blocks" id="blocks"></div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const v = $('v');
+let job = ''; let data = null; let saveTimer = null; let playing = null;
+const clipOf = (name) => data.clips.find((c) => c.name === name);
+const keyOf = (clip, i) => `${clip}:${i}`;
+const clock = (s) => { const m = Math.floor(s / 60); return `${m}:${(s - m * 60).toFixed(1).padStart(4, '0')}`; };
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+try { $('who').value = localStorage.getItem('paper-who') || localStorage.getItem('who') || ''; } catch {}
+$('who').addEventListener('change', () => { try { localStorage.setItem('paper-who', $('who').value); } catch {} });
+
+async function loadJobs() {
+  const r = await fetch('/api/paper/jobs').then((x) => x.json());
+  if (!r.jobs.length) { $('nothing').hidden = false; return; }
+  const want = new URLSearchParams(location.search).get('job');
+  $('job').innerHTML = r.jobs.map((j) => `<option value="${esc(j.job)}">${esc(j.name)}${j.status === 'sent' ? ' (sent)' : ''}</option>`).join('');
+  if (want && r.jobs.some((j) => j.job === want)) $('job').value = want;
+  $('job').onchange = () => load($('job').value);
+  load($('job').value);
+}
+
+async function load(name) {
+  stop();
+  job = name; history.replaceState(null, '', `?job=${encodeURIComponent(job)}`);
+  data = await fetch(`/api/paper?job=${encodeURIComponent(job)}`).then((x) => x.json());
+  $('app').hidden = false;
+  $('note').value = data.paper.note || '';
+  renderSide(); render(); showLength();
+  $('saved').textContent = data.paper.status === 'sent' ? 'Sent' : '';
+  const first = data.check.runs[0] || { clip: data.clips[0]?.name, start: 0 };   // show the opening frame
+  if (first.clip) { await setClip(first.clip); v.currentTime = Math.max(0, first.start); }
+}
+
+/** Which takes the tool set aside, by "clip#sentence". */
+function takeLabels() {
+  const out = {};
+  for (const r of data.paper.proposals.retakes || []) {
+    r.takes.forEach((t, n) => { out[`${r.clip}#${t}`] = t === r.keep ? `Take ${n + 1} of ${r.takes.length}, the one proposed` : `Take ${n + 1} of ${r.takes.length}`; });
+  }
+  return out;
+}
+
+function renderSide() {
+  const hooks = data.paper.proposals.hooks || [];
+  $('hooks').innerHTML = hooks.length ? hooks.map((h, n) => `<li><div>"${esc(h.text)}"<small>${esc(h.reasons.join(', ') || 'no strong signal')}</small></div><button class="btn small" data-hook="${n}">Open with it</button></li>`).join('') : '<li>No sentences yet.</li>';
+  $('hooks').querySelectorAll('[data-hook]').forEach((b) => b.onclick = () => { const h = hooks[b.dataset.hook]; moveTo(h.clip, h.sentence, 0); });
+  const rt = data.paper.proposals.retakes || [];
+  $('retakeCard').hidden = !rt.length;
+  $('retakes').innerHTML = rt.map((r) => `<p>${esc(r.clip)}: said ${r.takes.length} times. The last complete take is kept and the others are cut; to swap, cut the kept one and click <b>Keep all</b> on another.</p>`).join('');
+}
+
+function render() {
+  const labels = takeLabels();
+  const pauses = new Map((data.paper.proposals.pauses || []).map((p) => [keyOf(p.clip, p.after), p]));
+  const keepPauses = new Set(data.paper.keep_pauses || []);
+  const flags = new Map((data.check.joins || []).filter((j) => j.flagged).map((j) => [j.after, j]));
+  const hookSet = new Set((data.paper.proposals.hooks || []).map((h) => `${h.clip}#${h.sentence}`));
+  $('blocks').innerHTML = data.paper.blocks.map((b, bi) => {
+    const c = clipOf(b.clip); const sent = c.sentences[b.sentence]; const kept = new Set(b.words);
+    const t0 = c.words[sent[0]].start;
+    const label = labels[`${b.clip}#${b.sentence}`];
+    let html = '';
+    sent.forEach((i) => {
+      const w = c.words[i]; const k = keyOf(b.clip, i);
+      const cls = ['w', kept.has(i) ? '' : 'cut', w.filler === 'yes' || w.repeat ? 'filler' : '', w.filler === 'maybe' ? 'maybe' : ''].filter(Boolean).join(' ');
+      html += `<span class="${cls}" tabindex="0" role="button" aria-pressed="${!kept.has(i)}" data-b="${bi}" data-i="${i}" title="${clock(w.start)}">${esc(w.text)}</span> `;
+      const p = pauses.get(k);
+      if (p) html += `<span class="chip${keepPauses.has(k) ? ' kept' : ''}" data-pause="${esc(k)}" title="Click to keep this pause as it was said">pause ${p.seconds} s ${keepPauses.has(k) ? 'kept' : `→ ${p.to} s`}</span> `;
+      const f = flags.get(k);
+      if (f) html += `<span class="flag${f.approved ? ' ok' : ''}">${f.approved ? 'Approved: ' : 'Check this join: '}${esc(f.reasons.join('; '))}<button class="btn small" data-join="${esc(f.key)}">${f.approved ? 'Undo' : 'It keeps the meaning'}</button></span>`;
+    });
+    const all = b.words.length === sent.length; const none = !b.words.length;
+    return `<div class="block${none ? ' out' : ''}" data-block="${bi}">
+      <div class="bhead"><span>${esc(b.clip)} · ${clock(t0)}</span>${label ? `<span class="tag take">${esc(label)}</span>` : ''}${hookSet.has(`${b.clip}#${b.sentence}`) ? '<span class="tag hook">opening idea</span>' : ''}
+        <span class="tools">
+          <button class="btn small" data-act="up" ${bi === 0 ? 'disabled' : ''} aria-label="Move up">Up</button>
+          <button class="btn small" data-act="down" ${bi === data.paper.blocks.length - 1 ? 'disabled' : ''} aria-label="Move down">Down</button>
+          <button class="btn small" data-act="first" ${bi === 0 ? 'disabled' : ''}>To the start</button>
+          <button class="btn small" data-act="${none ? 'all' : 'none'}">${none ? 'Keep all' : 'Cut sentence'}</button>
+          ${!all && !none ? '<button class="btn small" data-act="all">Keep all</button>' : ''}
+        </span></div>
+      <div class="text">${html}</div></div>`;
+  }).join('');
+}
+
+$('blocks').addEventListener('click', (e) => {
+  const w = e.target.closest('.w'); const act = e.target.closest('[data-act]'); const pause = e.target.closest('[data-pause]'); const join = e.target.closest('[data-join]');
+  if (join) { const k = join.dataset.join; const s = new Set(data.paper.approved_joins || []); s.has(k) ? s.delete(k) : s.add(k); data.paper.approved_joins = [...s]; changed(); return; }
+  if (pause) { const k = pause.dataset.pause; const s = new Set(data.paper.keep_pauses || []); s.has(k) ? s.delete(k) : s.add(k); data.paper.keep_pauses = [...s]; changed(); return; }
+  if (w) {
+    const b = data.paper.blocks[w.dataset.b]; const i = Number(w.dataset.i);
+    if (e.shiftKey) { hear(b.clip, i); return; }
+    const kept = new Set(b.words); kept.has(i) ? kept.delete(i) : kept.add(i);
+    b.words = clipOf(b.clip).sentences[b.sentence].filter((x) => kept.has(x)); changed(); return;
+  }
+  if (act) {
+    const bi = Number(act.closest('[data-block]').dataset.block); const blocks = data.paper.blocks; const b = blocks[bi];
+    const a = act.dataset.act;
+    if (a === 'up' && bi > 0) [blocks[bi - 1], blocks[bi]] = [blocks[bi], blocks[bi - 1]];
+    if (a === 'down' && bi < blocks.length - 1) [blocks[bi + 1], blocks[bi]] = [blocks[bi], blocks[bi + 1]];
+    if (a === 'first') blocks.unshift(blocks.splice(bi, 1)[0]);
+    if (a === 'none') b.words = [];
+    if (a === 'all') b.words = [...clipOf(b.clip).sentences[b.sentence]];
+    changed();
+  }
+});
+$('blocks').addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('w')) { e.preventDefault(); e.stopPropagation(); e.target.dispatchEvent(new MouseEvent('click', { bubbles: true, shiftKey: e.shiftKey })); } });
+
+function moveTo(clip, sentence, at) {
+  const blocks = data.paper.blocks; const i = blocks.findIndex((b) => b.clip === clip && b.sentence === sentence);
+  if (i < 0) return;
+  const [b] = blocks.splice(i, 1);
+  if (!b.words.length) b.words = [...clipOf(clip).sentences[sentence]].filter((x) => { const w = clipOf(clip).words[x]; return w.filler !== 'yes' && !w.repeat; });
+  blocks.splice(at, 0, b); changed();
+}
+
+function changed() {
+  render(); showLength(); $('saved').textContent = 'Saving';
+  clearTimeout(saveTimer); saveTimer = setTimeout(save, 350);
+}
+async function save(sendKind) {
+  const payload = { blocks: data.paper.blocks, keep_pauses: data.paper.keep_pauses || [], approved_joins: data.paper.approved_joins || [], note: $('note').value, reviewer: $('who').value };
+  if (sendKind) payload.approved = sendKind === 'ok';
+  const r = await fetch(`/api/paper/${sendKind ? 'send' : 'save'}?job=${encodeURIComponent(job)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).then((x) => x.json());
+  if (r.check) { data.check = r.check; data.paper.status = r.status; render(); showLength(); }
+  $('saved').textContent = r.status === 'sent' ? 'Sent' : r.ok ? 'Saved' : 'Not saved';
+  return r;
+}
+$('note').addEventListener('input', () => { clearTimeout(saveTimer); saveTimer = setTimeout(save, 600); });
+
+function showLength() {
+  const s = data.check.seconds; const t = data.paper.target_seconds;
+  const open = (data.check.joins || []).filter((j) => j.flagged && !j.approved).length;
+  $('length').className = `length${t && s > t ? ' over' : ''}`;
+  $('length').innerHTML = `About ${s.toFixed(1)} s${t ? ` <small>of ${t} s</small>` : ''}${open ? ` <small>· ${open} join${open > 1 ? 's' : ''} to check</small>` : ''}`;
+}
+
+async function send(kind) {
+  const open = (data.check.joins || []).filter((j) => j.flagged && !j.approved).length;
+  if (kind === 'ok' && open) { toast(`${open} join${open > 1 ? 's still need' : ' still needs'} a look: each one is marked in the text.`, true); return; }
+  clearTimeout(saveTimer);
+  const r = await save(kind);
+  toast(r.ok ? (kind === 'ok' ? 'Sent. The rough cut is made from this paper edit.' : 'Sent with your notes.') : 'Could not send. Is the studio server still running?', !r.ok);
+}
+$('sendOk').onclick = () => send('ok');
+$('sendNotes').onclick = () => send('notes');
+function toast(text, bad) { const t = $('toast'); t.textContent = text; t.style.display = 'block'; t.style.background = bad ? 'var(--peach-soft)' : 'var(--green-soft)'; t.style.color = bad ? '#7A3A12' : '#14532D'; }
+
+// ---------------------------------------------------------------- playing
+const mediaUrl = (clip) => `/clip-media/${encodeURIComponent(job)}/${encodeURIComponent(clip)}`;
+function setClip(clip) {
+  return new Promise((resolve) => {
+    if (v.dataset.clip === clip) return resolve();
+    v.dataset.clip = clip; v.src = mediaUrl(clip);
+    v.addEventListener('loadedmetadata', () => resolve(), { once: true });
+  });
+}
+async function hear(clip, i) {
+  stop();
+  const w = clipOf(clip).words[i];
+  await setClip(clip);
+  v.currentTime = Math.max(0, w.start - 0.15);
+  playing = { single: true, until: w.start + 2.5 };
+  v.play(); tick();
+}
+async function playEdit() {
+  stop();
+  const runs = data.check.runs;
+  if (!runs.length) return;
+  playing = { runs, k: -1 };
+  await nextRun();
+  tick();
+}
+async function nextRun() {
+  if (!playing) return;
+  playing.k++;
+  const r = playing.runs[playing.k];
+  if (!r) { stop(); return; }
+  await setClip(r.clip);
+  v.currentTime = Math.max(0, r.start);
+  await v.play().catch(() => {});
+}
+function tick() {
+  if (!playing) return;
+  const t = v.currentTime;
+  if (playing.single) { if (t >= playing.until || v.ended) stop(); }
+  else { const r = playing.runs[playing.k]; if (r && (t >= r.end || v.ended)) { nextRun(); } }
+  showNow(t);
+  requestAnimationFrame(tick);
+}
+function showNow(t) {
+  document.querySelectorAll('.w.now').forEach((x) => x.classList.remove('now'));
+  const clip = v.dataset.clip; if (!clip) return;
+  const words = clipOf(clip).words;
+  const i = words.findIndex((w) => t >= w.start && t < w.end);
+  $('time').textContent = `${clip} ${clock(t)}`;
+  if (i < 0) return;
+  const el = [...document.querySelectorAll(`.w[data-i="${i}"]`)].find((x) => data.paper.blocks[x.dataset.b].clip === clip);
+  if (el && (!el.classList.contains('cut') || playing?.single)) { el.classList.add('now'); $('nowSaid').textContent = words[i].text; }
+}
+function stop() { playing = null; v.pause(); document.querySelectorAll('.w.now').forEach((x) => x.classList.remove('now')); }
+$('playEdit').onclick = playEdit;
+$('stop').onclick = stop;
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ' && !['TEXTAREA', 'INPUT', 'SELECT', 'BUTTON'].includes(e.target.tagName) && !e.target.classList.contains('w')) { e.preventDefault(); playing ? stop() : playEdit(); }
+});
+
+loadJobs();
+</script>
+</body>
+</html>

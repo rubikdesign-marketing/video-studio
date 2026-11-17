@@ -6,6 +6,9 @@
 //
 //   node studio/wait-for-notes.mjs <job_dir> --done <batch number> '<json: [{"id": "b001-n1", "reply": "..."}]>'
 // marks a batch as done once the notes have been worked through, so the page shows the replies.
+//
+//   node studio/wait-for-notes.mjs <job_dir> --paper [--hours 8]
+// waits for the transcript page's Send (edit/paper.json marked sent), then prints what was decided and exits.
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -31,6 +34,26 @@ if (done) {
 }
 
 const hours = Number((flag('hours') || [8])[0]);
+if (flag('paper')) {
+  const file = path.join(jobDir, 'edit', 'paper.json');
+  const until = Date.now() + hours * 3600 * 1000;
+  const look = () => {
+    const paper = fs.existsSync(file) ? read(file) : null;
+    if (paper?.status === 'sent') {
+      paper.status = 'picked up'; paper.picked_at = new Date().toISOString();
+      fs.writeFileSync(file, JSON.stringify(paper, null, 2));
+      const kept = paper.blocks.filter((b) => b.words.length).length;
+      console.log(`Paper edit sent${paper.reviewer ? ` by ${paper.reviewer}` : ''}: ${paper.approved ? 'ready for the rough cut' : 'with notes, not ready yet'}.`);
+      console.log(`${kept} of ${paper.blocks.length} sentences kept; ${(paper.approved_joins || []).length} flagged join(s) approved; ${(paper.keep_pauses || []).length} pause(s) kept as said.`);
+      if (paper.note) console.log(`Note: ${paper.note}`);
+      console.log(paper.approved ? 'Next: node tools/footage/footage.mjs rough <job> --render' : 'Next: work through the note, then hand the paper edit back.');
+      process.exit(0);
+    }
+    if (Date.now() > until) { console.log('Nobody sent the paper edit in time.'); process.exit(3); }
+    setTimeout(look, 3000);
+  };
+  look();
+} else {
 const deadline = Date.now() + hours * 3600 * 1000;
 const check = () => {
   for (const file of batchFiles()) {
@@ -56,3 +79,4 @@ const check = () => {
   setTimeout(check, 2000);
 };
 check();
+}

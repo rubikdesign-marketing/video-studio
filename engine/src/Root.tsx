@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { Composition, Still } from 'remotion';
 import { calculateCapturePreview, CapturePreview, capturePreviewDefaults, capturePreviewSchema, FPS as CAPTURE_FPS } from './capture/CapturePreview';
 import { calculateGlueProbe, GlueProbe, glueProbeDefaults, glueProbeSchema } from './capture/GlueProbe';
+import { calculateFootageCut, FootageCut, footageCutDefaults, footageCutSchema } from './footage/FootageCut';
 import { JobCompositions, jobs } from './jobs';
 import { defaultBrand } from './kit/brand';
 import { BackgroundCompositions } from './library/backgrounds';
@@ -54,6 +55,18 @@ export const RemotionRoot: FC = () => (
       durationInFrames={CAPTURE_FPS}
       calculateMetadata={calculateGlueProbe}
       defaultProps={glueProbeDefaults}
+    />
+    {/* An edit of raw footage from tools/footage/footage.mjs rough: the newest one, or the job named. */}
+    <Composition
+      id="FootageCut"
+      component={FootageCut}
+      schema={footageCutSchema}
+      width={1920}
+      height={1080}
+      fps={30}
+      durationInFrames={90}
+      calculateMetadata={calculateFootageCut}
+      defaultProps={footageCutDefaults}
     />
     {/* Product screens rebuilt from real captures: one "TulvoUi-<id>" composition per screen (src/products). */}
     <ProductCompositions />

@@ -29,9 +29,28 @@ Running it again skips what is already done unless a clip changed; `--force` doe
 
 None of it is synced: `jobs/*/edit/` and `jobs/*/footage/` stay on the Mac.
 
+## Phase 2: paper edit and rough cut
+
+```bash
+node tools/footage/footage.mjs paper jobs/<job>
+```
+
+Writes `edit/paper.json`: every sentence in clip order, fillers and repeated words struck, the earlier takes of a line said more than once struck (the last complete take kept), and the tool's proposals (opening-line ideas with reasons, possible fillers, long pauses). Running it again keeps a person's choices and refreshes the proposals; `--fresh` starts again. `--energy` and `--target` override the job's energy preset and length.
+
+A person then decides on the transcript page: `node studio/server.mjs`, then http://localhost:4317/paper. Click a word to cut it or bring it back, shift-click to hear it, move sentences, keep a pause as it was said, say yes to a flagged join, and play the edit as it stands. Send marks the paper edit as sent; `node studio/wait-for-notes.mjs jobs/<job> --paper` waits for that.
+
+```bash
+node tools/footage/footage.mjs cut jobs/<job>
+node tools/footage/footage.mjs rough jobs/<job> --render
+```
+
+`cut` writes `edit/cutlist.json`. Each cut lands on the quiet dip between words, with room before and after; a long pause becomes a breath (by energy preset); the clip's own room tone fills a breath only where the footage is short of quiet. Every join is checked for meaning: a join inside a sentence that is not just a filler or a shortened pause is flagged, with any "not", number or name it loses, and needs a person's yes (on the page, or `footage.mjs approve jobs/<job> <key>`).
+
+`rough` joins the dialogue sample by sample with 15 ms crossfades (`edit/rough/dialogue.wav`), checks it for clicks, listens back (transcribes it and compares it word for word with the paper edit), makes captions, and hands the engine's `FootageCut` the pictures. `--render` renders `jobs/<job>/out/rough-cut.mp4` (outside Claude's command sandbox). It will not run while a flagged join is unanswered.
+
 ## How it was checked
 
-`tests/make_clips.mjs` makes four synthetic clips with known contents (fillers and a retake; a sideways HDR phone clip with an uneven frame rate and one-sided sound; a dark, soft, grainy, flickering clip with noise, 50 Hz hum, music, clipping and clicks; two shots with a cut and shake). `tests/check_truth.mjs` checks an ingested job against them: 31 checks. `node --test tools/footage/tests/*.test.mjs` runs the fast tests. The thresholds for the findings were set on these synthetic clips and are checked again on the first real footage.
+`tests/make_clips.mjs` makes four synthetic clips with known contents (fillers and a retake; a sideways HDR phone clip with an uneven frame rate and one-sided sound; a dark, soft, grainy, flickering clip with noise, 50 Hz hum, music, clipping and clicks; two shots with a cut and shake). `tests/check_truth.mjs` checks an ingested job against them: 31 checks. `node --test tools/footage/tests/*.test.mjs` runs the fast tests (18). `tests/check_rough.mjs <job> --render` checks phase 2 on a job holding the synthetic talking clip: the retake and fillers gone, every kept word heard and nothing struck, no clicks, and the rendered picture within one frame of its sound (9 checks). The thresholds for the findings were set on these synthetic clips and are checked again on the first real footage.
 
 ## Notes
 

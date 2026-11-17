@@ -2,16 +2,21 @@
 // The studio's local review server. No packages; Node 22+.
 //   node studio/server.mjs [port=4317]
 // It serves the review page, the rendered films from jobs/<job>/out, and saves notes into the job folder.
+// /paper is the transcript page for an edit of raw footage (FOOTAGE-PLAN.md section 4.1): it reads and writes
+// jobs/<job>/edit/paper.json and plays each clip's working copy.
 // It listens on this computer only (127.0.0.1) and never sends anything anywhere.
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { planCut } from '../tools/footage/lib/cut.mjs';
+import { guard, joinKey, key, runsOf, sentences } from '../tools/footage/lib/paper.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const JOBS = path.join(STUDIO, 'jobs');
 const FILMS = path.join(STUDIO, 'engine', 'src', 'jobs');
 const PAGE = path.join(STUDIO, 'studio', 'review.html');
+const PAPER_PAGE = path.join(STUDIO, 'studio', 'paper.html');
 const PORT = Number(process.argv[2] || process.env.PORT || 4317);
 
 const readJson = (p, fallback = null) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; } };
@@ -52,13 +57,13 @@ function listJobs() {
   }).filter((j) => j.videos.length);
 }
 
-function serveVideo(req, res, file) {         // with byte ranges, so the player can jump around
+function serveVideo(req, res, file, type = 'video/mp4') {         // with byte ranges, so the player can jump around
   const stat = fs.statSync(file); const range = req.headers.range;
-  if (!range) { res.writeHead(200, { 'Content-Type': 'video/mp4', 'Content-Length': stat.size, 'Accept-Ranges': 'bytes' }); return fs.createReadStream(file).pipe(res); }
+  if (!range) { res.writeHead(200, { 'Content-Type': type, 'Content-Length': stat.size, 'Accept-Ranges': 'bytes' }); return fs.createReadStream(file).pipe(res); }
   const m = /bytes=(\d*)-(\d*)/.exec(range); let start = m[1] ? Number(m[1]) : 0; let end = m[2] ? Number(m[2]) : stat.size - 1;
   if (start >= stat.size) { res.writeHead(416, { 'Content-Range': `bytes */${stat.size}` }); return res.end(); }
   end = Math.min(end, stat.size - 1);
-  res.writeHead(206, { 'Content-Type': 'video/mp4', 'Content-Range': `bytes ${start}-${end}/${stat.size}`, 'Accept-Ranges': 'bytes', 'Content-Length': end - start + 1 });
+  res.writeHead(206, { 'Content-Type': type, 'Content-Range': `bytes ${start}-${end}/${stat.size}`, 'Accept-Ranges': 'bytes', 'Content-Length': end - start + 1 });
   fs.createReadStream(file, { start, end }).pipe(res);
 }
 function body(req) {
@@ -98,11 +103,76 @@ function sendBatch(job, payload) {
   return batch;
 }
 
+// ---------------------------------------------------------------- the transcript page (paper edit)
+const editDir = (job) => path.join(JOBS, job, 'edit');
+function paperJobs() {
+  if (!fs.existsSync(JOBS)) return [];
+  return fs.readdirSync(JOBS).filter((j) => safeName(j) && fs.existsSync(path.join(editDir(j), 'paper.json')))
+    .map((j) => { const p = readJson(path.join(editDir(j), 'paper.json'), {}); return { job: j, name: readJson(path.join(JOBS, j, 'job.json'), {}).name || j, status: p.status || 'draft' }; });
+}
+const wordsOf = (job) => { const cache = {}; return (clip) => (cache[clip] ??= readJson(path.join(editDir(job), 'clips', clip, 'words.json'), { words: [] }).words); };
+/** The edit's runs, length and joins as the cut list will see them (before cut points are placed). */
+function paperCheck(job, paper) {
+  const w = wordsOf(job);
+  const runs = runsOf(paper, w);
+  const approved = new Set(paper.approved_joins || []);
+  const joins = runs.slice(1).map((r, k) => {
+    const g = guard(runs[k], r, w);
+    const jk = joinKey(key(runs[k].clip, runs[k].words.at(-1)), key(r.clip, r.words[0]));
+    return { key: jk, after: key(runs[k].clip, runs[k].words.at(-1)), kind: g.kind, flagged: g.flagged, reasons: g.reasons, approved: !g.flagged || approved.has(jk) };
+  });
+  let seconds = runs.reduce((t, r) => t + (r.end - r.start), 0) + Math.max(0, runs.length - 1) * 0.4 + 0.65;
+  // The exact cut points, placed on the sound as the cut list will place them, so "Play the edit" plays what the
+  // rough cut will hold. Without them (no runs, or the footage tool's Python missing) the page plays word times.
+  let play = runs.map((r) => ({ clip: r.clip, start: r.start - 0.08, end: r.end + 0.1 }));
+  try {
+    if (runs.length) {
+      const cut = planCut(path.join(JOBS, job), paper);
+      play = cut.pieces.filter((x) => x.kind === 'speech').map((x) => ({ clip: x.clip, start: x.in, end: x.out }));
+      seconds = cut.duration;
+    }
+  } catch { /* keep the estimate */ }
+  return { runs: play, joins, seconds: Math.round(seconds * 10) / 10 };
+}
+function paperData(job) {
+  const paper = readJson(path.join(editDir(job), 'paper.json'));
+  if (!paper) return null;
+  const clipsDir = path.join(editDir(job), 'clips');
+  const names = [...new Set(paper.blocks.map((b) => b.clip))];
+  const clips = names.map((name) => {
+    const words = wordsOf(job)(name); const info = readJson(path.join(clipsDir, name, 'clip.json'), {});
+    return { name, words, sentences: sentences(words), duration: info.source?.measured?.duration ?? null, video: !!info.source?.measured?.video };
+  });
+  return { paper, clips, check: paperCheck(job, paper), job: readJson(path.join(JOBS, job, 'job.json'), {}) };
+}
+/** Saves what a person changed. Only these fields come from the page; the proposals stay as the tool wrote them. */
+function paperSave(job, d, send) {
+  const file = path.join(editDir(job), 'paper.json');
+  const paper = readJson(file);
+  const known = new Set(paper.blocks.map((b) => `${b.clip}#${b.sentence}`));
+  const words = wordsOf(job);
+  if (Array.isArray(d.blocks)) {
+    const blocks = d.blocks.filter((b) => b && known.has(`${b.clip}#${b.sentence}`)).map((b) => ({ clip: b.clip, sentence: b.sentence, words: (b.words || []).filter((i) => Number.isInteger(i) && i >= 0 && i < words(b.clip).length) }));
+    if (blocks.length === paper.blocks.length) paper.blocks = blocks;
+  }
+  if (Array.isArray(d.keep_pauses)) paper.keep_pauses = d.keep_pauses.filter((x) => typeof x === 'string').slice(0, 2000);
+  if (Array.isArray(d.approved_joins)) paper.approved_joins = d.approved_joins.filter((x) => typeof x === 'string').slice(0, 2000);
+  if (typeof d.note === 'string') paper.note = d.note.slice(0, 4000);
+  if (typeof d.reviewer === 'string') paper.reviewer = d.reviewer.slice(0, 60);
+  if (send) { paper.status = 'sent'; paper.approved = !!d.approved; paper.sent_at = new Date().toISOString(); }
+  else if (paper.status !== 'sent') paper.status = 'draft';
+  paper.saved_at = new Date().toISOString();
+  writeJson(file, paper);
+  return { ok: true, check: paperCheck(job, paper), status: paper.status };
+}
+
 http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://localhost'); const p = url.pathname;
     if (p === '/' || p === '/index.html') return send(res, 200, fs.readFileSync(PAGE), 'text/html; charset=utf-8');
     if (p === '/api/jobs') return send(res, 200, { jobs: listJobs() });
+    if (p === '/paper' || p === '/paper.html') return send(res, 200, fs.readFileSync(PAPER_PAGE), 'text/html; charset=utf-8');
+    if (p === '/api/paper/jobs') return send(res, 200, { jobs: paperJobs() });
     if (p.startsWith('/font/')) {
       const f = path.join(STUDIO, 'studio', 'fonts', path.basename(p)); // the review page's own UI font, not any brand's
       return fs.existsSync(f) ? send(res, 200, fs.readFileSync(f), 'font/woff2') : send(res, 404, { error: 'no font' });
@@ -120,6 +190,22 @@ http.createServer(async (req, res) => {
     if (p === '/api/send' && req.method === 'POST') {
       const batch = sendBatch(job, await body(req));
       return batch ? send(res, 200, { ok: true, batch }) : send(res, 400, { error: 'nothing to send' });
+    }
+    if (p === '/api/paper' && req.method === 'GET') {
+      const data = paperData(job);
+      return data ? send(res, 200, data) : send(res, 404, { error: 'no paper edit for this job yet' });
+    }
+    if ((p === '/api/paper/save' || p === '/api/paper/send') && req.method === 'POST') {
+      if (!fs.existsSync(path.join(editDir(job), 'paper.json'))) return send(res, 404, { error: 'no paper edit for this job yet' });
+      return send(res, 200, paperSave(job, await body(req), p.endsWith('/send')));
+    }
+    if (p.startsWith('/clip-media/')) {                   // a clip's working copy, or its sound when it has no picture
+      const [, , j, c] = p.split('/').map(decodeURIComponent);
+      if (!safeName(j || '') || !safeName(c || '')) return send(res, 404, { error: 'no such clip' });
+      const dir = path.join(editDir(j), 'clips', c);
+      const file = fs.existsSync(path.join(dir, 'edit.mp4')) ? path.join(dir, 'edit.mp4') : path.join(dir, 'sound.wav');
+      if (!fs.existsSync(file)) return send(res, 404, { error: 'no such clip' });
+      return serveVideo(req, res, file, file.endsWith('.wav') ? 'audio/wav' : 'video/mp4');
     }
     if (p.startsWith('/media/')) {
       const [, , j, f] = p.split('/').map(decodeURIComponent);

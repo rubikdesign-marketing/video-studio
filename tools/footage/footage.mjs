@@ -1,9 +1,15 @@
 #!/usr/bin/env node
-// The footage tool (FOOTAGE-PLAN.md). Phase 1: ingest and log.
+// The footage tool (FOOTAGE-PLAN.md). Phase 1: ingest and log. Phase 2: paper edit and rough cut.
 //
 //   node tools/footage/footage.mjs ingest jobs/<job> [--clip <name>] [--force] [--engine whisper|parakeet] [--language en]
 //   node tools/footage/footage.mjs log jobs/<job>
 //   node tools/footage/footage.mjs compare jobs/<job> --clip <name>      the two transcribers side by side
+//   node tools/footage/footage.mjs paper jobs/<job> [--fresh] [--energy calm|confident|hype] [--target <seconds>]
+//        the first paper edit (edit/paper.json) with the tool's proposals; the transcript page edits it after that
+//   node tools/footage/footage.mjs cut jobs/<job>                      the cut list (edit/cutlist.json), joins checked
+//   node tools/footage/footage.mjs approve jobs/<job> <join key>       a person's yes to a flagged join
+//   node tools/footage/footage.mjs rough jobs/<job> [--render]         the rough cut's sound, captions and engine files;
+//        --render renders it to jobs/<job>/out/rough-cut.mp4 (outside Claude's command sandbox: the render browser)
 //
 // ingest takes every video and sound file in jobs/<job>/footage/ and, for each clip, writes jobs/<job>/edit/clips/<clip>/:
 //   clip.json     measurements, what the working copy changed, the source's fingerprint, when each step ran
@@ -20,9 +26,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { AUDIO_ONLY, MEDIA, PYTHON, fingerprint, py, readJson, slug, writeJson } from './lib/common.mjs';
+import { buildCutlist } from './lib/cut.mjs';
 import { render } from './lib/log.mjs';
+import { firstPaper, propose, runsOf, sentences } from './lib/paper.mjs';
 import { measure } from './lib/probe.mjs';
 import { transcribe } from './lib/transcribe.mjs';
+import { listenBack, prepareRough, renderRough } from './lib/rough.mjs';
 import { makeWorkingCopy } from './lib/workcopy.mjs';
 
 const LONG = 20 * 60; // longer clips: picture quality waits for the paper edit (kept stretches only)
@@ -32,7 +41,7 @@ function args(argv) {
   const o = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--force') o.force = true;
+    if (['--force', '--fresh', '--render', '--allow-flagged'].includes(a)) o[a.slice(2)] = true;
     else if (a.startsWith('--')) o[a.slice(2)] = argv[++i];
     else o._.push(a);
   }
@@ -118,17 +127,91 @@ function compare(job, name) {
   say(`${Math.round((same / Math.max(1, ta.length)) * 100)}% of whisper's words also in parakeet's. Both saved beside words.json for a person to compare.`);
 }
 
+/** The ingested clips that have a transcript, in name order. */
+function spokenClips(job) {
+  const root = path.join(job, 'edit', 'clips');
+  if (!fs.existsSync(root)) return [];
+  return fs.readdirSync(root).sort().map((name) => ({ name, words: readJson(path.join(root, name, 'words.json'), null)?.words })).filter((c) => c.words?.length);
+}
+
+/** Seconds a paper edit will run, before cut points are placed: the kept words plus a breath at each join. */
+function roughLength(paper, job) {
+  const cache = {};
+  const wordsOf = (clip) => (cache[clip] ??= readJson(path.join(job, 'edit', 'clips', clip, 'words.json')).words);
+  const runs = runsOf(paper, wordsOf);
+  return runs.reduce((t, r) => t + (r.end - r.start), 0) + Math.max(0, runs.length - 1) * 0.4 + 0.65;
+}
+
+function paperCmd(job, o) {
+  const file = path.join(job, 'edit', 'paper.json');
+  const clips = spokenClips(job);
+  if (!clips.length) throw new Error('No transcribed clips yet. Run: footage.mjs ingest <job>');
+  const jobJson = readJson(path.join(job, 'job.json'), {});
+  const energy = o.energy || jobJson.energy_preset || 'confident';
+  let paper = readJson(file, null);
+  if (!paper || o.fresh) paper = firstPaper(path.basename(job), clips, { energy, target: o.target ? Number(o.target) : jobJson.length_cap_seconds });
+  else { paper.proposals = propose(clips, { energy: paper.energy }); say('Kept the paper edit as it is; refreshed the proposals only (--fresh starts again).'); }
+  writeJson(file, paper);
+  const kept = paper.blocks.filter((b) => b.words.length).length;
+  say(`Paper edit: ${kept} of ${paper.blocks.length} sentences kept, about ${roughLength(paper, job).toFixed(1)} s${paper.target_seconds ? ` (target ${paper.target_seconds} s)` : ''}.`);
+  const p = paper.proposals;
+  say(`Hook ideas: ${p.hooks.map((h) => `"${h.text}" (${h.reasons.join(', ') || 'no strong signal'})`).join('; ')}`);
+  for (const r of p.retakes) say(`Retake in ${r.clip}: ${r.reason}. Kept: "${r.texts[r.takes.indexOf(r.keep)]}"`);
+  say(`Fillers struck: ${p.fillers.filter((f) => f.sure).length}; possible fillers left for a person: ${p.fillers.filter((f) => !f.sure).length}; long pauses to shorten: ${p.pauses.length}.`);
+  say(`Written: ${file}. Open the transcript page to decide: node studio/server.mjs, then http://localhost:4317/paper`);
+}
+
+function cutCmd(job) {
+  const cut = buildCutlist(job);
+  const speech = cut.pieces.filter((p) => p.kind === 'speech').length;
+  say(`Cut list: ${speech} piece${speech === 1 ? '' : 's'} of footage, ${cut.pieces.length - speech} of room tone, ${cut.duration.toFixed(2)} s.`);
+  const kinds = cut.joins.reduce((m, j) => ({ ...m, [j.kind]: (m[j.kind] || 0) + 1 }), {});
+  say(`Joins: ${Object.entries(kinds).map(([k, n]) => `${n} ${k}`).join(', ') || 'none'}.`);
+  for (const j of cut.joins.filter((x) => x.flagged)) say(`${j.approved ? 'approved' : 'NEEDS A YES'}  ${j.key}: "…${j.before}" + "${j.next}…" (${j.reasons.join('; ')})`);
+  if (cut.unanswered) say(`${cut.unanswered} join${cut.unanswered > 1 ? 's' : ''} need a person's yes (transcript page, or: footage.mjs approve <job> <key>) before the rough cut.`);
+  return cut;
+}
+
+function approveCmd(job, k) {
+  const file = path.join(job, 'edit', 'paper.json');
+  const paper = readJson(file, null);
+  if (!paper || !k) throw new Error('Usage: footage.mjs approve jobs/<job> <join key>');
+  paper.approved_joins = [...new Set([...(paper.approved_joins || []), k])];
+  writeJson(file, paper);
+  say(`Approved ${k}.`);
+}
+
+function roughCmd(job, o) {
+  const cut = cutCmd(job);
+  if (cut.unanswered && !o['allow-flagged']) { say('Not made: answer the flagged joins first.'); process.exit(1); }
+  const r = prepareRough(job, cut);
+  say(`Rough cut ready for the engine: FootageCut "${r.slug}", ${r.seconds.toFixed(2)} s at ${r.fps} fps, ${r.width}×${r.height}.`);
+  const check = JSON.parse(py('sound', [path.join(job, 'edit', 'rough', 'dialogue.wav'), path.join(job, 'edit', 'rough', 'quality.json')]).trim().split('\n').pop());
+  const clicks = check.summary.clicks || [];
+  say(clicks.length ? `Clicks in the joined sound: ${clicks.join(', ')} s` : 'No clicks in the joined sound.');
+  const lb = listenBack(job, cut);
+  say(`Listened back: ${lb.matched} of ${lb.expected} kept words heard${lb.missing.length ? `; missing: ${lb.missing.join(' ')}` : ''}${lb.extra.length ? `; extra (a struck word that leaked in, or a mishearing): ${lb.extra.join(' ')}` : ''}.`);
+  if (o.render) {
+    const out = renderRough(job, r.slug, path.join(job, 'out', 'rough-cut.mp4'));
+    say(`Rendered: ${out}`);
+  } else say(`Render it with --render, or open it in Remotion Studio (FootageCut, cut "${r.slug}").`);
+}
+
 function main() {
   const o = args(process.argv.slice(2));
   const [cmd, jobArg] = o._;
-  if (!cmd || !jobArg || !['ingest', 'log', 'compare'].includes(cmd)) {
-    say('Usage: node tools/footage/footage.mjs ingest|log|compare jobs/<job> [--clip <name>] [--force] [--engine whisper|parakeet]');
+  if (!cmd || !jobArg || !['ingest', 'log', 'compare', 'paper', 'cut', 'approve', 'rough'].includes(cmd)) {
+    say('Usage: node tools/footage/footage.mjs ingest|log|compare|paper|cut|approve|rough jobs/<job> (see the top of this file)');
     process.exit(2);
   }
   const job = path.resolve(jobArg);
   if (!fs.existsSync(job)) { say(`No job folder at ${jobArg}.`); process.exit(2); }
   if (cmd !== 'log' && !fs.existsSync(PYTHON)) { say("The footage tool's Python environment is missing. Run: bash setup/install.sh"); process.exit(2); }
   if (cmd === 'compare') { compare(job, o.clip); return; }
+  if (cmd === 'paper') { paperCmd(job, o); return; }
+  if (cmd === 'cut') { cutCmd(job); return; }
+  if (cmd === 'approve') { approveCmd(job, o._[2]); return; }
+  if (cmd === 'rough') { roughCmd(job, o); return; }
   if (cmd === 'ingest') {
     let list = clipsOf(job);
     if (o.clip) list = list.filter((c) => c.name === o.clip || path.basename(c.file) === o.clip);
