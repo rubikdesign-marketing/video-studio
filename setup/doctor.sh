@@ -58,6 +58,15 @@ node --test tools/footage/tests/*.test.mjs >/dev/null 2>&1 && pass "the footage 
 [ -d "$HOME/.cache/hyperframes/parakeet" ] && pass "Parakeet (a second transcriber, for comparing)" \
   || note "Parakeet is not installed" "only needed to compare transcribers (footage.mjs compare): cd engine && npx hyperframes models install parakeet"
 
+echo "Hearing (earshot)"
+EARSHOT_BIN="$(command -v earshot || echo "$HOME/.local/bin/earshot")"
+if [ -x "$EARSHOT_BIN" ]; then pass "earshot (Claude's ears; installed with uv, pinned to 0.4.1)"
+else fail "earshot is not installed (Claude's ears: tools/audio/listen.mjs)" "bash setup/install.sh   (needs uv: brew install uv)"; fi
+[ -n "$(ls -A tools/audio/.earshot/hf 2>/dev/null)" ] && pass "earshot's listening models (tools/audio/.earshot)" || fail "earshot's listening models are missing" "bash setup/install.sh fetches them (about 1.1 GB)"
+for s in real-sfx hyperframes-to-after-effects; do [ -f ".claude/skills/$s/SKILL.md" ] && pass "skill $s (fetched, not kept in the repository)" || fail "skill $s is missing" "bash setup/update-skills.sh --missing"; done
+[ -f tools/media/openverse.mjs ] && pass "Openverse search (tools/media/openverse.mjs)" || fail "tools/media/openverse.mjs is missing" "pull the latest studio from GitHub"
+node --test tools/media/tests/*.test.mjs >/dev/null 2>&1 && pass "the Openverse and listening tests pass" || fail "the Openverse or listening tests fail" "run: node --test tools/media/tests/*.test.mjs"
+
 echo "Product capture"
 if [ -d tools/capture/node_modules/playwright-core ]; then
   pass "capture tool installed (playwright-core $(node -p "require('./tools/capture/node_modules/playwright-core/package.json').version" 2>/dev/null))"
@@ -117,7 +126,7 @@ else fail ".env does not exist" "bash setup/install.sh creates it; then paste th
 git check-ignore -q .env 2>/dev/null && pass ".env is kept out of GitHub" || note ".env is not ignored by git yet" "this folder is not a git repository, or .gitignore is missing"
 
 echo "Tools"
-for t in tools/study/profile.py tools/study/sheets.sh tools/audio/voice_check.py tools/checks/smoothness.py tools/checks/frame_quality.py tools/checks/onscreen_text.py tools/checks/capture_motion.mjs tools/checks/capture_glue.mjs tools/checks/capture_transitions.mjs tools/checks/capture_relayout.mjs tools/checks/text_size.mjs tools/checks/captions_clear.mjs tools/checks/flashes.py tools/checks/energy_map.py tools/checks/lib/film.mjs tools/checks/lib/capture_place.mjs tools/film/sources.mjs tools/capture/freshness.mjs tools/audio/voice.mjs tools/audio/sound.mjs tools/audio/mix.py tools/audio/master.sh tools/audio/capture_sounds.mjs tools/film/captions.mjs tools/film/scaffold.mjs tools/film/render.sh tools/film/storyboard.mjs tools/film/seen_scroll.mjs tools/brand/lib.mjs tools/brand/sync.mjs tools/brand/check.mjs tools/brand/new.mjs tools/capture/capture.mjs tools/capture/yourchrome.mjs tools/capture/kinds.mjs tools/capture/answers.mjs tools/capture/parts.mjs tools/capture/email.mjs tools/capture/site.mjs tools/capture/terminal.mjs tools/capture/phone.mjs tools/capture/package.json studio/server.mjs studio/review.html studio/paper.html studio/wait-for-notes.mjs; do
+for t in tools/study/profile.py tools/study/sheets.sh tools/audio/voice_check.py tools/checks/smoothness.py tools/checks/frame_quality.py tools/checks/onscreen_text.py tools/checks/capture_motion.mjs tools/checks/capture_glue.mjs tools/checks/capture_transitions.mjs tools/checks/capture_relayout.mjs tools/checks/text_size.mjs tools/checks/captions_clear.mjs tools/checks/flashes.py tools/checks/energy_map.py tools/checks/lib/film.mjs tools/checks/lib/capture_place.mjs tools/film/sources.mjs tools/capture/freshness.mjs tools/audio/voice.mjs tools/audio/sound.mjs tools/audio/mix.py tools/audio/master.sh tools/audio/capture_sounds.mjs tools/audio/listen.mjs tools/audio/earshot.sh tools/media/openverse.mjs tools/film/captions.mjs tools/film/scaffold.mjs tools/film/render.sh tools/film/storyboard.mjs tools/film/seen_scroll.mjs tools/brand/lib.mjs tools/brand/sync.mjs tools/brand/check.mjs tools/brand/new.mjs tools/capture/capture.mjs tools/capture/yourchrome.mjs tools/capture/kinds.mjs tools/capture/answers.mjs tools/capture/parts.mjs tools/capture/email.mjs tools/capture/site.mjs tools/capture/terminal.mjs tools/capture/phone.mjs tools/capture/package.json studio/server.mjs studio/review.html studio/paper.html studio/wait-for-notes.mjs; do
   [ -f "$t" ] && pass "$t" || fail "$t is missing" "pull the latest studio from GitHub"
 done
 

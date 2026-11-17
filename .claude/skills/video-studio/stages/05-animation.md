@@ -9,7 +9,7 @@ Two approvals: **First animation**, then **Full animation**. Every tool below pr
 - `knowledge/craft/02-motion.md`, then the one craft file each scene needs (type, UI, light, advanced motion)
 - `knowledge/craft/07-sound.md` when you reach sound
 - `knowledge/craft/08-directors-checks.md` before any hand-over
-- Skills to load (see "Skills the studio uses" in `SKILL.md`): `remotion-best-practices` before writing any scene code; `motion-design`, `motion-foundations` (and `motion-advanced` for complex moves) while animating; `hyperframes` for a move Remotion handles poorly; `fixing-motion-performance` when the smoothness check flags a scene; `hallmark` and `impeccable` critique on the contact sheet before a cut goes to a person
+- Skills to load (see "Skills the studio uses" in `SKILL.md`): `remotion-best-practices` before writing any scene code; `motion-design`, `motion-foundations` (and `motion-advanced` for complex moves) while animating; `bang-motion`'s techniques (rebuilt with Remotion's own timing) and `knowledge/craft/14-motion-systems.md` while animating; `hyperframes` for a move Remotion handles poorly; `fixing-motion-performance` when the smoothness check flags a scene; `hallmark` and `impeccable` critique on the contact sheet before a cut goes to a person
 
 ## 1. Turn the shot list into a film skeleton
 
@@ -30,14 +30,16 @@ Then build what the playbook asks for at this approval (for a promo: three alter
 - One scene per helper agent, one after another. Give the agent only the scene file, `engine/README.md`, and the craft files that scene needs.
 - Colours, fonts and timings come only from the kit. Cues come from the `scene` prop, never typed-in numbers.
 - Product screens that must move are built from `engine/src/products/tulvo/` (inside `<AppStage>`) and compared with the real capture.
+- Build to `knowledge/craft/14-motion-systems.md`: the camera goes to what is speaking and text appears after it arrives; entrances 0.7–1.3 s, exits 0.35–0.55 s; no more than three things moving at once; durations on the music's grid when music leads.
 - `bash tools/film/render.sh jobs/<job> scene S03` renders one scene alone. Look at it with `tools/study/sheets.sh` before moving on.
 
 ## 4. Sound
 
-1. Write `jobs/<job>/audio/sfx.json`: each effect with an id, a prompt, a length, the film time it lands on and a gain between 0.35 and 0.7. One on every scene change, starting 0.15–0.2 s early.
+1. Write `jobs/<job>/audio/sfx.json`: each effect with an id, a prompt, a length, the film time it lands on and a gain between 0.35 and 0.7. One on every scene change, starting 0.15–0.2 s early. A sound lands by its attack or its arrival, not by where its file starts: a riser arrives on the cut, a click's attack is on the press (`real-sfx`, `references/typed-cues.md` and `event-map.md`). Real recorded sounds come through `tools/media/openverse.mjs`, with their licence and credit kept.
 2. Write `jobs/<job>/audio/music-brief.json`: style, what to avoid, and one section per scene group with its film times and energy from the energy map.
 3. `node tools/audio/sound.mjs plan jobs/<job>`, read the plan, then `sound.mjs music` and `sound.mjs sfx`. These two spend ElevenLabs credits; effects that already exist are not made again.
 4. `python3 -I tools/audio/mix.py jobs/<job>` mixes voice, music and effects and measures the result: music at 20–30% of the voice, effects between a third and two thirds. If it reports a miss, fix the cue it names.
+5. Listen to the mix: `node tools/audio/listen.mjs jobs/<job>/audio/mix.wav --job jobs/<job>`. Read its report and look at `sheet.png`. Fix any cue that lands more than a frame off its picture moment, any effect buried under the music, and any loudness or tone note, before the master.
 
 ## 5. Master and check
 
@@ -47,6 +49,8 @@ Then build what the playbook asks for at this approval (for a promo: three alter
    - `python3 -I tools/checks/frame_quality.py <file>`
    - `python3 -I tools/checks/onscreen_text.py <file> --must "<offer wording>" --never "<retired wording>"`
    - `python3 -I tools/study/profile.py <file> jobs/<job>/out` and compare with the energy map and the targets in `knowledge/craft/00-principles.md`
+   - `node tools/audio/listen.mjs <file> --job jobs/<job> --critique`: the sound against seven professional launch films, with fixes and times. Name each fix it suggests and whether it was made
+   - The anti-slide and restraint checks on the contact sheet (`knowledge/craft/14-motion-systems.md` sections 3 and 7)
 3. Look at every flagged moment frame by frame with `tools/study/sheets.sh window`. Fix it, or say why it stands.
 4. Do the ten-percent pass.
 

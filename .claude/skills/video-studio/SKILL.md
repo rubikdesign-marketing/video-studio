@@ -71,7 +71,7 @@ Read one craft file at a time, only when the stage file names it.
 
 ## Skills the studio uses
 
-70 other skills are bundled in `.claude/skills/`, and five plugins are declared in `.claude/settings.json` (Superpowers, claude-mem, Matt Pocock's skills and Ponytail on; ECC off). Many overlap. **Before starting any task, read `skill-map.md` (in this folder)**: it names, for each task, the skill that leads, the sub-guides to read for each video type and craft topic, the ones that support it, and the ones not to use, and how conflicts are settled. Load a skill with the Skill tool when its task starts; one or two per task, never all.
+75 other skills are bundled in `.claude/skills/`, and five plugins are declared in `.claude/settings.json` (Superpowers, claude-mem, Matt Pocock's skills and Ponytail on; ECC off). Many overlap. **Before starting any task, read `skill-map.md` (in this folder)**: it names, for each task, the skill that leads, the sub-guides to read for each video type and craft topic, the ones that support it, and the ones not to use, and how conflicts are settled. Load a skill with the Skill tool when its task starts; one or two per task, never all.
 
 The short version:
 
@@ -79,7 +79,9 @@ The short version:
 |---|---|
 | Ideas, scripts and on-screen words | the stage guide; `zero-slop` as the last pass on every line a viewer reads or hears; `ugc-ad-scripts` for creator ads |
 | Look of frames (moodboard, storyboard, end cards) | `impeccable`; `hallmark` and `impeccable` critique before a person sees it |
-| Motion | `motion-design`, `motion-foundations`; `motionmaxxing` curves and studies for feel |
+| Motion | `knowledge/craft/14-motion-systems.md` (shot sizes, choreography, restraint, rhythm, anti-slide); `bang-motion` for its techniques; `motion-design`, `motion-foundations`; `motionmaxxing` curves and studies for feel |
+| Hearing anything (Claude cannot hear) | `earshot` through `tools/audio/listen.mjs`: never say how something sounds without its number |
+| Placing and finding sounds | the studio's sound tools; `real-sfx` for placement by a sound's attack; `tools/media/openverse.mjs` and `real-sound` for real recorded sounds with their licences |
 | Scene code | `remotion-best-practices`; `hyperframes` for what Remotion handles poorly |
 | Jumps and judder | `fixing-motion-performance` |
 | Paid ads around a video | `advertising-kickoff` (it routes the ad skills) |

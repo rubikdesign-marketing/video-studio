@@ -252,6 +252,7 @@ Built on the existing mix tool (`tools/audio/mix.py`), with the dialogue from se
 | Measure | Used for |
 |---|---|
 | **Speech-quality score** (DNSMOS, free) per line, before and after repair | A repair that lowers the score is turned down; the lighter setting wins |
+| **earshot** (`tools/audio/listen.mjs`; `earshot ab` for before and after) | Loudness curve, tone balance in seven bands, noise floor, the difference a repair made in words (brighter, quieter, shorter tail), and the annotated sheet to look at |
 | Noise floor per piece | Matching rooms at cuts |
 | Hum, clipping, click counts | Repair worked, nothing new added |
 | Voice over music, per spoken line | The clear-over-music rule |

@@ -58,6 +58,22 @@ else
   echo "uv is missing, so the footage tool's Python was not set up. The health check at the end will say so."
 fi
 
+# earshot (github.com/Leonxlnx/earshot): Claude's ears for every sound judgement (tools/audio/listen.mjs). Its own Python,
+# pinned to the version the studio was tested with; its listening models (about 1.1 GB) in tools/audio/.earshot/.
+EARSHOT_REF="4ac3d2a"
+if have uv; then
+  if ! have earshot && [ ! -x "$HOME/.local/bin/earshot" ]; then
+    echo "Installing earshot (it hears sound for Claude; about 1 GB with its models)..."
+    uv tool install --quiet --python 3.12 "earshot @ git+https://github.com/Leonxlnx/earshot@$EARSHOT_REF" || echo "earshot did not install. The health check at the end will say so."
+  fi
+  if [ ! -d tools/audio/.earshot/hf ] || [ -z "$(ls -A tools/audio/.earshot/hf 2>/dev/null)" ]; then
+    echo "Fetching earshot's listening models (one time)..."
+    mkdir -p tools/audio/.earshot
+    EARSHOT_HOME="$PWD/tools/audio/.earshot" HF_HUB_DISABLE_TELEMETRY=1 "$HOME/.local/bin/earshot" doctor --fetch >/dev/null 2>&1 \
+      || echo "earshot's models did not download. Run this script again later."
+  fi
+fi
+
 say "3 of 5  Engine packages"
 if [ -f engine/package.json ]; then
   if [ -f engine/package-lock.json ]; then (cd engine && npm ci --no-audit --no-fund); else (cd engine && npm install --no-audit --no-fund); fi \

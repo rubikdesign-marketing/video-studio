@@ -2,6 +2,8 @@
 
 Sound is half the film. Claude cannot hear it, so every rule here has a measurement, and a person listens at two approvals: the voice read and the full animation.
 
+The measurements come from the studio's tools and from earshot (`node tools/audio/listen.mjs <file> --job jobs/<job>`): loudness over time, tone balance, events and how far each rises over the music, how well each sound lands on its picture moment, and a sheet to look at. Never describe how something sounds without its number. Sounds land by their attack or arrival, not their file start (`real-sfx`); real recorded sounds come from `tools/media/openverse.mjs` with their licence kept.
+
 ## Voice
 
 - ElevenLabs. Each brand's named voices and its default are in `brands/<brand>/voices.json`. The voice is chosen at the idea stage.

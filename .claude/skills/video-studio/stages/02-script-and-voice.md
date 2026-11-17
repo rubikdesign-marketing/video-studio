@@ -26,7 +26,8 @@ Ends with the **Script and voice read** approval. A person listens to the voice 
 - `node tools/audio/voice.mjs choose jobs/<job>` checks every take and picks the best. A line with no clean take is regenerated (delete its takes, run generate again), never repaired. Never stretch or slice a line.
 - `node tools/audio/voice.mjs join jobs/<job>` writes `audio/voice.wav`, `audio/words.json` and `audio/lines.json`, and checks the joined file.
 - If the check reports a product word as different but the maker confirms by listening that it was said correctly, add the mishearing to `brands/<brand>/heard-as.json`.
+- Listen to the joined voice: `node tools/audio/listen.mjs jobs/<job>/audio/voice.wav --quick` (earshot). Read its loudness, loudness range, noise floor and tone balance. A line it measures as clipped, noisy or much duller or brighter than the others is regenerated, like any failed take.
 
 ## 3. Hand-over
 
-Give the script as a table (line, beat, energy, seconds), the joined voice file to listen to, and the check results. State that nobody has listened yet. Stop for approval. After approval the voice is locked: scene lengths come from its timings.
+Give the script as a table (line, beat, energy, seconds), the joined voice file to listen to, the check results and earshot's numbers. State that nobody has listened yet. Stop for approval. After approval the voice is locked: scene lengths come from its timings.

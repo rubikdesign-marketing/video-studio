@@ -55,6 +55,13 @@ SKILLS=(
   "manavmishra/ZeroSlop|skills/zero-slop|zero-slop|LICENSE"
   "juliusbrussee/caveman|skills/caveman|caveman|LICENSE"
   "mbfinotti/advertising-skills|skills/*|*|LICENSE"
+  "bangtutorial/bang-motion|.|bang-motion|LICENSE"
+  "Leonxlnx/earshot|skills/earshot|earshot|LICENSE"
+  "Leonxlnx/earshot|skills/real-sound|real-sound|LICENSE"
+  # Clipwing's skills state no licence for their instructions, so, like Remotion's, they are fetched on each Mac and
+  # never kept in the public repository (.gitignore).
+  "Clipwing/skills|skills/real-sfx|real-sfx|"
+  "Clipwing/skills|skills/hyperframes-to-after-effects|hyperframes-to-after-effects|"
 )
 
 if [ "${1:-}" = "--list" ]; then

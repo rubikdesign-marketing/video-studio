@@ -7,6 +7,7 @@ Ends with the **Storyboard** approval. The storyboard is made of the film's own 
 - `jobs/<job>/job.json`, the locked script and word timings, the approved look
 - `knowledge/craft/01-direction.md` (shot grammar, eye trace, hand-off objects)
 - `knowledge/craft/03-transitions.md`
+- `knowledge/craft/14-motion-systems.md` (shot sizes, choreography, restraint, the music grid, the anti-slide checks)
 - `knowledge/craft/05-ui-choreography.md` and `jobs/<job>/flow.md`
 - `knowledge/craft/12-frame-quality.md` (every key frame is checked against it)
 - `library/motion/index.json` (the animations that already work, with when to use each) and `knowledge/craft/09-advanced-motion.md` (choose at most three advanced techniques and say what each means)
@@ -14,7 +15,7 @@ Ends with the **Storyboard** approval. The storyboard is made of the film's own 
 - `knowledge/craft/11-data-visualisation.md` if any chart or number is on screen
 - `knowledge/craft/00-principles.md`
 - Product shots: `tools/capture/README.md` and `CAPTURE-PLAN.md` section 7.9 (looks, pointers, camera, staging, animations, transitions); capture scripts are written now and approved with the storyboard
-- Skills to load (see "Skills the studio uses" in `SKILL.md`): `motion-design` for each shot's motion notes; `impeccable` for the key frames' type, colour and layout; `hallmark` and `impeccable` critique before the storyboard goes to a person
+- Skills to load (see "Skills the studio uses" in `SKILL.md`): `motion-design` for each shot's motion notes; `bang-motion` (`references/techniques.md`) for shot sizes, the camera going to what is speaking, and its transition menu; `impeccable` for the key frames' type, colour and layout; `hallmark` and `impeccable` critique before the storyboard goes to a person
 
 ## 1. Shot list
 
@@ -53,6 +54,7 @@ Sentence case, no dots as separators, no coding-style typeface, and wording a pe
 - Any third-party logo, for confirmation.
 - The beats that would make the 30 s, 15 s and 6 s versions (promos).
 - The new move this video adds to the library.
+- The film's motion on paper (`14-motion-systems.md`): each shot's size, choreography and transition; how many scene changes are plain fades (two at most); the kinds of transition used (at least two, one with depth); the most things moving at once in any scene (three at most); and, when music leads, its beats per minute and which beats the big moments land on.
 
 ## Hand-over
 

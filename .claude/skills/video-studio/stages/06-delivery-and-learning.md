@@ -15,7 +15,7 @@ Into `jobs/<job>/deliver/`:
 - A captions file.
 - A poster frame (the signature moment).
 - A two-line description and the approved offer wording.
-- A note of every licence or permission the video relies on.
+- A note of every licence or permission the video relies on. Media from Openverse: run `node tools/media/openverse.mjs credits jobs/<job>`, copy `media/CREDITS.md` here, and put every line marked "credit needed" in the description or on the end card.
 - The proof of source (`sources.txt`, `sources.json`), when the film shows the product.
 
 ## Record

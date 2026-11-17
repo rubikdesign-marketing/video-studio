@@ -1,6 +1,6 @@
 # Skills bundled with the studio
 
-Every skill here except `video-studio` (the studio's own) is a copy of a public, open-source skill, taken at its latest version on 12 Nov 2026 (70 skills) so every teammate gets the same set when they clone the repository. Refresh them with `bash setup/update-skills.sh`, then update this page and commit.
+Every skill here except `video-studio` (the studio's own) is a copy of a public, open-source skill, taken at its latest version on 12 Nov 2026 (70 skills; five more added 17 Nov) so every teammate gets the same set when they clone the repository. Refresh them with `bash setup/update-skills.sh`, then update this page and commit.
 
 Which skill leads which task, and how overlaps are settled, is in `video-studio/skill-map.md`.
 
@@ -20,6 +20,9 @@ Which skill leads which task, and how overlaps are settled, is in `video-studio/
 | zero-slop | The last pass on every line a viewer reads or hears: removes wording that sounds machine-made | github.com/manavmishra/ZeroSlop | commit 9f7bca2, 11 Nov 2026 | MIT |
 | caveman | Terse notes between helper agents to save tokens; never for anything a person reads | github.com/juliusbrussee/caveman | commit 3dc497a, 8 Nov 2026 | MIT |
 | 31 advertising skills (advertising-kickoff routes them: ad-format-fit, ugc-ad-scripts, ad-creative-test-plan, ad-creative-fatigue, ad-audience-targeting, ad-bidding-strategy, ad-spend-guardrails and more; the full list is in `.sets/`) | Planning and running videos as paid ads | github.com/mbfinotti/advertising-skills | commit ab1eb51, 26 Oct 2026 | MIT |
+| bang-motion | Motion craft: shot sizes, the camera going to what is speaking, transitions, type rhythm, the anti-slide tests. Written in Indonesian. Its house rules give way to the brand (`knowledge/craft/14-motion-systems.md` section 8) | github.com/bangtutorial/bang-motion | 1.19.0 (commit c1aa65e, 15 Sep 2026) | MIT |
+| earshot, real-sound | Hearing with numbers: loudness, tone, events, sound-on-picture sync, the annotated sheet, the launch-film critique (`tools/audio/listen.mjs` runs it); building a soundtrack from real licensed recordings | github.com/Leonxlnx/earshot (the `earshot` program is installed by `setup/install.sh`, pinned to the same commit; its models, about 1.1 GB, live in `tools/audio/.earshot/`) | 0.4.1 (commit 4ac3d2a, 6 Nov 2026) | MIT (models: LAION CLAP, Apache 2.0; MIT AST, BSD 3-clause) |
+| real-sfx, hyperframes-to-after-effects | Placing real sounds on the exact frame (by attack or arrival, from cues, HyperFrames timings or the picture); turning a HyperFrames clip into an editable After Effects project | github.com/Clipwing/skills | commit edbefcb, 21 Oct 2026 | No licence file. real-sfx's README says its scripts are MIT and its bundled uisfx sounds CC0 (synthesised, MIT code); hyperframes-to-after-effects states none. Fetched on each Mac by `setup/update-skills.sh --missing`, never kept in the public repository |
 
 Notes:
 - The taste family was folded into one skill in taste-skill 2.5 (5 Nov 2026). Older names (gpt-taste, high-end-visual-design, minimalist-ui, redesign-existing-projects) no longer exist upstream and are not bundled.
@@ -42,3 +45,5 @@ Claude Code offers to install these when a teammate opens the folder and trusts 
 
 - The other skills in Remotion's main repository (product-recording, homepage-video-assets, timeline-layout-reveal and about 60 more) are Remotion's own developer tools for its codebase and website; they do not work outside it. All 13 public Remotion skills are bundled.
 - HyperFrames' registry blocks each carry a guide; `hyperframes-registry` reaches them, so they are not bundled separately.
+- Openverse (github.com/WordPress/openverse, MIT) is used as a service, not a skill: `tools/media/openverse.mjs` searches its public API for sounds and photos and keeps each one's licence and credit.
+- open-motion (github.com/Yuan-ManX/open-motion, MIT) is not bundled: it is a whole app. Its choreography, restraint, rhythm, transition and pointer-response tables are copied, with credit, into `knowledge/craft/14-motion-systems.md`.
