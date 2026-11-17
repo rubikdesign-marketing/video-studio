@@ -34,7 +34,9 @@ export function run(cmd, args, { allowFail = false, input, cwd, maxBuffer = 1 <<
 /** Run one of the footage tool's Python programs (tools/footage/py/<name>.py) in its own environment. */
 export function py(name, args, opts = {}) {
   if (!fs.existsSync(PYTHON)) throw new Error('The footage tool\'s Python environment is missing. Run: bash setup/install.sh');
-  return run(PYTHON, ['-I', path.join(TOOL, 'py', `${name}.py`), ...args], opts);
+  // Nothing about a job leaves this Mac: onnxruntime's and Hugging Face's telemetry are switched off for every run.
+  const env = { ORT_DISABLE_TELEMETRY: '1', HF_HUB_DISABLE_TELEMETRY: '1', ...(opts.env || {}) };
+  return run(PYTHON, ['-I', path.join(TOOL, 'py', `${name}.py`), ...args], { ...opts, env });
 }
 
 export const readJson = (f, fallback) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : fallback);

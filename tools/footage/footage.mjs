@@ -8,6 +8,7 @@
 //        the first paper edit (edit/paper.json) with the tool's proposals; the transcript page edits it after that
 //   node tools/footage/footage.mjs cut jobs/<job>                      the cut list (edit/cutlist.json), joins checked
 //   node tools/footage/footage.mjs approve jobs/<job> <join key>       a person's yes to a flagged join
+//   node tools/footage/footage.mjs repair jobs/<job> [--clip <name>]    phase 3: each clip's sound repaired (voice/, sound.json)
 //   node tools/footage/footage.mjs rough jobs/<job> [--render]         the rough cut's sound, captions and engine files;
 //        --render renders it to jobs/<job>/out/rough-cut.mp4 (outside Claude's command sandbox: the render browser)
 //
@@ -31,6 +32,7 @@ import { render } from './lib/log.mjs';
 import { firstPaper, propose, runsOf, sentences } from './lib/paper.mjs';
 import { measure } from './lib/probe.mjs';
 import { transcribe } from './lib/transcribe.mjs';
+import { linkRecorders, matchTone, repairClip } from './lib/repair.mjs';
 import { listenBack, prepareRough, renderRough } from './lib/rough.mjs';
 import { makeWorkingCopy } from './lib/workcopy.mjs';
 
@@ -131,7 +133,9 @@ function compare(job, name) {
 function spokenClips(job) {
   const root = path.join(job, 'edit', 'clips');
   if (!fs.existsSync(root)) return [];
-  return fs.readdirSync(root).sort().map((name) => ({ name, words: readJson(path.join(root, name, 'words.json'), null)?.words })).filter((c) => c.words?.length);
+  return fs.readdirSync(root).sort()
+    .filter((name) => !readJson(path.join(root, name, 'clip.json'), {}).linked_to) // a separate recorder's words are its camera clip's
+    .map((name) => ({ name, words: readJson(path.join(root, name, 'words.json'), null)?.words })).filter((c) => c.words?.length);
 }
 
 /** Seconds a paper edit will run, before cut points are placed: the kept words plus a breath at each join. */
@@ -186,6 +190,9 @@ function roughCmd(job, o) {
   if (cut.unanswered && !o['allow-flagged']) { say('Not made: answer the flagged joins first.'); process.exit(1); }
   const r = prepareRough(job, cut);
   say(`Rough cut ready for the engine: FootageCut "${r.slug}", ${r.seconds.toFixed(2)} s at ${r.fps} fps, ${r.width}×${r.height}.`);
+  const beds = cut.room?.beds || {};
+  if (Object.keys(beds).length) say(`Room evened at the cuts: ${Object.entries(beds).map(([c, b]) => `${c} gets ${b.bed}'s room tone at ${b.gainDb} dB`).join('; ')}.`);
+  say(`The sound at every cut: ${path.join(job, 'edit', 'rough', 'cuts.png')} (look for bright vertical lines, dark gaps, or the background changing across a cut).`);
   const check = JSON.parse(py('sound', [path.join(job, 'edit', 'rough', 'dialogue.wav'), path.join(job, 'edit', 'rough', 'quality.json')]).trim().split('\n').pop());
   const clicks = check.summary.clicks || [];
   say(clicks.length ? `Clicks in the joined sound: ${clicks.join(', ')} s` : 'No clicks in the joined sound.');
@@ -197,11 +204,30 @@ function roughCmd(job, o) {
   } else say(`Render it with --render, or open it in Remotion Studio (FootageCut, cut "${r.slug}").`);
 }
 
+function repairCmd(job, o) {
+  const root = path.join(job, 'edit', 'clips');
+  const all = fs.existsSync(root) ? fs.readdirSync(root).filter((c) => fs.existsSync(path.join(root, c, 'sound.wav'))).sort() : [];
+  if (!all.length) throw new Error('No ingested clips with sound. Run: footage.mjs ingest <job>');
+  say('Separate recordings:');
+  const links = linkRecorders(job, all, (x) => say(x));
+  const linked = new Set(Object.values(links).flat().map((l) => l.recorder));
+  const todo = all.filter((c) => !linked.has(c) && (!o.clip || o.clip === c));
+  const docs = [];
+  for (const c of todo) {
+    say(`${c}:`);
+    docs.push(repairClip(job, c, { links: links[c] || [], say: (x) => say(x) }));
+  }
+  if (!o.clip) { say('Tone across clips:'); matchTone(job, docs, (x) => say(x)); }
+  const worse = docs.flatMap((d) => d.tracks.filter((t) => t.after.SIG < t.before.SIG - 0.05).map((t) => `${d.clip} ${t.name}`));
+  say(`\nRepaired ${docs.length} clip${docs.length === 1 ? '' : 's'}: voice/ and sound.json in each.${worse.length ? ` The voice scores lower after repair in: ${worse.join(', ')}; listen before using it.` : ' No voice scores lower than before.'}`);
+  say('A person listens to each voice/mix.wav before the rough cut is approved (the plan\'s one check by ear).');
+}
+
 function main() {
   const o = args(process.argv.slice(2));
   const [cmd, jobArg] = o._;
-  if (!cmd || !jobArg || !['ingest', 'log', 'compare', 'paper', 'cut', 'approve', 'rough'].includes(cmd)) {
-    say('Usage: node tools/footage/footage.mjs ingest|log|compare|paper|cut|approve|rough jobs/<job> (see the top of this file)');
+  if (!cmd || !jobArg || !['ingest', 'log', 'compare', 'paper', 'cut', 'approve', 'repair', 'rough'].includes(cmd)) {
+    say('Usage: node tools/footage/footage.mjs ingest|log|compare|paper|cut|approve|repair|rough jobs/<job> (see the top of this file)');
     process.exit(2);
   }
   const job = path.resolve(jobArg);
@@ -211,6 +237,7 @@ function main() {
   if (cmd === 'paper') { paperCmd(job, o); return; }
   if (cmd === 'cut') { cutCmd(job); return; }
   if (cmd === 'approve') { approveCmd(job, o._[2]); return; }
+  if (cmd === 'repair') { repairCmd(job, o); return; }
   if (cmd === 'rough') { roughCmd(job, o); return; }
   if (cmd === 'ingest') {
     let list = clipsOf(job);

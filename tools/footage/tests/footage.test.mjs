@@ -81,6 +81,8 @@ test('fillers, possible fillers and repeated words are marked', () => {
   assert.equal(w[7].filler, undefined);
   const r = markFillers(['the', 'the', 'board'].map((text, i) => ({ text, start: i, end: i + 1 })));
   assert.equal(r[1].repeat, true);
+  const g = markFillers(['try', 'it,', 'it', 'only'].map((text, i) => ({ text, start: i, end: i + 1 })));
+  assert.equal(g[2].repeat, undefined); // grammar across a comma, not a stutter
 });
 
 test('the log says what is in each clip and the repair for each finding', () => {

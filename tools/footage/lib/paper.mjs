@@ -202,8 +202,13 @@ export function guard(a, b, wordsOf) {
   const wa = wordsOf(a.clip); const wb = wordsOf(b.clip);
   const last = a.words.at(-1); const first = b.words[0];
   const before = wa[last]; const after = wb[first];
-  const endsSentence = ENDS.test(before.text);
-  const startsSentence = first === 0 || ENDS.test(wb[first - 1].text) || wb[first].start - wb[first - 1].end >= 1.2;
+  // Fillers struck at a sentence's start or end do not make a join "inside" it: look past them.
+  const isFiller = (w) => w.filler === 'yes' || w.filler === 'maybe' || w.repeat;
+  let fa = last; while (fa + 1 < wa.length && isFiller(wa[fa + 1]) && !ENDS.test(wa[fa].text)) fa++;
+  const endsSentence = ENDS.test(before.text) || (fa > last && ENDS.test(wa[fa].text)) || fa + 1 >= wa.length;
+  const boundary = (i) => i === 0 || ENDS.test(wb[i - 1].text) || wb[i].start - wb[i - 1].end >= 1.2;
+  let sb = first; while (!boundary(sb) && isFiller(wb[sb - 1])) sb--;
+  const startsSentence = boundary(sb);
   const inside = !endsSentence || !startsSentence;
   if (a.clip === b.clip && first === last + 1) return { kind: 'pause', flagged: false, reasons: [], dropped: [] };
   const dropped = a.clip === b.clip && first > last ? wa.slice(last + 1, first).map((w, k) => ({ ...w, i: last + 1 + k })) : [];

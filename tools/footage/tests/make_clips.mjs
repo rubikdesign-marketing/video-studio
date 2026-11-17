@@ -105,6 +105,64 @@ const truth = {};
   truth.twoshots = { cuts: [4.0], shaky: [4.0, 8.0], duration: 8 };
 }
 
+/** One phrase in a voice, trimmed to its sound. Returns { file, seconds }. */
+function phrase(name, text, voice) {
+  const raw = path.join(tmp, `${name}.raw.wav`); const f = path.join(tmp, `${name}.wav`);
+  run('say', ['-v', voice, '-o', raw, '--data-format=LEI16@48000', text]);
+  ff('-i', raw, '-af', 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0,areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0,areverse', '-ac', '1', '-ar', '48000', f);
+  return { file: f, seconds: Number(run('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f])) };
+}
+/** Lays phrases on one track at their times: [{file, at}] -> wav of the given length. */
+function track(name, parts, seconds) {
+  const out = path.join(tmp, `${name}.wav`);
+  if (!parts.length) { ff('-f', 'lavfi', '-i', `anullsrc=r=48000:cl=mono`, '-t', String(seconds), out); return out; }
+  const inputs = parts.flatMap((p) => ['-i', p.file]);
+  const chains = parts.map((p, i) => `[${i}:a]adelay=${Math.round(p.at * 1000)}:all=1,apad[p${i}]`).join(';');
+  ff(...inputs, '-filter_complex', `${chains};${parts.map((_, i) => `[p${i}]`).join('')}amix=inputs=${parts.length}:normalize=0:duration=longest,atrim=0:${seconds}[a]`, '-map', '[a]', '-ac', '1', '-ar', '48000', '-c:a', 'pcm_s16le', out);
+  return out;
+}
+
+// 5. Interview: two people, each on their own microphone (left: Samantha, right: Daniel), each mic hearing the other
+// faintly (bleed at -15 dB), Daniel's mic 8 dB quieter. And a separate recorder on Samantha, started 1.234 s before the
+// camera, at 44.1 kHz, as a clip-on microphone would be.
+{
+  const lines = [
+    ['A', 'Thanks for joining us. How did your team find the new boards?', 'Samantha'],
+    ['B', 'Honestly, it changed how we plan every week.', 'Daniel'],
+    ['A', 'What was the biggest difference for you?', 'Samantha'],
+    ['B', 'Everyone sees the same board, so nobody asks for updates.', 'Daniel'],
+  ];
+  let t = 0.6; const parts = { A: [], B: [] }; const truthLines = [];
+  lines.forEach(([who, text, voice], i) => {
+    const p = phrase(`iv-${i}`, text, voice);
+    parts[who].push({ file: p.file, at: t });
+    truthLines.push({ who, text, start: +t.toFixed(3), end: +(t + p.seconds).toFixed(3) });
+    t += p.seconds + 0.7;
+  });
+  const total = +(t + 0.5).toFixed(3);
+  const a = track('iv-A', parts.A, total); const b = track('iv-B', parts.B, total);
+  const stereo = path.join(tmp, 'iv-stereo.wav');
+  ff('-i', a, '-i', b, '-f', 'lavfi', '-i', `anoisesrc=c=pink:r=48000:a=0.002:d=${total}`,
+    '-filter_complex', '[0:a]asplit[a1][a2];[1:a]asplit[b1][b2];[2:a]asplit[n1][n2];[a1][b1]amix=inputs=2:weights=1 0.18:normalize=0[l0];[l0][n1]amix=inputs=2:normalize=0[l];[b2][a2]amix=inputs=2:weights=0.4 0.072:normalize=0[r0];[r0][n2]amix=inputs=2:normalize=0[r];[l][r]join=inputs=2:channel_layout=stereo[o]',
+    '-map', '[o]', '-c:a', 'pcm_s16le', stereo);
+  ff('-f', 'lavfi', '-i', `smptebars=s=1920x1080:r=30:d=${total}`, '-i', stereo, '-c:v', 'libx264', '-crf', '20', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-shortest', path.join(foot, 'interview.mp4'));
+  // The recorder: Samantha alone, cleaner, 1.234 s of room before the camera started, 44.1 kHz.
+  ff('-f', 'lavfi', '-i', 'anoisesrc=c=pink:r=48000:a=0.0008:d=1.234', '-i', a, '-filter_complex', '[1:a]highpass=f=90[v];[0:a][v]concat=n=2:v=0:a=1[o]', '-map', '[o]', '-ar', '44100', '-c:a', 'pcm_s16le', path.join(foot, 'interview-lav.wav'));
+  truth.interview = { lines: truthLines, duration: total, channels: { left: 'A', right: 'B' }, levelGapDb: 8, bleedDb: -15 };
+  truth['interview-lav'] = { of: 'interview', speaker: 'A', leadSeconds: 1.234, rate: 44100 };
+}
+
+// 6. A voice in a ringing room: about 0.8 s for the sound to die away by 60 dB.
+{
+  const s = speech('echo', ['This room has a lot of echo in it.', 'Every word keeps ringing after it ends.'], [1.6, 1.2], 'Fred');
+  const ir = path.join(tmp, 'room-ir.wav');
+  ff('-f', 'lavfi', '-i', "aevalsrc='if(lt(t,0.0005),1,(random(0)*2-1)*0.06*exp(-8.6*t))':s=48000:d=1.2", '-ac', '1', ir);
+  const wet = path.join(tmp, 'echo-wet.wav');
+  ff('-i', s.wav, '-i', ir, '-filter_complex', '[0:a][1:a]afir=dry=10:wet=10[a];[a]loudnorm=I=-20:TP=-2[o]', '-map', '[o]', '-ar', '48000', '-c:a', 'pcm_s16le', wet);
+  ff('-f', 'lavfi', '-i', `testsrc2=s=1920x1080:r=30:d=${s.duration}`, '-i', wet, '-c:v', 'libx264', '-crf', '20', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-shortest', path.join(foot, 'echo.mp4'));
+  truth.echo = { phrases: s.phrases, duration: s.duration, rt60: 0.8 };
+}
+
 fs.writeFileSync(path.join(out, 'truth.json'), `${JSON.stringify(truth, null, 2)}\n`);
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log(`Made ${Object.keys(truth).length} test clips in ${foot}`);

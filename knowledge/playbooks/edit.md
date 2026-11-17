@@ -27,7 +27,7 @@ The approvals stay, with different contents:
 2. **Log.** `jobs/<job>/edit/log.md`, written by ingest: every clip with what is said, what is seen, picture and sound notes, and the repair proposed for each. Look at each clip's contact sheet (`edit/clips/<clip>/sheet.jpg`) too.
 3. **Paper edit.** Cut by the words. Choose the strongest opening line first; it becomes the hook even if it was said last. Run `node tools/footage/footage.mjs paper jobs/<job>` for the tool's proposals, then hand the person the transcript page (`node studio/server.mjs`, then http://localhost:4317/paper) and wait with `node studio/wait-for-notes.mjs jobs/<job> --paper`.
 4. **Tighten.** Remove dead air, filler words and repeats. Leave a breath between thoughts; do not cut every pause. The cut list does this from the paper edit (`footage.mjs cut`), and `footage.mjs rough --render` makes the rough cut for the "First animation" approval; it will not run while a flagged join is unanswered.
-5. **Clean the sound.** Reduce noise, level the voice, then run the voice checks.
+5. **Clean the sound.** `node tools/footage/footage.mjs repair jobs/<job>` repairs each clip by what ingest measured, never lowering the voice's speech-quality score, and writes `edit/clips/<clip>/sound.json` (what was done and why, the scores before and after, earshot's words for the difference). A person listens to each `voice/mix.wav` before the rough cut is approved. The rough cut uses the repaired voices.
 6. **Cover the cuts.** Every jump in a talking shot is covered by a product insert, a slight reframe (10–15% push), or a title.
 7. **Add product.** Inserts of real Tulvo UI follow `craft/05-ui-choreography.md`.
 8. **Captions, music, sound design.** As for any film.

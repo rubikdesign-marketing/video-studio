@@ -26,7 +26,8 @@ export function markFillers(words) {
     if (FILLERS.has(b)) w.filler = 'yes';
     else if ((b === 'you' && next === 'know') || (b === 'i' && next === 'mean')) { w.filler = 'maybe'; if (words[i + 1]) words[i + 1].filler = 'maybe'; }
     else if (MAYBE.has(b) && /[,]$/.test(w.text)) w.filler = 'maybe';
-    else if (i && b && b === bare(words[i - 1].text) && !w.filler) w.repeat = true;
+    // A stutter ("the the", "I I"), not grammar across a comma ("try it, it only takes a minute").
+    else if (i && b && b === bare(words[i - 1].text) && !/[,.;:!?…]["'’”)\]]*$/.test(words[i - 1].text) && !w.filler) w.repeat = true;
   });
   return words;
 }

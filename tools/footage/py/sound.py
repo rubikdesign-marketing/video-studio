@@ -136,27 +136,51 @@ def pauses_from(words, total):
 
 
 def echo(x, words):
-    """Time for the sound to fall 20 dB after the end of a sentence, times three (an RT60 estimate). Needs pauses of
-    at least 0.4 s after a word; returns None when there are none to measure."""
+    """How long the room rings: the reverberation time (RT60), from the slope of the slow tail after a sentence.
+    For each pause of 0.4 s or more: from the last syllable (the last moment within 10 dB of the loudest, searched from
+    0.6 s before the pause, since the word edges include the tail), skip the first 30 ms (the voice itself stopping), then fit a line to the
+    level while it is between 10 dB under the peak and 6 dB over the background, counted only when it falls in a
+    nearly straight line (R² 0.75 or more). RT60 = 60 dB / the slope.
+    Returns the median over the pauses, or None when there are none to measure."""
     if not words:
         return None
     env = frame_db(sosfilt(butter(4, [200, 4000], 'bandpass', fs=RATE, output='sos'), x), RATE // 100)
+    floor_all = float(np.percentile(env, 10))
     rts = []
     for a, b in zip(words, words[1:] + [None]):
         gap_end = b['start'] if b else len(x) / RATE
         if gap_end - a['end'] < 0.4:
             continue
-        i0 = int(a['end'] * 100) - 3
-        seg = env[max(0, i0):int(gap_end * 100)]
-        if len(seg) < 10:
+        lo = max(0, int((a['end'] - 0.6) * 100)); hi = int(a['end'] * 100); end = min(len(env), int(gap_end * 100))
+        if hi <= lo or end - hi < 10:
             continue
-        top = seg[:6].max()
-        floor = np.percentile(seg[-10:], 50)
+        win = env[lo:hi + 1]
+        p = lo + int(np.where(win >= win.max() - 10)[0][-1])  # the last syllable: the last moment near the loudest
+        top = env[p]
+        tail = env[p + 3:end]
+        floor = max(floor_all, float(np.percentile(env[max(p, end - 15):end], 50)))
         if top - floor < 25:
             continue
-        below = np.where(seg[np.argmax(seg[:6]):] <= top - 20)[0]
-        if len(below):
-            rts.append(below[0] / 100 * 3)
+        t = np.arange(len(tail)) / 100
+        use = (tail <= top - 10) & (tail >= floor + 6)
+        # Only the first continuous stretch: the next word must not count as the room.
+        idx = np.where(use)[0]
+        if len(idx) < 8:
+            continue
+        run = [idx[0]]
+        for i in idx[1:]:
+            if i - run[-1] <= 2:
+                run.append(i)
+            else:
+                break
+        if len(run) < 8:
+            continue
+        slope, icpt = np.polyfit(t[run], tail[run], 1)
+        fit = slope * t[run] + icpt
+        r2 = 1 - np.sum((tail[run] - fit) ** 2) / (np.sum((tail[run] - tail[run].mean()) ** 2) + 1e-9)
+        # A room's ring falls in a nearly straight line (in dB); a wobbling plateau (bleed, noise, a breath) does not.
+        if slope < -5 and r2 >= 0.75:
+            rts.append(min(5.0, -60.0 / slope))
     return round(float(np.median(rts)), 2) if rts else None
 
 

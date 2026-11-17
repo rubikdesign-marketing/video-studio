@@ -15,22 +15,72 @@ import { bare, transcribe } from './transcribe.mjs';
 const SIZES = { '16:9': [1920, 1080], '9:16': [1080, 1920], '1:1': [1080, 1080], '4:5': [1080, 1350] };
 export const slugOf = (job) => path.basename(path.resolve(job)).toLowerCase().replace(/[^a-z0-9_-]+/g, '-');
 
-/** The dialogue: every piece from its clip's sound, crossfaded 15 ms into the next. */
+/** A clip's dialogue: its repaired voice (phase 3, voice/mix.wav) when there is one, else its sound as recorded. */
+export const voiceOf = (clipDir) => (fs.existsSync(path.join(clipDir, 'voice', 'mix.wav')) ? path.join(clipDir, 'voice', 'mix.wav') : path.join(clipDir, 'sound.wav'));
+
+/** The room-tone file for a clip's dialogue, made on first use from the same sound the dialogue uses. */
+function roomtoneOf(clipDir) {
+  const src = voiceOf(clipDir);
+  const f = path.join(clipDir, src.endsWith('mix.wav') ? 'voice/roomtone.wav' : 'roomtone.wav');
+  if (!fs.existsSync(f) || fs.statSync(f).mtimeMs < fs.statSync(src).mtimeMs) py('cutpoints', ['roomtone', src, path.join(clipDir, 'words.json'), f]);
+  return f;
+}
+
+/**
+ * How much room tone to lay under each clip's pieces so every cut keeps the same room (FOOTAGE-PLAN.md 7.3): the
+ * noisiest clip's background is the target; a clip more than 2 dB quieter gets that clip's room tone underneath, at
+ * the level that brings its background up to the target. Nothing is done when even the noisiest room is quieter than
+ * -70 dBFS (not heard under dialogue), or when the room tone would need more than 12 dB of lift. Returns { clip: { bed, gainDb } }. Levels in dBFS.
+ */
+const INAUDIBLE = -70; // dBFS: a background quieter than this is not heard under dialogue at -20 LUFS
+
+export function roomBeds(floors, roomLevels) {
+  const clips = Object.keys(floors);
+  if (clips.length < 2) return {};
+  const target = clips.reduce((a, b) => (floors[b] > floors[a] ? b : a));
+  const t = floors[target]; const out = {};
+  if (t < INAUDIBLE) return {}; // every room is too quiet to hear in a mix: nothing to even
+  for (const c of clips) {
+    if (c === target || floors[c] > t - 2) continue;
+    const bedDb = 10 * Math.log10(10 ** (t / 10) - 10 ** (floors[c] / 10));
+    const gainDb = round(bedDb - roomLevels[target], 2);
+    if (gainDb > 12) continue; // the room tone would have to be pushed up hard: leave the cut as it is
+    out[c] = { bed: target, gainDb };
+  }
+  return out;
+}
+
+/** The dialogue: every piece from its clip's voice, crossfaded 15 ms into the next, with the room evened out. */
 export function dialogue(job, cut, out) {
   const edit = path.join(job, 'edit');
-  const inputs = []; const chains = []; let last = null;
+  const inputs = []; const chains = []; let last = null; let n = 0;
+  const clips = [...new Set(cut.pieces.map((p) => p.clip))];
+  const dirOf = (c) => path.join(edit, 'clips', c);
+  const floors = {}; const roomLevels = {};
+  for (const c of clips) {
+    floors[c] = JSON.parse(String(py('repair', ['floor', voiceOf(dirOf(c)), '--words', path.join(dirOf(c), 'words.json')])).trim().split('\n').pop()).floor_dbfs;
+    roomLevels[c] = JSON.parse(String(py('repair', ['floor', roomtoneOf(dirOf(c))])).trim().split('\n').pop()).floor_dbfs;
+  }
+  const beds = roomBeds(floors, roomLevels);
   cut.pieces.forEach((p, i) => {
-    const clipDir = path.join(edit, 'clips', p.clip);
-    let src = path.join(clipDir, 'sound.wav');
-    if (p.kind === 'room tone') {
-      src = path.join(clipDir, 'roomtone.wav');
-      if (!fs.existsSync(src)) py('cutpoints', ['roomtone', path.join(clipDir, 'sound.wav'), path.join(clipDir, 'words.json'), src]);
-    }
+    const clipDir = dirOf(p.clip);
+    const src = p.kind === 'room tone' ? roomtoneOf(clipDir) : voiceOf(clipDir);
     inputs.push('-ss', String(p.in), '-t', String(p.dur), '-i', src);
-    chains.push(`[${i}:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[a${i}]`);
-    if (i === 0) last = 'a0';
-    else { chains.push(`[${last}][a${i}]acrossfade=d=${CROSSFADE}:c1=tri:c2=tri[x${i}]`); last = `x${i}`; }
+    const k = n++;
+    let label = `p${i}`;
+    chains.push(`[${k}:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo[${label}]`);
+    const bed = beds[p.clip];
+    if (bed) { // under speech and under room-tone fillers alike, so no stretch of the film drops to a different room
+      inputs.push('-stream_loop', '-1', '-t', String(p.dur), '-i', roomtoneOf(dirOf(bed.bed)));
+      const b = n++;
+      chains.push(`[${b}:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo,volume=${bed.gainDb}dB[b${i}]`);
+      chains.push(`[${label}][b${i}]amix=inputs=2:normalize=0:duration=first[m${i}]`);
+      label = `m${i}`;
+    }
+    if (i === 0) last = label;
+    else { chains.push(`[${last}][${label}]acrossfade=d=${CROSSFADE}:c1=tri:c2=tri[x${i}]`); last = `x${i}`; }
   });
+  cut.room = { floors_dbfs: floors, beds };
   const script = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'footage-mix-')), 'graph.txt');
   fs.writeFileSync(script, chains.join(';\n'));
   try {
@@ -77,6 +127,8 @@ export function prepareRough(job, cut) {
   const cache = {};
   const wordsOf = (clip) => (cache[clip] ??= readJson(path.join(edit, 'clips', clip, 'words.json')).words);
   dialogue(job, cut, path.join(rough, 'dialogue.wav'));
+  writeJson(path.join(edit, 'cutlist.json'), cut); // with the room levels the dialogue was made with
+  py('cuts', [path.join(rough, 'dialogue.wav'), path.join(edit, 'cutlist.json'), path.join(rough, 'cuts.png')]);
   const captions = { lines: captionLines(filmWords(cut, wordsOf)) };
   writeJson(path.join(rough, 'captions.json'), captions);
   const clips = [...new Set(cut.pieces.map((p) => p.clip))];

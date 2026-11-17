@@ -58,6 +58,13 @@ node --test tools/footage/tests/*.test.mjs >/dev/null 2>&1 && pass "the footage 
 [ -d "$HOME/.cache/hyperframes/parakeet" ] && pass "Parakeet (a second transcriber, for comparing)" \
   || note "Parakeet is not installed" "only needed to compare transcribers (footage.mjs compare): cd engine && npx hyperframes models install parakeet"
 
+echo "Sound repair (footage phase 3)"
+[ -x tools/footage/bin/deep-filter ] && pass "DeepFilterNet (noise removal)" || fail "DeepFilterNet is missing" "bash setup/install.sh"
+[ -f tools/footage/models/dnsmos/sig_bak_ovr.onnx ] && pass "DNSMOS speech-quality model (Microsoft, CC BY 4.0)" || fail "the DNSMOS speech-quality model is missing" "bash setup/install.sh"
+tools/footage/.venv/bin/python -I -c "import onnxruntime, nara_wpe" >/dev/null 2>&1 && pass "echo reduction and the scorer's runtime (nara_wpe, onnxruntime)" || fail "nara_wpe or onnxruntime is missing from the footage tool's Python" "bash setup/install.sh"
+[ -x "$HOME/.local/bin/demucs" ] && pass "Demucs (separates music from a voice)" || note "Demucs is not installed" "only needed for footage with music under speech: bash setup/install.sh --extras"
+tools/footage/.venv/bin/python -I -m unittest discover -s tools/footage/tests -p 'test_*.py' >/dev/null 2>&1 && pass "the sound repair tests pass" || fail "the sound repair tests fail" "run: tools/footage/.venv/bin/python -I -m unittest discover -s tools/footage/tests -p 'test_*.py' -v"
+
 echo "Hearing (earshot)"
 EARSHOT_BIN="$(command -v earshot || echo "$HOME/.local/bin/earshot")"
 if [ -x "$EARSHOT_BIN" ]; then pass "earshot (Claude's ears; installed with uv, pinned to 0.4.1)"

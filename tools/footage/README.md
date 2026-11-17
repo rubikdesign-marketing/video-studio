@@ -48,9 +48,21 @@ node tools/footage/footage.mjs rough jobs/<job> --render
 
 `rough` joins the dialogue sample by sample with 15 ms crossfades (`edit/rough/dialogue.wav`), checks it for clicks, listens back (transcribes it and compares it word for word with the paper edit), makes captions, and hands the engine's `FootageCut` the pictures. `--render` renders `jobs/<job>/out/rough-cut.mp4` (outside Claude's command sandbox). It will not run while a flagged join is unanswered.
 
+## Phase 3: sound repair and dialogue
+
+```bash
+node tools/footage/footage.mjs repair jobs/<job>
+```
+
+For each clip: a separate recorder is found by its sound and lined up to the sample; two microphones are split, each one's pickup of the other voice turned down, and each word given to its microphone. Then each track gets only the repairs ingest measured: rebuild clipping, remove clicks, notch hum, cut rumble below the voice's lowest notes, soften pops, separate music (Demucs), remove noise (DeepFilterNet), reduce echo (WPE), lower breaths, soften harsh "s" sounds, even the level, and one loudness (−20 LUFS). Separating music, removing noise and reducing echo are guarded by Microsoft's DNSMOS speech-quality score: tried strong, then lighter, and left out if the voice's score drops. A voice's tone is matched across clips when its pitch says it is the same person.
+
+Each clip gets `voice/<track>.wav`, `voice/mix.wav` and `sound.json`: every step with its reason and result, the scores before and after, and earshot's words for the difference. The rough cut then uses the repaired voices, evens the room at every cut, and draws the sound at every cut (`rough/cuts.png`, one fixed scale: a bright vertical line is a click, a dark band a gap, a colour change across the line a change of room).
+
+Credits: DNSMOS models © Microsoft, CC BY 4.0 (github.com/microsoft/DNS-Challenge); DeepFilterNet (MIT or Apache 2.0); Demucs (MIT); nara_wpe (MIT).
+
 ## How it was checked
 
-`tests/make_clips.mjs` makes four synthetic clips with known contents (fillers and a retake; a sideways HDR phone clip with an uneven frame rate and one-sided sound; a dark, soft, grainy, flickering clip with noise, 50 Hz hum, music, clipping and clicks; two shots with a cut and shake). `tests/check_truth.mjs` checks an ingested job against them: 31 checks. `node --test tools/footage/tests/*.test.mjs` runs the fast tests (18). `tests/check_rough.mjs <job> --render` checks phase 2 on a job holding the synthetic talking clip: the retake and fillers gone, every kept word heard and nothing struck, no clicks, and the rendered picture within one frame of its sound (9 checks). The thresholds for the findings were set on these synthetic clips and are checked again on the first real footage.
+`tests/make_clips.mjs` makes four synthetic clips with known contents (fillers and a retake; a sideways HDR phone clip with an uneven frame rate and one-sided sound; a dark, soft, grainy, flickering clip with noise, 50 Hz hum, music, clipping and clicks; two shots with a cut and shake). `tests/check_truth.mjs` checks an ingested job against them: 31 checks. `node --test tools/footage/tests/*.test.mjs` runs the fast tests (18). `tests/check_rough.mjs <job> --render` checks phase 2 on a job holding the synthetic talking clip: the retake and fillers gone, every kept word heard and nothing struck, no clicks, and the rendered picture within one frame of its sound (9 checks). `tests/check_repair.mjs <job>` checks phase 3 on the full synthetic set (it now also makes an interview on two microphones, a separate recorder and an echoey room): 19 checks. `tools/footage/.venv/bin/python -I -m unittest discover -s tools/footage/tests -p 'test_*.py'` runs the repair tests. The thresholds for the findings were set on these synthetic clips and are checked again on the first real footage.
 
 ## Notes
 

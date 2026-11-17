@@ -58,6 +58,27 @@ else
   echo "uv is missing, so the footage tool's Python was not set up. The health check at the end will say so."
 fi
 
+# Sound repair for footage (FOOTAGE-PLAN.md phase 3): DeepFilterNet's noise removal (MIT or Apache 2.0, one program,
+# its model inside) and Microsoft's DNSMOS speech-quality models (CC BY 4.0). Demucs (MIT; separates music from a voice;
+# about 1-2 GB with PyTorch) only with: bash setup/install.sh --extras
+DF="tools/footage/bin/deep-filter"
+if [ ! -x "$DF" ]; then
+  arch="$(uname -m)"; [ "$arch" = "arm64" ] && arch="aarch64"
+  mkdir -p tools/footage/bin
+  echo "Fetching DeepFilterNet (noise removal, about 28 MB)..."
+  curl -sL --fail -o "$DF" "https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-$arch-apple-darwin" && chmod +x "$DF" \
+    || { rm -f "$DF"; echo "DeepFilterNet did not download. The health check at the end will say so."; }
+fi
+mkdir -p tools/footage/models/dnsmos
+for f in sig_bak_ovr.onnx model_v8.onnx; do
+  [ -f "tools/footage/models/dnsmos/$f" ] || curl -sL --fail -o "tools/footage/models/dnsmos/$f" "https://raw.githubusercontent.com/microsoft/DNS-Challenge/master/DNSMOS/DNSMOS/$f" \
+    || echo "The speech-quality model $f did not download. The health check at the end will say so."
+done
+if [ "${1:-}" = "--extras" ] && have uv && [ ! -x "$HOME/.local/bin/demucs" ]; then
+  echo "Installing Demucs (separates music from a voice; about 1-2 GB)..."
+  HF_HUB_DISABLE_TELEMETRY=1 uv tool install --quiet --python 3.12 "demucs==4.1.0" --with numpy --with soundfile || echo "Demucs did not install."
+fi
+
 # earshot (github.com/Leonxlnx/earshot): Claude's ears for every sound judgement (tools/audio/listen.mjs). Its own Python,
 # pinned to the version the studio was tested with; its listening models (about 1.1 GB) in tools/audio/.earshot/.
 EARSHOT_REF="4ac3d2a"
