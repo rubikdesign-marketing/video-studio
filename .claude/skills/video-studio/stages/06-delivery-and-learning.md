@@ -20,7 +20,7 @@ Into `jobs/<job>/deliver/`:
 
 ## Record
 
-1. **Ledger.** Add a record to `brands/<brand>/ledger.json`: type, date, length, hook, look, signature move, stage, voice, references used, and the measured profile summary.
+1. **Ledger.** Add a record to `brands/<brand>/ledger.json`: type, date, length, hook, `hook_formula` (the hook library's id for the opening that shipped, from `job.json`), look, signature move, stage, voice, references used, and the measured profile summary. When results come in they go in the same record: the ledger is the only place a hook formula earns "worked for this brand" (`knowledge/craft/15-hooks.md` section 9).
 2. **Library.** Add the new move, effect or background to `library/` with its code, a preview clip, and the video types it suits.
 3. **Product knowledge.** Write anything learned about the product to `brands/<brand>/product/` with the date and a screenshot.
 4. **Usage.** Add the credits used per stage to the job record.

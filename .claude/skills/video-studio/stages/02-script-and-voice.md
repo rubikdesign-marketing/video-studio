@@ -16,7 +16,10 @@ Ends with the **Script and voice read** approval. A person listens to the voice 
 - Full sentences spoken to one person. Outcomes, not feature names. The hook or offer inside the first 3–5 seconds.
 - Fix the offer wording once and use it identically everywhere.
 - Estimate length at about 2.5 words a second and stay under the cap with room for holds.
-- Offer two alternative hooks alongside the recommended one.
+- Three hooks, from three different families of the hook library, written in the brand's own words: `node tools/hooks/hooks.mjs find --type <type> --platform <platform> --awareness <level> --brand <brand>`. A formula is a pattern to write from, never a line to copy.
+- For each: the spoken line, the written line that goes on screen with it (seven words at most, never a repeat of the voice) and what the first frame shows (`knowledge/craft/15-hooks.md` sections 1, 2 and 5). Measure it (`hooks.mjs measure "<line>" --on-screen "<line>"`) and score it on the four hook killers (`hooks.mjs rubric`): under 6 of 8, or a 0 anywhere, is rewritten. The scores are your judgement; say so.
+- Recommend one. Record all three in `job.json` under `hooks`: `formula` (the library id), `spoken`, `on_screen`, `first_frame`, `score`, and `picked`. The two not picked are kept as ad variants.
+- Every line is the brand's and goes through `zero-slop` like the rest of the script.
 
 ## 2. Voice
 

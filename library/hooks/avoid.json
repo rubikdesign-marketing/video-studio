@@ -1,0 +1,74 @@
+[
+ {
+  "pattern": "^\\s*(hey|hi|hello)([ ,]+(guys|everyone|everybody|y'?all|there|friends|folks|team)\\b|\\s*[,!.]|\\s*$)",
+  "why": "a greeting spends the first second before any topic"
+ },
+ {
+  "pattern": "^\\s*welcome( back)?\\b",
+  "why": "a channel intro: the viewer came for the promise, not the welcome"
+ },
+ {
+  "pattern": "\\bin (this|today's) video\\b",
+  "why": "it announces the video instead of being about the topic"
+ },
+ {
+  "pattern": "^\\s*(so )?today,? (i|we)('m|'re| am| are)? ?(going to|gonna|want to|wanna|will|'ll)\\b",
+  "why": "it promises talking, not a payoff"
+ },
+ {
+  "pattern": "^\\s*so (today|basically)\\b",
+  "why": "warm-up words that add time and no information"
+ },
+ {
+  "pattern": "^\\s*let('s| me| us) (explain|talk about|explore|dive|tell you)",
+  "why": "throat-clearing before the topic"
+ },
+ {
+  "pattern": "\\bbefore we (get started|begin|start)\\b",
+  "why": "it puts the payoff off"
+ },
+ {
+  "pattern": "^\\s*(story ?time|pov:?)\\s*$",
+  "why": "an empty wrapper with nothing after it"
+ },
+ {
+  "pattern": "\\byou won'?t believe\\b|\\bwait (till|until) you see\\b",
+  "why": "no topic: it reads as bait"
+ },
+ {
+  "pattern": "\\b(no ?one|nobody)('s| is)? (tells|talks|told|telling|talking) (you|about)\\b|\\bwhat they don'?t tell you\\b",
+  "why": "a tease that names nothing: say the thing"
+ },
+ {
+  "pattern": "^\\s*(stop scrolling|wait,? don'?t (swipe|scroll)|listen up)\\b",
+  "why": "an order with no reason yet: it reads as desperate"
+ },
+ {
+  "pattern": "^\\s*(smash|hit) (that |the )?(subscribe|like|follow)|^\\s*follow (me )?for more",
+  "why": "asks before giving anything"
+ },
+ {
+  "pattern": "^\\s*(check out our (new|latest)|we('re| are) (so )?(excited|thrilled|proud) to (announce|share|introduce))",
+  "why": "about the seller, not the viewer"
+ },
+ {
+  "pattern": "\\b(we|we've|we have|our \\w+( \\w+)?) (has |have )?just launched\\b",
+  "why": "a news report with no stake for the viewer"
+ },
+ {
+  "pattern": "\\bthe (shift|future|evolution|landscape) (happening )?(in|of)\\b",
+  "why": "abstract: nothing the viewer can picture"
+ },
+ {
+  "pattern": "^\\s*comment \\w+ (for|to|and)\\b",
+  "why": "a call to action closes a film: it does not open one"
+ },
+ {
+  "pattern": "\\b(game[- ]?chang(er|ers|ing)|revolutionary|mind[- ]?blowing|insane|insanely|crazy|secret|secrets|hack|hacks)\\b",
+  "why": "hype wording: say what it does instead"
+ },
+ {
+  "pattern": "^\\s*(did you know|have you ever wondered)\\b",
+  "why": "a quiz-show opener: start with the fact or the question itself"
+ }
+]

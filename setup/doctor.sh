@@ -78,6 +78,8 @@ else fail "earshot is not installed (Claude's ears: tools/audio/listen.mjs)" "ba
 [ -n "$(ls -A tools/audio/.earshot/hf 2>/dev/null)" ] && pass "earshot's listening models (tools/audio/.earshot)" || fail "earshot's listening models are missing" "bash setup/install.sh fetches them (about 1.1 GB)"
 for s in real-sfx hyperframes-to-after-effects; do [ -f ".claude/skills/$s/SKILL.md" ] && pass "skill $s (fetched, not kept in the repository)" || fail "skill $s is missing" "bash setup/update-skills.sh --missing"; done
 [ -f tools/media/openverse.mjs ] && pass "Openverse search (tools/media/openverse.mjs)" || fail "tools/media/openverse.mjs is missing" "pull the latest studio from GitHub"
+node tools/hooks/hooks.mjs check >/dev/null 2>&1 && pass "the hook library is sound (library/hooks/)" || fail "the hook library has a problem" "run: node tools/hooks/hooks.mjs check"
+node --test tools/hooks/tests/*.test.mjs >/dev/null 2>&1 && pass "the hook tools' tests pass" || fail "the hook tools' tests fail" "run: node --test tools/hooks/tests/*.test.mjs"
 node --test tools/media/tests/*.test.mjs >/dev/null 2>&1 && pass "the Openverse and listening tests pass" || fail "the Openverse or listening tests fail" "run: node --test tools/media/tests/*.test.mjs"
 
 echo "Product capture"
@@ -144,7 +146,7 @@ for t in tools/study/profile.py tools/study/sheets.sh tools/audio/voice_check.py
 done
 
 # The checks' own tests (phase 7): fast, no browser, no render. The engine-plan tests need the engine's esbuild.
-if node --test tools/capture/tests/*.test.mjs tools/checks/tests/film.test.mjs tools/checks/tests/captions_clear.test.mjs tools/checks/tests/text_size.test.mjs tools/film/tests/*.test.mjs >/dev/null 2>&1; then pass "the freshness, captions, text size and proof-of-source tests pass"
+if node --test tools/capture/tests/*.test.mjs tools/checks/tests/film.test.mjs tools/checks/tests/captions_clear.test.mjs tools/checks/tests/text_size.test.mjs tools/checks/tests/hook_legible.test.mjs tools/film/tests/*.test.mjs >/dev/null 2>&1; then pass "the freshness, captions, text size, hook readability and proof-of-source tests pass"
 else fail "a check's own tests fail" "run: node --test tools/capture/tests/*.test.mjs tools/checks/tests/*.test.mjs tools/film/tests/*.test.mjs"; fi
 if [ -d engine/node_modules/esbuild ]; then
   node --test tools/checks/tests/capture_place.test.mjs >/dev/null 2>&1 && pass "the checks read captures through the engine's plan" || fail "the checks cannot read captures through the engine's plan" "run: node --test tools/checks/tests/capture_place.test.mjs"

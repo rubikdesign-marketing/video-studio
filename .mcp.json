@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "viralhooks": {
+      "type": "http",
+      "url": "https://viralhooks.org/api/mcp/"
+    }
+  }
+}

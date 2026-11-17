@@ -38,6 +38,7 @@ Each concept is a filled `templates/soul-sheet.md`, plus:
 - The flow pattern it uses (`knowledge/craft/10-flows.md`).
 - Up to three study cards it learns from, and the one technique taken from each.
 - How its hook, look and signature move differ from the last five videos.
+- The hook family each idea would open with (`knowledge/craft/15-hooks.md` section 4; `node tools/hooks/hooks.mjs find --type <type> --platform <platform> --awareness <level> --brand <brand>` gives formulas the brand has not used lately). The three ideas open in three different families.
 
 The three must differ from each other in idea, not only in styling. Recommend one.
 

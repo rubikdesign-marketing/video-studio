@@ -33,6 +33,8 @@ A film that sells one offer or one launch. The viewer should want it and know wh
 
 For every promo, the first-animation step includes three different openings for the first three seconds, at preview quality. The maker picks one. The others are kept for testing as ad variants.
 
+The three come from three different families of the hook library (`library/hooks/`, `node tools/hooks/hooks.mjs find`), written at the script stage and scored there (`knowledge/craft/15-hooks.md`). Each opening's written line must pass `node tools/checks/hook_legible.mjs`: readable with the sound off by 3 s.
+
 ## First animation
 
 The animatic of the whole film with the real voice, plus one proof scene and the hook at full polish.

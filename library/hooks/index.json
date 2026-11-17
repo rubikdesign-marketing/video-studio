@@ -1,0 +1,4927 @@
+{
+ "about": "Hook formulas for the first three seconds of a video (LIBRARY-PLAN.md phase 1). Each is a pattern to write from in the brand's own words, never a line to copy. Every formula is \"untested\": the library says what a formula is, never that it works; what worked for a brand is in that brand's ledger. Use: node tools/hooks/hooks.mjs find. Credits: CREDITS.md.",
+ "families": [
+  {
+   "id": "question",
+   "name": "Question",
+   "what": "asks what the viewer already wants answered"
+  },
+  {
+   "id": "contrarian",
+   "name": "Contrarian",
+   "what": "says the opposite of what the viewer believes, and means it"
+  },
+  {
+   "id": "outcome",
+   "name": "Outcome first",
+   "what": "shows or states the result before anything else"
+  },
+  {
+   "id": "problem",
+   "name": "Problem",
+   "what": "names a pain the viewer recognises as theirs"
+  },
+  {
+   "id": "curiosity-gap",
+   "name": "Curiosity gap",
+   "what": "opens a gap with a shape: the kind of answer is named, the answer is not"
+  },
+  {
+   "id": "proof",
+   "name": "Proof",
+   "what": "leads with a number, a result or a receipt that can be shown"
+  },
+  {
+   "id": "story",
+   "name": "Story",
+   "what": "starts in the middle of something that happened"
+  },
+  {
+   "id": "how-to",
+   "name": "How to",
+   "what": "promises a method the viewer can use"
+  },
+  {
+   "id": "list",
+   "name": "List",
+   "what": "promises a counted set"
+  },
+  {
+   "id": "mistake-warning",
+   "name": "Mistake or warning",
+   "what": "points at a mistake or a loss the viewer may be making"
+  },
+  {
+   "id": "callout",
+   "name": "Callout",
+   "what": "names the exact people it is for"
+  },
+  {
+   "id": "comparison",
+   "name": "Comparison",
+   "what": "sets two things side by side: before and after, this or that"
+  },
+  {
+   "id": "offer",
+   "name": "Offer",
+   "what": "is the deal itself, said plainly"
+  },
+  {
+   "id": "demonstration",
+   "name": "Demonstration",
+   "what": "shows the product doing the thing, before any talk"
+  },
+  {
+   "id": "pattern-interrupt",
+   "name": "Pattern interrupt",
+   "what": "opens on a picture or a move the feed does not usually show"
+  }
+ ],
+ "sources": [
+  {
+   "id": "ig-agent",
+   "name": "instagram-agent-skill (skills/ig-reel/hooks.json)",
+   "url": "https://github.com/Jakeschincariol/instagram-agent-skill",
+   "licence": "MIT",
+   "commit": "d03c56bb598be770c60b201f94237e5d1a4268a6",
+   "copyright": "Copyright (c) 2026 Jake Schincariol",
+   "taken": "2026-11-18",
+   "formulas": 25
+  },
+  {
+   "id": "yt-agent",
+   "name": "youtube-agent-skill (skills/yt-script/hooks.json)",
+   "url": "https://github.com/Jakeschincariol/youtube-agent-skill",
+   "licence": "MIT",
+   "commit": "a2feb2104981a375ffd4f87ee04f4f5344ac43c6",
+   "copyright": "Copyright (c) 2026 Jake Schincariol",
+   "taken": "2026-11-18",
+   "formulas": 10
+  },
+  {
+   "id": "viral-hooks-db",
+   "name": "viral-hooks-skill (hooks-database.md)",
+   "url": "https://github.com/rediumvex/viral-hooks-skill",
+   "licence": "MIT",
+   "commit": "e26b339ccf452abf43bb97df54603e4781ae0a8e",
+   "copyright": "Copyright (c) 2026 Roman Knox",
+   "taken": "2026-11-18",
+   "formulas": 45
+  },
+  {
+   "id": "vyral",
+   "name": "Vyral content-skills (viral-hooks)",
+   "url": "https://github.com/vyralcontent/content-skills",
+   "licence": "MIT",
+   "commit": "349e495d97029a3e6303a7510e3f39c73f36d8fe",
+   "copyright": "Copyright (c) 2026 Vyral",
+   "taken": "2026-11-18",
+   "formulas": 20
+  },
+  {
+   "id": "marketingskills",
+   "name": "marketingskills (ad-creative hook system)",
+   "url": "https://github.com/coreyhaines31/marketingskills",
+   "licence": "MIT",
+   "commit": "1f837447b20bb6f0e72d87b80ece1c221c362c7d",
+   "copyright": "Copyright (c) 2025 Corey Haines",
+   "taken": "2026-11-18",
+   "formulas": 13
+  },
+  {
+   "id": "yt-skills",
+   "name": "youtube-skills (hook formulas, retention beats)",
+   "url": "https://github.com/sergebulaev/youtube-skills",
+   "licence": "MIT",
+   "commit": "73cd16a05b589d755bf2eef3e4ee9db9e2df5494",
+   "copyright": "Copyright (c) 2026 Sergey Bulaev",
+   "taken": "2026-11-18",
+   "formulas": 9
+  },
+  {
+   "id": "storytelling",
+   "name": "storytelling-skills (storytelling-hooks)",
+   "url": "https://github.com/yaxeen/storytelling-skills",
+   "licence": "MIT",
+   "commit": "24ef3c1e3d7fde66cc5f1c5953cd6c1d7afc0b4f",
+   "copyright": "Copyright (c) 2026 Muhammad Yasin",
+   "taken": "2026-11-18",
+   "formulas": 19
+  },
+  {
+   "id": "virality",
+   "name": "claude-virality-skill",
+   "url": "https://github.com/Ootto-AI/claude-virality-skill",
+   "licence": "MIT",
+   "commit": "542ed54b2c3684597157d8d91b79d3ae7ec2e137",
+   "copyright": "Copyright (c) 2026 Ootto",
+   "taken": "2026-11-18",
+   "formulas": 6
+  },
+  {
+   "id": "content-skills",
+   "name": "content-skills (viral-hooks)",
+   "url": "https://github.com/artemnovitckii/content-skills",
+   "licence": "MIT",
+   "commit": "1c6e909c975b15d80f6ffcb0e2b60904b7da6656",
+   "copyright": "Copyright (c) 2026 Artem Novitckii",
+   "taken": "2026-11-18",
+   "formulas": 0
+  },
+  {
+   "id": "video-director",
+   "name": "video-director",
+   "url": "https://github.com/win4r/video-director",
+   "licence": "MIT",
+   "commit": "02d1912ab251bf5235b45e8e7aad81b4bc786b15",
+   "copyright": "Copyright (c) 2026 win4r",
+   "taken": "2026-11-18",
+   "formulas": 0
+  },
+  {
+   "id": "studio",
+   "name": "Written for this studio",
+   "url": "https://github.com/rubikdesign-marketing/video-studio",
+   "licence": "own",
+   "commit": "",
+   "copyright": "Copyright 2026 the owners of this repository",
+   "taken": "2026-11-18",
+   "formulas": 8
+  }
+ ],
+ "formulas": [
+  {
+   "id": "audience-reason-not",
+   "family": "callout",
+   "name": "Audience, then reason",
+   "spoken": "{Audience}: the reason {shared problem} isn't what you think.",
+   "example": "New managers: the reason your team goes quiet in meetings isn't what you think.",
+   "on_screen": "Why your team goes quiet",
+   "first_frame": "The audience label as the first text, with the problem scene behind it.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Naming a broad audience loses the point; narrow the audience label.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "if-this-watch",
+   "family": "callout",
+   "name": "If this, watch",
+   "spoken": "If you {specific situation}, this {short time} fixes it",
+   "example": "If you get plenty of sign-ups but nobody finishes setup, this two-minute change fixes it",
+   "on_screen": "Sign-ups but no setup?",
+   "first_frame": "The viewer's exact situation shown as a screen, such as a drop-off chart",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "A situation so broad it qualifies nobody. 'If you want to grow' is not a situation.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "if-you-situation",
+   "family": "callout",
+   "name": "If you, then the cause",
+   "spoken": "If you {specific situation}, {thing} is the problem.",
+   "example": "If your team keeps asking where the latest file is, your folder naming is the problem.",
+   "on_screen": "Where's the latest file?",
+   "first_frame": "A screen showing exactly that situation, such as a cluttered shared folder.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A callout so broad it fits anyone fits no one; narrow it.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "private-feeling",
+   "family": "callout",
+   "name": "Say the feeling",
+   "spoken": "If {private feeling in the audience's own words}, this is for you.",
+   "example": "If opening the shared inbox makes your stomach drop, this is for you.",
+   "on_screen": "Dreading the shared inbox",
+   "first_frame": "The thing causing the feeling on screen, such as an overflowing inbox.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Use their real words from reviews and comments, not a paraphrase.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "role-callout",
+   "family": "callout",
+   "name": "Role callout",
+   "spoken": "Attention {role}: {specific situation}.",
+   "example": "Attention team leads: you're still copying the same update into three places.",
+   "on_screen": "Team leads, one update, three places",
+   "first_frame": "A screen of the exact duplicated task the role does.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Reads like an ad on cold audiences; make the situation more specific than the role.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "stop-scrolling-if",
+   "family": "callout",
+   "name": "If you, stop scrolling",
+   "spoken": "If you {audience-defining behaviour}, stop scrolling.",
+   "example": "If you run payroll for a team under twenty, stop scrolling.",
+   "on_screen": "Payroll for a small team?",
+   "first_frame": "The specific audience situation on screen, with motion in frame one.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "The source treats imperative openers as high-variance: only use it when the payoff earns the command.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "the-callout",
+   "family": "callout",
+   "name": "The callout",
+   "spoken": "{Specific group}, this is the one you have been ignoring",
+   "example": "Support leads, this is the report you have been ignoring",
+   "on_screen": "Support leads, this one is for you",
+   "first_frame": "The group named in large type, with a screen they would use behind it",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A group so large it is not a callout. 'Entrepreneurs' is not a group.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "this-is-for",
+   "family": "callout",
+   "name": "This is for",
+   "spoken": "This is for the {type of person} who {relatable struggle}",
+   "example": "This is for the founder who keeps re-explaining the same feature on every call",
+   "on_screen": "This one is for you",
+   "first_frame": "The person's exact moment shown on screen, such as a repeated call",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "cold"
+    ]
+   },
+   "trap": "A struggle so general it fits everyone. Pick one moment they would recognise.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "head-to-head",
+   "family": "comparison",
+   "name": "Head to head",
+   "spoken": "{A} versus {B}. I ran both for {time} and one of them was not close",
+   "example": "Email onboarding or in-app tips? I ran both for a month",
+   "on_screen": "Email versus in-app tips",
+   "first_frame": "Both options side by side in a split screen",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Refusing to pick. A comparison with a diplomatic ending is a video with no ending.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "left-right-contrast",
+   "family": "comparison",
+   "name": "Two states, one beat",
+   "spoken": "{Before state} on one side, {after state} on the other.",
+   "example": "Our old inbox on one side, the sorted one on the other.",
+   "on_screen": "Before and after, same inbox",
+   "first_frame": "Both states in the frame at once, side by side or split.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The change must be shown honestly; an exaggerated after is a compliance and trust problem.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "most-versus-some",
+   "family": "comparison",
+   "name": "Most do this, some do that",
+   "spoken": "Most {roles} do {X}. The ones who {result} do {Y}.",
+   "example": "Most project leads give status updates in a meeting. The calm ones write them",
+   "on_screen": "Meetings or written updates",
+   "first_frame": "Two behaviours shown or named, the common one first.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "promo"
+    ],
+    "platforms": [
+     "linkedin",
+     "x",
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Name a behaviour the audience will recognise as what most people really do, or it reads as a straw man.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "old-way-new-way",
+   "family": "comparison",
+   "name": "Old way, new way",
+   "spoken": "We used to {old way}. Now everyone {new way}. Which is better for {goal}?",
+   "example": "We kept launch notes in documents. Now it is one shared board. Which is better?",
+   "on_screen": "Documents or boards, for launches?",
+   "first_frame": "A visual of the old way beside the new way, such as a document next to a board.",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial"
+    ],
+    "platforms": [
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "reels",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The hook only works if the body answers and takes a side from real expertise.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "the-replacement",
+   "family": "comparison",
+   "name": "The replacement",
+   "spoken": "{This thing} replaced {expensive thing} for {price}",
+   "example": "This one tool replaced the three we were paying for, at a third of the cost",
+   "on_screen": "Three tools down to one",
+   "first_frame": "The old tools side by side, then one window taking their place",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "solution-aware",
+     "problem-aware"
+    ]
+   },
+   "trap": "Overstating the replacement. If it replaced part of the job, say which part, or the comments will say it for you.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "two-real-options",
+   "family": "comparison",
+   "name": "Two real options",
+   "spoken": "{Option A} or {Option B} for {specific decision}?",
+   "example": "Kanban or a simple checklist for a team of five?",
+   "on_screen": "Kanban or checklist?",
+   "first_frame": "Both options named on screen, split down the middle.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Both options must be ones the audience really weighs, and the payoff must pick a side.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "versus-same-job",
+   "family": "comparison",
+   "name": "Versus, same job",
+   "spoken": "{Option A} vs {Option B}: I {did the same job} in both.",
+   "example": "Spreadsheet vs shared board: I planned the same launch in both.",
+   "on_screen": "Spreadsheet vs board, same launch",
+   "first_frame": "Both tools split on screen with the same task in each.",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A rigged comparison reads as sponsored; show the real trade-off.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "advice-rejected",
+   "family": "contrarian",
+   "name": "Advice rejected",
+   "spoken": "Everyone says {accepted advice}. I {did the opposite} and {result}",
+   "example": "Everyone says add more integrations. I removed half of ours and support tickets dropped",
+   "on_screen": "Everyone says this. I did not",
+   "first_frame": "The common advice on screen, then crossed out by the real result",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Needs evidence in the next fifteen seconds or it reads as contrarian for its own sake.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "consensus-backfires",
+   "family": "contrarian",
+   "name": "Consensus backfires",
+   "spoken": "Everyone says {X}. Here's why {X} is exactly why {bad outcome}.",
+   "example": "Everyone says automate everything first. Here's why that's exactly why your workflows break.",
+   "on_screen": "Automate first, break later",
+   "first_frame": "The popular advice on screen as a quote card or checklist item.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Only works when the payoff really connects the advice to the bad outcome.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "does-not-work",
+   "family": "contrarian",
+   "name": "Does not work",
+   "spoken": "{Popular thing} does not work the way people think. Here is why",
+   "example": "Long onboarding tours do not work the way people think. Here is why",
+   "on_screen": "Does not work how you think",
+   "first_frame": "The popular thing running on screen, with the flaw circled",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware"
+    ]
+   },
+   "trap": "Saying it does not work and then showing it does, a bit. Be exact about where it fails.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "drop-the-assumed-need",
+   "family": "contrarian",
+   "name": "Drop the assumed need",
+   "spoken": "You can {drop the thing the buyer believes they need}.",
+   "example": "You can cancel your third scheduling tool.",
+   "on_screen": "Cancel the third scheduling tool",
+   "first_frame": "The thing being dropped on screen, such as a subscription list.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "x",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Draws strong reactions including angry ones; stay fair to any named product and get legal review before naming a competitor in paid ads.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "everyone-missing",
+   "family": "contrarian",
+   "name": "Everyone is missing",
+   "spoken": "Everyone is doing {trend}, but they are missing {key detail}",
+   "example": "Everyone is adding an AI chat box and missing the undo button",
+   "on_screen": "Everyone is missing this detail",
+   "first_frame": "The trend as a familiar screen, with the missing piece circled",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Naming a detail that is not actually missing. Check three real examples first.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "everyone-thinks-wrong",
+   "family": "contrarian",
+   "name": "Everyone thinks, wrongly",
+   "spoken": "Everyone thinks {X} because {Y}. They're wrong, and here's what's actually happening.",
+   "example": "Everyone thinks onboarding emails get ignored because they're too long. They're wrong, and here's what's actually happening.",
+   "on_screen": "The real reason onboarding emails fail",
+   "first_frame": "The common belief shown as text or a screenshot, about to be crossed out.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Highest peak and highest variance; the body has to defend the claim or trust collapses.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "hidden-cost",
+   "family": "contrarian",
+   "name": "The hidden cost",
+   "spoken": "The hidden cost of {popular thing}",
+   "example": "The hidden cost of free tools that do not talk to each other",
+   "on_screen": "The hidden cost of free tools",
+   "first_frame": "The popular thing on screen with a running tally beside it",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A cost with no working shown. Show the sum or it is only a feeling.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "i-stopped",
+   "family": "contrarian",
+   "name": "I stopped",
+   "spoken": "I stopped {thing everyone does} and {result}",
+   "example": "I stopped sending a weekly newsletter and replies to our team went up",
+   "on_screen": "I stopped doing this",
+   "first_frame": "The thing being switched off or deleted on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Claiming a result you cannot show. Put the before and after on screen.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "myth-reality",
+   "family": "contrarian",
+   "name": "Myth and reality",
+   "spoken": "Myth: {popular belief}. Reality: {the truer version}",
+   "example": "Myth: customers want every feature. Reality: they use three",
+   "on_screen": "Myth, then reality",
+   "first_frame": "Two halves of the screen, the myth struck through, the reality beside it",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A myth nobody believed. Pick one you have actually heard people say.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "negative-command",
+   "family": "contrarian",
+   "name": "Stop and swap",
+   "spoken": "Stop {common action}. Do {alternative} instead",
+   "example": "Stop sending a welcome email with six links. Send one link and a short video",
+   "on_screen": "Stop doing this one thing",
+   "first_frame": "The habit being done on screen, then a red cross over it",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Telling people to stop doing something nobody does. The habit has to be one the viewer recognises in themselves.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "not-this-but-that",
+   "family": "contrarian",
+   "name": "Not this, but that",
+   "spoken": "It is not {common cause}. It is {real cause}",
+   "example": "It is not your server that is slow. It is one database query",
+   "on_screen": "Not the cause you think",
+   "first_frame": "The usual suspect on screen, then crossed out for the real cause",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware"
+    ]
+   },
+   "trap": "Swapping one vague cause for another. The real cause has to be shown.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "opposite-is-true",
+   "family": "contrarian",
+   "name": "The opposite is true",
+   "spoken": "Why {common belief} is actually the opposite",
+   "example": "Why giving trial users more features is the opposite of what helps them sign up",
+   "on_screen": "The opposite is true",
+   "first_frame": "The common belief on screen, then flipped",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Flipping a belief nobody holds. State the real thing within ten seconds.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "permission",
+   "family": "contrarian",
+   "name": "Permission to skip it",
+   "spoken": "You do not need {the thing everyone says you need}",
+   "example": "You do not need a developer to add a booking form. You need ten minutes",
+   "on_screen": "You do not need a developer",
+   "first_frame": "The supposed requirement crossed out on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Removing the blocker and putting nothing in its place. The second half is the whole video.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "practice-is-the-reason",
+   "family": "contrarian",
+   "name": "The practice is the cause",
+   "spoken": "{Common practice} is exactly why you can't {goal}.",
+   "example": "Weekly status meetings are exactly why you can't ship on Fridays.",
+   "on_screen": "Status meetings block Fridays",
+   "first_frame": "The common practice on screen, such as a calendar block.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The causal link has to hold up in the body, or it reads as provocation.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "saying-flip",
+   "family": "contrarian",
+   "name": "Saying flipped",
+   "spoken": "{Well-known saying, inverted}",
+   "example": "The customer is not always right. The customer is always telling you something",
+   "on_screen": "Saying turned upside down",
+   "first_frame": "The familiar saying on screen with one word swapped",
+   "suits": {
+    "types": [
+     "promo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Flipping a saying nobody says. The original has to be a reflex, or the inversion is just a sentence.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "stopped-working",
+   "family": "contrarian",
+   "name": "Stopped working",
+   "spoken": "{Popular strategy} has stopped working for us. Here is what we do now",
+   "example": "Cold calling has stopped working for us. Here is what we do now",
+   "on_screen": "This stopped working for us",
+   "first_frame": "The old method shown, then replaced by the new one",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Declaring something dead on a hunch. Say what you measured and over how long.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "unpopular-opinion",
+   "family": "contrarian",
+   "name": "Unpopular opinion",
+   "spoken": "Unpopular opinion: {bold claim about your field}",
+   "example": "Unpopular opinion: most onboarding tours should be deleted",
+   "on_screen": "Unpopular opinion",
+   "first_frame": "The claim on screen in plain type, nothing else",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "x",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "An opinion nobody would argue with. If no one disagrees, it was only a statement.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "after-the-milestone",
+   "family": "curiosity-gap",
+   "name": "After the milestone",
+   "spoken": "What happens after {milestone} is the hard part",
+   "example": "What happens after you launch the help centre is the hard part",
+   "on_screen": "After the help centre launch",
+   "first_frame": "The milestone achieved on screen, the next step left empty.",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "demo"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "\"Nobody talks about\" with no named thing is on the source's own banned list; name the thing straight after.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "authority-then-gap",
+   "family": "curiosity-gap",
+   "name": "Credibility, then gap",
+   "spoken": "I've spent {time} doing {thing}. Here is what I would tell you first",
+   "example": "I've spent six years answering support emails. Here is what I would tell you first",
+   "on_screen": "Six years of support emails",
+   "first_frame": "The speaker or their real workspace, already mid-task.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "False authority reads worse than none; if you can't back the claim, leave it out.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "found-hidden-thing",
+   "family": "curiosity-gap",
+   "name": "Found something hidden",
+   "spoken": "I found {hidden thing} in {familiar place} that {does unexpected thing}.",
+   "example": "I found a setting in our billing page that stops failed-payment emails going to the wrong person.",
+   "on_screen": "Hidden setting, billing page",
+   "first_frame": "The familiar screen with the hidden thing highlighted.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Hold back the answer but name the category of it, or the gap reads as bait.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "found-out-why",
+   "family": "curiosity-gap",
+   "name": "Found out why",
+   "spoken": "I found out why {common problem} keeps happening",
+   "example": "I found out why our onboarding emails keep landing in spam",
+   "on_screen": "Why this keeps happening",
+   "first_frame": "The problem itself on screen, mid-failure, before anyone speaks",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware"
+    ]
+   },
+   "trap": "Never answering the why. If the cause turns up after the halfway mark, the title has lied.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "most-lose-to-detail",
+   "family": "curiosity-gap",
+   "name": "Quiet loss",
+   "spoken": "Most {audience} lose {resource} to {thing} without noticing the one {detail} causing it.",
+   "example": "Most small teams lose hours to meetings without noticing the one recurring invite causing it.",
+   "on_screen": "The one invite costing you hours",
+   "first_frame": "The recurring thing, such as a calendar full of the same invite.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Specific enough to feel real, or the viewer files it as generic.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "number-first",
+   "family": "curiosity-gap",
+   "name": "Number first",
+   "spoken": "{Specific number}: that is how many {things} {context}",
+   "example": "Forty-one: that is how many tabs I had open before we built this",
+   "on_screen": "The number, then why",
+   "first_frame": "The number alone in large type, then the reason it matters",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "product-aware"
+    ]
+   },
+   "trap": "A number with no payoff. Say why it matters in the next sentence.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "reason-not-obvious",
+   "family": "curiosity-gap",
+   "name": "Reason, but not that",
+   "spoken": "There's a reason {surprising observation}, and it's not {expected explanation}.",
+   "example": "There's a reason your reports look different on every machine, and it's not the software.",
+   "on_screen": "Why reports look different",
+   "first_frame": "The surprising observation itself shown, such as two mismatched screens.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "If the real reason is weak, the gap closes with a shrug.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "shorts-payoff-line",
+   "family": "curiosity-gap",
+   "name": "One-line payoff",
+   "spoken": "This one {setting or habit} {changed a result} and it's {off by default}.",
+   "example": "This one setting made our reports easier to share and it's off by default.",
+   "on_screen": "Off by default, worth switching on",
+   "first_frame": "The setting on screen with the line written over it, already readable.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "promo",
+     "edit"
+    ],
+    "platforms": [
+     "shorts",
+     "reels",
+     "youtube",
+     "tiktok"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "No greeting, no logo, no slow zoom; the first frame is the whole funnel.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "what-happens-when",
+   "family": "curiosity-gap",
+   "name": "What happens when",
+   "spoken": "What happens when you {unexpected action} for {timeframe}",
+   "example": "What happens when you switch off every notification in your app for a week",
+   "on_screen": "A week with no notifications",
+   "first_frame": "A timer or dashboard already running, day one marked on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "edit",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "product-aware"
+    ]
+   },
+   "trap": "A setup with no stake. If nothing is at risk, the answer is a shrug.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "withheld-reveal",
+   "family": "curiosity-gap",
+   "name": "Withheld reveal",
+   "spoken": "I won't say which {thing}, but my {result} is {surprising}.",
+   "example": "I won't say which export setting, but my reports now load before I've finished my coffee.",
+   "on_screen": "One setting changed my reports",
+   "first_frame": "The result on screen with the key detail blurred or covered.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A reveal that never comes, or comes late, burns trust faster than no hook.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "withhold-the-noun",
+   "family": "curiosity-gap",
+   "name": "Withhold the noun",
+   "spoken": "The {withheld noun} behind most {common frustration}.",
+   "example": "The setting behind most missed meeting reminders.",
+   "on_screen": "The setting behind missed reminders",
+   "first_frame": "The frustration on screen, such as a notification that never arrived.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Must pay off inside the video; a gap with no answer is clickbait and hurts what follows.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "before-after-on-screen",
+   "family": "demonstration",
+   "name": "Before and after",
+   "spoken": "{Show the old thing}. {Show the new thing}. {One sentence on the lever}",
+   "example": "This was our checkout last March. This is it now. We removed one field",
+   "on_screen": "March, then now",
+   "first_frame": "The old version, then a hard cut to the new one",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Three levers. Name one thing that changed or the transformation stops being believable.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "behind-the-scenes",
+   "family": "demonstration",
+   "name": "Behind the scenes",
+   "spoken": "Behind the scenes of {thing worth seeing}",
+   "example": "Behind the scenes of how we ship an update every Friday",
+   "on_screen": "Behind the scenes",
+   "first_frame": "The real working space or screen, already in use",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "youtube"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Showing a tidy set instead of the real thing. The mess is the point.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "builds-itself",
+   "family": "demonstration",
+   "name": "Builds itself",
+   "spoken": "{The claim, built word by word, as the thing connects}.",
+   "example": "Connect your calendar to your project board. Watch it fill itself in.",
+   "on_screen": "Calendar plus board, connected",
+   "first_frame": "A cable or line connecting two real things as the claim builds word by word on screen.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "From one account's experience; keep the claim to what the next shot can really show.",
+   "source": "virality",
+   "status": "untested"
+  },
+  {
+   "id": "cold-open-demo",
+   "family": "demonstration",
+   "name": "Cold open demo",
+   "spoken": "{Start mid-action, already doing the thing}. Watch what this does",
+   "example": "Already dragging a file into the app. Watch what this does",
+   "on_screen": "Watch this",
+   "first_frame": "The screen already mid-action, a hand or cursor moving",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "A result that takes twelve seconds to arrive. If the payoff is slow, cut to it and show the wait afterwards.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "look-at-this",
+   "family": "demonstration",
+   "name": "Look at this",
+   "spoken": "Look at this. That's actually {surprise}.",
+   "example": "Look at this. That one button is actually the whole report.",
+   "on_screen": "One button, whole report",
+   "first_frame": "The surprising thing already on screen, with a hand or cursor pointing at it.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The spoken line is only a pointer, so a flat visual leaves nothing to point at.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "peak-moment-cold-open",
+   "family": "demonstration",
+   "name": "Cold open on the peak",
+   "spoken": "{Peak moment shown first}. To get here I had to {obstacle}, so let me show you.",
+   "example": "That is the whole team on one board. It started as four spreadsheets",
+   "on_screen": "Four spreadsheets to one board",
+   "first_frame": "A few seconds of the most striking moment, before any setup.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "The teased moment must appear later and be worth the wait.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "receipt-shot",
+   "family": "demonstration",
+   "name": "The receipt shot",
+   "spoken": "{Plain statement of the number or result on screen}.",
+   "example": "Here's the real invoice total, and here's what we changed.",
+   "on_screen": "The real invoice, up close",
+   "first_frame": "A real number visible in frame one: an analytics screen, an invoice, a settings page.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "A fake or staged number gets caught and costs trust.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "result-first-rewind",
+   "family": "demonstration",
+   "name": "Result first, then rewind",
+   "spoken": "{Finished result, shown}. Now let me back up to how it started.",
+   "example": "This is the finished dashboard. Now let me back up to the blank page it started as.",
+   "on_screen": "Finished dashboard, from blank",
+   "first_frame": "The finished result filling the frame before any setup appears.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "The result has to appear and be worth the wait, or it reads as a bait tease.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "self-proving",
+   "family": "demonstration",
+   "name": "The video proves it",
+   "spoken": "Nobody {did the usual thing} for this video. {The tool did}.",
+   "example": "Nobody edited this video by hand. The tool did.",
+   "on_screen": "Nobody edited this by hand",
+   "first_frame": "The finished video itself, with the claim shown on screen as it plays.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Only works if the claim is true and checkable; an unverifiable \"nobody did this\" damages trust.",
+   "source": "virality",
+   "status": "untested"
+  },
+  {
+   "id": "split-before-after",
+   "family": "demonstration",
+   "name": "Split before and after",
+   "spoken": "{Before state}. {After state}. Here's what changed.",
+   "example": "Empty dashboard on the left. A full one on the right. Here's what changed.",
+   "on_screen": "Before and after, one screen",
+   "first_frame": "Both states visible instantly, divided down the middle of the frame.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Show a genuine result, not staged contrast.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "the-origin",
+   "family": "demonstration",
+   "name": "The origin",
+   "spoken": "Every {thing} we make starts in the same {place}. Here it is",
+   "example": "Every video we make starts in the same short brief. Here it is",
+   "on_screen": "Where every video begins",
+   "first_frame": "The real file or template open full-frame",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Works once per channel. It is a reveal about you, and you only have one.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "the-reveal-new",
+   "family": "demonstration",
+   "name": "The reveal",
+   "spoken": "This is the new {thing}",
+   "example": "This is the new dashboard, and it finally lets you filter by team",
+   "on_screen": "The new dashboard",
+   "first_frame": "The product held up or filling the screen, already in motion",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Holding the thing up without saying what it changes. A reveal with no stake is an advert.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "two-known-tools-joined",
+   "family": "demonstration",
+   "name": "Two tools, joined",
+   "spoken": "{Tool A} and {Tool B}, working together on {outcome}.",
+   "example": "Your helpdesk and your chat tool, working together so nobody asks the same question twice.",
+   "on_screen": "Helpdesk plus chat, joined up",
+   "first_frame": "Two tools the viewer already knows side by side, joined by a line, a plus sign or a cable.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "From one account's own experience, not evidence; the tools must be ones your audience actually uses.",
+   "source": "virality",
+   "status": "untested"
+  },
+  {
+   "id": "typed-live-in-app",
+   "family": "demonstration",
+   "name": "Typed live in the app",
+   "spoken": "{The claim, typed live}. Now watch what it does.",
+   "example": "Show me every task due this week. Now watch what it does.",
+   "on_screen": "Typed live, answered live",
+   "first_frame": "The claim being typed into the real product, then a cut to the product doing it.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "One account found the same line flopped as a static card and did better typed live, but that is a single account's experience.",
+   "source": "virality",
+   "status": "untested"
+  },
+  {
+   "id": "how-to-first-time",
+   "family": "how-to",
+   "name": "Your first time",
+   "spoken": "Never {done the task} before? Do this first",
+   "example": "Never built a report before? Do this first",
+   "on_screen": "Your first report",
+   "first_frame": "The empty screen a beginner would see",
+   "suits": {
+    "types": [
+     "tutorial"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Assuming knowledge a first-timer does not have in the very next sentence.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "how-to-in-steps",
+   "family": "how-to",
+   "name": "In so many steps",
+   "spoken": "{Result} in {N} steps. Step one: {first step}",
+   "example": "A client portal in three steps. Step one: pick the pages they can see",
+   "on_screen": "A client portal in three steps",
+   "first_frame": "Step one already on screen, with the count beside it",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "More steps than promised, or a first step that is really a prerequisite.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "how-to-start-to-finish",
+   "family": "how-to",
+   "name": "Start to finish",
+   "spoken": "Here is how I {task}, start to finish",
+   "example": "Here is how I set up a new client, start to finish",
+   "on_screen": "A new client, start to finish",
+   "first_frame": "The finished result for one second, then the blank start",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Skipping the dull middle step that is the one people get stuck on.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "how-to-without",
+   "family": "how-to",
+   "name": "How to, without the pain",
+   "spoken": "How to {desired result} without {pain point}.",
+   "example": "How to send a client report without rebuilding it every month.",
+   "on_screen": "Client reports, no monthly rebuild",
+   "first_frame": "The finished result on screen, with the pain point visible and fading.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "If the without-clause isn't actually delivered, the pre-screen turns into a broken promise.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "the-clock",
+   "family": "how-to",
+   "name": "The clock",
+   "spoken": "In the next {time} you will have {specific result}",
+   "example": "In the next six minutes you will have a working invoice template ready to send",
+   "on_screen": "A working template in six minutes",
+   "first_frame": "A visible timer starting at zero beside the empty starting screen",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "shorts",
+     "reels",
+     "tiktok"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The clock has to be true. Overrun it and the next video's hook is not believed.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "the-stack",
+   "family": "how-to",
+   "name": "The stack",
+   "spoken": "{Tool A} plus {tool B} gives you {outcome} in {one step}",
+   "example": "A form builder plus a spreadsheet gives you a weekly sign-up report in one step",
+   "on_screen": "Two tools, one result",
+   "first_frame": "Both tool logos side by side, then the combined result",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Both tools must be nameable and the outcome must need both.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "unexpected-method",
+   "family": "how-to",
+   "name": "Result by odd method",
+   "spoken": "{Person or team} got {result} using {unexpected method}.",
+   "example": "One of our customers stopped chasing late invoices by using a plain spreadsheet export.",
+   "on_screen": "Late invoices, no chasing",
+   "first_frame": "The unexpected method itself on screen, such as the plain export.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "The method has to be real and specific; a named result with no named method sounds like a lecture.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "count-with-tease",
+   "family": "list",
+   "name": "Count with a tease",
+   "spoken": "{N} {things} that {specific payoff}, and number {X} {surprised me}.",
+   "example": "Seven small edits that made our demo clearer, and number four took two minutes.",
+   "on_screen": "Seven edits, number four surprised me",
+   "first_frame": "The first item, or the count, large on screen.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "edit"
+    ],
+    "platforms": [
+     "youtube",
+     "tiktok",
+     "shorts",
+     "reels",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The pure list is niche-dependent; the source's own sample found numbers worked better attached to a time or effort claim.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "numbered-favourite",
+   "family": "list",
+   "name": "Numbered, with a favourite",
+   "spoken": "{N} {things} that {outcome}. Number {k} is the one nobody uses",
+   "example": "Five settings that make reports load faster. Number four is the one nobody touches",
+   "on_screen": "Five settings, number four wins",
+   "first_frame": "A big number one on screen, with the list counting up",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "N above seven. Nobody believes you have nine good ones, and you do not.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "only-n-things",
+   "family": "list",
+   "name": "Only n things",
+   "spoken": "The only {N} {things} you need to {result}",
+   "example": "The only three settings you need to change in week one",
+   "on_screen": "Only three settings matter",
+   "first_frame": "Three items lined up on screen, ready to count off",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A short list that quietly leaves out the one thing people really need.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "the-list",
+   "family": "list",
+   "name": "The counted list",
+   "spoken": "{N} things I would do differently if I {started again}",
+   "example": "Seven things I would do differently if I rebuilt our onboarding from scratch",
+   "on_screen": "Seven things I would change",
+   "first_frame": "The number large on screen with the first item already visible",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The count must be exact and every item must be different in kind.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "tools-needed",
+   "family": "list",
+   "name": "Tools every role needs",
+   "spoken": "{N} tools every {role} needs",
+   "example": "Four tools every support lead should have open",
+   "on_screen": "Four tools for support leads",
+   "first_frame": "The tools' windows tiled on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A list that is all affiliate links. Pick tools you use every day.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "underrated",
+   "family": "list",
+   "name": "Underrated picks",
+   "spoken": "{N} underrated {tools or habits} that save me {time}",
+   "example": "Four underrated features in our own app that save me time every week",
+   "on_screen": "Four underrated features",
+   "first_frame": "The first feature in use, with a count in the corner",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Listing things that are not underrated at all. Pick ones people genuinely miss.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "wish-i-knew",
+   "family": "list",
+   "name": "Wish I had known",
+   "spoken": "{N} things I wish I had known at {stage}",
+   "example": "Five things I wish I had known before our first hundred customers",
+   "on_screen": "Things I wish I had known",
+   "first_frame": "The stage or moment named on screen, with the first item ready",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Advice that is really a brag. Each item has to be a mistake or a lesson.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "wish-i-knew-before",
+   "family": "list",
+   "name": "Wish I knew before",
+   "spoken": "{N} {things} I wish I knew before I {did Y}.",
+   "example": "Four things I wish I knew before I set up our first automation.",
+   "on_screen": "Before your first automation",
+   "first_frame": "The first item already numbered and on screen.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Padding to hit a number dilutes the payoff; a short honest list beats a long weak one.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "doing-right-one-cap",
+   "family": "mistake-warning",
+   "name": "One thing capping you",
+   "spoken": "You're doing everything right with {goal}, and one {hidden thing} is quietly capping your results.",
+   "example": "You're doing everything right with onboarding, and one early email is quietly capping your activation.",
+   "on_screen": "One early email, one cap",
+   "first_frame": "The area the viewer cares about on screen, with the hidden thing circled.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Name what the hidden thing is within the video, or the setup is a tease with no end.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "mistakes-skip",
+   "family": "mistake-warning",
+   "name": "Mistakes to skip",
+   "spoken": "{N} mistakes I made {doing thing}, so you can skip them",
+   "example": "Five mistakes I made migrating our data, so you can skip them",
+   "on_screen": "Five mistakes you can skip",
+   "first_frame": "The first mistake already shown on screen as a real error",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "cold"
+    ]
+   },
+   "trap": "Mistakes that are really humble brags. Name ones that cost something.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "stop-doing-this",
+   "family": "mistake-warning",
+   "name": "Stop doing this",
+   "spoken": "Stop {common action}. You're {losing or wasting} {specific thing}.",
+   "example": "Stop exporting reports as images. You're losing the data inside them.",
+   "on_screen": "Stop exporting images",
+   "first_frame": "The common action in progress, with the cost visible.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "shorts",
+     "reels",
+     "tiktok",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The source's own sample gave this no support for business content; the fix must arrive fast or it reads as fear-bait.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "the-mistake",
+   "family": "mistake-warning",
+   "name": "The mistake",
+   "spoken": "{Your specific habit} is why {the bad result}. It is not {the usual suspect}",
+   "example": "Your first thirty seconds are why people leave the trial. It is not the pricing",
+   "on_screen": "Your first thirty seconds",
+   "first_frame": "The viewer's likely mistake shown on screen, ready to check in one second",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "cold"
+    ]
+   },
+   "trap": "Only works if the mistake is common and the viewer can check it in one second.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "the-warning",
+   "family": "mistake-warning",
+   "name": "The warning",
+   "spoken": "Do not {next action} until you check {one thing}",
+   "example": "Do not publish another page until you check this one setting",
+   "on_screen": "Check this before you publish",
+   "first_frame": "The one setting or screen, highlighted before anything else",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "cold"
+    ]
+   },
+   "trap": "If the cost is small the hook is a lie. Reserve it.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "wrong-all-along",
+   "family": "mistake-warning",
+   "name": "Wrong all along",
+   "spoken": "I have been {doing thing} wrong for {long time}",
+   "example": "I have been exporting reports by hand for two years",
+   "on_screen": "Wrong for two years",
+   "first_frame": "The clumsy old way shown in full, mid-task",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware"
+    ]
+   },
+   "trap": "Confessing to a mistake nobody makes. The viewer has to recognise the habit as theirs.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "wrong-this-whole-time",
+   "family": "mistake-warning",
+   "name": "Wrong all along",
+   "spoken": "You've been {doing everyday thing} wrong this whole time.",
+   "example": "You've been naming your files wrong this whole time.",
+   "on_screen": "Naming files wrong",
+   "first_frame": "The everyday action being done the usual way.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "promo",
+     "edit"
+    ],
+    "platforms": [
+     "shorts",
+     "reels",
+     "tiktok",
+     "youtube",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A manufactured problem gets the view and loses the viewer; the correction must be real.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "wrong-way-right-way",
+   "family": "mistake-warning",
+   "name": "Wrong way, right way",
+   "spoken": "You are doing {thing} wrong, and it is not your fault. {The fix}",
+   "example": "Your invoice template is set up wrong, and it is not your fault",
+   "on_screen": "Not your fault, here is the fix",
+   "first_frame": "The wrong version on screen, with the problem circled",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Skipping the absolution. 'You are doing it wrong' on its own makes people leave rather than learn.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "cheat-sheet",
+   "family": "offer",
+   "name": "Cheat sheet",
+   "spoken": "{Thing} cheat sheet, keep this one",
+   "example": "Keyboard shortcuts cheat sheet, keep this one",
+   "on_screen": "The cheat sheet, keep it",
+   "first_frame": "The finished sheet full-frame and readable at once",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A sheet too dense to read on a phone. Test it at phone size.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "offer-first-step",
+   "family": "offer",
+   "name": "The first step is free",
+   "spoken": "Start {doing the outcome} today, free for {period}",
+   "example": "Start sending invoices today, free for thirty days",
+   "on_screen": "Free for thirty days",
+   "first_frame": "The first step already done on screen: a sent invoice, a made board",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "A free start that needs a card, a call or a form the film did not mention.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "offer-now-you-can",
+   "family": "offer",
+   "name": "Now you can",
+   "spoken": "You can now {do the new thing} in {product}",
+   "example": "You can now assign a card from your inbox",
+   "on_screen": "Assign cards from your inbox",
+   "first_frame": "The new thing happening, cursor already on it",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "product-aware"
+    ]
+   },
+   "trap": "Announcing the feature by its name instead of showing what it lets someone do.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "offer-plain",
+   "family": "offer",
+   "name": "The deal, said plainly",
+   "spoken": "{Product} is {the deal} until {date}",
+   "example": "The team plan is half price until Friday",
+   "on_screen": "Half price until Friday",
+   "first_frame": "The deal in large type over the product in use",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "A deadline that is not real, or a deal the viewer has to hunt for after the film.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "offer-risk-off",
+   "family": "offer",
+   "name": "Nothing to lose",
+   "spoken": "Try {product} on {your real task}. If it does not {outcome}, you have lost {a small thing}",
+   "example": "Try it on this week's rota. If it is not quicker, you have lost ten minutes",
+   "on_screen": "Ten minutes to find out",
+   "first_frame": "The real task open, half done",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Promising an outcome the product cannot show inside the trial.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "offer-what-you-get",
+   "family": "offer",
+   "name": "What you get for it",
+   "spoken": "For {price}, you get {three concrete things}",
+   "example": "For nine pounds a month you get the boards, the reminders and the shared inbox",
+   "on_screen": "Everything in one plan",
+   "first_frame": "The three things on screen at once, each one real product",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Listing features instead of things the viewer will use this week.",
+   "source": "studio",
+   "status": "untested"
+  },
+  {
+   "id": "problem-then-offer",
+   "family": "offer",
+   "name": "Problem, then offer",
+   "spoken": "{Problem line}. We built {thing} for it, and you can {low-risk first step} today.",
+   "example": "Tracking leave on a sheet gets messy. Try our leave calendar free today",
+   "on_screen": "Leave tracking, without the sheet",
+   "first_frame": "The messy current state on screen, with the product's cleaner version about to replace it.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "On cold audiences an offer in the first seconds reads as a pitch, so soften it up front.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "the-deadline",
+   "family": "offer",
+   "name": "The deadline",
+   "spoken": "{Thing} changes on {date}. Do {action} before then",
+   "example": "The old import format stops working on the first of March. Re-export your files before then",
+   "on_screen": "Before the first of March",
+   "first_frame": "The date shown on a calendar or banner, with the thing it affects beside it",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Manufactured urgency. One fake deadline and every future one is discounted.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "the-steal",
+   "family": "offer",
+   "name": "Steal this",
+   "spoken": "Steal this {artifact}. It took me {time} to get right",
+   "example": "Steal this onboarding checklist. It took me a month to get right",
+   "on_screen": "The checklist, full-frame",
+   "first_frame": "The finished artifact full-frame and readable, with a cursor ready to copy it",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The artifact not being on screen. If they cannot screenshot it, there is nothing to steal.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "near-future-claim",
+   "family": "outcome",
+   "name": "Near-future claim",
+   "spoken": "This {thing} is about to change how {audience} {action}.",
+   "example": "This one view is about to change how support teams sort their inbox.",
+   "on_screen": "Inbox sorting is changing",
+   "first_frame": "The new view already open and being used, mid-task.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A prediction with no demo behind it reads as noise, so show the change happening.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "only-one-that",
+   "family": "outcome",
+   "name": "Only one that",
+   "spoken": "This is the only {product type} that {outcome}.",
+   "example": "This is the only invoice tool that chases the client for you without a template to maintain.",
+   "on_screen": "Chases late payers for you",
+   "first_frame": "The outcome happening in the product, not the logo.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "linkedin"
+    ],
+    "awareness": [
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Only for claims you can defend; an indefensible \"only\" is also a compliance risk.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "restate-and-raise",
+   "family": "outcome",
+   "name": "Restate and raise",
+   "spoken": "{The title's promise in spoken voice}. {The obstacle or stakes}. By the end you'll {capability}.",
+   "example": "Automated reminders, set up today. Most teams get one rule wrong",
+   "on_screen": "Automated reminders, set up right",
+   "first_frame": "The thing being built, open and ready, with no intro card.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo"
+    ],
+    "platforms": [
+     "youtube"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Don't summarise the whole video in the hook; confirm the promise and open the loop.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "result-not-cause",
+   "family": "outcome",
+   "name": "Result, not the cause",
+   "spoken": "{Impressive result}, and it had nothing to do with {expected cause}.",
+   "example": "One page brought far more demo requests, and it was not the copy",
+   "on_screen": "More demo requests, not the copy",
+   "first_frame": "The result on screen, with the expected cause conspicuously absent.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Skip it when you can't show or explain the real cause, since that is what the viewer stays for.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "specific-bold-claim",
+   "family": "outcome",
+   "name": "Specific bold claim",
+   "spoken": "This replaced my entire {routine}.",
+   "example": "This replaced my whole Monday reporting routine.",
+   "on_screen": "Replaced my Monday report",
+   "first_frame": "The routine's old artefacts next to the replacement already running.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "A bold claim needs substantiation on screen or in the next beat.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "the-superlative",
+   "family": "outcome",
+   "name": "The superlative",
+   "spoken": "The {fastest, biggest or only} {thing} is {the answer}",
+   "example": "The fastest way to get a new teammate set up is a recorded walkthrough they can pause",
+   "on_screen": "The fastest way to onboard",
+   "first_frame": "The answer itself on screen, not a title card",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A superlative with a soft answer. If the second half is 'consistency', you have said nothing and the comments will tell you.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "time-collapse",
+   "family": "outcome",
+   "name": "Time collapse",
+   "spoken": "This used to take me {long time}. It now takes {short time}",
+   "example": "Writing a proposal used to take me an afternoon. Now it takes twenty minutes",
+   "on_screen": "Afternoon down to twenty minutes",
+   "first_frame": "A clock or timer in the corner, running as the task gets done",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A ratio nobody believes. A huge drop gets treated as a lie even when it is true.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "counter-climbs",
+   "family": "pattern-interrupt",
+   "name": "Counter climbs",
+   "spoken": "{Short claim as a number moves}.",
+   "example": "Watch this number as I switch it on.",
+   "on_screen": "Watch this number",
+   "first_frame": "A counter already moving from frame one, locking on a figure at the end of the hook.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The number must be real and must lock on something; a counter that goes nowhere is a gimmick.",
+   "source": "virality",
+   "status": "untested"
+  },
+  {
+   "id": "mid-action-interrupt",
+   "family": "pattern-interrupt",
+   "name": "Caught mid-action",
+   "spoken": "{Short line that names what just happened}.",
+   "example": "Whoops. That's three hours of work, gone.",
+   "on_screen": "Three hours, gone",
+   "first_frame": "Someone caught mid-motion, such as wincing at a screen or tearing up a page.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The motion has to be real and relevant; a random jolt with no link to the topic is just noise.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "mid-sentence-start",
+   "family": "pattern-interrupt",
+   "name": "Mid-sentence start",
+   "spoken": "...and that is when {the turn}",
+   "example": "...and that is when the customer asked for a refund. Three days after approving the design",
+   "on_screen": "He asked for a refund",
+   "first_frame": "A cut that lands mid-scene, with no title card or greeting",
+   "suits": {
+    "types": [
+     "promo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Never going back to fill in the gap. Deliver the setup by second eight or it reads as a mistake.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "odd-object",
+   "family": "pattern-interrupt",
+   "name": "The odd object",
+   "spoken": "This {out-of-place object} is the reason {outcome}.",
+   "example": "This two-pound kitchen timer is the reason our team stopped overrunning meetings.",
+   "on_screen": "A kitchen timer, for meetings",
+   "first_frame": "An out-of-place item held to camera, with nothing else competing.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "promo",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The mismatch is the gap, so the object must connect to the payoff.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "on-screen-countdown",
+   "family": "pattern-interrupt",
+   "name": "Countdown challenge",
+   "spoken": "{Timer or challenge shown}: by the end you'll have {payoff}.",
+   "example": "Sixty seconds on the clock: by the end you'll have a working form.",
+   "on_screen": "Working form in sixty seconds",
+   "first_frame": "A timer already running over the starting screen.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "If the payoff doesn't arrive before the timer ends, hold rate falls away.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "pov",
+   "family": "pattern-interrupt",
+   "name": "Point of view",
+   "spoken": "POV: you are {scenario}",
+   "example": "POV: you are a support agent and the same ticket arrives for the ninth time today",
+   "on_screen": "POV, the ninth ticket",
+   "first_frame": "A first-person view of the scene, already under way",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "product-aware"
+    ]
+   },
+   "trap": "A scenario that fits no one. Make it specific enough to be recognised.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "pov-of-problem",
+   "family": "pattern-interrupt",
+   "name": "Their view of the problem",
+   "spoken": "{Short line the viewer would say about this view}.",
+   "example": "Forty-seven tabs. Again.",
+   "on_screen": "Forty-seven tabs",
+   "first_frame": "The viewer's own view of the pain: a crowded browser, an inbox, an alarm.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Needs a view the audience really recognises, not a generic mess.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "something-breaks",
+   "family": "pattern-interrupt",
+   "name": "Something breaks",
+   "spoken": "{Short line describing what just broke}.",
+   "example": "That's the old way of tracking leave, gone.",
+   "on_screen": "The old tracker, gone",
+   "first_frame": "A recognisable object on screen that visibly breaks, burns or collapses in the first beat.",
+   "suits": {
+    "types": [
+     "promo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The break has to mean something about the topic; spectacle alone doesn't carry it.",
+   "source": "virality",
+   "status": "untested"
+  },
+  {
+   "id": "the-impossible",
+   "family": "pattern-interrupt",
+   "name": "The hard-to-believe claim",
+   "spoken": "You can {outcome that sounds untrue} without {the usual cost}",
+   "example": "You can move a whole help centre across without copying a single page by hand",
+   "on_screen": "Sounds untrue, so watch",
+   "first_frame": "The result starting to happen on screen within the first second",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The proof has to start within twenty seconds or it reads as clickbait.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "the-ratio",
+   "family": "pattern-interrupt",
+   "name": "The ratio",
+   "spoken": "{Number} to {number}: the ratio that matters",
+   "example": "Three to one: our ratio of bug fixes to new features last quarter",
+   "on_screen": "A ratio worth knowing",
+   "first_frame": "The two numbers in large type, one above the other",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A ratio you invented for effect. Use one you track.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "ad-pain-escalate",
+   "family": "problem",
+   "name": "Name the pain, sharpen it",
+   "spoken": "{Pain named}. It gets worse when {agitation}. {Fix} sorts it out.",
+   "example": "Your invoices go out late, and then the client asks. One reminder rule fixes it",
+   "on_screen": "Late invoices, fixed with one rule",
+   "first_frame": "The pain moment on screen, such as the unanswered client email.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Spending the whole hook on agitation leaves nothing for the fix; keep the fix in view.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "harder-you-try",
+   "family": "problem",
+   "name": "The trap",
+   "spoken": "The harder you try to {goal}, the worse {outcome} gets. Here's the trap.",
+   "example": "The harder you try to keep every task updated, the worse your board gets. Here's the trap.",
+   "on_screen": "Updating harder makes it worse",
+   "first_frame": "The effortful state on screen, such as a crowded board.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Needs a genuine mechanism; \"here's the trap\" without one is empty.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "not-the-problem",
+   "family": "problem",
+   "name": "You are not the problem",
+   "spoken": "You are not {negative self-belief}. You just need {solution}",
+   "example": "You are not bad at spreadsheets. You just need the template filled in for you",
+   "on_screen": "You are not the problem",
+   "first_frame": "The blank or messy starting point, then the solution filling it in",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "cold"
+    ]
+   },
+   "trap": "Flattery with no fix. The solution has to be shown, not just named.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "not-you-reframe",
+   "family": "problem",
+   "name": "Not you, the setup",
+   "spoken": "You're not {self-blame}. You're {reframe}.",
+   "example": "You're not disorganised. You're using a tool built for a different team size.",
+   "on_screen": "Not disorganised, just mismatched",
+   "first_frame": "The viewer's own messy-but-real workspace in frame.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A reframe that doesn't fit their situation reads as flattery.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "pov-moment",
+   "family": "problem",
+   "name": "Point of view moment",
+   "spoken": "POV: it's {specific moment} and you're {specific action}.",
+   "example": "POV: it's the end of the month and you're still matching receipts by hand.",
+   "on_screen": "POV: month-end receipts",
+   "first_frame": "The viewer's-eye view of the moment, with the screen or object in shot.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Specificity is the whole mechanic; a generic POV is invisible.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "stop-blaming",
+   "family": "problem",
+   "name": "Stop blaming",
+   "spoken": "Stop blaming {usual suspect}. The real issue is {cause}",
+   "example": "Stop blaming the free plan. The real issue is the first screen",
+   "on_screen": "Stop blaming the usual suspect",
+   "first_frame": "The usual suspect on screen, then the real cause lit up",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware"
+    ]
+   },
+   "trap": "Blaming the viewer instead. The tone must be on their side.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "that-feeling-fix",
+   "family": "problem",
+   "name": "That feeling",
+   "spoken": "That feeling when {hyper-specific shared moment}? There's a fix.",
+   "example": "That feeling when a client says quick question at six on a Friday? There's a fix.",
+   "on_screen": "Quick question, Friday, six",
+   "first_frame": "The exact moment as a message or notification on screen.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The moment must be one your audience really recognises; otherwise nobody feels it.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "the-objection",
+   "family": "problem",
+   "name": "The objection",
+   "spoken": "\"{Objection they actually say}\". Fine. Here is the version that works anyway",
+   "example": "\"I hate being on camera.\" Fine. Here is the version where your face never appears",
+   "on_screen": "Hate being on camera?",
+   "first_frame": "The objection as a real comment or message on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Inventing the objection. Pull it verbatim from a message or comment, including the bad grammar.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "three-line-hook",
+   "family": "problem",
+   "name": "Three short lines",
+   "spoken": "The {relatable enemy} is {negative thing}. The {hero} is {strong positive}. And I {accelerant}. {Teaser question}?",
+   "example": "The status meeting is dead time. The shared board is the fix. Want to see it?",
+   "on_screen": "Status meetings, replaced",
+   "first_frame": "Three lines appearing one at a time on a plain background, then cutting to the board.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "x",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Built for feed text; spoken at full pace it can run past the deadline, so time it aloud.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "what-it-costs",
+   "family": "problem",
+   "name": "What it costs",
+   "spoken": "{Amount}: what {common thing} really costs",
+   "example": "Two hundred pounds a month: what our unused seats really cost",
+   "on_screen": "What it really costs",
+   "first_frame": "The sum worked out on screen, line by line",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware"
+    ]
+   },
+   "trap": "A cost with no working shown. Show the sum or it is only a feeling.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "all-do-this",
+   "family": "proof",
+   "name": "All do this",
+   "spoken": "All {N} of our {best customers} do this one thing",
+   "example": "All twelve of our longest-standing customers set up this one rule on day one",
+   "on_screen": "All twelve do this",
+   "first_frame": "The one thing on screen, with the customers' names or logos around it",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Cherry-picking a group that fits. Say how you chose them.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "helped-many",
+   "family": "proof",
+   "name": "Helped many",
+   "spoken": "I have helped {N} {people} do {result}. The mistake I see most is {mistake}",
+   "example": "I have helped forty teams set up billing. The mistake I see most is skipping test mode",
+   "on_screen": "The mistake I see most",
+   "first_frame": "The common mistake on screen, with the count of teams helped beside it",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Inflating the number. Use the real count, even if it is small.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "insider-leak",
+   "family": "proof",
+   "name": "Inside view",
+   "spoken": "I spent {N years} {inside the thing}. Here is what I saw from the inside",
+   "example": "I spent six years on a support desk. Here is what I saw from the inside",
+   "on_screen": "Six years on a support desk",
+   "first_frame": "The speaker in the real workplace or setting, with the years on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Promising an inside story and delivering the brochure. The comments are merciless about this one.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "metric-moved",
+   "family": "proof",
+   "name": "Metric moved",
+   "spoken": "Our {metric} went from {before} to {after} when we changed {one thing}",
+   "example": "Our trial sign-ups went from nine a day to fourteen when we changed the button label",
+   "on_screen": "One change, one number",
+   "first_frame": "The before and after figures in large type, with the one change beneath",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Changing several things and crediting one. Name only what you actually changed.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "odd-number-lead",
+   "family": "proof",
+   "name": "Odd number lead",
+   "spoken": "{Specific number} {units} of {thing}, and here's the one pattern that held.",
+   "example": "Four hundred and twelve support tickets read by hand, and here's the one pattern that held.",
+   "on_screen": "412 tickets, one pattern",
+   "first_frame": "The raw material, such as a long list or folder, with the count visible.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A made-up or rounded-up number gets spotted; use a real count you can show.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "proof-first",
+   "family": "proof",
+   "name": "Receipt first",
+   "spoken": "{Result or receipt shown}. Here's how it happened.",
+   "example": "Here's the support queue at zero on a Friday afternoon. Here's how it happened.",
+   "on_screen": "Queue at zero, Friday",
+   "first_frame": "The result or receipt filling the frame, readable at a glance.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Strongest when the proof stands on its own; a weak receipt makes the claim look thinner.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "result-breakdown",
+   "family": "proof",
+   "name": "Result and breakdown",
+   "spoken": "I {result} in {short timeframe}. Here is how it went",
+   "example": "I rebuilt our help centre in a fortnight. Here is how it went",
+   "on_screen": "Rebuilt in a fortnight",
+   "first_frame": "The finished result full-frame and already moving",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A result with no evidence on screen. Show the thing, not the claim.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "someone-elses-result",
+   "family": "proof",
+   "name": "Someone else's result",
+   "spoken": "There was one {person} who {outcome} in {time}",
+   "example": "There was one customer who cut their support backlog in half within a quarter",
+   "on_screen": "One customer, one result",
+   "first_frame": "The named person or company, shown with their own screen",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "No name and no link. An anonymous miracle is a rumour.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "spent-so-you-dont",
+   "family": "proof",
+   "name": "Spent so you needn't",
+   "spoken": "I spent {time or money} on {thing} so you do not have to",
+   "example": "I spent a month testing screen recorders so you do not have to",
+   "on_screen": "A month testing, one result",
+   "first_frame": "The pile of things tried, shown on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Spending nothing. The cost has to be real and shown.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "tested-for-time",
+   "family": "proof",
+   "name": "Tested for a stretch",
+   "spoken": "I {did X} for {time} to find out {Y}.",
+   "example": "I ran every stand-up through the app for a month. Did it save time?",
+   "on_screen": "A month of stand-ups, tested",
+   "first_frame": "A calendar or log of the test period filling up as the clip starts.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "ad",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware",
+     "product-aware"
+    ]
+   },
+   "trap": "Visible effort is the credibility, so a vague test with no real record behind it buys nothing.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "tested-many",
+   "family": "proof",
+   "name": "Tested many",
+   "spoken": "I tested {N} {options}. Only {one} did the job",
+   "example": "I tested six form builders. Only one handled file uploads properly",
+   "on_screen": "Six tested, one passed",
+   "first_frame": "A grid of the options with a result mark on each",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A test with no criteria. Say what the job was before you show the winner.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "the-receipt",
+   "family": "proof",
+   "name": "The receipt",
+   "spoken": "I {did thing} for {N days}. Here are the actual numbers",
+   "example": "One product clip a day for sixty days. Here is what it did to sign-ups",
+   "on_screen": "Sixty days, the real numbers",
+   "first_frame": "The real dashboard on screen, scrolled to the figures",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Not showing the screen. A numbers video with no screen recording is a numbers claim.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "the-statistic",
+   "family": "proof",
+   "name": "The number",
+   "spoken": "{Number} of {group} {surprising fact}",
+   "example": "Most people who download a new app never open it a second time",
+   "on_screen": "The number everyone repeats",
+   "first_frame": "The figure alone in large type with its source line beneath",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A statistic you cannot source. Say where it came from in the video or do not use it.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "the-teardown",
+   "family": "proof",
+   "name": "The teardown",
+   "spoken": "I took {N} {real examples} apart and found {what they share}",
+   "example": "I took nine competitor onboarding flows apart and found the one step they all skip",
+   "on_screen": "Nine flows, one gap",
+   "first_frame": "A grid of the real examples on screen, with the shared part highlighted",
+   "suits": {
+    "types": [
+     "tutorial",
+     "promo",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "shorts",
+     "reels",
+     "tiktok"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Name what you pulled and how many. A teardown of one example is an anecdote.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "buyers-own-question",
+   "family": "question",
+   "name": "The buyer's own question",
+   "spoken": "{The exact question the buyer would type into search}?",
+   "example": "How do I stop getting double-booked on shared calendars?",
+   "on_screen": "How to stop double bookings",
+   "first_frame": "The question typed into a search box or chat field.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Use the buyer's wording from reviews and comments, not marketing paraphrase.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "can-you-guess",
+   "family": "question",
+   "name": "Can you guess",
+   "spoken": "Can you guess {surprising number or fact}?",
+   "example": "Can you guess how many clicks it takes to cancel in most apps?",
+   "on_screen": "Can you guess the number?",
+   "first_frame": "The question in plain type over a blank field, ready to fill",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold"
+    ]
+   },
+   "trap": "A number you cannot back up. Reveal it honestly within seconds.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "making-this-mistake",
+   "family": "question",
+   "name": "Making this mistake",
+   "spoken": "Are you making this {field} mistake?",
+   "example": "Are you making this password-reset mistake in your app?",
+   "on_screen": "Are you making this mistake?",
+   "first_frame": "The mistake on screen in a real screen the viewer would use",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "cold"
+    ]
+   },
+   "trap": "A mistake the viewer cannot check. Let them test themselves in seconds.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "question-and-contract",
+   "family": "question",
+   "name": "Question, short answer, bonus",
+   "spoken": "{The exact question, asked plainly}. Short answer: {real partial answer}. Stick around for {bonus}.",
+   "example": "Can you merge two workspaces? Yes. What matters is what happens to your history",
+   "on_screen": "Can you merge two workspaces?",
+   "first_frame": "The question on screen as the app is already open.",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo"
+    ],
+    "platforms": [
+     "youtube"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A hollow short answer makes viewers leave the moment they notice.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "state-then-doubt",
+   "family": "question",
+   "name": "State it, then doubt it",
+   "spoken": "You need {widely accepted requirement}. Or do you?",
+   "example": "You need a separate tool for every client. Or do you?",
+   "on_screen": "Separate tool per client?",
+   "first_frame": "The accepted idea as plain text, then a visible question mark.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The source marks this as still being tested by practitioners; the doubt needs a real answer in the body.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "verbatim-question",
+   "family": "question",
+   "name": "The question as asked",
+   "spoken": "\"{Question exactly as it was asked}\". I get this every week",
+   "example": "\"How do I get my data out of the old tool?\" I get this every week",
+   "on_screen": "Asked every week",
+   "first_frame": "The question in a message bubble, typos left in",
+   "suits": {
+    "types": [
+     "tutorial",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Tidying the question up. The value is that it is in their words, typos and all.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "what-would-you-do",
+   "family": "question",
+   "name": "What would you do",
+   "spoken": "What would you do if {scenario}?",
+   "example": "What would you do if your biggest customer asked for their data tomorrow?",
+   "on_screen": "What would you do?",
+   "first_frame": "The scenario acted out or shown on screen, still unresolved",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "x"
+    ],
+    "awareness": [
+     "problem-aware",
+     "cold"
+    ]
+   },
+   "trap": "A scenario so remote it feels invented. Use one that has happened to someone real.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "why-does-it",
+   "family": "question",
+   "name": "Why does it do that",
+   "spoken": "Why does {common thing} {do the odd thing}?",
+   "example": "Why does every signup form ask for your phone number?",
+   "on_screen": "Ever wondered why?",
+   "first_frame": "The familiar thing on screen, looking ordinary",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold"
+    ]
+   },
+   "trap": "A question with a dull answer. Make sure the reason is worth waiting for.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "why-keeps-happening",
+   "family": "question",
+   "name": "Why does it keep happening",
+   "spoken": "Why does {common annoyance} keep happening?",
+   "example": "Why does your invoice keep showing the wrong currency?",
+   "on_screen": "Why does this keep happening?",
+   "first_frame": "The annoyance happening on screen, in a real window",
+   "suits": {
+    "types": [
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware"
+    ]
+   },
+   "trap": "Asking a question you do not answer. The viewer is owed the reason.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "almost-gave-up",
+   "family": "story",
+   "name": "Almost gave up",
+   "spoken": "I almost gave up on {thing} until {turning point}",
+   "example": "I almost gave up on our onboarding flow until a customer filmed herself using it",
+   "on_screen": "Almost gave up",
+   "first_frame": "The low point on screen, such as an empty dashboard, before the turn",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A turning point that is vague. The viewer needs the exact thing that changed.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "cost-confession",
+   "family": "story",
+   "name": "Cost confession",
+   "spoken": "{Specific amount} is what {one mistake} cost me",
+   "example": "Four hours a week is what one manual export cost our support team",
+   "on_screen": "The mistake that cost real time",
+   "first_frame": "The real number in large type over the screen where the mistake happened",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A fake cost. 'It cost me my peace of mind' is not a number and everybody can hear that.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "day-i-realised",
+   "family": "story",
+   "name": "The day I realised",
+   "spoken": "The day I realised {insight}",
+   "example": "The day I realised nobody had opened our settings page in a year",
+   "on_screen": "The day I realised",
+   "first_frame": "The screen or data that triggered the realisation",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "An insight that was obvious all along. Give the viewer the moment, not the moral.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "day-n-turn",
+   "family": "story",
+   "name": "Day it turned",
+   "spoken": "I did {action} every day for {timeframe}. What happened on day {N} changed how I {activity}.",
+   "example": "One customer email a day for ninety days. Day forty changed how I write",
+   "on_screen": "Day forty changed my emails",
+   "first_frame": "A day counter on screen at the pivotal day.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The day has to be a real turn, not decoration.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "doing-it-wrong",
+   "family": "story",
+   "name": "Doing it wrong",
+   "spoken": "I was doing {common thing} completely wrong.",
+   "example": "I was exporting my reports completely wrong.",
+   "on_screen": "I exported reports wrong",
+   "first_frame": "The old way mid-action, so the mistake is visible.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Reads fake without lived-in detail about what exactly went wrong.",
+   "source": "marketingskills",
+   "status": "untested"
+  },
+  {
+   "id": "flop-record",
+   "family": "story",
+   "name": "The flop record",
+   "spoken": "My first {N} {attempts} did nothing. Here is what changed on {N plus one}",
+   "example": "My first nine onboarding emails did nothing. Here is what changed on the tenth",
+   "on_screen": "Nine flops, then this",
+   "first_frame": "A list of the earlier attempts with their poor results, then the one that worked",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "Making the change sound like luck. If the answer is 'I got lucky', there is no video.",
+   "source": "ig-agent",
+   "status": "untested"
+  },
+  {
+   "id": "followed-it-failed",
+   "family": "story",
+   "name": "Followed it, it failed",
+   "spoken": "I followed {system or authority} perfectly. It failed. Then I broke one rule.",
+   "example": "I followed the standard onboarding checklist perfectly. It failed. Then I broke one rule.",
+   "on_screen": "The checklist failed, so I broke it",
+   "first_frame": "The system or checklist on screen, followed to the letter.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "tutorial",
+     "edit"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A story opener; lead with the failure, not the chronology.",
+   "source": "storytelling",
+   "status": "untested"
+  },
+  {
+   "id": "i-tried-it",
+   "family": "story",
+   "name": "I tried it",
+   "spoken": "I {did the experiment} for {time}. {The stated cost}",
+   "example": "A week in our own app with keyboard shortcuts only. The mouse went in a drawer",
+   "on_screen": "A week without a mouse",
+   "first_frame": "The experiment set up in the real place, with the day count shown",
+   "suits": {
+    "types": [
+     "promo",
+     "edit",
+     "demo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "Needs a real cost (time, money or risk) or there is no stake.",
+   "source": "yt-agent",
+   "status": "untested"
+  },
+  {
+   "id": "ill-admit-it",
+   "family": "story",
+   "name": "I will admit it",
+   "spoken": "I will admit it: I {confession}",
+   "example": "I will admit it: I shipped that update without testing it on a phone",
+   "on_screen": "I will admit it",
+   "first_frame": "The speaker or screen, straight on, with no polish",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A confession that is really a boast. It has to cost you something.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "last-week",
+   "family": "story",
+   "name": "Last week",
+   "spoken": "Last week, {unexpected thing} happened",
+   "example": "Last week, a customer sent us a screen recording of their whole workday",
+   "on_screen": "Last week this happened",
+   "first_frame": "The unexpected thing shown straight away, such as the message itself",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "An event that was not that unexpected. Start from the surprising detail.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "learned-from",
+   "family": "story",
+   "name": "Learned from",
+   "spoken": "What I learned from {unusual source} about {topic}",
+   "example": "What I learned from a bakery queue about onboarding",
+   "on_screen": "Lessons from a bakery queue",
+   "first_frame": "The unusual source filmed in its own setting",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A strange source with no real link. The lesson has to follow from it, not be bolted on.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "real-talk",
+   "family": "story",
+   "name": "Real talk",
+   "spoken": "Real talk: {honest admission}",
+   "example": "Real talk: our first version only worked in one browser",
+   "on_screen": "Real talk",
+   "first_frame": "The old version on screen in its rough state",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "An admission with no follow-up. Say what you did about it.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "someone-elses-story",
+   "family": "story",
+   "name": "Someone else's story",
+   "spoken": "How {named person or type of team} built {outcome} from {starting point}.",
+   "example": "How a three-person support team built a help centre from a single shared document.",
+   "on_screen": "Three people, one shared document",
+   "first_frame": "The customer or team in their own setting, or the starting document.",
+   "suits": {
+    "types": [
+     "promo",
+     "ad"
+    ],
+    "platforms": [
+     "youtube",
+     "linkedin",
+     "x",
+     "reels",
+     "tiktok",
+     "shorts"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "The story must be real and checkable, and a customer story needs the customer's agreement.",
+   "source": "yt-skills",
+   "status": "untested"
+  },
+  {
+   "id": "spent-so-you-need-not",
+   "family": "story",
+   "name": "Cost confession",
+   "spoken": "I spent {cost} so you don't have to. Here's what I learned.",
+   "example": "I trialled seven scheduling tools over a quarter so you don't have to. Here's what I learned.",
+   "on_screen": "Seven tools tested, so you don't",
+   "first_frame": "A stack of the tools' tabs or logos being closed one by one.",
+   "suits": {
+    "types": [
+     "promo",
+     "demo",
+     "edit",
+     "ad"
+    ],
+    "platforms": [
+     "reels",
+     "tiktok",
+     "shorts",
+     "youtube",
+     "linkedin"
+    ],
+    "awareness": [
+     "problem-aware",
+     "solution-aware"
+    ]
+   },
+   "trap": "A vague \"I did a lot of research\" buys nothing; the receipt has to be real.",
+   "source": "vyral",
+   "status": "untested"
+  },
+  {
+   "id": "then-and-now",
+   "family": "story",
+   "name": "Then and now",
+   "spoken": "{Time} ago I was {low point}. Today {high point}",
+   "example": "Two years ago our whole product was a spreadsheet. Today it runs for four hundred teams",
+   "on_screen": "Two years ago, and now",
+   "first_frame": "The old state and the current state side by side",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "youtube",
+     "reels",
+     "tiktok",
+     "shorts",
+     "x"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A glow-up with nothing in the middle. Say what changed between the two.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  },
+  {
+   "id": "years-lesson",
+   "family": "story",
+   "name": "Years, one lesson",
+   "spoken": "{N years} of {experience} taught me one thing",
+   "example": "Six years of building onboarding taught me one thing",
+   "on_screen": "Six years, one lesson",
+   "first_frame": "The speaker in their real working setting with the years on screen",
+   "suits": {
+    "types": [
+     "promo",
+     "tutorial",
+     "ad"
+    ],
+    "platforms": [
+     "linkedin",
+     "x",
+     "youtube",
+     "linkedin",
+     "reels"
+    ],
+    "awareness": [
+     "cold",
+     "problem-aware"
+    ]
+   },
+   "trap": "A lesson everyone already knows. If it fits on a poster, cut it.",
+   "source": "viral-hooks-db",
+   "status": "untested"
+  }
+ ]
+}

@@ -23,7 +23,7 @@ Running the scaffold again after a timing change updates the timings and never t
 
 `bash tools/film/render.sh jobs/<job> preview` renders the whole film at half size. With placeholders in place this is already the animatic: real voice, real timings, on-screen text at its cues.
 
-Then build what the playbook asks for at this approval (for a promo: three alternative openings and one scene at full polish). Hand over with the note from `08-directors-checks.md`. Stop for approval.
+Then build what the playbook asks for at this approval (for a promo: three alternative openings and one scene at full polish). The openings are the three hooks recorded at the script stage (`job.json`, `hooks`), each built to `knowledge/craft/15-hooks.md` sections 1, 2 and 5. Run `node tools/checks/hook_legible.mjs <render> --expect "<the hook's on-screen line>"` on each opening and again on the final film in every size that ships: the written line must be readable with the sound off by 3 s. A failure names the moment; look at that frame before changing anything. If the job uses a clip from viralhooks.org, `node tools/hooks/clips.mjs check jobs/<job>` must pass (`15-hooks.md` section 8). Hand over with the note from `08-directors-checks.md`. Stop for approval.
 
 ## 3. Build the scenes
 
