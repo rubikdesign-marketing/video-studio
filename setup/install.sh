@@ -69,6 +69,10 @@ if [ ! -x "$DF" ]; then
   curl -sL --fail -o "$DF" "https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-$arch-apple-darwin" && chmod +x "$DF" \
     || { rm -f "$DF"; echo "DeepFilterNet did not download. The health check at the end will say so."; }
 fi
+# Face tracking for framing (FOOTAGE-PLAN.md phase 4): MediaPipe's face landmarker (Apache 2.0). Positions only.
+FL="tools/footage/models/face_landmarker.task"
+[ -f "$FL" ] || { mkdir -p tools/footage/models; curl -sL --fail -o "$FL" "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task" \
+  || { rm -f "$FL"; echo "The face model did not download. The health check at the end will say so."; }; }
 mkdir -p tools/footage/models/dnsmos
 for f in sig_bak_ovr.onnx model_v8.onnx; do
   [ -f "tools/footage/models/dnsmos/$f" ] || curl -sL --fail -o "tools/footage/models/dnsmos/$f" "https://raw.githubusercontent.com/microsoft/DNS-Challenge/master/DNSMOS/DNSMOS/$f" \

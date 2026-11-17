@@ -35,7 +35,7 @@ export function run(cmd, args, { allowFail = false, input, cwd, maxBuffer = 1 <<
 export function py(name, args, opts = {}) {
   if (!fs.existsSync(PYTHON)) throw new Error('The footage tool\'s Python environment is missing. Run: bash setup/install.sh');
   // Nothing about a job leaves this Mac: onnxruntime's and Hugging Face's telemetry are switched off for every run.
-  const env = { ORT_DISABLE_TELEMETRY: '1', HF_HUB_DISABLE_TELEMETRY: '1', ...(opts.env || {}) };
+  const env = { ORT_DISABLE_TELEMETRY: '1', HF_HUB_DISABLE_TELEMETRY: '1', MPLCONFIGDIR: path.join(os.tmpdir(), 'footage-mpl'), ...(opts.env || {}) };
   return run(PYTHON, ['-I', path.join(TOOL, 'py', `${name}.py`), ...args], { ...opts, env });
 }
 

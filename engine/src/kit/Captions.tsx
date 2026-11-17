@@ -22,6 +22,8 @@ export const captionsSchema = z.object({
       words: z
         .array(z.object({ text: z.string(), start: z.number(), end: z.number(), highlight: z.boolean().optional() }))
         .min(1),
+      /** Where this line sits, when it differs from the film's (a line moved off a face). */
+      position: z.enum(['bottom', 'top']).optional(),
     }),
   ),
 });
@@ -164,8 +166,11 @@ const CaptionPill: FC<{ lines: Line[]; position: 'bottom' | 'top' }> = ({ lines,
   const line = lines[index];
   const next = lines.at(index + 1);
   // After a short pause the pill stays and changes width; after a long one it has gone and forms again.
-  const previous = index > 0 && line.start - lines[index - 1].end <= MAX_GAP ? lines[index - 1] : undefined;
-  const staysForNext = next !== undefined && next.start - line.end <= MAX_GAP;
+  const where = line.position ?? position;
+  // The pill stays between lines only when they sit in the same place; a line in the other slot forms its own pill.
+  const samePlace = (other: Line | undefined) => other !== undefined && (other.position ?? position) === where;
+  const previous = index > 0 && line.start - lines[index - 1].end <= MAX_GAP && samePlace(lines[index - 1]) ? lines[index - 1] : undefined;
+  const staysForNext = next !== undefined && next.start - line.end <= MAX_GAP && samePlace(next);
 
   const enterAt = line.start - LEAD;
   const exitAt = line.end + HOLD;
@@ -195,7 +200,7 @@ const CaptionPill: FC<{ lines: Line[]; position: 'bottom' | 'top' }> = ({ lines,
         style={{
           position: 'absolute',
           left: slot ? slot.x + (slot.width - width) / 2 : (frame.width - width) / 2,
-          top: slot ? (position === 'top' ? slot.y : slot.y + slot.height - height) : position === 'top' ? vh(SAFE_MARGIN) : frame.height - vh(SAFE_MARGIN) - height,
+          top: slot ? (where === 'top' ? slot.y : slot.y + slot.height - height) : where === 'top' ? vh(SAFE_MARGIN) : frame.height - vh(SAFE_MARGIN) - height,
           width,
           height,
           scale: `${lerp(0.94, 1, settle)}`,

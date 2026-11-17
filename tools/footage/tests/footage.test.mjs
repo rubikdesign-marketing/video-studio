@@ -103,5 +103,5 @@ test('the log says what is in each clip and the repair for each finding', () => 
   assert.match(r, /2 words, 1 filler/);
   const md = render('demo', [{ name: 'booth', clip, words: null, shots: null, quality: null }], { made: new Date('2026-11-12T10:00:00Z') });
   assert.match(md, /# Footage log: demo/);
-  assert.match(md, /Faces, who speaks/);
+  assert.match(md, /Blown-out faces: phase 5/);
 });

@@ -224,15 +224,16 @@ export function guard(a, b, wordsOf) {
 }
 
 /** Caption lines from the film's words (same rules as tools/film/captions.mjs: 42 characters, breaks at clauses and pauses). Pure. */
-export function captionLines(words, { max = 42, pause = 0.25, bonus = 14 } = {}) {
+export function captionLines(words, { max = 42, pause = 0.25, bonus = 14, least = max < 30 ? 1 : 2 } = {}) {
+  // least: the fewest words a line may be left with (one in a narrow frame, where three long words may not fit).
   const len = (ws) => ws.map((w) => w.text).join(' ').length;
   const split = (ws) => {
     const length = len(ws);
-    if (length <= max || ws.length < 4) return [ws];
+    if (length <= max || ws.length < 2 * least) return [ws];
     const lines = Math.ceil(length / max);
     const target = (length * Math.floor(lines / 2)) / lines;
     let best = 2; let bestCost = Infinity;
-    for (let i = 2; i <= ws.length - 2; i++) {
+    for (let i = least; i <= ws.length - least; i++) {
       const natural = ENDS.test(ws[i - 1].text) || CLAUSE.test(ws[i - 1].text) || ws[i].start - ws[i - 1].end >= pause;
       const cost = Math.abs(len(ws.slice(0, i)) - target) - (natural ? bonus : 0);
       if (cost < bestCost) [best, bestCost] = [i, cost];

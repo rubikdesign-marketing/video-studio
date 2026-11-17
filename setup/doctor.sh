@@ -65,6 +65,11 @@ tools/footage/.venv/bin/python -I -c "import onnxruntime, nara_wpe" >/dev/null 2
 [ -x "$HOME/.local/bin/demucs" ] && pass "Demucs (separates music from a voice)" || note "Demucs is not installed" "only needed for footage with music under speech: bash setup/install.sh --extras"
 tools/footage/.venv/bin/python -I -m unittest discover -s tools/footage/tests -p 'test_*.py' >/dev/null 2>&1 && pass "the sound repair tests pass" || fail "the sound repair tests fail" "run: tools/footage/.venv/bin/python -I -m unittest discover -s tools/footage/tests -p 'test_*.py' -v"
 
+echo "Faces and framing (footage phase 4)"
+[ -f tools/footage/models/face_landmarker.task ] && pass "MediaPipe face landmarker (positions only, never who someone is)" || fail "the face model is missing" "bash setup/install.sh"
+tools/footage/.venv/bin/python -I -c "import mediapipe" >/dev/null 2>&1 && pass "MediaPipe in the footage tool's Python" || fail "MediaPipe is missing from the footage tool's Python" "bash setup/install.sh"
+"$FF" -hide_banner -filters 2>/dev/null | grep -q " vidstabdetect " && pass "ffmpeg can steady shaky footage (vidstab)" || fail "ffmpeg lacks vidstab" "brew install ffmpeg-full"
+
 echo "Hearing (earshot)"
 EARSHOT_BIN="$(command -v earshot || echo "$HOME/.local/bin/earshot")"
 if [ -x "$EARSHOT_BIN" ]; then pass "earshot (Claude's ears; installed with uv, pinned to 0.4.1)"

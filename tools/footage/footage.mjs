@@ -9,7 +9,9 @@
 //   node tools/footage/footage.mjs cut jobs/<job>                      the cut list (edit/cutlist.json), joins checked
 //   node tools/footage/footage.mjs approve jobs/<job> <join key>       a person's yes to a flagged join
 //   node tools/footage/footage.mjs repair jobs/<job> [--clip <name>]    phase 3: each clip's sound repaired (voice/, sound.json)
-//   node tools/footage/footage.mjs rough jobs/<job> [--render]         the rough cut's sound, captions and engine files;
+//   node tools/footage/footage.mjs check-framing jobs/<job>            phase 4: every film size checked for faces in frame,
+//        the safe area, sharpness, the eye line at punch-ins and captions clear of faces (edit/rough/framing-check.json)
+//   node tools/footage/footage.mjs rough jobs/<job> [--render [--size 9:16]]  the rough cut's sound, captions and engine files;
 //        --render renders it to jobs/<job>/out/rough-cut.mp4 (outside Claude's command sandbox: the render browser)
 //
 // ingest takes every video and sound file in jobs/<job>/footage/ and, for each clip, writes jobs/<job>/edit/clips/<clip>/:
@@ -20,6 +22,9 @@
 //   shots.json    shot changes inside the clip
 //   quality.json  picture and sound quality per second, with plain-words findings
 //   sheet.jpg     a contact sheet with the words said and the brightness and colour scopes (scopes/ has each picture)
+//   faces.json    where each person's face is, frame by frame (positions only, never who they are); a shaky clip is
+//                 steadied first (edit.mp4 becomes the steady copy, edit-unsteady.mp4 keeps the original)
+//   speakers.json who speaks each word (the mouth that moves, or the microphone), or off camera
 // then jobs/<job>/edit/log.md, the table of every clip to read before the paper edit.
 // Finished steps are skipped when the source has not changed (--force does them again). The original files are
 // never changed. A camera's Log LUT, when needed, goes beside the clip as <clip>.cube.
@@ -28,12 +33,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { AUDIO_ONLY, MEDIA, PYTHON, fingerprint, py, readJson, slug, writeJson } from './lib/common.mjs';
 import { buildCutlist } from './lib/cut.mjs';
+import { checkSize } from './lib/framecheck.mjs';
 import { render } from './lib/log.mjs';
 import { firstPaper, propose, runsOf, sentences } from './lib/paper.mjs';
 import { measure } from './lib/probe.mjs';
 import { transcribe } from './lib/transcribe.mjs';
 import { linkRecorders, matchTone, repairClip } from './lib/repair.mjs';
 import { listenBack, prepareRough, renderRough } from './lib/rough.mjs';
+import { steady } from './lib/steady.mjs';
 import { makeWorkingCopy } from './lib/workcopy.mjs';
 
 const LONG = 20 * 60; // longer clips: picture quality waits for the paper edit (kept stretches only)
@@ -98,6 +105,22 @@ export function ingestClip(job, { file, name }, opts = {}) {
     else step('picture quality', null, () => { say('  measuring the picture'); py('picture', [path.join(dir, 'edit.mp4'), path.join(dir, 'quality.json'), '--shots', path.join(dir, 'shots.json')]); });
   }
   if (m.audio) step('sound quality', null, () => { say('  measuring the sound'); py('sound', [path.join(dir, 'sound.wav'), path.join(dir, 'quality.json'), '--words', path.join(dir, 'words.json')]); });
+  // Phase 4: a shaky clip is steadied before its faces are found, so framing follows the steady picture.
+  if (m.video && !clip.steady) {
+    const q = readJson(path.join(dir, 'quality.json'), {});
+    if ((q.picture?.flags || []).some((f) => f.what === 'shaky')) {
+      say('  steadying (hand shake measured)');
+      const r = steady(dir);
+      clip.steady = { zoom: r.zoom, at: stamp() };
+      py('picture', [path.join(dir, 'edit.mp4'), path.join(dir, 'quality.json'), '--shots', path.join(dir, 'shots.json')]);
+      fs.rmSync(path.join(dir, 'faces.json'), { force: true }); fs.rmSync(path.join(dir, 'sheet.jpg'), { force: true });
+      writeJson(cj, clip);
+    }
+  }
+  // Faces are found on a copy up to 1280 wide (half the source's width, at least 720): small faces in a wide 4K shot
+  // are lost at 720.
+  if (m.video) step('faces', 'faces.json', () => { say('  finding faces'); py('faces', [dir, '--width', String(Math.min(1280, Math.max(720, Math.round(m.video.width / 2))))]); });
+  if (m.video && m.audio) step('who speaks', 'speakers.json', () => { say('  working out who speaks'); py('speakers', [dir]); });
   if (m.video) step('contact sheet', 'sheet.jpg', () => { say('  making the contact sheet'); py('sheet', [dir]); });
   writeJson(cj, clip);
   return dir;
@@ -108,7 +131,8 @@ export function writeLog(job) {
   const names = fs.existsSync(root) ? fs.readdirSync(root).filter((n) => fs.existsSync(path.join(root, n, 'clip.json'))).sort() : [];
   const clips = names.map((name) => {
     const d = path.join(root, name);
-    return { name, clip: readJson(path.join(d, 'clip.json')), words: readJson(path.join(d, 'words.json'), null), shots: readJson(path.join(d, 'shots.json'), null), quality: readJson(path.join(d, 'quality.json'), null) };
+    return { name, clip: readJson(path.join(d, 'clip.json')), words: readJson(path.join(d, 'words.json'), null), shots: readJson(path.join(d, 'shots.json'), null), quality: readJson(path.join(d, 'quality.json'), null),
+      faces: readJson(path.join(d, 'faces.json'), null), speakers: readJson(path.join(d, 'speakers.json'), null) };
   });
   const out = path.join(job, 'edit', 'log.md');
   fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -198,8 +222,9 @@ function roughCmd(job, o) {
   say(clicks.length ? `Clicks in the joined sound: ${clicks.join(', ')} s` : 'No clicks in the joined sound.');
   const lb = listenBack(job, cut);
   say(`Listened back: ${lb.matched} of ${lb.expected} kept words heard${lb.missing.length ? `; missing: ${lb.missing.join(' ')}` : ''}${lb.extra.length ? `; extra (a struck word that leaked in, or a mishearing): ${lb.extra.join(' ')}` : ''}.`);
+  say('Framing, every size:'); checkFraming(job);
   if (o.render) {
-    const out = renderRough(job, r.slug, path.join(job, 'out', 'rough-cut.mp4'));
+    const out = renderRough(job, r.slug, path.join(job, 'out', `rough-cut${o.size ? `-${o.size.replace(':', 'x')}` : ''}.mp4`), o.size || '');
     say(`Rendered: ${out}`);
   } else say(`Render it with --render, or open it in Remotion Studio (FootageCut, cut "${r.slug}").`);
 }
@@ -223,10 +248,24 @@ function repairCmd(job, o) {
   say('A person listens to each voice/mix.wav before the rough cut is approved (the plan\'s one check by ear).');
 }
 
+export function checkFraming(job) {
+  const rough = path.join(job, 'edit', 'rough');
+  const fr = readJson(path.join(rough, 'framing.json'), null);
+  if (!fr) throw new Error('No framing yet: make the rough cut first (footage.mjs rough <job>).');
+  const cut = readJson(path.join(job, 'edit', 'cutlist.json'));
+  const clips = Object.fromEntries(Object.entries(fr.clips).map(([c, x]) => [c, { ...x, faces: readJson(path.join(job, 'edit', 'clips', c, 'faces.json'), null), speakers: readJson(path.join(job, 'edit', 'clips', c, 'speakers.json'), null) }]));
+  const SIZE = { '16:9': { w: 1920, h: 1080 }, '9:16': { w: 1080, h: 1920 }, '1:1': { w: 1080, h: 1080 }, '4:5': { w: 1080, h: 1350 } };
+  const engineCut = readJson(path.join(rough, 'cut.json'), {});
+  const results = Object.entries(fr.sizes).map(([name, plan]) => checkSize(name, SIZE[name], cut, plan, clips, { lines: (engineCut.sizes?.[name]?.captions || engineCut.captions || { lines: [] }).lines }));
+  writeJson(path.join(rough, 'framing-check.json'), results);
+  for (const r of results) say(`${r.size}: ${r.pass ? 'every check passes' : r.problems.map((p) => `${p.what} in ${Math.round(p.share * 100)}% of moments (first at ${p.first} s: ${p.detail})`).join('; ')}; most enlargement ${r.worst_enlargement}x.`);
+  return results;
+}
+
 function main() {
   const o = args(process.argv.slice(2));
   const [cmd, jobArg] = o._;
-  if (!cmd || !jobArg || !['ingest', 'log', 'compare', 'paper', 'cut', 'approve', 'repair', 'rough'].includes(cmd)) {
+  if (!cmd || !jobArg || !['ingest', 'log', 'compare', 'paper', 'cut', 'approve', 'repair', 'rough', 'check-framing'].includes(cmd)) {
     say('Usage: node tools/footage/footage.mjs ingest|log|compare|paper|cut|approve|repair|rough jobs/<job> (see the top of this file)');
     process.exit(2);
   }
@@ -239,6 +278,7 @@ function main() {
   if (cmd === 'approve') { approveCmd(job, o._[2]); return; }
   if (cmd === 'repair') { repairCmd(job, o); return; }
   if (cmd === 'rough') { roughCmd(job, o); return; }
+  if (cmd === 'check-framing') { const r = checkFraming(job); process.exit(r.every((x) => x.pass) ? 0 : 1); }
   if (cmd === 'ingest') {
     let list = clipsOf(job);
     if (o.clip) list = list.filter((c) => c.name === o.clip || path.basename(c.file) === o.clip);

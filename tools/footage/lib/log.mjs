@@ -11,7 +11,7 @@ export const REPAIRS = {
   'blown highlights': 'pull the highlights back where anything is left (phase 5)',
   'flat picture': 'restore contrast, or convert from Log with the camera\'s LUT (phase 5)',
   flicker: 'deflicker (phase 5)',
-  shaky: 'steady it (phase 4)',
+  shaky: 'steadied at ingest (5% crop)',
   clipping: 'rebuild the flattened peaks; a different take if it is too damaged (phase 3)',
   clicks: 'click removal (phase 3)',
   noisy: 'noise removal (phase 3)',
@@ -26,7 +26,7 @@ const span = (f, total) => (f.from <= 0.5 && f.to >= total - 1 ? 'throughout' : 
 const esc = (s) => String(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
 
 /** One clip's row of the log. clip: { name, clip (clip.json), words, shots, quality }. Pure. */
-export function row({ name, clip, words, shots, quality }) {
+export function row({ name, clip, words, shots, quality, faces, speakers }) {
   const m = clip.source.measured;
   const total = m.duration;
   const v = m.video;
@@ -44,7 +44,11 @@ export function row({ name, clip, words, shots, quality }) {
       : 'no speech found';
   }
   let seen = v ? (shots ? (shots.cuts.length ? `${shots.shots.length} shots, cut${shots.cuts.length > 1 ? 's' : ''} at ${shots.cuts.map(clock).join(', ')}` : 'one continuous shot') : 'not measured') : '';
-  if (v) seen += '; faces measured in phase 4';
+  if (v) {
+    const ppl = faces?.people || [];
+    seen += ppl.length ? `; ${ppl.length === 1 ? 'one person' : `${ppl.length} people (${ppl.map((p) => p.side).join(', ')})`}${speakers ? `, ${speakers.people.map((p) => `${p.side} speaks ${Math.round(p.share * 100)}%`).join(', ')}${speakers.off_camera_words ? `, ${speakers.off_camera_words} words off camera` : ''}` : ''}` : faces ? '; no face' : '; faces not measured';
+    if (clip.steady) seen += '; steadied';
+  }
   const pf = quality?.picture?.flags || [];
   const sf = quality?.sound?.flags || [];
   const picNotes = v ? (quality?.picture ? (pf.length ? pf.map((f) => `${f.what} (${span(f, total)})`).join('; ') : 'nothing found') : (clip.skipped?.picture || 'not measured')) : '';
@@ -80,7 +84,7 @@ export function render(job, clips, { made = new Date() } = {}) {
     '',
     '## Not measured yet',
     '',
-    '- Faces, who speaks, and blown-out faces: phase 4 (face tracking).',
+    '- Blown-out faces: phase 5 (picture).',
     '- The speech-quality score: phase 3 (with the sound repairs).',
     '- Thresholds for the notes were set on synthetic test clips and are checked against the first real footage.',
     '',

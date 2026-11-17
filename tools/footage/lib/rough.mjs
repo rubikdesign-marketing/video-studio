@@ -9,7 +9,9 @@ import os from 'node:os';
 import path from 'node:path';
 import { FFMPEG, STUDIO, py, readJson, round, run, writeJson } from './common.mjs';
 import { CROSSFADE } from './cut.mjs';
+import { planCut as planFraming } from './framing.mjs';
 import { captionLines } from './paper.mjs';
+import { captionChars, placeCaptions } from './framecheck.mjs';
 import { bare, transcribe } from './transcribe.mjs';
 
 const SIZES = { '16:9': [1920, 1080], '9:16': [1080, 1920], '1:1': [1080, 1080], '4:5': [1080, 1350] };
@@ -103,18 +105,26 @@ export function filmWords(cut, wordsOf) {
  * What the engine plays: each piece's picture as a stretch of film frames, switching in the middle of each sound
  * crossfade; a room-tone piece holds the last frame before it. Pure.
  */
-export function pictures(cut, fps, srcOf) {
+export function pictures(cut, fps, srcOf, framing = null, sizeOf = () => null) {
   const starts = cut.pieces.map((p, k) => (k === 0 ? 0 : Math.round((p.at + CROSSFADE / 2) * fps)));
   const total = Math.round(cut.duration * fps);
-  let lastSpeech = null;
+  let lastSpeech = null; let lastKey = null;
+  // A piece's crop keyframes on its own frame clock: [frame from the piece's start, x, y, w, h] (source pixels).
+  const cropOf = (k, from, size) => {
+    const keys = framing?.[k];
+    if (!keys?.length) return null;
+    return { src: size, keys: keys.map((q) => [Math.max(0, Math.round(q.t * fps) - from), q.x, q.y, q.w, q.h]) };
+  };
   return cut.pieces.map((p, k) => {
     const from = starts[k]; const frames = Math.max(1, (starts[k + 1] ?? total) - from);
     if (p.kind === 'speech') {
       lastSpeech = p;
-      return { src: srcOf(p.clip), from, frames, trim: Math.max(0, Math.round((p.in + (from / fps - p.at)) * fps)), freeze: false };
+      const crop = cropOf(k, from, sizeOf(p.clip));
+      if (crop) lastKey = { src: crop.src, keys: [[0, ...crop.keys.at(-1).slice(1)]] };
+      return { src: srcOf(p.clip), from, frames, trim: Math.max(0, Math.round((p.in + (from / fps - p.at)) * fps)), freeze: false, ...(crop ? { crop } : {}) };
     }
     const prev = lastSpeech ?? cut.pieces.find((q) => q.kind === 'speech');
-    return { src: srcOf(prev.clip), from, frames, trim: Math.max(0, Math.round((prev.out - 1 / fps) * fps)), freeze: true };
+    return { src: srcOf(prev.clip), from, frames, trim: Math.max(0, Math.round((prev.out - 1 / fps) * fps)), freeze: true, ...(lastKey ? { crop: lastKey } : {}) };
   });
 }
 
@@ -141,7 +151,24 @@ export function prepareRough(job, cut) {
   const srcOf = (clip) => `jobs/${slug}/edit/${clip}.mp4`;
   for (const c of clips) place(path.join(edit, 'clips', c, 'edit.mp4'), path.join(pub, `${c}.mp4`));
   place(path.join(rough, 'dialogue.wav'), path.join(pub, 'dialogue.wav'));
-  const engineCut = { job: slug, fps, width, height, durationInFrames: Math.max(1, Math.round(cut.duration * fps)), audio: `jobs/${slug}/edit/dialogue.wav`, pictures: pictures(cut, fps, srcOf), captions };
+  // The footage camera (phase 4) for every film size, from each clip's faces and who speaks.
+  const info = Object.fromEntries(clips.map((c) => {
+    const d = path.join(edit, 'clips', c); const cj = readJson(path.join(d, 'clip.json'));
+    const v = cj.source.measured.video || { width: 1920, height: 1080 };
+    return [c, { faces: readJson(path.join(d, 'faces.json'), null), speakers: readJson(path.join(d, 'speakers.json'), null), steadyZoom: cj.steady?.zoom || 1, src: { w: v.width, h: v.height } }];
+  }));
+  const sizes = {}; const framing = {};
+  for (const [name, [w, h]] of Object.entries(SIZES)) {
+    const plan = planFraming(cut, info, { w, h });
+    framing[name] = plan;
+    // Caption lines split for this size: a tall frame holds about 17 characters a line at caption size, a wide one 42.
+    // and each line moved to the top slot when a face would be under the bottom one while it shows.
+    const lines = placeCaptions(name, { w, h }, cut, plan, info, captionLines(filmWords(cut, wordsOf), { max: captionChars(name, { w, h }) }));
+    sizes[name] = { width: w, height: h, pictures: pictures(cut, fps, srcOf, plan, (c) => [info[c].src.w, info[c].src.h]), captions: { lines } };
+  }
+  writeJson(path.join(rough, 'framing.json'), { sizes: framing, clips: Object.fromEntries(Object.entries(info).map(([c, x]) => [c, { src: x.src, steadyZoom: x.steadyZoom }])) });
+  const main = jobJson.size && SIZES[jobJson.size] ? jobJson.size : '16:9';
+  const engineCut = { job: slug, fps, width, height, size: main, durationInFrames: Math.max(1, Math.round(cut.duration * fps)), audio: `jobs/${slug}/edit/dialogue.wav`, pictures: sizes[main].pictures, sizes, captions };
   writeJson(path.join(rough, 'cut.json'), engineCut);
   writeJson(path.join(pub, 'cut.json'), engineCut);
   const listFile = path.join(STUDIO, 'engine', 'public', 'footage-cuts.json');
@@ -151,9 +178,9 @@ export function prepareRough(job, cut) {
 }
 
 /** Renders the rough cut with the engine (FootageCut). Needs to run outside Claude's command sandbox (the render browser). */
-export function renderRough(job, slug, out) {
+export function renderRough(job, slug, out, size = '') {
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  run('npx', ['remotion', 'render', 'FootageCut', out, `--props=${JSON.stringify({ cut: slug })}`, '--log=error'], { cwd: path.join(STUDIO, 'engine') });
+  run('npx', ['remotion', 'render', 'FootageCut', out, `--props=${JSON.stringify({ cut: slug, size })}`, '--log=error'], { cwd: path.join(STUDIO, 'engine') });
   return out;
 }
 
