@@ -4,20 +4,15 @@
 //
 //   faces in frame   the framed person's hairline and chin are inside the frame (never tighter than chin to hairline)
 //   safe area        their face is inside the size's safe area (tall sizes leave room for the platform's own buttons
-//                    and the captions at the bottom)
+//                    and the captions at the bottom); where the crop already sits against the footage's edge, it is
+//                    noted as "tight in the footage" instead (no camera move can help)
 //   sharpness        no frame enlarges the source more than the size allows (framing.mjs limits)
-//   eye line         across a punch-in (a cut inside one take) the eyes stay within 3% of the frame's height
+//   eye line         across a punch-in (a cut inside one take and shot) the eyes stay within 3% of the frame's height
 //   captions         while a caption shows, its slot (captionSlot: where the engine places it, bottom or moved to
 //                    the top by placeCaptions) never covers a framed face from brows to chin, and every caption line fits
 //                    across it
-import { limits, personAt } from './framing.mjs';
+import { SAFE, limits, personAt, sameShot } from './framing.mjs';
 
-const SAFE = { // shares of the frame: left/right, top, bottom
-  '16:9': { side: 0.03, top: 0.04, bottom: 0.04 },
-  '9:16': { side: 0.06, top: 0.1, bottom: 0.25 },
-  '1:1': { side: 0.05, top: 0.06, bottom: 0.18 },
-  '4:5': { side: 0.05, top: 0.06, bottom: 0.18 },
-};
 /**
  * Where the caption pill sits, as shares of the frame (engine/src/kit/Captions.tsx with capture/relayout.ts). At the
  * bottom: in a wide frame 6% up from the bottom, 8% tall; in 9:16 at the bottom of the band all three platforms leave
@@ -118,7 +113,7 @@ export function placeCaptions(name, out, cut, plan, clips, lines) {
  */
 export function checkSize(name, out, cut, plan, clips, { captions = true, lines = [] } = {}) {
   const safe = SAFE[name] || SAFE['16:9'];
-  const issues = []; let samples = 0; let worstEnlarge = 0;
+  const issues = []; const notes = []; let samples = 0; let worstEnlarge = 0;
   const lastEyes = {};
   cut.pieces.forEach((p, k) => {
     const keys = plan[k];
@@ -127,24 +122,41 @@ export function checkSize(name, out, cut, plan, clips, { captions = true, lines 
     const lim = limits(c.src, out, c.steadyZoom || 1);
     for (let t = p.at; t <= p.at + p.dur + 1e-6; t += 0.1) {
       samples++;
-      const { scale: enlarge, faces } = framedFaces(out, p, keys, c, t);
+      const { scale: enlarge, faces, crop } = framedFaces(out, p, keys, c, t);
       worstEnlarge = Math.max(worstEnlarge, enlarge);
       if (enlarge > lim.allowed * 1.005) issues.push({ size: name, t, what: 'sharpness', detail: `enlarged ${enlarge.toFixed(2)}x, the most this size allows is ${lim.allowed}x` });
       const line = lines.length ? lineAt(lines, t) : { position: 'bottom' };
       const slot = line ? captionSlot(name, line.position || 'bottom') : null;
       for (const f of faces) {
         if (f.top < 0 || f.chin > out.h) issues.push({ size: name, t, what: 'face cut off', detail: `person ${f.id}: ${f.top < 0 ? 'hairline above the frame' : 'chin below the frame'}` });
-        else if (f.left < safe.side * out.w || f.right > (1 - safe.side) * out.w || f.top < safe.top * out.h || f.chin > (1 - safe.bottom) * out.h) issues.push({ size: name, t, what: 'outside the safe area', detail: `person ${f.id}` });
+        else {
+          // Outside the safe area on a side where the crop already sits against the footage's edge: the footage itself
+          // is framed that tight and no camera move can help. Listed as a note, not a failure.
+          const cr = crop; const at = (v, edge) => Math.abs(v - edge) < 1.5;
+          const out_ = [
+            [f.left < safe.side * out.w, at(cr.x, 0)], [f.right > (1 - safe.side) * out.w, at(cr.x + cr.w, c.src.w)],
+            [f.top < safe.top * out.h, at(cr.y, 0)], [f.chin > (1 - safe.bottom) * out.h, at(cr.y + cr.h, c.src.h)],
+          ].filter(([o]) => o);
+          if (out_.length) {
+            if (out_.every(([, edge]) => edge)) notes.push({ size: name, t, what: 'tight in the footage', detail: `person ${f.id}: the footage itself has the face this close to the edge` });
+            else issues.push({ size: name, t, what: 'outside the safe area', detail: `person ${f.id}` });
+          }
+        }
         if (captions && slot && covers(slot, out, f)) issues.push({ size: name, t, what: 'caption over a face', detail: `person ${f.id}, caption at the ${line.position || 'bottom'}` });
       }
       if (t === p.at && faces.length === 1) {
         const prev = lastEyes[`${p.clip}:${faces[0].id}`]; // the same person: a speaker switch is not a punch-in
         const join = cut.joins.find((j) => j.after === k - 1);
-        if (prev && join && ['pause', 'filler', 'inside a sentence'].includes(join.kind) && prev.k === k - 1 && Math.abs(prev.y - faces[0].eyeY) > 0.03 * out.h) {
-          issues.push({ size: name, t, what: 'eye line jumps at a punch-in', detail: `${Math.round(Math.abs(prev.y - faces[0].eyeY))} px` });
+        if (prev && join && ['pause', 'filler', 'inside a sentence'].includes(join.kind) && prev.k === k - 1 && sameShot(c.shots, cut.pieces[k - 1], p) && Math.abs(prev.y - faces[0].eyeY) > 0.03 * out.h) {
+          // Against the footage's top or bottom edge on either side of the cut, the camera cannot hold the eye line and
+          // keep the face in the safe area: the footage has no more picture. Listed as a note, with the jump.
+          const edge = (cr) => cr.y < 1.5 || cr.y + cr.h > c.src.h - 1.5;
+          const detail = `${Math.round(Math.abs(prev.y - faces[0].eyeY))} px`;
+          if (edge(crop) || edge(prev.crop)) notes.push({ size: name, t, what: 'eye line held back by the footage\'s edge', detail });
+          else issues.push({ size: name, t, what: 'eye line jumps at a punch-in', detail });
         }
       }
-      if (faces.length === 1) lastEyes[`${p.clip}:${faces[0].id}`] = { k, y: faces[0].eyeY };
+      if (faces.length === 1) lastEyes[`${p.clip}:${faces[0].id}`] = { k, y: faces[0].eyeY, crop };
     }
   });
   // Every caption line fits across its slot (the same width estimate as captionChars).
@@ -157,9 +169,11 @@ export function checkSize(name, out, cut, plan, clips, { captions = true, lines 
     }
   }
   // One line per kind of problem, with how often and when it first happened.
-  const kinds = {};
+  const kinds = {}; const noted = {};
   for (const i of issues) (kinds[i.what] ??= []).push(i);
+  for (const i of notes) (noted[i.what] ??= []).push(i);
+  const summary = (groups) => Object.entries(groups).map(([what, list]) => ({ what, count: list.length, share: Number((list.length / samples).toFixed(3)), first: Number(list[0].t.toFixed(2)), detail: list[0].detail }));
   return { size: name, samples, worst_enlargement: Number(worstEnlarge.toFixed(3)), pass: !issues.length,
     captions_moved_up: lines.filter((l) => l.position === 'top').length,
-    problems: Object.entries(kinds).map(([what, list]) => ({ what, count: list.length, share: Number((list.length / samples).toFixed(3)), first: Number(list[0].t.toFixed(2)), detail: list[0].detail })) };
+    problems: summary(kinds), notes: summary(noted) };
 }

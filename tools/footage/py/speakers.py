@@ -3,7 +3,7 @@ to someone off camera.
 
     python speakers.py <clip_dir>
 
-Reads faces.json (people and their mouths) and words.json; on a two-microphone clip also voice/ch1-words.json and
+Reads faces.json (people and their mouths, per shot) and words.json; on a two-microphone clip also voice/ch1-words.json and
 voice/ch2-words.json from the sound repair (which microphone each word was loudest on). Writes speakers.json:
   people:    [{id, side, words, share}]
   words:     [{i, person, by}]   person: an id, or null (off camera); by: "only face", "mouth", "microphone", "sentence"
@@ -61,6 +61,9 @@ def main():
         for i, w in enumerate(words):
             acts = [(activity(p, w['start'], w['end']), p['id']) for p in people]
             acts = [(a, pid) for a, pid in acts if a is not None]
+            if len(acts) == 1:  # the only face on screen during the word (a shot of one person)
+                result[i]['person'], result[i]['by'] = acts[0][1], 'only face'
+                continue
             if len(acts) < 2:
                 continue
             acts.sort(reverse=True)
@@ -98,7 +101,7 @@ def main():
     for s in sentences(words):
         ps = [result[i]['person'] for i in s]
         sents.append({'start': words[s[0]]['start'], 'end': words[s[-1]]['end'], 'person': max(set(ps), key=ps.count) if ps else None})
-    out = {'people': [{'id': p['id'], 'side': p['side'], 'words': counts[p['id']], 'share': round(counts[p['id']] / max(1, len(words)), 2)} for p in people],
+    out = {'people': [{'id': p['id'], 'side': p['side'], 'shot': p.get('shot', 0), 'words': counts[p['id']], 'share': round(counts[p['id']] / max(1, len(words)), 2)} for p in people],
            'off_camera_words': sum(1 for r in result if r['person'] is None), 'words': result, 'sentences': sents}
     with open(os.path.join(d, 'speakers.json'), 'w') as f:
         json.dump(out, f, indent=1)

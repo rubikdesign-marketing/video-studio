@@ -46,7 +46,12 @@ export function row({ name, clip, words, shots, quality, faces, speakers }) {
   let seen = v ? (shots ? (shots.cuts.length ? `${shots.shots.length} shots, cut${shots.cuts.length > 1 ? 's' : ''} at ${shots.cuts.map(clock).join(', ')}` : 'one continuous shot') : 'not measured') : '';
   if (v) {
     const ppl = faces?.people || [];
-    seen += ppl.length ? `; ${ppl.length === 1 ? 'one person' : `${ppl.length} people (${ppl.map((p) => p.side).join(', ')})`}${speakers ? `, ${speakers.people.map((p) => `${p.side} speaks ${Math.round(p.share * 100)}%`).join(', ')}${speakers.off_camera_words ? `, ${speakers.off_camera_words} words off camera` : ''}` : ''}` : faces ? '; no face' : '; faces not measured';
+    const shotsWith = new Set(ppl.map((p) => p.shot ?? 0)).size;
+    const most = Math.max(0, ...[...new Set(ppl.map((p) => p.shot ?? 0))].map((k) => ppl.filter((p) => (p.shot ?? 0) === k).length));
+    const offCam = speakers?.off_camera_words ? `, ${speakers.off_camera_words} words with no face on screen` : '';
+    if (!ppl.length) seen += faces ? '; no face' : '; faces not measured';
+    else if (shotsWith > 1) seen += `; faces in ${shotsWith} shots, up to ${most === 1 ? 'one person' : `${most} people`} at once (each shot's people kept apart; who is who across shots is for a person to say)${offCam}`;
+    else seen += `; ${ppl.length === 1 ? 'one person' : `${ppl.length} people (${ppl.map((p) => p.side).join(', ')})`}${speakers && ppl.length > 1 ? `, ${speakers.people.map((p) => `${p.side} speaks ${Math.round(p.share * 100)}%`).join(', ')}` : ''}${offCam}`;
     if (clip.steady) seen += '; steadied';
   }
   const pf = quality?.picture?.flags || [];

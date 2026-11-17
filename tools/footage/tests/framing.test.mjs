@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { captionChars, captionSlot, checkSize, placeCaptions } from '../lib/framecheck.mjs';
 import { captionLines } from '../lib/paper.mjs';
-import { RULES, frameFace, limits, planPiece } from '../lib/framing.mjs';
+import { RULES, frameFace, limits, planCut, planPiece } from '../lib/framing.mjs';
 
 const SRC4K = { w: 3840, h: 2160 }; const SRC = { w: 1920, h: 1080 };
 const OUT = { w: 1920, h: 1080 }; const TALL = { w: 1080, h: 1920 };
@@ -101,4 +101,51 @@ test('a caption line moves to the top when a big face in a tall frame would be u
   assert.equal(placed[0].position, 'top');
   assert.ok(!checkSize('9:16', TALL, cut, plan, clips, { lines: placed }).problems.some((p) => p.what === 'caption over a face'));
   assert.equal(placeCaptions('16:9', OUT, cut, [[{ t: 0, ...frameFace(big, SRC, OUT) }, { t: 2, ...frameFace(big, SRC, OUT) }]], clips, lines)[0].position, undefined);
+});
+
+test('inside one take the eye line holds across punch-ins; a cut across the footage\'s own camera change is not a punch-in', () => {
+  // The head drifts down 60 px across the take; each cut puts the eyes where they were at the end of the last piece.
+  const smooth = Array.from({ length: 101 }, (_, i) => ({ t: i * 0.1, ...face(1900, 860 + 0.6 * i) }));
+  const people = [{ id: 1, side: 'centre', frames: smooth.map((f) => ({ ...f, mouth: 0 })), smooth }];
+  const pieces = [0, 3, 6].map((s0, i) => ({ kind: 'speech', clip: 'a', in: s0 + 0.3 * i, at: 2.4 * i, dur: 2.4 })); // under 2.5 s: no opening push
+  const cut = { pieces, joins: [{ after: 0, kind: 'pause' }, { after: 1, kind: 'filler' }] };
+  const clips = { a: { src: SRC4K, steadyZoom: 1, faces: { people }, speakers: null, shots: { cuts: [] } } };
+  const plan = planCut(cut, clips, OUT);
+  assert.ok(Math.abs(plan[1][0].w * RULES.close - plan[0].at(-1).w) < 60 || Math.abs(plan[0].at(-1).w * RULES.close - plan[1][0].w) < 60); // a punch-in
+  const r = checkSize('16:9', OUT, cut, plan, clips, { captions: false });
+  assert.ok(!r.problems.some((p) => p.what === 'eye line jumps at a punch-in'), JSON.stringify(r.problems));
+  // The same cut with a camera change in the footage between the pieces: both pieces framed wide.
+  const changed = { a: { ...clips.a, shots: { cuts: [2.8] } } };
+  const plan2 = planCut(cut, changed, OUT);
+  assert.ok(Math.abs(plan2[1][0].w - plan2[0].at(-1).w) < 0.05 * plan2[0].at(-1).w);
+});
+
+test('a face outside the safe area only because the footage is framed that tight is a note, not a failure', () => {
+  const tight = face(960, 160, 0, 380); // hairline 0.4 % from the top of a 1080p source
+  const people = [{ id: 1, side: 'centre', frames: [{ ...tight, t: 0, mouth: 0 }], smooth: [{ t: 0, ...tight }] }];
+  const clips = { a: { src: SRC, steadyZoom: 1, faces: { people }, speakers: null } };
+  const cut = { pieces: [{ kind: 'speech', clip: 'a', in: 0, at: 0, dur: 1 }], joins: [] };
+  const crop = frameFace(tight, SRC, OUT);
+  const r = checkSize('16:9', OUT, cut, [[{ t: 0, ...crop }, { t: 1, ...crop }]], clips, { captions: false });
+  assert.equal(crop.y, 0);
+  assert.ok(r.pass); assert.ok(r.notes.some((n) => n.what === 'tight in the footage'));
+});
+
+test('a camera change in the footage is a clean cut in the framing, and each shot\'s people are used only in that shot', () => {
+  // Shot one (0 to 2 s): a face on the left. Shot two (2 to 4 s): a face on the right. One piece spans the change.
+  const mk = (x, from, to, id) => {
+    const smooth = Array.from({ length: 21 }, (_, i) => ({ t: from + i * ((to - from) / 20), ...face(x, 900) }));
+    return { id, side: 'centre', shot: id - 1, shot_from: from, shot_to: to, start: from, end: to, frames: smooth.map((f) => ({ ...f, mouth: 0 })), smooth };
+  };
+  const people = [mk(1000, 0, 2, 1), mk(2800, 2, 4, 2)];
+  // A room-tone piece first, so this is not the opening line (no push).
+  const cut = { pieces: [{ kind: 'room', at: -1, dur: 1 }, { kind: 'speech', clip: 'a', in: 0, at: 0, dur: 4 }], joins: [] };
+  const clips = { a: { src: SRC4K, steadyZoom: 1, faces: { people }, speakers: null, shots: { cuts: [2] } } };
+  const keys = planCut(cut, clips, OUT)[1];
+  assert.ok(keys.every((k, i) => i === 0 || k.t > keys[i - 1].t)); // in time order
+  const before = keys.filter((k) => k.t < 2); const after = keys.filter((k) => k.t > 2);
+  assert.ok(before.every((k) => k.x === before[0].x)); // held on the first face up to the change
+  assert.ok(after.every((k) => k.x === after[0].x)); // straight onto the second face, no easing across
+  assert.ok(after[0].x > before[0].x + 1000);
+  assert.ok(checkSize('16:9', OUT, cut, [null, keys], clips, { captions: false }).pass);
 });

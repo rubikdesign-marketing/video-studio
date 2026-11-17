@@ -68,6 +68,7 @@ tools/footage/.venv/bin/python -I -m unittest discover -s tools/footage/tests -p
 echo "Faces and framing (footage phase 4)"
 [ -f tools/footage/models/face_landmarker.task ] && pass "MediaPipe face landmarker (positions only, never who someone is)" || fail "the face model is missing" "bash setup/install.sh"
 tools/footage/.venv/bin/python -I -c "import mediapipe" >/dev/null 2>&1 && pass "MediaPipe in the footage tool's Python" || fail "MediaPipe is missing from the footage tool's Python" "bash setup/install.sh"
+[ -f tools/footage/models/face_detection_yunet_2023mar.onnx ] && pass "YuNet face detector (finds faces turned away from the camera)" || note "the turned-face model is missing" "faces in side view (two people talking to each other) may be missed: bash setup/install.sh"
 "$FF" -hide_banner -filters 2>/dev/null | grep -q " vidstabdetect " && pass "ffmpeg can steady shaky footage (vidstab)" || fail "ffmpeg lacks vidstab" "brew install ffmpeg-full"
 
 echo "Hearing (earshot)"

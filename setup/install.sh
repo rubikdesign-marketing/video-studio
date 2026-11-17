@@ -73,6 +73,11 @@ fi
 FL="tools/footage/models/face_landmarker.task"
 [ -f "$FL" ] || { mkdir -p tools/footage/models; curl -sL --fail -o "$FL" "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task" \
   || { rm -f "$FL"; echo "The face model did not download. The health check at the end will say so."; }; }
+# OpenCV's YuNet face detector (MIT, opencv_zoo): finds faces turned away from the camera. Positions only.
+YN="tools/footage/models/face_detection_yunet_2023mar.onnx"
+[ -f "$YN" ] || { curl -sL --fail -o "$YN" "https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx" \
+  && echo "8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4  $YN" | shasum -a 256 -c --quiet - \
+  || { rm -f "$YN"; echo "The turned-face model did not download or did not match. The health check at the end will say so."; }; }
 mkdir -p tools/footage/models/dnsmos
 for f in sig_bak_ovr.onnx model_v8.onnx; do
   [ -f "tools/footage/models/dnsmos/$f" ] || curl -sL --fail -o "tools/footage/models/dnsmos/$f" "https://raw.githubusercontent.com/microsoft/DNS-Challenge/master/DNSMOS/DNSMOS/$f" \

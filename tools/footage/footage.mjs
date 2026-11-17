@@ -253,12 +253,12 @@ export function checkFraming(job) {
   const fr = readJson(path.join(rough, 'framing.json'), null);
   if (!fr) throw new Error('No framing yet: make the rough cut first (footage.mjs rough <job>).');
   const cut = readJson(path.join(job, 'edit', 'cutlist.json'));
-  const clips = Object.fromEntries(Object.entries(fr.clips).map(([c, x]) => [c, { ...x, faces: readJson(path.join(job, 'edit', 'clips', c, 'faces.json'), null), speakers: readJson(path.join(job, 'edit', 'clips', c, 'speakers.json'), null) }]));
+  const clips = Object.fromEntries(Object.entries(fr.clips).map(([c, x]) => [c, { ...x, faces: readJson(path.join(job, 'edit', 'clips', c, 'faces.json'), null), speakers: readJson(path.join(job, 'edit', 'clips', c, 'speakers.json'), null), shots: readJson(path.join(job, 'edit', 'clips', c, 'shots.json'), null) }]));
   const SIZE = { '16:9': { w: 1920, h: 1080 }, '9:16': { w: 1080, h: 1920 }, '1:1': { w: 1080, h: 1080 }, '4:5': { w: 1080, h: 1350 } };
   const engineCut = readJson(path.join(rough, 'cut.json'), {});
   const results = Object.entries(fr.sizes).map(([name, plan]) => checkSize(name, SIZE[name], cut, plan, clips, { lines: (engineCut.sizes?.[name]?.captions || engineCut.captions || { lines: [] }).lines }));
   writeJson(path.join(rough, 'framing-check.json'), results);
-  for (const r of results) say(`${r.size}: ${r.pass ? 'every check passes' : r.problems.map((p) => `${p.what} in ${Math.round(p.share * 100)}% of moments (first at ${p.first} s: ${p.detail})`).join('; ')}; most enlargement ${r.worst_enlargement}x.`);
+  for (const r of results) say(`${r.size}: ${r.pass ? 'every check passes' : r.problems.map((p) => `${p.what} in ${Math.round(p.share * 100)}% of moments (first at ${p.first} s: ${p.detail})`).join('; ')}; most enlargement ${r.worst_enlargement}x.${(r.notes || []).map((n) => ` Note: ${n.what}, ${n.count} moment${n.count > 1 ? 's' : ''} (first at ${n.first} s: ${n.detail}).`).join('')}`);
   return results;
 }
 

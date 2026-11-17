@@ -155,7 +155,7 @@ export function prepareRough(job, cut) {
   const info = Object.fromEntries(clips.map((c) => {
     const d = path.join(edit, 'clips', c); const cj = readJson(path.join(d, 'clip.json'));
     const v = cj.source.measured.video || { width: 1920, height: 1080 };
-    return [c, { faces: readJson(path.join(d, 'faces.json'), null), speakers: readJson(path.join(d, 'speakers.json'), null), steadyZoom: cj.steady?.zoom || 1, src: { w: v.width, h: v.height } }];
+    return [c, { faces: readJson(path.join(d, 'faces.json'), null), speakers: readJson(path.join(d, 'speakers.json'), null), shots: readJson(path.join(d, 'shots.json'), null), steadyZoom: cj.steady?.zoom || 1, src: { w: v.width, h: v.height } }];
   }));
   const sizes = {}; const framing = {};
   for (const [name, [w, h]] of Object.entries(SIZES)) {
