@@ -689,11 +689,15 @@ const CaptionLayer: FC<{ lines: Line[]; siteRanges: [number, number][] }> = ({ l
     <div style={{ position: 'absolute', left: cx, bottom: onSite ? 22 : 66, transform: 'translateX(-50%)', whiteSpace: 'nowrap', font: `800 ${size}px/1.1 ${FONT}`, letterSpacing: '-0.02em',
       WebkitTextStroke: `${Math.round(size * 0.14)}px ${C.forest}`, paintOrder: 'stroke fill', filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.45))' }}>
       {line.words.map((w, i) => {
-        const u = Math.min(1, Math.max(0, (t - w.t0 + 0.04) / 0.14)); const pop = u <= 0 ? 0 : 1 - (1 - u) ** 3 + Math.sin(u * Math.PI) * 0.12;
-        const next = line.words[i + 1]; const now = t >= w.t0 && t < (next ? next.t0 : w.t1 + 0.08); const key = KEY.test(w.w.replace(/[^A-Za-z0-9]/g, ''));
+        // A smooth rise over 0.22 s (no overshoot), and the spoken word grows 8% over 0.1 s and settles back over 0.15 s:
+        // the 4-frame pop and one-frame size jump read as judder (smoothness.py: 4 windows in 5 s, 0 without captions).
+        const u = Math.min(1, Math.max(0, (t - w.t0 + 0.06) / 0.22)); const pop = 1 - (1 - u) ** 3;
+        const next = line.words[i + 1]; const end = next ? next.t0 : w.t1 + 0.08; const now = t >= w.t0 && t < end;
+        const grow = Math.min(1, Math.max(0, (t - w.t0) / 0.1)) * (1 - Math.min(1, Math.max(0, (t - end) / 0.15)));
+        const em = grow * grow * (3 - 2 * grow); const key = KEY.test(w.w.replace(/[^A-Za-z0-9]/g, ''));
         return (
-          <span key={i} style={{ display: 'inline-block', marginRight: i < line.words.length - 1 ? '0.4em' : 0, opacity: u > 0 ? 1 : 0.0,
-            transform: `translateY(${(1 - Math.min(1, pop)) * size * 0.25}px) scale(${(0.7 + 0.3 * Math.min(1, pop)) * (now ? 1.1 : 1)})`, transformOrigin: '50% 80%',
+          <span key={i} style={{ display: 'inline-block', marginRight: i < line.words.length - 1 ? '0.4em' : 0, opacity: pop,
+            transform: `translateY(${(1 - pop) * size * 0.15}px) scale(${(0.85 + 0.15 * pop) * (1 + 0.08 * em)})`, transformOrigin: '50% 80%',
             color: now || (key && t >= w.t0) ? C.lime : '#FFFFFF' }}>{w.w}</span>
         );
       })}
