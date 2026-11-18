@@ -36,7 +36,9 @@ const enter = (t: number, at: number, dur = 0.45) => interpolate(t, [at, at + du
 const useSpring = (at: number, damping = 16) => { const f = useCurrentFrame(); const { fps } = useVideoConfig(); return spring({ frame: f - sec(at), fps, config: { damping, stiffness: 170, mass: 0.8 } }); };
 
 // ---------------------------------------------------------------- A-roll
-type Crop = { src: [number, number]; keys: [number, number, number, number, number][] };
+/** keys: [frame, x, y, w, h, eye offset]: the 6th value (when present) is how far his eyes sit from the frame's centre
+ *  line in 1080p px, where the crop is pinned at the source's edge (build/center.py). */
+type Crop = { src: [number, number]; keys: number[][] };
 type Pic = { src: string; from: number; frames: number; trim: number; freeze: boolean; crop?: Crop };
 /** grade: per clip, gains that match skin and exposure to the reference clip plus one look (build/grade.py); an older
  *  cut stores the gains alone. */
@@ -53,6 +55,12 @@ const cropAt = (c: Crop, f: number) => {
   if (f <= k[0][0]) return k[0];
   for (let i = 1; i < k.length; i++) if (f <= k[i][0]) { const a = k[i - 1]; const b = k[i]; const u = (f - a[0]) / Math.max(1, b[0] - a[0]); return a.map((v, j) => v + (b[j] - v) * u); }
   return k[k.length - 1];
+};
+/** How far his eyes sit from the centre line (1080p px) at dialogue frame f: lets a narrow panel re-centre him. */
+const eyeOffsetAt = (cut: FilmCut, f: number): number => {
+  const p = cut.pictures.find((q) => f >= q.from && f < q.from + q.frames);
+  const k = p?.crop ? cropAt(p.crop, f - p.from) : undefined;
+  return k && k.length > 5 ? k[5] : 0;
 };
 const clipOf = (src: string) => src.slice(src.lastIndexOf('/') + 1, -4);
 const GradeDefs: FC<{ grade: FilmCut['grade'] }> = ({ grade }) => (
@@ -429,8 +437,10 @@ const ColdOpen: FC<{ c: Extract<Card, { type: 'coldopen' }>; shot: Shot; cut: Fi
   const side = cueOf(shot, 'Can', 1.4);
   const u = interpolate(t, [side, side + 0.85], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
   // Kashfiq: full frame, then a tall panel on the left, his face kept on the panel's centre line.
-  const P = { x: 64 * u, y: 64 * u, w: 1920 + (760 - 1920) * u, h: 1080 + (952 - 1080) * u };
-  const sc = P.h / 1080;
+  // The panel shows a wide slice of the frame (about 1220 px of 1920), and re-centres him where the crop is pinned at
+  // the source's edge, so his head and shoulders stay inside it (owner: 'Kashfiq goes out of frame').
+  const P = { x: 64 * u, y: 196 * u, w: 1920 + (780 - 1920) * u, h: 1080 + (688 - 1080) * u };
+  const sc = P.h / 1080; const off = eyeOffsetAt(cut, sec(d0 + t)) * u;
   // The question types on with his words, then rises to sit over the site.
   const qa = cueOf(shot, 'What', 0.1); const qb = cueOf(shot, 'do?', 1.0) + 0.25;
   const typed = Math.floor(interpolate(t, [qa, qb], [0, c.question.length], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }));
@@ -441,7 +451,7 @@ const ColdOpen: FC<{ c: Extract<Card, { type: 'coldopen' }>; shot: Shot; cut: Fi
   return (
     <AbsoluteFill style={{ background: `radial-gradient(120% 90% at 18% 10%, ${C.forest2} 0%, ${C.forest} 58%, #001A10 100%)`, fontFamily: FONT }}>
       <div style={{ position: 'absolute', left: P.x, top: P.y, width: P.w, height: P.h, overflow: 'hidden', borderRadius: 28 * u, boxShadow: u > 0 ? `0 2px 6px rgba(0,0,0,${0.25 * u}), 0 28px 70px -12px rgba(0,0,0,${0.55 * u})` : undefined }}>
-        <div style={{ position: 'absolute', left: P.w / 2 - 960 * sc, top: 0, width: 1920, height: 1080, transform: `scale(${sc})`, transformOrigin: '0 0' }}><ARollAt cut={cut} d0={d0} len={len} /></div>
+        <div style={{ position: 'absolute', left: P.w / 2 - (960 + off) * sc, top: 0, width: 1920, height: 1080, transform: `scale(${sc})`, transformOrigin: '0 0' }}><ARollAt cut={cut} d0={d0} len={len} /></div>
         <AbsoluteFill style={{ background: `linear-gradient(transparent 45%, rgba(0,20,12,${0.7 * (1 - u)}) 100%)` }} />
       </div>
       {t >= side + 0.1 ? (
@@ -680,9 +690,9 @@ const CaptionLayer: FC<{ lines: Line[]; siteRanges: [number, number][] }> = ({ l
       WebkitTextStroke: `${Math.round(size * 0.14)}px ${C.forest}`, paintOrder: 'stroke fill', filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.45))' }}>
       {line.words.map((w, i) => {
         const u = Math.min(1, Math.max(0, (t - w.t0 + 0.04) / 0.14)); const pop = u <= 0 ? 0 : 1 - (1 - u) ** 3 + Math.sin(u * Math.PI) * 0.12;
-        const now = t >= w.t0 && t < w.t1 + 0.08; const key = KEY.test(w.w.replace(/[^A-Za-z0-9]/g, ''));
+        const next = line.words[i + 1]; const now = t >= w.t0 && t < (next ? next.t0 : w.t1 + 0.08); const key = KEY.test(w.w.replace(/[^A-Za-z0-9]/g, ''));
         return (
-          <span key={i} style={{ display: 'inline-block', marginRight: i < line.words.length - 1 ? '0.26em' : 0, opacity: u > 0 ? 1 : 0.0,
+          <span key={i} style={{ display: 'inline-block', marginRight: i < line.words.length - 1 ? '0.4em' : 0, opacity: u > 0 ? 1 : 0.0,
             transform: `translateY(${(1 - Math.min(1, pop)) * size * 0.25}px) scale(${(0.7 + 0.3 * Math.min(1, pop)) * (now ? 1.1 : 1)})`, transformOrigin: '50% 80%',
             color: now || (key && t >= w.t0) ? C.lime : '#FFFFFF' }}>{w.w}</span>
         );
