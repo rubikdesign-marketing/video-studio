@@ -98,7 +98,8 @@ export const markBoxAt = (box: Box, markScroll: number, track: [number, number][
 // ---------------------------------------------------------------- the in-view check
 type CheckRing = { at: Cue; out?: Cue; box: Box; mark?: string };
 export type Focus = { at?: Cue; over?: number; margin?: number; minW?: number; from?: Box };
-type CheckSite = { type: string; cap: string; from: number; to?: number; rate?: number; zoom?: Zoom & { at?: Cue }; focus?: Focus; rings?: CheckRing[]; pause?: { at: Cue; box: Box }; morph?: { at: Cue; box: Box } };
+export type BeatSpec = { at: Cue; mark?: string; src?: number; view?: Box; play?: number };
+type CheckSite = { type: string; cap: string; from: number; to?: number; rate?: number; zoom?: Zoom & { at?: Cue }; focus?: Focus; beats?: BeatSpec[]; rings?: CheckRing[]; pause?: { at: Cue; box: Box }; morph?: { at: Cue; box: Box } };
 type CheckShot = { n: number; start: number; end: number; words: Word[] };
 export type MarksFile = Record<string, { scroll: [number, number][]; marks: Record<string, { t: number; scroll: number }> }>;
 export type CheckRow = { shot: number; kind: string; i: number; ok: boolean; cut: number; t: number };
@@ -112,6 +113,7 @@ export function checkMarks(spec: Record<number, unknown>, T: { shots: CheckShot[
     const len = shot.end - shot.start; const cap = marks[sp.cap];
     const plan = capPlan(capLen[sp.cap], sp.from, sp.to, len, sp.rate); const st = sp.to === undefined && still(sp.cap, sp.from);
     const zoom = zoomOf(sp, shot, marks, capLen, still); const zAt = cueTime(shot.words, shot.start, zoom?.at, 0);
+    const beats = resolveBeats(sp, shot, marks);
     const items: [string, number, CheckRing][] = [
       ...(sp.rings ?? []).map((r, i) => ['ring', i, r] as [string, number, CheckRing]),
       ...(sp.pause ? [['pause', 0, { at: sp.pause.at, box: sp.pause.box }] as [string, number, CheckRing]] : []),
@@ -121,9 +123,10 @@ export function checkMarks(spec: Record<number, unknown>, T: { shots: CheckShot[
       const a = cueTime(shot.words, shot.start, r.at, 0); const b = r.out !== undefined ? cueTime(shot.words, shot.start, r.out, len) : len;
       let worst = 0; let wt = a;
       for (let t = a; t <= b + 1e-9; t += 0.1) {
-        const v = viewAt(zoom, zAt, len, t);
+        const bt = beats ? beatAt(beats, t) : undefined;
+        const v = bt ? bt.view : viewAt(zoom, zAt, len, t);
         const m = r.mark && cap?.marks[r.mark];
-        const box = m ? markBoxAt(r.box, m.scroll, cap.scroll, srcAt(plan, sp.from, t, st)) : r.box;
+        const box = m ? markBoxAt(r.box, m.scroll, cap.scroll, bt ? bt.src : srcAt(plan, sp.from, t, st)) : r.box;
         const cut = Math.max(0, v[0] - box[0]) + Math.max(0, v[1] - box[1]) + Math.max(0, box[0] + box[2] - v[0] - v[2]) + Math.max(0, box[1] + box[3] - v[1] - v[3]);
         if (cut > worst) { worst = cut; wt = t; }
       }
@@ -153,4 +156,25 @@ export function perimeterPoint(w: number, h: number, u: number): [number, number
   if (d <= h) return [w, d]; d -= h;
   if (d <= w) return [w - d, h]; d -= w;
   return [0, h - d];
+}
+
+// ---------------------------------------------------------------- beats (owner's notes b001-n9, n10, n15, n16, n19, n29–31)
+/** One thing he names: at film-shot time t the page goes to capture moment `src` (usually a capture mark) and frames
+ *  `view`, then holds there; with `play`, the capture runs on at that speed while the view holds. */
+export type Beat = { t: number; src: number; view: Box; play?: number };
+/** Where the page is at shot time t: each beat's move takes `move` seconds, the capture playing forward from the
+ *  last beat's moment (a scroll down the page) and the view easing; going back up the page cuts straight there. */
+export function beatAt(beats: Beat[], t: number, move = 0.8): { src: number; view: Box } {
+  const held = (i: number, at: number) => { const b = beats[i]; const from = i === 0 ? b.t : b.t + move; return b.src + Math.max(0, at - from) * (b.play ?? 0); };
+  let i = 0; for (let k = 0; k < beats.length; k++) if (beats[k].t <= t) i = k;
+  const b = beats[i];
+  if (i === 0 || t >= b.t + move) return { src: t < b.t ? b.src : held(i, t), view: b.view };
+  const u = inOut((t - b.t) / move); const prevSrc = held(i - 1, b.t);
+  return { src: b.src >= prevSrc ? prevSrc + (b.src - prevSrc) * u : b.src, view: lerpBox(beats[i - 1].view, b.view, u) };
+}
+
+/** A shot's beats as times and capture moments: a beat named by a mark starts at that mark; no view = the whole page. */
+export function resolveBeats(sp: { cap: string; type?: string; from?: number; beats?: BeatSpec[] }, shot: { start: number; words: Word[] }, marks: MarksFile): Beat[] | undefined {
+  if (!sp.beats?.length) return undefined;
+  return sp.beats.map((b) => ({ t: cueTime(shot.words, shot.start, b.at, 0), src: b.mark ? marks[sp.cap]?.marks[b.mark]?.t ?? b.src ?? 0 : b.src ?? 0, view: b.view ?? FULL, play: b.play }));
 }

@@ -9,9 +9,9 @@ import { z } from 'zod';
 import { BrandProvider } from '../../kit/brand';
 import { MotionProvider } from '../../kit/motion';
 import timeline from './timeline.json';
-import { capPlan, cueTime, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
+import { beatAt, capPlan, cueTime, resolveBeats, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
 import marksJson from './marks.json';
-import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Row, type Site, type Tone } from './spec';
+import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Proof, type Row, type Site, type Tone } from './spec';
 import { B, Browser, C, FONT, Highlight, KineticLine, PAGE, Spotlight, toneBg, toneInk } from './look';
 
 // ---------------------------------------------------------------- data
@@ -21,7 +21,7 @@ const T = timeline as TL;
 const MARKS = marksJson as unknown as MarksFile;
 export const RubikEp1Fps = T.fps;
 export const RubikEp1Frames = Math.round(T.duration * T.fps);
-export const RubikEp1Schema = z.object({ captions: z.boolean(), audio: z.enum(['voice', 'mix', 'none']) });
+export const RubikEp1Schema = z.object({ captions: z.boolean(), audio: z.enum(['voice', 'mix', 'none']), plate: z.boolean().optional() });
 export const RubikEp1Defaults: z.infer<typeof RubikEp1Schema> = { captions: true, audio: 'voice' };
 const JOB = 'jobs/2026-11-17-rubik-ep1';
 
@@ -118,6 +118,34 @@ const PiP: FC<{ cut: FilmCut; d0: number; len: number; x: number; y: number; siz
 };
 
 // ---------------------------------------------------------------- site shot
+/** Kashfiq cut out (build/matte_front.sh: Robust Video Matting on a 1920 x 1080 plate of the centred A-roll), standing
+ *  in front of the browser at the bottom right (presence 'front'). Each file covers these film frames; `lid` is the plate
+ *  row of the laptop's top edge: the matte makes the lid half see-through, so the cut-out is clipped there and that
+ *  row sits on the frame's bottom edge. */
+const MATTES: { name: string; a: number; b: number; lid: number }[] = [
+  { name: 's21-22', a: 2317, b: 2800, lid: 875 }, { name: 's33', a: 4846, b: 5112, lid: 835 },
+  { name: 's55', a: 9994, b: 10350, lid: 850 }, { name: 's58', a: 10779, b: 11164, lid: 815 }];
+const Front: FC<{ shot: Shot; fadeIn: boolean }> = ({ shot, fadeIn }) => {
+  const t = useT(); const f0 = sec(shot.start);
+  const m = MATTES.find((x) => f0 >= x.a && f0 < x.b);
+  if (!m) return null;
+  const u = fadeIn ? enter(t, 0.1, 0.6) : 1; const sc = 0.75; const W = 1920 * sc; const H = 1080 * sc; const lid = m.lid * sc;
+  return (
+    <div style={{ position: 'absolute', left: 1650 - W / 2, top: 1080 - lid + (1 - u) * 90, width: W, height: H, opacity: u, clipPath: `inset(0 0 ${H - lid}px 0)`, filter: 'drop-shadow(0 18px 40px rgba(0,0,0,0.5))' }}>
+      <OffthreadVideo src={staticFile(`${JOB}/edit/matte/${m.name}.mov`)} transparent muted trimBefore={f0 - m.a} style={{ width: '100%', height: '100%' }} />
+    </div>
+  );
+};
+/** Kashfiq full-frame behind the browser: blurred, darkened and pushed in a little, so the page reads first and he is
+ *  still there (presence 'behind'). Fades in when the shot before did not have him behind. */
+const Behind: FC<{ cut: FilmCut; d0: number; len: number; fadeIn: boolean }> = ({ cut, d0, len, fadeIn }) => {
+  const t = useT(); const u = fadeIn ? enter(t, 0, 0.6) : 1;
+  return (
+    <AbsoluteFill style={{ opacity: u, transform: 'scale(1.06)', filter: 'blur(14px) brightness(0.42) saturate(0.8)' }}>
+      <ARollAt cut={cut} d0={d0} len={len} />
+    </AbsoluteFill>
+  );
+};
 /** The capture on the film clock: from `from`, at the speed that reaches `to` by the shot's end, holding its last frame. */
 /** Places where a capture snaps (measured with the smoothness check): [last good second, first good second after]. */
 const CAP_SNAPS: Record<string, [number, number][]> = {
@@ -165,14 +193,40 @@ const Capture: FC<{ cap: string; from: number; to?: number; len: number; rate?: 
     </>
   );
 };
+/** A stopwatch on the page (b001-n14): a lime ring fills as it counts 0.0 to 2.0 s, stops on the word, then the
+ *  verdict stamps in under it. */
+const Stopwatch: FC<{ shot: Shot; at: number; stop: number; text: string }> = ({ at, stop, text }) => {
+  const t = useT(); const u = enter(t, at - 0.2, 0.4);
+  if (u <= 0) return null;
+  const v = Math.min(2, Math.max(0, ((Math.min(t, stop) - at) / Math.max(0.1, stop - at)) * 2));
+  const stamp = useSpring(stop + 0.15, 12); const R0 = 70; const per = 2 * Math.PI * R0;
+  return (
+    <div style={{ position: 'absolute', right: 40, top: 300, width: 300, display: 'grid', justifyItems: 'center', gap: 14, opacity: u, transform: `translateY(${(1 - u) * -16}px)` }}>
+      <div style={{ position: 'relative', width: 220, height: 220, borderRadius: 110, background: C.forest, boxShadow: '0 2px 6px rgba(0,0,0,0.2), 0 24px 50px -10px rgba(0,0,0,0.45)' }}>
+        <svg width="220" height="220" style={{ position: 'absolute', inset: 0 }}><circle cx="110" cy="110" r={R0} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="12" />
+          <circle cx="110" cy="110" r={R0} fill="none" stroke={C.lime} strokeWidth="12" strokeLinecap="round" strokeDasharray={per} strokeDashoffset={per * (1 - v / 2)} transform="rotate(-90 110 110)" /></svg>
+        <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', font: `800 54px/1 ${FONT}`, color: C.white, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.03em' }}>{v.toFixed(1)}<span style={{ position: 'absolute', top: 146, font: `600 18px/1 ${FONT}`, color: C.mint }}>seconds</span></div>
+      </div>
+      {t >= stop + 0.15 ? <div style={{ background: C.lime, color: C.forest, font: `800 30px/1 ${FONT}`, padding: '14px 22px', borderRadius: 14, transform: `scale(${0.6 + 0.4 * stamp}) rotate(${(1 - stamp) * -8}deg)`, opacity: Math.min(1, stamp * 1.5), letterSpacing: '-0.01em', whiteSpace: 'nowrap', boxShadow: '0 12px 30px rgba(0,0,0,0.3)' }}>{text}</div> : null}
+    </div>
+  );
+};
+/** The capture at exactly capture second `src` (beats choose it frame by frame). */
+const BeatCapture: FC<{ cap: string; src: number }> = ({ cap, src }) => {
+  const { fps } = useVideoConfig();
+  const f = Math.max(0, Math.min(Math.round(src * fps), Math.floor((CAP_LENGTH[cap] - 0.1) * fps)));
+  return <Freeze frame={f}><OffthreadVideo src={staticFile(`${JOB}/capture/${cap}.mp4`)} muted style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} /></Freeze>;
+};
 const SPEC_STATIC = new Set(STILLS);
 
-const PinMark: FC<{ x: number; y: number; tone: Tone; text?: string; at: number; k: number }> = ({ x, y, tone, text = '?', at, k }) => {
-  const s = useSpring(at, 11); const t = useT();
-  if (t < at) return null;
+const PinMark: FC<{ x: number; y: number; tone: Tone; text?: string; at: number; out?: number; instant?: boolean; k: number }> = ({ x, y, tone, text = '?', at, out, instant, k }) => {
+  const sp = useSpring(at, 11); const t = useT();
+  if (t < at || (out !== undefined && t >= out)) return null;
+  const s = instant ? 1 : sp;
   const pulse = 1 + 0.08 * Math.sin((t - at) * 5);
+  const shrug = text === '?' ? 14 * Math.sin((t - at) * 4.2) * Math.exp(-(t - at) * 0.8) : 0;
   return (
-    <div style={{ position: 'absolute', left: x * k - 24, top: y * k - 24, width: 48, height: 48, borderRadius: 24, background: toneBg[tone], color: toneInk[tone], display: 'grid', placeItems: 'center', font: `800 28px/1 ${FONT}`, transform: `scale(${s * pulse})`, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>{text}</div>
+    <div style={{ position: 'absolute', left: x * k - 24, top: y * k - 24, width: 48, height: 48, borderRadius: 24, background: toneBg[tone], color: toneInk[tone], display: 'grid', placeItems: 'center', font: `800 28px/1 ${FONT}`, transform: `scale(${s * pulse}) rotate(${shrug}deg)`, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>{text}</div>
   );
 };
 
@@ -200,7 +254,7 @@ const Chip: FC<{ tone: Tone; children: ReactNode; dark?: boolean }> = ({ tone, c
 const sentence = (s: string) => s.charAt(0) + s.slice(1).toLowerCase().replace(/\bcta\b/g, 'CTA').replace(/\bdna\b/g, 'DNA').replace(/fibery/g, 'Fibery');
 const NoteCard: FC<{ note: Note; shot: Shot; at: number }> = ({ note, shot, at }) => {
   const t = useT(); const s = useSpring(at, 15);
-  const light = note.kind === 'steps' || note.kind === 'dna' || note.kind === 'timer' || note.kind === 'concept' || note.tone === 'info' || note.tone === 'keep';
+  const light = note.kind === 'steps' || note.kind === 'dna' || note.kind === 'timer' || note.kind === 'concept' || note.kind === 'contrast' || note.tone === 'info' || note.tone === 'keep';
   const bg = note.kind === 'motion' ? C.fix : light ? '#FFFFFF' : note.tone === 'fix' ? C.fix : C.forest;
   const ink = light ? C.ink : '#FFFFFF';
   const body = (() => {
@@ -230,6 +284,16 @@ const NoteCard: FC<{ note: Note; shot: Shot; at: number }> = ({ note, shot, at }
         </div>
         <div style={{ marginTop: 10, font: `600 15px/1 ${FONT}`, letterSpacing: '0.04em', color: 'rgba(255,255,255,0.86)' }}>Motion concept · Rubik</div></>);
     }
+    if (note.kind === 'contrast' && note.cols) {
+      const [a, b] = note.cols; const second = enter(t, at + 1.1, 0.45);
+      return (
+        <div style={{ display: 'grid', gap: 12 }}>
+          <div><div style={{ font: `600 17px/1 ${FONT}`, color: C.grey, marginBottom: 8 }}>{a.h}</div><div style={{ font: `700 27px/1.18 ${FONT}`, color: C.forest, letterSpacing: '-0.01em' }}>{a.t}</div></div>
+          <div style={{ height: 1, background: C.line }} />
+          <div style={{ opacity: second, transform: `translateY(${(1 - second) * 10}px)` }}><div style={{ font: `600 17px/1 ${FONT}`, color: C.grey, marginBottom: 8 }}>{b.h}</div><div style={{ font: `700 27px/1.18 ${FONT}`, color: C.fix, letterSpacing: '-0.01em' }}>{b.t}</div></div>
+        </div>
+      );
+    }
     if (note.kind === 'concept') return (<><div style={{ font: `700 30px/1.18 ${FONT}`, color: C.forest, letterSpacing: '-0.01em' }}>{note.text}</div><div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8, font: `600 15px/1 ${FONT}`, color: C.forest, letterSpacing: '0.03em' }}><Logo name="mark-on-light" h={16} />Rubik concept</div></>);
     return <div style={{ font: `600 30px/1.2 ${FONT}`, color: ink, letterSpacing: '-0.01em' }}>{note.text}</div>;
   })();
@@ -253,9 +317,11 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
   const k = PAGE.w / 1920;
   const still = spec.to === undefined && SPEC_STATIC.has(spec.cap + spec.from);
   const z = zoomOf(spec, shot, MARKS, CAP_LENGTH, (c, f) => SPEC_STATIC.has(c + f));
-  const [vx, vy, vw] = viewAt(z, cueOf(shot, z?.at, 0), len, t);
+  const beats = resolveBeats(spec, shot, MARKS); const bt = beats ? beatAt(beats, t) : undefined;
+  const [vx, vy, vw] = bt ? bt.view : viewAt(z, cueOf(shot, z?.at, 0), len, t);
   // Highlights tied to a capture mark move with the page as it scrolls.
-  const srcT = srcAt(capPlan(CAP_LENGTH[spec.cap], spec.from, spec.to, len, spec.rate), spec.from, t, still);
+  const srcT = bt ? bt.src : srcAt(capPlan(CAP_LENGTH[spec.cap], spec.from, spec.to, len, spec.rate), spec.from, t, still);
+  const page = bt ? <BeatCapture cap={spec.cap} src={bt.src} /> : <Capture cap={spec.cap} from={spec.from} to={spec.to} len={len} rate={spec.rate} />;
   const onPage = (box: Box, mark?: string): Box => { const m = mark ? MARKS[spec.cap]?.marks[mark] : undefined; return m ? markBoxAt(box, m.scroll, MARKS[spec.cap].scroll, srcT) : box; };
   const scale = 1920 / vw;
   const pauseAt = spec.pause ? cueOf(shot, spec.pause.at) : 1e9;
@@ -264,11 +330,10 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
   const stripAt = spec.strip ? cueOf(shot, spec.strip.at) : 1e9; const su = enter(t, stripAt, 0.5);
   return (
     <Stage>
+      {spec.presence === 'behind' ? <Behind cut={cut} d0={d0} len={len} fadeIn={pipIn} /> : null}
       <Browser url={spec.url}>
         <div style={{ position: 'absolute', left: 0, top: 0, width: PAGE.w, height: PAGE.h, transform: `scale(${scale}) translate(${-vx * k}px, ${-vy * k}px)`, transformOrigin: '0 0' }}>
-          {spec.pause ? (
-            <Spotlight box={spec.pause.box} at={pauseAt} k={k} pw={PAGE.w} ph={PAGE.h}><Capture cap={spec.cap} from={spec.from} to={spec.to} len={len} rate={spec.rate} /></Spotlight>
-          ) : <Capture cap={spec.cap} from={spec.from} to={spec.to} len={len} rate={spec.rate} />}
+          {spec.pause ? <Spotlight box={spec.pause.box} at={pauseAt} k={k} pw={PAGE.w} ph={PAGE.h}>{page}</Spotlight> : page}
           {spec.patch && pw > 0 ? (
             <div style={{ position: 'absolute', left: spec.patch.box[0] * k, top: spec.patch.box[1] * k, width: spec.patch.box[2] * k, height: spec.patch.box[3] * k, background: spec.patch.bg, clipPath: `inset(0 ${(1 - pw) * 100}% 0 0)`, padding: 4 }}>
               <div style={{ display: 'inline-block', marginBottom: 10, background: C.forest, color: C.lime, font: `700 11px/1 ${FONT}`, letterSpacing: '0.1em', padding: '6px 8px', borderRadius: 5 }}>{spec.patch.label.toUpperCase()}</div>
@@ -276,13 +341,14 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
             </div>
           ) : null}
           {spec.morph && mu > 0 ? (
-            <div style={{ position: 'absolute', left: (spec.morph.box[0] + spec.morph.box[2] / 2) * k, top: spec.morph.box[1] * k, height: spec.morph.box[3] * k, transform: 'translateX(-50%)', background: spec.morph.bg, color: spec.morph.ink, borderRadius: 999, display: 'grid', placeItems: 'center', padding: `0 ${16 + 10 * mu}px`, font: `700 ${15}px/1 ${FONT}`, whiteSpace: 'nowrap', boxShadow: `0 0 0 ${3 * mu}px ${C.lime}` }}>
+            <div style={{ position: 'absolute', left: (spec.morph.box[0] + (spec.morph.anchor === 'right' ? spec.morph.box[2] : spec.morph.box[2] / 2)) * k, top: spec.morph.box[1] * k, height: spec.morph.box[3] * k, transform: spec.morph.anchor === 'right' ? 'translateX(-100%)' : 'translateX(-50%)', background: spec.morph.bg, color: spec.morph.ink, borderRadius: 999, display: 'grid', placeItems: 'center', padding: `0 ${16 + 10 * mu}px`, font: `700 ${15}px/1 ${FONT}`, whiteSpace: 'nowrap', boxShadow: `0 0 0 ${3 * mu}px ${C.lime}` }}>
               <span>{mu < 0.5 ? spec.morph.from : spec.morph.to}</span>
             </div>
           ) : null}
           {(spec.rings ?? []).map((r, i) => <Highlight key={i} box={onPage(r.box, r.mark)} at={cueOf(shot, r.at)} out={r.out !== undefined ? cueOf(shot, r.out) : undefined} k={k} scale={scale} />)}
-          {(spec.pins ?? []).map((p, i) => <PinMark key={i} x={p.x} y={p.y} tone={p.tone} text={p.text} at={cueOf(shot, p.at)} k={k} />)}
+          {(spec.pins ?? []).map((p, i) => <PinMark key={i} x={p.x} y={p.y} tone={p.tone} text={p.text} at={cueOf(shot, p.at)} out={p.out !== undefined ? cueOf(shot, p.out) : undefined} instant={p.instant} k={k} />)}
         </div>
+        {spec.timer ? <Stopwatch shot={shot} at={cueOf(shot, spec.timer.at)} stop={cueOf(shot, spec.timer.stop, 2)} text={spec.timer.text} /> : null}
         {spec.strip && su > 0 ? (
           <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '22px 30px', background: C.forest, color: C.white, font: `700 38px/1.15 ${FONT}`, letterSpacing: '-0.02em', transform: `translateY(${(1 - su) * 100}%)`, display: 'flex', alignItems: 'center', gap: 18 }}>
             <span style={{ width: 10, height: 44, borderRadius: 5, background: C.lime }} />{spec.strip.text}
@@ -290,7 +356,8 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
         ) : null}
       </Browser>
       <Rail notes={spec.notes ?? []} shot={shot} top={RAIL.y} />
-      <PiP cut={cut} d0={d0} len={len} x={RAIL.x + RAIL.w - 300} y={PAGE.y + PAGE.h - 300 + 4} size={300} at={pipIn ? 0 : -1} />
+      {spec.presence === 'front' ? <Front shot={shot} fadeIn={pipIn} /> : null}
+      {(spec.presence ?? 'pip') === 'pip' ? <PiP cut={cut} d0={d0} len={len} x={RAIL.x + RAIL.w - 300} y={PAGE.y + PAGE.h - 300 + 4} size={300} at={pipIn ? 0 : -1} /> : null}
       {spec.kinetic ? <KineticLine text={spec.kinetic.text} at={cueOf(shot, spec.kinetic.at)} out={cueOf(shot, spec.kinetic.out, len - 0.05)} /> : null}
     </Stage>
   );
@@ -299,9 +366,10 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
 // ---------------------------------------------------------------- A-roll shot with its graphics
 const ARollShot: FC<{ shot: Shot; spec: Extract<typeof SPEC[number], { type: 'aroll' }>; cut: FilmCut; d0: number }> = ({ shot, spec, cut, d0 }) => {
   const t = useT(); const len = shot.end - shot.start;
+  const soft = spec.soft ? enter(t, 0, 0.7) : 1;
   return (
-    <AbsoluteFill style={{ fontFamily: FONT }}>
-      <ARollAt cut={cut} d0={d0} len={len} />
+    <AbsoluteFill style={{ fontFamily: FONT, background: C.forest }}>
+      <AbsoluteFill style={{ opacity: soft, filter: soft < 1 ? `blur(${(1 - soft) * 18}px)` : undefined, transform: `scale(${1.04 - 0.04 * soft})` }}><ARollAt cut={cut} d0={d0} len={len} /></AbsoluteFill>
       <AbsoluteFill style={{ background: 'radial-gradient(130% 100% at 50% 40%, transparent 60%, rgba(0,0,0,0.28) 100%)' }} />
       {spec.lower ? (() => { const at = cueOf(shot, spec.lower.at); const u = enter(t, at, 0.6); const out = 1 - enter(t, len - 0.4, 0.35); return (
         <div style={{ position: 'absolute', left: 96, bottom: 150, display: 'flex', alignItems: 'center', gap: 22, background: C.forest, borderRadius: 18, padding: '20px 30px 20px 22px', clipPath: `inset(0 ${(1 - u) * 100}% 0 0 round 18px)`, opacity: out, boxShadow: '0 20px 50px rgba(0,0,0,0.35)' }}>
@@ -311,8 +379,8 @@ const ARollShot: FC<{ shot: Shot; spec: Extract<typeof SPEC[number], { type: 'ar
       {spec.pills ? (
         <div style={{ position: 'absolute', left: 0, right: 0, top: 120, display: 'flex', justifyContent: 'center', gap: 22 }}>
           {spec.pills.map((p, i) => { const s = useSpringSafe(shot, p.at, t, i); return (
-            <div key={p.text} style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#FFFFFF', borderRadius: 999, padding: '16px 26px', boxShadow: '0 16px 40px rgba(0,0,0,0.3)', transform: `translateY(${(1 - s) * -30}px) scale(${0.9 + 0.1 * s})`, opacity: Math.min(1, s * 1.5) }}>
-              <Logo name={p.logo} h={30} /><span style={{ font: `600 24px/1 ${FONT}`, color: C.grey }}>{p.text}</span>
+            <div key={p.logo} style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#FFFFFF', borderRadius: 999, padding: '20px 34px', boxShadow: '0 16px 40px rgba(0,0,0,0.3)', transform: `translateY(${(1 - s) * -30}px) scale(${0.9 + 0.1 * s})`, opacity: Math.min(1, s * 1.5) }}>
+              <Logo name={p.logo} h={44} />{p.text ? <span style={{ font: `600 24px/1 ${FONT}`, color: C.grey }}>{p.text}</span> : null}
             </div>); })}
         </div>
       ) : null}
@@ -426,9 +494,10 @@ const MaximCard: FC<{ c: Extract<Card, { type: 'maxim' }>; shot: Shot }> = ({ c,
     <Stage tone="dark">
       <AbsoluteFill style={{ display: 'grid', placeItems: 'center' }}>
         <div style={{ width: 1500 }}>
-          {c.small ? <div style={{ font: `700 22px/1 ${FONT}`, letterSpacing: '0.2em', color: C.mint, marginBottom: 36 }}>{c.small.toUpperCase()}</div> : null}
-          {c.lines.map((l, i) => { const at = cueOf(shot, l.at, i * 0.6); const u = enter(t, at, 0.5); return (
-            <div key={i} style={{ font: `800 ${c.lines.length > 2 ? 96 : 132}px/1.04 ${FONT}`, letterSpacing: '-0.04em', color: l.hi ? C.lime : C.white, opacity: u, transform: `translateY(${(1 - u) * 36}px)` }}>{l.text}</div>); })}
+          {c.lines.map((l, i) => { const at = cueOf(shot, l.at, i * 0.6); const u = enter(t, at, 0.5); const st = l.strike ? enter(t, at + 0.45, 0.4) : 0; const pop = l.hi ? useSpringSafe(shot, at, t, 0) : 1; return (
+            <div key={i} style={{ position: 'relative', display: 'table', font: `800 ${l.hi ? 128 : c.lines.length > 2 ? 96 : 132}px/1.08 ${FONT}`, letterSpacing: '-0.04em', color: l.hi ? C.lime : C.white, opacity: u * (1 - 0.55 * st), transform: `translateY(${(1 - u) * 36}px) scale(${l.hi ? 0.92 + 0.08 * pop : 1})`, transformOrigin: '0 50%', marginTop: l.hi ? 28 : 0 }}>
+              {l.text}{l.strike ? <span style={{ position: 'absolute', left: -6, top: '54%', height: 10, width: `calc(${st * 100}% + 12px)`, background: C.lime, borderRadius: 5 }} /> : null}
+            </div>); })}
         </div>
       </AbsoluteFill>
     </Stage>
@@ -459,55 +528,89 @@ const VerdictCard: FC<{ c: Extract<Card, { type: 'verdict' }>; shots: Shot[]; fi
     </AbsoluteFill>
   );
 };
-const PathCard: FC<{ shots: Shot[]; first: Shot; cut: FilmCut; d0: number; len: number }> = ({ shots, first, cut, d0, len }) => {
+/** How visitors find the price (b001-n32): the two paths as a diagram, and beside each a live example playing in
+ *  step with it. Most sites: home, then a click on Pricing loads a new page. Slite: the prices are already on the
+ *  homepage, a scroll away. No window of Kashfiq here. */
+const PathCard: FC<{ shots: Shot[]; first: Shot }> = ({ shots, first }) => {
   const t = useT();
   const at = (word: string, d: number) => groupCueTime(shots, word, first.start, d);
   const Node: FC<{ text: string; on: number; hi?: boolean }> = ({ text, on, hi }) => (
-    <div style={{ background: hi ? C.forest : '#FFFFFF', color: hi ? C.lime : C.ink, borderRadius: 18, padding: '24px 30px', font: `700 38px/1 ${FONT}`, boxShadow: '0 10px 30px rgba(0,0,0,0.08)', opacity: on, transform: `scale(${0.9 + 0.1 * on})` }}>{text}</div>
+    <div style={{ background: hi ? C.forest : '#FFFFFF', color: hi ? C.lime : C.ink, borderRadius: 18, padding: '22px 28px', font: `700 36px/1 ${FONT}`, boxShadow: '0 2px 4px rgba(0,0,0,0.05), 0 14px 30px -8px rgba(0,0,0,0.14)', opacity: on, transform: `scale(${0.9 + 0.1 * on})`, whiteSpace: 'nowrap' }}>{text}</div>
   );
   const Arrow: FC<{ on: number; label?: string; tone?: Tone }> = ({ on, label, tone }) => (
-    <div style={{ position: 'relative', width: 150, height: 40 }}>
-      <div style={{ position: 'absolute', left: 10, top: 18, height: 4, width: 120 * on, background: C.grey, borderRadius: 2 }} />
-      <div style={{ position: 'absolute', left: 120, top: 10, width: 0, height: 0, borderLeft: `16px solid ${C.grey}`, borderTop: '10px solid transparent', borderBottom: '10px solid transparent', opacity: on }} />
-      {label ? <div style={{ position: 'absolute', left: 20, top: -44, opacity: on }}><Tag tone={tone ?? 'fix'} size={17}>{label}</Tag></div> : null}
+    <div style={{ position: 'relative', width: 120, height: 40 }}>
+      <div style={{ position: 'absolute', left: 8, top: 18, height: 4, width: 96 * on, background: C.grey, borderRadius: 2 }} />
+      <div style={{ position: 'absolute', left: 96, top: 10, width: 0, height: 0, borderLeft: `16px solid ${C.grey}`, borderTop: '10px solid transparent', borderBottom: '10px solid transparent', opacity: on }} />
+      {label ? <div style={{ position: 'absolute', left: 4, top: -46, opacity: on, whiteSpace: 'nowrap' }}><Tag tone={tone ?? 'fix'} size={17}>{label}</Tag></div> : null}
     </div>
   );
   const r1 = at('most', 0.2); const r1b = at('page.', r1 + 2); const r1c = at('click.', r1 + 4);
   const r2 = at('inserted', 7); const r2b = at('glimpse', r2 + 2); const r2c = at('answers', r2 + 4);
+  const B1 = { x: 1210, y: 196, w: 620 }; const B2 = { x: 1210, y: 640, w: 620 }; const k = 620 / 1920;
+  // Most sites: the home page; the cursor goes to Pricing and clicks; the pricing page loads.
+  const link: Box = [1071.8, 16, 67.8, 32]; const cx = interpolate(t, [r1b - 0.9, r1b - 0.15], [1500, link[0] + link[2] / 2], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
+  const cy = interpolate(t, [r1b - 0.9, r1b - 0.15], [700, link[1] + link[3] / 2], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
+  const onPricing = t >= r1b;
+  const b2 = resolveBeats({ cap: 'slite-tour', beats: [{ at: 0, src: 52.0 }, { at: 0, src: 56.4 }] }, { start: 0, words: [] }, MARKS);
+  const beats2 = b2 ? [{ ...b2[0], t: r2 }, { ...b2[1], t: r2b }] : [];
   return (
     <Stage tone="light">
-      <div style={{ position: 'absolute', left: 120, top: 120, font: `700 26px/1 ${FONT}`, letterSpacing: '0.2em', color: C.grey }}>HOW VISITORS FIND THE PRICE</div>
-      <div style={{ position: 'absolute', left: 120, top: 250 }}>
+      <div style={{ position: 'absolute', left: 110, top: 104, font: `800 52px/1 ${FONT}`, letterSpacing: '-0.03em', color: C.ink }}>How visitors find the price</div>
+      <div style={{ position: 'absolute', left: 110, top: 290 }}>
         <div style={{ font: `600 28px/1 ${FONT}`, color: C.grey, marginBottom: 22, opacity: enter(t, r1) }}>Most SaaS sites</div>
         <div style={{ display: 'flex', alignItems: 'center' }}><Node text="Home" on={enter(t, r1)} /><Arrow on={enter(t, r1b)} /><Node text="Pricing page" on={enter(t, r1b)} /><Arrow on={enter(t, r1c)} label="+1 click" /><Node text="Answer" on={enter(t, r1c)} /></div>
       </div>
-      <div style={{ position: 'absolute', left: 120, top: 560 }}>
+      <div style={{ position: 'absolute', left: 110, top: 734 }}>
         <div style={{ font: `600 28px/1 ${FONT}`, color: C.forest, marginBottom: 22, opacity: enter(t, r2) }}>Slite</div>
         <div style={{ display: 'flex', alignItems: 'center' }}><Node text="Home" on={enter(t, r2)} /><Arrow on={enter(t, r2b)} label="in the scroll" tone="keep" /><Node text="Answer" on={enter(t, r2c)} hi /></div>
       </div>
-      <PiP cut={cut} d0={d0} len={len} x={1480} y={640} size={340} at={0.3} />
+      <Browser url={onPricing ? 'folk.app/pricing' : 'folk.app'} at={B1} style={{ opacity: enter(t, r1 - 0.2), transform: `translateY(${(1 - enter(t, r1 - 0.2)) * 30}px)` }}>
+        <BeatCapture cap={onPricing ? 'folk-pricing' : 'folk-hero'} src={onPricing ? 13.2 : 0.7} />
+        {!onPricing && t >= r1b - 0.9 ? <svg width="22" height="30" viewBox="0 0 22 30" style={{ position: 'absolute', left: cx * k, top: cy * k, filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.35))' }}><path d="M2 2v22l6-6 4 10 4-2-4-10h8z" fill="#111" stroke="#fff" strokeWidth="1.6" strokeLinejoin="round" /></svg> : null}
+        {onPricing ? <Highlight box={[323, 358, 1281, 536]} at={r1c} k={k} scale={1} /> : null}
+      </Browser>
+      <Browser url="slite.com" at={B2} style={{ opacity: enter(t, r2 - 0.2), transform: `translateY(${(1 - enter(t, r2 - 0.2)) * 30}px)` }}>
+        {beats2.length ? <BeatCapture cap="slite-tour" src={beatAt(beats2, t, 1.4).src} /> : null}
+        <Highlight box={[350, 730, 1218, 272]} at={r2c} k={k} scale={1} />
+      </Browser>
     </Stage>
   );
 };
-const LessonsCard: FC<{ c: Extract<Card, { type: 'lessons' }>; shots: Shot[]; first: Shot; cut: FilmCut; d0: number; len: number }> = ({ c, shots, first, cut, d0, len }) => {
+/** What we learned (b001-n38, n39): each lesson with its own proof playing beside it, a real page with what the
+ *  lesson is about marked. Number and words share one size and baseline. No window of Kashfiq. */
+const LessonsCard: FC<{ c: Extract<Card, { type: 'lessons' }>; shots: Shot[]; first: Shot }> = ({ c, shots, first }) => {
   const t = useT();
   const at = (cue: Cue | undefined, d: number) => (cue === undefined ? d : groupCueTime(shots, cue, first.start, d));
+  const live = c.rules.filter((r) => !r.dim && r.proof);
+  const BW = { x: 1030, y: 330, w: 800 }; const k = 800 / 1920;
   return (
     <Stage tone="dark">
-      <div style={{ position: 'absolute', left: 120, top: 110, font: `700 24px/1 ${FONT}`, letterSpacing: '0.2em', color: C.mint }}>WHAT WE LEARNED</div>
-      <div style={{ position: 'absolute', left: 120, top: 200, width: 1240, display: 'grid', gap: 40 }}>
-        {c.rules.map((r, i) => { const a = at(r.at, i); const u = enter(t, a, 0.55); const sb = enter(t, at(r.sub_at, a + 1.5), 0.5); return (
-          <div key={i} style={{ opacity: u * (r.dim ? 0.38 : 1), transform: `translateY(${(1 - u) * 30}px)` }}>
-            <div style={{ display: 'flex', gap: 28, alignItems: 'baseline' }}>
-              <span style={{ font: `800 92px/1 ${FONT}`, color: C.lime }}>{r.n}</span>
-              <span style={{ font: `800 ${r.dim ? 56 : 76}px/1.04 ${FONT}`, color: C.white, letterSpacing: '-0.035em' }}>{r.text}</span>
+      <div style={{ position: 'absolute', left: 120, top: 200, width: 840, display: 'grid', gap: 48 }}>
+        {c.rules.map((r, i) => { const a = at(r.at, i); const u = enter(t, a, 0.55); const sb = enter(t, at(r.sub_at, a + 1.5), 0.5); const sz = r.dim ? 48 : 72; return (
+          <div key={i} style={{ opacity: u * (r.dim ? 0.4 : 1), transform: `translateY(${(1 - u) * 30}px)` }}>
+            <div style={{ display: 'flex', gap: 22, alignItems: 'baseline', font: `800 ${sz}px/1.06 ${FONT}`, letterSpacing: '-0.035em' }}>
+              <span style={{ color: C.lime, fontVariantNumeric: 'tabular-nums' }}>{r.n}</span><span style={{ color: C.white }}>{r.text}</span>
             </div>
-            {r.sub ? <div style={{ marginLeft: 82, marginTop: 14, font: `600 36px/1.2 ${FONT}`, color: C.lime, opacity: sb }}>{r.sub}</div> : null}
-            {r.stills ? <div style={{ marginLeft: 82, marginTop: 26, display: 'flex', gap: 20 }}>{r.stills.map((s, j) => { const v = enter(t, a + 0.6 + j * 0.25, 0.5); return <Img key={s} src={staticFile(`${JOB}/stills/${s}.jpg`)} style={{ width: 400, height: 225, objectFit: 'cover', borderRadius: 14, opacity: v, transform: `translateY(${(1 - v) * 20}px)`, boxShadow: '0 16px 40px rgba(0,0,0,0.4)' }} />; })}</div> : null}
+            {r.sub && !r.dim ? <div style={{ marginLeft: sz * 0.6 + 22, marginTop: 18, font: `600 34px/1.25 ${FONT}`, color: C.lime, opacity: sb }}>{r.sub}</div> : null}
           </div>); })}
       </div>
-      <PiP cut={cut} d0={d0} len={len} x={1480} y={640} size={340} at={0.3} />
+      {live.map((r, i) => { const a = at(r.at, 0); const u = enter(t, a + 0.3, 0.6); const p = r.proof!; const sub = at(r.sub_at, a + 1.5); return (
+        <Sequence key={i} from={sec(a + 0.3)} layout="none">
+          <Browser url={p.url} at={BW} style={{ opacity: u, transform: `translateX(${(1 - u) * 60}px) rotate(${(1 - u) * 2}deg)` }}>
+            <ProofPage p={p} k={k} ringAt={Math.max(0.4, sub - a - 0.3)} />
+          </Browser>
+        </Sequence>); })}
     </Stage>
+  );
+};
+const ProofPage: FC<{ p: Proof; k: number; ringAt: number }> = ({ p, k, ringAt }) => {
+  const t = useT();
+  return (
+    <>
+      <BeatCapture cap={p.cap} src={p.src + t * (p.play ?? 0)} />
+      {p.ring ? <Highlight box={p.ring} at={ringAt} k={k} scale={1} /> : null}
+      {p.pin ? <PinMark x={p.pin.x} y={p.pin.y} tone={p.pin.tone} text={p.pin.text} at={ringAt + 0.6} k={k} /> : null}
+    </>
   );
 };
 const EndCard: FC = () => {
@@ -560,7 +663,7 @@ const CaptionLayer: FC<{ lines: Line[]; siteRanges: [number, number][] }> = ({ l
 };
 
 // ---------------------------------------------------------------- the film
-const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
+const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio, plate }) => {
   const cut = useFilmCut();
   const shots = T.shots;
   const dOf = (filmT: number) => { // dialogue time at a film time
@@ -571,6 +674,8 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
   const siteRanges = useMemo(() => shots.filter((s) => ['site', 'verdict', 'path', 'lessons'].includes((SPEC[s.n] as { type: string }).type) || ((SPEC[s.n] as { type: string }).type === 'cont' && s.n > 3)).map((s) => [s.start, s.end] as [number, number]), [shots]);
   if (!cut) return null;
   const group = (first: number, until: number) => shots.filter((s) => s.n >= first && s.n <= until && s.voice);
+  // plate: only the centred A-roll, for cutting Kashfiq out (build/matte_front.sh renders it for the 'front' shots).
+  if (plate) return <AbsoluteFill style={{ background: '#000' }}>{shots.map((s, i) => <Sequence key={i} from={sec(s.start)} durationInFrames={Math.max(1, sec(s.end) - sec(s.start))}><ARollAt cut={cut} d0={dOf(s.start)} len={s.end - s.start} /></Sequence>)}</AbsoluteFill>;
   return (
     <AbsoluteFill style={{ background: C.forest }}>
       <GradeDefs grade={cut.grade} />
@@ -582,15 +687,15 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
         const from = sec(s.start); const dur = Math.max(1, sec(end) - from);
         const d0 = dOf(s.start); const len = end - s.start;
         let body: ReactNode = null;
-        if (spec.type === 'site') body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} pipIn={i === 0 || SPEC[shots[i - 1].n].type !== 'site'} />;
+        if (spec.type === 'site') { const prev = i > 0 ? SPEC[shots[i - 1].n] : undefined; body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} pipIn={!prev || prev.type !== 'site' || (prev.presence ?? 'pip') !== (spec.presence ?? 'pip')} />; }
         else if (spec.type === 'aroll') body = <ARollShot shot={s} spec={spec} cut={cut} d0={d0} />;
         else if (spec.type === 'title') body = <TitleCard />;
         else if (spec.type === 'coldopen') body = <ColdOpen c={spec} shot={s} cut={cut} d0={d0} len={len} />;
         else if (spec.type === 'chapter') body = <ChapterCard c={spec} len={len} />;
         else if (spec.type === 'maxim') body = <MaximCard c={spec} shot={s} />;
         else if (spec.type === 'verdict') body = <VerdictCard c={spec} shots={group(s.n, spec.until)} first={s} cut={cut} d0={d0} len={len} />;
-        else if (spec.type === 'path') body = <PathCard shots={group(s.n, spec.until)} first={s} cut={cut} d0={d0} len={len} />;
-        else if (spec.type === 'lessons') body = <LessonsCard c={spec} shots={group(s.n, spec.until ?? s.n)} first={s} cut={cut} d0={d0} len={len} />;
+        else if (spec.type === 'path') body = <PathCard shots={group(s.n, spec.until)} first={s} />;
+        else if (spec.type === 'lessons') body = <LessonsCard c={spec} shots={group(s.n, spec.until ?? s.n)} first={s} />;
         else if (spec.type === 'end') body = <EndCard />;
         return <Sequence key={i} from={from} durationInFrames={dur} name={`S${s.n} ${spec.type}`}>{body}</Sequence>;
       })}

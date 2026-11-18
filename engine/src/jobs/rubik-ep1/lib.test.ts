@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';
-import { capPlan, checkMarks, contains, cueTime, findWord, fitView, groupCueTime, markBoxAt, pageBox, perimeterPoint, zoomOf, scrollAt, srcAt, viewAt, viewBox, type Box, type Word } from './lib.ts';
+import { beatAt, capPlan, resolveBeats, checkMarks, contains, cueTime, findWord, fitView, groupCueTime, markBoxAt, pageBox, perimeterPoint, zoomOf, scrollAt, srcAt, viewAt, viewBox, type Box, type Word } from './lib.ts';
 
 const words = (...ws: string[]): Word[] => ws.map((w, i) => ({ w, t0: 10 + i, t1: 10.8 + i }));
 
@@ -141,4 +141,46 @@ test('perimeterPoint walks the box clockwise from its top-left corner', () => {
   assert.deepEqual(r(perimeterPoint(100, 50, 250 / 300)), [0, 50]);
   assert.deepEqual(r(perimeterPoint(100, 50, 1)), [0, 0]);
   assert.deepEqual(r(perimeterPoint(100, 50, 275 / 300)), [0, 25]);
+});
+
+// ---- beats: go to what he names, frame it, hold
+test('beatAt holds the first beat before anything is named', () => {
+  const b = [{ t: 1, src: 5, view: [0, 0, 1920, 1080] as Box }, { t: 3, src: 9, view: [400, 200, 960, 540] as Box }];
+  assert.deepEqual(beatAt(b, 0.2), { src: 5, view: [0, 0, 1920, 1080] });
+  assert.deepEqual(beatAt(b, 2.5), { src: 5, view: [0, 0, 1920, 1080] });
+});
+
+test('beatAt moves to the next beat over 0.8 s, playing the capture forward, then holds', () => {
+  const b = [{ t: 0, src: 5, view: [0, 0, 1920, 1080] as Box }, { t: 3, src: 9, view: [400, 200, 960, 540] as Box }];
+  const mid = beatAt(b, 3.4);
+  assert.ok(mid.src > 5 && mid.src < 9);
+  assert.ok(mid.view[2] < 1920 && mid.view[2] > 960);
+  assert.deepEqual(beatAt(b, 3.8), { src: 9, view: [400, 200, 960, 540] });
+  assert.deepEqual(beatAt(b, 10), { src: 9, view: [400, 200, 960, 540] });
+});
+
+test('going back up the page cuts straight to the earlier moment instead of playing it backwards', () => {
+  const b = [{ t: 0, src: 20, view: [0, 0, 1920, 1080] as Box }, { t: 2, src: 4, view: [0, 0, 1920, 1080] as Box }];
+  assert.equal(beatAt(b, 2.01).src, 4);
+  assert.equal(beatAt(b, 1.99).src, 20);
+});
+
+test('a beat with play: the capture runs on from its moment while it holds the view', () => {
+  const b = [{ t: 0, src: 5, view: [0, 0, 1920, 1080] as Box, play: 1 }];
+  assert.equal(beatAt(b, 2).src, 7);
+});
+
+test('resolveBeats: a beat named by a mark starts at that mark; no view means the whole page', () => {
+  const shot = { n: 1, start: 10, end: 20, words: [{ w: 'features', t0: 13, t1: 13.5 }] };
+  const marks = { cap: { scroll: [[0, 0]] as [number, number][], marks: { feat: { t: 21.4, scroll: 6691 } } } };
+  const b = resolveBeats({ type: 'site', cap: 'cap', from: 0, beats: [{ at: 0, src: 1 }, { at: 'features', mark: 'feat', view: [100, 100, 960, 540] }] }, shot, marks);
+  assert.deepEqual(b, [{ t: 0, src: 1, view: [0, 0, 1920, 1080], play: undefined }, { t: 3, src: 21.4, view: [100, 100, 960, 540], play: undefined }]);
+});
+
+test('checkMarks follows the beats: a ring inside the beat it shows in passes, one outside is cut', () => {
+  const T = { shots: [{ n: 1, start: 0, end: 4, words: [] }] };
+  const marks = { cap: { scroll: [[0, 0]] as [number, number][], marks: {} } };
+  const sp = (box: Box) => ({ 1: { type: 'site', cap: 'cap', from: 0, beats: [{ at: 0, src: 2, view: [400, 225, 960, 540] as Box }], rings: [{ at: 1, box }] } });
+  assert.equal(checkMarks(sp([500, 300, 200, 100]), T, marks, { cap: 10 }).filter((r) => !r.ok).length, 0);
+  assert.equal(checkMarks(sp([100, 100, 200, 100]), T, marks, { cap: 10 }).filter((r) => !r.ok).length, 1);
 });
