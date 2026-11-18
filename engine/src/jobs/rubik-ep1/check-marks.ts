@@ -11,7 +11,7 @@ for (const r of rows) console.log(`S${r.shot} ${r.kind}${r.i ? ` ${r.i + 1}` : '
 const oi = process.argv.indexOf('--outline');
 if (oi > 0) {
   const CAP = new URL('../../../../jobs/2026-11-17-rubik-ep1/capture/', import.meta.url).pathname;
-  const items = [];
+  const items: { name: string; png: string; box: number[]; pad: number; scale: number }[] = [];
   for (const [n, sp] of Object.entries(SPEC) as [string, { type: string; cap?: string; rings?: { box: number[]; mark?: string }[] }][]) {
     if (sp.type !== 'site') continue;
     (sp.rings ?? []).forEach((r, i) => { if (!r.mark) return; const take = JSON.parse(fs.readFileSync(`${CAP}${sp.cap}/best.json`, 'utf8')).folder;
