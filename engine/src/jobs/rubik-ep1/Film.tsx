@@ -203,9 +203,10 @@ const Capture: FC<{ cap: string; from: number; to?: number; len: number; rate?: 
  *  verdict stamps in under it. */
 const Stopwatch: FC<{ shot: Shot; at: number; stop: number; text: string }> = ({ at, stop, text }) => {
   const t = useT(); const u = enter(t, at - 0.2, 0.4);
+  const stamp = useSpring(stop + 0.15, 12); // hooks before any early return (React rule)
   if (u <= 0) return null;
   const v = Math.min(2, Math.max(0, ((Math.min(t, stop) - at) / Math.max(0.1, stop - at)) * 2));
-  const stamp = useSpring(stop + 0.15, 12); const R0 = 70; const per = 2 * Math.PI * R0;
+  const R0 = 70; const per = 2 * Math.PI * R0;
   return (
     <div style={{ position: 'absolute', right: 40, top: 300, width: 300, display: 'grid', justifyItems: 'center', gap: 14, opacity: u, transform: `translateY(${(1 - u) * -16}px)` }}>
       <div style={{ position: 'relative', width: 220, height: 220, borderRadius: 110, background: C.forest, boxShadow: '0 2px 6px rgba(0,0,0,0.2), 0 24px 50px -10px rgba(0,0,0,0.45)' }}>
