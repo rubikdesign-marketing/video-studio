@@ -11,7 +11,7 @@ import timeline from './timeline.json';
 import { capPlan, cueTime, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
 import marksJson from './marks.json';
 import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Row, type Site, type Tone } from './spec';
-import { B, Browser, C, FONT, Highlight, PAGE, Spotlight, toneBg, toneInk, toneLine } from './look';
+import { B, Browser, C, FONT, Highlight, PAGE, Spotlight, toneBg, toneInk } from './look';
 
 // ---------------------------------------------------------------- data
 type Shot = { n: number; kind: string; voice: boolean; start: number; end: number; text: string; words: Word[]; d0?: number; d1?: number };
@@ -175,24 +175,47 @@ const PinMark: FC<{ x: number; y: number; tone: Tone; text?: string; at: number;
   );
 };
 
-/** Kashfiq's notes on the right: each note springs in on its word, newest at the bottom, four at most. */
-const RAIL = { x: 1520, y: 72, w: 352 };
+/** Kashfiq's notes on the right: each note springs in on its word, newest at the bottom, two at most so they never
+ *  reach his window below. 380 px wide, text 30 px (owner's notes b001-n6, n25: bigger cards). */
+const RAIL = { x: 1512, y: 72, w: 380 };
+/** A drawn mark for a note's tone: keep = check, fix = alert, ask = question, info = dot. */
+const ToneIcon: FC<{ tone: Tone; size?: number }> = ({ tone, size = 22 }) => {
+  const ink = tone === 'keep' || tone === 'ask' ? C.forest : '#FFFFFF'; const bg = tone === 'keep' || tone === 'ask' ? C.lime : tone === 'fix' ? C.fix : C.forest;
+  return (
+    <svg width={size} height={size} viewBox="0 0 22 22" aria-hidden style={{ flex: 'none' }}>
+      <circle cx="11" cy="11" r="11" fill={bg} />
+      {tone === 'keep' ? <path d="M6.5 11.4l3 3 6-6.6" stroke={ink} strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" /> : null}
+      {tone === 'fix' ? <><path d="M11 6v6.2" stroke={ink} strokeWidth="2.4" strokeLinecap="round" /><circle cx="11" cy="15.6" r="1.5" fill={ink} /></> : null}
+      {tone === 'ask' ? <><path d="M8.3 8.6a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2.9-1.2 1.8v.4" stroke={ink} strokeWidth="2.2" fill="none" strokeLinecap="round" /><circle cx="11" cy="16" r="1.4" fill={ink} /></> : null}
+      {tone === 'info' ? <circle cx="11" cy="11" r="3.4" fill={C.lime} /> : null}
+    </svg>
+  );
+};
+const Chip: FC<{ tone: Tone; children: ReactNode; dark?: boolean }> = ({ tone, children, dark }) => (
+  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, font: `600 16px/1 ${FONT}`, letterSpacing: '0.02em', color: dark ? 'rgba(255,255,255,0.86)' : C.grey, marginBottom: 12 }}>
+    <ToneIcon tone={tone} size={20} />{children}
+  </div>
+);
+const sentence = (s: string) => s.charAt(0) + s.slice(1).toLowerCase().replace(/\bcta\b/g, 'CTA').replace(/\bdna\b/g, 'DNA').replace(/fibery/g, 'Fibery');
 const NoteCard: FC<{ note: Note; shot: Shot; at: number }> = ({ note, shot, at }) => {
   const t = useT(); const s = useSpring(at, 15);
+  const light = note.kind === 'steps' || note.kind === 'dna' || note.kind === 'timer' || note.kind === 'concept' || note.tone === 'info' || note.tone === 'keep';
+  const bg = note.kind === 'motion' ? C.fix : light ? '#FFFFFF' : note.tone === 'fix' ? C.fix : C.forest;
+  const ink = light ? C.ink : '#FFFFFF';
   const body = (() => {
     if (note.kind === 'timer') {
       const stop = cueOf(shot, note.stop, at + 2);
       const v = Math.min(2, Math.max(0, ((Math.min(t, stop) - at) / Math.max(0.1, stop - at)) * 2));
-      return (<><div style={{ font: `700 64px/1 ${FONT}`, color: C.forest, fontVariantNumeric: 'tabular-nums' }}>{v.toFixed(1)} s</div><div style={{ font: `600 22px/1.25 ${FONT}`, color: C.forest, marginTop: 8, opacity: t >= stop ? 1 : 0.35 }}>{note.text}</div></>);
+      return (<><div style={{ font: `700 72px/1 ${FONT}`, color: C.forest, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.03em' }}>{v.toFixed(1)} s</div><div style={{ font: `600 26px/1.25 ${FONT}`, color: C.forest, marginTop: 10, opacity: t >= stop ? 1 : 0.35 }}>{note.text}</div></>);
     }
     if (note.kind === 'steps' || note.kind === 'dna') {
       return (
         <div style={{ display: 'grid', gap: 8 }}>
-          {note.kind === 'dna' ? <div style={{ display: 'flex', gap: 6, marginBottom: 6 }}>{FIBERY_SWATCHES.map((c) => <div key={c} style={{ flex: 1, height: 40, borderRadius: 8, background: c, border: '1px solid rgba(0,0,0,0.08)' }} />)}</div> : null}
+          {note.kind === 'dna' ? <div style={{ display: 'flex', gap: 6, marginBottom: 6 }}>{FIBERY_SWATCHES.map((c) => <div key={c} style={{ flex: 1, height: 44, borderRadius: 9, background: c, boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.08)' }} />)}</div> : null}
           {(note.steps ?? []).map((st, i) => { const on = t >= cueOf(shot, st.at, at + i); const active = note.kind === 'steps' && on && (i === (note.steps ?? []).length - 1 || t < cueOf(shot, (note.steps ?? [])[i + 1].at, 1e9));
             return (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', borderRadius: 10, background: active ? C.forest : on ? 'rgba(0,45,27,0.10)' : 'rgba(0,45,27,0.04)', color: active ? C.lime : C.forest, font: `600 22px/1 ${FONT}`, opacity: on ? 1 : 0.4, transition: 'none' }}>
-                <span style={{ font: `700 14px/1 ${FONT}`, opacity: 0.7 }}>{note.kind === 'steps' ? String(i + 1).padStart(2, '0') : '•'}</span>{st.text}
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px', borderRadius: 11, background: active ? C.forest : on ? 'rgba(0,45,27,0.08)' : 'rgba(0,45,27,0.03)', color: active ? C.lime : C.forest, font: `600 26px/1 ${FONT}`, opacity: on ? 1 : 0.4 }}>
+                {note.kind === 'steps' ? <span style={{ width: 10, height: 10, borderRadius: 5, background: active ? C.lime : C.forest, opacity: on ? 1 : 0.4 }} /> : <span style={{ width: 8, height: 8, borderRadius: 4, background: C.forest, opacity: 0.6 }} />}{st.text}
               </div>
             ); })}
         </div>
@@ -200,27 +223,26 @@ const NoteCard: FC<{ note: Note; shot: Shot; at: number }> = ({ note, shot, at }
     }
     if (note.kind === 'motion') {
       const p = (t * 0.9) % 1;
-      return (<><div style={{ font: `600 22px/1.25 ${FONT}`, color: '#FFFFFF' }}>{note.text}</div>
-        <div style={{ marginTop: 12, height: 92, borderRadius: 12, background: 'rgba(255,255,255,0.16)', position: 'relative', overflow: 'hidden' }}>
-          {[0, 1, 2].map((i) => <div key={i} style={{ position: 'absolute', left: 14, top: 14 + i * 24, height: 12, borderRadius: 6, background: '#FFFFFF', width: `${30 + 55 * Math.max(0, Math.min(1, (p * 3 - i * 0.5)))}%`, opacity: 0.85 }} />)}
-          <div style={{ position: 'absolute', right: 10, bottom: 8, font: `700 12px/1 ${FONT}`, letterSpacing: '0.08em', color: '#FFFFFF', opacity: 0.8 }}>MOTION CONCEPT</div>
-        </div></>);
+      return (<><div style={{ font: `600 28px/1.22 ${FONT}`, color: '#FFFFFF' }}>{note.text}</div>
+        <div style={{ marginTop: 14, height: 96, borderRadius: 12, background: 'rgba(255,255,255,0.16)', position: 'relative', overflow: 'hidden' }}>
+          {[0, 1, 2].map((i) => <div key={i} style={{ position: 'absolute', left: 16, top: 16 + i * 26, height: 12, borderRadius: 6, background: '#FFFFFF', width: `${28 + 60 * Math.max(0, Math.min(1, (p * 3 - i * 0.5)))}%`, opacity: 0.88 }} />)}
+        </div>
+        <div style={{ marginTop: 10, font: `600 15px/1 ${FONT}`, letterSpacing: '0.04em', color: 'rgba(255,255,255,0.86)' }}>Motion concept · Rubik</div></>);
     }
-    if (note.kind === 'concept') return (<><div style={{ font: `700 24px/1.2 ${FONT}`, color: C.forest }}>{note.text}</div><div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 8, font: `600 14px/1 ${FONT}`, color: C.forest, letterSpacing: '0.06em' }}><Logo name="mark-on-light" h={16} />RUBIK CONCEPT</div></>);
-    return <div style={{ font: `600 24px/1.25 ${FONT}`, color: toneInk[note.tone] }}>{note.text}</div>;
+    if (note.kind === 'concept') return (<><div style={{ font: `700 30px/1.18 ${FONT}`, color: C.forest, letterSpacing: '-0.01em' }}>{note.text}</div><div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8, font: `600 15px/1 ${FONT}`, color: C.forest, letterSpacing: '0.03em' }}><Logo name="mark-on-light" h={16} />Rubik concept</div></>);
+    return <div style={{ font: `600 30px/1.2 ${FONT}`, color: ink, letterSpacing: '-0.01em' }}>{note.text}</div>;
   })();
-  const dark = note.tone === 'fix' || note.tone === 'ask';
   return (
-    <div style={{ transform: `translateX(${(1 - s) * 60}px)`, opacity: Math.min(1, s * 1.4), background: note.kind === 'steps' || note.kind === 'dna' || note.kind === 'timer' || note.kind === 'concept' ? '#FFFFFF' : toneBg[note.tone], borderRadius: 16, padding: '16px 18px 18px', boxShadow: '0 14px 36px rgba(0,0,0,0.28)', borderLeft: note.kind ? `6px solid ${toneLine[note.tone] === C.white ? C.forest : toneLine[note.tone]}` : undefined }}>
-      {note.tag ? <div style={{ font: `700 13px/1 ${FONT}`, letterSpacing: '0.1em', color: dark ? 'rgba(255,255,255,0.85)' : note.kind ? C.grey : note.tone === 'keep' ? C.forest : C.grey, marginBottom: 10 }}>{note.tag}</div> : null}
+    <div style={{ transform: `translateX(${(1 - s) * 60}px)`, opacity: Math.min(1, s * 1.4), background: bg, borderRadius: 18, padding: '18px 22px 22px', boxShadow: '0 2px 6px rgba(0,0,0,0.18), 0 18px 40px -8px rgba(0,0,0,0.45)' }}>
+      {note.tag ? <Chip tone={note.kind === 'motion' ? 'fix' : note.tone} dark={!light}>{sentence(note.tag)}</Chip> : null}
       {body}
     </div>
   );
 };
 const Rail: FC<{ notes: Note[]; shot: Shot; top: number }> = ({ notes, shot, top }) => {
   const t = useT();
-  const shown = notes.map((n) => ({ n, at: cueOf(shot, n.at, 0.3) })).filter((x) => t >= x.at).slice(-3);
-  return <div style={{ position: 'absolute', left: RAIL.x, top, width: RAIL.w, display: 'grid', gap: 14 }}>{shown.map((x, i) => <NoteCard key={x.n.text + x.n.tag + i} note={x.n} shot={shot} at={x.at} />)}</div>;
+  const shown = notes.map((n) => ({ n, at: cueOf(shot, n.at, 0.3) })).filter((x) => t >= x.at).slice(-2);
+  return <div style={{ position: 'absolute', left: RAIL.x, top, width: RAIL.w, display: 'grid', gap: 16 }}>{shown.map((x, i) => <NoteCard key={x.n.text + x.n.tag + i} note={x.n} shot={shot} at={x.at} />)}</div>;
 };
 
 /** pipIn: Kashfiq's window fades in at this shot's start; false when the shot before already showed it in the same
@@ -293,15 +315,15 @@ const ARollShot: FC<{ shot: Shot; spec: Extract<typeof SPEC[number], { type: 'ar
         </div>
       ) : null}
       {spec.labels ? (
-        <div style={{ position: 'absolute', right: 96, top: 170, display: 'grid', gap: 14, width: 470 }}>
+        <div style={{ position: 'absolute', right: 88, top: 150, display: 'grid', gap: 16, width: 580 }}>
           {spec.labels.map((l, i) => { const at = cueOf(shot, l.at, i); const s = enter(t, at, 0.45); return (
-            <div key={l.text} style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(0,45,27,0.92)', color: C.white, borderRadius: 14, padding: '16px 20px', font: `600 26px/1.15 ${FONT}`, transform: `translateX(${(1 - s) * 40}px)`, opacity: s }}>
-              <span style={{ font: `700 16px/1 ${FONT}`, color: C.lime }}>{String(i + 1).padStart(2, '0')}</span>{l.text}
+            <div key={l.text} style={{ display: 'flex', alignItems: 'center', gap: 18, background: 'rgba(0,45,27,0.94)', color: C.white, borderRadius: 18, padding: '22px 26px', font: `600 34px/1.15 ${FONT}`, letterSpacing: '-0.01em', boxShadow: '0 2px 6px rgba(0,0,0,0.2), 0 18px 40px -10px rgba(0,0,0,0.5)', transform: `translateX(${(1 - s) * 40}px)`, opacity: s }}>
+              <span style={{ width: 12, height: 12, borderRadius: 6, background: C.lime, flex: 'none' }} />{l.text}
             </div>); })}
         </div>
       ) : null}
       {spec.tag ? (() => { const at = cueOf(shot, spec.tag.at); const u = enter(t, at, 0.5); return (
-        <div style={{ position: 'absolute', left: 96, top: 96, background: C.lime, color: C.forest, font: `700 30px/1.15 ${FONT}`, borderRadius: 14, padding: '16px 22px', maxWidth: 640, transform: `translateY(${(1 - u) * -20}px)`, opacity: u, letterSpacing: '-0.01em' }}>{spec.tag.text}</div>); })() : null}
+        <div style={{ position: 'absolute', left: 88, top: 88, background: C.lime, color: C.forest, font: `700 40px/1.12 ${FONT}`, borderRadius: 18, padding: '22px 28px', maxWidth: 780, boxShadow: '0 2px 6px rgba(0,0,0,0.2), 0 18px 40px -10px rgba(0,0,0,0.45)', transform: `translateY(${(1 - u) * -20}px)`, opacity: u, letterSpacing: '-0.01em' }}>{spec.tag.text}</div>); })() : null}
       {spec.cta ? (() => { const at = cueOf(shot, spec.cta.at); const s = useSpringSafe(shot, spec.cta.at, t, 0); const typed = Math.floor(Math.max(0, (t - at - 0.5) * 22)); return (
         <div style={{ position: 'absolute', right: 96, top: 150, width: 560, background: C.forest, borderRadius: 24, padding: 32, transform: `translateX(${(1 - s) * 120}px)`, opacity: Math.min(1, s * 1.5), boxShadow: '0 30px 70px rgba(0,0,0,0.4)' }}>
           <div style={{ font: `700 46px/1.05 ${FONT}`, color: C.white, letterSpacing: '-0.025em' }}>{spec.cta.title}</div>
@@ -333,20 +355,24 @@ const TitleCard: FC = () => {
     </Stage>
   );
 };
-const ChapterCard: FC<{ c: Extract<Card, { type: 'chapter' }> }> = ({ c }) => {
+/** Chapter card (owner's note b001-n7): the site's logo is the hero, large and white; a counter in the corner says
+ *  which of the three sites this is; the card pushes out in its last 0.3 s. */
+const ChapterCard: FC<{ c: Extract<Card, { type: 'chapter' }>; len: number }> = ({ c, len }) => {
   const t = useT(); const wipe = interpolate(t, [0, 0.45], [100, 0], { extrapolateRight: 'clamp', easing: ease });
-  const n = enter(t, 0.15, 0.5); const l = enter(t, 0.3, 0.55); const u = enter(t, 0.5, 0.5);
+  const l = enter(t, 0.2, 0.7); const n = enter(t, 0.45, 0.5); const p = enter(t, 0.6, 0.6);
+  const out = enter(t, len - 0.3, 0.3);
   return (
     <AbsoluteFill style={{ clipPath: `inset(${wipe}% 0 0 0)` }}>
       <Stage tone="dark">
-        <div style={{ position: 'absolute', left: 140, top: 140, font: `700 22px/1 ${FONT}`, letterSpacing: '0.2em', color: C.mint }}>WEBSITE TEARDOWN</div>
-        <div style={{ position: 'absolute', left: 140, top: 300, font: `800 260px/0.85 ${FONT}`, color: C.lime, letterSpacing: '-0.05em', opacity: n, transform: `translateY(${(1 - n) * 40}px)` }}>{c.n}</div>
-        <div style={{ position: 'absolute', left: 150, top: 590, opacity: l, transform: `translateY(${(1 - l) * 30}px)` }}><Logo name={`${c.logo}-white`} h={110} /></div>
-        <div style={{ position: 'absolute', left: 150, top: 760, font: `500 30px/1 ${FONT}`, color: C.mint, opacity: u }}>{c.url}</div>
-        <div style={{ position: 'absolute', right: 140, bottom: 140, display: 'flex', gap: 14, alignItems: 'center', opacity: u }}>
-          <span style={{ font: `600 22px/1 ${FONT}`, color: C.mint, marginRight: 8 }}>Site {c.of} of 3</span>
-          {[1, 2, 3].map((i) => <div key={i} style={{ width: i === c.of ? 56 : 16, height: 16, borderRadius: 8, background: i === c.of ? C.lime : 'rgba(255,255,255,0.22)' }} />)}
-        </div>
+        <AbsoluteFill style={{ transform: `scale(${1 + 0.04 * out})`, opacity: 1 - out }}>
+          <div style={{ position: 'absolute', left: 150, top: 132, display: 'flex', alignItems: 'baseline', gap: 10, opacity: n, font: `700 44px/1 ${FONT}`, letterSpacing: '-0.02em', fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ color: C.lime }}>{c.n}</span><span style={{ color: C.mint, opacity: 0.6 }}>/ 03</span>
+          </div>
+          <div style={{ position: 'absolute', left: 150, top: 380, clipPath: `inset(${(1 - l) * 100}% 0 0 0)`, transform: `translateY(${(1 - l) * 40}px)` }}><Logo name={`${c.logo}-white`} h={170} /></div>
+          <div style={{ position: 'absolute', left: 150, top: 640, display: 'flex', gap: 12, opacity: p }}>
+            {[1, 2, 3].map((i) => <div key={i} style={{ width: i === c.of ? 72 * p : 18, height: 8, borderRadius: 4, background: i === c.of ? C.lime : i < c.of ? C.mint : 'rgba(255,255,255,0.18)' }} />)}
+          </div>
+        </AbsoluteFill>
       </Stage>
     </AbsoluteFill>
   );
@@ -380,7 +406,7 @@ const VerdictCard: FC<{ c: Extract<Card, { type: 'verdict' }>; shots: Shot[]; fi
           {c.rows.map((r, i) => { const at = rowAt(r); const s = enter(t, at, 0.5); const ghost = enter(t, 0.35 + i * 0.12, 0.4); return (
             <div key={i} style={{ position: 'relative', minHeight: 112 }}>
             <div style={{ position: 'absolute', inset: 0, borderRadius: 20, border: `3px dashed ${C.grey}`, opacity: 0.35 * ghost * (1 - s) }} />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 26, background: '#FFFFFF', borderRadius: 20, padding: '26px 30px', boxShadow: '0 10px 30px rgba(0,0,0,0.07)', borderLeft: `10px solid ${r.tone === 'keep' ? C.lime : C.fix}`, opacity: s, transform: `translateY(${(1 - s) * 30}px)` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 26, background: '#FFFFFF', borderRadius: 20, padding: '26px 30px', boxShadow: '0 2px 4px rgba(0,0,0,0.05), 0 14px 30px -8px rgba(0,0,0,0.14)', opacity: s, transform: `translateY(${(1 - s) * 30}px)` }}>
               <Tag tone={r.tone} size={20}>{r.tone === 'keep' ? 'Keep' : 'Fix'}</Tag>
               <span style={{ font: `700 46px/1.1 ${FONT}`, color: C.ink, letterSpacing: '-0.025em' }}>{r.text}</span>
             </div></div>); })}
@@ -516,7 +542,7 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
         if (spec.type === 'site') body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} pipIn={i === 0 || SPEC[shots[i - 1].n].type !== 'site'} />;
         else if (spec.type === 'aroll') body = <ARollShot shot={s} spec={spec} cut={cut} d0={d0} />;
         else if (spec.type === 'title') body = <TitleCard />;
-        else if (spec.type === 'chapter') body = <ChapterCard c={spec} />;
+        else if (spec.type === 'chapter') body = <ChapterCard c={spec} len={len} />;
         else if (spec.type === 'maxim') body = <MaximCard c={spec} shot={s} />;
         else if (spec.type === 'verdict') body = <VerdictCard c={spec} shots={group(s.n, spec.until)} first={s} cut={cut} d0={d0} len={len} />;
         else if (spec.type === 'path') body = <PathCard shots={group(s.n, spec.until)} first={s} cut={cut} d0={d0} len={len} />;
