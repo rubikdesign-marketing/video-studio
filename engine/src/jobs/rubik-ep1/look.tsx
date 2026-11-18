@@ -75,8 +75,8 @@ export const Highlight: FC<{ box: Box; at: number; out?: number; k: number; scal
 /** Spotlight (owner's note b001-n33): the page sinks into a dark blur and only the box stays sharp, with no border
  *  and no badge. It takes the page itself as children and draws it twice: blurred and dimmed underneath, sharp
  *  through a rounded hole (a backdrop blur also softened what showed through the hole). pw x ph is the page area. */
-export const Spotlight: FC<{ box: Box; at: number; k: number; pw: number; ph: number; instant?: boolean; children: ReactNode }> = ({ box, at, k, pw, ph, instant, children }) => {
-  const t = useSec(); const u = spotlightLevel(t, at, instant);
+export const Spotlight: FC<{ box: Box; at: number; out?: number; k: number; pw: number; ph: number; instant?: boolean; children: ReactNode }> = ({ box, at, out, k, pw, ph, instant, children }) => {
+  const t = useSec(); const u = spotlightLevel(t, at, instant) * (out !== undefined ? 1 - span(t, out, 0.5, inOut) : 1);
   if (u <= 0) return <>{children}</>;
   const p = 8; const r = 14;
   const [x, y, w, h] = [box[0] * k - p, box[1] * k - p, box[2] * k + p * 2, box[3] * k + p * 2];

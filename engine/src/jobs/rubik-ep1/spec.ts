@@ -40,7 +40,8 @@ export type Site = {
   /** A full-frame typed line (look.tsx KineticLine). ' / ' breaks the line; *word* lights up in lime. */
   kinetic?: Kinetic;
   /** Spotlight on one box: the rest of the page dims and blurs (look.tsx Spotlight). */
-  pause?: { at: Cue; box: Box; instant?: boolean };
+  /** out: the spotlight lifts over 0.5 s from then (S64 lifts it as the page opens up). */
+  pause?: { at: Cue; box: Box; instant?: boolean; out?: Cue };
   patch?: { at: Cue; box: Box; bg: string; ink: string; lines: string[]; label: string };
   /** anchor 'right': the new label grows leftwards from the old button's right edge. */
   morph?: { at: Cue; box: Box; from: string; to: string; bg: string; ink: string; anchor?: 'right' };
@@ -198,7 +199,7 @@ export const SPEC: Record<number, ShotSpec> = {
   63: { type: 'site', presence: 'behind', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: [450, 295, 760, 428], to: [450, 295, 760, 428] },
     pause: { at: 0, box: SLITE_BTN, instant: true },
     notes: [{ at: 0.2, tone: 'fix', tag: 'FIX · CTA', text: '“Talk to us” = ?' }, { at: 'invite', tone: 'fix', tag: 'WHY', text: 'It doesn’t invite an action' }] },
-  64: { type: 'site', presence: 'behind', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: [450, 295, 760, 428], to: [380, 100, 1160, 653], over: 3 },
+  64: { type: 'site', pause: { at: 0, box: SLITE_BTN, instant: true, out: 0.05 }, presence: 'behind', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: [450, 295, 760, 428], to: [380, 100, 1160, 653], over: 3 },
     morph: { at: 'demo', anchor: 'right', box: [778, 407, 140, 64], from: 'Talk to us', to: 'Book a demo →', bg: '#FF6A3D', ink: '#FFFFFF' },
     notes: [{ at: 'demo', tone: 'keep', tag: 'SUGGESTED CHANGE', text: 'Say what happens when they click', kind: 'concept' }] },
   65: { type: 'verdict', site: 'Slite', logo: 'slite', until: 66, rows: [

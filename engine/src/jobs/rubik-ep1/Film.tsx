@@ -347,7 +347,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
       <AbsoluteFill style={{ transformOrigin: '0 0', transform: fu > 0 ? `translate(${PAGE.x * (1 - fu)}px, ${PAGE.y * (1 - fu)}px) scale(${fs}) translate(${-PAGE.x}px, ${-PAGE.y}px)` : undefined }}>
       <Browser url={spec.url} style={fu > 0 ? { borderRadius: 20 * (1 - fu) } : undefined}>
         <div style={{ position: 'absolute', left: 0, top: 0, width: PAGE.w, height: PAGE.h, transform: `scale(${scale}) translate(${-vx * k}px, ${-vy * k}px)`, transformOrigin: '0 0' }}>
-          {spec.pause ? <Spotlight box={spec.pause.box} at={pauseAt} instant={spec.pause.instant} k={k} pw={PAGE.w} ph={PAGE.h}>{page}</Spotlight> : page}
+          {spec.pause ? <Spotlight box={spec.pause.box} at={pauseAt} out={spec.pause.out !== undefined ? cueOf(shot, spec.pause.out) : undefined} instant={spec.pause.instant} k={k} pw={PAGE.w} ph={PAGE.h}>{page}</Spotlight> : page}
           {spec.patch && pw > 0 ? (
             <div style={{ position: 'absolute', left: spec.patch.box[0] * k, top: spec.patch.box[1] * k, width: spec.patch.box[2] * k, height: spec.patch.box[3] * k, background: spec.patch.bg, clipPath: `inset(0 ${(1 - pw) * 100}% 0 0)`, padding: 4 }}>
               <div style={{ display: 'inline-block', marginBottom: 10, background: C.forest, color: C.lime, font: `700 11px/1 ${FONT}`, letterSpacing: '0.1em', padding: '6px 8px', borderRadius: 5 }}>{spec.patch.label.toUpperCase()}</div>
@@ -373,7 +373,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
       <Rail notes={spec.notes ?? []} shot={shot} top={RAIL.y} />
       {spec.presence === 'front' ? <Front shot={shot} fadeIn={pipIn} /> : null}
       {(spec.presence ?? 'pip') === 'pip' ? <PiP cut={cut} d0={d0} len={len} x={RAIL.x + RAIL.w - 300} y={PAGE.y + PAGE.h - 300 + 4} size={300} at={pipIn ? 0 : -1} /> : null}
-      {spec.kinetic ? <KineticLine text={spec.kinetic.text} at={cueOf(shot, spec.kinetic.at)} out={cueOf(shot, spec.kinetic.out, len - 0.05)} /> : null}
+      {spec.kinetic ? <KineticLine text={spec.kinetic.text} at={cueOf(shot, spec.kinetic.at)} out={cueOf(shot, spec.kinetic.out, len - 0.35)} /> : null}
     </Stage>
   );
 };
@@ -416,7 +416,7 @@ const ARollShot: FC<{ shot: Shot; spec: Extract<typeof SPEC[number], { type: 'ar
           <div style={{ marginTop: 16, font: `600 22px/1.2 ${FONT}`, color: C.lime }}>{spec.cta.sub}</div>
         </div>); })() : null}
       {spec.sign ? <div style={{ position: 'absolute', left: 64, bottom: 56, opacity: enter(t, 0.3, 0.6) }}><Logo name="wordmark-on-dark" h={34} /></div> : null}
-      {spec.kinetic ? <KineticLine text={spec.kinetic.text} at={cueOf(shot, spec.kinetic.at)} out={cueOf(shot, spec.kinetic.out, len - 0.05)} /> : null}
+      {spec.kinetic ? <KineticLine text={spec.kinetic.text} at={cueOf(shot, spec.kinetic.at)} out={cueOf(shot, spec.kinetic.out, len - 0.35)} /> : null}
     </AbsoluteFill>
   );
 };
