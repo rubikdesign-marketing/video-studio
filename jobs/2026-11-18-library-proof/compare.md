@@ -1,6 +1,6 @@
 # Library proof: new way against old way
 
-The same 15-second Tulvo film for Reels (9:16), made twice on 18 Nov 2026 with the same words and the same music bed. Watch both, then say which you prefer: that is the one check left (LIBRARY-PLAN phase 6, "the owner prefers it to the old-way version").
+The same 15-second Tulvo film for Reels (9:16), made twice on 18 Nov 2026 with the same words and the same music bed. **Decided 18 Nov 2026:** the owner chose the new way on the studio's recommendation (it is better or level on every measure below), without comparing the two films first.
 
 - New: `out/new.mp4` (composition `LibraryProof-New`)
 - Old: `out/old.mp4` (composition `LibraryProof-Old`)
@@ -52,7 +52,7 @@ Found while making it, and fixed:
 
 ## Not checked
 
-- Which one you prefer. Nobody has watched either all the way through with sound; the checks above are measurements, and the contact sheets were looked at frame by frame.
+- Nobody has watched either all the way through with sound; the checks above are measurements, and the contact sheets were looked at frame by frame.
 - Nobody has listened to the mixes. The listening tool measured them (loudness, tone, 120 BPM); its critique was not run.
 - The cost in tokens of each version. Both were written in one session together with the library, so their cost cannot be separated. What can be counted: each film is about 40 lines in one file; the new one placed 14 sounds by their picture moments against 6.
-- Rule 19 of `knowledge/rules/starting-rules.md` says sound and music come only from the ElevenLabs plan. The approved library plan brings shared sounds and public-domain music in; this test uses them. Before a film for release uses library sounds, the rule needs your word to change.
+- Rule 19 of `knowledge/rules/starting-rules.md` was changed by the owner on 18 Nov 2026: sound comes from the brand's kit first, then the shared library, then ElevenLabs.

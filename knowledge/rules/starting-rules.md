@@ -22,7 +22,7 @@ Approved 11 Nov 2026. Taken from 34 rounds of feedback on the Black Friday and U
 | 16 | The voice is never stretched or sliced; the picture is fitted to it | script, animation | `tools/audio/voice_check.py` on the joined voice | 1, and measured |
 | 17 | Low-resolution previews while iterating; full quality only for finals | animation | — | 1 |
 | 18 | Third-party logos need a person's confirmation | storyboard | Listed at the storyboard approval | — |
-| 19 | Sound and music come only from the ElevenLabs plan | sound | Licence note in the delivery pack | 1 |
+| 19 | Sound comes from the brand's own kit first, then the shared library (`library/sounds/`: public domain or made by the studio, every file's licence recorded), and only then is made on the ElevenLabs plan; every library sound used is named in the hand-over. Music is made for the film by default; a bundled public-domain bed may be used for a quick cut or a draft. Nothing that needs a credit on screen or forbids sharing (changed by the owner 18 Nov 2026, on the library plan; was "only from the ElevenLabs plan") | sound | `node tools/audio/sounds.mjs check`; the licence note in the delivery pack lists library sounds | 1 |
 | 20 | No coding-style (monospaced) typeface anywhere | moodboard, storyboard, animation | Fonts loaded by the engine; look at labels on the contact sheet | 1 |
 | 21 | No dots: not in backgrounds, not inside pills, not between words | script, storyboard, animation | `tools/checks/onscreen_text.py --never "·"` plus a look at pills and labels | 2 |
 | 22 | Nothing on screen or spoken reads as if a machine wrote it | script | The "Human wording" list in `craft/04`; read every line aloud | 1 |
