@@ -10,7 +10,7 @@ The library's rule (library/sounds/README.md): every sound peaks at -3 dBFS, lik
 is measured and recorded; the mixer (mix.py) sets the final level against the voice from that measure. Ambience and
 music beds are levelled the same way: their place in the mix is set by their gain, not by the file.
 
---trim cuts silence (below -60 dBFS) from the start and the end, keeping 5 ms before the first sound, so a cue placed at
+--trim cuts silence (57 dB below the sound's own peak, never above -60 dBFS) from the start and the end, keeping 5 ms before the first sound, so a cue placed at
 a time sounds at that time. Needs ffmpeg only.
 """
 import json, math, os, re, subprocess, sys, tempfile
@@ -54,8 +54,13 @@ def measure(path):
 def make(src, out, peak=-3.0, mono=False, trim=False):
     chain = []
     if trim:
-        chain.append("silenceremove=start_periods=1:start_threshold=-60dB:start_silence=0.005,"
-                     "areverse,silenceremove=start_periods=1:start_threshold=-60dB:start_silence=0.02,areverse")
+        # Silence is judged against the sound's own peak, not a fixed level, so a quiet source loses no more of its
+        # tail than a loud one: 57 dB below the peak, and never above -60 dBFS (which is where a sound already
+        # levelled to -3 dBFS lands, so remakes of the library's sounds are unchanged).
+        src_peak = measure(src)["peak_db"]
+        floor = -60.0 if src_peak is None else min(-60.0, src_peak - 57.0)
+        chain.append(f"silenceremove=start_periods=1:start_threshold={floor:.1f}dB:start_silence=0.005,"
+                     f"areverse,silenceremove=start_periods=1:start_threshold={floor:.1f}dB:start_silence=0.02,areverse")
     chain.append(f"aresample={SR}")
     with tempfile.TemporaryDirectory() as tmp:
         wav = os.path.join(tmp, "a.wav")

@@ -1,0 +1,7 @@
+[
+ { "id": "01", "text": "Ten apps that never talk", "beat": "hook", "energy": 4 },
+ { "id": "02", "text": "Clients here. Invoices there.", "beat": "stake", "energy": 2 },
+ { "id": "03", "text": "In ten apps. In one place.", "beat": "body", "energy": 3 },
+ { "id": "04", "text": "Describe it. Tulvo builds it.", "beat": "body", "energy": 5 },
+ { "id": "05", "text": "Try it free", "beat": "payoff", "energy": 4 }
+]

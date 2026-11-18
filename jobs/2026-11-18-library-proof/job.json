@@ -1,0 +1,52 @@
+{
+ "name": "2026-11-18-library-proof",
+ "brand": "tulvo",
+ "type": "promo",
+ "created": "2026-11-18",
+ "maker": "studio",
+ "size": "9:16",
+ "platform": "reels",
+ "length_cap_seconds": 15,
+ "energy_preset": "confident",
+ "framework": "reel-shape",
+ "voice": null,
+ "music": "library/sounds/music/minimal-pulse-01.mp3 (from its first beat, 0.251 s)",
+ "stage_next": "owner compares the two versions",
+ "approvals": {
+  "idea": "LIBRARY-PLAN decision 8 (owner, 18 Nov 2026)",
+  "script_and_voice": null,
+  "moodboard": null,
+  "storyboard": null,
+  "first_animation": null,
+  "full_animation": null
+ },
+ "hooks": [
+  {
+   "line": "Ten apps that never talk",
+   "family": "problem",
+   "opener": "opener-punch-in"
+  }
+ ],
+ "offer_wording": "Try it free",
+ "facts": [
+  "Tulvo puts clients, projects and invoices in one workspace (save-the-date film, 14 Nov 2026).",
+  "Describe your business and Tulvo builds it (save-the-date film, 14 Nov 2026)."
+ ],
+ "planned_instant_changes": [
+  2.007,
+  10.006
+ ],
+ "planned_holds": [],
+ "house_rule_waivers": [],
+ "compositions": {
+  "new": "LibraryProof-New",
+  "old": "LibraryProof-Old"
+ },
+ "notes": [
+  "The library's proof film (LIBRARY-PLAN phase 6): the same 15 s Tulvo film made twice. New: a library hook opener, six new text moves, three new transitions and a hard cut on a downbeat, library sounds, cuts on the beats of a bundled bed. Old: the kit as it was before the library, the brand's own eleven sounds, cuts set by eye. Same words, same bed.",
+  "No voice: every line is on screen, so the film is silent-first. lines.json gives when each line is on screen, so the beat sheet reads real times.",
+  "Not a delivery: it is a test of the library for the owner to compare. Rule 19 (sound and music only from ElevenLabs) is superseded for this test by the approved LIBRARY-PLAN; see compare.md."
+ ],
+ "length_seconds": 15,
+ "music_offset": -0.251
+}

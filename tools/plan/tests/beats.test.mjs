@@ -110,3 +110,12 @@ test('the hook deadline applies only to a hook', () => {
   const r = beatSheet({ lines: [L('01', 0.3, 5, 'pain'), L('02', 6, 9, 'pain'), L('03', 10, 21, 'reframe'), L('04', 22, 29, 'promise')], framework: pain, duration: 30, platform: 'reels' });
   assert.ok(!r.problems.some((p) => p.what === 'hook late'));
 });
+
+test('a hook is judged by its seconds, not by its share of the film (a 2 s hook fits a 15 s reel)', async () => {
+  const { loadFrameworks } = await import('../lib/frameworks.mjs');
+  const { allowed } = await import('../lib/beats.mjs');
+  const reel = loadFrameworks().frameworks.find((f) => f.id === 'reel-shape');
+  const hook = reel.beats.find((b) => b.id === 'hook');
+  assert.deepEqual(allowed(hook, 15), [0, 2]);
+  assert.deepEqual(allowed(hook, 45), [0, 2]);
+});

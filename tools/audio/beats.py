@@ -10,14 +10,16 @@ Commands:
         the sections with how loud each one is (1 quiet .. 5 full), and the drop. Defaults to the track's
         name with .beats.json. --first-downbeat sets the bar start by hand (the beat nearest that time) when you know
         it, as for a bed cut on a bar start. Takes a few seconds for a 60 s track. Needs no network and no model.
-  snap  <beats.json> --cuts 0,3.2,6.5 [--to beats|downbeats] [--within 0.25] [--fps 30]
+  snap  <beats.json> --cuts 0,3.2,6.5 [--offset 0] [--to beats|downbeats] [--within 0.25] [--fps 30]
         For each cut time you plan, says which beat is nearest, how far it is, and whether it is
         within --within seconds. Exit 0 when every cut is within, 1 when one is not.
   check <beats.json> <job_dir> [--offset 0] [--on beats|downbeats] [--fps 30]
         Reads jobs/<job>/shots.json: the cuts are the starts of every scene after the first, found by adding
         up the scenes' "seconds". Says for each cut how many frames it is from the nearest beat, and passes
         only when every cut is within ONE frame. --offset is where the music starts in the film, in
-        seconds (music that starts 1 s into the film: --offset 1). Exit 0 pass, 1 a cut is off the beat,
+        seconds (music that starts 1 s into the film: --offset 1; music played from 0.251 s into the track:
+        --offset=-0.251). Without --offset, check reads "music_offset" from the job's job.json. snap takes the
+        same --offset. Exit 0 pass, 1 a cut is off the beat,
         2 could not check (file missing, no cuts, a scene with no length).
 
 What the grid is, and what it is not:
@@ -374,7 +376,7 @@ def cmd_snap(a):
         cuts = [float(x) for x in a.cuts.split(",") if x.strip() != ""]
     except ValueError:
         print("--cuts wants seconds separated by commas, like 0,3.2,6.5", file=sys.stderr); return 2
-    times = grid_times(g, a.to)
+    times = grid_times(g, a.to, a.offset)
     if not times:
         print(f"The grid has no {a.to}.", file=sys.stderr); return 2
     allin = True
@@ -432,6 +434,9 @@ def cmd_check(a):
         print(str(e), file=sys.stderr); return 2
     if not cuts:
         print("The film has one scene, so there are no cuts to check.", file=sys.stderr); return 2
+    if a.offset is None:
+        try: a.offset = float(json.load(open(os.path.join(a.job, "job.json"))).get("music_offset") or 0.0)
+        except (OSError, ValueError, TypeError): a.offset = 0.0
     times = grid_times(g, a.on, a.offset)
     if not times:
         print(f"The grid has no {a.on}.", file=sys.stderr); return 2
@@ -471,10 +476,11 @@ def main(argv=None):
     s.add_argument("grid"); s.add_argument("--cuts", required=True)
     s.add_argument("--to", choices=["beats", "downbeats"], default="beats")
     s.add_argument("--within", type=float, default=0.25); s.add_argument("--fps", type=float, default=30)
+    s.add_argument("--offset", type=float, default=0.0)
     s.add_argument("--json", action="store_true")
     c = sub.add_parser("check", help="are a job's cuts on the beat")
     c.add_argument("grid"); c.add_argument("job")
-    c.add_argument("--offset", type=float, default=0.0)
+    c.add_argument("--offset", type=float, default=None)
     c.add_argument("--on", choices=["beats", "downbeats"], default="beats")
     c.add_argument("--fps", type=float, default=30)
     a = ap.parse_args(argv)

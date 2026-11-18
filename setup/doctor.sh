@@ -152,7 +152,7 @@ for t in tools/study/profile.py tools/study/sheets.sh tools/audio/voice_check.py
 done
 
 # The checks' own tests (phase 7): fast, no browser, no render. The engine-plan tests need the engine's esbuild.
-if node --test tools/capture/tests/*.test.mjs tools/checks/tests/film.test.mjs tools/checks/tests/captions_clear.test.mjs tools/checks/tests/text_size.test.mjs tools/checks/tests/hook_legible.test.mjs tools/film/tests/*.test.mjs >/dev/null 2>&1; then pass "the freshness, captions, text size, hook readability and proof-of-source tests pass"
+if node --test tools/capture/tests/*.test.mjs tools/checks/tests/film.test.mjs tools/checks/tests/captions_clear.test.mjs tools/checks/tests/text_size.test.mjs tools/checks/tests/hook_legible.test.mjs tools/checks/tests/motion_library.test.mjs tools/film/tests/*.test.mjs >/dev/null 2>&1; then pass "the freshness, captions, text size, hook readability, motion catalogue and proof-of-source tests pass"
 else fail "a check's own tests fail" "run: node --test tools/capture/tests/*.test.mjs tools/checks/tests/*.test.mjs tools/film/tests/*.test.mjs"; fi
 if [ -d engine/node_modules/esbuild ]; then
   node --test tools/checks/tests/capture_place.test.mjs >/dev/null 2>&1 && pass "the checks read captures through the engine's plan" || fail "the checks cannot read captures through the engine's plan" "run: node --test tools/checks/tests/capture_place.test.mjs"

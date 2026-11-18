@@ -15,7 +15,7 @@ export function loadPlan(jobDir, { framework: fid = null, platform = null } = {}
   const lines = read(path.join(jobDir, 'audio', 'lines.json'));
   const shots = read(path.join(jobDir, 'shots.json'));
   const lib = loadFrameworks();
-  const id = fid || defaultFor(job.type);
+  const id = fid || job.framework || defaultFor(job.type);
   const framework = lib.frameworks.find((f) => f.id === id);
   if (!framework) throw new Error(`No framework "${id}". The frameworks: ${lib.frameworks.map((f) => f.id).join(', ')}`);
   const timed = lineTimes(script, { lines: Array.isArray(lines) ? lines : null });

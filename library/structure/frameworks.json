@@ -474,10 +474,7 @@
      "id": "hook",
      "name": "Hook",
      "job": "One-line provocation.",
-     "size": [
-      0.05,
-      0.084
-     ],
+     "size": null,
      "seconds": [
       0,
       2
@@ -677,10 +674,7 @@
      "id": "hook",
      "name": "Hook",
      "job": "First 2 s, high contrast with the shot that follows.",
-     "size": [
-      0.05,
-      0.084
-     ],
+     "size": null,
      "seconds": [
       0,
       2
@@ -758,10 +752,7 @@
      "id": "hook",
      "name": "Hook",
      "job": "One frame plus one line that opens a loop.",
-     "size": [
-      0.038,
-      0.062
-     ],
+     "size": null,
      "seconds": [
       0,
       1
@@ -827,13 +818,10 @@
      "id": "hook",
      "name": "Hook",
      "job": "The claim, with motion in the first frame and its text up at frame one.",
-     "size": [
-      0.05,
-      0.084
-     ],
+     "size": null,
      "seconds": [
       0,
-      3
+      2
      ],
      "required": true
     },
@@ -894,10 +882,7 @@
      "id": "hook",
      "name": "Hook",
      "job": "Stop the click-away and make a promise within the first 30 s.",
-     "size": [
-      0.034,
-      0.056
-     ],
+     "size": null,
      "seconds": [
       0,
       30

@@ -48,7 +48,7 @@ tools/footage/.venv/bin/python tools/audio/beats.py snap library/sounds/music/mi
 tools/footage/.venv/bin/python tools/audio/beats.py check library/sounds/music/minimal-pulse-01.beats.json jobs/<job>
 ```
 
-`check` reads the job's shot list and passes when every cut lands within one frame of a beat. The beds are from Komiku and Loyalty Freak Music (the same artist), each marked CC0 on its Internet Archive page; the evidence is in `music/index.json`.
+`check` reads the job's shot list and passes when every cut lands within one frame of a beat. When the film plays the bed from later than its start (from its first beat, say), write that in `job.json` as `"music_offset": -0.251` (seconds); `check` reads it, and `snap` takes the same `--offset`. The beds are from Komiku and Loyalty Freak Music (the same artist), each marked CC0 on its Internet Archive page; the evidence is in `music/index.json`.
 
 ## Adding a sound
 

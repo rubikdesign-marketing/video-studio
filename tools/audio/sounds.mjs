@@ -66,20 +66,25 @@ if (cmd === 'find') {
   const out = path.resolve(flag('--out', path.join(STUDIO, 'engine', 'out', `sheet-${group}.mp3`)));
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const GAP = 0.8;
+  const LONGEST = 6;
   const inputs = [];
   const filters = [];
   let at = 0;
   const lines = [];
   chosen.forEach((s, i) => {
     inputs.push('-i', path.join(LIBRARY(), s.file));
-    filters.push(`[${i}:a]aresample=48000,aformat=channel_layouts=stereo,adelay=${Math.round(at * 1000)}|${Math.round(at * 1000)}[a${i}]`);
+    // A long sound (an ambience, a music bed) is heard for its first 6 s, faded out, so it never runs under the next.
+    const heard = Math.min(s.seconds, LONGEST);
+    const fade = s.seconds > LONGEST ? `,afade=t=out:st=${LONGEST - 0.5}:d=0.5` : '';
+    filters.push(`[${i}:a]atrim=0:${heard},aresample=48000,aformat=channel_layouts=stereo${fade},adelay=${Math.round(at * 1000)}|${Math.round(at * 1000)}[a${i}]`);
     lines.push(`${at.toFixed(2).padStart(7)} s  ${s.id}  (${(s.feel || []).join(', ')})`);
-    at += Math.min(s.seconds, 6) + GAP;
+    at += heard + GAP;
   });
   const mixGraph = `${filters.join(';')};${chosen.map((_, i) => `[a${i}]`).join('')}amix=inputs=${chosen.length}:normalize=0:duration=longest[out]`;
-  const r = spawnSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...inputs, '-filter_complex', mixGraph, '-map', '[out]', '-c:a', 'libmp3lame', '-q:a', '3', out], { encoding: 'utf8' });
+  const r = spawnSync('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', ...inputs, '-filter_complex', mixGraph, '-map', '[out]', ...(/\.mp3$/i.test(out) ? ['-c:a', 'libmp3lame', '-q:a', '3'] : []), out], { encoding: 'utf8' });
   if (r.status !== 0) die(`ffmpeg failed: ${r.stderr.slice(-600)}`, 1);
-  fs.writeFileSync(out.replace(/\.mp3$/, '.txt'), lines.join('\n') + '\n');
+  // The list of what plays when goes beside the sheet, whatever the sheet's extension.
+  fs.writeFileSync(`${out.replace(/\.[a-z0-9]+$/i, '')}.txt`, lines.join('\n') + '\n');
   console.log(`${out}\n${lines.join('\n')}`);
 } else if (cmd === 'kit') {
   const brand = positional[0] || die('Say which brand: sounds.mjs kit tulvo');

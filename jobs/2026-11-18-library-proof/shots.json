@@ -1,0 +1,15 @@
+{
+ "_about": "The proof film's shot list. Cuts are on beats of the bed (tools/audio/beats.py snap), at 2.007, 5.007, 10.006 and 12.505 s. These are the new version's scenes; the old version uses the same words with cuts at 2.4, 5.4, 10.2 and 12.6 s.",
+ "scenes": [
+  { "id": "S01", "title": "Hook", "lines": ["01"], "beat": "hook", "energy": 4, "seconds": 2.007, "transition_in": null,
+    "shots": [{ "text": "Ten apps that never *talk*", "move": "opener-punch-in", "sound": "impact-hard on frame 0, impact-soft on the punch" }] },
+  { "id": "S02", "title": "The stake", "lines": ["02"], "beat": "stake", "energy": 2, "seconds": 3.0, "transition_in": "whip-pan",
+    "shots": [{ "text": "Clients here.\nInvoices *there.*", "move": "mask-rise, smear-in", "sound": "whip on the swap, swishes on each line" }] },
+  { "id": "S03", "title": "One place", "lines": ["03"], "beat": "body", "energy": 3, "seconds": 4.999, "transition_in": "iris-wipe",
+    "shots": [{ "text": "In ten apps / In one place", "move": "retype", "sound": "a whoosh into the iris, keyboard bursts" }] },
+  { "id": "S04", "title": "It builds it", "lines": ["04"], "beat": "body", "energy": 5, "seconds": 2.499, "transition_in": "hard cut on the downbeat",
+    "shots": [{ "text": "Describe it.\nTulvo *builds it.*", "move": "fade-up, highlighter", "sound": "soft hit on the cut, swish on the highlight, riser into the logo" }] },
+  { "id": "S05", "title": "Offer and logo", "lines": ["05"], "beat": "payoff", "energy": 4, "seconds": 2.495, "transition_in": "logo-mask-wipe",
+    "shots": [{ "text": "Try it *free*", "move": "word-pop", "sound": "logo sting, a pop on the offer" }] }
+ ]
+}

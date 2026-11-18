@@ -59,6 +59,12 @@ SKILLS=(
   "vyralcontent/content-skills|skills/viral-hooks|viral-hooks|LICENSE"
   "Leonxlnx/earshot|skills/earshot|earshot|LICENSE"
   "maximilianfeix/plinkfx|skills/plinkfx|plinkfx|LICENSE"
+  "whystrohm/shotkit|skills/storyboard-architect|storyboard-architect|LICENSE"
+  "vyralcontent/content-skills|skills/viral-short-form|viral-short-form|LICENSE"
+  "calesthio/generative-media-skills|skills/production/post-production/title-kinetic-typography|title-kinetic-typography|LICENSE"
+  "greensock/gsap-skills|skills/gsap-core|gsap-core|LICENSE"
+  "greensock/gsap-skills|skills/gsap-timeline|gsap-timeline|LICENSE"
+  "greensock/gsap-skills|skills/gsap-plugins|gsap-plugins|LICENSE"
   "Leonxlnx/earshot|skills/real-sound|real-sound|LICENSE"
   # Clipwing's skills state no licence for their instructions, so, like Remotion's, they are fetched on each Mac and
   # never kept in the public repository (.gitignore).

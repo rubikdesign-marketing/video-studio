@@ -169,6 +169,18 @@ class CheckTests(unittest.TestCase):
         code, _, _ = run(["check", self.grid, self.job([2.75, 2.0])])
         self.assertEqual(code, 1)
 
+    def test_offset_is_read_from_job_json(self):
+        d = self.job([2.25, 2.0], name="offjob")      # cuts at 2.25 and 4.25: on the beat only if the music starts 0.25 s late
+        self.assertEqual(run(["check", self.grid, d])[0], 1)
+        json.dump({"music_offset": -0.25}, open(os.path.join(d, "job.json"), "w"))
+        self.assertEqual(run(["check", self.grid, d])[0], 0)
+        self.assertEqual(run(["check", self.grid, d, "--offset", "0"])[0], 1)   # given on the command line, it wins
+
+    def test_snap_takes_an_offset(self):
+        code, out, _ = run(["snap", self.grid, "--cuts", "2.2", "--offset=-0.25"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("2.250", out)
+
     def test_cannot_check(self):
         self.assertEqual(run(["check", self.grid, os.path.join(self.tmp.name, "nojob")])[0], 2)       # no shots.json
         self.assertEqual(run(["check", self.grid, self.job([4.0], "one")])[0], 2)                     # no cuts
