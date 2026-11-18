@@ -1,0 +1,149 @@
+/*
+ * Design tokens for the editor. The only file under src/ that may hold a literal colour.
+ * Two tiers: raw values first, then roles. Components use roles only.
+ * Night is the default. Paper applies under :root[data-theme="paper"].
+ * Values come from ARCHITECTURE_PLAN.md section 3.1.
+ */
+
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('./fonts/InstrumentSans-var.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+/* Tier 1: raw values. */
+:root {
+  --raw-white: #ffffff;
+  --raw-black: #000000;
+
+  --raw-night-page: #03050a;
+  --raw-night-panel: #010b24;
+  --raw-night-panel-80: rgba(1, 11, 36, 0.8);
+  --raw-night-ink: #050b14;
+  --raw-lime: #bbfc9e;
+  --raw-night-good: #63a65e;
+  --raw-night-warn: #ffa724;
+  --raw-white-96: rgba(255, 255, 255, 0.96);
+  --raw-white-70: rgba(255, 255, 255, 0.7);
+  --raw-white-55: rgba(255, 255, 255, 0.55);
+  --raw-white-12: rgba(255, 255, 255, 0.12);
+  --raw-white-10: rgba(255, 255, 255, 0.1);
+  --raw-white-6: rgba(255, 255, 255, 0.06);
+  --raw-white-80: rgba(255, 255, 255, 0.8);
+
+  --raw-paper-page: #f5f3ef;
+  --raw-paper-ink: #101113;
+  --raw-paper-body: #626670;
+  /* The plan gives #8A8F98 for quiet text. It reads 2.93:1 on the page, under the 4.5:1 it must meet,
+     so it is darkened here by the smallest step that passes (4.62:1 on the page, 5.12:1 on white). */
+  --raw-paper-quiet: #6a6e75;
+  --raw-paper-line: #e4e2de;
+  --raw-paper-canvas: #0b0c10;
+  --raw-blue: #2b5ce6;
+  --raw-paper-good: #1f8a4c;
+  --raw-paper-warn: #f7a878;
+  --raw-ink-4: rgba(16, 17, 19, 0.04);
+
+  --raw-black-50: rgba(0, 0, 0, 0.5);
+  --raw-black-35: rgba(0, 0, 0, 0.35);
+  --raw-ink-16: rgba(16, 17, 19, 0.16);
+}
+
+/* Tier 2: roles. Night. */
+:root {
+  color-scheme: dark;
+
+  --surface-page: var(--raw-night-page);
+  --surface-panel: var(--raw-night-panel);
+  --surface-raised: var(--raw-white-6);
+  --surface-raised-line: transparent;
+  --surface-hover: var(--raw-white-10);
+  --surface-canvas: var(--raw-black);
+  /* Glass: floating toolbars and sheets only. Never behind body text. */
+  --surface-glass: var(--raw-night-panel-80);
+  --glass-blur: 16px;
+  --scrim: var(--raw-black-50);
+
+  --text-strong: var(--raw-white-96);
+  --text-body: var(--raw-white-70);
+  --text-quiet: var(--raw-white-55);
+  /* The canvas is dark in both themes, so text on it has its own role. */
+  --text-on-canvas: var(--raw-white-96);
+  --line: var(--raw-white-12);
+  --accent: var(--raw-lime);
+  --on-accent: var(--raw-night-ink);
+  --good: var(--raw-night-good);
+  --warn: var(--raw-night-warn);
+  --focus-ring: var(--accent);
+  --shadow-float: 0 12px 32px var(--raw-black-50);
+
+  /* Type: Instrument Sans 400 to 700. Sizes 12, 13, 15, 18, 24. */
+  --font: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --size-12: 0.75rem;
+  --size-13: 0.8125rem;
+  --size-15: 0.9375rem;
+  --size-18: 1.125rem;
+  --size-24: 1.5rem;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --leading-tight: 1.25;
+  --leading-body: 1.45;
+  /* Every time on screen uses this. */
+  --numeric-time: tabular-nums;
+
+  /* Radii: 4px controls, 8px panels, full pills for chips. */
+  --radius-control: 4px;
+  --radius-panel: 8px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --control-height: 32px;
+
+  /* Motion: 150ms for controls, 250ms for panels. */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --duration-control: 150ms;
+  --duration-panel: 250ms;
+}
+
+/* Tier 2: roles. Paper. */
+:root[data-theme="paper"] {
+  color-scheme: light;
+
+  --surface-page: var(--raw-paper-page);
+  --surface-panel: var(--raw-white);
+  --surface-raised: var(--raw-white);
+  --surface-raised-line: var(--raw-paper-line);
+  --surface-hover: var(--raw-ink-4);
+  --surface-canvas: var(--raw-paper-canvas);
+  --surface-glass: var(--raw-white-80);
+  --scrim: var(--raw-black-35);
+
+  --text-strong: var(--raw-paper-ink);
+  --text-body: var(--raw-paper-body);
+  --text-quiet: var(--raw-paper-quiet);
+  --line: var(--raw-paper-line);
+  --accent: var(--raw-blue);
+  --on-accent: var(--raw-white);
+  --good: var(--raw-paper-good);
+  --warn: var(--raw-paper-warn);
+  --shadow-float: 0 12px 32px var(--raw-ink-16);
+}
+
+/* Reduced motion removes every transition and animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

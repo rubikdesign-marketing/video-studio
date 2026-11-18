@@ -1,0 +1,53 @@
+/* Stand-in content only. The real panels replace it. */
+.app-title {
+  color: var(--text-strong);
+  font-size: var(--size-15);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.app-film {
+  overflow: hidden;
+  color: var(--text-quiet);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.app-spacer {
+  flex: 1;
+}
+
+.placeholder {
+  padding: var(--space-4);
+}
+.placeholder-title {
+  margin-bottom: var(--space-1);
+  font-size: var(--size-12);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.shell-panel .placeholder-title,
+.shell-timeline .placeholder-title {
+  color: var(--text-strong);
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+.preview > .ui-field {
+  width: 100%;
+}
+.preview-title {
+  color: var(--text-strong);
+  font-size: var(--size-15);
+  font-weight: var(--weight-semibold);
+}
+.preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
