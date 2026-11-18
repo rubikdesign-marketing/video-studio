@@ -9,7 +9,7 @@
  "length_cap_status": "Storyboard cut list is 606.5 s (10:06) from word timings",
  "energy_preset": "calm",
  "voice": "Kashfiq (footage, phone microphone); no made voice",
- "stage_next": "Owner reviews the v3 look check (https://claude.ai/artifact/6ibecFoahA3VkS3zUY2kZ1). On their go: render the v3 preview and master (plan Task 18), run the checks, reply to all 40 notes on the review page.",
+ "stage_next": "Owner watches out/rubik-ep1-v3.mp4 (or the 720p preview) with sound and sends batch 2 or approves full animation; then the showreel beat and the four 9:16 reels.",
  "approvals": {
   "idea": {
    "date": "2026-11-17",
@@ -58,7 +58,8 @@
   "2026-11-18 (overnight, owner asleep, full go-ahead): rough cut reviewed frame by frame (projects/rubik/video-1-edit/REVIEW-AND-PLAN.md). Built the full film as engine composition RubikEp1 (engine/src/jobs/rubik-ep1: Film.tsx, spec.ts, timeline.json from build/timeline.py). A-roll re-centred (build/center.py), light per-setup grade, 39 site shots from the real captures in a browser frame with PiP and a notes rail, title sting, 3 chapter cards, 3 verdict cards, 2 maxim cards, path diagram, 2 lessons cards, CTA card, lower third, end card; captions rebuilt (one line, no crossfade). Sound: music by ElevenLabs in two pieces joined at the Slite chapter (audio/music-a, music-b), 173 effects from library/sounds placed on the same cues as the picture (build/audio_events.mjs), mixed by tools/audio/mix.py, mastered to -14 LUFS / -1.5 dBFS. Brand file filled with Rubik colours and logos (placeholders moved to logo/_placeholders).",
   "18 Nov: v1 checked frame by frame; v2 spliced (site-capture stutters removed, shot 54 ring, Slite zoom framing, larger URL, music 21%). Review page https://claude.ai/artifact/JBDg9gKJYtZ27VNWh57uVC",
   "18 Nov: owner's review batch 1 on v2 (40 notes, 10 must-fix) recorded in revisions.json round v2. The 'Filmed 17 Nov 2026' label is removed at the owner's request (note 4), overriding the 17 Nov rule. Plan: docs/superpowers/plans/2026-11-18-rubik-ep1-v3-fixes.md",
-  "18 Nov: v3 fixes for all 40 notes built on branch rubik-ep1-v3 (cue timing, page-anchored highlights, face lock, cold open, presence per shot, beats, card redesigns, one-family sound with the owner's local pack, per-clip grade). Stills look check: https://claude.ai/artifact/6ibecFoahA3VkS3zUY2kZ1. Not rendered, not watched at speed, not listened to."
+  "18 Nov: v3 fixes for all 40 notes built on branch rubik-ep1-v3 (cue timing, page-anchored highlights, face lock, cold open, presence per shot, beats, card redesigns, one-family sound with the owner's local pack, per-clip grade). Stills look check: https://claude.ai/artifact/6ibecFoahA3VkS3zUY2kZ1. Not rendered, not watched at speed, not listened to.",
+  "18 Nov: v3 rendered (16035 frames, -14.0 LUFS). Batch 1 answered note by note on the review page. Also: full-screen site shots S18, S36, S57 (owner, after the look check). Checks on the render: hook readable at 1 s; judder windows 8 (v2 11); PiP drop-outs at site cuts gone; one-frame white flashes at shot ends fixed. Not watched at speed or listened to by anyone."
  ],
  "join_check": {
   "page": "https://claude.ai/artifact/GHwe2G1HPjvib8yteYMcXP",
@@ -80,10 +81,15 @@
  "skills_used": [
   "figma-use",
   "remotion-best-practices",
-  "video-studio"
+  "video-studio",
+  "superpowers:writing-plans",
+  "superpowers:executing-plans",
+  "superpowers:test-driven-development",
+  "impeccable"
  ],
  "outputs": {
-  "master": "out/rubik-ep1-v2.mp4",
-  "preview": "out/rubik-ep1-v2-preview-720p.mp4"
+  "master": "out/rubik-ep1-v3.mp4",
+  "preview": "out/rubik-ep1-v3-preview-720p.mp4",
+  "previous": "out/rubik-ep1-v2.mp4"
  }
 }
