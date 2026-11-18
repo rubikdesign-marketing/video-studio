@@ -13,8 +13,11 @@ import { planCut } from '../tools/footage/lib/cut.mjs';
 import { guard, joinKey, key, runsOf, sentences } from '../tools/footage/lib/paper.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const JOBS = path.join(STUDIO, 'jobs');
-const FILMS = path.join(STUDIO, 'engine', 'src', 'jobs');
+// Where the jobs, the films' timing files and the feedback log live. It is this studio folder unless STUDIO_ROOT
+// names another one, which the server's own tests use (studio/tests/) so they never touch real jobs.
+const ROOT = process.env.STUDIO_ROOT ? path.resolve(process.env.STUDIO_ROOT) : STUDIO;
+const JOBS = path.join(ROOT, 'jobs');
+const FILMS = path.join(ROOT, 'engine', 'src', 'jobs');
 const PAGE = path.join(STUDIO, 'studio', 'review.html');
 const PAPER_PAGE = path.join(STUDIO, 'studio', 'paper.html');
 const PORT = Number(process.argv[2] || process.env.PORT || 4317);
@@ -96,7 +99,7 @@ function sendBatch(job, payload) {
   const batch = { batch: n, job, video: payload.video || null, reviewer: String(payload.reviewer || '').slice(0, 60) || null,
     sent_at: new Date().toISOString(), status: 'sent', approved: !!payload.approved, good_scenes: good, notes };
   writeJson(path.join(dir, `batch-${tag}.json`), batch);
-  const log = path.join(STUDIO, 'knowledge', 'feedback-log', `${job}.jsonl`); fs.mkdirSync(path.dirname(log), { recursive: true });
+  const log = path.join(ROOT, 'knowledge', 'feedback-log', `${job}.jsonl`); fs.mkdirSync(path.dirname(log), { recursive: true });
   for (const note of notes) fs.appendFileSync(log, JSON.stringify({ date: batch.sent_at, job, video: batch.video, batch: n, reviewer: batch.reviewer, time: note.time, scene: note.scene, kind: note.kind, topic: note.topic, must: note.must, text: note.text }) + '\n');
   if (batch.approved) fs.appendFileSync(log, JSON.stringify({ date: batch.sent_at, job, video: batch.video, batch: n, reviewer: batch.reviewer, approved: true }) + '\n');
   writeJson(path.join(dir, 'draft.json'), { notes: [], good_scenes: [] });
