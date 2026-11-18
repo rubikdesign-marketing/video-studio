@@ -494,7 +494,7 @@ const buildLines = (shots: Shot[], hide: Set<number>): Line[] => {
     s.words.forEach((w, i) => {
       const len = cur.reduce((a, x) => a + x.w.length + 1, 0);
       const gap = i > 0 ? w.t0 - s.words[i - 1].t1 : 0;
-      if (cur.length && (len + w.w.length > 34 || gap > 0.45)) push();
+      if (cur.length && (len + w.w.length > 30 || gap > 0.45)) push();
       cur.push(w);
       if (/[.?!]$/.test(w.w) && cur.length > 2) push();
     });
@@ -510,7 +510,7 @@ const CaptionLayer: FC<{ lines: Line[]; siteRanges: [number, number][] }> = ({ l
   const onSite = siteRanges.some(([a, b]) => t >= a && t < b);
   const cx = onSite ? PAGE.x + PAGE.w / 2 : 960;
   return (
-    <div style={{ position: 'absolute', left: cx, bottom: onSite ? 34 : 64, transform: 'translateX(-50%)', background: `linear-gradient(${C.forest2}, ${C.forest})`, borderRadius: 16, padding: '14px 24px', whiteSpace: 'nowrap', font: `${B.captions.weight} ${onSite ? 36 : 46}px/1.15 ${FONT}`, letterSpacing: '-0.01em', boxShadow: '0 12px 30px rgba(0,0,0,0.35)' }}>
+    <div style={{ position: 'absolute', left: cx, bottom: onSite ? 30 : 60, transform: 'translateX(-50%)', background: `linear-gradient(${C.forest2}, ${C.forest})`, borderRadius: 18, padding: onSite ? '12px 24px' : '16px 28px', whiteSpace: 'nowrap', font: `${B.captions.weight} ${onSite ? 44 : 56}px/1.15 ${FONT}`, letterSpacing: '-0.01em', boxShadow: '0 12px 30px rgba(0,0,0,0.35)' }}>
       {line.words.map((w, i) => { const said = t >= w.t0; const now = said && t < w.t1 + 0.08; return <span key={i} style={{ color: now ? C.lime : said ? C.white : 'rgba(255,255,255,0.45)' }}>{w.w}{i < line.words.length - 1 ? ' ' : ''}</span>; })}
     </div>
   );
