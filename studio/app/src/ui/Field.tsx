@@ -3,6 +3,8 @@ import { cx } from './cx';
 
 interface FieldBase {
   label: string;
+  /** Keeps the label for screen readers but does not show it. */
+  hideLabel?: boolean;
   value: string;
   onChange(value: string): void;
   /** A short line of help under the field. */
@@ -19,7 +21,7 @@ export type FieldProps = FieldBase &
 
 /** A labelled text box: one line, or several with `multiline`. */
 export function Field(props: FieldProps) {
-  const { label, value, onChange, hint, error, placeholder, disabled, name, className } = props;
+  const { label, hideLabel, value, onChange, hint, error, placeholder, disabled, name, className } = props;
   const id = useId();
   const noteId = `${id}-note`;
   const note = error ?? hint;
@@ -34,7 +36,7 @@ export function Field(props: FieldProps) {
   };
   return (
     <div className={cx('ui-field', className)}>
-      <label htmlFor={id} className="ui-field-label">
+      <label htmlFor={id} className={cx('ui-field-label', hideLabel && 'visually-hidden')}>
         {label}
       </label>
       {props.multiline ? (
