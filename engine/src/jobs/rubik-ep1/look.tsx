@@ -1,9 +1,11 @@
 // Episode 1's shared look: brand tokens and the pieces every scene uses (the browser window, highlights, cards).
 // Colours, fonts and logos come only from brands/rubik/brand.json.
 import type { FC, ReactNode } from 'react';
+import { Easing, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
 import { brandFiles } from '../../brands';
 import { getBrand } from '../../kit/brand';
-import type { Tone } from './spec';
+import { perimeterPoint } from './lib';
+import type { Box, Tone } from './spec';
 
 // ---------------------------------------------------------------- brand (brands/rubik/brand.json)
 export const B = getBrand('rubik');
@@ -39,3 +41,51 @@ export const Browser: FC<{ url: string; children: ReactNode }> = ({ url, childre
     <div style={{ position: 'absolute', left: 0, top: BAR, width: PAGE.w, height: PAGE.h, overflow: 'hidden', background: '#FFFFFF' }}>{children}</div>
   </div>
 );
+
+// ---------------------------------------------------------------- highlight and spotlight (drawn inside the page)
+const useSec = () => { const f = useCurrentFrame(); const { fps } = useVideoConfig(); return f / fps; };
+const inOut = Easing.bezier(0.65, 0, 0.35, 1);
+const outE = Easing.bezier(0.22, 1, 0.36, 1);
+const span = (t: number, a: number, d: number, e = inOut) => interpolate(t, [a, a + d], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: e });
+/** The gap the line leaves around what it marks, in page-area px (tools/checks/outline_clear.py checks it is clear). */
+export const HL_PAD = 10;
+
+/** The highlight (owner's note b001-n23): a lime dot appears at the top-left corner, runs clockwise and draws the
+ *  whole border in one stroke, then rests as a thin neon line. No fill, the same for every tone (the notes say
+ *  keep or fix). `k` maps page px to the page area; `scale` is the zoom, so the line stays the same width on screen. */
+export const Highlight: FC<{ box: Box; at: number; out?: number; k: number; scale: number }> = ({ box, at, out, k, scale }) => {
+  const t = useSec();
+  const u = span(t, at, 0.9); const gone = out !== undefined ? 1 - span(t, out, 0.35, outE) : 1;
+  if (t < at || gone <= 0) return null;
+  const sw = 4 / scale; const rx = 14; const pad = HL_PAD;
+  const [x, y, w, h] = [box[0] * k - pad, box[1] * k - pad, box[2] * k + pad * 2, box[3] * k + pad * 2];
+  const per = 2 * (w + h);
+  const [dx, dy] = perimeterPoint(w, h, (u * per + rx) / per);
+  const dot = u < 1 ? 1 : 1 - span(t, at + 0.9, 0.25, outE);
+  const appear = span(t, at, 0.12, outE);
+  const m = 12 / scale;
+  return (
+    <svg style={{ position: 'absolute', left: x - m, top: y - m, width: w + m * 2, height: h + m * 2, overflow: 'visible', opacity: gone, filter: `drop-shadow(0 0 ${5 / scale}px ${C.lime}AA)` }}>
+      <rect x={m} y={m} width={w} height={h} rx={rx} fill="none" stroke={C.lime} strokeWidth={sw} strokeDasharray={per} strokeDashoffset={per * (1 - u)} strokeLinecap="round" />
+      {dot > 0 ? <circle cx={m + dx} cy={m + dy} r={(5.5 / scale) * appear} fill="#FFFFFF" stroke={C.lime} strokeWidth={2.5 / scale} opacity={dot} /> : null}
+    </svg>
+  );
+};
+
+/** Spotlight (owner's note b001-n33): the page sinks into a dark blur and only the box stays sharp, with no border
+ *  and no badge. It takes the page itself as children and draws it twice: blurred and dimmed underneath, sharp
+ *  through a rounded hole (a backdrop blur also softened what showed through the hole). pw x ph is the page area. */
+export const Spotlight: FC<{ box: Box; at: number; k: number; pw: number; ph: number; children: ReactNode }> = ({ box, at, k, pw, ph, children }) => {
+  const t = useSec(); const u = span(t, at, 0.5, outE);
+  if (u <= 0) return <>{children}</>;
+  const p = 8; const r = 14;
+  const [x, y, w, h] = [box[0] * k - p, box[1] * k - p, box[2] * k + p * 2, box[3] * k + p * 2];
+  const hole = `M${x + r} ${y}H${x + w - r}A${r} ${r} 0 0 1 ${x + w} ${y + r}V${y + h - r}A${r} ${r} 0 0 1 ${x + w - r} ${y + h}H${x + r}A${r} ${r} 0 0 1 ${x} ${y + h - r}V${y + r}A${r} ${r} 0 0 1 ${x + r} ${y}Z`;
+  const layer = { position: 'absolute', left: 0, top: 0, width: pw, height: ph } as const;
+  return (
+    <>
+      <div style={{ ...layer, filter: `blur(${7 * u}px) brightness(${1 - 0.62 * u}) saturate(${1 - 0.4 * u})` }}>{children}</div>
+      <div style={{ ...layer, clipPath: `path('${hole}')` }}>{children}</div>
+    </>
+  );
+};

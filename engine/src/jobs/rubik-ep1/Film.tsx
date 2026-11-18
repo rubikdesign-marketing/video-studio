@@ -11,7 +11,7 @@ import timeline from './timeline.json';
 import { capPlan, cueTime, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
 import marksJson from './marks.json';
 import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Row, type Site, type Tone } from './spec';
-import { B, Browser, C, FONT, PAGE, toneBg, toneInk, toneLine } from './look';
+import { B, Browser, C, FONT, Highlight, PAGE, Spotlight, toneBg, toneInk, toneLine } from './look';
 
 // ---------------------------------------------------------------- data
 type Shot = { n: number; kind: string; voice: boolean; start: number; end: number; text: string; words: Word[]; d0?: number; d1?: number };
@@ -166,19 +166,6 @@ const Capture: FC<{ cap: string; from: number; to?: number; len: number; rate?: 
 };
 const SPEC_STATIC = new Set(STILLS);
 
-const RingMark: FC<{ box: Box; tone: Tone; at: number; out?: number; k: number }> = ({ box, tone, at, out, k }) => {
-  const t = useT();
-  const u = enter(t, at, 0.55); const gone = out !== undefined ? 1 - enter(t, out, 0.3) : 1;
-  if (u <= 0 || gone <= 0) return null;
-  const pad = 10; const [x, y, w, h] = [box[0] * k - pad, box[1] * k - pad, box[2] * k + pad * 2, box[3] * k + pad * 2];
-  const per = 2 * (w + h);
-  return (
-    <svg style={{ position: 'absolute', left: x - 6, top: y - 6, width: w + 12, height: h + 12, overflow: 'visible', opacity: gone }}>
-      <rect x={6} y={6} width={w} height={h} rx={16} fill={tone === 'keep' ? 'rgba(187,236,85,0.10)' : tone === 'fix' ? 'rgba(201,54,60,0.08)' : 'transparent'} opacity={u} />
-      <rect x={6} y={6} width={w} height={h} rx={16} fill="none" stroke={toneLine[tone] === C.white ? C.forest : toneLine[tone]} strokeWidth={5} strokeDasharray={per} strokeDashoffset={per * (1 - u)} strokeLinecap="round" />
-    </svg>
-  );
-};
 const PinMark: FC<{ x: number; y: number; tone: Tone; text?: string; at: number; k: number }> = ({ x, y, tone, text = '?', at, k }) => {
   const s = useSpring(at, 11); const t = useT();
   if (t < at) return null;
@@ -248,7 +235,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
   const srcT = srcAt(capPlan(CAP_LENGTH[spec.cap], spec.from, spec.to, len, spec.rate), spec.from, t, still);
   const onPage = (box: Box, mark?: string): Box => { const m = mark ? MARKS[spec.cap]?.marks[mark] : undefined; return m ? markBoxAt(box, m.scroll, MARKS[spec.cap].scroll, srcT) : box; };
   const scale = 1920 / vw;
-  const pauseAt = spec.pause ? cueOf(shot, spec.pause.at) : 1e9; const pu = enter(t, pauseAt, 0.4);
+  const pauseAt = spec.pause ? cueOf(shot, spec.pause.at) : 1e9;
   const patchAt = spec.patch ? cueOf(shot, spec.patch.at) : 1e9; const pw = interpolate(t, [patchAt, patchAt + 0.7], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
   const morphAt = spec.morph ? cueOf(shot, spec.morph.at) : 1e9; const mu = enter(t, morphAt, 0.6);
   const stripAt = spec.strip ? cueOf(shot, spec.strip.at) : 1e9; const su = enter(t, stripAt, 0.5);
@@ -256,13 +243,9 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
     <Stage>
       <Browser url={spec.url}>
         <div style={{ position: 'absolute', left: 0, top: 0, width: PAGE.w, height: PAGE.h, transform: `scale(${scale}) translate(${-vx * k}px, ${-vy * k}px)`, transformOrigin: '0 0' }}>
-          <Capture cap={spec.cap} from={spec.from} to={spec.to} len={len} rate={spec.rate} />
           {spec.pause ? (
-            <svg style={{ position: 'absolute', inset: 0, width: PAGE.w, height: PAGE.h, opacity: pu }}>
-              <defs><mask id={`hole-${shot.n}`}><rect width="100%" height="100%" fill="white" /><rect x={spec.pause.box[0] * k - 8} y={spec.pause.box[1] * k - 8} width={spec.pause.box[2] * k + 16} height={spec.pause.box[3] * k + 16} rx={14} fill="black" /></mask></defs>
-              <rect width="100%" height="100%" fill="rgba(40,42,40,0.62)" mask={`url(#hole-${shot.n})`} />
-            </svg>
-          ) : null}
+            <Spotlight box={spec.pause.box} at={pauseAt} k={k} pw={PAGE.w} ph={PAGE.h}><Capture cap={spec.cap} from={spec.from} to={spec.to} len={len} rate={spec.rate} /></Spotlight>
+          ) : <Capture cap={spec.cap} from={spec.from} to={spec.to} len={len} rate={spec.rate} />}
           {spec.patch && pw > 0 ? (
             <div style={{ position: 'absolute', left: spec.patch.box[0] * k, top: spec.patch.box[1] * k, width: spec.patch.box[2] * k, height: spec.patch.box[3] * k, background: spec.patch.bg, clipPath: `inset(0 ${(1 - pw) * 100}% 0 0)`, padding: 4 }}>
               <div style={{ display: 'inline-block', marginBottom: 10, background: C.forest, color: C.lime, font: `700 11px/1 ${FONT}`, letterSpacing: '0.1em', padding: '6px 8px', borderRadius: 5 }}>{spec.patch.label.toUpperCase()}</div>
@@ -274,14 +257,9 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
               <span>{mu < 0.5 ? spec.morph.from : spec.morph.to}</span>
             </div>
           ) : null}
-          {(spec.rings ?? []).map((r, i) => <RingMark key={i} box={onPage(r.box, r.mark)} tone={r.tone} at={cueOf(shot, r.at)} out={r.out !== undefined ? cueOf(shot, r.out) : undefined} k={k} />)}
+          {(spec.rings ?? []).map((r, i) => <Highlight key={i} box={onPage(r.box, r.mark)} at={cueOf(shot, r.at)} out={r.out !== undefined ? cueOf(shot, r.out) : undefined} k={k} scale={scale} />)}
           {(spec.pins ?? []).map((p, i) => <PinMark key={i} x={p.x} y={p.y} tone={p.tone} text={p.text} at={cueOf(shot, p.at)} k={k} />)}
         </div>
-        {spec.pause && pu > 0 ? (
-          <div style={{ position: 'absolute', left: 24, top: 24, display: 'flex', alignItems: 'center', gap: 10, background: C.fix, color: '#FFFFFF', font: `700 20px/1 ${FONT}`, padding: '12px 16px', borderRadius: 10, opacity: pu, letterSpacing: '0.02em' }}>
-            <svg width="16" height="18"><rect x="1" y="1" width="5" height="16" rx="1.5" fill="#fff" /><rect x="10" y="1" width="5" height="16" rx="1.5" fill="#fff" /></svg> PAUSED · LOOK AT THE BUTTON
-          </div>
-        ) : null}
         {spec.strip && su > 0 ? (
           <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '22px 30px', background: C.forest, color: C.white, font: `700 38px/1.15 ${FONT}`, letterSpacing: '-0.02em', transform: `translateY(${(1 - su) * 100}%)`, display: 'flex', alignItems: 'center', gap: 18 }}>
             <span style={{ width: 10, height: 44, borderRadius: 5, background: C.lime }} />{spec.strip.text}

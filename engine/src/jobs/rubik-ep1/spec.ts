@@ -23,6 +23,7 @@ export type Site = {
   focus?: { at?: Cue; over?: number; margin?: number; minW?: number; from?: Box };
   rings?: Ring[]; pins?: Pin[]; notes?: Note[];
   strip?: { at: Cue; text: string };
+  /** Spotlight on one box: the rest of the page dims and blurs (look.tsx Spotlight). */
   pause?: { at: Cue; box: Box };
   patch?: { at: Cue; box: Box; bg: string; ink: string; lines: string[]; label: string };
   morph?: { at: Cue; box: Box; from: string; to: string; bg: string; ink: string };
@@ -67,7 +68,7 @@ export const SPEC: Record<number, ShotSpec> = {
   5: { type: 'site', cap: 'folk-pricing', from: 13.3, url: `${FOLK}/pricing`, zoom: { from: [160, 200, 1600, 900], to: [260, 260, 1400, 788] },
     rings: [{ at: 0.2, box: [323, 358, 1281, 536], tone: 'keep', mark: 'plans' }], notes: [{ at: 0.3, tone: 'info', tag: 'RULE', text: 'Complex pricing makes people leave' }] },
   6: { type: 'site', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: [240, 60, 1440, 810], to: [470, 210, 980, 551] },
-    rings: [{ at: 0.2, box: SLITE_BTN, tone: 'fix', mark: 'hero' }], notes: [{ at: 0.3, tone: 'fix', tag: 'FIX · CTA', text: '“Talk to us” doesn’t say what happens next' }] },
+    notes: [{ at: 0.3, tone: 'fix', tag: 'FIX · CTA', text: '“Talk to us” doesn’t say what happens next' }] },
   7: { type: 'maxim', lines: [{ at: 0, text: 'Never make your' }, { at: 'users', text: 'users guess.', hi: true }] },
   8: { type: 'title' },
   // ---- premise
@@ -168,9 +169,9 @@ export const SPEC: Record<number, ShotSpec> = {
   60: { type: 'path', until: 61 },
   61: { type: 'cont' },
   62: { type: 'site', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: FULL, to: [450, 295, 760, 428], at: 'CTA', over: 1.2 },
-    pause: { at: 'CTA', box: SLITE_BTN }, rings: [{ at: 'button', box: SLITE_BTN, tone: 'fix', mark: 'hero' }] },
+    pause: { at: 'CTA', box: SLITE_BTN } },
   63: { type: 'site', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: [450, 295, 760, 428], to: [450, 295, 760, 428] },
-    pause: { at: 0, box: SLITE_BTN }, rings: [{ at: 0, box: SLITE_BTN, tone: 'fix', mark: 'hero' }],
+    pause: { at: 0, box: SLITE_BTN },
     notes: [{ at: 0.2, tone: 'fix', tag: 'FIX · CTA', text: '“Talk to us” = ?' }, { at: 'invite', tone: 'fix', tag: 'WHY', text: 'It doesn’t invite an action' }] },
   64: { type: 'site', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: [450, 295, 760, 428], to: [270, 100, 1160, 653], over: 3 },
     morph: { at: 'demo', box: [778, 407, 140, 64], from: 'Talk to us', to: 'Book a demo →', bg: '#FF6A3D', ink: '#FFFFFF' },

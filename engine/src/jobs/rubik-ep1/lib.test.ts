@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';
-import { capPlan, checkMarks, contains, cueTime, findWord, fitView, groupCueTime, markBoxAt, pageBox, zoomOf, scrollAt, srcAt, viewAt, viewBox, type Box, type Word } from './lib.ts';
+import { capPlan, checkMarks, contains, cueTime, findWord, fitView, groupCueTime, markBoxAt, pageBox, perimeterPoint, zoomOf, scrollAt, srcAt, viewAt, viewBox, type Box, type Word } from './lib.ts';
 
 const words = (...ws: string[]): Word[] => ws.map((w, i) => ({ w, t0: 10 + i, t1: 10.8 + i }));
 
@@ -131,4 +131,14 @@ test('a shot with its own zoom keeps it', () => {
   const shot = { n: 1, start: 0, end: 4, words: [] };
   const zoom = { to: [1, 2, 1600, 900] as Box };
   assert.deepEqual(zoomOf({ type: 'site', cap: 'cap', from: 0, zoom }, shot, { cap: { scroll: [[0, 0]], marks: {} } }, { cap: 10 })?.to, zoom.to);
+});
+
+test('perimeterPoint walks the box clockwise from its top-left corner', () => {
+  const r = (p: [number, number]) => p.map((v) => Math.round(v * 1e6) / 1e6);
+  assert.deepEqual(r(perimeterPoint(100, 50, 0)), [0, 0]);
+  assert.deepEqual(r(perimeterPoint(100, 50, 100 / 300)), [100, 0]);
+  assert.deepEqual(r(perimeterPoint(100, 50, 150 / 300)), [100, 50]);
+  assert.deepEqual(r(perimeterPoint(100, 50, 250 / 300)), [0, 50]);
+  assert.deepEqual(r(perimeterPoint(100, 50, 1)), [0, 0]);
+  assert.deepEqual(r(perimeterPoint(100, 50, 275 / 300)), [0, 25]);
 });

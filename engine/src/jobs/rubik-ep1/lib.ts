@@ -143,3 +143,14 @@ export function zoomOf(sp: CheckSite, shot: CheckShot, marks: MarksFile, capLen:
   const f = sp.focus;
   return { from: f.from ?? FULL, to: fitView(boxes, { margin: f.margin ?? 48, minW: f.minW ?? 720 }), at: f.at ?? 0, over: f.over ?? 1.2 };
 }
+
+/** The point a share u (0–1) of the way round a w x h box, clockwise from its top-left corner: where the drawn
+ *  highlight's leading dot is. */
+export function perimeterPoint(w: number, h: number, u: number): [number, number] {
+  const p = 2 * (w + h); let d = (((u % 1) + 1) % 1) * p;
+  if (u >= 1) d = 0;
+  if (d <= w) return [d, 0]; d -= w;
+  if (d <= h) return [w, d]; d -= h;
+  if (d <= w) return [w - d, h]; d -= w;
+  return [0, h - d];
+}
