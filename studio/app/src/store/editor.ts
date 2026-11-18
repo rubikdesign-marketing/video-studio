@@ -5,7 +5,7 @@ import type { Film, Seconds, VideoVersion } from '../contracts/film';
 import type { Box, DraftNote, Edit, ExportRequest, NoteKind } from '../contracts/review';
 import type { Command, History, Selection } from '../contracts/store';
 import { changesNothing, checkEdit, dropEdits, putEdit, sceneNumber } from './edits';
-import { createHistory, type HistoryState } from './history';
+import { createHistory, liveHistory, type HistoryState } from './history';
 import { createSaver, type SaveStatus } from './saver';
 
 // ---------------------------------------------------------------- what the stores hold
@@ -378,15 +378,8 @@ export function createEditor(options: EditorOptions) {
   /** Saves now what is waiting. Also the "try again" after a failed save. */
   async function flush(): Promise<void> { await Promise.all([notesSaver.flush(), editsSaver.flush()]); }
 
-  /** The History contract, for code that wants the plain object rather than the store. Always reads the latest state. */
-  const history: History = {
-    run: (c) => historyStore.getState().run(c),
-    undo: () => historyStore.getState().undo(),
-    redo: () => historyStore.getState().redo(),
-    get canUndo() { return historyStore.getState().canUndo; },
-    get canRedo() { return historyStore.getState().canRedo; },
-    get labels() { return historyStore.getState().labels; },
-  };
+  /** The History contract as one lasting object. It always reads the latest state. */
+  const history: History = liveHistory(historyStore);
 
   return {
     stores: { film, selection, notes, edits, saving, history: historyStore as StoreApi<HistoryState> },

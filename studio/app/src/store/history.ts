@@ -72,3 +72,18 @@ export function createHistory(options: HistoryOptions = {}): StoreApi<HistorySta
   }
   return store;
 }
+
+/**
+ * The History contract as one lasting object that always reads the latest state. Hand this to code that keeps hold
+ * of a History (the shortcuts do); a `getState()` snapshot would go on showing the labels from when it was taken.
+ */
+export function liveHistory(store: StoreApi<HistoryState>): History {
+  return {
+    run: (c) => store.getState().run(c),
+    undo: () => store.getState().undo(),
+    redo: () => store.getState().redo(),
+    get canUndo() { return store.getState().canUndo; },
+    get canRedo() { return store.getState().canRedo; },
+    get labels() { return store.getState().labels; },
+  };
+}
