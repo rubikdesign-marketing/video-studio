@@ -1,0 +1,146 @@
+/* Inspector and scene list. Roles from tokens.css only. */
+.inspector-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+.inspector-title {
+  color: var(--text-strong);
+  font-size: var(--size-15);
+  font-weight: var(--weight-semibold);
+}
+.inspector-lead {
+  color: var(--text-strong);
+}
+.inspector-sub {
+  margin: var(--space-2) 0 0;
+  color: var(--text-body);
+  font-size: var(--size-12);
+  font-weight: var(--weight-semibold);
+}
+.inspector-quiet {
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.inspector-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px var(--space-3);
+  margin: 0;
+}
+.inspector-facts dt {
+  color: var(--text-quiet);
+}
+.inspector-facts dd {
+  margin: 0;
+  color: var(--text-strong);
+}
+.inspector-lines,
+.inspector-cues {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.inspector-lines li {
+  color: var(--text-body);
+}
+.inspector-cues {
+  align-items: flex-start;
+  gap: 0;
+}
+.inspector-when {
+  display: block;
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.inspector-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.inspector-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+.inspector-times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  align-items: start;
+}
+.ui-chip.inspector-over {
+  border-color: var(--warn);
+  color: var(--text-strong);
+}
+
+.scene-list,
+.scene-cues {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.scene-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.scene-item,
+.scene-cue {
+  display: block;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-body);
+  text-align: left;
+  cursor: pointer;
+}
+.scene-item {
+  padding: var(--space-2);
+}
+.scene-item:hover,
+.scene-cue:hover {
+  color: var(--text-strong);
+}
+.scene-item.is-selected,
+.scene-cue.is-selected {
+  border-color: var(--line);
+  background: var(--surface-raised);
+  color: var(--text-strong);
+}
+.scene-item-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.scene-item-name {
+  color: var(--text-strong);
+  font-weight: var(--weight-semibold);
+}
+.scene-item-time {
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.scene-item-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scene-cues {
+  margin: 0 0 var(--space-1) var(--space-4);
+  border-left: 1px solid var(--line);
+}
+.scene-cue {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--size-12);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

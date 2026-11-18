@@ -1,0 +1,200 @@
+/* The canvas. Roles from tokens.css only. It is dark in both themes, so text on it uses --text-on-canvas. */
+.canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--text-on-canvas);
+}
+
+.canvas-frame {
+  position: absolute;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--surface-canvas);
+}
+.canvas-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: var(--surface-canvas);
+}
+
+/* Guides. They never take a click. */
+.canvas-overlays {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.canvas-overlays > * {
+  position: absolute;
+}
+.canvas-covered {
+  background: var(--scrim);
+}
+.canvas-safe,
+.canvas-title-safe {
+  border: 1px dashed var(--text-on-canvas);
+  opacity: 0.85;
+}
+.canvas-safe {
+  border-style: solid;
+  border-color: var(--accent);
+}
+.canvas-guide-label {
+  position: absolute;
+  left: var(--space-1);
+  top: var(--space-1);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-control);
+  background: var(--scrim);
+  color: var(--text-on-canvas);
+  font-size: var(--size-12);
+  white-space: nowrap;
+}
+.canvas-third {
+  background: var(--text-on-canvas);
+  opacity: 0.45;
+}
+.canvas-third--down {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+.canvas-third--across {
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+.canvas-box {
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.canvas-draw {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  touch-action: none;
+}
+.canvas-draw.is-marking {
+  cursor: crosshair;
+}
+
+/* Compare */
+.canvas-tag {
+  position: absolute;
+  top: var(--space-2);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--scrim);
+  color: var(--text-on-canvas);
+  font-size: var(--size-12);
+  pointer-events: none;
+}
+.canvas-tag--first {
+  left: var(--space-2);
+}
+.canvas-tag--second {
+  right: var(--space-2);
+}
+.canvas-wipe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  margin-left: -8px;
+  cursor: col-resize;
+  touch-action: none;
+}
+.canvas-wipe::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 7px;
+  width: 2px;
+  background: var(--accent);
+}
+.canvas-wipe:focus-visible {
+  outline-offset: -2px;
+}
+
+/* The floating toolbar is glass, so every word on it uses the strong text colour. */
+.canvas-toolbar {
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: var(--space-3);
+  width: fit-content;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  max-width: calc(100% - var(--space-5));
+  padding: var(--space-1);
+  z-index: 5;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-float);
+  color: var(--text-strong);
+  --text-body: var(--text-strong);
+  --text-quiet: var(--text-strong);
+}
+.canvas-toolbar .ui-field {
+  width: auto;
+}
+.canvas-toolbar .ui-select {
+  width: auto;
+}
+.canvas-time {
+  padding: 0 var(--space-2);
+  font-size: var(--size-13);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+.canvas-toolbar-gap {
+  width: 1px;
+  height: 20px;
+  margin: 0 var(--space-1);
+  background: var(--line);
+}
+
+/* Versions list (left panel) */
+.canvas-versions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.canvas-version {
+  width: 100%;
+  padding: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-body);
+  text-align: left;
+  cursor: pointer;
+}
+.canvas-version:hover {
+  color: var(--text-strong);
+}
+.canvas-version.is-current {
+  border-color: var(--line);
+  background: var(--surface-raised);
+  color: var(--text-strong);
+}
+.canvas-empty {
+  color: var(--text-quiet);
+}

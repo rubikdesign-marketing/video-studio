@@ -1,4 +1,18 @@
-/* Stand-in content only. The real panels replace it. */
+/* The page around the shell's slots. Roles from tokens.css only. */
+.app-bar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.app-bar .ui-field {
+  width: auto;
+}
+.app-bar .ui-select {
+  max-width: 260px;
+}
 .app-title {
   color: var(--text-strong);
   font-size: var(--size-15);
@@ -7,47 +21,59 @@
 }
 .app-film {
   overflow: hidden;
-  color: var(--text-quiet);
+  color: var(--text-body);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .app-spacer {
   flex: 1;
 }
-
-.placeholder {
-  padding: var(--space-4);
+.app-reviewer .ui-input {
+  width: 140px;
 }
-.placeholder-title {
-  margin-bottom: var(--space-1);
-  font-size: var(--size-12);
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.shell-panel .placeholder-title,
-.shell-timeline .placeholder-title {
+.ui-chip.app-save-failed {
+  border-color: var(--warn);
   color: var(--text-strong);
 }
 
-.preview {
+.app-section {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+.app-section-title {
+  margin-bottom: var(--space-2);
+  color: var(--text-strong);
+  font-size: var(--size-12);
+  font-weight: var(--weight-semibold);
+}
+
+.app-notice {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  color: var(--text-on-canvas);
+  text-align: center;
+}
+.app-notice p {
+  max-width: 46ch;
+}
+.app-notice-title {
+  font-size: var(--size-18);
+  font-weight: var(--weight-semibold);
+}
+
+.app-stale {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border-top: 1px solid var(--line);
-}
-.preview > .ui-field {
-  width: 100%;
-}
-.preview-title {
-  color: var(--text-strong);
-  font-size: var(--size-15);
-  font-weight: var(--weight-semibold);
-}
-.preview-row {
-  display: flex;
-  flex-wrap: wrap;
   gap: var(--space-2);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--line);
+  border-left: 3px solid var(--warn);
+  color: var(--text-strong);
 }
