@@ -32,7 +32,7 @@ describe('the review server as it was', () => {
     assert.deepEqual(job.videos.map((v) => v.file), ['preview.mp4']);           // raw.mp4 is left out
     assert.equal(typeof job.videos[0].modified, 'number');
     assert.deepEqual(job.scenes[0], { id: 'S01', title: 'Opening', start: 0, end: 3, energy: 3,
-      lines: [{ start: 0.2, end: 2.8, text: 'Meet  Tulvo today.' }] });           // no texts, no line id, tags and old name removed
+      lines: [{ start: 0.2, end: 2.8, text: 'Meet  friends today.' }] });         // no texts, no line id, and the [tags] removed
     assert.equal(job.scenes.length, 2);
   });
 

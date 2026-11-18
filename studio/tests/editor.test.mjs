@@ -61,7 +61,7 @@ describe('the editor endpoints', () => {
     assert.deepEqual(d.film.scenes[1], { id: 'S02', title: 'Closing', start: 3, end: 8, energy: 5,
       lines: [{ id: '02', start: 3.2, end: 7.5, text: 'That is all.' }],
       texts: [{ lines: ['First cue.'], at: 0.2, out: 2 }, { lines: ['Second', 'cue here.'], at: 2.5, out: 4.5 }] });
-    assert.equal(d.film.scenes[0].lines[0].text, 'Meet  Tulvo today.');
+    assert.equal(d.film.scenes[0].lines[0].text, 'Meet  friends today.');
     assert.deepEqual(d.videos.map((v) => v.file), ['preview.mp4']);
     assert.equal(d.film_modified, fs.statSync(root.path('engine/src/jobs/demo/film.json')).mtimeMs);
     modified = d.film_modified;

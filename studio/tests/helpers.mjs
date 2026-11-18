@@ -10,11 +10,11 @@ import { fileURLToPath } from 'node:url';
 export const SERVER = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'server.mjs');
 
 export const film = () => ({
-  job: 'demo', slug: 'demo', fps: 30, width: 1920, height: 1080, brand: 'tulvo', preset: 'confident', stage: 'dark', duration: 8,
+  job: 'demo', slug: 'demo', fps: 30, width: 1920, height: 1080, brand: 'demo', preset: 'confident', stage: 'dark', duration: 8,
   audio: 'jobs/demo/audio.wav',
   scenes: [
     { id: 'S01', title: 'Opening', start: 0, end: 3, energy: 3,
-      lines: [{ id: '01', start: 0.2, end: 2.8, text: 'Meet [warm] Toolvo today.' }],
+      lines: [{ id: '01', start: 0.2, end: 2.8, text: 'Meet [warm] friends today.' }],
       texts: [{ lines: ['A *sample* film.'], at: 0.3, out: 2.5 }] },
     { id: 'S02', title: 'Closing', start: 3, end: 8, energy: 5,
       lines: [{ id: '02', start: 3.2, end: 7.5, text: 'That is all.' }],
