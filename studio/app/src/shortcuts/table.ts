@@ -9,7 +9,7 @@ import { isMac, isTyping, matchKeys, type KeyPress } from './keys';
 type Entry = Omit<Shortcut, 'run'>;
 const entry = (id: string, keys: string, label: string, group: string): Entry => ({ id, keys, label, group });
 
-export const GROUPS = ['Playback', 'Timeline', 'Notes', 'Editing', 'Panels', 'Help'] as const;
+export const GROUPS = ['Playback', 'Timeline', 'Notes', 'Paper edit', 'Editing', 'Panels', 'Help'] as const;
 
 export const TABLE = {
   // Playback and timeline (Worker 2)
@@ -34,6 +34,11 @@ export const TABLE = {
   toggleSafeZones: entry('canvas.safe-zones', 'S', 'Show or hide the safe zones', 'Notes'),
   compareVersions: entry('canvas.compare', 'C', 'Compare two versions', 'Notes'),
   send: entry('notes.send', 'Mod+Enter', 'Send the notes', 'Notes'),
+  // Paper edit mode. They act on the sentence the keyboard focus is in. Space (play or stop the edit) is `playPause`.
+  paperUp: entry('paper.up', 'Alt+ArrowUp', 'Move this sentence up', 'Paper edit'),
+  paperDown: entry('paper.down', 'Alt+ArrowDown', 'Move this sentence down', 'Paper edit'),
+  paperCut: entry('paper.cut', 'Alt+Backspace', 'Cut this sentence, or bring it back', 'Paper edit'),
+  paperStop: entry('paper.stop', 'Escape', 'Stop playing', 'Paper edit'),
   // Panels and theme (Worker 1)
   toggleLeft: entry('panels.left', '[', 'Show or hide the left panel', 'Panels'),
   toggleRight: entry('panels.right', ']', 'Show or hide the right panel', 'Panels'),
@@ -81,6 +86,8 @@ function bind<K extends Name>(handlers: Handlers<K>): () => void {
 export const registerPlaybackShortcuts = (handlers: Handlers<'playPause' | 'frameBack' | 'frameForward' | 'secondBack' | 'secondForward' | 'previousScene' | 'nextScene' | 'loopScene' | 'slower' | 'faster' | 'fitTimeline' | 'zoomIn' | 'zoomOut'>) => bind(handlers);
 /** Worker 3: notes, the canvas and sending. */
 export const registerNoteShortcuts = (handlers: Handlers<'newNote' | 'markGood' | 'removeSelected' | 'pointAtArea' | 'toggleSafeZones' | 'compareVersions' | 'send'>) => bind(handlers);
+/** Paper edit mode: the sentence keys. Space for "play or stop the edit" goes through `registerPlaybackShortcuts({ playPause })`. */
+export const registerPaperShortcuts = (handlers: Handlers<'paperUp' | 'paperDown' | 'paperCut' | 'paperStop'>) => bind(handlers);
 /** Worker 1: panels and the theme. */
 export const registerPanelShortcuts = (handlers: Handlers<'toggleLeft' | 'toggleRight' | 'toggleTimeline' | 'toggleTheme'>) => bind(handlers);
 
@@ -111,6 +118,16 @@ export const toggleMenu = () => shortcutStore.setState((s) => ({ menuOpen: !s.me
 
 // ---------------------------------------------------------------- key handling
 
+/** True for a button, a link or anything acting as one: Space and Enter belong to it while it has the focus. */
+function isPressable(target: unknown): boolean {
+  const el = target as { tagName?: string; getAttribute?: (name: string) => string | null } | null;
+  if (!el || typeof el !== 'object') return false;
+  const tag = (el.tagName ?? '').toUpperCase();
+  if (tag === 'BUTTON' || tag === 'A' || tag === 'SUMMARY') return true;
+  const role = typeof el.getAttribute === 'function' ? el.getAttribute('role') : null;
+  return role === 'button' || role === 'radio' || role === 'option' || role === 'tab' || role === 'link';
+}
+
 export interface KeyEvent extends KeyPress { target?: unknown; defaultPrevented?: boolean; preventDefault?(): void }
 
 /**
@@ -123,6 +140,7 @@ export function handleKey(e: KeyEvent, mac: boolean = isMac()): boolean {
   const dialogOpen = state.sheetOpen || state.menuOpen;
   if (dialogOpen && e.key === 'Escape') { e.preventDefault?.(); closeSheet(); closeMenu(); return true; }
   if (isTyping(e.target)) return false;
+  if ((e.key === ' ' || e.key === 'Enter') && isPressable(e.target)) return false;      // that key presses the control in focus
   const hit = state.shortcuts.find((s) => matchKeys(s.keys, e, mac));
   if (!hit || (dialogOpen && hit.id !== TABLE.sheet.id && hit.id !== TABLE.menu.id)) return false;
   e.preventDefault?.();
