@@ -23,13 +23,17 @@ export type Site = {
   focus?: { at?: Cue; over?: number; margin?: number; minW?: number; from?: Box };
   rings?: Ring[]; pins?: Pin[]; notes?: Note[];
   strip?: { at: Cue; text: string };
+  /** A full-frame typed line (look.tsx KineticLine). ' / ' breaks the line; *word* lights up in lime. */
+  kinetic?: Kinetic;
   /** Spotlight on one box: the rest of the page dims and blurs (look.tsx Spotlight). */
   pause?: { at: Cue; box: Box };
   patch?: { at: Cue; box: Box; bg: string; ink: string; lines: string[]; label: string };
   morph?: { at: Cue; box: Box; from: string; to: string; bg: string; ink: string };
 };
+export type Kinetic = { at: Cue; out?: Cue; text: string };
 export type ARoll = {
   type: 'aroll';
+  kinetic?: Kinetic;
   lower?: { at: Cue; name: string; role: string };
   pills?: { at: Cue; text: string; logo: string }[];
   labels?: { at: Cue; text: string }[];
@@ -41,7 +45,7 @@ export type Row = { at: Cue; tone: 'keep' | 'fix'; text: string };
 export type Card =
   | { type: 'title' }
   | { type: 'chapter'; n: string; site: string; logo: string; url: string; of: number }
-  | { type: 'maxim'; lines: { at: Cue; text: string; hi?: boolean }[]; small?: string }
+  | { type: 'maxim'; lines: { at: Cue; text: string; hi?: boolean }[]; small?: string; kinetic?: Kinetic }
   | { type: 'verdict'; site: string; logo: string; rows: Row[]; until: number }
   | { type: 'path'; until: number }
   | { type: 'lessons'; rules: { at: Cue; n: string; text: string; sub?: string; sub_at?: Cue; dim?: boolean; stills?: string[] }[] ; until?: number }
@@ -69,7 +73,7 @@ export const SPEC: Record<number, ShotSpec> = {
     rings: [{ at: 0.2, box: [323, 358, 1281, 536], tone: 'keep', mark: 'plans' }], notes: [{ at: 0.3, tone: 'info', tag: 'RULE', text: 'Complex pricing makes people leave' }] },
   6: { type: 'site', cap: 'slite-hero', from: 1.2, url: SLITE, zoom: { from: [240, 60, 1440, 810], to: [470, 210, 980, 551] },
     notes: [{ at: 0.3, tone: 'fix', tag: 'FIX · CTA', text: '“Talk to us” doesn’t say what happens next' }] },
-  7: { type: 'maxim', lines: [{ at: 0, text: 'Never make your' }, { at: 'users', text: 'users guess.', hi: true }] },
+  7: { type: 'maxim', lines: [{ at: 0, text: 'Never make your' }, { at: 'users', text: 'users guess.', hi: true }], kinetic: { at: 0.1, text: 'Never make your / *users guess.*' } },
   8: { type: 'title' },
   // ---- premise
   9: { type: 'aroll' },
@@ -96,7 +100,7 @@ export const SPEC: Record<number, ShotSpec> = {
     rings: [{ at: 'product', box: FIB_PRODUCT, tone: 'keep', mark: 'hero' }],
     notes: [{ at: 'front', tone: 'keep', tag: 'KEEP', text: 'Product, front and centre' }, { at: 'context,', tone: 'info', tag: 'WHY', text: 'New visitors have no context yet' }] },
   22: { type: 'site', cap: 'fibery-hero', from: 3.0, to: 9.0, url: FIB, zoom: { from: [640, 110, 1090, 613], to: [700, 140, 980, 551] },
-    strip: { at: 'connect', text: 'Show the product. People connect instantly.' } },
+    kinetic: { at: 'actual', text: 'Show the product. / People *connect instantly.*' } },
   23: { type: 'site', cap: 'fibery-tour', from: 12.95, url: FIB, zoom: { from: FULL, to: [300, 120, 1320, 743], at: 0.2, over: 7.4 }, notes: [{ at: 'illustrations', tone: 'keep', tag: 'KEEP', text: 'Custom illustrations and assets' }, { at: 'stands', tone: 'info', tag: 'WHY', text: 'Stands out from the crowd in its niche' }] },
   24: { type: 'site', cap: 'fibery-tour', from: 18.6, url: FIB, zoom: { from: FULL, to: [200, 270, 1440, 810], at: 0.2, over: 13.5 }, notes: [{ at: 0.4, tone: 'keep', tag: 'DESIGN DNA · FIBERY', text: '', kind: 'dna',
     steps: [{ at: 'warm', text: 'Warm backgrounds' }, { at: 'colors', text: 'Use of colour' }, { at: 'animated', text: 'Animated UI' }, { at: 'characters', text: 'Characters' }] }] },
@@ -134,7 +138,7 @@ export const SPEC: Record<number, ShotSpec> = {
   41: { type: 'site', cap: 'folk-journey', from: 50.8, to: 55.7, url: FOLK, notes: [{ at: 'testimonials,', tone: 'keep', tag: 'KEEP', text: 'Real testimonials' }, { at: 'social', tone: 'info', tag: 'WHY', text: 'Social proof always adds value' }] },
   42: { type: 'site', cap: 'folk-pricing', from: 1.4, to: 13.2, url: `${FOLK}/pricing`, notes: [{ at: 'streamlined', tone: 'keep', tag: 'PRICING', text: 'Streamlined and simple' }] },
   43: { type: 'site', cap: 'folk-pricing', from: 13.2, url: `${FOLK}/pricing`,
-    strip: { at: 'bounce.', text: 'Complex pricing makes people leave.' } },
+    kinetic: { at: 'complex,', text: 'Complex pricing / makes people *leave.*' } },
   44: { type: 'site', cap: 'folk-pricing', from: 13.2, to: 33.6, url: `${FOLK}/pricing`,
     rings: [{ at: 'three', out: 2.6, box: [328.5, 363.5, 404, 525], tone: 'keep', mark: 'plans' }, { at: 'simple', out: 2.6, box: [761.5, 363.5, 405, 525], tone: 'keep', mark: 'plans' }, { at: 'plans', out: 2.6, box: [1189, 358, 415, 536], tone: 'keep', mark: 'plans' }],
     notes: [{ at: 'three', tone: 'keep', tag: 'KEEP', text: 'Three simple plans' }, { at: 'comparison,', tone: 'keep', tag: 'KEEP', text: 'A full comparison below' }] },

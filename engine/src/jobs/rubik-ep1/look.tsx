@@ -89,3 +89,38 @@ export const Spotlight: FC<{ box: Box; at: number; k: number; pw: number; ph: nu
     </>
   );
 };
+
+// ---------------------------------------------------------------- kinetic line (owner's note b001-n24)
+/** One important line on a full-frame forest scrim: typed in left to right at 90% size, then, once the sentence is
+ *  complete, it grows to fill the frame and its starred words (*word*) turn lime. ' / ' breaks the line. Typing
+ *  takes at most 45% of the time it has (never more than 1.3 s), so it always finishes while he is still on the
+ *  line; the type is sized so the longest line spans about 1550 px. `out` is when it leaves (0.3 s fade). */
+export const KineticLine: FC<{ text: string; at: number; out: number }> = ({ text, at, out }) => {
+  const t = useSec();
+  const lines = text.split(' / ').map((l) => l.split(/(\*[^*]+\*)/).filter(Boolean).map((p) => ({ s: p.replace(/\*/g, ''), hi: p.startsWith('*') })));
+  const plain = lines.map((l) => l.map((p) => p.s).join(''));
+  const total = plain.reduce((a, l) => a + l.length, 0);
+  const typeFor = Math.min(1.3, Math.max(0.5, (out - at) * 0.45));
+  const typed = Math.floor(span(t, at, typeFor, (x) => x) * total + 1e-6);
+  const grow = span(t, at + typeFor + 0.08, 0.5, outE);
+  const scrim = span(t, at - 0.25, 0.3, outE) * (1 - span(t, out, 0.3, outE));
+  if (scrim <= 0) return null;
+  const size = Math.min(190, Math.max(96, 1550 / (0.47 * Math.max(...plain.map((l) => l.length)))));
+  let n = 0;
+  return (
+    <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(120% 100% at 50% 40%, ${C.forest2}F2, ${C.forest}FA 70%)`, opacity: scrim, display: 'grid', placeItems: 'center' }}>
+      <div style={{ transform: `scale(${0.9 + 0.1 * grow})`, textAlign: 'center', font: `800 ${size}px/1.02 ${FONT}`, letterSpacing: '-0.04em', color: C.white }}>
+        {lines.map((l, i) => (
+          <div key={i} style={{ whiteSpace: 'nowrap' }}>
+            {l.map((p, j) => (
+              <span key={j} style={{ color: p.hi && grow > 0 ? `color-mix(in srgb, ${C.lime} ${Math.round(grow * 100)}%, ${C.white})` : undefined }}>
+                {[...p.s].map((ch, k) => { const idx = n++; const on = idx < typed; const caret = grow < 1 && idx === typed - 1;
+                  return <span key={k} style={{ position: 'relative', opacity: on ? 1 : 0 }}>{ch}{caret ? <span style={{ position: 'absolute', left: '100%', top: '8%', bottom: '8%', width: '0.06em', marginLeft: '0.04em', background: C.lime }} /> : null}</span>; })}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

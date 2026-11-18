@@ -7,11 +7,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { AbsoluteFill, Audio, Easing, Freeze, Img, interpolate, OffthreadVideo, Sequence, cancelRender, continueRender, delayRender, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
 import { BrandProvider } from '../../kit/brand';
+import { MotionProvider } from '../../kit/motion';
 import timeline from './timeline.json';
 import { capPlan, cueTime, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
 import marksJson from './marks.json';
 import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Row, type Site, type Tone } from './spec';
-import { B, Browser, C, FONT, Highlight, PAGE, Spotlight, toneBg, toneInk } from './look';
+import { B, Browser, C, FONT, Highlight, KineticLine, PAGE, Spotlight, toneBg, toneInk } from './look';
 
 // ---------------------------------------------------------------- data
 type Shot = { n: number; kind: string; voice: boolean; start: number; end: number; text: string; words: Word[]; d0?: number; d1?: number };
@@ -290,6 +291,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
       </Browser>
       <Rail notes={spec.notes ?? []} shot={shot} top={RAIL.y} />
       <PiP cut={cut} d0={d0} len={len} x={RAIL.x + RAIL.w - 300} y={PAGE.y + PAGE.h - 300 + 4} size={300} at={pipIn ? 0 : -1} />
+      {spec.kinetic ? <KineticLine text={spec.kinetic.text} at={cueOf(shot, spec.kinetic.at)} out={cueOf(shot, spec.kinetic.out, len - 0.05)} /> : null}
     </Stage>
   );
 };
@@ -331,6 +333,7 @@ const ARollShot: FC<{ shot: Shot; spec: Extract<typeof SPEC[number], { type: 'ar
           <div style={{ marginTop: 16, font: `600 22px/1.2 ${FONT}`, color: C.lime }}>{spec.cta.sub}</div>
         </div>); })() : null}
       {spec.sign ? <div style={{ position: 'absolute', left: 64, bottom: 56, opacity: enter(t, 0.3, 0.6) }}><Logo name="wordmark-on-dark" h={34} /></div> : null}
+      {spec.kinetic ? <KineticLine text={spec.kinetic.text} at={cueOf(shot, spec.kinetic.at)} out={cueOf(shot, spec.kinetic.out, len - 0.05)} /> : null}
     </AbsoluteFill>
   );
 };
@@ -379,6 +382,7 @@ const ChapterCard: FC<{ c: Extract<Card, { type: 'chapter' }>; len: number }> = 
 };
 const MaximCard: FC<{ c: Extract<Card, { type: 'maxim' }>; shot: Shot }> = ({ c, shot }) => {
   const t = useT();
+  if (c.kinetic) return <Stage tone="dark"><KineticLine text={c.kinetic.text} at={cueOf(shot, c.kinetic.at)} out={cueOf(shot, c.kinetic.out, shot.end - shot.start + 1)} /></Stage>;
   return (
     <Stage tone="dark">
       <AbsoluteFill style={{ display: 'grid', placeItems: 'center' }}>
@@ -559,5 +563,5 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
 };
 
 export const RubikEp1: FC<z.infer<typeof RubikEp1Schema>> = (props) => (
-  <BrandProvider brand="rubik"><Inner {...props} /></BrandProvider>
+  <BrandProvider brand="rubik"><MotionProvider preset="calm"><Inner {...props} /></MotionProvider></BrandProvider>
 );
