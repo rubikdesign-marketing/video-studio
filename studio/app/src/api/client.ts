@@ -2,7 +2,7 @@ import type { Film, VideoVersion } from '../contracts/film';
 import type { DraftNote, Edit, EditList, ExportRequest } from '../contracts/review';
 import { ApiError, errorFromResponse, offlineError } from './errors';
 import { subscribeEvents, type EventsOptions } from './events';
-import type { Batch, Draft, ExportReceipt, FilmResponse, JobSummary, Review, SavedEdits, SendRequest } from './types';
+import type { Batch, Draft, ExportReceipt, FilmResponse, JobSummary, PaperData, PaperJob, PaperPayload, PaperSaved, Review, SavedEdits, SendRequest } from './types';
 
 export interface ClientOptions {
   /** Where the studio server is. Empty for the page's own server. */
@@ -85,6 +85,18 @@ export function createClient(options: ClientOptions = {}) {
     async requestExport(job: string, request: ExportRequest): Promise<ExportReceipt> {
       return (await call<{ export: ExportReceipt }>(forJob('/api/export', job), request)).export;
     },
+    /** Every job that has a paper edit (a transcript of raw footage to cut). */
+    async listPaperJobs(): Promise<PaperJob[]> {
+      return (await call<{ jobs: PaperJob[] }>(`${base}/api/paper/jobs`)).jobs;
+    },
+    /** The paper edit of a job: its sentences, the clips' words and what the server makes of the edit. */
+    getPaper: (job: string): Promise<PaperData> => call<PaperData>(forJob('/api/paper', job)),
+    /** Saves what a person changed in the paper edit. The answer carries the joins and length worked out afresh. */
+    savePaper: (job: string, payload: PaperPayload): Promise<PaperSaved> => call<PaperSaved>(forJob('/api/paper/save', job), payload),
+    /** Sends the paper edit. `approved: true` means "ready for the rough cut". */
+    sendPaper: (job: string, payload: PaperPayload & { approved: boolean }): Promise<PaperSaved> => call<PaperSaved>(forJob('/api/paper/send', job), payload),
+    /** The address of a clip's working copy (or its sound, when it has no picture), for a video element. */
+    clipMediaUrl: (job: string, clip: string) => `${base}/clip-media/${encodeURIComponent(job)}/${encodeURIComponent(clip)}`,
     /** The address of a rendered version, for a video element. */
     mediaUrl: (job: string, file: string) => `${base}/media/${encodeURIComponent(job)}/${encodeURIComponent(file)}`,
     /** The address of a picture saved with a sent note. `frame` is the note's `frame` field (`review/frames/b001-n1.jpg`). */

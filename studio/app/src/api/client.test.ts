@@ -56,6 +56,20 @@ describe('the studio client', () => {
     expect(calls[2]).toEqual({ url: '/api/export?job=demo', method: 'POST', body: { ratio: '9:16', height: 1080, quality: 'master' } });
   });
 
+  it('reads, saves and sends a paper edit at the addresses the old page uses', async () => {
+    const payload = { blocks: [{ clip: 'take 1', sentence: 0, words: [0, 1] }], keep_pauses: ['take 1:3'], approved_joins: [], note: 'Warm', reviewer: 'Sam' };
+    const saved = { ok: true, check: { runs: [], joins: [], seconds: 3.2 }, status: 'draft' };
+    const { client, calls } = fakeServer({ body: { jobs: [{ job: 'a', name: 'A', status: 'draft' }] } }, { body: { paper: { blocks: [] } } }, { body: saved }, { body: { ...saved, status: 'sent' } });
+    expect(await client.listPaperJobs()).toEqual([{ job: 'a', name: 'A', status: 'draft' }]);
+    expect(await client.getPaper('my job')).toEqual({ paper: { blocks: [] } });
+    expect(await client.savePaper('my job', payload)).toEqual(saved);
+    expect((await client.sendPaper('my job', { ...payload, approved: true })).status).toBe('sent');
+    expect(calls.map((c) => [c.method, c.url])).toEqual([['GET', '/api/paper/jobs'], ['GET', '/api/paper?job=my%20job'], ['POST', '/api/paper/save?job=my%20job'], ['POST', '/api/paper/send?job=my%20job']]);
+    expect(calls[2]?.body).toEqual(payload);
+    expect(calls[3]?.body).toEqual({ ...payload, approved: true });
+    expect(client.clipMediaUrl('my job', 'take 1')).toBe('/clip-media/my%20job/take%201');
+  });
+
   it('builds safe addresses for films and pictures', () => {
     const client = createClient({ baseUrl: 'http://localhost:4317/' });
     expect(client.mediaUrl('demo', 'my film.mp4')).toBe('http://localhost:4317/media/demo/my%20film.mp4');

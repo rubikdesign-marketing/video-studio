@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { api, plainMessage, type JobSummary } from './api';
 import { Canvas, VersionList, useCanvas, versionOptions } from './canvas';
 import { Inspector, SceneList } from './inspector';
+import { PaperEdit } from './modes/paper';
 import { NoteEditor, NotesList, SendBox, SentBatches, sendFromPage, startNote, toggleMarking, useComposer, useReviewer } from './notes';
 import { registerPlaybackShortcuts, usePlayback } from './playback';
 import { Shell, usePanelsStore } from './shell';
@@ -9,7 +10,7 @@ import { CommandMenu, ShortcutSheet, registerCoreShortcuts, registerNoteShortcut
 import { editor, history, useFilm, useHistory, useNotes, useSaveLabel, useSaving, useSelection } from './store';
 import { ThemeSwitch, useTheme } from './theme';
 import { Timeline } from './timeline';
-import { Button, Chip, Field, Select, Toasts, Tooltip, showToast } from './ui';
+import { Button, Chip, Field, Segmented, Select, Toasts, Tooltip, showToast } from './ui';
 import { sceneAt } from './canvas';
 import './App.css';
 
@@ -86,7 +87,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function TopBar({ jobs, job, onJob }: { jobs: JobSummary[]; job: string | null; onJob(job: string): void }) {
+function TopBar({ jobs, job, onJob, modeSwitch }: { jobs: JobSummary[]; job: string | null; onJob(job: string): void; modeSwitch: ReactNode }) {
   const videos = useFilm((s) => s.videos);
   const video = useFilm((s) => s.video);
   const rendering = useFilm((s) => s.rendering);
@@ -103,6 +104,7 @@ function TopBar({ jobs, job, onJob }: { jobs: JobSummary[]; job: string | null; 
   return (
     <div className="app-bar">
       <h1 className="app-title">Video Studio</h1>
+      {modeSwitch}
       {jobs.length > 1 && job ? (
         <Select label="Film" hideLabel value={job} onChange={onJob} options={jobs.map((j) => ({ value: j.job, label: j.name }))} />
       ) : name ? (
@@ -227,7 +229,7 @@ function usePageShortcuts() {
   }, []);
 }
 
-export function App() {
+function ReviewApp({ modeSwitch }: { modeSwitch: ReactNode }) {
   const { jobs, job, open, retry } = useOpenJob();
   const status = useFilm((s) => s.status);
   const message = useFilm((s) => s.message);
@@ -260,7 +262,7 @@ export function App() {
   return (
     <>
       <Shell
-        topBar={<TopBar jobs={list} job={job} onJob={open} />}
+        topBar={<TopBar jobs={list} job={job} onJob={open} modeSwitch={modeSwitch} />}
         left={
           ready ? (
             <>
@@ -306,4 +308,26 @@ export function App() {
       <Toasts />
     </>
   );
+}
+
+type Mode = 'review' | 'paper';
+
+/** The editor: Review (a rendered film and its notes) or Paper edit (a transcript of raw footage), chosen by `?mode=`. */
+export function App() {
+  const [mode, setMode] = useState<Mode>(() => (param('mode') === 'paper' ? 'paper' : 'review'));
+  const modeSwitch = (
+    <Segmented
+      label="What to work on"
+      value={mode}
+      onChange={(next) => {
+        setParams({ mode: next === 'paper' ? 'paper' : null, v: null });
+        setMode(next);
+      }}
+      options={[
+        { value: 'review', label: 'Review' },
+        { value: 'paper', label: 'Paper edit' },
+      ]}
+    />
+  );
+  return mode === 'paper' ? <PaperEdit modeSwitch={modeSwitch} /> : <ReviewApp modeSwitch={modeSwitch} />;
 }

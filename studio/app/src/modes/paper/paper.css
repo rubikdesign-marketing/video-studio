@@ -1,0 +1,67 @@
+/* Paper edit mode. Theme roles from theme/tokens.css only: no colour is written here. */
+.pp-stage { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(240px, 36%) minmax(0, 1fr); background: var(--surface-page); color: var(--text-body); }
+.pp-watch { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3); min-width: 0; }
+.pp-frame { position: relative; aspect-ratio: 16 / 9; background: var(--surface-canvas); border-radius: var(--radius-panel); overflow: hidden; }
+.pp-frame video { display: block; width: 100%; height: 100%; object-fit: contain; background: var(--surface-canvas); }
+.pp-sound-only { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--text-on-canvas); }
+.pp-said { min-height: 1.5em; margin: 0; color: var(--text-strong); font-size: var(--size-18); }
+
+.pp-blocks { display: grid; align-content: start; gap: var(--space-2); padding: var(--space-3); overflow-y: auto; min-height: 0; }
+.pp-block { background: var(--surface-panel); border: 1px solid var(--line); border-radius: var(--radius-panel); padding: var(--space-3) var(--space-4); }
+.pp-block[data-out] { background: transparent; }
+.pp-block-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-1); color: var(--text-quiet); font-size: var(--size-13); }
+.pp-tools { margin-left: auto; display: flex; flex-wrap: wrap; gap: 2px; }
+.pp-small.ui-button { min-height: 24px; padding: 0 var(--space-2); font-size: var(--size-12); }
+.ui-chip.pp-tag { font-size: var(--size-12); }
+.ui-chip.pp-tag--take { border-color: var(--warn); color: var(--text-strong); }
+.ui-chip.pp-tag--hook { border-color: var(--accent); color: var(--text-strong); }
+
+.pp-text { margin: 0; color: var(--text-strong); font-size: var(--size-18); line-height: 1.75; }
+.pp-word { cursor: pointer; border-radius: var(--radius-control); padding: 1px; }
+.pp-word:hover { background: var(--surface-hover); }
+.pp-word:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.pp-word[data-cut] { color: var(--text-quiet); text-decoration: line-through; text-decoration-color: var(--warn); text-decoration-thickness: 2px; }
+.pp-word[data-filler] { background: color-mix(in srgb, var(--warn) 28%, transparent); }
+.pp-word[data-maybe] { text-decoration: underline dashed var(--warn); text-underline-offset: 4px; }
+.pp-word[data-now] { background: var(--accent); color: var(--on-accent); text-decoration-color: var(--on-accent); }
+.ui-chip.pp-pause { vertical-align: 2px; font-size: var(--size-12); min-height: 22px; }
+
+.pp-flag { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: var(--space-2) 0 2px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-control); border: 1px solid var(--warn); border-left-width: 4px; background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--text-strong); font-size: var(--size-13); line-height: var(--leading-body); }
+.pp-flag[data-approved] { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
+
+/* The bar under the picture: play, stop, and the edit in order. */
+.pp-transport { display: flex; flex-direction: column; gap: var(--space-2); height: 100%; box-sizing: border-box; padding: var(--space-2) var(--space-3); color: var(--text-body); font-size: var(--size-13); }
+.pp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.pp-time { color: var(--text-strong); font-weight: var(--weight-semibold); min-width: 12ch; }
+.pp-keys { margin: 0; color: var(--text-quiet); }
+.pp-strip { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; min-height: 36px; flex: 1; max-height: 64px; }
+.pp-strip li { flex: 1 1 0; min-width: 6px; display: flex; }
+.pp-run { flex: 1; min-width: 0; overflow: hidden; padding: 0 var(--space-2); font: inherit; font-size: var(--size-12); text-align: left; white-space: nowrap; text-overflow: ellipsis; cursor: pointer; color: var(--text-body); background: color-mix(in srgb, var(--accent) 18%, var(--surface-panel)); border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--surface-panel)); border-radius: var(--radius-control); }
+.pp-run:hover { color: var(--text-strong); }
+.pp-run:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.pp-run[aria-current] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+
+/* Side panels */
+.pp-card { padding: var(--space-3); border-bottom: 1px solid var(--line); display: grid; gap: var(--space-2); color: var(--text-body); font-size: var(--size-13); }
+.pp-card p { margin: 0; }
+.pp-card-title { margin: 0; color: var(--text-strong); font-size: var(--size-13); font-weight: var(--weight-semibold); }
+.pp-ideas { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.pp-ideas li { display: grid; gap: var(--space-1); justify-items: start; color: var(--text-strong); }
+.pp-ideas small { display: block; color: var(--text-quiet); font-size: var(--size-12); }
+.pp-send.ui-button { width: 100%; min-height: 40px; white-space: normal; }
+.pp-result { padding: var(--space-2) var(--space-3); border-radius: var(--radius-control); border: 1px solid var(--good); border-left-width: 4px; color: var(--text-strong); }
+.pp-result[data-bad] { border-color: var(--warn); }
+
+.ui-chip.pp-length { color: var(--text-strong); }
+.ui-chip.pp-length--over { border-color: var(--warn); }
+.pp-notice { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-5); text-align: center; color: var(--text-on-canvas); }
+.pp-notice h2 { margin: 0; font-size: var(--size-18); }
+.pp-notice p { margin: 0; max-width: 60ch; }
+
+/* Narrow: the picture sits above the transcript and stays in view. */
+@media (max-width: 1080px) {
+  .pp-stage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .pp-watch { flex-direction: row; align-items: center; padding-bottom: 0; }
+  .pp-frame { flex: none; width: min(46%, 300px); }
+  .pp-said { flex: 1; min-width: 0; }
+}

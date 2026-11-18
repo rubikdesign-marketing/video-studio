@@ -46,3 +46,36 @@ export type StudioEvent =
   | { type: 'batch'; n: number; status: string };
 
 export type EventsStatus = 'connecting' | 'live' | 'reconnecting' | 'closed';
+
+// ---------------------------------------------------------------- paper edit (the transcript of raw footage)
+
+/** One spoken word of a clip, with its times in the clip. */
+export interface PaperWord { text: string; start: Seconds; end: Seconds; filler?: 'yes' | 'maybe' | string; repeat?: boolean }
+export interface PaperClip {
+  name: string; words: PaperWord[];
+  /** Each sentence as the indexes of its words. */
+  sentences: number[][];
+  duration: Seconds | null;
+  /** False when the clip is sound only. */
+  video: boolean;
+}
+/** One sentence in the edit: which clip, which sentence, and the word indexes that are kept. */
+export interface PaperBlock { clip: string; sentence: number; words: number[] }
+export interface PaperProposals {
+  hooks?: { clip: string; sentence: number; text: string; reasons: string[] }[];
+  retakes?: { clip: string; takes: number[]; keep: number }[];
+  pauses?: { clip: string; after: number; seconds: number; to: number }[];
+}
+export interface Paper {
+  blocks: PaperBlock[]; keep_pauses?: string[]; approved_joins?: string[]; note?: string; reviewer?: string;
+  status?: string; approved?: boolean; target_seconds?: number | null; proposals: PaperProposals;
+}
+export interface PaperJoin { key: string; after: string; kind: string; flagged: boolean; reasons: string[]; approved: boolean }
+/** What the server works out from the edit: the stretches to play, the joins and the length. */
+export interface PaperCheck { runs: { clip: string; start: Seconds; end: Seconds }[]; joins: PaperJoin[]; seconds: Seconds }
+/** `GET /api/paper`. */
+export interface PaperData { paper: Paper; clips: PaperClip[]; check: PaperCheck; job: { name?: string } }
+export interface PaperJob { job: string; name: string; status: string }
+/** What `POST /api/paper/save` takes, in the old page's field order. `/api/paper/send` adds `approved`. */
+export interface PaperPayload { blocks: PaperBlock[]; keep_pauses: string[]; approved_joins: string[]; note: string; reviewer: string; approved?: boolean }
+export interface PaperSaved { ok: boolean; check: PaperCheck; status: string }
