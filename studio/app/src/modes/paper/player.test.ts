@@ -33,6 +33,7 @@ describe('the paper player', () => {
   it('shows the opening picture without playing', async () => {
     await player.showOpening();
     expect([video.src, video.time, video.paused, player.store.getState().clip]).toEqual(['/clip-media/demo/take-1', 0.82, true, 'take-1']);
+    expect(player.store.getState().time).toBe(0.82);                                  // the time shown matches the picture
   });
 
   it('plays one word from just before it, for two and a half seconds, cut or not', async () => {

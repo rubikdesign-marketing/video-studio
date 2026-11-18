@@ -173,6 +173,16 @@ describe('paper edit mode', () => {
     expect(screen.getByText(/Shift-click to hear it/)).toBeTruthy();
   });
 
+  it('hands its video element to the player once, not again on every re-draw', async () => {
+    const attach = vi.spyOn(player, 'attach');
+    await open();
+    attach.mockClear();
+    fireEvent.click(word('second'));
+    act(() => { player.store.setState({ said: 'second', clip: 'take-1', time: 4.2 }); });   // what playing does many times a second
+    act(() => { player.store.setState({ said: 'one,' }); });
+    expect(attach).not.toHaveBeenCalled();
+  });
+
   it('moves and cuts the sentence in focus with the keyboard', async () => {
     await open();
     word('second').focus();

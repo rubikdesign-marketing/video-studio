@@ -132,6 +132,9 @@ function Transcript({ data }: { data: PaperData }) {
 
 // ---------------------------------------------------------------- the picture and the bar under it
 
+/** One lasting function, so a re-draw does not hand the video over again (which would stop what is playing). */
+const attachVideo = (el: HTMLVideoElement | null) => player.attach(el);
+
 function Stage({ data }: { data: PaperData }) {
   const clip = usePlayer((s) => s.clip);
   const said = usePlayer((s) => s.said);
@@ -141,7 +144,7 @@ function Stage({ data }: { data: PaperData }) {
     <div className="pp-stage">
       <div className="pp-watch">
         <div className="pp-frame">
-          <video ref={(el) => player.attach(el)} playsInline preload="auto" aria-label="The clip being played" />
+          <video ref={attachVideo} playsInline preload="auto" aria-label="The clip being played" />
           {soundOnly ? <p className="pp-sound-only">This clip is sound only.</p> : null}
         </div>
         <p className="pp-said" aria-live="off">{said}</p>

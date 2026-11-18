@@ -120,7 +120,7 @@ export function createPlayer(source: PlayerSource) {
     const first = source.runs()[0] ?? { clip: source.clips()[0]?.name, start: 0 };
     if (!v || !first.clip || job) return;
     await setClip(first.clip);
-    if (v && !job) v.currentTime = Math.max(0, first.start);
+    if (v && !job) { v.currentTime = Math.max(0, first.start); store.setState({ time: Math.max(0, first.start) }); }
   }
 
   return {

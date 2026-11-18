@@ -34,7 +34,7 @@
 .pp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .pp-time { color: var(--text-strong); font-weight: var(--weight-semibold); min-width: 12ch; }
 .pp-keys { margin: 0; color: var(--text-quiet); }
-.pp-strip { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; min-height: 36px; flex: 1; max-height: 64px; }
+.pp-strip { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; min-height: 36px; flex: 1; max-height: 96px; }
 .pp-strip li { flex: 1 1 0; min-width: 6px; display: flex; }
 .pp-run { flex: 1; min-width: 0; overflow: hidden; padding: 0 var(--space-2); font: inherit; font-size: var(--size-12); text-align: left; white-space: nowrap; text-overflow: ellipsis; cursor: pointer; color: var(--text-body); background: color-mix(in srgb, var(--accent) 18%, var(--surface-panel)); border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--surface-panel)); border-radius: var(--radius-control); }
 .pp-run:hover { color: var(--text-strong); }
