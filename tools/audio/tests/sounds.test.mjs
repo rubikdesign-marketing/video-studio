@@ -92,3 +92,17 @@ test('a kit slot falls back to the library, and says so; a brand file wins', () 
 test('library ids become file names for a job', () => {
   assert.equal(sfxIdOf('whoosh/air-soft-01'), 'whoosh--air-soft-01');
 });
+
+test('local packs: read only when asked, marked local, files resolved inside their pack', async () => {
+  const { loadLocal } = await import('../lib/library.mjs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'local-'));
+  fs.mkdirSync(path.join(dir, 'pack', 'Whooshes'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'pack', 'index.json'), JSON.stringify({ pack: 'pack', licence: 'unknown', sounds: [
+    { id: 'pack/whoosh/001', file: 'Whooshes/soft air.wav', name: 'soft air', group: 'whoosh', feel: ['soft', 'air'], seconds: 0.8, peak_db: -3, licence: 'unknown' }] }));
+  const { sounds } = loadLocal(dir);
+  assert.equal(sounds.length, 1);
+  assert.equal(sounds[0].local, true);
+  assert.equal(sounds[0].file, path.join('pack', 'Whooshes', 'soft air.wav'));
+  assert.equal(findSounds(sounds, { group: 'whoosh', feel: ['soft'] })[0].sound.id, 'pack/whoosh/001');
+  assert.equal(loadLocal(path.join(dir, 'missing')).sounds.length, 0);
+});
