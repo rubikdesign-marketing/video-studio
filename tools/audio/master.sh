@@ -7,6 +7,9 @@ set -euo pipefail
 IN="${1:?rendered film}"; OUT="${2:?output name without extension}"
 FF="${FFMPEG:-/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg}"; [ -x "$FF" ] || FF=ffmpeg
 TARGET=-14; PEAK=-1; RANGE=11
+# The limiter works on sample peaks; the AAC encode and the peaks between samples add a little on top, so it sits
+# 0.5 dB under the true-peak ceiling (0.84 = -1.5 dBFS). At 0.89 (-1.0 dBFS) a film came out at -0.92 dBTP.
+LIMIT=0.84
 mkdir -p "$(dirname "$OUT")"
 
 measure() {  # prints the loudnorm JSON for a file
@@ -21,7 +24,7 @@ mth=$(echo "$J" | field input_thresh); off=$(echo "$J" | field target_offset)
 echo "before: $mi LUFS, peak $mtp dBTP"
 
 "$FF" -v error -y -i "$IN" -c:v copy \
-  -af "loudnorm=I=$TARGET:TP=$PEAK:LRA=$RANGE:measured_I=$mi:measured_TP=$mtp:measured_LRA=$mlra:measured_thresh=$mth:offset=$off:linear=true,alimiter=limit=0.89:attack=2:release=60:level=false,aresample=48000" \
+  -af "loudnorm=I=$TARGET:TP=$PEAK:LRA=$RANGE:measured_I=$mi:measured_TP=$mtp:measured_LRA=$mlra:measured_thresh=$mth:offset=$off:linear=true,alimiter=limit=$LIMIT:attack=2:release=60:level=false,aresample=48000" \
   -c:a aac -b:a 320k -movflags +faststart "$OUT.mp4"
 [ -s "$OUT.mp4" ] || { echo "The mastered file was not written."; exit 1; }
 
@@ -32,7 +35,7 @@ import sys
 i, tp = float(sys.argv[1]), float(sys.argv[2])
 bad = []
 if abs(i - (-14)) > 1.0: bad.append(f"loudness {i} LUFS is more than 1 away from -14")
-if tp > -0.5: bad.append(f"peak {tp} dBTP is above -0.5")
+if tp > -1.0: bad.append(f"peak {tp} dBTP is above the -1 dBTP ceiling")
 if bad:
     print("OFF TARGET: " + "; ".join(bad)); sys.exit(1)
 print("on target")
