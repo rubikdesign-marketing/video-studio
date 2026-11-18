@@ -6,12 +6,12 @@ import type { CSSProperties, FC, ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { AbsoluteFill, Audio, Easing, Freeze, Img, interpolate, OffthreadVideo, Sequence, cancelRender, continueRender, delayRender, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
-import { brandFiles } from '../../brands';
-import { BrandProvider, getBrand } from '../../kit/brand';
+import { BrandProvider } from '../../kit/brand';
 import timeline from './timeline.json';
 import { capPlan, cueTime, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
 import marksJson from './marks.json';
 import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Row, type Site, type Tone } from './spec';
+import { B, Browser, C, FONT, PAGE, toneBg, toneInk, toneLine } from './look';
 
 // ---------------------------------------------------------------- data
 type Shot = { n: number; kind: string; voice: boolean; start: number; end: number; text: string; words: Word[]; d0?: number; d1?: number };
@@ -23,19 +23,6 @@ export const RubikEp1Frames = Math.round(T.duration * T.fps);
 export const RubikEp1Schema = z.object({ captions: z.boolean(), audio: z.enum(['voice', 'mix', 'none']) });
 export const RubikEp1Defaults: z.infer<typeof RubikEp1Schema> = { captions: true, audio: 'voice' };
 const JOB = 'jobs/2026-11-17-rubik-ep1';
-
-// ---------------------------------------------------------------- brand (brands/rubik/brand.json)
-const B = getBrand('rubik');
-const other = (brandFiles.rubik as unknown as { colours: { other: Record<string, string> } }).colours.other;
-const C = {
-  forest: B.stages.dark.page, forest2: B.stages.dark.soft, lime: B.stages.dark.accent, canvas: B.stages.light.page,
-  ink: B.stages.light.ink, grey: B.stages.light.second, line: B.stages.light.line, chip: B.stages.light.soft,
-  white: B.stages.dark.ink, mint: B.stages.dark.second, fix: other.fix, ask: other.question,
-};
-const FONT = `${B.fonts.headline.family}, Inter, system-ui, sans-serif`;
-const toneBg: Record<Tone, string> = { keep: C.lime, fix: C.fix, ask: C.ask, info: C.white };
-const toneInk: Record<Tone, string> = { keep: C.forest, fix: '#FFFFFF', ask: '#FFFFFF', info: C.ink };
-const toneLine: Record<Tone, string> = { keep: C.lime, fix: C.fix, ask: C.ask, info: C.white };
 
 // ---------------------------------------------------------------- time helpers
 const useT = () => { const f = useCurrentFrame(); const { fps } = useVideoConfig(); return f / fps; };
@@ -130,23 +117,6 @@ const PiP: FC<{ cut: FilmCut; d0: number; len: number; x: number; y: number; siz
 };
 
 // ---------------------------------------------------------------- site shot
-const PAGE = { x: 64, y: 108, w: 1424, h: 801 }; // the page area of the browser window (16:9)
-const BAR = 52;
-
-const Browser: FC<{ url: string; children: ReactNode }> = ({ url, children }) => (
-  <div style={{ position: 'absolute', left: PAGE.x, top: PAGE.y - BAR, width: PAGE.w, height: PAGE.h + BAR, borderRadius: 18, overflow: 'hidden', background: '#FFFFFF', boxShadow: '0 40px 90px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' }}>
-    <div style={{ height: BAR, background: '#F3F4F1', display: 'flex', alignItems: 'center', gap: 16, padding: '0 20px', borderBottom: `1px solid ${C.line}` }}>
-      <div style={{ display: 'flex', gap: 8 }}>{['#E0E2DC', '#E0E2DC', '#E0E2DC'].map((c, i) => <div key={i} style={{ width: 13, height: 13, borderRadius: 7, background: c }} />)}</div>
-      <div style={{ flex: 1, height: 32, borderRadius: 9, background: '#FFFFFF', border: `1px solid ${C.line}`, display: 'flex', alignItems: 'center', gap: 9, padding: '0 14px', font: `500 17px/1 ${FONT}`, color: C.ink }}>
-        <svg width="12" height="14" viewBox="0 0 12 14"><rect x="1" y="6" width="10" height="7" rx="1.5" fill={C.grey} /><path d="M3.5 6V4a2.5 2.5 0 0 1 5 0v2" stroke={C.grey} strokeWidth="1.6" fill="none" /></svg>
-        {url}
-      </div>
-      <div style={{ font: `500 14px/1 ${FONT}`, color: C.grey, letterSpacing: '0.04em' }}>FILMED 17 NOV 2026</div>
-    </div>
-    <div style={{ position: 'absolute', left: 0, top: BAR, width: PAGE.w, height: PAGE.h, overflow: 'hidden', background: '#FFFFFF' }}>{children}</div>
-  </div>
-);
-
 /** The capture on the film clock: from `from`, at the speed that reaches `to` by the shot's end, holding its last frame. */
 /** Places where a capture snaps (measured with the smoothness check): [last good second, first good second after]. */
 const CAP_SNAPS: Record<string, [number, number][]> = {
