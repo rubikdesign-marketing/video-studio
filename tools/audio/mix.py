@@ -10,7 +10,8 @@ Reads from <job_dir>/audio:
   voice.wav     required. The joined voice from voice.mjs (never stretched).
   lines.json    required. When each line is spoken; decides where the music sits lower.
   music.mp3     optional (or music.wav).
-  sfx.json      optional. [{ "id": "whoosh-1", "at": 3.25, "gain": 0.5 }, ...] with files in audio/sfx/<id>.mp3
+  sfx.json      optional. [{ "id": "whoosh-1", "at": 3.25, "gain": 0.5 }, ...] with files in audio/sfx/<id>.mp3;
+                an entry with "library": "whoosh/air-soft-01" is read from library/sounds/ when the job has no copy
 Writes:
   mix.wav             the film's sound, 48 kHz stereo
   stems/voice.wav, stems/music.wav, stems/sfx.wav   each part alone, as mixed
@@ -30,6 +31,19 @@ UNDER_VOICE = (0.20, 0.30)      # music as a share of the voice while a line is 
 GAP_LIFT_DB = 3.0               # how much higher the music sits between lines
 SR = 8000                       # measuring rate
 END_CARD_GAP = 0.5              # silent end cards start this long after the voice (scaffold.mjs TAIL)
+
+
+def library_file(sound_id):
+    """The file of a shared library sound (library/sounds/<group>/index.json), or None."""
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "library", "sounds")
+    group = sound_id.split("/")[0]
+    for name in sorted(os.listdir(os.path.join(root, group))) if os.path.isdir(os.path.join(root, group)) else []:
+        if not name.endswith(".json") or name.endswith(".beats.json"): continue
+        try: sounds = json.load(open(os.path.join(root, group, name))).get("sounds", [])
+        except (OSError, ValueError): continue
+        for snd in sounds:
+            if snd.get("id") == sound_id: return os.path.join(root, snd["file"])
+    return None
 
 
 def end_card_seconds(job):
@@ -170,7 +184,12 @@ def main():
     if os.path.exists(sfx_file):
         for c in json.load(open(sfx_file)):
             path = os.path.join(A, "sfx", c["id"] + ".mp3")
-            if not os.path.exists(path): sys.exit(f"Sound effect file missing: {path}. Run sound.mjs sfx first.")
+            if not os.path.exists(path) and c.get("library"):
+                # A shared library sound (tools/audio/sounds.mjs use) is read from the library when the job has no copy.
+                path = library_file(c["library"])
+            if not path or not os.path.exists(path):
+                sys.exit(f"Sound effect file missing: {os.path.join(A, 'sfx', c['id'] + '.mp3')}. "
+                         "Run sound.mjs sfx, or sounds.mjs use for a library sound.")
             g = c.get("gain", 0.5)
             if not 0.2 <= g <= 0.8: sys.exit(f"Effect {c['id']}: gain {g} is outside 0.2-0.8 of the voice.")
             if c["at"] > total: sys.exit(f"Effect {c['id']} is placed at {c['at']} s, after the film ends ({total} s).")

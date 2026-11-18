@@ -13,7 +13,9 @@
 // --energy          calm, confident (default) or hype
 //
 // The sounds are the brand's sound kit: brands/<brand>/sounds/<slot>.mp3, one file per slot (the slot names are
-// printed below). A slot with no file is left out and listed as missing; this tool never fetches or makes a sound.
+// printed below). A slot the brand has no file for uses the shared library's sound for that slot
+// (library/sounds/kit.json), named in the output so the hand-over lists it; a slot with neither is left out and
+// listed as missing. This tool never fetches or makes a sound.
 // With --job and --write it adds the placed sounds to <job>/audio/sfx.json in the form tools/audio/mix.py reads
 // ([{ "id", "at", "gain" }], files in audio/sfx/<id>.mp3), copying each slot's file there; sounds it placed before for
 // the same capture are replaced, anything else in sfx.json is kept. mix.py then checks the levels.
@@ -22,6 +24,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { resolveSlot } from './lib/library.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const studio = path.join(here, '..', '..');
@@ -52,10 +55,11 @@ const tracks = withThings(cursor, fs.existsSync(path.join(folder, 'tracks.json')
 const plan = planCapture(cursor, tracks, { from: options.from, to: options.to, look: options.look, time: options.time, moves: options.moves, holds: options.holds, energy, overrides: options.overrides });
 const cues = planSounds(cursor, plan, { offset: Number(flag('--offset', 0)), energy, emphasis: options.emphasis, sceneChanges: list(flag('--scenes')), results: list(flag('--results')), tracks });
 
-const kit = path.join(studio, 'brands', brand, 'sounds');
-const fileOf = (slot) => path.join(kit, `${slot}.mp3`);
 const used = [...new Set(cues.map((c) => c.slot))];
-const missing = used.filter((slot) => !fs.existsSync(fileOf(slot)));
+const resolved = Object.fromEntries(used.map((slot) => [slot, resolveSlot(brand, slot)]));
+const fileOf = (slot) => resolved[slot].file;
+const missing = used.filter((slot) => !resolved[slot].file);
+const fromLibrary = used.filter((slot) => resolved[slot].from === 'library');
 const placed = cues.filter((c) => !missing.includes(c.slot));
 const name = `${path.basename(path.dirname(path.dirname(folder)))}/${path.basename(folder)}`;
 
@@ -65,8 +69,12 @@ for (const c of cues) {
   console.log(`  ${c.at.toFixed(3).padStart(7)} s  ${c.slot.padEnd(15)} ${String(Math.round(c.gain * 100)).padStart(3)}% of the voice${gainOk ? '' : ' (OUTSIDE a third to two thirds)'}  ${c.cause}${missing.includes(c.slot) ? '  (no file: not placed)' : ''}`);
 }
 if (!cues.length) console.log('  Nothing on screen here calls for a sound.');
+if (fromLibrary.length) {
+  console.log(`\nNot in brands/${brand}/sounds/, so the shared library's sound is used (list these in the hand-over):`);
+  for (const slot of fromLibrary) console.log(`  ${slot.padEnd(15)} ${resolved[slot].id}`);
+}
 if (missing.length) {
-  console.log(`\nMissing from brands/${brand}/sounds/ (nothing placed for these):`);
+  console.log(`\nMissing from brands/${brand}/sounds/ and from the library's kit (nothing placed for these):`);
   for (const slot of missing) console.log(`  ${slot}.mp3  ${soundSlots[slot].about}`);
   console.log('These are made with the studio\'s sound tool, a paid ElevenLabs call: ask the owner first.');
 }
@@ -80,10 +88,10 @@ if (job && args.includes('--write')) {
   const source = `capture ${name}`;
   const kept = before.filter((c) => c.source !== source);
   for (const slot of new Set(placed.map((c) => c.slot))) fs.copyFileSync(fileOf(slot), path.join(audio, 'sfx', `${slot}.mp3`));
-  const added = placed.map((c) => ({ id: c.slot, at: c.at, gain: +c.gain.toFixed(3), source, cause: c.cause }));
+  const added = placed.map((c) => ({ id: c.slot, at: c.at, gain: +c.gain.toFixed(3), source, cause: c.cause, ...(resolved[c.slot].from === 'library' ? { library: resolved[c.slot].id } : {}) }));
   fs.writeFileSync(sfxFile, JSON.stringify([...kept, ...added].sort((a, b) => a.at - b.at), null, 1) + '\n');
   console.log(`\nWrote ${added.length} sounds to ${path.relative(studio, sfxFile)} (kept ${kept.length} others).`);
 }
 const jsonOut = flag('--json');
-if (jsonOut) fs.writeFileSync(jsonOut, JSON.stringify({ capture: name, energy, seconds: plan.map.duration, cues, missing }, null, 1));
+if (jsonOut) fs.writeFileSync(jsonOut, JSON.stringify({ capture: name, energy, seconds: plan.map.duration, cues, missing, from_library: fromLibrary.map((slot) => ({ slot, id: resolved[slot].id })) }, null, 1));
 process.exit(0);

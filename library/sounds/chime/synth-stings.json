@@ -1,0 +1,176 @@
+{
+  "group": "chime",
+  "about": "Logo stings made by synth.py, to merge into chime/index.json.",
+  "sounds": [
+    {
+      "id": "chime/sting-warm-synth-01",
+      "file": "chime/sting-warm-synth-01.mp3",
+      "name": "Warm logo sting",
+      "feel": [
+        "warm",
+        "premium",
+        "calm",
+        "rising"
+      ],
+      "use_for": "The closing logo: a soft rising shimmer that resolves into one warm, confident tone.",
+      "seconds": 2.355,
+      "peak_db": -2.9,
+      "loudest_lufs": -10.7,
+      "channels": 2,
+      "source": "studio",
+      "author": "Video Studio (tools/audio/synth.py)",
+      "licence": "CC0-1.0",
+      "source_url": null,
+      "recipe": {
+        "kind": "sting",
+        "seconds": 2.4,
+        "seed": 601,
+        "tone": "neutral",
+        "weight": "medium",
+        "note": 293.66,
+        "chord": "major",
+        "resolve": 0.35,
+        "sparkle": 24,
+        "width": 0.6
+      },
+      "fetched": "2026-11-18",
+      "sha256": "9e14b6894eea90436e6a493ad002deb44c57459a0decf35fb4a15d1ee56d78db"
+    },
+    {
+      "id": "chime/sting-open-synth-02",
+      "file": "chime/sting-open-synth-02.mp3",
+      "name": "Open logo sting",
+      "feel": [
+        "warm",
+        "wide",
+        "calm",
+        "premium"
+      ],
+      "use_for": "The closing logo: a soft rising shimmer that resolves into one warm, confident tone.",
+      "seconds": 2.742,
+      "peak_db": -3.4,
+      "loudest_lufs": -9.9,
+      "channels": 2,
+      "source": "studio",
+      "author": "Video Studio (tools/audio/synth.py)",
+      "licence": "CC0-1.0",
+      "source_url": null,
+      "recipe": {
+        "kind": "sting",
+        "seconds": 2.8,
+        "seed": 602,
+        "tone": "neutral",
+        "weight": "medium",
+        "note": 261.63,
+        "chord": "sus",
+        "resolve": 0.35,
+        "sparkle": 24,
+        "width": 0.6
+      },
+      "fetched": "2026-11-18",
+      "sha256": "6198f64ddabc1be469d9ef52d00b08d2e4a94731a250544585cfee8880dfa8a9"
+    },
+    {
+      "id": "chime/sting-deep-synth-03",
+      "file": "chime/sting-deep-synth-03.mp3",
+      "name": "Deep logo sting",
+      "feel": [
+        "deep",
+        "warm",
+        "bold",
+        "premium"
+      ],
+      "use_for": "The closing logo: a soft rising shimmer that resolves into one warm, confident tone.",
+      "seconds": 2.133,
+      "peak_db": -2.9,
+      "loudest_lufs": -11.7,
+      "channels": 2,
+      "source": "studio",
+      "author": "Video Studio (tools/audio/synth.py)",
+      "licence": "CC0-1.0",
+      "source_url": null,
+      "recipe": {
+        "kind": "sting",
+        "seconds": 2.2,
+        "seed": 603,
+        "tone": "dark",
+        "weight": "medium",
+        "note": 220.0,
+        "chord": "fifth",
+        "resolve": 0.35,
+        "sparkle": 24,
+        "width": 0.6
+      },
+      "fetched": "2026-11-18",
+      "sha256": "77bf41083c11f6129c9fd6abca2f36b423725ce835c75c0c12e1453798f23aad"
+    },
+    {
+      "id": "chime/sting-bright-synth-04",
+      "file": "chime/sting-bright-synth-04.mp3",
+      "name": "Bright logo sting",
+      "feel": [
+        "bright",
+        "glassy",
+        "rising",
+        "premium"
+      ],
+      "use_for": "The closing logo: a soft rising shimmer that resolves into one warm, confident tone.",
+      "seconds": 2.924,
+      "peak_db": -3.1,
+      "loudest_lufs": -11.2,
+      "channels": 2,
+      "source": "studio",
+      "author": "Video Studio (tools/audio/synth.py)",
+      "licence": "CC0-1.0",
+      "source_url": null,
+      "recipe": {
+        "kind": "sting",
+        "seconds": 3.0,
+        "seed": 604,
+        "tone": "bright",
+        "weight": "medium",
+        "note": 329.63,
+        "chord": "add9",
+        "resolve": 0.35,
+        "sparkle": 24,
+        "width": 0.6
+      },
+      "fetched": "2026-11-18",
+      "sha256": "58e67042201c36714cc15c1887e35816429bddf665552da65dfb5d06e995056a"
+    },
+    {
+      "id": "chime/sting-short-synth-05",
+      "file": "chime/sting-short-synth-05.mp3",
+      "name": "Short logo sting",
+      "feel": [
+        "warm",
+        "short",
+        "clean",
+        "premium"
+      ],
+      "use_for": "The closing logo: a soft rising shimmer that resolves into one warm, confident tone.",
+      "seconds": 1.918,
+      "peak_db": -2.9,
+      "loudest_lufs": -10.7,
+      "channels": 2,
+      "source": "studio",
+      "author": "Video Studio (tools/audio/synth.py)",
+      "licence": "CC0-1.0",
+      "source_url": null,
+      "recipe": {
+        "kind": "sting",
+        "seconds": 2.0,
+        "seed": 605,
+        "tone": "neutral",
+        "weight": "medium",
+        "note": 246.94,
+        "chord": "major",
+        "resolve": 0.35,
+        "sparkle": 24,
+        "width": 0.6
+      },
+      "fetched": "2026-11-18",
+      "sha256": "815f349da0d67c73e2fb0b6dfc22b7ad58d4d8dc7113a1e72fdd6dec1a553b03"
+    }
+  ]
+}

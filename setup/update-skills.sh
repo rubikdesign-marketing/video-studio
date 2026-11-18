@@ -58,6 +58,7 @@ SKILLS=(
   "bangtutorial/bang-motion|.|bang-motion|LICENSE"
   "vyralcontent/content-skills|skills/viral-hooks|viral-hooks|LICENSE"
   "Leonxlnx/earshot|skills/earshot|earshot|LICENSE"
+  "maximilianfeix/plinkfx|skills/plinkfx|plinkfx|LICENSE"
   "Leonxlnx/earshot|skills/real-sound|real-sound|LICENSE"
   # Clipwing's skills state no licence for their instructions, so, like Remotion's, they are fetched on each Mac and
   # never kept in the public repository (.gitignore).

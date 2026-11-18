@@ -33,6 +33,7 @@ A line that fails is regenerated, not repaired.
 - The music follows the energy map: it thins before the peak and opens on it.
 - Consider cutting the music entirely for the line that matters most. Half a second of quiet is the loudest thing in a film.
 - Under the voice the music sits at 20–30% of the voice level. In gaps it rises, then ducks back within 0.5 s.
+- A film may instead start from a track that already exists: one of the six public-domain beds in `library/sounds/music/`, or the brand's own music. Then the beat leads the cut: `tools/audio/beats.py` gives the track's beats, bars and drop, `beats.py snap` moves each planned cut to the nearest beat, and `beats.py check jobs/<job>` passes when every cut is within a frame of one. The biggest moment lands on the drop or on a bar start.
 
 ## Sound design
 
@@ -48,7 +49,9 @@ Four layers, each with a job:
 - Few and exact beats many and vague. Every sound has a cause on screen.
 - No two sounds of the same kind within 0.3 s.
 - Sound effects sit below the voice, between a third and two thirds of its level.
-- All sound is generated on the ElevenLabs plan. Nothing from free libraries, so nothing needs a credit line.
+- Sounds come from the brand's own kit first (`brands/<brand>/sounds/`, made on the ElevenLabs plan with the owner's yes), then from the shared library (`library/sounds/`: about 250 public-domain or studio-made sounds; `node tools/audio/sounds.mjs find`). A library sound used in place of a brand's own is named in the hand-over. Nothing from free sites whose licence forbids sharing files (Pixabay, Mixkit, Zapsplat and the like), and nothing that needs a credit line on screen.
+- Whooshes, risers and impacts a brand wants of its own are made from numbers with `tools/footage/.venv/bin/python tools/audio/synth.py` (no cost, no outside call), or designed with the bundled plinkfx skill.
+- Each text move, transition and hook opener names the sound it wants in `library/motion/index.json` (group and feel); use that as the starting point.
 
 ## A sound signature
 

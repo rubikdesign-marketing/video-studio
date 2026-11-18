@@ -80,6 +80,11 @@ for s in real-sfx hyperframes-to-after-effects; do [ -f ".claude/skills/$s/SKILL
 [ -f tools/media/openverse.mjs ] && pass "Openverse search (tools/media/openverse.mjs)" || fail "tools/media/openverse.mjs is missing" "pull the latest studio from GitHub"
 node tools/hooks/hooks.mjs check >/dev/null 2>&1 && pass "the hook library is sound (library/hooks/)" || fail "the hook library has a problem" "run: node tools/hooks/hooks.mjs check"
 node --test tools/plan/tests/*.test.mjs >/dev/null 2>&1 && pass "the planning tools' tests pass (beat sheet, retention reader)" || fail "the planning tools' tests fail" "run: node --test tools/plan/tests/*.test.mjs"
+node --test tools/audio/tests/sounds.test.mjs >/dev/null 2>&1 && pass "the sound library's tests pass (finder, check, kit)" || fail "the sound library's tests fail" "run: node --test tools/audio/tests/sounds.test.mjs"
+node tools/audio/sounds.mjs check >/dev/null 2>&1 && pass "every library sound matches its record, licence, level and credit (library/sounds/)" || fail "the sound library check found a problem" "run: node tools/audio/sounds.mjs check"
+if [ -x tools/footage/.venv/bin/python ]; then
+  tools/footage/.venv/bin/python -I -m unittest discover -s tools/audio/tests -p 'test_*.py' >/dev/null 2>&1 && pass "the sound maker and beat grid tests pass (synth.py, beats.py)" || fail "the sound maker or beat grid tests fail" "run: tools/footage/.venv/bin/python -I -m unittest discover -s tools/audio/tests -p 'test_*.py' -v"
+fi
 node --test tools/hooks/tests/*.test.mjs >/dev/null 2>&1 && pass "the hook tools' tests pass" || fail "the hook tools' tests fail" "run: node --test tools/hooks/tests/*.test.mjs"
 node --test tools/media/tests/*.test.mjs >/dev/null 2>&1 && pass "the Openverse and listening tests pass" || fail "the Openverse or listening tests fail" "run: node --test tools/media/tests/*.test.mjs"
 
