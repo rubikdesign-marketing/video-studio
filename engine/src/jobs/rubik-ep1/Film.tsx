@@ -82,7 +82,9 @@ const Picture: FC<{ p: Pic }> = ({ p }) => {
   let video: ReactNode;
   if (c) {
     const [, x, y, w] = cropAt(c, p.freeze ? 0 : f); const s = W / w;
-    video = <OffthreadVideo src={staticFile(p.src)} muted trimBefore={p.trim} style={{ position: 'absolute', left: -x * s, top: -y * s, width: c.src[0] * s, height: c.src[1] * s, filter }} />;
+    // Placed with a transform, not left/top: left/top round to whole pixels, so a slow face-locked move stepped
+    // 0, 0, 1 px (judder); a transform is drawn at the exact sub-pixel position.
+    video = <OffthreadVideo src={staticFile(p.src)} muted trimBefore={p.trim} style={{ position: 'absolute', left: 0, top: 0, width: c.src[0] * s, height: c.src[1] * s, transform: `translate3d(${-x * s}px, ${-y * s}px, 0)`, filter }} />;
   } else video = <OffthreadVideo src={staticFile(p.src)} muted trimBefore={p.trim} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter }} />;
   return p.freeze ? <Freeze frame={0}>{video}</Freeze> : <>{video}</>;
 };
@@ -264,7 +266,9 @@ const Rail: FC<{ notes: Note[]; shot: Shot; top: number }> = ({ notes, shot, top
   return <div style={{ position: 'absolute', left: RAIL.x, top, width: RAIL.w, display: 'grid', gap: 14 }}>{shown.map((x, i) => <NoteCard key={x.n.text + x.n.tag + i} note={x.n} shot={shot} at={x.at} />)}</div>;
 };
 
-const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number }> = ({ shot, spec, cut, d0 }) => {
+/** pipIn: Kashfiq's window fades in at this shot's start; false when the shot before already showed it in the same
+ *  place (v2 restarted the fade at every cut, so the window blinked out for 2 frames: owner notes b001-n8, n27). */
+const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: boolean }> = ({ shot, spec, cut, d0, pipIn }) => {
   const t = useT(); const len = shot.end - shot.start;
   const k = PAGE.w / 1920;
   const still = spec.to === undefined && SPEC_STATIC.has(spec.cap + spec.from);
@@ -315,7 +319,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number }> = ({ sh
         ) : null}
       </Browser>
       <Rail notes={spec.notes ?? []} shot={shot} top={RAIL.y} />
-      <PiP cut={cut} d0={d0} len={len} x={RAIL.x + RAIL.w - 300} y={PAGE.y + PAGE.h - 300 + 4} size={300} />
+      <PiP cut={cut} d0={d0} len={len} x={RAIL.x + RAIL.w - 300} y={PAGE.y + PAGE.h - 300 + 4} size={300} at={pipIn ? 0 : -1} />
     </Stage>
   );
 };
@@ -561,7 +565,7 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
         const from = sec(s.start); const dur = Math.max(1, sec(end) - from);
         const d0 = dOf(s.start); const len = end - s.start;
         let body: ReactNode = null;
-        if (spec.type === 'site') body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} />;
+        if (spec.type === 'site') body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} pipIn={i === 0 || SPEC[shots[i - 1].n].type !== 'site'} />;
         else if (spec.type === 'aroll') body = <ARollShot shot={s} spec={spec} cut={cut} d0={d0} />;
         else if (spec.type === 'title') body = <TitleCard />;
         else if (spec.type === 'chapter') body = <ChapterCard c={spec} />;
