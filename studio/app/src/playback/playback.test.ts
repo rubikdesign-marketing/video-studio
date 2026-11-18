@@ -36,6 +36,8 @@ function fakeVideo(perFrame: boolean) {
       const due = [...callbacks.values()]; callbacks.clear();
       for (const cb of due) cb(performance.now(), { mediaTime: time });
     },
+    /** The film moves on without a frame being reported. */
+    tickClock(seconds: number) { if (!paused) time += seconds * (el.playbackRate as number); },
     get time() { return time; },
     get waiting() { return callbacks.size; },
   };
@@ -58,6 +60,9 @@ beforeEach(() => {
   usePlayback.setState({ time: 0, playing: false, rate: 1, loop: null });
 });
 afterEach(() => { p().attachVideo(null); shortcutStore.setState({ shortcuts: [] }); });
+
+let screen = fakeScreen();
+beforeEach(() => { screen = fakeScreen(); });
 
 describe('playback', () => {
   it('takes the length and the frame rate from the film in the store', () => {
@@ -85,7 +90,7 @@ describe('playback', () => {
   });
 
   it('stays within one frame where the browser cannot report frames, even when screen and film drift apart', () => {
-    const screen = fakeScreen(); const video = fakeVideo(false);
+    const video = fakeVideo(false);
     p().attachVideo(video.el);
     p().toggle();
     let worst = 0;
@@ -97,6 +102,21 @@ describe('playback', () => {
       worst = Math.max(worst, Math.abs(p().time - video.el.currentTime));
     }
     expect(worst).toBeGreaterThan(0);
+    expect(worst).toBeLessThanOrEqual(FRAME);
+  });
+
+  it('still follows within one frame when the video can report frames but shows none (off screen or covered)', async () => {
+    const video = fakeVideo(true);
+    p().attachVideo(video.el);
+    p().toggle();
+    await new Promise((r) => setTimeout(r, 130));                                  // no frame for longer than the quiet time
+    let worst = 0;
+    for (let i = 0; i < 120; i++) {
+      video.tickClock(FRAME);                                                       // the film moves on, no frame callback runs
+      screen.refresh();
+      worst = Math.max(worst, Math.abs(p().time - video.el.currentTime));
+    }
+    expect(video.time).toBeCloseTo(2, 5);
     expect(worst).toBeLessThanOrEqual(FRAME);
   });
 
@@ -115,7 +135,7 @@ describe('playback', () => {
   it('seeks within the film and holds the place until the video gets there', () => {
     const video = fakeVideo(true);
     p().attachVideo(video.el);
-    p().seek(5); expect([p().time, video.time]).toEqual([5, 5]);
+    p().seek(5); expect(p().time).toBe(5); expect(video.time).toBeCloseTo(5, 3);
     video.showFrame(0);                                                            // an old frame arrives mid-seek: ignored
     expect(p().time).toBe(5);
     video.settle();
@@ -137,6 +157,21 @@ describe('playback', () => {
     expect(p().time).toBeCloseTo(31 / 30, 10);                                     // the film's own frame rate
     video.settle(); p().seek(0); video.settle(); p().step(-1);
     expect(p().time).toBe(0);
+  });
+
+  it('sends the video just inside the frame it means, so the right frame is shown', () => {
+    const video = fakeVideo(true);
+    p().attachVideo(video.el);
+    p().seek(2); video.settle();
+    p().step(1); p().step(1); p().step(1);                                         // frame 123: 123 / 60 is 2.0499999...
+    expect(Math.floor(video.time * 60)).toBe(123);
+    video.settle();
+    expect(p().time).toBeCloseTo(2.05, 10);                                        // and the playhead keeps the round figure
+    for (let frame = 0; frame <= 732; frame++) {                                   // every frame of the sample film
+      p().seek(frame / 60);
+      if (Math.floor(video.time * 60) !== frame) throw new Error(`frame ${frame} would show frame ${Math.floor(video.time * 60)}`);
+      video.settle();
+    }
   });
 
   it('plays at a quarter, half and full speed', () => {
@@ -175,7 +210,7 @@ describe('playback', () => {
     const first = fakeVideo(true); const second = fakeVideo(true);
     p().attachVideo(first.el); p().seek(6); first.settle();
     p().attachVideo(second.el);
-    expect(second.time).toBe(6);
+    expect(second.time).toBeCloseTo(6, 3);
     first.showFrame(0);
     expect(first.waiting).toBe(0);
   });

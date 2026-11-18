@@ -28,6 +28,17 @@ type Video = HTMLVideoElement & {
   cancelVideoFrameCallback?: (handle: number) => void;
 };
 
+/** How long the video may show no frame before the screen refresh takes over the clock, in ms. */
+const QUIET_MS = 100;
+
+/**
+ * A frame's time, worked out as frame / fps, can land a hair before the frame begins (123 / 60 is 2.0499999...), and
+ * the video would then show the frame before. So the video is sent a tenth of a millisecond further on, and a
+ * report back that differs by no more than that is taken as "arrived".
+ */
+const NUDGE = 1e-4;
+const send = (el: Video, time: Seconds) => { if (Math.abs(el.currentTime - (time + NUDGE)) > 1e-6) el.currentTime = time + NUDGE; };
+
 let video: Video | null = null;
 let stopFollowing: (() => void) | null = null;
 
@@ -46,7 +57,7 @@ export const usePlayback = create<PlaybackState>((set, get) => {
   const goTo = (t: Seconds) => {
     const time = Math.min(Math.max(0, Number.isFinite(t) ? t : 0), limit());
     set({ time });
-    if (video && Math.abs(video.currentTime - time) > 1e-4) video.currentTime = time;
+    if (video) send(video, time);
   };
 
   /** What the video says the time is. Ignored while it is still getting to a place it was sent. */
@@ -54,37 +65,46 @@ export const usePlayback = create<PlaybackState>((set, get) => {
     if (el !== video || el.seeking) return;
     const s = get();
     if (s.loop && !el.paused && t >= s.loop[1] - 0.5 / s.fps) { goTo(s.loop[0]); return; }
-    if (t !== s.time) set({ time: t });
+    if (Math.abs(t - s.time) > NUDGE * 2) set({ time: t });
   };
 
   /** Keeps `time` on the video's frame: per shown frame where the browser can say, otherwise per screen refresh. */
   const follow = (el: Video): (() => void) => {
-    let stopped = false; let handle = 0;
+    let stopped = false;
     const onPlay = () => set({ playing: true });
     const onPause = () => { set({ playing: false }); report(el, el.currentTime); };
     const onTime = () => report(el, el.currentTime);
     const events: [string, () => void][] = [['play', onPlay], ['playing', onPlay], ['pause', onPause], ['ended', onPause], ['seeked', onTime], ['timeupdate', onTime]];
     for (const [name, handler] of events) el.addEventListener(name, handler);
+    // Two clocks. The video says which frame it is showing, where the browser can tell (the exact one). The screen
+    // refresh is the stand-in: it speaks only when the video has shown no frame for a moment, which is always in
+    // browsers that cannot tell, and also while the video is off screen or covered and so shows no frames.
+    const now = () => (typeof performance === 'undefined' ? Date.now() : performance.now());
+    let frameHandle = 0; let screenHandle = 0; let lastFrameAt = Number.NEGATIVE_INFINITY;
     const perFrame = typeof el.requestVideoFrameCallback === 'function';
     if (perFrame) {
       const tick: FrameCallback = (_now, frame) => {
         if (stopped) return;
+        lastFrameAt = now();
         report(el, frame.mediaTime);
-        handle = el.requestVideoFrameCallback?.(tick) ?? 0;
+        frameHandle = el.requestVideoFrameCallback?.(tick) ?? 0;
       };
-      handle = el.requestVideoFrameCallback?.(tick) ?? 0;
-    } else if (typeof requestAnimationFrame === 'function') {
+      frameHandle = el.requestVideoFrameCallback?.(tick) ?? 0;
+    }
+    const onScreen = typeof requestAnimationFrame === 'function';
+    if (onScreen) {
       const tick = () => {
         if (stopped) return;
-        report(el, el.currentTime);
-        handle = requestAnimationFrame(tick);
+        if (now() - lastFrameAt > QUIET_MS) report(el, el.currentTime);
+        screenHandle = requestAnimationFrame(tick);
       };
-      handle = requestAnimationFrame(tick);
+      screenHandle = requestAnimationFrame(tick);
     }
     return () => {
       stopped = true;
       for (const [name, handler] of events) el.removeEventListener(name, handler);
-      if (perFrame) el.cancelVideoFrameCallback?.(handle); else if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(handle);
+      if (perFrame) el.cancelVideoFrameCallback?.(frameHandle);
+      if (onScreen) cancelAnimationFrame(screenHandle);
     };
   };
 
@@ -134,7 +154,7 @@ export const usePlayback = create<PlaybackState>((set, get) => {
       video = el;
       if (!el) { set({ playing: false }); return; }
       el.playbackRate = get().rate;
-      if (Math.abs(el.currentTime - get().time) > 1e-4) el.currentTime = get().time;   // a new version opens where the last one was
+      if (get().time > 0 || el.currentTime > 0) send(el, get().time);                  // a new version opens where the last one was
       set({ playing: !el.paused && !el.ended });
       stopFollowing = follow(el);
     },
