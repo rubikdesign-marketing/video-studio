@@ -139,7 +139,7 @@ export function createEditor(options: EditorOptions) {
     },
   });
 
-  const key = (j: string) => `tulvo-editor:${j}`;
+  const key = (j: string) => `studio-editor:${j}`;
   /** Keeps a copy in the browser on every change, marked with what the server does not have yet. */
   function backup() {
     const j = film.getState().job;

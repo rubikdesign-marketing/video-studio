@@ -70,12 +70,12 @@ const sent = () => posted.filter((p) => p.url.startsWith('/api/send'));
 
 describe('sending notes', () => {
   it.each([[false], [true]])('posts what the old review page posts, field for field (approved: %s)', async (approved) => {
-    const result = await sendNotes({ editor: ed, reviewer: '  Rubik ', approved, capture: async (t, b) => capture(t, b) });
+    const result = await sendNotes({ editor: ed, reviewer: '  Sam ', approved, capture: async (t, b) => capture(t, b) });
     expect(result.ok).toBe(true);
     expect(sent()).toHaveLength(1);
     expect(sent()[0]?.url).toBe('/api/send?job=_sample');
 
-    const old = oldPagePayload('  Rubik ', 'preview.mp4', approved);
+    const old = oldPagePayload('  Sam ', 'preview.mp4', approved);
     const { notes: newNotes, ...newTop } = sent()[0]?.body as { notes: Record<string, unknown>[] } & Record<string, unknown>;
     const { notes: oldNotes, ...oldTop } = old;
 
@@ -96,7 +96,7 @@ describe('sending notes', () => {
   });
 
   it('empties the notes after sending and keeps them to bring back', async () => {
-    const result = await sendNotes({ editor: ed, reviewer: 'Rubik', approved: false, capture: async () => null });
+    const result = await sendNotes({ editor: ed, reviewer: 'Sam', approved: false, capture: async () => null });
     expect(result).toMatchObject({ ok: true, message: 'Sent. Only the scenes your notes touch will be changed, and the new version will appear here.' });
     expect(ed.stores.notes.getState().notes).toEqual([]);
     expect(ed.stores.notes.getState().previous?.notes).toHaveLength(3);
@@ -113,7 +113,7 @@ describe('sending notes', () => {
 
   it('says in plain words when the studio refuses', async () => {
     const failing = { stores: ed.stores, send: async () => { throw new Error('boom'); } };
-    const result = await sendNotes({ editor: failing, reviewer: 'Rubik', approved: false, capture: async () => null });
+    const result = await sendNotes({ editor: failing, reviewer: 'Sam', approved: false, capture: async () => null });
     expect(result.ok).toBe(false);
     expect(!result.ok && result.problem).toMatch(/^That did not send\. /);
   });

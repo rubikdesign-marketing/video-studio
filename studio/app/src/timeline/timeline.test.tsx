@@ -104,7 +104,7 @@ describe('lane controls', () => {
     expect(editor.history.canUndo).toBe(false);
     fireEvent.click(within(lane('Scenes')).getAllByRole('button', { name: /^Scene 1/ })[0] as Element);
     expect(editor.stores.selection.getState().selection).toBeNull();
-    expect(JSON.parse(localStorage.getItem('tulvo-editor:timeline-lanes') ?? '{}')).toMatchObject({ text: { locked: true }, scenes: { locked: true }, voice: { locked: false } });
+    expect(JSON.parse(localStorage.getItem('studio-editor:timeline-lanes') ?? '{}')).toMatchObject({ text: { locked: true }, scenes: { locked: true }, voice: { locked: false } });
     fireEvent.click(screen.getByRole('button', { name: 'Unlock the On-screen text lane' }));
     expect((cueButton(/scene 2: Three beeps/) as HTMLButtonElement).disabled).toBe(false);
   });
