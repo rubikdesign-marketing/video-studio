@@ -9,7 +9,7 @@
  "length_cap_status": "Storyboard cut list is 606.5 s (10:06) from word timings",
  "energy_preset": "calm",
  "voice": "Kashfiq (footage, phone microphone); no made voice",
- "stage_next": "v3 fixes in progress (plan above); stills look-check before the v3 render",
+ "stage_next": "Owner reviews the v3 look check (https://claude.ai/artifact/6ibecFoahA3VkS3zUY2kZ1). On their go: render the v3 preview and master (plan Task 18), run the checks, reply to all 40 notes on the review page.",
  "approvals": {
   "idea": {
    "date": "2026-11-17",
@@ -57,7 +57,8 @@
   "2026-11-18: owner fixes. Name on screen is \"Shiyam Kashfiq\" (lower third, Figma, plan); he says only \"Kashfiq\" on camera. Transcript spellings fixed for captions (guess not case, folk, Slite, Fibery, Kashfiq, branding) by clean/word_fixes.py; re-run it after any re-ingest. The tool's rough command rebuilds the cut list and would undo the tightening: run cut, then clean/tighten.mjs, then prepareRough on the saved cutlist.",
   "2026-11-18 (overnight, owner asleep, full go-ahead): rough cut reviewed frame by frame (projects/rubik/video-1-edit/REVIEW-AND-PLAN.md). Built the full film as engine composition RubikEp1 (engine/src/jobs/rubik-ep1: Film.tsx, spec.ts, timeline.json from build/timeline.py). A-roll re-centred (build/center.py), light per-setup grade, 39 site shots from the real captures in a browser frame with PiP and a notes rail, title sting, 3 chapter cards, 3 verdict cards, 2 maxim cards, path diagram, 2 lessons cards, CTA card, lower third, end card; captions rebuilt (one line, no crossfade). Sound: music by ElevenLabs in two pieces joined at the Slite chapter (audio/music-a, music-b), 173 effects from library/sounds placed on the same cues as the picture (build/audio_events.mjs), mixed by tools/audio/mix.py, mastered to -14 LUFS / -1.5 dBFS. Brand file filled with Rubik colours and logos (placeholders moved to logo/_placeholders).",
   "18 Nov: v1 checked frame by frame; v2 spliced (site-capture stutters removed, shot 54 ring, Slite zoom framing, larger URL, music 21%). Review page https://claude.ai/artifact/JBDg9gKJYtZ27VNWh57uVC",
-  "18 Nov: owner's review batch 1 on v2 (40 notes, 10 must-fix) recorded in revisions.json round v2. The 'Filmed 17 Nov 2026' label is removed at the owner's request (note 4), overriding the 17 Nov rule. Plan: docs/superpowers/plans/2026-11-18-rubik-ep1-v3-fixes.md"
+  "18 Nov: owner's review batch 1 on v2 (40 notes, 10 must-fix) recorded in revisions.json round v2. The 'Filmed 17 Nov 2026' label is removed at the owner's request (note 4), overriding the 17 Nov rule. Plan: docs/superpowers/plans/2026-11-18-rubik-ep1-v3-fixes.md",
+  "18 Nov: v3 fixes for all 40 notes built on branch rubik-ep1-v3 (cue timing, page-anchored highlights, face lock, cold open, presence per shot, beats, card redesigns, one-family sound with the owner's local pack, per-clip grade). Stills look check: https://claude.ai/artifact/6ibecFoahA3VkS3zUY2kZ1. Not rendered, not watched at speed, not listened to."
  ],
  "join_check": {
   "page": "https://claude.ai/artifact/GHwe2G1HPjvib8yteYMcXP",
