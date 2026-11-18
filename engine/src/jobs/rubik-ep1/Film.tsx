@@ -9,13 +9,15 @@ import { z } from 'zod';
 import { brandFiles } from '../../brands';
 import { BrandProvider, getBrand } from '../../kit/brand';
 import timeline from './timeline.json';
-import { cueTime, groupCueTime, type Word } from './lib';
-import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, type Box, type Card, type Cue, type Note, type Row, type Site, type Tone } from './spec';
+import { capPlan, cueTime, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
+import marksJson from './marks.json';
+import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Row, type Site, type Tone } from './spec';
 
 // ---------------------------------------------------------------- data
 type Shot = { n: number; kind: string; voice: boolean; start: number; end: number; text: string; words: Word[]; d0?: number; d1?: number };
 type TL = { fps: number; duration: number; dialogue: string; voice: { d0: number; d1: number; at: number }[]; shots: Shot[] };
 const T = timeline as TL;
+const MARKS = marksJson as unknown as MarksFile;
 export const RubikEp1Fps = T.fps;
 export const RubikEp1Frames = Math.round(T.duration * T.fps);
 export const RubikEp1Schema = z.object({ captions: z.boolean(), audio: z.enum(['voice', 'mix', 'none']) });
@@ -128,7 +130,6 @@ const PiP: FC<{ cut: FilmCut; d0: number; len: number; x: number; y: number; siz
 // ---------------------------------------------------------------- site shot
 const PAGE = { x: 64, y: 108, w: 1424, h: 801 }; // the page area of the browser window (16:9)
 const BAR = 52;
-const lerpBox = (a: Box, b: Box, u: number): Box => [0, 1, 2, 3].map((i) => a[i] + (b[i] - a[i]) * u) as Box;
 
 const Browser: FC<{ url: string; children: ReactNode }> = ({ url, children }) => (
   <div style={{ position: 'absolute', left: PAGE.x, top: PAGE.y - BAR, width: PAGE.w, height: PAGE.h + BAR, borderRadius: 18, overflow: 'hidden', background: '#FFFFFF', boxShadow: '0 40px 90px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)' }}>
@@ -160,13 +161,10 @@ const FadeIn: FC<{ frames: number; children: ReactNode }> = ({ frames, children 
 const Capture: FC<{ cap: string; from: number; to?: number; len: number; rate?: number }> = ({ cap, from, to, len, rate: forced }) => {
   const { fps } = useVideoConfig();
   const max = CAP_LENGTH[cap] - 0.1;
-  const end = Math.min(max, to ?? max);
-  const rate = forced ?? (to !== undefined ? Math.min(2.6, Math.max(0.4, (to - from) / len)) : 1);
-  const playable = Math.max(0.05, Math.min(len, (end - from) / rate));
+  const { rate, playable, srcEnd } = capPlan(CAP_LENGTH[cap], from, to, len, forced);
   const src = staticFile(`${JOB}/capture/${cap}.mp4`);
   const style: CSSProperties = { position: 'absolute', inset: 0, width: '100%', height: '100%' };
   const still = to === undefined && SPEC_STATIC.has(cap + from);
-  const srcEnd = from + playable * rate;
   const playFrames = Math.max(1, Math.round(playable * fps));
   // Split the playing part at each snap: the frame before the snap holds while the part after it dissolves in.
   const snaps = still ? [] : (CAP_SNAPS[cap] ?? []).filter(([a]) => a > from + 0.1 && a < srcEnd - 0.1);
@@ -194,8 +192,7 @@ const Capture: FC<{ cap: string; from: number; to?: number; len: number; rate?: 
     </>
   );
 };
-/** Holds that should not move at all (the page frozen on a mark while he reads it). */
-const SPEC_STATIC = new Set(['fibery-hero9.7', 'slite-hero0.7', 'slite-hero1.2', 'fibery-tour12.95', 'fibery-tour18.6']);
+const SPEC_STATIC = new Set(STILLS);
 
 const RingMark: FC<{ box: Box; tone: Tone; at: number; out?: number; k: number }> = ({ box, tone, at, out, k }) => {
   const t = useT();
@@ -270,11 +267,12 @@ const Rail: FC<{ notes: Note[]; shot: Shot; top: number }> = ({ notes, shot, top
 const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number }> = ({ shot, spec, cut, d0 }) => {
   const t = useT(); const len = shot.end - shot.start;
   const k = PAGE.w / 1920;
-  const z = spec.zoom;
-  const zf = z?.from ?? [0, 0, 1920, 1080] as Box; const zt = z?.to ?? zf;
-  const zAt = cueOf(shot, z?.at, 0); const zOver = z?.over ?? Math.max(0.5, len - zAt);
-  const zu = inOut(Math.min(1, Math.max(0, (t - zAt) / zOver)));
-  const [vx, vy, vw] = lerpBox(zf, zt, zu);
+  const still = spec.to === undefined && SPEC_STATIC.has(spec.cap + spec.from);
+  const z = zoomOf(spec, shot, MARKS, CAP_LENGTH, (c, f) => SPEC_STATIC.has(c + f));
+  const [vx, vy, vw] = viewAt(z, cueOf(shot, z?.at, 0), len, t);
+  // Highlights tied to a capture mark move with the page as it scrolls.
+  const srcT = srcAt(capPlan(CAP_LENGTH[spec.cap], spec.from, spec.to, len, spec.rate), spec.from, t, still);
+  const onPage = (box: Box, mark?: string): Box => { const m = mark ? MARKS[spec.cap]?.marks[mark] : undefined; return m ? markBoxAt(box, m.scroll, MARKS[spec.cap].scroll, srcT) : box; };
   const scale = 1920 / vw;
   const pauseAt = spec.pause ? cueOf(shot, spec.pause.at) : 1e9; const pu = enter(t, pauseAt, 0.4);
   const patchAt = spec.patch ? cueOf(shot, spec.patch.at) : 1e9; const pw = interpolate(t, [patchAt, patchAt + 0.7], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
@@ -302,7 +300,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number }> = ({ sh
               <span>{mu < 0.5 ? spec.morph.from : spec.morph.to}</span>
             </div>
           ) : null}
-          {(spec.rings ?? []).map((r, i) => <RingMark key={i} box={r.box} tone={r.tone} at={cueOf(shot, r.at)} out={r.out !== undefined ? cueOf(shot, r.out) : undefined} k={k} />)}
+          {(spec.rings ?? []).map((r, i) => <RingMark key={i} box={onPage(r.box, r.mark)} tone={r.tone} at={cueOf(shot, r.at)} out={r.out !== undefined ? cueOf(shot, r.out) : undefined} k={k} />)}
           {(spec.pins ?? []).map((p, i) => <PinMark key={i} x={p.x} y={p.y} tone={p.tone} text={p.text} at={cueOf(shot, p.at)} k={k} />)}
         </div>
         {spec.pause && pu > 0 ? (
