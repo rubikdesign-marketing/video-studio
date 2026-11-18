@@ -9,7 +9,7 @@
  "length_cap_status": "Storyboard cut list is 606.5 s (10:06) from word timings",
  "energy_preset": "calm",
  "voice": "Kashfiq (footage, phone microphone); no made voice",
- "stage_next": "Owner watches out/rubik-ep1-v3.mp4 (or the 720p preview) with sound and sends batch 2 or approves full animation; then the showreel beat and the four 9:16 reels.",
+ "stage_next": "Owner watches out/rubik-ep1-v4.mp4 (copy in ~/Downloads) and sends notes or approves full animation; branch rubik-ep1-v4 not merged.",
  "approvals": {
   "idea": {
    "date": "2026-11-17",
@@ -59,7 +59,8 @@
   "18 Nov: v1 checked frame by frame; v2 spliced (site-capture stutters removed, shot 54 ring, Slite zoom framing, larger URL, music 21%). Review page https://claude.ai/artifact/JBDg9gKJYtZ27VNWh57uVC",
   "18 Nov: owner's review batch 1 on v2 (40 notes, 10 must-fix) recorded in revisions.json round v2. The 'Filmed 17 Nov 2026' label is removed at the owner's request (note 4), overriding the 17 Nov rule. Plan: docs/superpowers/plans/2026-11-18-rubik-ep1-v3-fixes.md",
   "18 Nov: v3 fixes for all 40 notes built on branch rubik-ep1-v3 (cue timing, page-anchored highlights, face lock, cold open, presence per shot, beats, card redesigns, one-family sound with the owner's local pack, per-clip grade). Stills look check: https://claude.ai/artifact/6ibecFoahA3VkS3zUY2kZ1. Not rendered, not watched at speed, not listened to.",
-  "18 Nov: v3 rendered (16035 frames, -14.0 LUFS). Batch 1 answered note by note on the review page. Also: full-screen site shots S18, S36, S57 (owner, after the look check). Checks on the render: hook readable at 1 s; judder windows 8 (v2 11); PiP drop-outs at site cuts gone; one-frame white flashes at shot ends fixed. Not watched at speed or listened to by anyone."
+  "18 Nov: v3 rendered (16035 frames, -14.0 LUFS). Batch 1 answered note by note on the review page. Also: full-screen site shots S18, S36, S57 (owner, after the look check). Checks on the render: hook readable at 1 s; judder windows 8 (v2 11); PiP drop-outs at site cuts gone; one-frame white flashes at shot ends fixed. Not watched at speed or listened to by anyone.",
+  "19 Nov: v4 from the owner's notes on v3 (relayed by the 'Rubik long-form video analysis' session): face lock only in S01-S03, S67, S72 (each under 12 s); every site shot without Kashfiq full screen (23 of 38); captions 80 px, word by word, spoken word lime; cold-open panel re-framed so Kashfiq stays inside. Master 16035 frames, -14.0 LUFS. smoothness.py judder windows rise with the new caption motion (5 s test: 4 with captions, 0 without). Not watched at speed or listened to by anyone."
  ],
  "join_check": {
   "page": "https://claude.ai/artifact/GHwe2G1HPjvib8yteYMcXP",
@@ -88,8 +89,8 @@
   "impeccable"
  ],
  "outputs": {
-  "master": "out/rubik-ep1-v3.mp4",
-  "preview": "out/rubik-ep1-v3-preview-720p.mp4",
-  "previous": "out/rubik-ep1-v2.mp4"
+  "master": "out/rubik-ep1-v4.mp4",
+  "preview": "out/rubik-ep1-v4-preview-720p.mp4",
+  "previous": "out/rubik-ep1-v3.mp4"
  }
 }
