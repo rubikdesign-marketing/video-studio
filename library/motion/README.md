@@ -48,6 +48,31 @@ npx remotion render move-blur-in ../library/motion/blur-in.mp4   # one move
 
 Another brand, preset or page: add `--props='{"brand":"demo","preset":"calm","page":"dark"}'`.
 
+## Text moves, transitions, hook openers and shader backgrounds (18 Nov 2026)
+
+The library plan's phases 4 and 5 added 100 moves, each built to work in all four sizes a film ships in:
+
+| Family | Moves | Code |
+|---|---|---|
+| `type` and `emphasis` (text) | 45 moves, 59 gallery entries: soft and bold arrivals, typing and decode, emphasis marks, layout and exits | `engine/src/kit/type/` |
+| `caption` | Two short-form caption styles a brand may choose for 9:16 (highlight box, spoken word enlarged); the fixed pill stays the default | `engine/src/kit/type/CaptionBox.tsx`, `CaptionPop.tsx` |
+| `transition` | 29: wipes, optical and camera moves, turns and tiles, the logo and title as windows, and a stylised five marked "use sparingly" | `engine/src/kit/transitions/` |
+| `opener` | 12 hook openers for the first two seconds | `engine/src/kit/openers/` |
+| `shader` | 8 brand-coloured shader backgrounds on Paper Shaders, frame-accurate | `engine/src/kit/shaders/` |
+
+- Every text move shares one splitter (`kit/type/split.tsx`): lines, words and letters, a starred word or phrase in the accent voice (`*in one place*`), and a size that shrinks to fit narrow frames. A move never measures text itself.
+- Each entry says the sound it wants (`sound`: a library group and feel words, `library/sounds/`), its `sizes` and its `credit`. Entries marked `house_rule` (blinds, invert flash, glitch cut, film burn, glitch-in, the glitch opener) are banned by default in `knowledge/craft/03-transitions.md` and need the owner's yes for the film.
+- In the gallery, each is the composition `move-<name>` in the folder of its family, with a `format` prop:
+
+  ```
+  npx remotion render move-mask-rise ../library/motion/mask-rise.mp4 --scale=0.5 --public-dir=out/lib-public
+  npx remotion still move-mask-rise out/mask-rise-9x16.png --frame=60 --props='{"format":"9:16","fps":30}' --public-dir=out/lib-public
+  ```
+
+  `--public-dir=out/lib-public` points at a 1 MB copy of the brands and kit (`cp -R public/brands public/kit public/captures.json public/footage-cuts.json out/lib-public/`): `engine/public` holds many gigabytes of job footage, which every bundle would otherwise copy. Shaders need `--gl=angle` (set in `remotion.config.ts`).
+- Checked: every preview passes `smoothness.py` and `flashes.py`; each move was looked at in all four sizes by its builder, and a fresh-eyes review of one settled frame of all 100 in 9:16, 1:1 and 4:5 found 24 problems, all fixed and looked at again. `tools/checks/tests/motion_library.test.mjs` keeps the catalogue and the gallery in step.
+- Not checked: each move on brands other than Tulvo and on the dark page (most were looked at on the light page only); the calm and hype presets (the confident preset was used throughout); moves inside real films beyond the library's proof film (`jobs/2026-11-18-library-proof/`).
+
 ## Moves for product captures
 
 The capture families in `index.json` (`capture-pointer`, `capture-effect`, `capture-camera`, `capture-time`, `capture-look`) are settings of `CaptureClip` (`engine/src/kit/CaptureClip.tsx`), not components of their own. Each has a composition `move-<name>` in the "capture" folder of Remotion Studio that plays a fitting stretch of a real capture, found from its own events: the newest capture, or the one named in its `capture` prop. Their previews here were rendered at half size from a practice capture.

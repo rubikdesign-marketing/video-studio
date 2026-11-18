@@ -13,6 +13,8 @@ import { demos, type Demo } from './demos';
 import { JoinMotionCompositions } from './joins';
 import { ProductMotionCompositions } from './product';
 import { RelayoutMotionCompositions } from './relayout';
+import { ProofCompositions } from './proof/LibraryProof';
+import { SizedCompositions } from './sized';
 import { MoveCaption } from './parts';
 
 /** Props of every gallery composition: the brand, the energy preset, and the page (light or dark). */
@@ -100,5 +102,9 @@ export const MotionCompositions: FC = () => (
     <JoinMotionCompositions />
     {/* The same takes re-laid out for 9:16, 1:1 and 4:5, the camera following the action. */}
     <RelayoutMotionCompositions />
+    {/* Text moves, transitions, hook openers and shader backgrounds, each in all four sizes (prop "format"). */}
+    <SizedCompositions />
+    {/* The library's proof film, made the new way and the old way (jobs/2026-11-18-library-proof). */}
+    <ProofCompositions />
   </>
 );

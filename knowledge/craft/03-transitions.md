@@ -37,6 +37,12 @@ Seen and timed in the study cards in `library/references/claude/`. Techniques 13
 | 18 | Pull back, slide, push in | The window shrinks to a card at about 78% width, slides to a neighbour with a long soft landing, then pushes in. The three moves overlap | "Meanwhile, somewhere else in the same product" |
 | 19 | Shape becomes object | A disc in a content colour fills the frame in about 330 ms, becomes a large chart ring on the cut, then collapses to an icon | The move into the closing line |
 
+### The transition library (18 Nov 2026)
+
+`library/motion/index.json`, family `transition`, holds 29 more, each built in the engine (`engine/src/kit/transitions/`), shown in all four frame sizes and passing the flash check: wipes (push, feather, iris, clock, door split, colour panel, dip to the brand's colour), optical and camera moves (blur-through, exposure bloom, whip pan, zoom blur, spin whip, parallax push, match cut), turns and tiles (cube, card flip, page turn, tile reveal, pixelate, luma dissolve), and two brand moves (a title that becomes the window, the logo as a mask). Each names its sound. They are tools for the techniques above, not new meanings: a whip pan is technique 11, a match cut technique 5, an iris from a button a hand-off (1). The rules below still hold: at most five techniques a film, never the same one twice in a row.
+
+Six of them are banned by default (below): blinds, invert flash, glitch cut, film burn, the glitch-in text move and the glitch hook opener. Each is marked `house_rule` in the catalogue. A film uses one only when the owner says yes for that film, written in `job.json`; the light leak, ripple and ink bleed are allowed but marked "use sparingly".
+
 ## Rules
 
 - No two neighbouring scene changes use the same technique.
@@ -55,6 +61,7 @@ Seen and timed in the study cards in `library/references/claude/`. Techniques 13
 - Flashes and screen shakes.
 - Any transition from a template pack look: glitch, RGB split, film burn.
 - More than three brightness jumps in one second (also a safety limit for photosensitive viewers).
+- The library's moves in this list (blinds, invert flash, glitch cut, film burn, glitch-in, the glitch opener, the number-slam shake) are allowed only with the owner's yes for that film, recorded in `job.json`. The flash limit is never waived.
 
 ## Adding to this file
 

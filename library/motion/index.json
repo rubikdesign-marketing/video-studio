@@ -28,7 +28,10 @@
     "capture-product": "Animations on the product, glued to tracked things (CaptureClip's emphasis, emphasis.tsx).",
     "capture-sound": "Interface sounds placed from a capture's event log (sound.ts, tools/audio/capture_sounds.mjs).",
     "capture-transition": "Transitions between two captures, or two parts of one, on one film clock (CaptureJoin, transitions.tsx; the plan is joins.ts).",
-    "capture-relayout": "A wide capture re-laid out for 9:16, 1:1 and 4:5, the camera following the action inside the recording; a phone-size take full frame (relayout.ts, CaptureShot in a tall or square frame)."
+    "capture-relayout": "A wide capture re-laid out for 9:16, 1:1 and 4:5, the camera following the action inside the recording; a phone-size take full frame (relayout.ts, CaptureShot in a tall or square frame).",
+    "caption": "Short-form caption styles a brand may choose for 9:16 (decision 6); the fixed caption design stays the default.",
+    "opener": "Hook openers: the first two seconds, made in the engine, a pattern interrupt without anyone else's footage (knowledge/craft/15-hooks.md).",
+    "shader": "Shader backgrounds on Paper Shaders, coloured from the brand, frame-accurate (render with --gl=angle)."
   },
   "moves": [
     {
@@ -4075,6 +4078,4064 @@
       "reviewed_on": null,
       "checked": "The take's shape fills the phone screen, so the camera holds still (no follow needed); smoothness.py: no jumps or judder. Tested on a stand-in cropped from the wide take, not a real phone-size take. Contact sheet looked at; not watched frame by frame.",
       "planned_instant_changes": []
+    },
+    {
+      "name": "opener-punch-in",
+      "family": "opener",
+      "component": "PunchIn",
+      "file": "engine/src/kit/openers/PunchIn.tsx",
+      "does": "The line is in frame at once, then the camera cuts hard to a tight crop on the starred word and eases back out to the whole line, with an accent underline.",
+      "use_when": "Statement hooks and outcome hooks where one word carries the claim.",
+      "avoid_when": "A line of one or two words (nothing to crop to); a film whose next shot is already a zoom.",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "hard",
+          "short",
+          "bold"
+        ],
+        "when": "start",
+        "note": "One impact on the hard cut at about 0.35 s."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-punch-in",
+      "preview": "library/motion/opener-punch-in.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        0.37
+      ],
+      "planned_note": "The cut to the tight crop is one frame, meant.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-fill-frame",
+      "family": "opener",
+      "component": "FillFrame",
+      "file": "engine/src/kit/openers/FillFrame.tsx",
+      "does": "Each word is set so large it touches the frame's edges and replaces the last on a beat; the starred word sits on an accent fill; then the whole line holds.",
+      "use_when": "Short, punchy lines of three to six words; offer and contrarian hooks.",
+      "avoid_when": "Long lines (the beat gets slow) and brands whose accent colour does not hold the text on it.",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "beat": "seconds each word stays (default about 0.42)",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "hard",
+          "tight",
+          "rhythmic",
+          "bold"
+        ],
+        "when": "each word",
+        "note": "A tick or short impact per word; a riser underneath until the line lands."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-fill-frame",
+      "preview": "library/motion/opener-fill-frame.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        0.43,
+        0.85,
+        1.27,
+        1.68
+      ],
+      "planned_note": "Every word is a hard cut, meant. The only full-frame colour change is the starred word on the accent fill (two changes in the preview, at most two in a second).",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-sudden-stop",
+      "family": "opener",
+      "component": "SuddenStop",
+      "file": "engine/src/kit/openers/SuddenStop.tsx",
+      "does": "Rows of the line rush across the frame, motion blurred, and brake to a dead stop on the line; an accent bar snaps under it.",
+      "use_when": "Hooks about speed, or a pain that keeps going (late invoices, a flooded inbox).",
+      "avoid_when": "Slow, calm brands; frames where the line is much wider than the frame (the ribbon gets crowded).",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "fast",
+          "heavy",
+          "tense"
+        ],
+        "when": "start",
+        "note": "A whoosh into a hard impact at about 1.3 s, where the line stops."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-sudden-stop",
+      "preview": "library/motion/opener-sudden-stop.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "flashes.py passes; the blurred rush covers 20% of the frame in cells that flicker (limit 25%), which is the closest of the twelve.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-at-the-lens",
+      "family": "opener",
+      "component": "AtTheLens",
+      "file": "engine/src/kit/openers/AtTheLens.tsx",
+      "does": "A brand-coloured card flies at the camera, grows past the frame and dissolves, and the line is pulled into focus behind it as it passes.",
+      "use_when": "Product hooks: the card carries the product's name or a result.",
+      "avoid_when": "Brands with no card-like product; when the first frame must already show the line (it appears at about 1 s).",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "label": "the card's words (the product or result)",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "rising",
+          "heavy",
+          "bold"
+        ],
+        "when": "start",
+        "note": "A rising whoosh that peaks as the card passes, a soft impact as the line lands."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-at-the-lens",
+      "preview": "library/motion/opener-at-the-lens.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "At the peak the card covers the frame for a few frames, then fades over about 0.15 s; flashes.py passes.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-number-slam",
+      "family": "opener",
+      "component": "NumberSlam",
+      "file": "engine/src/kit/openers/NumberSlam.tsx",
+      "does": "The old figure slams down to size, is struck through, and the new figure slams in below. A short shake as it lands is available with `shake` (off by default; needs the owner's yes).",
+      "use_when": "Proof and outcome hooks built on one before-and-after number.",
+      "avoid_when": "Hooks with no figure; claims the film cannot back with the same numbers.",
+      "technique": null,
+      "props": {
+        "from": "the old figure, for example \"3 hours\"",
+        "to": "the new figure, for example \"3 *minutes*\"",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)",
+        "shake": "true adds a short shake as the new figure lands. Off by default: needs the owner's yes."
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "hard",
+          "bold",
+          "rhythmic"
+        ],
+        "when": "each slam",
+        "note": "An impact on each slam (at 0 s and about 1.1 s) and a soft tick as the strike draws."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-number-slam",
+      "preview": "library/motion/opener-number-slam.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18",
+      "house_rule": "The short shake is off by default (prop `shake`); screen shakes are banned unless the owner says yes for the film (03-transitions.md)."
+    },
+    {
+      "name": "opener-split-screen",
+      "family": "opener",
+      "component": "SplitScreen",
+      "file": "engine/src/kit/openers/SplitScreen.tsx",
+      "does": "Two halves (before in the soft fill, after in the accent colour) slide to meet while the hook line sits on a solid plate across the seam.",
+      "use_when": "Comparison hooks: before and after at once.",
+      "avoid_when": "When the two states cannot each be said in a few words; frames where a plate of text over two colours looks heavy.",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "before": "label of the first half",
+        "after": "label of the second half",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "soft",
+          "clean"
+        ],
+        "when": "start",
+        "note": "A soft whoosh as the seam moves, an impact as the plate settles."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-split-screen",
+      "preview": "library/motion/opener-split-screen.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "The preview is 1.2 MB: the flat accent half carries film grain.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-strike-out",
+      "family": "opener",
+      "component": "StrikeOut",
+      "file": "engine/src/kit/openers/StrikeOut.tsx",
+      "does": "The old belief is on screen from the first frame and is struck through row by row; the claim rises in below it, word by word.",
+      "use_when": "Contrarian hooks: say what people believe, then the opposite.",
+      "avoid_when": "Hooks with no belief to strike; two long lines (they stack tall in a 9:16 frame).",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "old": "what people believe, a short line",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "foley",
+        "feel": [
+          "short",
+          "tight",
+          "gritty"
+        ],
+        "when": "start",
+        "note": "A short scratch as the strike draws, an impact as the claim lands."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-strike-out",
+      "preview": "library/motion/opener-strike-out.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-question",
+      "family": "opener",
+      "component": "Question",
+      "file": "engine/src/kit/openers/Question.tsx",
+      "does": "A question builds word by word with a caret after the newest word; the last word lands in the accent voice, pulses once, and the caret keeps blinking.",
+      "use_when": "Question hooks; tutorials and problem-aware viewers.",
+      "avoid_when": "Statements; lines longer than about seven words.",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "gap": "seconds between words (default about 0.28)",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "click",
+        "feel": [
+          "soft",
+          "light",
+          "rhythmic"
+        ],
+        "when": "each word",
+        "note": "A soft tick per word and a pop on the last."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-question",
+      "preview": "library/motion/opener-question.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-glitch-cut",
+      "family": "opener",
+      "component": "GlitchCut",
+      "file": "engine/src/kit/openers/GlitchCut.tsx",
+      "does": "A digital interruption: the line torn into slices with a colour ghost and accent bars, decaying to the clean line, with one small hiccup at about 2 s.",
+      "use_when": "Pattern-interrupt hooks about things breaking or being fixed.",
+      "avoid_when": "Calm or premium brands; viewers sensitive to flicker (the stepped changes are the reason for the flash check).",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "glitch",
+        "feel": [
+          "digital",
+          "gritty",
+          "fast"
+        ],
+        "when": "start",
+        "note": "A glitch burst on the tear (0 to 0.8 s) and a short one on the hiccup."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-glitch-cut",
+      "preview": "library/motion/opener-glitch-cut.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        0.08,
+        0.15,
+        0.22,
+        0.3,
+        0.37,
+        0.43,
+        0.5,
+        0.58,
+        0.72,
+        0.82,
+        2.08,
+        2.15
+      ],
+      "planned_note": "The tearing changes 14 times a second on purpose (stepped, like a damaged signal); the steps are the planned instant changes. Nothing changes the whole frame, and flashes.py passes (4 flashes a second at most, 0.5% of the frame).",
+      "added_on": "2026-11-18",
+      "house_rule": "Banned by default in knowledge/craft/03-transitions.md (the template-pack glitch look). Use only with the owner's yes for this film, recorded in job.json."
+    },
+    {
+      "name": "opener-spotlight",
+      "family": "opener",
+      "component": "Spotlight",
+      "file": "engine/src/kit/openers/Spotlight.tsx",
+      "does": "The frame starts dark; a soft pool of light is already travelling in from the edge onto the line and widens until the frame is lit.",
+      "use_when": "Curiosity and reveal hooks ('everyone is missing this').",
+      "avoid_when": "Brands with a very light, airy look; films whose next shot is bright (the vignette lingers about 2.5 s).",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "riser",
+        "feel": [
+          "dark",
+          "rising",
+          "tense"
+        ],
+        "when": "start",
+        "note": "A low riser while the light moves, a soft hit as it reaches the line."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-spotlight",
+      "preview": "library/motion/opener-spotlight.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-notification-drop",
+      "family": "opener",
+      "component": "NotificationDrop",
+      "file": "engine/src/kit/openers/NotificationDrop.tsx",
+      "does": "A large phone-style notification drops in carrying the hook, with two older ones stacked behind, and buzzes sideways once on landing.",
+      "use_when": "Problem and outcome hooks that read as a message to the viewer ('Queue at zero, Friday').",
+      "avoid_when": "Hooks that are not something a phone would say; brands that avoid imitating phone interfaces.",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "app": "the app name in the header (the brand's name by default)",
+        "when": "the time stamp (default \"now\")",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "chime",
+        "feel": [
+          "bright",
+          "short",
+          "clean"
+        ],
+        "when": "land",
+        "note": "A notification chime or pop on landing, a faint buzz under the wiggle."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-notification-drop",
+      "preview": "library/motion/opener-notification-drop.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "opener-whip-in",
+      "family": "opener",
+      "component": "WhipIn",
+      "file": "engine/src/kit/openers/WhipIn.tsx",
+      "does": "A whip-pan: an accent panel whips out to the left while the line whips in from the right and stops dead, both motion blurred.",
+      "use_when": "Fast, energetic openers; hooks that need no build-up.",
+      "avoid_when": "When frame 0 must show the line (it arrives at about 0.3 s); calm brands.",
+      "technique": null,
+      "props": {
+        "line": "the hook line, up to seven words; star a word (*word*) for the accent voice",
+        "at": "seconds on the scene clock when it starts (0 for the first frame of the film)",
+        "out": "seconds when it hands over; it fades in a short exit while the film runs under it",
+        "next": "the film that follows; its own clock starts at 0 on `out`",
+        "size": "the written line, per cent of the frame's short side (default 12.5, never below 8.2)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "fast",
+          "bold"
+        ],
+        "when": "start",
+        "note": "A whoosh across, a hit as the line stops."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-opener-whip-in",
+      "preview": "library/motion/opener-whip-in.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-mesh-gradient",
+      "family": "shader",
+      "component": "MeshGradient",
+      "file": "engine/src/kit/shaders/MeshGradient.tsx",
+      "does": "Four soft fields of the page, soft, accent and second colours flow slowly into one another across the whole frame. Needs WebGL: render with --gl=angle.",
+      "use_when": "The all-purpose premium backdrop under a headline, an offer or a product window; calm openings and end cards.",
+      "avoid_when": "A film that already sits on a busy capture, or a brand whose page and soft colours are almost the same (it then reads as a flat page).",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), mesh gradient",
+      "composition": "move-shader-mesh-gradient",
+      "preview": "library/motion/shader-mesh-gradient.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-grain-gradient",
+      "family": "shader",
+      "component": "GrainGradient",
+      "file": "engine/src/kit/shaders/GrainGradient.tsx",
+      "does": "Large soft blobs of the soft and accent colours drift over a pale tint of the soft colour, with a fine grain of their own, so the whole frame is coloured. Needs WebGL: render with --gl=angle.",
+      "use_when": "Warmer, more tactile films: handmade goods, studios, editorial launches.",
+      "avoid_when": "Very clean interface films where grain reads as dirt; small or heavily compressed exports (grain costs file size).",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), grain gradient",
+      "composition": "move-shader-grain-gradient",
+      "preview": "library/motion/shader-grain-gradient.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-god-rays",
+      "family": "shader",
+      "component": "GodRays",
+      "file": "engine/src/kit/shaders/GodRays.tsx",
+      "does": "Soft beams of brand light fall from just above the top edge and turn slowly, with a gentle bloom. Needs WebGL: render with --gl=angle.",
+      "use_when": "A reveal, a launch title, the 'big moment' of a film; strongest on the dark page.",
+      "avoid_when": "Calm explainers or long holds behind body text; on the light page the beams are pale and read as a soft haze.",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), god rays",
+      "composition": "move-shader-god-rays",
+      "preview": "library/motion/shader-god-rays.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-warp",
+      "family": "shader",
+      "component": "Warp",
+      "file": "engine/src/kit/shaders/Warp.tsx",
+      "does": "Broad bands of the page, soft and accent colours fold slowly through one another like silk; the middle keeps under half the contrast of the edges. Needs WebGL: render with --gl=angle.",
+      "use_when": "Product films that want more movement than a gradient but nothing busy; section openers.",
+      "avoid_when": "Under small type or a dense card: the folds have soft ridges that compete with fine detail.",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), warp",
+      "composition": "move-shader-warp",
+      "preview": "library/motion/shader-warp.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-smoke-ring",
+      "family": "shader",
+      "component": "SmokeRing",
+      "file": "engine/src/kit/shaders/SmokeRing.tsx",
+      "does": "A slow ring of accent-coloured smoke circles the middle of the frame, with the page clear inside it. Needs WebGL: render with --gl=angle.",
+      "use_when": "One centred word, a number or a logo: the type sits in the ring's clear centre.",
+      "avoid_when": "Long lines or two-line headlines (they cross the ring), and layouts with content off centre, and lines wider than about a third of the frame.",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), smoke ring",
+      "composition": "move-shader-smoke-ring",
+      "preview": "library/motion/shader-smoke-ring.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-neuro-noise",
+      "family": "shader",
+      "component": "NeuroNoise",
+      "file": "engine/src/kit/shaders/NeuroNoise.tsx",
+      "does": "Fine glowing threads of the accent and second colours drift like a network; the middle keeps a third of their strength. Needs WebGL: render with --gl=angle.",
+      "use_when": "AI, data and 'how it works' films; strongest on the dark page.",
+      "avoid_when": "Calm or human stories; under small type (thin bright threads cut through letters even at reduced strength).",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), neuro noise",
+      "composition": "move-shader-neuro-noise",
+      "preview": "library/motion/shader-neuro-noise.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-swirl",
+      "family": "shader",
+      "component": "Swirl",
+      "file": "engine/src/kit/shaders/Swirl.tsx",
+      "does": "Broad soft bands of the soft and accent colours turn slowly round the middle of the frame, like stirred paint. Needs WebGL: render with --gl=angle.",
+      "use_when": "A launch or title card that wants a gentle pull towards the centre.",
+      "avoid_when": "Long holds or calm explainers (the turning reads as a vortex if watched for long), or anything off centre.",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), swirl",
+      "composition": "move-shader-swirl",
+      "preview": "library/motion/shader-swirl.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shader-simplex-noise",
+      "family": "shader",
+      "component": "SimplexNoise",
+      "file": "engine/src/kit/shaders/SimplexNoise.tsx",
+      "does": "Broad fields in faint contour steps from the page through the soft colour to a tint of the accent drift like a contour map. Needs WebGL: render with --gl=angle.",
+      "use_when": "Data, maps, planning and 'see everything' films; a calm graphic texture.",
+      "avoid_when": "Under a chart or a map that has contours of its own.",
+      "technique": null,
+      "props": {
+        "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
+        "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
+        "quiet": "true lowers the contrast further, for a shader under type for the whole shot. Optional.",
+        "at": "Seconds on the scene clock to fade it up from the page colour. Optional: without it, it is simply there.",
+        "out": "Seconds to fade it back to the page colour. Optional.",
+        "seed": "A number that moves where its clock starts, so two films do not match. Optional."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Paper Shaders (paper-design/shaders, Apache-2.0), simplex noise",
+      "composition": "move-shader-simplex-noise",
+      "preview": "library/motion/shader-simplex-noise.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "mask-rise",
+      "family": "type",
+      "component": "MaskRise",
+      "file": "engine/src/kit/type/MaskRise.tsx",
+      "does": "Each word rises into view from behind its own edge, as if from a slot, one after another; the exit drops the text back behind the edge, faster.",
+      "use_when": "Titles and claims in confident films; the classic, clean title arrival.",
+      "avoid_when": "Calm films that want a softer arrival (fade-up, blur-in), or a line that must be read the instant it appears.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several. Star one word (*word*) to set it in the accent voice.",
+        "by": "\"word\" (default), \"letter\" or \"line\": what rises as one piece.",
+        "order": "\"start\" (default), \"end\", \"centre\", \"edges\" or \"random\": the order pieces rise in.",
+        "at": "Seconds on the scene clock when the first piece starts.",
+        "out": "Seconds when it leaves. Optional.",
+        "size": "Type size as a percentage of frame height; shrunk to fit narrow frames. Optional.",
+        "align": "\"left\", \"center\" or \"right\". Optional.",
+        "colours": "Colour roles by line, e.g. [\"ink\", \"accent\"]. Optional: ink, then second.",
+        "style": "Extra CSS for placing it. Optional."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "short"
+        ],
+        "when": "start",
+        "note": "One soft swish for the line, not one per word."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"mask reveal\" (MIT)",
+      "composition": "move-mask-rise",
+      "preview": "library/motion/mask-rise.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "mask-rise-letters",
+      "family": "type",
+      "component": "MaskRise",
+      "file": "engine/src/kit/type/MaskRise.tsx",
+      "does": "The mask rise letter by letter, here from the centre outwards (by=\"letter\", order=\"centre\").",
+      "use_when": "A short word or name that should feel built, in confident and hype films.",
+      "avoid_when": "Lines of more than about four words: letter by letter takes too long to read.",
+      "technique": null,
+      "props": {
+        "by": "\"letter\"",
+        "order": "\"centre\"",
+        "other": "As mask-rise."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "short",
+          "bright"
+        ],
+        "when": "start",
+        "note": null
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"mask reveal\" (MIT)",
+      "composition": "move-mask-rise-letters",
+      "preview": "library/motion/mask-rise-letters.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "mask-rise-lines",
+      "family": "type",
+      "component": "MaskRise",
+      "file": "engine/src/kit/type/MaskRise.tsx",
+      "does": "The mask rise line by line: each line rises whole, a quick length after the one before.",
+      "use_when": "A list of two to four short lines (steps, benefits).",
+      "avoid_when": "More than four lines on screen at once.",
+      "technique": null,
+      "props": {
+        "by": "\"line\"",
+        "other": "As mask-rise."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "short"
+        ],
+        "when": "each line",
+        "note": "Quiet: a third of the voice."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"mask reveal\" (MIT)",
+      "composition": "move-mask-rise-lines",
+      "preview": "library/motion/mask-rise-lines.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "fade-up",
+      "family": "type",
+      "component": "FadeUp",
+      "file": "engine/src/kit/type/FadeUp.tsx",
+      "does": "Words fade in and rise a short way, one after another. The quietest arrival.",
+      "use_when": "Calm, confident copy; a line that should simply be there, with no show.",
+      "avoid_when": "A headline that needs punch or a hook in the first second.",
+      "technique": null,
+      "props": {
+        "lines": "lines: a string or an array of lines; star a word (*word*) for the accent voice",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "size": "type size, per cent of frame height; shrinks to fit narrow frames",
+        "align": "left | center | right",
+        "colours": "colour role per line",
+        "style": "extra style for the text block",
+        "by": "word | line (default word)"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "airy",
+          "subtle",
+          "short"
+        ],
+        "when": "start",
+        "note": "A faint air under the first word; no per-word sound."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic (MIT), \"fade up\"",
+      "composition": "move-fade-up",
+      "preview": "library/motion/fade-up.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "letter-cascade",
+      "family": "type",
+      "component": "LetterCascade",
+      "file": "engine/src/kit/type/LetterCascade.tsx",
+      "does": "Letters fade in one after another with a slight rise. One move for left-to-right, random-order and centre-out cascades.",
+      "use_when": "A short title or number where the letters themselves are the show; centre-out for a symmetrical title, random for a lively one.",
+      "avoid_when": "Long sentences (too slow to read) or small type.",
+      "technique": null,
+      "props": {
+        "lines": "lines: a string or an array of lines; star a word (*word*) for the accent voice",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "size": "type size, per cent of frame height; shrinks to fit narrow frames",
+        "align": "left | center | right",
+        "colours": "colour role per line",
+        "style": "extra style for the text block",
+        "order": "start | end | centre | edges | random (default start); the demo shows centre"
+      },
+      "sound": {
+        "group": "chime",
+        "feel": [
+          "soft",
+          "light",
+          "airy",
+          "rhythmic"
+        ],
+        "when": "each letter",
+        "note": "Very quiet, only on the first few letters, or one soft sweep at the start."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic (MIT), \"letter cascade\"",
+      "composition": "move-letter-cascade",
+      "preview": "library/motion/letter-cascade.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "soft-wipe",
+      "family": "type",
+      "component": "SoftWipe",
+      "file": "engine/src/kit/type/SoftWipe.tsx",
+      "does": "A soft-edged mask sweeps across each line from the reading side and writes it on.",
+      "use_when": "A gentle write-on for a statement or a two-line headline; premium, quiet films.",
+      "avoid_when": "When a hard, graphic reveal is wanted (use block-reveal or mask-rise).",
+      "technique": null,
+      "props": {
+        "lines": "lines: a string or an array of lines; star a word (*word*) for the accent voice",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "size": "type size, per cent of frame height; shrinks to fit narrow frames",
+        "align": "left | center | right",
+        "colours": "colour role per line",
+        "style": "extra style for the text block",
+        "direction": "ltr | rtl (default ltr)"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "airy",
+          "slow",
+          "premium"
+        ],
+        "when": "each line",
+        "note": "One soft swish per line, matched to the sweep."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic (MIT), \"soft edge write-on\"",
+      "composition": "move-soft-wipe",
+      "preview": "library/motion/soft-wipe.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "blur-sweep",
+      "family": "type",
+      "component": "BlurSweep",
+      "file": "engine/src/kit/type/BlurSweep.tsx",
+      "does": "A band of blur passes along the line: sharp and in place behind it, not yet there ahead of it.",
+      "use_when": "A single line that should be revealed with a glint of motion; one-line headlines and slogans.",
+      "avoid_when": "Several lines at once, or long copy: the band reads best along one line.",
+      "technique": null,
+      "props": {
+        "lines": "lines: a string or an array of lines; star a word (*word*) for the accent voice",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "size": "type size, per cent of frame height; shrinks to fit narrow frames",
+        "align": "left | center | right",
+        "colours": "colour role per line",
+        "style": "extra style for the text block"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "soft",
+          "airy",
+          "short"
+        ],
+        "when": "each line",
+        "note": "A short airy pass, as the band travels."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic (MIT), \"blur sweep\"",
+      "composition": "move-blur-sweep",
+      "preview": "library/motion/blur-sweep.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "focus-in",
+      "family": "type",
+      "component": "FocusIn",
+      "file": "engine/src/kit/type/FocusIn.tsx",
+      "does": "The whole text starts slightly large and soft and pulls into focus and size together, like a lens focusing.",
+      "use_when": "A calm hero statement where the text is the one thing on screen; film-like openings.",
+      "avoid_when": "Per-word emphasis (BlurIn does it word by word) or text that must be readable in the first half second.",
+      "technique": null,
+      "props": {
+        "lines": "lines: a string or an array of lines; star a word (*word*) for the accent voice",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "size": "type size, per cent of frame height; shrinks to fit narrow frames",
+        "align": "left | center | right",
+        "colours": "colour role per line",
+        "style": "extra style for the text block"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "calm",
+          "premium"
+        ],
+        "when": "start",
+        "note": "A soft swell that lands as the text sharpens."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio original, after the focus pull in film",
+      "composition": "move-focus-in",
+      "preview": "library/motion/focus-in.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "outline-fill",
+      "family": "type",
+      "component": "OutlineFill",
+      "file": "engine/src/kit/type/OutlineFill.tsx",
+      "does": "Letters appear as outlines in ink, then fill from the bottom up, staggered.",
+      "use_when": "A short bold headline or number; a drawn-then-filled title.",
+      "avoid_when": "Thin type voices (the outline vanishes), long lines, small sizes. Where letters touch (tight tracking), the outline shows a small overlap line.",
+      "technique": null,
+      "props": {
+        "lines": "lines: a string or an array of lines; star a word (*word*) for the accent voice",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "size": "type size, per cent of frame height; shrinks to fit narrow frames",
+        "align": "left | center | right",
+        "colours": "colour role per line",
+        "style": "extra style for the text block"
+      },
+      "sound": {
+        "group": "pop",
+        "feel": [
+          "soft",
+          "playful",
+          "rhythmic",
+          "short"
+        ],
+        "when": "each letter",
+        "note": "Optional: a faint tick as each letter fills; silence also works."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio original",
+      "composition": "move-outline-fill",
+      "preview": "library/motion/outline-fill.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "giant-crop",
+      "family": "type",
+      "component": "GiantCrop",
+      "file": "engine/src/kit/type/GiantCrop.tsx",
+      "does": "One word so large the frame crops it rises slowly through the frame as a statement backdrop; sized from frame width so it crops the same way in every size.",
+      "use_when": "An opening or a section statement where one word is the whole idea; a backdrop (lower `strength`) behind smaller type.",
+      "avoid_when": "Words longer than about ten letters (the crop makes them hard to read) or more than one idea.",
+      "technique": null,
+      "props": {
+        "lines": "the word (only the first line is used)",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "span": "word width as a share of frame width (default 1.16)",
+        "strength": "opacity, 0 to 1 (default 1)",
+        "colours": "colour role (default ink)",
+        "style": "extra style"
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "soft",
+          "deep",
+          "slow",
+          "rising"
+        ],
+        "when": "start",
+        "note": "A low, slow swell under the rise; no hit."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio original",
+      "composition": "move-giant-crop",
+      "preview": "library/motion/giant-crop.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "block-reveal",
+      "family": "type",
+      "component": "BlockReveal",
+      "file": "engine/src/kit/type/BlockReveal.tsx",
+      "does": "A solid block in the accent colour wipes across each line and, as it leaves, uncovers the text.",
+      "use_when": "Section titles and lower-third headlines; a graphic, confident reveal.",
+      "avoid_when": "Calm, quiet films (the block is loud) and accent colours that clash with the page.",
+      "technique": null,
+      "props": {
+        "lines": "lines: a string or an array of lines; star a word (*word*) for the accent voice",
+        "at": "seconds when it starts",
+        "out": "seconds when it leaves (optional)",
+        "size": "type size, per cent of frame height; shrinks to fit narrow frames",
+        "align": "left | center | right",
+        "colours": "colour role per line",
+        "style": "extra style for the text block"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "bold",
+          "tight",
+          "short"
+        ],
+        "when": "each line",
+        "note": "One crisp swish per line, at the block's travel."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic (MIT), \"block reveal\"",
+      "composition": "move-block-reveal",
+      "preview": "library/motion/block-reveal.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "slam",
+      "family": "type",
+      "component": "Slam",
+      "file": "engine/src/kit/type/Slam.tsx",
+      "does": "An oversized word or short line drops in from larger than the frame and lands hard with a tiny settle, blurred while fast. The exit punches it larger and out.",
+      "use_when": "A single big word or short line that should hit: launch day, a price, a number.",
+      "avoid_when": "Long lines, calm or premium films, more than one or two lines.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "from": "Starting scale (default 3.2)."
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "heavy",
+          "hard",
+          "short",
+          "bold"
+        ],
+        "when": "land",
+        "note": "Lands about a quarter second after the cue; line the hit up with the landing."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-slam",
+      "preview": "library/motion/slam.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "word-pop",
+      "family": "type",
+      "component": "WordPop",
+      "file": "engine/src/kit/type/WordPop.tsx",
+      "does": "Words pop in one by one from a small scale with the preset's overshoot, each about its own centre. The exit shrinks and fades them together.",
+      "use_when": "Short punchy lines and offers, friendly or confident films.",
+      "avoid_when": "Long sentences; calm preset (no overshoot, so it reads as a plain scale-in).",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "from": "Starting scale, a share of full size (default 0.35).",
+        "order": "start, end, centre, edges or random."
+      },
+      "sound": {
+        "group": "pop",
+        "feel": [
+          "light",
+          "playful",
+          "short",
+          "bright"
+        ],
+        "when": "each word",
+        "note": "Soft pop on each word; thin out to every other word for long lines."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-word-pop",
+      "preview": "library/motion/word-pop.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "drop-bounce",
+      "family": "type",
+      "component": "DropBounce",
+      "file": "engine/src/kit/type/DropBounce.tsx",
+      "does": "Letters fall from above one after another, bounce once into place and stay. The exit lets them fall away through the bottom in turn.",
+      "use_when": "One short, playful line a film.",
+      "avoid_when": "Serious or premium films; more than one line a film; long lines.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "order": "start, end, centre, edges or random."
+      },
+      "sound": {
+        "group": "pop",
+        "feel": [
+          "playful",
+          "light",
+          "rhythmic",
+          "short"
+        ],
+        "when": "each letter",
+        "note": "A light tap per letter, or one thud when the line lands."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-drop-bounce",
+      "preview": "library/motion/drop-bounce.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "flip-up",
+      "family": "type",
+      "component": "FlipUp",
+      "file": "engine/src/kit/type/FlipUp.tsx",
+      "does": "Words or letters stand up from lying flat, tipping about their bottom edge in perspective. The exit folds them back down.",
+      "use_when": "Lists and step lines (Plan it. Build it. Ship it.), crisp product films.",
+      "avoid_when": "Very long lines; letters on long text.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "by": "word or letter (default word).",
+        "order": "start, end, centre, edges or random."
+      },
+      "sound": {
+        "group": "click",
+        "feel": [
+          "tight",
+          "clean",
+          "short",
+          "digital"
+        ],
+        "when": "each word",
+        "note": "A short click or tick per word."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-flip-up",
+      "preview": "library/motion/flip-up.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "arc-swing",
+      "family": "type",
+      "component": "ArcSwing",
+      "file": "engine/src/kit/type/ArcSwing.tsx",
+      "does": "Words swing up on an arc about the left end of their baseline and land upright, with a little blur while fast. The exit swings them up and away.",
+      "use_when": "Energetic headlines of two to six words.",
+      "avoid_when": "Long lines (the swing crowds the line below); letters.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "angle": "Degrees below the baseline they start (default 65).",
+        "order": "start, end, centre, edges or random."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "light",
+          "fast",
+          "airy"
+        ],
+        "when": "each word",
+        "note": "A short swish per word, softly."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-arc-swing",
+      "preview": "library/motion/arc-swing.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "scatter-assemble",
+      "family": "type",
+      "component": "ScatterAssemble",
+      "file": "engine/src/kit/type/ScatterAssemble.tsx",
+      "does": "Letters start scattered over the frame at seeded places and tilts, then fly into the line in shuffled order and lock in. The exit throws them back out.",
+      "use_when": "A title build that should feel busy and energetic, one short line.",
+      "avoid_when": "Long lines; calm films; anything that must be read while it builds.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "order": "start, end, centre, edges or random (default random).",
+        "seed": "Changes the scatter (default 5)."
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "fast",
+          "bright",
+          "rising"
+        ],
+        "when": "start",
+        "note": "One rising whoosh as the letters gather; the landing is a short tick."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-scatter-assemble",
+      "preview": "library/motion/scatter-assemble.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "from-lens",
+      "family": "type",
+      "component": "FromLens",
+      "file": "engine/src/kit/type/FromLens.tsx",
+      "does": "The line comes from behind the viewer: huge, soft and see-through, shrinking to its place as it sharpens. The exit sends it back into the distance.",
+      "use_when": "A big claim or the title of a film, one or two lines.",
+      "avoid_when": "Long lines; films without depth or camera moves.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "from": "Starting scale (default 4)."
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "deep",
+          "rising",
+          "wide"
+        ],
+        "when": "start",
+        "note": "A soft whoosh that peaks as the text lands."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-from-lens",
+      "preview": "library/motion/from-lens.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "smear-in",
+      "family": "type",
+      "component": "SmearIn",
+      "file": "engine/src/kit/type/SmearIn.tsx",
+      "does": "Words slide in sideways very fast with a strong directional smear and lean, which clears as they stop. The exit carries them on the same way and out.",
+      "use_when": "Hype and quick-cut films, two short lines.",
+      "avoid_when": "Calm or premium films; long lines.",
+      "technique": null,
+      "props": {
+        "lines": "One line or several; star a word (*word*) for the accent voice.",
+        "at": "Seconds when it starts.",
+        "out": "Seconds when it leaves (optional).",
+        "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
+        "from": "left, right or alternate (each line the opposite side).",
+        "strength": "Scale of the smear (default 2.2).",
+        "order": "start, end, centre, edges or random."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "fast",
+          "bold",
+          "tight"
+        ],
+        "when": "each word",
+        "note": "A hard, short swish per word."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-smear-in",
+      "preview": "library/motion/smear-in.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "human-type",
+      "family": "type",
+      "component": "HumanType",
+      "file": "engine/src/kit/type/HumanType.tsx",
+      "does": "Large film type typed at a human rhythm: uneven gaps between keys, a longer pause after spaces and punctuation, and a caret that is solid while keys land and blinks while it waits.",
+      "use_when": "A headline that should feel written live; a line that wants a human touch.",
+      "avoid_when": "A search field or prompt box (use TypeOn); very long text.",
+      "technique": null,
+      "props": {
+        "lines": "one line or several; *word* in the accent voice",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "seed": "changes the rhythm",
+        "caret": "true by default",
+        "size": "per cent of frame height"
+      },
+      "sound": {
+        "group": "click",
+        "feel": [
+          "soft",
+          "short",
+          "digital"
+        ],
+        "when": "each letter",
+        "note": "Keys are uneven, so a sound per key should follow the move's own timing, or use one soft bed."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"typewriter\" (MIT)",
+      "composition": "move-human-type",
+      "preview": "library/motion/human-type.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "Each key is an instant change of one letter, at seeded uneven times from about 0.4 s on; the caret blinks softly. Smoothness found no unplanned jumps without a list, so none is listed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "retype",
+      "family": "type",
+      "component": "Retype",
+      "file": "engine/src/kit/type/Retype.tsx",
+      "does": "Types a phrase, holds it for a reading pause, deletes back to a point (about twice as fast as it typed) and types the replacement, so a claim corrects itself.",
+      "use_when": "A before/after claim in one line ('Reports in hours' becoming 'Reports in minutes').",
+      "avoid_when": "More than one line; a replacement that shares nothing with the first phrase.",
+      "technique": null,
+      "props": {
+        "text": "the first phrase",
+        "to": "the replacement",
+        "keep": "characters kept, default the shared start",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "seed": "rhythm"
+      },
+      "sound": {
+        "group": "click",
+        "feel": [
+          "soft",
+          "short",
+          "digital"
+        ],
+        "when": "each letter",
+        "note": "Backspacing can take a lighter, faster click."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"typewriter\" (MIT)",
+      "composition": "move-retype",
+      "preview": "library/motion/retype.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "Typing and deleting are instant changes of one letter each; none was flagged by the smoothness check.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "stream-answer",
+      "family": "type",
+      "component": "StreamAnswer",
+      "file": "engine/src/kit/type/StreamAnswer.tsx",
+      "does": "An assistant's answer arrives in chunks of one to three words, each fading in softly, wrapping inside a column, with a small block cursor after the last word.",
+      "use_when": "Showing a product that answers in words; chat and copilot demos.",
+      "avoid_when": "Headline type; text that must be read at a glance.",
+      "technique": null,
+      "props": {
+        "lines": "one paragraph per entry",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "width": "share of frame width for the column",
+        "size": "Type size, per cent of frame height. Default 3.8, lifted by a third in square-ish frames (1:1, 4:5)."
+      },
+      "sound": {
+        "group": "interface",
+        "feel": [
+          "soft",
+          "subtle",
+          "digital"
+        ],
+        "when": "each chunk",
+        "note": "A very quiet tick per chunk, or silent."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"AI text stream\" (MIT)",
+      "composition": "move-stream-answer",
+      "preview": "library/motion/stream-answer.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "scramble-lock",
+      "family": "type",
+      "component": "ScrambleLock",
+      "file": "engine/src/kit/type/ScrambleLock.tsx",
+      "does": "Every letter cycles through random characters of its own kind and locks onto its real letter one after another, from the start or from the centre.",
+      "use_when": "A title that decodes; security, data and AI products.",
+      "avoid_when": "Long sentences; slow, calm brands.",
+      "technique": null,
+      "props": {
+        "lines": "film type",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "order": "start or centre",
+        "seed": "changes the characters"
+      },
+      "sound": {
+        "group": "glitch",
+        "feel": [
+          "digital",
+          "short",
+          "tight"
+        ],
+        "when": "start",
+        "note": "One short digital burst while it cycles; a small tick as the last letter locks."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"text scramble\" (MIT)",
+      "composition": "move-scramble-lock",
+      "preview": "library/motion/scramble-lock.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "Characters change every half tick and each lock is an instant change, all small areas; smoothness found no unplanned jumps.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "split-flap",
+      "family": "type",
+      "component": "SplitFlap",
+      "file": "engine/src/kit/type/SplitFlap.tsx",
+      "does": "Every letter is a flip tile on a departure board: it flips through the alphabet, the top half falling over the bottom, until it shows its own letter; tiles start a beat apart. Each tile has a faint seam that disappears once it has settled.",
+      "use_when": "Times, dates, status and short announcements ('Ships by Friday').",
+      "avoid_when": "Long text; lower-case copy (letters show in capitals); brands that are soft and organic.",
+      "technique": null,
+      "props": {
+        "lines": "film type",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "order": "start (default), end, centre, edges or random",
+        "seed": "flips per tile"
+      },
+      "sound": {
+        "group": "click",
+        "feel": [
+          "hard",
+          "short",
+          "rhythmic"
+        ],
+        "when": "each letter",
+        "note": "A clatter bed that thins out as tiles land."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"split flap\" (MIT)",
+      "composition": "move-split-flap",
+      "preview": "library/motion/split-flap.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "Each flip is a quick turn of the tile; the changes of letter are instant. Flashes: up to 6 flashes a second over about 1% of the frame.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "drum-roll",
+      "family": "type",
+      "component": "DrumRoll",
+      "file": "engine/src/kit/type/DrumRoll.tsx",
+      "does": "Every letter is a drum that rolls up through the alphabet and stops on its own letter, one after another; blurred while it spins, sharp when it stops.",
+      "use_when": "A name or a word that is dialled in; games, offers, reveals.",
+      "avoid_when": "Long lines; text that must stay readable throughout.",
+      "technique": null,
+      "props": {
+        "lines": "film type",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "order": "start (default) or others",
+        "seed": "spin length"
+      },
+      "sound": {
+        "group": "foley",
+        "feel": [
+          "light",
+          "rhythmic",
+          "fast"
+        ],
+        "when": "each letter",
+        "note": "A ratchet that slows into each stop."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"slot text\" (MIT)",
+      "composition": "move-drum-roll",
+      "preview": "library/motion/drum-roll.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "planned_note": "Flashes: up to 9 flashes a second over about 4% of the frame, within the limit (25% of the frame).",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "pixel-decode",
+      "family": "type",
+      "component": "PixelDecode",
+      "file": "engine/src/kit/type/PixelDecode.tsx",
+      "does": "A line resolves from coarse blocks to sharp type in six steps, as an image does when it loads. An SVG filter on the real text, so it needs no canvas.",
+      "use_when": "A digital reveal that does not move; data and image products.",
+      "avoid_when": "Small type (the first steps hide most of the line); more than three lines.",
+      "technique": null,
+      "props": {
+        "lines": "film type, a line after the first starts a little later",
+        "at": "seconds",
+        "out": "seconds, optional"
+      },
+      "sound": {
+        "group": "glitch",
+        "feel": [
+          "digital",
+          "short",
+          "clean"
+        ],
+        "when": "start",
+        "note": "Six quick steps can take a short rising chirp."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"pixel reveal\" (MIT)",
+      "composition": "move-pixel-decode",
+      "preview": "library/motion/pixel-decode.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        0.4,
+        0.55,
+        0.7,
+        0.85,
+        1.0,
+        1.15,
+        1.3
+      ],
+      "planned_note": "Each of the six block sizes appears as an instant change, about 0.15 s apart from 0.4 s; the second line steps about 0.13 s later.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "glitch-in",
+      "family": "type",
+      "component": "GlitchIn",
+      "file": "engine/src/kit/type/GlitchIn.tsx",
+      "does": "The line arrives through six steps of digital glitch: a few bands slide sideways and a thin split in the accent and second colours, then it settles clean; the exit glitches for three steps and fades.",
+      "use_when": "A hard, techy opening; breaking-news or error-themed lines.",
+      "avoid_when": "Calm or luxury brands; anyone sensitive to flicker.",
+      "technique": null,
+      "props": {
+        "lines": "film type",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "seed": "changes the cuts"
+      },
+      "sound": {
+        "group": "glitch",
+        "feel": [
+          "digital",
+          "short",
+          "gritty"
+        ],
+        "when": "start",
+        "note": "A short glitch burst; another on the exit."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"glitch text\" (MIT)",
+      "composition": "move-glitch-in",
+      "preview": "library/motion/glitch-in.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        0.4,
+        0.46,
+        0.52,
+        0.58,
+        0.64,
+        0.7,
+        0.76
+      ],
+      "planned_note": "Flash safety: the type never changes brightness or opacity while glitching; only bands of the line (never the full frame) move sideways and a thin colour fringe shows. Each step is an instant change about 0.06 s apart.",
+      "added_on": "2026-11-18",
+      "house_rule": "Banned by default in knowledge/craft/03-transitions.md (the template-pack glitch look). Use only with the owner's yes for this film, recorded in job.json."
+    },
+    {
+      "name": "anagram",
+      "family": "type",
+      "component": "Anagram",
+      "file": "engine/src/kit/type/Anagram.tsx",
+      "does": "The letters of a line shuffle into place: from a shuffled order (or from another phrase made of the same letters) each letter travels on its own arc to its spot, with motion blur while it travels.",
+      "use_when": "A reveal of the real line; wordplay; 'sort out the mess' stories.",
+      "avoid_when": "Long lines; more than one line; starred words (not supported).",
+      "technique": null,
+      "props": {
+        "text": "the final line",
+        "from": "optional start phrase with the same letters; otherwise a seeded shuffle",
+        "at": "seconds",
+        "out": "seconds, optional",
+        "seed": "shuffle"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "light",
+          "soft",
+          "fast"
+        ],
+        "when": "start",
+        "note": "A soft sweep as the letters travel."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Leonxlnx/cinetic, \"text shuffle\" (MIT)",
+      "composition": "move-anagram",
+      "preview": "library/motion/anagram.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "highlighter",
+      "family": "emphasis",
+      "component": "Highlighter",
+      "file": "engine/src/kit/type/Highlighter.tsx",
+      "does": "A soft accent marker sweeps behind the chosen words, with a slightly uneven, seeded edge; the ink stays on top.",
+      "use_when": "The phrase that carries the offer or the benefit.",
+      "avoid_when": "Dark pages with a very light accent, where the marker is lost; more than one phrase in a beat.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words.",
+        "seed": "Changes the uneven edge."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "short"
+        ],
+        "when": "start",
+        "note": "A quiet marker stroke as it sweeps."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Magic UI, \"highlighter\" (MIT)",
+      "composition": "move-highlighter",
+      "preview": "library/motion/highlighter.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "mark-word",
+      "family": "emphasis",
+      "component": "MarkWord",
+      "file": "engine/src/kit/type/MarkWord.tsx",
+      "does": "A crisp accent box is drawn round the chosen words with a stroke-dash line. The line opens a little room around the marked words, so the mark never touches its neighbours.",
+      "use_when": "Naming one term in a sentence, like a callout.",
+      "avoid_when": "Hand-drawn feel wanted (use DrawnMark).",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words.",
+        "kind": "box | bracket | strike | underline (box here)",
+        "weight": "Stroke thickness, per cent of frame height."
+      },
+      "sound": {
+        "group": "interface",
+        "feel": [
+          "clean",
+          "short",
+          "tight"
+        ],
+        "when": "start",
+        "note": "A light tick as the box closes."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own; the clean-line idea echoes Magic UI's text marks (MIT)",
+      "composition": "move-mark-word",
+      "preview": "library/motion/mark-word.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "mark-word-strike",
+      "family": "emphasis",
+      "component": "MarkWord",
+      "file": "engine/src/kit/type/MarkWord.tsx",
+      "does": "A straight accent line strikes through the chosen words. The line opens a little room around the marked words, so the mark never touches its neighbours.",
+      "use_when": "An old price or a thing being replaced.",
+      "avoid_when": "Where the struck word must still read clearly on a busy page.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words.",
+        "kind": "strike"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "short",
+          "tight",
+          "clean"
+        ],
+        "when": "start",
+        "note": "A short slash."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-mark-word-strike",
+      "preview": "library/motion/mark-word-strike.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "mark-word-bracket",
+      "family": "emphasis",
+      "component": "MarkWord",
+      "file": "engine/src/kit/type/MarkWord.tsx",
+      "does": "Two square brackets are drawn round the chosen words. The line opens a little room around the marked words, so the mark never touches its neighbours.",
+      "use_when": "A figure or term to hold up, like a quote.",
+      "avoid_when": "Very short words in tall frames, where the brackets crowd the neighbours.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words.",
+        "kind": "bracket"
+      },
+      "sound": {
+        "group": "interface",
+        "feel": [
+          "clean",
+          "short"
+        ],
+        "when": "start",
+        "note": "A soft double tick."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-mark-word-bracket",
+      "preview": "library/motion/mark-word-bracket.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "mark-word-underline",
+      "family": "emphasis",
+      "component": "MarkWord",
+      "file": "engine/src/kit/type/MarkWord.tsx",
+      "does": "A straight accent underline is drawn under the chosen words. The line opens a little room around the marked words, so the mark never touches its neighbours.",
+      "use_when": "The closing phrase of a line.",
+      "avoid_when": "When DrawnMark's hand-drawn line would suit the brand better.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words.",
+        "kind": "underline"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "short",
+          "clean",
+          "tight"
+        ],
+        "when": "start",
+        "note": "A quick slide."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-mark-word-underline",
+      "preview": "library/motion/mark-word-underline.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "shimmer",
+      "family": "emphasis",
+      "component": "Shimmer",
+      "file": "engine/src/kit/type/Shimmer.tsx",
+      "does": "A band of light passes once through the letters of the chosen words, ink to a light tone and back.",
+      "use_when": "A premium word: a plan name, a product name.",
+      "avoid_when": "Lines that must stay perfectly steady; more than once a film.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words; left out and no stars, the whole line."
+      },
+      "sound": {
+        "group": "chime",
+        "feel": [
+          "glassy",
+          "premium",
+          "subtle",
+          "short"
+        ],
+        "when": "start",
+        "note": "A glassy shimmer under the pass."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Magic UI, \"animated shiny text\" (MIT)",
+      "composition": "move-shimmer",
+      "preview": "library/motion/shimmer.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "colour-front",
+      "family": "emphasis",
+      "component": "ColourFront",
+      "file": "engine/src/kit/type/ColourFront.tsx",
+      "does": "A front of colour runs along the chosen words letter by letter, turning ink to accent as a wave.",
+      "use_when": "The turn of a sentence; the words the line is about.",
+      "avoid_when": "Lines where the accent already fills most of the text.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "rising",
+          "airy"
+        ],
+        "when": "start",
+        "note": "A rising breath under the front."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-colour-front",
+      "preview": "library/motion/colour-front.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "gradient-ink",
+      "family": "emphasis",
+      "component": "GradientInk",
+      "file": "engine/src/kit/type/GradientInk.tsx",
+      "does": "The chosen word fills with a slow drifting gradient of the accent and a lighter tone of it. The lighter tone is chosen to keep 4.5:1 against the page.",
+      "use_when": "One word that should feel alive while the line holds.",
+      "avoid_when": "Short films (the drift needs a few seconds); long runs of words.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words."
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After Magic UI, \"animated gradient text\" (MIT)",
+      "composition": "move-gradient-ink",
+      "preview": "library/motion/gradient-ink.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "payoff-punch",
+      "family": "emphasis",
+      "component": "PayoffPunch",
+      "file": "engine/src/kit/type/PayoffPunch.tsx",
+      "does": "The payoff word swells with the preset's overshoot and turns accent while the rest dims a little, then settles.",
+      "use_when": "The last beat of a line: the result, the promise.",
+      "avoid_when": "Calm films with no overshoot wanted (it still works, smaller); lines with no clear payoff word.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The payoff; left out, the starred word, else the last word."
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "short",
+          "tight",
+          "bold"
+        ],
+        "when": "land",
+        "note": "A soft thud at the peak."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-payoff-punch",
+      "preview": "library/motion/payoff-punch.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "weight-wave",
+      "family": "emphasis",
+      "component": "WeightWave",
+      "file": "engine/src/kit/type/WeightWave.tsx",
+      "does": "The chosen word goes from regular to heavy through the variable font weight (shift mode); neighbours ease aside. The line is set at the face's regular weight and the word goes to its heaviest (on Tulvo, 400 to 700).",
+      "use_when": "A word that should get heavier as it is said.",
+      "avoid_when": "A headline face that is not variable: it then dims and swells the word instead (the entry in the gallery is checked on Inter, which is variable).",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words.",
+        "mode": "shift | wave",
+        "heavy": "The heaviest weight, 900 by default."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "short"
+        ],
+        "when": "start",
+        "note": "A soft press."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-weight-wave",
+      "preview": "library/motion/weight-wave.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "weight-wave-ripple",
+      "family": "emphasis",
+      "component": "WeightWave",
+      "file": "engine/src/kit/type/WeightWave.tsx",
+      "does": "A crest of weight runs through the letters of the chosen word, each returning to its own weight (wave mode). The line is set at the face's regular weight and the word goes to its heaviest (on Tulvo, 400 to 700).",
+      "use_when": "A word that wants attention without a colour change.",
+      "avoid_when": "Non-variable headline faces (falls back to opacity and scale); narrow frames with a long word, where the width changes show.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words.",
+        "mode": "wave"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "airy",
+          "short"
+        ],
+        "when": "start",
+        "note": "A soft ripple."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-weight-wave-ripple",
+      "preview": "library/motion/weight-wave-ripple.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "letter-wave",
+      "family": "emphasis",
+      "component": "LetterWave",
+      "file": "engine/src/kit/type/LetterWave.tsx",
+      "does": "The letters of the chosen word rise and fall once, one after another: a small nudge.",
+      "use_when": "A word to flag lightly, such as a speed claim.",
+      "avoid_when": "More than once in a beat; when nothing may move.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The words: a word or phrase, word numbers, or left out for the starred words."
+      },
+      "sound": {
+        "group": "pop",
+        "feel": [
+          "playful",
+          "light",
+          "short"
+        ],
+        "when": "each letter",
+        "note": "Optional soft tick per letter."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-letter-wave",
+      "preview": "library/motion/letter-wave.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "voice-swap",
+      "family": "emphasis",
+      "component": "VoiceSwap",
+      "file": "engine/src/kit/type/VoiceSwap.tsx",
+      "does": "A word crossfades from the headline voice to the accent voice with a little blur while its slot resizes and the line re-flows smoothly.",
+      "use_when": "The word a sentence turns on, in a brand with an accent face.",
+      "avoid_when": "Brands with no accent face, where the swap is only a weight change.",
+      "technique": null,
+      "props": {
+        "lines": "The line, drawn by the move; star a word for the accent voice.",
+        "at": "Seconds when the emphasis lands.",
+        "out": "Seconds when the emphasis ends (the line stays; the scene takes the line away).",
+        "mark": "The word; left out, the starred word (written with its stars, shown plain until the swap)."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "airy"
+        ],
+        "when": "start",
+        "note": "A soft swap."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Studio's own",
+      "composition": "move-voice-swap",
+      "preview": "library/motion/voice-swap.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "caption-box",
+      "family": "caption",
+      "component": "CaptionBox",
+      "file": "engine/src/kit/type/CaptionBox.tsx",
+      "does": "Short-form caption style: the spoken phrase in large type with a highlight box in the brand's caption highlight colour that slides from word to word as each is spoken. Words not yet spoken sit faint and come up as they are spoken.",
+      "use_when": "A brand that has chosen this style for 9:16 (or 4:5, 1:1) talking-head or voice-over film.",
+      "avoid_when": "Long phrases, wide films that already have the fixed glass caption, or any shot where the band is needed for product UI.",
+      "technique": null,
+      "props": {
+        "words": "{ text, start, end }[] in seconds on the scene clock; phrases of up to maxWords (5) are cut at pauses and sentence ends",
+        "at": "seconds added to every word time (default 0)",
+        "out": "seconds when captions go",
+        "maxWords": "words per phrase, default 5",
+        "size": "Type size, per cent of frame height. Default 8, capped at an eighth of the caption band's width."
+      },
+      "sound": null,
+      "sizes": [
+        "9:16",
+        "4:5",
+        "1:1",
+        "16:9"
+      ],
+      "credit": null,
+      "composition": "move-caption-box",
+      "preview": "library/motion/caption-box.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "caption-pop",
+      "family": "caption",
+      "component": "CaptionPop",
+      "file": "engine/src/kit/type/CaptionPop.tsx",
+      "does": "Short-form caption style: the phrase in large type and the word being spoken swells and turns the highlight colour, popping slightly as it starts. Words not yet spoken sit faint and come up as they are spoken.",
+      "use_when": "A brand that has chosen this style for 9:16 film with fast, energetic speech.",
+      "avoid_when": "Calm or formal films; long words that crowd the line.",
+      "technique": null,
+      "props": {
+        "words": "{ text, start, end }[] in seconds on the scene clock",
+        "at": "offset added to word times",
+        "out": "seconds when captions go",
+        "maxWords": "default 5",
+        "size": "per cent of frame height"
+      },
+      "sound": null,
+      "sizes": [
+        "9:16",
+        "4:5",
+        "1:1",
+        "16:9"
+      ],
+      "credit": null,
+      "composition": "move-caption-pop",
+      "preview": "library/motion/caption-pop.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "one-word-stack",
+      "family": "type",
+      "component": "OneWordStack",
+      "file": "engine/src/kit/type/OneWordStack.tsx",
+      "does": "A sentence shown one very large word at a time, each word replacing the last on its cue.",
+      "use_when": "A short punchy line (up to about seven words) that should hit like a beat: hooks, price drops.",
+      "avoid_when": "Anything the viewer has to read as a sentence at once.",
+      "technique": null,
+      "props": {
+        "lines": "the sentence (lines are read as one); *word* in the accent voice",
+        "at": "seconds when the first word starts",
+        "times": "optional start second of each word",
+        "pace": "seconds per word when no times are given (default a base length)",
+        "out": "seconds when the last word leaves",
+        "size": "per cent of frame height, default 18"
+      },
+      "sound": {
+        "group": "click",
+        "feel": [
+          "soft",
+          "short",
+          "tight"
+        ],
+        "when": "each word",
+        "note": "One light tick per word, quiet; none if the voice carries the beat."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-one-word-stack",
+      "preview": "library/motion/one-word-stack.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "recentre-build",
+      "family": "type",
+      "component": "RecentreBuild",
+      "file": "engine/src/kit/type/RecentreBuild.tsx",
+      "does": "Words are added one by one to a centred line, and the line glides to stay centred as each arrives.",
+      "use_when": "A statement built up to its last word; lists written as a sentence.",
+      "avoid_when": "Long sentences that already fill the width; text that must be read from the first frame.",
+      "technique": null,
+      "props": {
+        "lines": "one or more lines (each builds in turn); *word* in the accent voice",
+        "at": "seconds when the first word starts",
+        "pace": "seconds between words (default three quarters of a base length)",
+        "out": "seconds when it leaves",
+        "size": "per cent of frame height, default 8"
+      },
+      "sound": {
+        "group": "pop",
+        "feel": [
+          "soft",
+          "light",
+          "short"
+        ],
+        "when": "each word",
+        "note": "A quiet pop per word, or none."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-recentre-build",
+      "preview": "library/motion/recentre-build.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "make-room",
+      "family": "type",
+      "component": "MakeRoom",
+      "file": "engine/src/kit/type/MakeRoom.tsx",
+      "does": "A word is put into a line that is already there; its neighbours slide apart to make room while it rises in.",
+      "use_when": "Adding the key word to a known line (a number, a promise): 'Your team ships twice as fast'.",
+      "avoid_when": "Lines where the word's place is not clear; a word that is not the one thing to look at.",
+      "technique": null,
+      "props": {
+        "lines": "the full line including the inserted word",
+        "insert": "index of the inserted word across all lines; default the first starred word, else the last",
+        "at": "seconds when the rest of the line arrives",
+        "insertAt": "seconds when the word goes in (default at + 70% of a hero length)",
+        "out": "seconds when it leaves",
+        "size": "per cent of frame height, default 8"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "short",
+          "airy"
+        ],
+        "when": "at insertAt",
+        "note": "A small airy swish as the gap opens."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-make-room",
+      "preview": "library/motion/make-room.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "ticker",
+      "family": "type",
+      "component": "Ticker",
+      "file": "engine/src/kit/type/Ticker.tsx",
+      "does": "A band of repeating text scrolling across the frame in a seamless loop, one row per line, rows in opposite directions, on brand bands if wanted.",
+      "use_when": "Headers such as a launch day or sale band; a running strip at the top of a film.",
+      "avoid_when": "Anything that has to be read once; stars and dots are not used.",
+      "technique": null,
+      "props": {
+        "lines": "one line per row (the text that repeats); stars ignored",
+        "at": "seconds when the band opens",
+        "out": "seconds when it closes",
+        "size": "per cent of frame height, default 6",
+        "band": "true (default): rows on accent then ink bands; false: bare type",
+        "speed": "frame widths per second, default 0.1",
+        "gap": "space between repeats in em, default 1.4 (spaces only, no dots)",
+        "top": "pixel top of the first row (default centred)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "soft",
+          "airy",
+          "short"
+        ],
+        "when": "start",
+        "note": "One quiet whoosh as the band opens."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-ticker",
+      "preview": "library/motion/ticker.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "on-path",
+      "family": "type",
+      "component": "OnPath",
+      "file": "engine/src/kit/type/OnPath.tsx",
+      "does": "Text set along a gentle curve that draws on along the path; the curve is built from the frame's size.",
+      "use_when": "Seals, stamps and flourishes: 'Made by hand in Lisbon'.",
+      "avoid_when": "Long sentences; headlines that must be read fast.",
+      "technique": null,
+      "props": {
+        "lines": "text (all lines as one); *word* in the accent voice",
+        "at": "seconds when the draw begins",
+        "out": "seconds when it erases",
+        "size": "per cent of frame height, default 7 (shrinks to fit the curve)",
+        "bend": "rise of the curve as a share of frame width, default 0.09",
+        "arc": "up (default) or down"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "long",
+          "airy"
+        ],
+        "when": "start",
+        "note": "A soft swish that follows the draw."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-on-path",
+      "preview": "library/motion/on-path.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "text-window",
+      "family": "type",
+      "component": "TextWindow",
+      "file": "engine/src/kit/type/TextWindow.tsx",
+      "does": "Huge type used as a window: the letters are cut out of a brand-coloured page so the picture behind shows only through them; then the window can open until the picture fills the frame.",
+      "use_when": "Titles over a product shot or gradient; an opening that reveals the product.",
+      "avoid_when": "Thin typefaces or long words; where the picture behind is dull or low contrast.",
+      "technique": null,
+      "props": {
+        "lines": "one to three short words; stars ignored",
+        "children": "the picture behind (fills the frame)",
+        "at": "seconds when the cover fades in",
+        "open": "seconds when the letters start to grow (optional)",
+        "focus": "which letter of the first line the zoom centres on, default the middle one",
+        "cover": "accent (default), ink or soft",
+        "out": "seconds when the cover fades",
+        "size": "per cent of frame height, default 24"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "rising",
+          "bold"
+        ],
+        "when": "at open",
+        "note": "A rising whoosh as the window opens; none if it only holds."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-text-window",
+      "preview": "library/motion/text-window.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "word-morph",
+      "family": "type",
+      "component": "WordMorph",
+      "file": "engine/src/kit/type/WordMorph.tsx",
+      "does": "One word changes into another in the same place: the old blurs and shrinks out while the new blurs in, overlapping, and the width animates between them.",
+      "use_when": "Before and after in one line: 'Reports in seconds' to 'minutes'.",
+      "avoid_when": "More than two or three swaps in one shot.",
+      "technique": null,
+      "props": {
+        "lines": "the words in order; the first appears on at; *word* in the accent voice",
+        "before": "fixed text before the word",
+        "after": "fixed text after the word (include its space)",
+        "at": "seconds when the first word arrives",
+        "swaps": "seconds of each swap, default every 1.4 s",
+        "out": "seconds when it leaves",
+        "size": "per cent of frame height, default 9"
+      },
+      "sound": {
+        "group": "pop",
+        "feel": [
+          "soft",
+          "airy",
+          "short"
+        ],
+        "when": "each swap",
+        "note": "One soft pop at each swap."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-word-morph",
+      "preview": "library/motion/word-morph.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "exit-set",
+      "family": "type",
+      "component": "ExitSet",
+      "file": "engine/src/kit/type/ExitSet.tsx",
+      "does": "Text already on screen leaves in a chosen way: drop, mask-fall, blur-out, scatter, letter-fade or wipe. Each exit is shorter than an entry and speeds up.",
+      "use_when": "Clearing a line before the next one; matching the leave to the beat.",
+      "avoid_when": "Text that should stay; several different exits in one scene.",
+      "technique": null,
+      "props": {
+        "lines": "the text",
+        "kind": "drop | mask-fall | blur-out | scatter | letter-fade | wipe",
+        "at": "seconds when it fades in",
+        "out": "seconds when the exit starts",
+        "size": "per cent of frame height, default 8"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "short",
+          "falling"
+        ],
+        "when": "start",
+        "note": "A short swish on out."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-exit-set",
+      "preview": "library/motion/exit-set.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "push-wipe",
+      "family": "transition",
+      "component": "PushWipe",
+      "file": "engine/src/kit/transitions/PushWipe.tsx",
+      "does": "The incoming scene pushes the outgoing one off the frame, both moving together, hard and fast with motion blur. Never an empty frame.",
+      "use_when": "A firm change of subject on a beat; energy 3 to 5.",
+      "avoid_when": "Calm films; text that must be read in the first 0.3 s after the push.",
+      "technique": 3,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "side": "left | right | up | down: the side the old scene leaves by (default left)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "fast",
+          "airy",
+          "bold"
+        ],
+        "when": "start",
+        "note": "Short whoosh peaking mid-push; no tail."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"Directional\" by Gaëtan Renaudeau (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-push-wipe",
+      "preview": "library/motion/push-wipe.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "feather-wipe",
+      "family": "transition",
+      "component": "FeatherWipe",
+      "file": "engine/src/kit/transitions/FeatherWipe.tsx",
+      "does": "A soft-edged wipe crosses the frame at an angle; both scenes swell and settle slightly as it passes.",
+      "use_when": "A gentle before-to-after reveal.",
+      "avoid_when": "A hard beat; a busy scene on both sides (the soft edge shows both at once).",
+      "technique": 10,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "side": "the side the wipe travels towards (default right)",
+        "angle": "tilt in degrees (default 18)"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "airy",
+          "premium"
+        ],
+        "when": "start",
+        "note": "One soft swish under the whole wipe."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"DirectionalWipe\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-feather-wipe",
+      "preview": "library/motion/feather-wipe.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "iris-wipe",
+      "family": "transition",
+      "component": "IrisWipe",
+      "file": "engine/src/kit/transitions/IrisWipe.tsx",
+      "does": "A circle opens from a point (a button, a number) to show the next scene, or closes to a point. A thin accent line runs on the edge.",
+      "use_when": "Going into whatever was just clicked or pointed at.",
+      "avoid_when": "No clear point of origin. On the same page as the outgoing scene, give `page` (e.g. \"light\"), or the old scene shows through the circle (found in the proof film).",
+      "technique": 4,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "from": "{x, y} in pixels of the frame (default the middle)",
+        "mode": "open | close (default open)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "rising",
+          "clean",
+          "light"
+        ],
+        "when": "start",
+        "note": "Short rising swell, no impact."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"CircleOpen\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-iris-wipe",
+      "preview": "library/motion/iris-wipe.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "clock-wipe",
+      "family": "transition",
+      "component": "ClockWipe",
+      "file": "engine/src/kit/transitions/ClockWipe.tsx",
+      "does": "A radial sweep, like a clock hand, goes once round and reveals the next scene. Hero length.",
+      "use_when": "A countdown, a timer, \"and then\".",
+      "avoid_when": "Fast films; anything over a proof moment.",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "from": "{x, y} pivot in pixels (default the middle)",
+        "start": "degrees, 0 is twelve o'clock",
+        "clockwise": "true by default"
+      },
+      "sound": {
+        "group": "transition",
+        "feel": [
+          "rhythmic",
+          "tight",
+          "clean"
+        ],
+        "when": "start",
+        "note": "Soft ticking or a rising sweep across the turn."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"ClockWipe\" by Fernando Kuteken (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-clock-wipe",
+      "preview": "library/motion/clock-wipe.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "door-split",
+      "family": "transition",
+      "component": "DoorSplit",
+      "file": "engine/src/kit/transitions/DoorSplit.tsx",
+      "does": "The outgoing scene splits in the middle and its halves slide apart, like doors, with the next scene behind and a soft shade at each edge.",
+      "use_when": "Opening on something: a reveal or launch.",
+      "avoid_when": "Outgoing scenes with fine detail across the middle seam.",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "axis": "vertical (halves go left and right, default) | horizontal (up and down, better in tall frames)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "heavy",
+          "wide",
+          "bold"
+        ],
+        "when": "start",
+        "note": "Low whoosh with a soft thud on the seam opening."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"Doorway\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-door-split",
+      "preview": "library/motion/door-split.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "blinds",
+      "family": "transition",
+      "component": "Blinds",
+      "file": "engine/src/kit/transitions/Blinds.tsx",
+      "does": "The next scene is revealed through slices that open one after another from their middles, like venetian blinds.",
+      "use_when": "A rhythmic reveal on a list, a grid or a before and after.",
+      "avoid_when": "Most films: the craft file lists slat and blind wipes as generic; use once, where the rhythm is the point.",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "count": "number of slices (default 8)",
+        "direction": "left | right | up | down: where the opening starts and runs (default right)"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "rhythmic",
+          "light",
+          "fast"
+        ],
+        "when": "start",
+        "note": "A quick stepped swish, one pulse per slice or one continuous swish."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"WindowBlinds\" by Fabien Benetou (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-blinds",
+      "preview": "library/motion/blinds.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18",
+      "house_rule": "Banned by default in knowledge/craft/03-transitions.md (slat and blind wipes). Use only with the owner's yes for this film, recorded in job.json."
+    },
+    {
+      "name": "panel-wipe",
+      "family": "transition",
+      "component": "PanelWipe",
+      "file": "engine/src/kit/transitions/PanelWipe.tsx",
+      "does": "A solid accent panel sweeps across and covers the frame for a few frames; the next scene is there as it leaves. With trail, a panel in the incoming page's colour follows (accent, then the page).",
+      "use_when": "A strong change of chapter on a beat.",
+      "avoid_when": "Calm films; two panel wipes in one film.",
+      "technique": 8,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "side": "the side it travels towards (default right)",
+        "trail": "true adds the second, page-coloured panel"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "bold",
+          "heavy",
+          "fast"
+        ],
+        "when": "start",
+        "note": "Whoosh that peaks as the panel covers the frame."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"ColorPanelWipe\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-panel-wipe",
+      "preview": "library/motion/panel-wipe.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        2.45
+      ],
+      "planned_note": "The scenes swap on frame 147 (2.45 s of the 60 fps preview) while the panel covers the whole frame for several frames, so nothing changes in view. In the demo at 30 fps the swap sits at the same time.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "dip-to-colour",
+      "family": "transition",
+      "component": "DipToColour",
+      "file": "engine/src/kit/transitions/DipToColour.tsx",
+      "does": "The scene dips into the brand's accent or page colour (never black), holds a few frames, and comes out in the next scene. No sound by default; a soft swell can sit under the dip.",
+      "use_when": "A quiet change of subject where nothing is near enough to carry the eye.",
+      "avoid_when": "When a hand-off object or a camera move can carry the change instead (the craft file's first choice).",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when it takes over (the move does the wrapping)",
+        "at": "seconds when the change starts",
+        "page": "stage name of the incoming scene's page (light or dark) when it is on the brand's other page",
+        "colour": "accent | page (default accent): taken from the incoming page"
+      },
+      "sound": null,
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "The classic dip; nothing copied",
+      "composition": "move-dip-to-colour",
+      "preview": "library/motion/dip-to-colour.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        2.4667
+      ],
+      "planned_note": "The scenes swap on frame 148 (2.467 s) in the middle of the full-colour hold, so the change is hidden.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "blur-through",
+      "family": "transition",
+      "component": "BlurThrough",
+      "file": "engine/src/kit/transitions/BlurThrough.tsx",
+      "does": "The outgoing scene blurs and grows slightly as it leaves; the incoming scene is as blurred on the swap, then sharpens and settles. They cross over a single tick at the peak of the blur, so the frame is never empty.",
+      "use_when": "A soft change of thought inside one world: a headline into the product card, one panel into the next.",
+      "avoid_when": "Anything that must be read within 0.7 s of the change; very sharp, graphic, hype passages.",
+      "technique": null,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "soft",
+          "airy",
+          "subtle",
+          "slow"
+        ],
+        "when": "start",
+        "note": "A soft breath that starts about 150 ms before the swap and peaks on it."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-blur-through",
+      "preview": "library/motion/blur-through.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.917
+      ],
+      "planned_note": "The swap, in the middle of the one-tick overlap of the two scenes, hidden by the blur or bloom at peak. Smoothness found no unplanned jumps and no judder; flashes passed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "exposure-bloom",
+      "family": "transition",
+      "component": "ExposureBloom",
+      "file": "engine/src/kit/transitions/ExposureBloom.tsx",
+      "does": "The frame over-exposes into a bloom of the brand's lighter ink (brighter, softer, a little larger), the swap is hidden at the peak, and the bloom falls away on the next scene. One rise and one fall, about 0.8 s; the bloom is weaker at the corners, so the frame is never one flat white. Flash-safe.",
+      "use_when": "A reveal or a change of mood: before into after, problem into answer.",
+      "avoid_when": "More than once in a film (it is a flash); a light page where the brand's light ink is the page itself (the effect is faint there); photosensitive audiences should still be tested for broadcast.",
+      "technique": null,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave."
+      },
+      "sound": {
+        "group": "riser",
+        "feel": [
+          "bright",
+          "rising",
+          "airy",
+          "soft"
+        ],
+        "when": "start",
+        "note": "A short bright riser that peaks on the swap and resolves into a soft tail; one sound, not a riser and a hit."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-exposure-bloom",
+      "preview": "library/motion/exposure-bloom.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.9
+      ],
+      "planned_note": "The swap, in the middle of the one-tick overlap of the two scenes, hidden by the blur or bloom at peak. Smoothness found no unplanned jumps and no judder; flashes passed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "invert-flash",
+      "family": "transition",
+      "component": "InvertFlash",
+      "file": "engine/src/kit/transitions/InvertFlash.tsx",
+      "does": "A small push in, then on the cut the whole frame (page included) is inverted for exactly two frames, the last frame of the old scene and the first of the new, and the new scene settles. One frame-pair, once. Flash-safe: a single inversion, never repeated within a second.",
+      "use_when": "A hard beat in a hype film, on a downbeat.",
+      "avoid_when": "Calm films; text that needs reading in the 0.3 s around the cut; any second flash within a second of it.",
+      "technique": null,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave."
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "hard",
+          "short",
+          "digital",
+          "bold"
+        ],
+        "when": "land",
+        "note": "A short riser leads in over the push and a hard hit lands on the two inverted frames. Flash-safe: one inversion of two frames, no repeat."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-invert-flash",
+      "preview": "library/motion/invert-flash.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.717
+      ],
+      "planned_note": "The cut under the two inverted frames (the inversion is the one planned flash: 0.97 to 0 and back, a single pair). Smoothness: no unplanned jumps, no judder. Flashes: pass, at most 1 flash a second.",
+      "added_on": "2026-11-18",
+      "house_rule": "Banned by default in knowledge/craft/03-transitions.md (flashes). Use only with the owner's yes for this film, recorded in job.json."
+    },
+    {
+      "name": "whip-pan",
+      "family": "transition",
+      "component": "WhipPan",
+      "file": "engine/src/kit/transitions/WhipPan.tsx",
+      "does": "Both scenes travel sideways at whip speed with strong directional blur; the swap is at peak speed, the incoming scene already moving the same way and slowing into place. The camera never stops between them.",
+      "use_when": "A quick change of place in a fast film: a number into its chart, one screen into another.",
+      "avoid_when": "Calm films, and any text that must be read within 0.7 s of the change. Once or twice a film (technique 11).",
+      "technique": 11,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave.",
+        "to": "\"left\", \"right\", \"up\" or \"down\". Optional; left by default."
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "fast",
+          "airy",
+          "bold",
+          "tight"
+        ],
+        "when": "start",
+        "note": "A fast whoosh starting about 150 ms before the swap, peaking on it, with a short tail that matches the settle."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-whip-pan",
+      "preview": "library/motion/whip-pan.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.717
+      ],
+      "planned_note": "The swap, in the middle of the one-tick overlap of the two scenes, hidden by the blur or bloom at peak. Smoothness found no unplanned jumps and no judder; flashes passed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "zoom-blur",
+      "family": "transition",
+      "component": "ZoomBlur",
+      "file": "engine/src/kit/transitions/ZoomBlur.tsx",
+      "does": "A radial zoom blur: the outgoing scene rushes at the camera, smeared outwards from the centre (a trail of scaled copies with falling opacity); the incoming scene rushes out of the centre from small and settles at its own size.",
+      "use_when": "A hype change, or when the next thing is the thing to see: a headline into a number.",
+      "avoid_when": "Calm films; busy outgoing scenes (the trail muddies them); text near the edges of the outgoing scene.",
+      "technique": null,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave."
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "fast",
+          "rising",
+          "bold",
+          "wide"
+        ],
+        "when": "start",
+        "note": "A rising whoosh that peaks on the swap and opens into a wide short tail."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-zoom-blur",
+      "preview": "library/motion/zoom-blur.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.817
+      ],
+      "planned_note": "The swap, in the middle of the one-tick overlap of the two scenes, hidden by the blur or bloom at peak. Smoothness found no unplanned jumps and no judder; flashes passed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "spin-whip",
+      "family": "transition",
+      "component": "SpinWhip",
+      "file": "engine/src/kit/transitions/SpinWhip.tsx",
+      "does": "A quick clockwise rotation about the middle of the frame with rotational blur (a trail of turned copies); the swap is at peak spin, the incoming scene already turning the same way from a quarter turn back and settling upright.",
+      "use_when": "A playful or hype change, once at most per film.",
+      "avoid_when": "Calm or serious films; scenes with a lot of fine text.",
+      "technique": null,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave."
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "fast",
+          "tight",
+          "playful",
+          "bold"
+        ],
+        "when": "start",
+        "note": "A tight swish with a turning pitch, starting about 150 ms before the swap and peaking on it."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-spin-whip",
+      "preview": "library/motion/spin-whip.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.717
+      ],
+      "planned_note": "The swap, in the middle of the one-tick overlap of the two scenes, hidden by the blur or bloom at peak. Smoothness found no unplanned jumps and no judder; flashes passed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "parallax-push",
+      "family": "transition",
+      "component": "ParallaxPush",
+      "file": "engine/src/kit/transitions/ParallaxPush.tsx",
+      "does": "The outgoing scene's layers slide away at different speeds, the front fastest and the back slowest, as the next scene pushes in over them at the front layer's speed. Each side is blurred by its own speed.",
+      "use_when": "A change of place that should feel like depth, not a flat slide: when the outgoing scene has a background, a main layer and a foreground.",
+      "avoid_when": "A scene with only one layer (use whip-pan); calm passages that want a camera carry.",
+      "technique": null,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave.",
+        "layers": "The outgoing scene as an array of layers, back to front. Or give `background` and the `children` as the foreground.",
+        "background": "The back layer, with `children` as the foreground.",
+        "to": "\"left\", \"right\", \"up\" or \"down\". Optional; left by default."
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "soft",
+          "wide",
+          "airy",
+          "slow"
+        ],
+        "when": "start",
+        "note": "A soft wide whoosh, starting about 150 ms before the swap, peaking on it with a long tail as the layers settle."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-parallax-push",
+      "preview": "library/motion/parallax-push.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        2.017
+      ],
+      "planned_note": "The swap, in the middle of the one-tick overlap of the two scenes, hidden by the blur or bloom at peak. Smoothness found no unplanned jumps and no judder; flashes passed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "match-cut",
+      "family": "transition",
+      "component": "MatchCut",
+      "file": "engine/src/kit/transitions/MatchCut.tsx",
+      "does": "A shape in the outgoing scene and one in the incoming scene occupy exactly the same place on the cut: the outgoing scene eases its scale and place so its shape lands on a common rectangle on the last frame before the cut, the incoming scene starts with its shape on that same rectangle and eases to rest, and the common rectangle is chosen so both move at the same speed.",
+      "use_when": "A strong beat where two scenes share a shape (a button into a chart ring, a dot into a big disc), energy 4 to 5. Technique 5.",
+      "avoid_when": "Shapes that differ in size by more than about a quarter of the frame, or in proportions (the match is then only of centre and area).",
+      "technique": 5,
+      "props": {
+        "children": "The outgoing scene.",
+        "next": "The incoming scene. Its clock starts at 0 as it takes over; give it no entrance of its own.",
+        "at": "Seconds when the outgoing scene starts to leave.",
+        "from": "Rect in pixels of the frame: the shape in the outgoing scene (x, y, width, height).",
+        "to": "Rect in pixels of the frame: the matching shape in the incoming scene."
+      },
+      "sound": {
+        "group": "impact",
+        "feel": [
+          "subtle",
+          "short",
+          "low",
+          "tight"
+        ],
+        "when": "land",
+        "note": "A quick swish into the cut and a soft low thud on the cut frame, where the two shapes line up."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "After the camera transitions catalogued in Leonxlnx/cinetic (MIT); rebuilt for the studio's engine, no code copied",
+      "composition": "move-match-cut",
+      "preview": "library/motion/match-cut.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.917
+      ],
+      "planned_note": "The swap, in the middle of the hard cut (one frame the old scene, the next the new). Smoothness found no unplanned jumps and no judder; flashes passed.",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "cube-turn",
+      "family": "transition",
+      "component": "CubeTurn",
+      "file": "engine/src/kit/transitions/CubeTurn.tsx",
+      "does": "The two scenes are two faces of one cube; the cube turns a quarter turn (a scene and a quick length, about 960 ms) to bring the next face round, the camera pulling back at the middle so the whole cube is seen. The face turning away darkens and the cube's edges are drawn while it turns. Both faces move on every frame of the turn, motion-blurred at its fastest. The faces are sheets painted exactly like the stage, so nothing changes on the page before or after.",
+      "use_when": "Stepping to a neighbouring item of one set: this feature, then the next; this month, then the next.",
+      "avoid_when": "The two scenes belong to different worlds, or a calm film where a 3D turn would be the loudest thing in it. Not twice in a row.",
+      "technique": 3,
+      "props": {
+        "children": "the outgoing scene (the front face)",
+        "next": "the incoming scene; its clock starts at 0 on `at`, when it starts to turn into view",
+        "at": "seconds when the turn starts",
+        "to": "left | right | up | down: the way the content moves (default left)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "wide",
+          "deep",
+          "clean",
+          "short"
+        ],
+        "when": "start",
+        "note": "Starts 150-200 ms before `at` and peaks at the middle of the turn (`at` + 0.48 s), where the turn is fastest."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"Cube\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-cube-turn",
+      "preview": "library/motion/cube-turn.mp4",
+      "swap": "No cut. In the preview the next face turns into view from 1.50 s, is half way at 1.98 s and is alone from 2.46 s.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "card-flip",
+      "family": "transition",
+      "component": "CardFlip",
+      "file": "engine/src/kit/transitions/CardFlip.tsx",
+      "does": "The scene lifts off the page as a card with round corners and a shadow, flips over about its upright axis (or its level one with `over`) and the next scene is on its back; the card grows back to fill the frame. About 1.15 s. The swap is the frame on which the card is edge-on, half way, where it turns fastest, so both sides are moving and the swap is unseen.",
+      "use_when": "The other side of one thing: a question and its answer, before and after, a price and what it buys.",
+      "avoid_when": "The two scenes are not two sides of one idea; more than once in a film.",
+      "technique": null,
+      "props": {
+        "children": "the front of the card (outgoing scene)",
+        "next": "the back of the card; its clock starts at 0 on `at`",
+        "at": "seconds when the flip starts",
+        "over": "true to flip about the level axis, top towards the viewer (default false: about the upright axis)"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "paper",
+          "light",
+          "short",
+          "clean"
+        ],
+        "when": "start",
+        "note": "Peaks on the edge-on frame (`at` + 0.575 s); a soft tap as the card lands flat is optional."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-card-flip",
+      "preview": "library/motion/card-flip.mp4",
+      "swap": "In the preview the flip runs 1.60 s to 2.75 s; the faces swap on the edge-on frame at 2.175 s (frame 130-131 at 60 fps).",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "page-turn",
+      "family": "transition",
+      "component": "PageTurn",
+      "file": "engine/src/kit/transitions/PageTurn.tsx",
+      "does": "The scene is a page: its right edge lifts and curls over a moving upright fold, the turned-over part (plain back of the page) lies on top and leaves to the left, showing the next page beneath with the fold's shadow on it. The next page settles from slightly larger. About 1.15 s. Built from thin strips of one sheet in CSS 3D, with the light changing smoothly across them; frame-pure, no pictures, no WebGL.",
+      "use_when": "The next chapter of a guide, a report, a story; a list of steps read like a booklet.",
+      "avoid_when": "Product UI that should feel live rather than printed; energy 5 films.",
+      "technique": null,
+      "props": {
+        "children": "the page being turned (outgoing scene)",
+        "next": "the page beneath; its clock starts at 0 on `at`",
+        "at": "seconds when the turn starts"
+      },
+      "sound": {
+        "group": "foley",
+        "feel": [
+          "paper",
+          "soft",
+          "organic",
+          "short"
+        ],
+        "when": "start",
+        "note": "One page-turn rustle starting just before `at`, its loudest part about 0.4 s in."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-page-turn",
+      "preview": "library/motion/page-turn.mp4",
+      "swap": "No cut: the next page is uncovered from the right edge from 1.50 s to 2.65 s in the preview.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "tile-reveal",
+      "family": "transition",
+      "component": "TileReveal",
+      "file": "engine/src/kit/transitions/TileReveal.tsx",
+      "does": "The frame becomes a grid of tiles (about five and a half on the short side, so a tall frame has more rows, not taller tiles); a wave runs diagonally from a corner and each tile turns over in a base length to show its piece of the next scene, dipping a little with round corners so the grid shows for a moment. About 1.15 s in all. The outgoing scene grows slightly and the next settles from slightly larger, so both move while tiles swap.",
+      "use_when": "A change of set: a new month, a new collection, a new board; a playful, organised film.",
+      "avoid_when": "A single object should carry the change (use a hand-off); calm films.",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 on `at`",
+        "at": "seconds when the wave starts",
+        "from": "top-left | top-right | bottom-left | bottom-right: the corner the wave starts from (default top-left)"
+      },
+      "sound": {
+        "group": "transition",
+        "feel": [
+          "light",
+          "rhythmic",
+          "clean",
+          "digital"
+        ],
+        "when": "start",
+        "note": "A light run of ticks or a granular sweep across the wave, `at` to `at` + 1.15 s; not one sound per tile."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-tile-reveal",
+      "preview": "library/motion/tile-reveal.mp4",
+      "swap": "Each tile swaps on its own edge-on frame; in the preview the first at about 1.80 s, the last at about 2.55 s; the wave runs 1.60 s to 2.75 s.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "pixelate-through",
+      "family": "transition",
+      "component": "PixelateThrough",
+      "file": "engine/src/kit/transitions/PixelateThrough.tsx",
+      "does": "The scene breaks into square blocks that grow (even in ratio) to about a ninth of the frame's short side, the blocks change from the outgoing scene's colours to the next's while biggest, and shrink until the next scene is sharp. About 960 ms. Drawn with an SVG filter on the live scenes (one pixel kept in the middle of each block, spread over it), not WebGL. Both scenes drift in scale through it. Flash check: at most 13 block changes in one second over 9.6% of the frame (limit 25%), passing.",
+      "use_when": "Digital, playful or retro films: a version change, a game-like reveal, an old screen to a new one.",
+      "avoid_when": "Premium or calm brands; anything where the blocks would read as a broken video.",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 on `at`",
+        "at": "seconds when the blocks start to grow"
+      },
+      "sound": {
+        "group": "glitch",
+        "feel": [
+          "digital",
+          "light",
+          "short",
+          "playful"
+        ],
+        "when": "start",
+        "note": "A soft bit-crush sweep up to the middle (`at` + 0.48 s) and down again; not a harsh glitch."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"Pixelize\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-pixelate-through",
+      "preview": "library/motion/pixelate-through.mp4",
+      "swap": "In the preview the blocks run 1.50 s to 2.46 s; the scenes swap inside the blocks from 1.87 s to 2.10 s, while the blocks are biggest.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "luma-dissolve",
+      "family": "transition",
+      "component": "LumaDissolve",
+      "file": "engine/src/kit/transitions/LumaDissolve.tsx",
+      "does": "The next scene appears through soft-edged patches that grow and join like ink in water: a threshold sweeps through a fixed, seeded cloud of SVG noise, and the outgoing scene is cut by the same cloud the other way, so the two meet only in the soft edge. About 1.15 s. Patch size follows the frame's short side. Both scenes keep moving: the outgoing grows slightly, the incoming settles from slightly larger.",
+      "use_when": "A gentle change of time or mood ('later that day', 'by 5 pm'), in calm films.",
+      "avoid_when": "Between two worlds (the house rule bans crossfades there) or with dense small text on both sides at the same place.",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 on `at`",
+        "at": "seconds when the dissolve starts",
+        "seed": "which noise cloud (whole number, default 7): the same seed renders the same every time"
+      },
+      "sound": {
+        "group": "transition",
+        "feel": [
+          "soft",
+          "airy",
+          "slow",
+          "calm"
+        ],
+        "when": "start",
+        "note": "A soft airy swell starting just before `at`, peaking about `at` + 0.6 s."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"LumaWipe\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-luma-dissolve",
+      "preview": "library/motion/luma-dissolve.mp4",
+      "swap": "No cut: patches of the next scene show from 1.50 s and the last pixels turn on 2.65 s in the preview.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "title-takeover",
+      "family": "transition",
+      "component": "TitleTakeover",
+      "file": "engine/src/kit/transitions/TitleTakeover.tsx",
+      "does": "One big word lands over the scene in the headline voice and ink (the scene shrinks back and fades a little); then its letters become windows onto the next scene while the frame outside them is shaded, and the word grows around one letter and fattens until the windows fill the frame. Landing a base length, opening and growing about 1.15 s. The frame-wide shade carries the stage grain, so this preview was encoded at --crf=25 to stay small.",
+      "use_when": "Naming the next section as you enter it: 'Reports', 'Pricing', 'Teams'. One short heavy word.",
+      "avoid_when": "Long words or two lines; a film that already uses a text window; more than once in a film.",
+      "technique": 9,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 when the letters open (`at` + base + tick)",
+        "at": "seconds when the word starts to land",
+        "word": "the title word (stars ignored)",
+        "size": "type size, per cent of frame height (default 24); shrunk to fit 86% of the width",
+        "focus": "which letter the word grows around, counted from 0 (default the middle one)"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "bold",
+          "rising",
+          "wide",
+          "short"
+        ],
+        "when": "land",
+        "note": "A low thump as the word lands at `at`, then a rising whoosh that peaks as the letters fill the frame (about `at` + 1.65 s)."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-title-takeover",
+      "preview": "library/motion/title-takeover.mp4",
+      "swap": "No cut. In the preview the word lands from 1.40 s, the letters open at 1.90 s and the next scene fills the frame at 3.05 s.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "logo-mask-wipe",
+      "family": "transition",
+      "component": "LogoMaskWipe",
+      "file": "engine/src/kit/transitions/LogoMaskWipe.tsx",
+      "does": "The brand's mark opens in the middle of the frame as a window onto the next scene (the frame outside it shaded), then grows, even in ratio, until it covers the frame. The mark is the dark page's mark file used only as a shape. Opening a base length, growing about 1.15 s; in the last tick whatever is left of the outgoing scene in the mark's gaps fades, so nothing is cut on the last frame. The frame-wide shade carries the stage grain, so this preview was encoded at --crf=25 to stay small.",
+      "use_when": "The move into the closing frame (wordmark and call to action), or out of the opening one. Once per film.",
+      "avoid_when": "The brand's dark mark file is a filled tile or has no clear background (the window would be a square); mid-film. An ending onto the same page: the frame outside the mark is darkened and reads muddy (found in the proof film); use it onto the other page.",
+      "technique": null,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its clock starts at 0 on `at`, when the mark opens",
+        "at": "seconds when the mark opens",
+        "focus": "{ x, y }: the point of the mark it grows around, from its middle in mark heights (default its middle); should lie in a solid part of the mark"
+      },
+      "sound": {
+        "group": "whoosh",
+        "feel": [
+          "wide",
+          "premium",
+          "rising",
+          "clean"
+        ],
+        "when": "start",
+        "note": "Rises from `at` and peaks as the mark covers the frame (`at` + 1.65 s); the brand's sting can follow on the closing frame."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": null,
+      "composition": "move-logo-mask-wipe",
+      "preview": "library/motion/logo-mask-wipe.mp4",
+      "swap": "No cut. In the preview the mark opens at 1.50 s, grows from 2.00 s and covers the frame at 3.15 s.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "light-leak",
+      "family": "transition",
+      "component": "LightLeak",
+      "file": "engine/src/kit/transitions/LightLeak.tsx",
+      "does": "A warm wash of light, tinted toward the brand's accent, drifts across the frame; the scene changes at its peak, hidden inside the light.",
+      "use_when": "Use sparingly, once a film at most. A warm, human beat: a launch, a season, a memory.",
+      "avoid_when": "Use sparingly: a stylised look that draws attention to itself. Product UI, data, or anything cool and exact; a film that already used a stylised transition.",
+      "technique": null,
+      "use_sparingly": true,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "The incoming scene; its own clock starts at the swap: a `tick`-long dissolve, inside the wash, centred at half of three quarters of a `hero` length after `at`.",
+        "at": "seconds when the move starts",
+        "seed": "changes the shape of the leak (default 4)"
+      },
+      "sound": {
+        "group": "transition",
+        "feel": [
+          "warm",
+          "soft",
+          "airy",
+          "long"
+        ],
+        "when": "start",
+        "note": "A soft airy swell that peaks at the swap and falls away."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Drawn from gradients. @remotion/light-leaks (4.0.543) was checked and not used: its leak is fixed yellow and orange and cannot be tinted to a brand's accent.",
+      "composition": "move-light-leak",
+      "preview": "library/motion/light-leak.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "flash_check": "flashes.py passes on the preview (at most one flash in any second, none over the area limit).",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "glitch-cut",
+      "family": "transition",
+      "component": "GlitchCut",
+      "file": "engine/src/kit/transitions/GlitchCut.tsx",
+      "does": "For about a quarter of a second the picture tears into slices that slip sideways, with two brand-coloured ghosts and accent bars, and the scene is different when it settles.",
+      "use_when": "Use sparingly, once a film at most. A tech or gaming beat, a 'before and after' on something broken or fast.",
+      "avoid_when": "Use sparingly: a stylised look that draws attention to itself. Calm, premium or human subjects; text that must be read during the glitch; any film for viewers sensitive to flicker.",
+      "technique": null,
+      "use_sparingly": true,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; its own clock starts at the cut, the third step of the burst (0.1 s after `at`)",
+        "at": "seconds when the move starts",
+        "seed": "changes which slices slip (default 11)",
+        "nextPage": "the page the next scene is on, for the ghosts' blending (default: the other page)"
+      },
+      "sound": {
+        "group": "glitch",
+        "feel": [
+          "digital",
+          "gritty",
+          "short",
+          "tense"
+        ],
+        "when": "start",
+        "note": "A short digital stutter, about a quarter of a second, ending on the cut."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Original.",
+      "composition": "move-glitch-cut",
+      "preview": "library/motion/glitch-cut.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [
+        1.5,
+        1.55,
+        1.6,
+        1.65,
+        1.7,
+        1.75
+      ],
+      "planned_note": "The glitch is stepped on purpose: five instant steps of 0.05 s each, starting at 1.5 s in the preview. The cut (page change) falls on the third step, 1.6 s. Smoothness passes with these listed.",
+      "flash_check": "flashes.py passes on the preview (at most one flash in any second, none over the area limit).",
+      "added_on": "2026-11-18",
+      "house_rule": "Banned by default in knowledge/craft/03-transitions.md (the template-pack glitch look). Use only with the owner's yes for this film, recorded in job.json."
+    },
+    {
+      "name": "ripple",
+      "family": "transition",
+      "component": "Ripple",
+      "file": "engine/src/kit/transitions/Ripple.tsx",
+      "does": "A ripple spreads from a point; inside the wavefront the next scene is already there, and the ring bends the picture like water.",
+      "use_when": "Use sparingly, once a film at most. A tap, a drop, a payment going through: a moment that starts from one point.",
+      "avoid_when": "Use sparingly: a stylised look that draws attention to itself. Text that must stay readable across the ring; busy or detailed scenes.",
+      "technique": null,
+      "use_sparingly": true,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; there is no single swap frame: it is on screen inside the ripple from `at`, with its own clock starting at `at`",
+        "at": "seconds when the move starts",
+        "origin": "where the ripple starts, shares of the frame {x, y} (the middle by default)",
+        "seed": "noise seed for the bending (default 3)"
+      },
+      "sound": {
+        "group": "chime",
+        "feel": [
+          "glassy",
+          "soft",
+          "airy",
+          "falling"
+        ],
+        "when": "start",
+        "note": "A water-drop plink with a short spreading tail."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"Ripple\" by gre (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-ripple",
+      "preview": "library/motion/ripple.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "flash_check": "flashes.py passes on the preview (at most one flash in any second, none over the area limit).",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "ink-bleed",
+      "family": "transition",
+      "component": "InkBleed",
+      "file": "engine/src/kit/transitions/InkBleed.tsx",
+      "does": "The next scene bleeds in through organic ink blots that start at a few points, swell and merge, each with a thin accent rim.",
+      "use_when": "Use sparingly, once a film at most. Handmade, craft, editorial or story subjects.",
+      "avoid_when": "Use sparingly: a stylised look that draws attention to itself. Product UI, data, or a tight timeline.",
+      "technique": null,
+      "use_sparingly": true,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; no single swap frame: it shows through the blots from `at`, with its own clock starting at `at`",
+        "at": "seconds when the move starts",
+        "seed": "changes where the blots start (default 8)"
+      },
+      "sound": {
+        "group": "swish",
+        "feel": [
+          "organic",
+          "soft",
+          "slow"
+        ],
+        "when": "start",
+        "note": "A soft wet spread, rising slowly, no hard attack."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Original; blots by seeded SVG feTurbulence cut at a falling level.",
+      "composition": "move-ink-bleed",
+      "preview": "library/motion/ink-bleed.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "flash_check": "flashes.py passes on the preview (at most one flash in any second, none over the area limit).",
+      "added_on": "2026-11-18"
+    },
+    {
+      "name": "film-burn",
+      "family": "transition",
+      "component": "FilmBurn",
+      "file": "engine/src/kit/transitions/FilmBurn.tsx",
+      "does": "A burn spreads in from one edge, ragged like film catching fire, with a near-black scorched band with a warm orange glow and a pale hot rim, a warm glow and a hot rim; the next scene is behind it.",
+      "use_when": "Use sparingly, once a film at most. A nostalgic or cinematic change of chapter.",
+      "avoid_when": "Use sparingly: a stylised look that draws attention to itself. Clean product work, data, or a modern minimal film.",
+      "technique": null,
+      "use_sparingly": true,
+      "props": {
+        "children": "the outgoing scene",
+        "next": "the incoming scene; no single swap frame: it is behind the burn from `at`, with its own clock starting at `at`",
+        "at": "seconds when the move starts",
+        "from": "left | right | top | bottom: the edge it starts from (default left)",
+        "seed": "noise seed (default 5)"
+      },
+      "sound": {
+        "group": "transition",
+        "feel": [
+          "warm",
+          "gritty",
+          "rising"
+        ],
+        "when": "start",
+        "note": "A crackle of film burning with a low warm swell."
+      },
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "credit": "Idea after gl-transitions \"FilmBurn\" by Anastasia Dunbar (MIT, https://github.com/gl-transitions/gl-transitions); rebuilt for the studio's engine, no code copied",
+      "composition": "move-film-burn",
+      "preview": "library/motion/film-burn.mp4",
+      "reviewed": true,
+      "reviewed_on": "2026-11-18",
+      "planned_instant_changes": [],
+      "flash_check": "flashes.py passes on the preview (at most one flash in any second, none over the area limit).",
+      "added_on": "2026-11-18",
+      "house_rule": "Banned by default in knowledge/craft/03-transitions.md (the template-pack film-burn look). Use only with the owner's yes for this film, recorded in job.json."
     }
   ],
   "review": {
@@ -4094,5 +8155,6 @@
     "staging_and_product": "Stagings are CaptureShot (engine/src/kit/capture/staging.tsx), product animations are CaptureClip's emphasis (emphasis.tsx), glued through glue.ts. Their previews (engine/src/library/motion/product.tsx) take \"capture\", \"second\", \"things\" (fixed places for a take that tracked nothing), \"roles\" and \"address\". Rendered at half size 12 Nov 2026: Tulvo's boards take (with its cards given as things, measured from the marks) for most, a practice take where typing, a message, a scroll or a second take was needed. Check glue with tools/checks/capture_glue.mjs on a GlueProbe render; measure where the picture really scrolled first with tools/film/seen_scroll.mjs.",
     "transitions": "Entries in the capture-transition family are CaptureJoin with one \"transition\" name. Their previews join the two parts of Tulvo's boards take 2 at the click on \"Campaign Launch Board\" (splitAtClick), rendered at half size with the props {\"capture\": \"tulvo-capture-test/boards-take-2\", \"options\": {\"join\": {\"from\": {\"x\": 12, \"y\": 381, \"width\": 223, \"height\": 33}}, \"b\": {\"from\": 7.25}}} (the link measured from the mark still; the second part starts after Tulvo's placeholders have gone); shared element adds \"to\": the breadcrumb title {\"x\": 365, \"y\": 17, \"width\": 151, \"height\": 19}. \"second\" names another take for the second part. The contact sheet is library/motion/transition-sheet.jpg. Check them with tools/checks/capture_transitions.mjs (pointer and clicked thing across the join, lengths) as well as tools/checks/smoothness.py and tools/checks/capture_motion.mjs.",
     "relayout": "Entries in the capture-relayout family are CaptureShot in a 9:16, 1:1 or 4:5 frame: the staging is re-laid for the frame (relayout.ts, sizedStaging) and the camera follows the action inside the wide recording (planFollow), keeping the acted-on thing and the pointer inside the safe area with a margin on every frame. On 9:16 the safe area is the band Instagram, TikTok and YouTube Shorts all leave free (top 14%, bottom 35%, right-hand buttons), less the caption slot. Previews (engine/src/library/motion/relayout.tsx, \"move-relayout-<name>\") were rendered at half size 12 Nov 2026 from Tulvo's boards take (take 5) with the link and the New button given as things from capture.json's step targets: {\"capture\": \"tulvo-capture-test/boards\", \"things\": {\"link\": {\"rect\": [12, 381.5, 223, 32], \"from\": 4.4, \"to\": 7.4}, \"new\": {\"rect\": [1807.7, 80, 80.3, 34], \"from\": 8.9}}}; the join adds {\"options\": {\"join\": {\"from\": {\"x\": 12, \"y\": 381, \"width\": 223, \"height\": 33}}, \"b\": {\"from\": 7.25}}}. The phone-size take previews use a stand-in (engine/public/jobs/_relayout-test/capture/phone-stand-in: the left 390 x 844 page pixels of the same take), not a real phone take. The contact sheet is library/motion/relayout-sheet.jpg. Check them with tools/checks/capture_relayout.mjs (safe area every frame, moves, holds, sharpness, text at the click, the three platforms, and the picture in a render) as well as tools/checks/smoothness.py and tools/checks/capture_motion.mjs (with the options the relayout check prints); joins with tools/checks/capture_transitions.mjs --size 9:16."
-  }
+  },
+  "sized_gallery": "Text moves, transitions, hook openers and shader backgrounds added 18 Nov 2026 render in all four sizes: composition move-<name> with --props '{\"format\":\"9:16\",\"fps\":30}' (engine/src/library/motion/sized.tsx). Render with --public-dir=out/lib-public."
 }

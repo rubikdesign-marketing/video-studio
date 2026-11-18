@@ -58,6 +58,8 @@ Nothing in a video, on screen or spoken, should read as if a machine wrote it.
 | Number roll | Digits roll to their value in fixed-width figures, slowing into the last digit | Prices, counts, percentages |
 | Swap | One word slides out, its replacement slides in, the rest of the line holds | Before → after in one line |
 
+The text library (`library/motion/index.json`, families `type`, `emphasis` and `caption`; code in `engine/src/kit/type/`) adds 45 more moves on one shared splitter, each checked in all four frame sizes: soft arrivals (fade up, letter cascade, soft wipe, blur sweep, focus in, outline fill, giant crop, block reveal, mask rise by line, word or letter), bold arrivals (slam, word pop, drop and bounce, flip up, arc swing, scatter assemble, from the lens, smear in), typing and decode (human typing, retype, stream answer, scramble lock, split-flap, drum roll, pixel decode, glitch-in, anagram), emphasis (highlighter, box, bracket, strike and underline marks, shimmer, colour front, gradient ink, payoff punch, weight shift and wave, letter wave, voice swap), and layout and exits (one word at a time, a line that re-centres as it builds, make room, ticker, text on a path, text as a window, word morph, an exit set). Star a word, or a phrase (`*in one place*`), for the accent voice. The rules below still hold: one emphasis per beat, at most seven words on screen.
+
 - Type enters on the voice: the word appears as it is spoken, or up to 100 ms before. Never after.
 - Type leaves faster than it enters.
 - Type never moves while it is the thing being read.
@@ -74,6 +76,15 @@ Nothing in a video, on screen or spoken, should read as if a machine wrote it.
 - **Layer:** captions are a separate layer. Every master exports with and without them, plus a captions file.
 
 The caption design is approved once, at the first moodboard, then it is fixed.
+
+### Short-form caption styles (owner's decision 6, 18 Nov 2026)
+
+The fixed pill stays the default for every film. For 9:16 (and 4:5, 1:1) a brand may choose one of two short-form styles instead, once, at its moodboard, written in `brands/<brand>/brand.md`:
+
+- **Highlight box** (`CaptionBox`): the phrase in large type; a box in the accent colour moves from word to word as each is spoken.
+- **Spoken word enlarged** (`CaptionPop`): the phrase in type; the word being spoken swells slightly and turns the accent colour.
+
+Both take the voice's word timings (`words: {text, start, end}[]`), group them into phrases of about five words, sit in the platforms' safe band like the pill, and follow the rules above: never over product UI or the focal point, a separate layer, exported with and without. The checks that read the pill (`captions_clear.mjs`) do not yet read these two styles; until they do, check placement by eye.
 
 ## Checks
 

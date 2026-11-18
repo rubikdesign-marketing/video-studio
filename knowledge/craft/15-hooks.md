@@ -140,7 +140,7 @@ The Viral Hooks connector (`.mcp.json`) searches a free library of short viral c
 
 - Never in a paid ad. Never in the repository. Never a clip with a child or a recognisable private person, or with another creator's captions burned in.
 - In a film only for an organic post, and only on the owner's decision for that one clip: `node tools/hooks/clips.mjs use <page> --job jobs/<job> --post organic --approved-by "<name>" --words "<what they said>"`, which writes the decision beside the clip. `clips.mjs check jobs/<job>` runs before delivery.
-- The default is the studio's own opening made in the engine, the brand's footage, or licensed footage (`tools/media/openverse.mjs`).
+- The default is the studio's own opening made in the engine, the brand's footage, or licensed footage (`tools/media/openverse.mjs`). The engine's twelve hook openers (`library/motion/index.json`, family `opener`; `engine/src/kit/openers/`) give a pattern interrupt with nothing borrowed: a punch-in, a line that fills the frame, a sudden stop, a card at the lens, a number slam, a split screen, a strike-out, a building question, a glitch cut (banned by default), a spotlight, a notification, a whip. Each is moving on frame 0, sets the written line at 8% or more of the short side, and was checked in all four sizes; three of them (at the lens, sudden stop, whip-in) leave the line unreadable until about 1 s, so pair those with a picture that carries the first second.
 
 ## 9. How the library learns
 
