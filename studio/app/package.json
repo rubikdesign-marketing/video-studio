@@ -1,5 +1,5 @@
 {
-  "name": "tulvo-video-studio-editor",
+  "name": "video-studio-editor",
   "version": "0.1.0",
   "description": "The review studio's editor, served at /editor",
   "private": true,

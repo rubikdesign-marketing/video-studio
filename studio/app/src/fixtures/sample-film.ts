@@ -11,7 +11,7 @@ export const sampleFilm: Film = {
   fps: 60,
   width: 1920,
   height: 1080,
-  brand: 'tulvo',
+  brand: 'demo',
   stage: 'dark',
   duration: 12.2,
   scenes: [
@@ -21,7 +21,7 @@ export const sampleFilm: Film = {
       start: 0,
       end: 3.5,
       energy: 3,
-      lines: [{ id: '01', start: 0.3, end: 3.1, text: 'This is the sample film for the Toolvo video studio.' }],
+      lines: [{ id: '01', start: 0.3, end: 3.1, text: 'This is the sample film for the new video studio.' }],
       texts: [{ lines: ['A *sample* film.'], at: 0.3, out: 3.15 }],
     },
     {

@@ -17,7 +17,7 @@ export const HEAD = 156;
 const END_SPACE = 24;
 export const MAX_PPS = 600;
 const DEFAULT_PPS = 80;
-const LANES_KEY = 'tulvo-editor:timeline-lanes';
+const LANES_KEY = 'studio-editor:timeline-lanes';
 
 /** How many pixels a second gets when the whole film fits the width. */
 export function fitPps(width: number, duration: Seconds): number {
