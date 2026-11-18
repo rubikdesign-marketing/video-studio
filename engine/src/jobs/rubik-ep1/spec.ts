@@ -23,6 +23,8 @@ export type Presence = 'pip' | 'hidden' | 'behind' | 'front';
 export type Site = {
   type: 'site'; cap: string; from: number; to?: number; url: string;
   presence?: Presence;
+  /** The page fills the frame: the browser window grows into it (owner, 18 Nov: 'sometimes show the websites full screen'). */
+  full?: boolean;
   /** Go to what he names and hold (lib.ts beatAt): at a word, the page moves to a capture mark (or moment `src`) and
    *  frames `view`; `play` lets the capture run on while the view holds. Replaces from/to/zoom for the picture. */
   beats?: { at: Cue; mark?: string; src?: number; view?: Box; play?: number }[];
@@ -108,7 +110,7 @@ export const SPEC: Record<number, ShotSpec> = {
   // ---- 01 Fibery
   16: { type: 'chapter', n: '01', site: 'Fibery', logo: 'fibery', url: FIB, of: 1 },
   17: { type: 'site', presence: 'hidden', cap: 'fibery-hero', from: 1.2, url: FIB, notes: [{ at: 0.2, tone: 'ask', tag: 'REMEMBER THE QUESTION?', text: 'What does this startup do?' }] },
-  18: { type: 'site', presence: 'hidden', beats: [{ at: 0, mark: 'hero' }, { at: 'hero', mark: 'hero', view: [150, 90, 1000, 563] }, { at: 'product', mark: 'hero', view: [690, 70, 1000, 563] }, { at: 'features', mark: 'illustration', view: [300, 349, 1300, 731], play: 0.5 }], cap: 'fibery-tour', from: 0.7, to: 12.4, url: FIB, notes: [
+  18: { type: 'site', full: true, presence: 'hidden', beats: [{ at: 0, mark: 'hero' }, { at: 'hero', mark: 'hero', view: [150, 90, 1000, 563] }, { at: 'product', mark: 'hero', view: [690, 70, 1000, 563] }, { at: 'features', mark: 'illustration', view: [300, 349, 1300, 731], play: 0.5 }], cap: 'fibery-tour', from: 0.7, to: 12.4, url: FIB, notes: [
     { at: 'hero', tone: 'info', tag: 'ANATOMY', text: 'Hero' }, { at: 'product', tone: 'info', tag: 'ANATOMY', text: 'Product shot' },
     { at: 'features', tone: 'info', tag: 'ANATOMY', text: 'Features' }, { at: 'illustrations', tone: 'info', tag: 'ANATOMY', text: 'Interactive illustrations' }] },
   19: { type: 'site', presence: 'hidden', beats: [{ at: 0, mark: 'templates' }, { at: 'user', mark: 'templates', view: [470, 190, 960, 540] }, { at: 'templates,', mark: 'templates', view: [310, 340, 1300, 731] }, { at: 'features', mark: 'features', view: [300, 230, 1500, 844] }], cap: 'fibery-tour', from: 15.3, to: 30.5, url: FIB, notes: [
@@ -146,7 +148,7 @@ export const SPEC: Record<number, ShotSpec> = {
   34: { type: 'site', presence: 'hidden', cap: 'folk-hero', from: 27.4, to: 31.3, url: FOLK, rings: [{ at: 'social', box: [240, 466, 1440, 244], tone: 'keep', mark: 'logos' }],
     notes: [{ at: 'social', tone: 'keep', tag: 'KEEP', text: 'Social proof: logos and ratings' }, { at: 'credibility', tone: 'info', tag: 'WHY', text: 'It adds credibility' }] },
   35: { type: 'site', presence: 'hidden', beats: [{ at: 0, mark: 'journey-intro', view: [200, 160, 1520, 855] }, { at: 'entire', mark: 'find', view: [220, 30, 1480, 833] }], cap: 'folk-journey', from: 0.6, to: 5.6, rate: 1, url: FOLK, notes: [{ at: 'like', tone: 'keep', tag: 'WHAT I LIKE MOST', text: 'The whole product lifecycle, one by one' }] },
-  36: { type: 'site', presence: 'hidden', beats: [{ at: 0, mark: 'find', view: [220, 30, 1480, 833] }, { at: 'open', mark: 'engage', view: [200, 60, 1520, 855] }], cap: 'folk-journey', from: 5.6, to: 12.3, url: FOLK, notes: [{ at: 'open', tone: 'keep', tag: 'KEEP', text: 'The product, wide open. Nothing to guess.' }] },
+  36: { type: 'site', full: true, presence: 'hidden', beats: [{ at: 0, mark: 'find', view: [220, 30, 1480, 833] }, { at: 'open', mark: 'engage', view: [200, 60, 1520, 855] }], cap: 'folk-journey', from: 5.6, to: 12.3, url: FOLK, notes: [{ at: 'open', tone: 'keep', tag: 'KEEP', text: 'The product, wide open. Nothing to guess.' }] },
   37: { type: 'site', presence: 'hidden', beats: [{ at: 0, mark: 'find', view: [160, 0, 1600, 900] }, { at: 'engage', mark: 'engage', view: [160, 0, 1600, 900] }, { at: 'call', mark: 'call', view: [160, 0, 1600, 900] }, { at: 'AI', mark: 'know', view: [160, 0, 1600, 900] }, { at: 'close', mark: 'close', view: [160, 0, 1600, 900] }], cap: 'folk-journey', from: 12.3, to: 41.5, url: FOLK, notes: [{ at: 0.2, tone: 'keep', tag: 'ONE JOURNEY', text: '', kind: 'steps',
     steps: [{ at: 'prospect', text: 'Find' }, { at: 'engage', text: 'Engage' }, { at: 'call', text: 'Call' }, { at: 'AI', text: 'Know' }, { at: 'close', text: 'Close' }] }] },
   38: { type: 'aroll' },
@@ -184,7 +186,7 @@ export const SPEC: Record<number, ShotSpec> = {
   55: { type: 'site', presence: 'front', cap: 'slite-tour', from: 11.2, to: 17.5, rate: 1, url: SLITE, notes: [{ at: 'good', tone: 'keep', tag: 'KEEP', text: 'Good sections, clear features' },
     { at: 'animations', tone: 'fix', tag: 'FIX · ADD MOTION', text: 'Static cards. A little motion gives context.', kind: 'motion' }] },
   56: { type: 'site', presence: 'hidden', beats: [{ at: 0, mark: 'agents' }, { at: 'integration', mark: 'agents', view: [300, 349, 1300, 731] }], cap: 'slite-tour', from: 42.5, to: 52.0, url: SLITE, notes: [{ at: 'integration', tone: 'keep', tag: 'KEEP', text: 'Integrations and the agents they provide' }] },
-  57: { type: 'site', presence: 'hidden', beats: [{ at: 0, mark: 'use-cases' }, { at: 'use', mark: 'use-cases', view: [320, 382, 1240, 698], play: 1 }], cap: 'slite-tour', from: 24.1, to: 33.0, url: SLITE, notes: [{ at: 'use', tone: 'keep', tag: 'KEEP', text: 'Use cases with real product flows' }] },
+  57: { type: 'site', full: true, presence: 'hidden', beats: [{ at: 0, mark: 'use-cases' }, { at: 'use', mark: 'use-cases', view: [320, 382, 1240, 698], play: 1 }], cap: 'slite-tour', from: 24.1, to: 33.0, url: SLITE, notes: [{ at: 'use', tone: 'keep', tag: 'KEEP', text: 'Use cases with real product flows' }] },
   58: { type: 'site', presence: 'front', beats: [{ at: 0, src: 52.0 }, { at: 'testimonial', src: 54.0, view: [440, 360, 1040, 585] }], cap: 'slite-tour', from: 47.7, to: 56.2, rate: 1, url: SLITE, notes: [{ at: 'testimonial', tone: 'info', tag: 'TESTIMONIALS', text: 'Works, but easy to miss' },
     { at: 'dedicated', tone: 'fix', tag: 'SUGGESTION', text: 'Give testimonials their own section' }] },
   59: { type: 'site', presence: 'hidden', cap: 'slite-tour', from: 56.4, url: SLITE, rings: [{ at: 'pricing', box: [350, 730, 1218, 272], tone: 'keep', mark: 'pricing-glimpse' }],

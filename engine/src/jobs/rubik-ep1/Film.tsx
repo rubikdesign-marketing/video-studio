@@ -11,7 +11,7 @@ import { MotionProvider } from '../../kit/motion';
 import timeline from './timeline.json';
 import { beatAt, capPlan, cueTime, resolveBeats, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
 import marksJson from './marks.json';
-import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Proof, type Row, type Site, type Tone } from './spec';
+import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Proof, type Row, type ShotSpec, type Site, type Tone } from './spec';
 import { B, Browser, C, FONT, Highlight, KineticLine, PAGE, Spotlight, toneBg, toneInk } from './look';
 
 // ---------------------------------------------------------------- data
@@ -319,8 +319,12 @@ const Rail: FC<{ notes: Note[]; shot: Shot; top: number }> = ({ notes, shot, top
 
 /** pipIn: Kashfiq's window fades in at this shot's start; false when the shot before already showed it in the same
  *  place (v2 restarted the fade at every cut, so the window blinked out for 2 frames: owner notes b001-n8, n27). */
-const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: boolean }> = ({ shot, spec, cut, d0, pipIn }) => {
+/** full: the page fills the frame (the window grows into it; owner, 18 Nov). fullIn / fullOut: grow at the start and
+ *  shrink at the end when the shot before / after is in a window. */
+const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: boolean; fullIn?: boolean; fullOut?: boolean }> = ({ shot, spec, cut, d0, pipIn, fullIn, fullOut }) => {
   const t = useT(); const len = shot.end - shot.start;
+  const fu = spec.full ? Math.min(fullIn ? interpolate(t, [0.05, 0.75], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut }) : 1, fullOut ? 1 - interpolate(t, [len - 0.65, len - 0.05], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut }) : 1) : 0;
+  const fs = 1 + (1920 / PAGE.w - 1) * fu;
   const k = PAGE.w / 1920;
   const still = spec.to === undefined && SPEC_STATIC.has(spec.cap + spec.from);
   const z = zoomOf(spec, shot, MARKS, CAP_LENGTH, (c, f) => SPEC_STATIC.has(c + f));
@@ -338,7 +342,8 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
   return (
     <Stage>
       {spec.presence === 'behind' ? <Behind cut={cut} d0={d0} len={len} fadeIn={pipIn} /> : null}
-      <Browser url={spec.url}>
+      <AbsoluteFill style={{ transformOrigin: '0 0', transform: fu > 0 ? `translate(${PAGE.x * (1 - fu)}px, ${PAGE.y * (1 - fu)}px) scale(${fs}) translate(${-PAGE.x}px, ${-PAGE.y}px)` : undefined }}>
+      <Browser url={spec.url} style={fu > 0 ? { borderRadius: 20 * (1 - fu) } : undefined}>
         <div style={{ position: 'absolute', left: 0, top: 0, width: PAGE.w, height: PAGE.h, transform: `scale(${scale}) translate(${-vx * k}px, ${-vy * k}px)`, transformOrigin: '0 0' }}>
           {spec.pause ? <Spotlight box={spec.pause.box} at={pauseAt} k={k} pw={PAGE.w} ph={PAGE.h}>{page}</Spotlight> : page}
           {spec.patch && pw > 0 ? (
@@ -362,6 +367,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
           </div>
         ) : null}
       </Browser>
+      </AbsoluteFill>
       <Rail notes={spec.notes ?? []} shot={shot} top={RAIL.y} />
       {spec.presence === 'front' ? <Front shot={shot} fadeIn={pipIn} /> : null}
       {(spec.presence ?? 'pip') === 'pip' ? <PiP cut={cut} d0={d0} len={len} x={RAIL.x + RAIL.w - 300} y={PAGE.y + PAGE.h - 300 + 4} size={300} at={pipIn ? 0 : -1} /> : null}
@@ -678,7 +684,7 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio, plate }) =
   };
   const hide = new Set([1, 7, 39]); // S01's question is typed on screen; S07 and S39 are typed lines
   const lines = useMemo(() => buildLines(shots, hide), []); // eslint-disable-line react-hooks/exhaustive-deps
-  const siteRanges = useMemo(() => shots.filter((s) => ['site', 'verdict', 'path', 'lessons'].includes((SPEC[s.n] as { type: string }).type) || ((SPEC[s.n] as { type: string }).type === 'cont' && s.n > 3)).map((s) => [s.start, s.end] as [number, number]), [shots]);
+  const siteRanges = useMemo(() => shots.filter((s) => (['site', 'verdict', 'path', 'lessons'].includes((SPEC[s.n] as { type: string }).type) && !(SPEC[s.n] as { full?: boolean }).full) || ((SPEC[s.n] as { type: string }).type === 'cont' && s.n > 3)).map((s) => [s.start, s.end] as [number, number]), [shots]);
   if (!cut) return null;
   const group = (first: number, until: number) => shots.filter((s) => s.n >= first && s.n <= until && s.voice);
   // plate: only the centred A-roll, for cutting Kashfiq out (build/matte_front.sh renders it for the 'front' shots).
@@ -694,7 +700,8 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio, plate }) =
         const from = sec(s.start); const dur = Math.max(1, sec(end) - from);
         const d0 = dOf(s.start); const len = end - s.start;
         let body: ReactNode = null;
-        if (spec.type === 'site') { const prev = i > 0 ? SPEC[shots[i - 1].n] : undefined; body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} pipIn={!prev || prev.type !== 'site' || (prev.presence ?? 'pip') !== (spec.presence ?? 'pip')} />; }
+        if (spec.type === 'site') { const prev = i > 0 ? SPEC[shots[i - 1].n] : undefined; const next = i + 1 < shots.length ? SPEC[shots[i + 1].n] : undefined; const isFull = (x?: ShotSpec) => x?.type === 'site' && !!x.full;
+          body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} pipIn={!prev || prev.type !== 'site' || (prev.presence ?? 'pip') !== (spec.presence ?? 'pip')} fullIn={!isFull(prev)} fullOut={!isFull(next)} />; }
         else if (spec.type === 'aroll') body = <ARollShot shot={s} spec={spec} cut={cut} d0={d0} />;
         else if (spec.type === 'title') body = <TitleCard />;
         else if (spec.type === 'coldopen') body = <ColdOpen c={spec} shot={s} cut={cut} d0={d0} len={len} />;
