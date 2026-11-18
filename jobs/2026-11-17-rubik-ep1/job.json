@@ -1,0 +1,88 @@
+{
+ "name": "Rubik Episode 1: What does this startup do? (Fibery, folk, Slite)",
+ "brand": "rubik",
+ "type": "edit",
+ "created": "2026-11-17",
+ "maker": "owner",
+ "size": "16:9 master (1920x1080), 9:16 versions from the same timeline",
+ "length_cap_seconds": 630,
+ "length_cap_status": "Storyboard cut list is 606.5 s (10:06) from word timings",
+ "energy_preset": "calm",
+ "voice": "Kashfiq (footage, phone microphone); no made voice",
+ "stage_next": "v3 fixes in progress (plan above); stills look-check before the v3 render",
+ "approvals": {
+  "idea": {
+   "date": "2026-11-17",
+   "by": "owner",
+   "note": "Edit plan published (claude.ai/artifact/WTdjfjEkgwvit7itzvE4Yq); owner moved on to the moodboard."
+  },
+  "script_and_voice": null,
+  "moodboard": {
+   "date": "2026-11-17",
+   "by": "owner",
+   "note": "Built in Figma at the owner's request (Figma file klPlLSv69g5dKI8W4sknFq); owner said 'Yes, start storyboard'."
+  },
+  "storyboard": {
+   "date": "2026-11-17",
+   "by": "owner",
+   "note": "Figma page '06 · Storyboard', 75 shots, 10:06. Owner: 'Approve, record captures'. 20 flagged joins/trims still need a listen at the paper-edit step."
+  },
+  "first_animation": null,
+  "full_animation": null,
+  "paper_edit": {
+   "date": "2026-11-18",
+   "by": "owner",
+   "note": "Word-level clean voice edit (fillers, false starts, repeats, padding cut; no pause over 0.55 s). Owner listened to all five acts on claude.ai/artifact/GHwe2G1HPjvib8yteYMcXP and marked each \"Sounds professional\". Built from projects/rubik/video-1-edit/clean/spec.py; silences tightened by clean/tighten.mjs."
+  }
+ },
+ "figma_file": "https://www.figma.com/design/klPlLSv69g5dKI8W4sknFq",
+ "source_footage": "/Users/wedevs/Downloads/Rubik Raw Videos (17 clips, 4K 29.97 fps, shot 12 Nov 2026); not copied into the repository",
+ "plan": "/Users/wedevs/Desktop/Marketer/projects/rubik/video-1-edit/EDIT-PLAN.md",
+ "facts": [],
+ "planned_instant_changes": [
+  "Hard cuts on the beat, shots 4–7",
+  "Jump cuts with punch-in, shots 9–15 and 73–74"
+ ],
+ "planned_holds": [
+  "Shot 47 verdict, 1 s",
+  "Shot 75 end card, 5 s"
+ ],
+ "new_library_entry": "Paused-button fix (shots 62–64): page dims, ring isolates a button, label morphs to a labelled concept",
+ "notes": [
+  "Third-party pages are filmed as they are on the capture date and labelled with it. Every redesign is labelled 'Suggested change · Rubik concept'.",
+  "Open decisions: lower-third title, series name, font licence, music library, third-party logo OK.",
+  "Captures recorded 17 Nov 2026: 7 captures, best takes listed in capture/CAPTURES.md.",
+  "Owner, 17 Nov: Kashfiq is centred in every shot. framing.json gives each clip's centred wide, tight and 9:16 crops (eyes centred, about 40% down; never under 1920 px wide or 2160 px tall, so nothing is upscaled). The logo-wall clip follows the smoothed face track because the gimbal drifts.",
+  "Owner, 17 Nov: use the real Fibery, folk and Slite logos (logos/, taken from each site's header on 17 Nov 2026) on chapter cards, site pills, verdict cards, the Design DNA card and site-specific graphics. This is the owner's confirmation for third-party logos.",
+  "2026-11-18: owner fixes. Name on screen is \"Shiyam Kashfiq\" (lower third, Figma, plan); he says only \"Kashfiq\" on camera. Transcript spellings fixed for captions (guess not case, folk, Slite, Fibery, Kashfiq, branding) by clean/word_fixes.py; re-run it after any re-ingest. The tool's rough command rebuilds the cut list and would undo the tightening: run cut, then clean/tighten.mjs, then prepareRough on the saved cutlist.",
+  "2026-11-18 (overnight, owner asleep, full go-ahead): rough cut reviewed frame by frame (projects/rubik/video-1-edit/REVIEW-AND-PLAN.md). Built the full film as engine composition RubikEp1 (engine/src/jobs/rubik-ep1: Film.tsx, spec.ts, timeline.json from build/timeline.py). A-roll re-centred (build/center.py), light per-setup grade, 39 site shots from the real captures in a browser frame with PiP and a notes rail, title sting, 3 chapter cards, 3 verdict cards, 2 maxim cards, path diagram, 2 lessons cards, CTA card, lower third, end card; captions rebuilt (one line, no crossfade). Sound: music by ElevenLabs in two pieces joined at the Slite chapter (audio/music-a, music-b), 173 effects from library/sounds placed on the same cues as the picture (build/audio_events.mjs), mixed by tools/audio/mix.py, mastered to -14 LUFS / -1.5 dBFS. Brand file filled with Rubik colours and logos (placeholders moved to logo/_placeholders).",
+  "18 Nov: v1 checked frame by frame; v2 spliced (site-capture stutters removed, shot 54 ring, Slite zoom framing, larger URL, music 21%). Review page https://claude.ai/artifact/JBDg9gKJYtZ27VNWh57uVC",
+  "18 Nov: owner's review batch 1 on v2 (40 notes, 10 must-fix) recorded in revisions.json round v2. The 'Filmed 17 Nov 2026' label is removed at the owner's request (note 4), overriding the 17 Nov rule. Plan: docs/superpowers/plans/2026-11-18-rubik-ep1-v3-fixes.md"
+ ],
+ "join_check": {
+  "page": "https://claude.ai/artifact/GHwe2G1HPjvib8yteYMcXP",
+  "answers": "page database, collection 'decisions', one document per act (act-open, act-fibery, act-folk, act-slite, act-close): choice approve | recut, note, by, at",
+  "built_from": "/Users/wedevs/Desktop/Marketer/projects/rubik/video-1-edit/listen/build_clean.py",
+  "result": "all five acts approved 2026-11-18"
+ },
+ "decisions": {
+  "lower_third": "Shiyam Kashfiq · Co-founder & CEO, Rubik",
+  "series_name": "Website Teardown",
+  "font": "Inter (free); Helvetica Now not used",
+  "pickups": "None: edit with Kashfiq's original words, weak lines covered by clean on-screen text",
+  "music_and_sound": "ElevenLabs for sound effects and music beds, or royalty-free music. Kashfiq's own voice is never generated or replaced.",
+  "tulvo_poster": "Not for this video",
+  "vertical": "4 reels: hook + Fibery headline fix, folk journey, Slite button fix, the two lessons",
+  "proof_beat": "Yes: an 8–15 s montage of Rubik's work taken from the showreel on rubik.design",
+  "third_party_logos": "Yes (owner asked for the real logos)"
+ },
+ "skills_used": [
+  "figma-use",
+  "remotion-best-practices",
+  "video-studio"
+ ],
+ "outputs": {
+  "master": "out/rubik-ep1-v2.mp4",
+  "preview": "out/rubik-ep1-v2-preview-720p.mp4"
+ }
+}
