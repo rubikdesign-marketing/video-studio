@@ -38,7 +38,10 @@ const useSpring = (at: number, damping = 16) => { const f = useCurrentFrame(); c
 // ---------------------------------------------------------------- A-roll
 type Crop = { src: [number, number]; keys: [number, number, number, number, number][] };
 type Pic = { src: string; from: number; frames: number; trim: number; freeze: boolean; crop?: Crop };
-type FilmCut = { pictures: Pic[]; grade: Record<string, [number, number, number]> };
+/** grade: per clip, gains that match skin and exposure to the reference clip plus one look (build/grade.py); an older
+ *  cut stores the gains alone. */
+type Grade = { gain: [number, number, number]; lift: number; gamma: number; sat: number };
+type FilmCut = { pictures: Pic[]; grade: Record<string, Grade | [number, number, number]> };
 const useFilmCut = () => {
   const [d, set] = useState<FilmCut | null>(null);
   const [h] = useState(() => delayRender('film-cut.json'));
@@ -54,12 +57,15 @@ const cropAt = (c: Crop, f: number) => {
 const clipOf = (src: string) => src.slice(src.lastIndexOf('/') + 1, -4);
 const GradeDefs: FC<{ grade: FilmCut['grade'] }> = ({ grade }) => (
   <svg width="0" height="0" style={{ position: 'absolute' }}>
-    {Object.entries(grade).map(([clip, [r, g, b]]) => (
-      <filter key={clip} id={`g-${clip}`} colorInterpolationFilters="sRGB">
-        <feColorMatrix type="matrix" values={`${r} 0 0 0 0  0 ${g} 0 0 0  0 0 ${b} 0 0  0 0 0 1 0`} />
-        <feComponentTransfer><feFuncR type="gamma" amplitude="1.03" exponent="1.04" offset="-0.01" /><feFuncG type="gamma" amplitude="1.03" exponent="1.04" offset="-0.01" /><feFuncB type="gamma" amplitude="1.03" exponent="1.04" offset="-0.01" /></feComponentTransfer>
-      </filter>
-    ))}
+    {Object.entries(grade).map(([clip, v]) => { const gr: Grade = Array.isArray(v) ? { gain: v, lift: -0.01, gamma: 1.04, sat: 1 } : v; const [r, g, b] = gr.gain;
+      const fn = { type: 'gamma', amplitude: '1.03', exponent: String(gr.gamma), offset: String(gr.lift) } as const;
+      return (
+        <filter key={clip} id={`g-${clip}`} colorInterpolationFilters="sRGB">
+          <feColorMatrix type="matrix" values={`${r} 0 0 0 0  0 ${g} 0 0 0  0 0 ${b} 0 0  0 0 0 1 0`} />
+          <feColorMatrix type="saturate" values={String(gr.sat)} />
+          <feComponentTransfer><feFuncR {...fn} /><feFuncG {...fn} /><feFuncB {...fn} /></feComponentTransfer>
+        </filter>
+      ); })}
   </svg>
 );
 const Picture: FC<{ p: Pic }> = ({ p }) => {
