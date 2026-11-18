@@ -75,3 +75,17 @@ A one-to-two second sound that ends every one of a brand's videos on the logo, t
 ## What a person must listen for
 
 Performance, warmth, whether the music suits the brand, whether a sound is annoying. None of that can be measured. The voice-read approval and the full-animation approval both say so in plain words.
+
+## From "3 Sound Design Secrets" (study card: library/references/rubik/sound-design-secrets/study.md), Nov 2026
+
+Supplied by the Rubik owner as the sound brief for their episode 1. Each rule has its measurable form.
+
+- **Layer big moves by frequency.** A small move: one light sound. A big move (chapter, reveal, lesson): two or three
+  layers in different bands (body under ~250 Hz, mid 0.5–2 kHz, air above ~4 kHz; `local_pack.py` and the library
+  indexes give each sound's `centroid_hz`), starting within 20 ms of each other.
+- **A pocket for the voice.** While the voice speaks, the music is 4–6 dB lower between 1 and 4 kHz than outside
+  that band, on top of the usual ducking; the voice is high-passed at ~90 Hz.
+- **One sound family per film.** All whooshes, hits and risers come from one family that fits the film's energy; a
+  calm film never uses gritty bass hits. Write the family into the sound plan.
+- **Music never stops dead.** Into a track: a riser, swell or reversed first beat under the join. Out of a track: a
+  reverb tail of at least 1.5 s on the last beat while the track fades.
