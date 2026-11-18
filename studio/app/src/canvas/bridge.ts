@@ -6,7 +6,7 @@ import { usePlayback } from '../playback';
  * follow the store and tells the store where the video is. Every step checks first and does nothing when the two
  * already agree, so it is harmless next to a store that drives the video. Set this to false to switch it off.
  */
-export const VIDEO_FOLLOWS_STORE = true;
+export const VIDEO_FOLLOWS_STORE = false;
 
 /** Makes the video follow the playback store. Returns the function that stops it. */
 export function followPlayback(video: HTMLVideoElement): () => void {

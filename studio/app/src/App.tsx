@@ -3,7 +3,7 @@ import { api, plainMessage, type JobSummary } from './api';
 import { Canvas, VersionList, useCanvas, versionOptions } from './canvas';
 import { Inspector, SceneList } from './inspector';
 import { NoteEditor, NotesList, SendBox, SentBatches, sendFromPage, startNote, toggleMarking, useComposer, useReviewer } from './notes';
-import { usePlayback } from './playback';
+import { registerPlaybackShortcuts, usePlayback } from './playback';
 import { Shell, usePanelsStore } from './shell';
 import { CommandMenu, ShortcutSheet, registerCoreShortcuts, registerNoteShortcuts, registerPanelShortcuts, useShortcuts } from './shortcuts';
 import { editor, history, useFilm, useHistory, useNotes, useSaveLabel, useSaving, useSelection } from './store';
@@ -187,6 +187,7 @@ function usePageShortcuts() {
     };
     const stops = [
       registerCoreShortcuts(history),
+      registerPlaybackShortcuts(),
       registerPanelShortcuts({
         toggleLeft: () => usePanelsStore.getState().toggle('left'),
         toggleRight: () => usePanelsStore.getState().toggle('right'),
