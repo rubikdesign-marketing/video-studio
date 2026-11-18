@@ -12,7 +12,7 @@ import timeline from './timeline.json';
 import { beatAt, capPlan, cueTime, resolveBeats, groupCueTime, markBoxAt, srcAt, viewAt, zoomOf, type MarksFile, type Word } from './lib';
 import marksJson from './marks.json';
 import { CAP_LENGTH, FIBERY_SWATCHES, SPEC, STILLS, type Box, type Card, type Cue, type Note, type Proof, type Row, type ShotSpec, type Site, type Tone } from './spec';
-import { B, Browser, C, FONT, Highlight, KineticLine, PAGE, Spotlight, toneBg, toneInk } from './look';
+import { Browser, C, FONT, Highlight, KineticLine, PAGE, Spotlight, toneBg, toneInk } from './look';
 
 // ---------------------------------------------------------------- data
 type Shot = { n: number; kind: string; voice: boolean; start: number; end: number; text: string; words: Word[]; d0?: number; d1?: number };
@@ -387,7 +387,7 @@ const ARollShot: FC<{ shot: Shot; spec: Extract<typeof SPEC[number], { type: 'ar
       <AbsoluteFill style={{ opacity: soft, filter: soft < 1 ? `blur(${(1 - soft) * 18}px)` : undefined, transform: `scale(${1.04 - 0.04 * soft})` }}><ARollAt cut={cut} d0={d0} len={len} /></AbsoluteFill>
       <AbsoluteFill style={{ background: 'radial-gradient(130% 100% at 50% 40%, transparent 60%, rgba(0,0,0,0.28) 100%)' }} />
       {spec.lower ? (() => { const at = cueOf(shot, spec.lower.at); const u = enter(t, at, 0.6); const out = 1 - enter(t, len - 0.4, 0.35); return (
-        <div style={{ position: 'absolute', left: 96, bottom: 150, display: 'flex', alignItems: 'center', gap: 22, background: C.forest, borderRadius: 18, padding: '20px 30px 20px 22px', clipPath: `inset(0 ${(1 - u) * 100}% 0 0 round 18px)`, opacity: out, boxShadow: '0 20px 50px rgba(0,0,0,0.35)' }}>
+        <div style={{ position: 'absolute', left: 96, bottom: 200, display: 'flex', alignItems: 'center', gap: 22, background: C.forest, borderRadius: 18, padding: '20px 30px 20px 22px', clipPath: `inset(0 ${(1 - u) * 100}% 0 0 round 18px)`, opacity: out, boxShadow: '0 20px 50px rgba(0,0,0,0.35)' }}>
           <div style={{ width: 64, height: 64, borderRadius: 14, background: C.forest2, display: 'grid', placeItems: 'center' }}><Logo name="mark-on-dark" h={38} /></div>
           <div><div style={{ font: `700 40px/1.05 ${FONT}`, color: C.white, letterSpacing: '-0.02em' }}>{spec.lower.name}</div><div style={{ font: `600 19px/1 ${FONT}`, color: C.lime, letterSpacing: '0.08em', marginTop: 10, textTransform: 'uppercase' }}>{spec.lower.role}</div></div>
         </div>); })() : null}
@@ -655,7 +655,7 @@ const buildLines = (shots: Shot[], hide: Set<number>): Line[] => {
     s.words.forEach((w, i) => {
       const len = cur.reduce((a, x) => a + x.w.length + 1, 0);
       const gap = i > 0 ? w.t0 - s.words[i - 1].t1 : 0;
-      if (cur.length && (len + w.w.length > 30 || gap > 0.45)) push();
+      if (cur.length && (len + w.w.length > 22 || gap > 0.45)) push();
       cur.push(w);
       if (/[.?!]$/.test(w.w) && cur.length > 2) push();
     });
@@ -664,15 +664,29 @@ const buildLines = (shots: Shot[], hide: Set<number>): Line[] => {
   for (let i = 0; i < lines.length; i++) { const nx = lines[i + 1]; lines[i].t1 = Math.min(nx ? Math.min(nx.t0, lines[i].t1 + 0.5) : lines[i].t1 + 0.5, (lines[i].end ?? 1e9) + 0.25); }
   return lines;
 };
+/** Captions (owner, 19 Nov: 'a lot bigger, more interactive and livelier'): heavy white type with a forest outline, no
+ *  box; each word pops up as it is said, the word being said is lime and a little larger, and the words that carry the
+ *  episode (the sites, Rubik, product, users, price, numbers) stay lime once said. 80 px on camera and over full-screen
+ *  pages, 60 px under a page in its window. */
+const KEY = /^(fibery|folk|slite|rubik|product|products|users?|guess|pricing|price|cta|demo|context|testimonials?|\d.*)$/i;
 const CaptionLayer: FC<{ lines: Line[]; siteRanges: [number, number][] }> = ({ lines, siteRanges }) => {
   const t = useT();
   const line = lines.find((l) => t >= l.t0 - 0.05 && t < l.t1);
   if (!line) return null;
   const onSite = siteRanges.some(([a, b]) => t >= a && t < b);
-  const cx = onSite ? PAGE.x + PAGE.w / 2 : 960;
+  const size = onSite ? 60 : 80; const cx = onSite ? PAGE.x + PAGE.w / 2 : 960;
   return (
-    <div style={{ position: 'absolute', left: cx, bottom: onSite ? 30 : 60, transform: 'translateX(-50%)', background: `linear-gradient(${C.forest2}, ${C.forest})`, borderRadius: 18, padding: onSite ? '12px 24px' : '16px 28px', whiteSpace: 'nowrap', font: `${B.captions.weight} ${onSite ? 44 : 56}px/1.15 ${FONT}`, letterSpacing: '-0.01em', boxShadow: '0 12px 30px rgba(0,0,0,0.35)' }}>
-      {line.words.map((w, i) => { const said = t >= w.t0; const now = said && t < w.t1 + 0.08; return <span key={i} style={{ color: now ? C.lime : said ? C.white : 'rgba(255,255,255,0.45)' }}>{w.w}{i < line.words.length - 1 ? ' ' : ''}</span>; })}
+    <div style={{ position: 'absolute', left: cx, bottom: onSite ? 22 : 66, transform: 'translateX(-50%)', whiteSpace: 'nowrap', font: `800 ${size}px/1.1 ${FONT}`, letterSpacing: '-0.02em',
+      WebkitTextStroke: `${Math.round(size * 0.14)}px ${C.forest}`, paintOrder: 'stroke fill', filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.45))' }}>
+      {line.words.map((w, i) => {
+        const u = Math.min(1, Math.max(0, (t - w.t0 + 0.04) / 0.14)); const pop = u <= 0 ? 0 : 1 - (1 - u) ** 3 + Math.sin(u * Math.PI) * 0.12;
+        const now = t >= w.t0 && t < w.t1 + 0.08; const key = KEY.test(w.w.replace(/[^A-Za-z0-9]/g, ''));
+        return (
+          <span key={i} style={{ display: 'inline-block', marginRight: i < line.words.length - 1 ? '0.26em' : 0, opacity: u > 0 ? 1 : 0.0,
+            transform: `translateY(${(1 - Math.min(1, pop)) * size * 0.25}px) scale(${(0.7 + 0.3 * Math.min(1, pop)) * (now ? 1.1 : 1)})`, transformOrigin: '50% 80%',
+            color: now || (key && t >= w.t0) ? C.lime : '#FFFFFF' }}>{w.w}</span>
+        );
+      })}
     </div>
   );
 };
