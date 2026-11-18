@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';
-import { beatAt, capPlan, resolveBeats, checkMarks, contains, cueTime, findWord, fitView, groupCueTime, markBoxAt, pageBox, perimeterPoint, zoomOf, scrollAt, srcAt, viewAt, viewBox, type Box, type Word } from './lib.ts';
+import { beatAt, capPlan, resolveBeats, spotlightLevel, checkMarks, contains, cueTime, findWord, fitView, groupCueTime, markBoxAt, pageBox, perimeterPoint, zoomOf, scrollAt, srcAt, viewAt, viewBox, type Box, type Word } from './lib.ts';
 
 const words = (...ws: string[]): Word[] => ws.map((w, i) => ({ w, t0: 10 + i, t1: 10.8 + i }));
 
@@ -183,4 +183,11 @@ test('checkMarks follows the beats: a ring inside the beat it shows in passes, o
   const sp = (box: Box) => ({ 1: { type: 'site', cap: 'cap', from: 0, beats: [{ at: 0, src: 2, view: [400, 225, 960, 540] as Box }], rings: [{ at: 1, box }] } });
   assert.equal(checkMarks(sp([500, 300, 200, 100]), T, marks, { cap: 10 }).filter((r) => !r.ok).length, 0);
   assert.equal(checkMarks(sp([100, 100, 200, 100]), T, marks, { cap: 10 }).filter((r) => !r.ok).length, 1);
+});
+
+test('a spotlight carried over from the shot before is fully on from the first frame (no blink at the cut)', () => {
+  assert.equal(spotlightLevel(0, 0, true), 1);
+  assert.equal(spotlightLevel(0, 0, false), 0);
+  assert.equal(spotlightLevel(0.6, 0, false), 1);
+  assert.equal(spotlightLevel(0.1, 0.5, false), 0);
 });

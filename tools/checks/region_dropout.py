@@ -6,6 +6,7 @@ Usage: region_dropout.py <video> --box x,y,w,h [--from s] [--to s] [--json out.j
   box   the region in the video's own pixels (a picture-in-picture window, say)
 
   dark   a frame whose region is more than 35% darker than the median of its 3 neighbours on each side
+  flash  a frame whose region is far brighter than its neighbours (a blank page for one frame)
   stuck  the region repeats the same picture for 4 frames or more while the rest of the frame moves (a video that
          stalled or reloaded); a region that is still while everything is still is not reported
 
@@ -35,6 +36,8 @@ def find(region, rest_moves):
             out.append({'frame': i, 'frames': j - i + 1, 'kind': 'dark'})
             i = j + 1
             continue
+        if nb.size and means[i] > max(1.35 * np.median(nb), np.median(nb) + 40):
+            out.append({'frame': i, 'frames': 1, 'kind': 'flash'})
         i += 1
     same = np.array([False] + [float(np.abs(region[k] - region[k - 1]).mean()) < STILL for k in range(1, n)])
     k = 1

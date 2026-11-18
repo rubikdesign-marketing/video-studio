@@ -24,6 +24,11 @@ class Dropouts(unittest.TestCase):
         self.assertEqual([d['frame'] for d in got], [17])
         self.assertEqual(got[0]['kind'], 'dark')
 
+    def test_one_blank_white_frame_is_found(self):
+        f = frames(); f[30] = np.full_like(f[30], 255)
+        got = region_dropout.find(f, np.ones(40, bool))
+        self.assertEqual([(d['frame'], d['kind']) for d in got], [(30, 'flash')])
+
     def test_a_region_stuck_while_the_rest_moves_is_found(self):
         f = frames()
         for i in range(20, 26): f[i] = f[19].copy()

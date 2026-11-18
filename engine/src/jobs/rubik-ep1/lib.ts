@@ -178,3 +178,11 @@ export function resolveBeats(sp: { cap: string; type?: string; from?: number; be
   if (!sp.beats?.length) return undefined;
   return sp.beats.map((b) => ({ t: cueTime(shot.words, shot.start, b.at, 0), src: b.mark ? marks[sp.cap]?.marks[b.mark]?.t ?? b.src ?? 0 : b.src ?? 0, view: b.view ?? FULL, play: b.play }));
 }
+
+/** How far the spotlight is on at shot time t (0–1): it eases in over 0.5 s from `at`, or is already fully on when it
+ *  carries over from the shot before (`instant`), so the cut does not blink. */
+export const spotlightLevel = (t: number, at: number, instant = false): number => {
+  if (instant) return 1;
+  const x = Math.min(1, Math.max(0, (t - at) / 0.5));
+  return 1 - (1 - x) ** 3;
+};

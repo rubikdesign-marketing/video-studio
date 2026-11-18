@@ -179,7 +179,7 @@ const Capture: FC<{ cap: string; from: number; to?: number; len: number; rate?: 
   return (
     <>
       {still ? (
-        <Sequence durationInFrames={playFrames} layout="none"><Freeze frame={0}><OffthreadVideo src={src} muted trimBefore={Math.round(from * fps)} style={style} /></Freeze></Sequence>
+        <Sequence layout="none"><Freeze frame={0}><OffthreadVideo src={src} muted trimBefore={Math.round(from * fps)} style={style} /></Freeze></Sequence>
       ) : parts.map((p, i) => {
         const f1 = i + 1 < parts.length ? parts[i + 1].f0 : playFrames;
         const nextLast = i + 1 < parts.length ? (parts[i + 1] as { last: number }).last : 0;
@@ -193,7 +193,9 @@ const Capture: FC<{ cap: string; from: number; to?: number; len: number; rate?: 
           </Sequence>
         );
       })}
-      {playable < len ? (
+      {/* The last frame holds to the end of the shot, always: playFrames is rounded, and a shot one frame longer than
+          it showed a blank white page on its final frame (18 one-frame flashes in v2, owner's notes b001-n8, n27). */}
+      {!still ? (
         <Sequence from={playFrames} layout="none"><Freeze frame={0}><OffthreadVideo src={src} muted trimBefore={Math.round(Math.min(max, srcEnd) * fps)} style={style} /></Freeze></Sequence>
       ) : null}
     </>
@@ -345,7 +347,7 @@ const SiteShot: FC<{ shot: Shot; spec: Site; cut: FilmCut; d0: number; pipIn: bo
       <AbsoluteFill style={{ transformOrigin: '0 0', transform: fu > 0 ? `translate(${PAGE.x * (1 - fu)}px, ${PAGE.y * (1 - fu)}px) scale(${fs}) translate(${-PAGE.x}px, ${-PAGE.y}px)` : undefined }}>
       <Browser url={spec.url} style={fu > 0 ? { borderRadius: 20 * (1 - fu) } : undefined}>
         <div style={{ position: 'absolute', left: 0, top: 0, width: PAGE.w, height: PAGE.h, transform: `scale(${scale}) translate(${-vx * k}px, ${-vy * k}px)`, transformOrigin: '0 0' }}>
-          {spec.pause ? <Spotlight box={spec.pause.box} at={pauseAt} k={k} pw={PAGE.w} ph={PAGE.h}>{page}</Spotlight> : page}
+          {spec.pause ? <Spotlight box={spec.pause.box} at={pauseAt} instant={spec.pause.instant} k={k} pw={PAGE.w} ph={PAGE.h}>{page}</Spotlight> : page}
           {spec.patch && pw > 0 ? (
             <div style={{ position: 'absolute', left: spec.patch.box[0] * k, top: spec.patch.box[1] * k, width: spec.patch.box[2] * k, height: spec.patch.box[3] * k, background: spec.patch.bg, clipPath: `inset(0 ${(1 - pw) * 100}% 0 0)`, padding: 4 }}>
               <div style={{ display: 'inline-block', marginBottom: 10, background: C.forest, color: C.lime, font: `700 11px/1 ${FONT}`, letterSpacing: '0.1em', padding: '6px 8px', borderRadius: 5 }}>{spec.patch.label.toUpperCase()}</div>
@@ -688,7 +690,7 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio, plate }) =
   if (!cut) return null;
   const group = (first: number, until: number) => shots.filter((s) => s.n >= first && s.n <= until && s.voice);
   // plate: only the centred A-roll, for cutting Kashfiq out (build/matte_front.sh renders it for the 'front' shots).
-  if (plate) return <AbsoluteFill style={{ background: '#000' }}>{shots.map((s, i) => <Sequence key={i} from={sec(s.start)} durationInFrames={Math.max(1, sec(s.end) - sec(s.start))}><ARollAt cut={cut} d0={dOf(s.start)} len={s.end - s.start} /></Sequence>)}</AbsoluteFill>;
+  if (plate) return <AbsoluteFill style={{ background: '#000' }}><GradeDefs grade={cut.grade} />{shots.map((s, i) => <Sequence key={i} from={sec(s.start)} durationInFrames={Math.max(1, sec(s.end) - sec(s.start))}><ARollAt cut={cut} d0={dOf(s.start)} len={s.end - s.start} /></Sequence>)}</AbsoluteFill>;
   return (
     <AbsoluteFill style={{ background: C.forest }}>
       <GradeDefs grade={cut.grade} />
