@@ -107,7 +107,17 @@ def share(db):
     return round(10 ** (db / 20), 3)
 
 
-def build(job, total, music, music_gain_db, cues, speech):
+def music_chain(i, total, gain_db, pocket_db=4.5):
+    """The music's level, its closing fade, and a pocket for the voice: 1-4 kHz (2 octaves around 2 kHz) cut by
+    pocket_db, so the voice sits in the music instead of only over it (knowledge/craft/07-sound.md, 'A pocket for
+    the voice')."""
+    fade = max(0.0, total - 1.6)
+    pocket = f"equalizer=f=2000:t=o:w=2:g={-pocket_db:.2f}," if pocket_db > 0 else ""
+    return (f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=0:{total:.3f},volume={gain_db:.2f}dB,{pocket}"
+            f"afade=t=out:st={fade:.3f}:d=1.6,apad=whole_dur={total:.3f}[m0]")
+
+
+def build(job, total, music, music_gain_db, cues, speech, pocket_db=4.5):
     A = os.path.join(job, "audio"); stems = os.path.join(A, "stems"); os.makedirs(stems, exist_ok=True)
     inputs = ["-i", os.path.join(A, "voice.wav")]
     f = ["[0:a]aresample=48000,aformat=channel_layouts=mono,highpass=f=80,equalizer=f=3200:t=q:w=1:g=2,"
@@ -118,9 +128,7 @@ def build(job, total, music, music_gain_db, cues, speech):
     if music:
         inputs += ["-i", music]
         i = len(inputs) // 2 - 1
-        fade = max(0.0, total - 1.6)
-        f.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=0:{total:.3f},volume={music_gain_db:.2f}dB,"
-                 f"afade=t=out:st={fade:.3f}:d=1.6,apad=whole_dur={total:.3f}[m0]")
+        f.append(music_chain(i, total, music_gain_db, pocket_db))
         # The music sits lower while a line is spoken and rises a little in the gaps. The dip follows the
         # known line times with smooth ramps (0.25 s down before a line, 0.45 s up after), so its depth is
         # exact and it never pumps.
@@ -152,7 +160,11 @@ def build(job, total, music, music_gain_db, cues, speech):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("job"); ap.add_argument("--tail", type=float, default=1.5)
+    ap.add_argument("--pocket", type=float, default=4.5, help="dB cut in the music at 1-4 kHz for the voice (0 for none)")
+    ap.add_argument("--under", type=float, help="music share of the voice while speaking, inside 0.20-0.30 (default: the middle)")
     a = ap.parse_args()
+    want = sum(UNDER_VOICE) / 2 if a.under is None else a.under
+    if not UNDER_VOICE[0] <= want <= UNDER_VOICE[1]: sys.exit(f"--under {want} is outside {UNDER_VOICE[0]}-{UNDER_VOICE[1]}.")
     A = os.path.join(a.job, "audio")
     voice = os.path.join(A, "voice.wav")
     if not os.path.exists(voice): sys.exit(f"Missing {voice}. Run voice.mjs join first.")
@@ -176,7 +188,7 @@ def main():
         if duration(music) < total - 0.5:
             sys.exit(f"The music ({duration(music):.1f} s) is shorter than the film ({total:.1f} s). Compose it to length.")
         m = samples(music)
-        target_under = 20 * math.log10(sum(UNDER_VOICE) / 2)            # middle of the allowed range, in dB below the voice
+        target_under = 20 * math.log10(want)                             # the chosen share (default the middle), in dB below the voice
         music_gain = (voice_db + target_under + GAP_LIFT_DB) - level(m, [(0, total)])
 
     cues = []
@@ -198,7 +210,7 @@ def main():
 
     report = {}
     for attempt in (1, 2):
-        out, stems = build(a.job, total, music, music_gain, cues, speech)
+        out, stems = build(a.job, total, music, music_gain, cues, speech, a.pocket)
         if not os.path.exists(out) or os.path.getsize(out) < 1000: sys.exit("The mix was not written.")
         got = duration(out)
         if abs(got - total) > 0.1: sys.exit(f"The mix is {got:.2f} s but the film is {total:.2f} s. Not usable.")
@@ -210,9 +222,9 @@ def main():
         under = share(level(ms, speech) - vs)
         between = share(level(ms, quiet) - vs) if quiet else None
         report.update(music_share_under_voice=under, music_share_in_gaps=between)
-        if UNDER_VOICE[0] <= under <= UNDER_VOICE[1] or attempt == 2:
+        if (UNDER_VOICE[0] <= under <= UNDER_VOICE[1] and (a.under is None or abs(under - want) <= 0.02)) or attempt == 2:
             break
-        music_gain += 20 * math.log10((sum(UNDER_VOICE) / 2) / under)     # correct once and mix again
+        music_gain += 20 * math.log10(want / under)                     # correct once and mix again
     if cues:
         ss = samples(os.path.join(stems, "sfx.wav"))
         report["loudest_effect_share_of_voice"] = share(loudest(ss, 0.0, total) - report["voice_db"])
