@@ -1,6 +1,6 @@
 // Episode 1's shared look: brand tokens and the pieces every scene uses (the browser window, highlights, cards).
 // Colours, fonts and logos come only from brands/rubik/brand.json.
-import type { FC, ReactNode } from 'react';
+import type { CSSProperties, FC, ReactNode } from 'react';
 import { Easing, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
 import { brandFiles } from '../../brands';
 import { getBrand } from '../../kit/brand';
@@ -28,8 +28,8 @@ export const BAR = 44;
 
 /** A quiet browser window: hairline chrome, the address centred, a soft two-layer shadow. No date label (the owner's
  *  note b001-n4). */
-export const Browser: FC<{ url: string; children: ReactNode }> = ({ url, children }) => (
-  <div style={{ position: 'absolute', left: PAGE.x, top: PAGE.y - BAR, width: PAGE.w, height: PAGE.h + BAR, borderRadius: 20, overflow: 'hidden', background: '#FFFFFF',
+export const Browser: FC<{ url: string; children: ReactNode; at?: { x: number; y: number; w: number }; style?: CSSProperties }> = ({ url, children, at = PAGE, style }) => (
+  <div style={{ position: 'absolute', left: at.x, top: at.y - BAR, width: at.w, height: (at.w * 9) / 16 + BAR, borderRadius: 20, overflow: 'hidden', background: '#FFFFFF', ...style,
     boxShadow: '0 2px 6px rgba(0,0,0,0.22), 0 28px 70px -12px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.10)' }}>
     <div style={{ position: 'relative', height: BAR, background: 'linear-gradient(#FAFAF8, #F1F2EE)', borderBottom: `1px solid ${C.line}`, display: 'flex', alignItems: 'center', padding: '0 18px' }}>
       <div style={{ display: 'flex', gap: 8 }}>{[0, 1, 2].map((i) => <div key={i} style={{ width: 12, height: 12, borderRadius: 6, background: '#DADDD6', boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.05)' }} />)}</div>
@@ -38,7 +38,7 @@ export const Browser: FC<{ url: string; children: ReactNode }> = ({ url, childre
         {url}
       </div>
     </div>
-    <div style={{ position: 'absolute', left: 0, top: BAR, width: PAGE.w, height: PAGE.h, overflow: 'hidden', background: '#FFFFFF' }}>{children}</div>
+    <div style={{ position: 'absolute', left: 0, top: BAR, width: at.w, height: (at.w * 9) / 16, overflow: 'hidden', background: '#FFFFFF' }}>{children}</div>
   </div>
 );
 

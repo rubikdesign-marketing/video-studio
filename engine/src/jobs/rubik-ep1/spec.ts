@@ -44,6 +44,9 @@ export type ARoll = {
 export type Row = { at: Cue; tone: 'keep' | 'fix'; text: string };
 export type Card =
   | { type: 'title' }
+  /** The opening (b001-n1): Kashfiq full-frame asks the question as it types on; on "Can you tell?" he moves to a
+   *  panel on the left and the site springs in on the right, playing. Runs to `until`. */
+  | { type: 'coldopen'; until: number; cap: string; from: number; to: number; url: string; question: string }
   | { type: 'chapter'; n: string; site: string; logo: string; url: string; of: number }
   | { type: 'maxim'; lines: { at: Cue; text: string; hi?: boolean }[]; small?: string; kinetic?: Kinetic }
   | { type: 'verdict'; site: string; logo: string; rows: Row[]; until: number }
@@ -63,10 +66,9 @@ const FULL: Box = [0, 0, 1920, 1080];
 
 export const SPEC: Record<number, ShotSpec> = {
   // ---- cold open and trailer
-  1: { type: 'site', cap: 'fibery-hero', from: 1.2, to: 3.4, url: FIB, zoom: { from: FULL, to: [120, 70, 1680, 945] },
-    pins: [{ at: 'do?', x: 690, y: 205, tone: 'ask', text: '?' }] },
-  2: { type: 'aroll' },
-  3: { type: 'aroll' },
+  1: { type: 'coldopen', until: 3, cap: 'fibery-tour', from: 0.7, to: 9.0, url: FIB, question: 'What does this startup do?' },
+  2: { type: 'cont' },
+  3: { type: 'cont' },
   4: { type: 'site', cap: 'fibery-hero', from: 3.6, url: FIB, zoom: { from: [160, 80, 1700, 956], to: [240, 110, 1500, 844] },
     rings: [{ at: 0.15, box: FIB_PRODUCT, tone: 'keep', mark: 'hero' }], notes: [{ at: 0.25, tone: 'keep', tag: 'KEEP', text: 'Product, front and centre' }] },
   5: { type: 'site', cap: 'folk-pricing', from: 13.3, url: `${FOLK}/pricing`, zoom: { from: [160, 200, 1600, 900], to: [260, 260, 1400, 788] },

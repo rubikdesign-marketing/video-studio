@@ -340,6 +340,45 @@ const ARollShot: FC<{ shot: Shot; spec: Extract<typeof SPEC[number], { type: 'ar
 const useSpringSafe = (shot: Shot, c: Cue, t: number, i: number) => { const at = cueOf(shot, c, i * 0.3); const u = Math.max(0, t - at); return u <= 0 ? 0 : 1 - Math.exp(-u * 9) * Math.cos(u * 11); };
 
 // ---------------------------------------------------------------- cards
+/** The cold open (owner's note b001-n1). */
+const ColdOpen: FC<{ c: Extract<Card, { type: 'coldopen' }>; shot: Shot; cut: FilmCut; d0: number; len: number }> = ({ c, shot, cut, d0, len }) => {
+  const t = useT();
+  const side = cueOf(shot, 'Can', 1.4);
+  const u = interpolate(t, [side, side + 0.85], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: inOut });
+  // Kashfiq: full frame, then a tall panel on the left, his face kept on the panel's centre line.
+  const P = { x: 64 * u, y: 64 * u, w: 1920 + (760 - 1920) * u, h: 1080 + (952 - 1080) * u };
+  const sc = P.h / 1080;
+  // The question types on with his words, then rises to sit over the site.
+  const qa = cueOf(shot, 'What', 0.1); const qb = cueOf(shot, 'do?', 1.0) + 0.25;
+  const typed = Math.floor(interpolate(t, [qa, qb], [0, c.question.length], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }));
+  const qOut = 1 - enter(t, cueOf(shot, 'because', 3.9), 0.35);
+  const qx = 960 + (1368 - 960) * u; const qy = 820 + (150 - 820) * u; const qs = 104 + (58 - 104) * u;
+  // The site springs in on the right, playing from the start of the tour.
+  const b = useSpringSafe(shot, side + 0.2, t, 0); const BW = { x: 880, y: 300, w: 976 };
+  return (
+    <AbsoluteFill style={{ background: `radial-gradient(120% 90% at 18% 10%, ${C.forest2} 0%, ${C.forest} 58%, #001A10 100%)`, fontFamily: FONT }}>
+      <div style={{ position: 'absolute', left: P.x, top: P.y, width: P.w, height: P.h, overflow: 'hidden', borderRadius: 28 * u, boxShadow: u > 0 ? `0 2px 6px rgba(0,0,0,${0.25 * u}), 0 28px 70px -12px rgba(0,0,0,${0.55 * u})` : undefined }}>
+        <div style={{ position: 'absolute', left: P.w / 2 - 960 * sc, top: 0, width: 1920, height: 1080, transform: `scale(${sc})`, transformOrigin: '0 0' }}><ARollAt cut={cut} d0={d0} len={len} /></div>
+        <AbsoluteFill style={{ background: `linear-gradient(transparent 45%, rgba(0,20,12,${0.7 * (1 - u)}) 100%)` }} />
+      </div>
+      {t >= side + 0.1 ? (
+        <Sequence from={sec(side + 0.1)} layout="none">
+          <Browser url={c.url} at={BW} style={{ opacity: Math.min(1, b * 1.4), transform: `translateY(${(1 - b) * 60}px) scale(${0.86 + 0.14 * b})`, transformOrigin: '50% 60%' }}>
+            <Capture cap={c.cap} from={c.from} to={c.to} len={len - side - 0.1} />
+          </Browser>
+        </Sequence>
+      ) : null}
+      {qOut > 0 ? (
+        <div style={{ position: 'absolute', left: qx, top: qy, transform: 'translate(-50%, -50%)', whiteSpace: 'nowrap', opacity: qOut, font: `800 ${qs}px/1 ${FONT}`, letterSpacing: '-0.035em', color: C.white, textShadow: u < 1 ? `0 4px 30px rgba(0,0,0,${0.5 * (1 - u)})` : undefined }}>
+          {[...c.question].map((ch, i) => (
+            <span key={i} style={{ position: 'relative', opacity: i < typed ? 1 : 0, color: i > c.question.lastIndexOf(' ') ? C.lime : undefined }}>{ch}
+              {i === typed - 1 && typed < c.question.length ? <span style={{ position: 'absolute', left: '100%', top: '6%', bottom: '6%', width: '0.06em', marginLeft: '0.04em', background: C.lime, opacity: 1 }} /> : null}
+            </span>))}
+        </div>
+      ) : null}
+    </AbsoluteFill>
+  );
+};
 const TitleCard: FC = () => {
   const t = useT();
   const m = interpolate(t, [0, 0.7], [0, 1], { extrapolateRight: 'clamp', easing: ease });
@@ -527,9 +566,9 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
   const dOf = (filmT: number) => { // dialogue time at a film time
     let seg = T.voice[0]; for (const v of T.voice) if (filmT >= v.at - 1e-6) seg = v; return filmT - seg.at + seg.d0;
   };
-  const hide = new Set([7, 39]);
+  const hide = new Set([1, 7, 39]); // S01's question is typed on screen; S07 and S39 are typed lines
   const lines = useMemo(() => buildLines(shots, hide), []); // eslint-disable-line react-hooks/exhaustive-deps
-  const siteRanges = useMemo(() => shots.filter((s) => s.kind === 'site' || ['verdict', 'path', 'lessons', 'cont'].includes((SPEC[s.n] as { type: string }).type)).map((s) => [s.start, s.end] as [number, number]), [shots]);
+  const siteRanges = useMemo(() => shots.filter((s) => ['site', 'verdict', 'path', 'lessons'].includes((SPEC[s.n] as { type: string }).type) || ((SPEC[s.n] as { type: string }).type === 'cont' && s.n > 3)).map((s) => [s.start, s.end] as [number, number]), [shots]);
   if (!cut) return null;
   const group = (first: number, until: number) => shots.filter((s) => s.n >= first && s.n <= until && s.voice);
   return (
@@ -546,6 +585,7 @@ const Inner: FC<z.infer<typeof RubikEp1Schema>> = ({ captions, audio }) => {
         if (spec.type === 'site') body = <SiteShot shot={s} spec={spec} cut={cut} d0={d0} pipIn={i === 0 || SPEC[shots[i - 1].n].type !== 'site'} />;
         else if (spec.type === 'aroll') body = <ARollShot shot={s} spec={spec} cut={cut} d0={d0} />;
         else if (spec.type === 'title') body = <TitleCard />;
+        else if (spec.type === 'coldopen') body = <ColdOpen c={spec} shot={s} cut={cut} d0={d0} len={len} />;
         else if (spec.type === 'chapter') body = <ChapterCard c={spec} len={len} />;
         else if (spec.type === 'maxim') body = <MaximCard c={spec} shot={s} />;
         else if (spec.type === 'verdict') body = <VerdictCard c={spec} shots={group(s.n, spec.until)} first={s} cut={cut} d0={d0} len={len} />;
