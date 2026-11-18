@@ -1,0 +1,15 @@
+{
+ "_about": "TEST BRAND. One voice, so that looking up a voice by brand can be tested. It is a voice saved on the team's ElevenLabs account on 11 Nov 2026 (the same account Tulvo uses).",
+ "default": "Justin",
+ "voices": [
+  {
+   "name": "Justin",
+   "voice_id": "DtQLDxHbTiQTpVVanTy1",
+   "library_name": "Justin Case - Warm, Trustworthy, and Clear",
+   "gender": "male",
+   "suits": ["tutorial", "demo"],
+   "settings": {},
+   "note": "Test brand only."
+  }
+ ]
+}

@@ -1,0 +1,137 @@
+{
+ "stage": "light",
+ "planned_instant_changes": [],
+ "planned_holds": [],
+ "scenes": [
+  {
+   "id": "S01",
+   "title": "The early riser",
+   "beat": "hook",
+   "energy": 2,
+   "seconds": 2.6,
+   "transition_in": null,
+   "hand_off": null,
+   "shots": [
+    {
+     "text": "Saturday is\n*croissant* day.",
+     "size": "abstract",
+     "move": "words rise one at a time, slow",
+     "sound": "soft room tone",
+     "focal_point": "centre",
+     "borrow": [
+      {
+       "ref": 0,
+       "for": "pacing"
+      },
+      {
+       "ref": 0,
+       "for": "type"
+      }
+     ],
+     "capture": null,
+     "point": "Saturday mornings now have croissants.",
+     "eye": "croissant"
+    }
+   ]
+  },
+  {
+   "id": "S02",
+   "title": "The new time",
+   "beat": "proof",
+   "energy": 3,
+   "seconds": 4.1,
+   "transition_in": {
+    "number": 1,
+    "name": "hand-off object"
+   },
+   "hand_off": "the word before slides into the clock",
+   "shots": [
+    {
+     "text": "Out of the oven\nat *7*.",
+     "label": "Every Saturday",
+     "size": "medium",
+     "move": "the time lands and holds",
+     "sound": "a low warm tick as 6:30 lands",
+     "focal_point": "centre, the time",
+     "borrow": [
+      {
+       "ref": 0,
+       "for": "type"
+      }
+     ],
+     "capture": null,
+     "point": "They are ready at 7 on Saturdays.",
+     "eye": "7",
+     "proves": 0
+    }
+   ]
+  },
+  {
+   "id": "S03",
+   "title": "Order the night before",
+   "beat": "offer",
+   "energy": 3,
+   "seconds": 3.2,
+   "transition_in": {
+    "number": 3,
+    "name": "camera carry"
+   },
+   "hand_off": null,
+   "shots": [
+    {
+     "text": "Only 60 a week.",
+     "size": "medium",
+     "move": "line types on, calm",
+     "sound": "paper rustle",
+     "focal_point": "upper third",
+     "borrow": [
+      {
+       "ref": 0,
+       "for": "pacing"
+      }
+     ],
+     "capture": null,
+     "point": "There are only 60, so it is worth ordering.",
+     "eye": "60",
+     "proves": 0
+    },
+    {
+     "text": "Order *ahead*.",
+     "size": "medium",
+     "move": "second line settles under the first",
+     "sound": "soft chime",
+     "focal_point": "lower third",
+     "capture": null,
+     "point": "You can reserve yours ahead.",
+     "eye": "ahead",
+     "proves": 1
+    }
+   ]
+  },
+  {
+   "id": "S04",
+   "title": "The name",
+   "beat": "close",
+   "energy": 2,
+   "seconds": 2.1,
+   "transition_in": {
+    "number": 2,
+    "name": "container transform"
+   },
+   "hand_off": null,
+   "shots": [
+    {
+     "text": "Halden *Bakehouse*",
+     "label": "Saturdays from 7",
+     "size": "abstract",
+     "move": "logo and name settle, hold to the end",
+     "sound": "room tone fades",
+     "focal_point": "centre, the logo",
+     "capture": null,
+     "point": "This is who to order from.",
+     "eye": "the name"
+    }
+   ]
+  }
+ ]
+}

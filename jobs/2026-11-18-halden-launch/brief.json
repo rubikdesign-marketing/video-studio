@@ -1,0 +1,59 @@
+{
+ "in_their_words": "A short vertical reel announcing that our bakery now opens at 6:30 and you can order the night before. Warm, calm, like the slow kinetic type reels I like. Ends on our name.",
+ "kind": "launch-reel",
+ "for": "people who live near the bakery and follow it on Instagram",
+ "viewer_should": "order tonight for a warm pickup at 6:30 tomorrow",
+ "deliver": [
+  {
+   "platform": "Instagram Reels",
+   "size": "9:16",
+   "master": true
+  },
+  {
+   "platform": "Instagram feed",
+   "size": "4:5",
+   "master": false
+  }
+ ],
+ "length_cap_seconds": 12,
+ "voice": "none",
+ "must_show": [
+  {
+   "what": "the new opening time",
+   "evidence": "6:30 on screen, held long enough to read on a phone"
+  },
+  {
+   "what": "you can order the night before",
+   "evidence": "the words 'Order tonight' then 'Pick up warm'"
+  }
+ ],
+ "must_not": [
+  "prices (not decided yet)"
+ ],
+ "materials": [],
+ "references": [
+  {
+   "source": "the slow kinetic-type reels the creator follows (described, no file given)",
+   "in_their_words": "like the slow kinetic type reels I like",
+   "liked_for": [
+    "pacing",
+    "type"
+   ],
+   "use": "study-only"
+  }
+ ],
+ "decisions": [
+  {
+   "what": "9:16 master for Reels, a 4:5 cut for the feed",
+   "by": "Claude, standing in for a first-time creator (example job)",
+   "date": "2026-11-18",
+   "applies_to": "all"
+  },
+  {
+   "what": "No voice: type carries it, with soft sound",
+   "by": "Claude, standing in for a first-time creator (example job)",
+   "date": "2026-11-18",
+   "applies_to": "all"
+  }
+ ]
+}

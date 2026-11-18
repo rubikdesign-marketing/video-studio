@@ -48,6 +48,8 @@ export const filmSchema = z.object({
             capture: z.string().nullable(),
             /** The shot's background settings from the shot list, as the job's own background reads them. */
             background: z.record(z.string(), z.unknown()).optional(),
+            /** Small supporting words the shot shows beside its text ("From tomorrow"), from the shot list's "label". */
+            label: z.string().optional(),
           }),
         )
         .default([]),

@@ -1,0 +1,88 @@
+{
+ "rounds": [
+  {
+   "name": "r2",
+   "opened": "2026-11-18",
+   "from": "r1",
+   "items": [
+    {
+     "id": "r2-1",
+     "says": "slow down the 6:30 part",
+     "action": "change",
+     "aspect": "pace",
+     "scope": [
+      "S02"
+     ],
+     "target": "hold>=3.4",
+     "status": "verified",
+     "result": "met (hold>=3.4)"
+    },
+    {
+     "id": "r2-2",
+     "says": "fix the ending: bigger, and the name is cut off",
+     "action": "change",
+     "aspect": "ending",
+     "scope": [
+      "S04"
+     ],
+     "target": null,
+     "status": "verified",
+     "result": "changed"
+    },
+    {
+     "id": "r2-3",
+     "says": "keep everything I liked",
+     "action": "keep",
+     "aspect": "content",
+     "scope": [
+      "rest"
+     ],
+     "target": null,
+     "status": "verified",
+     "result": "unchanged"
+    },
+    {
+     "id": "r2-4",
+     "says": "(the 12 s cap still holds)",
+     "action": "keep",
+     "aspect": "length",
+     "scope": [
+      "S01",
+      "S02",
+      "S03",
+      "S04"
+     ],
+     "target": "length<=12",
+     "status": "verified",
+     "result": "met (length<=12)"
+    }
+   ],
+   "after": "r2-cut",
+   "verified_at": "2026-11-18T06:35:10.838Z"
+  },
+  {
+   "name": "r3",
+   "opened": "2026-11-18",
+   "from": "r2-cut",
+   "items": [
+    {
+     "id": "r3-1",
+     "says": "(studio change: labels moved into the shot list; nothing should move)",
+     "action": "keep",
+     "aspect": "content",
+     "scope": [
+      "S01",
+      "S02",
+      "S03",
+      "S04"
+     ],
+     "target": null,
+     "status": "needs a person",
+     "result": "S02's own code changed though its frames match: check the motion between frames; S04's own code changed though its frames match: check the motion between frames"
+    }
+   ],
+   "after": "r3-cut",
+   "verified_at": "2026-11-18T06:49:58.405Z"
+  }
+ ]
+}

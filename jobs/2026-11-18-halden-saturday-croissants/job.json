@@ -1,0 +1,37 @@
+{
+ "name": "2026-11-18-halden-saturday-croissants",
+ "brand": "halden",
+ "type": "promo",
+ "created": "2026-11-18",
+ "maker": "",
+ "size": "9:16",
+ "length_cap_seconds": 12,
+ "energy_preset": "calm",
+ "voice": "none",
+ "stage_next": "storyboard",
+ "approvals": {
+  "idea": null,
+  "script_and_voice": null,
+  "moodboard": null,
+  "storyboard": null,
+  "first_animation": null,
+  "full_animation": null
+ },
+ "moodboard_canvas": null,
+ "storyboard_canvas": null,
+ "figma_file": null,
+ "offer_wording": null,
+ "facts": [],
+ "planned_instant_changes": [],
+ "planned_holds": [],
+ "new_library_entry": null,
+ "usage_by_stage": {},
+ "notes": [
+  "Started from the style halden/morning-type (approved film 2026-11-18-halden-launch). Idea, moodboard and look are settled by the style; approve the words and the storyboard."
+ ],
+ "_skills_used": "Filled in at each stage: [{\"skill\": \"impeccable\", \"stage\": \"moodboard\", \"asked_for\": \"type scale\", \"result\": \"helped | no difference | got in the way\", \"why\": \"one line\"}]. Read monthly; see .claude/skills/video-studio/skill-map.md, \"Keeping the skills sharp\".",
+ "skills_used": [],
+ "_usage": "Token plan step 8 (.claude/skills/video-studio/skill-map.md): one entry per stage session: [{\"stage\": \"storyboard\", \"cost\": \"$1.20 (from /cost or /ponytail-gain)\", \"helpers\": [\"frame-critic\"], \"note\": \"why, if much more than usual\"}].",
+ "usage": [],
+ "style": "halden/morning-type"
+}
