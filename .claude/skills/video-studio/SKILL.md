@@ -11,6 +11,7 @@ One video at a time, six approvals, each a save point. Works for any brand in `b
 
 1. If a job is in progress, read `jobs/<job>/job.json`. It names the brand and the next stage. If there is no job, start at stage 1. If the brand is not set up yet, start at stage 0. If the brand has no approved `brands/<brand>/product/discovery.md` and the video shows its product, run stage 0B first.
 2. Read the one stage file for that stage. Do not read the others.
+   - **Every new video request starts with the pre-flight checklist** (stage 1, "The pre-flight checklist"): `brief.mjs check` must show brand, product, audience, message angle, look, hook, video type with references, and size, length and voice all known, and the creator must confirm the plan from `brief.mjs plan`, before anything is captured, generated, scripted or proposed. This holds for a quick one-off too.
 3. At the end of the stage, write the outputs, update `job.json`, give the hand-over note, and stop for approval. The next stage starts in a fresh session.
 
 ## Stages

@@ -9,30 +9,51 @@ Ends with the **Idea** approval.
 - `knowledge/craft/01-direction.md` (soul sheet and energy map sections)
 - `brands/<brand>/ledger.json` (the last five videos)
 
-## 1. Intake: grill the maker
+## 1. Intake: the brief, in their words
 
-Ask in rounds, each question with a recommended answer, until these are settled. Do not ask for facts you can look up in `knowledge/`.
+Start with what the creator said, word for word: `node tools/plan/brief.mjs new jobs/<date>-<name> "<their words>"`. Add any references or footage they gave to `brief.json` (`references`, `materials`), each with what they said about it. Then run `node tools/plan/brief.mjs check jobs/<job>`.
 
-- What kind of video: promo, feature demo, tutorial or edit.
-- The one thing the viewer should do or believe afterwards.
-- Who it is for, and what they already know.
-- Where it will run. Size is 16:9 unless they say otherwise.
-- The facts that must be right: offer wording, prices, dates, claims, with sources.
-- Whether a script exists already.
-- The voice: Ray, or a named voice.
-- Deadline, and anything that must or must not appear.
+- It states back what their words already settle ("vertical" is 9:16): say it in one line so they can correct it; do not ask it.
+- It lists only the questions whose answers change what gets made, most consequential first. Ask at most three at a time, each with the recommended answer, in plain words. The usual first ones: the master size; what kind of film (product demo, launch reel, edit of their footage, a person talking, an animated short); and, for every reference, **what they like about it**: the camera, the pacing, the presenter's delivery, the look, the type or the sound. That answer decides what gets copied. A reference liked for its delivery needs a short performance test before anything else is made; one liked for its camera needs a motion test, not a still.
+- For every claim the film makes ("it connects", "it's fast"), ask what the viewer literally sees that proves it, and write it as `must_show[].evidence`.
+- Record each answer once: a field with `brief.mjs set` (`brand`, `product`, `for`, `awareness`, `angle`, `look`, `hook.family`, …), anything else with `brief.mjs decide`. Every later stage reads `brief.mjs show` instead of re-asking.
 
-## 2. Product walk
+Do not ask for facts you can look up in `knowledge/` or the brand folder.
 
-Use the Tulvo connector and the signed-in browser pane to do the task the video is about, in the demo workspace, building new boards and pages for this video. Capture every screen and state at double resolution into `jobs/<job>/captures/`. Compare with `brands/<brand>/product/` and note anything that has changed.
+### The pre-flight checklist
 
-Write the task as a flow table in `jobs/<job>/flow.md` (format in `knowledge/craft/10-flows.md`), marking each step show, shorten or cut. Check `brands/<brand>/product/flows/` first: reuse a saved flow if the product has not changed since it was walked. Build believable, consistent data for the customer story through the connector.
+`check` opens with eight items. **Nothing is captured, generated, scripted or proposed until all eight are known and the creator has confirmed the plan.** Each one is known when:
+
+| # | Item | Known when | Look up before asking |
+|---|---|---|---|
+| 1 | Brand | `brand` names a set-up folder in `brands/` | their words, `job.json`, `studio.json`. Not set up: stage 0 first |
+| 2 | Product | `product` names the product and the one feature or moment | `brands/<brand>/product/`. No approved discovery: stage 0B first. Not needed for an edit of footage or an animated short |
+| 3 | Audience | `for` (who exactly) and `awareness` (cold, problem-aware, solution-aware, product-aware) | discovery section 2: propose the ideal customer, ask them to confirm |
+| 4 | Message angle | `angle` (the one sentence the film argues), `viewer_should`, and at least one `must_show` with its `evidence` | discovery section 3, key messages |
+| 5 | Style and look | `look`: one of the six styles, a reference's look, or `propose` | the brand's last five films in `ledger.json`, so the look differs |
+| 6 | Hook | `hook.family` or `hook.idea`, or `propose` (three openings from three families) | `hooks.mjs find --awareness <level> --brand <brand>` |
+| 7 | Video type and references | `kind`, and every reference with what they like about it (or `no_reference: true`) | `check` shows library films to point at: "like this one?" |
+| 8 | Size, length and voice | the master size, `length_cap_seconds`, `voice` | their words ("vertical") |
+
+Thorough is these eight, not more. Do not ask about colours, fonts, logo, music track, transitions or captions: the brand and the later stages settle those. A creator who says "you choose" on look or hook has answered: record `propose`.
+
+### The plan, in brief
+
+When `check` shows all eight known, run `node tools/plan/brief.mjs plan jobs/<job>`. It writes `jobs/<job>/plan.md`: the film in one line, who it is for, the angle and its proof, the look, the hook, the references and what is borrowed from each, a scene outline timed to the length cap with the proof placed on its beat, and what the studio will use (playbook, craft guides, the brand's references and study cards, the library, the leading skills from `skill-map.md`). Show it to the creator as it is: short, in their words. On their yes, `brief.mjs decide jobs/<job> "plan confirmed"`. A change sends you back to `set`, then `plan` again.
+
+The scene outline is the spine for everything after: the three concepts fill it, the script is timed against it (`beats.mjs`), and the storyboard's `shots.json` gets one scene per beat. Load the skills `plan.md` names at the moment their task starts, not before.
+
+## 2. The material
+
+Choose each shot's source by what the film must prove: the real product (screen capture), the creator's footage, drawn motion and type, or generated footage. Defaults per kind are in `tools/plan/lib/brief.mjs` (`PATHS`); generated people and recurring characters always get a short test first.
+
+If the film shows a web product: walk the task in the product in the browser pane (signed in to a demo account with no real customer data), using the product's Claude connector if it has one to set up believable demo data. Capture every screen and state at double resolution into `jobs/<job>/captures/`. Compare with `brands/<brand>/product/` and note what changed. Write the task as a flow table in `jobs/<job>/flow.md` (format in `knowledge/craft/10-flows.md`), marking each step show, shorten or cut. Reuse a saved flow from `brands/<brand>/product/flows/` if the product has not changed since.
 
 If the product cannot honestly do something the brief assumes, say so now.
 
 ## 3. Three concepts
 
-Each concept is a filled `templates/soul-sheet.md`, plus:
+Only after the plan is confirmed. All three keep the confirmed audience, angle, proof and length; they differ in idea. Where the plan says `propose` for the look or the hook, the concepts are where those are proposed. Each concept is a filled `templates/soul-sheet.md` laid on the plan's scene outline, plus:
 
 - A recommended length cap, energy preset and design style (one of the six in `knowledge/craft/13-design-styles.md`), with one line of reasoning each.
 - The flow pattern it uses (`knowledge/craft/10-flows.md`).
