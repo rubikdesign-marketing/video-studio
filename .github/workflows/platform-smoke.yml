@@ -3,6 +3,11 @@ name: platform-smoke
 # Core native smoke test on each target OS. Manual runs and pushes to platform-04 only (the repo is private; runs are billed).
 on:
   workflow_dispatch:
+    inputs:
+      os:
+        description: 'JSON list of runners, e.g. ["windows-latest"] to rerun one OS (saves billed minutes)'
+        required: false
+        default: '["windows-latest", "ubuntu-24.04", "macos-latest"]'
   push:
     branches: [platform-04]
 
@@ -19,7 +24,7 @@ jobs:
       matrix:
         # macos-14 images are retired ("configuration not supported"); macos-latest is Apple silicon.
         # windows-latest is Windows Server, not Windows 11: report it as CI, separate from physical devices.
-        os: [windows-latest, ubuntu-24.04, macos-latest]
+        os: ${{ fromJSON(inputs.os || '["windows-latest", "ubuntu-24.04", "macos-latest"]') }}
     steps:
       - uses: actions/checkout@v4
 
@@ -72,6 +77,11 @@ jobs:
         run: |
           bash setup/install.sh
           node setup/runtime/smoke.mjs --root .
+
+      - name: Probe fs.cpSync on an accented path (diagnostic, never fails the job)
+        if: always()
+        continue-on-error: true
+        run: node .github/scripts/probe-cpsync.mjs
 
       - name: Collect artifacts
         if: always()

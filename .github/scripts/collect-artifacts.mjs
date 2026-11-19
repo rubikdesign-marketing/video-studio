@@ -14,5 +14,13 @@ for (const f of files) {
   try { fs.copyFileSync(path.join(src, ...f.split('/')), path.join(out, path.basename(f))); console.log('collected ' + f); }
   catch { console.log('missing: ' + f); }
 }
-try { fs.cpSync(path.join(src, '.damex', 'logs'), path.join(out, 'logs'), { recursive: true }); console.log('collected logs'); }
-catch { console.log('missing: .damex/logs'); }
+// Plain per-file copy, not fs.cpSync: on the Windows runner cpSync on the accented path ended the
+// process from inside this try/catch (see probe-cpsync.mjs).
+try {
+  const logs = path.join(src, '.damex', 'logs');
+  fs.mkdirSync(path.join(out, 'logs'), { recursive: true });
+  for (const name of fs.readdirSync(logs)) {
+    if (fs.statSync(path.join(logs, name)).isFile()) fs.copyFileSync(path.join(logs, name), path.join(out, 'logs', name));
+  }
+  console.log('collected logs');
+} catch { console.log('missing: .damex/logs'); }
