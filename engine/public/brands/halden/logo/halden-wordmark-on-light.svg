@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 96" width="960" height="192">
+  <!-- Halden Bakehouse: an invented brand for the studio's example films. Not a real business. -->
+  <title>Halden Bakehouse</title>
+  <path d="M30 70 Q48 18 66 70 Z" fill="#B5642A"/>
+  <path d="M38 58 L58 58" stroke="#2B1D14" stroke-width="4" stroke-linecap="round"/>
+  <text x="86" y="66" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-style="italic" fill="#2B1D14">Halden</text>
+  <text x="244" y="66" textLength="220" lengthAdjust="spacingAndGlyphs" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="600" fill="#2B1D14">BAKEHOUSE</text>
+</svg>

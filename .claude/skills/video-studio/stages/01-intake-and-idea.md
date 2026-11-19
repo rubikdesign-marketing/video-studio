@@ -9,26 +9,26 @@ Ends with the **Idea** approval.
 - `knowledge/craft/01-direction.md` (soul sheet and energy map sections)
 - `brands/<brand>/ledger.json` (the last five videos)
 
-## 1. Intake: grill the maker
+## 1. Intake: the brief, in their words
 
-Ask in rounds, each question with a recommended answer, until these are settled. Do not ask for facts you can look up in `knowledge/`.
+Start with what the creator said, word for word: `node tools/plan/brief.mjs new jobs/<date>-<name> "<their words>"`. Add any references or footage they gave to `brief.json` (`references`, `materials`), each with what they said about it. Then run `node tools/plan/brief.mjs check jobs/<job>`.
 
-- What kind of video: promo, feature demo, tutorial or edit.
-- The one thing the viewer should do or believe afterwards.
-- Who it is for, and what they already know.
-- Where it will run. Size is 16:9 unless they say otherwise.
-- The facts that must be right: offer wording, prices, dates, claims, with sources.
-- Whether a script exists already.
-- The voice: Ray, or a named voice.
-- Deadline, and anything that must or must not appear.
+- It states back what their words already settle ("vertical" is 9:16): say it in one line so they can correct it; do not ask it.
+- It lists only the questions whose answers change what gets made, most consequential first. Ask at most three at a time, each with the recommended answer, in plain words. The usual first ones: the master size; what kind of film (product demo, launch reel, edit of their footage, a person talking, an animated short); and, for every reference, **what they like about it**: the camera, the pacing, the presenter's delivery, the look, the type or the sound. That answer decides what gets copied. A reference liked for its delivery needs a short performance test before anything else is made; one liked for its camera needs a motion test, not a still.
+- For every claim the film makes ("it connects", "it's fast"), ask what the viewer literally sees that proves it, and write it as `must_show[].evidence`.
+- Record each answer once with `brief.mjs decide`. Every later stage reads `brief.mjs show` instead of re-asking.
 
-## 2. Product walk
+Do not ask for facts you can look up in `knowledge/` or the brand folder.
 
-Use the Tulvo connector and the signed-in browser pane to do the task the video is about, in the demo workspace, building new boards and pages for this video. Capture every screen and state at double resolution into `jobs/<job>/captures/`. Compare with `brands/<brand>/product/` and note anything that has changed.
+## 2. The material
 
-Write the task as a flow table in `jobs/<job>/flow.md` (format in `knowledge/craft/10-flows.md`), marking each step show, shorten or cut. Check `brands/<brand>/product/flows/` first: reuse a saved flow if the product has not changed since it was walked. Build believable, consistent data for the customer story through the connector.
+Choose each shot's source by what the film must prove: the real product (screen capture), the creator's footage, drawn motion and type, or generated footage. Defaults per kind are in `tools/plan/lib/brief.mjs` (`PATHS`); generated people and recurring characters always get a short test first.
+
+If the film shows a web product: walk the task in the product in the browser pane (signed in to a demo account with no real customer data), using the product's Claude connector if it has one to set up believable demo data. Capture every screen and state at double resolution into `jobs/<job>/captures/`. Compare with `brands/<brand>/product/` and note what changed. Write the task as a flow table in `jobs/<job>/flow.md` (format in `knowledge/craft/10-flows.md`), marking each step show, shorten or cut. Reuse a saved flow from `brands/<brand>/product/flows/` if the product has not changed since.
 
 If the product cannot honestly do something the brief assumes, say so now.
+
+If the creator has made a film in this brand before and liked it, offer the short path first: `node tools/plan/style.mjs list <brand>`, then "Next episode in a saved style" in `SKILL.md`.
 
 ## 3. Three concepts
 

@@ -1,0 +1,197 @@
+{
+ "name": "morning-type",
+ "brand": "halden",
+ "saved": "2026-11-18",
+ "from_job": "2026-11-18-halden-launch",
+ "approved": null,
+ "size": "9:16",
+ "energy_preset": "calm",
+ "voice": "none",
+ "length_cap_seconds": 12,
+ "type": "promo",
+ "stage": "light",
+ "kind": "launch-reel",
+ "deliver": [
+  {
+   "platform": "Instagram Reels",
+   "size": "9:16",
+   "master": true
+  },
+  {
+   "platform": "Instagram feed",
+   "size": "4:5",
+   "master": false
+  }
+ ],
+ "structure": [
+  {
+   "id": "S01",
+   "title": "The early riser",
+   "beat": "hook",
+   "energy": 2,
+   "seconds": 2.6,
+   "transition_in": null,
+   "hand_off": null,
+   "shots": [
+    {
+     "size": "abstract",
+     "move": "words rise one at a time, slow",
+     "sound": "soft room tone",
+     "focal_point": "centre",
+     "borrow": [
+      {
+       "ref": 0,
+       "for": "pacing"
+      },
+      {
+       "ref": 0,
+       "for": "type"
+      }
+     ],
+     "example_text": "Fresh bread,\n*before* work."
+    }
+   ]
+  },
+  {
+   "id": "S02",
+   "title": "The new time",
+   "beat": "proof",
+   "energy": 3,
+   "seconds": 4.1,
+   "transition_in": {
+    "number": 1,
+    "name": "hand-off object"
+   },
+   "hand_off": "the word before slides into the clock",
+   "shots": [
+    {
+     "size": "medium",
+     "move": "the time lands and holds",
+     "sound": "a low warm tick as 6:30 lands",
+     "focal_point": "centre, the time",
+     "borrow": [
+      {
+       "ref": 0,
+       "for": "type"
+      }
+     ],
+     "example_text": "Doors open\nat *6:30*.",
+     "example_label": "From tomorrow"
+    }
+   ]
+  },
+  {
+   "id": "S03",
+   "title": "Order the night before",
+   "beat": "offer",
+   "energy": 3,
+   "seconds": 3.2,
+   "transition_in": {
+    "number": 3,
+    "name": "camera carry"
+   },
+   "hand_off": null,
+   "shots": [
+    {
+     "size": "medium",
+     "move": "line types on, calm",
+     "sound": "paper rustle",
+     "focal_point": "upper third",
+     "borrow": [
+      {
+       "ref": 0,
+       "for": "pacing"
+      }
+     ],
+     "example_text": "Order tonight."
+    },
+    {
+     "size": "medium",
+     "move": "second line settles under the first",
+     "sound": "soft chime",
+     "focal_point": "lower third",
+     "example_text": "Pick up *warm*."
+    }
+   ]
+  },
+  {
+   "id": "S04",
+   "title": "The name",
+   "beat": "close",
+   "energy": 2,
+   "seconds": 2.1,
+   "transition_in": {
+    "number": 2,
+    "name": "container transform"
+   },
+   "hand_off": null,
+   "shots": [
+    {
+     "size": "abstract",
+     "move": "logo and name settle, hold to the end",
+     "sound": "room tone fades",
+     "focal_point": "centre, the logo",
+     "example_text": "Halden *Bakehouse*",
+     "example_label": "Open daily from 6:30"
+    }
+   ]
+  }
+ ],
+ "references": [
+  {
+   "source": "the slow kinetic-type reels the creator follows (described, no file given)",
+   "in_their_words": "like the slow kinetic type reels I like",
+   "liked_for": [
+    "pacing",
+    "type"
+   ],
+   "use": "study-only"
+  }
+ ],
+ "decisions": [
+  {
+   "what": "9:16 master for Reels, a 4:5 cut for the feed",
+   "by": "Claude, standing in for a first-time creator (example job)",
+   "date": "2026-11-18",
+   "applies_to": "all"
+  },
+  {
+   "what": "No voice: type carries it, with soft sound",
+   "by": "Claude, standing in for a first-time creator (example job)",
+   "date": "2026-11-18",
+   "applies_to": "all"
+  }
+ ],
+ "must_not": [
+  "prices (not decided yet)"
+ ],
+ "learned": [
+  {
+   "said": "slow down the 6:30 part",
+   "aspect": "pace",
+   "scenes": [
+    "S02"
+   ],
+   "target": "hold>=3.4",
+   "round": "r2"
+  },
+  {
+   "said": "fix the ending: bigger, and the name is cut off",
+   "aspect": "ending",
+   "scenes": [
+    "S04"
+   ],
+   "target": null,
+   "round": "r2"
+  }
+ ],
+ "scene_files": [
+  "S01.tsx",
+  "S02.tsx",
+  "S03.tsx",
+  "S04.tsx"
+ ],
+ "sound": [
+  "mix.sh"
+ ]
+}

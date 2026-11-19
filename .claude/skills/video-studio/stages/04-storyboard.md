@@ -37,6 +37,8 @@ For each shot, build how it looks **at rest**, in its scene file: the background
 
 `node tools/film/storyboard.mjs jobs/<job>` renders one still per shot into `jobs/<job>/storyboard/` and writes `frames.json` with the notes for each. It has to be allowed to run outside the command sandbox.
 
+Before rendering, give every shot in `shots.json` a `point` (one sentence: what it proves) and an `eye` (the one thing to look at), and run `node tools/plan/brief.mjs check jobs/<job>`. It lists shots with no point or eye, actions with no proof moment, claims in the brief that no shot shows (`proves`), and reference qualities no shot borrows (`borrow`). A shot that shows an action (a click, a drag, a hand picking something up, a paste) names the moment that proves it, `"proof": { "what": "the row lands in Notion", "at": 2.1 }` (seconds from the scene's start, or "70%" of the shot), and the storyboard draws that frame beside the resting one. For a hand and a product, that is the moment of contact; for a presenter, the board shows a still but approval needs a few seconds of speech with sound. A revision of a few scenes: `storyboard.mjs jobs/<job> --only S03,S05` redraws only those and keeps the rest.
+
 ## 5. Lay them out on a design canvas
 
 1. Start a new design canvas with the Artifact tool (the Design type), titled "<video name> storyboard". Follow that type's own instructions for how its files are written.

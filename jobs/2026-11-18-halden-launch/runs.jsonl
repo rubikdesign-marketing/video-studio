@@ -1,0 +1,15 @@
+{"at":"2026-11-18T06:31:56.511Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"render","mode":"preview","scene":"","splice":"","captions":"","seconds":11,"ok":true}
+{"at":"2026-11-18T06:31:59.403Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":5,"bundled":true,"bundle_seconds":0.6,"seconds":2.9,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:33:15.054Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"render","mode":"preview","scene":"","splice":"","captions":"","seconds":13,"ok":true}
+{"at":"2026-11-18T06:33:17.882Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":5,"bundled":true,"bundle_seconds":0.6,"seconds":2.8,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:34:22.058Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"render","mode":"preview","scene":"","splice":"","captions":"","seconds":13,"ok":true}
+{"at":"2026-11-18T06:34:30.205Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":5,"bundled":true,"bundle_seconds":0.6,"seconds":2.5,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:35:08.127Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"render","mode":"preview","scene":"","splice":"","captions":"","seconds":11,"ok":true}
+{"at":"2026-11-18T06:35:10.686Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":5,"bundled":true,"bundle_seconds":0.6,"seconds":2.5,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:35:44.175Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"render","mode":"master","scene":"","splice":"","captions":"","seconds":19,"ok":true}
+{"at":"2026-11-18T06:38:01.731Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":5,"bundled":true,"bundle_seconds":0.9,"seconds":2.8,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:38:09.370Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":5,"bundled":true,"bundle_seconds":0.5,"seconds":2.1,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:43:53.983Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":1,"only":"S01","bundled":false,"bundle_seconds":0.1,"seconds":1.2,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:49:55.655Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"render","mode":"preview","scene":"","splice":"","captions":"","seconds":11,"ok":true}
+{"at":"2026-11-18T06:49:56.593Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":1,"only":"S02","bundled":false,"bundle_seconds":0.1,"seconds":0.9,"parallel":2,"ok":true}
+{"at":"2026-11-18T06:49:58.302Z","machine":"Apple M4, 10 cores, 16 GB, darwin 25.6.0","tool":"storyboard","frames":5,"bundled":false,"bundle_seconds":0.1,"seconds":1.5,"parallel":2,"ok":true}

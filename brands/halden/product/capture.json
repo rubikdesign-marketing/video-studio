@@ -1,0 +1,41 @@
+{
+  "_about": "Where the product lives and how to film it, for the capture tool (tools/capture/README.md). How to fill it in: brands/_template/product/README.md. Keys that start with _ are notes for people.",
+  "address": "https://app.example.com",
+  "kind": "web app",
+  "_kind": "The kind of product, which fills sensible defaults for it: \"web app\", \"ai product\", \"wordpress\", \"shop\", \"extension\", \"phone web\", \"desktop\" (an Electron app, with \"app\"), \"phone app\" (with \"phone\"), \"command line\" (with \"terminal\"). What each sets: node tools/capture/capture.mjs kinds. Anything written below wins.",
+  "demo_account": "",
+  "signs_in": "",
+  "browser": "",
+  "_browser": "Which Chrome records by default: \"mine\" (your own Chrome, through the Playwright Extension) or \"studio\" (the studio's own window). Empty: the studio's default (your own Chrome; check uses the studio's window).",
+  "safe_to_show": [],
+  "never_show": [
+    { "what": "Billing pages", "paths": ["/billing"] },
+    { "what": "Real e-mail addresses", "pattern": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", "allow": ["@example.com"] }
+  ],
+  "clean_screen": {
+    "studio_defaults": true,
+    "hide": [],
+    "dismiss": [],
+    "keep": [],
+    "_examples": {
+      "hide": [{ "what": "Feedback tab", "selector": "#feedback-tab" }, { "what": "Update nag", "text": "A new version is available" }],
+      "dismiss": [{ "what": "What's new pop-up", "click": "Got it", "in": "What's new", "wait": 1.5 }, { "what": "Product tour", "press": "Escape", "when": "Take the tour" }],
+      "keep": [{ "what": "Beta label", "text": "Beta" }]
+    }
+  },
+  "setting": { "language": "en", "region": "US", "time_zone": "", "theme": "light", "reduced_motion": false },
+  "clock": { "demo_time": "", "note": "" },
+  "_optional": {
+    "_about": "Copy any of these up a level when the product needs it (brands/_template/product/README.md says what each does).",
+    "size": "desktop",
+    "touch": false,
+    "ai": { "answers": ["/api/chat"] },
+    "extension": { "folder": "../extension/dist" },
+    "recipes": { "setup": "recipes/setup.json", "tidy": "recipes/tidy.json" },
+    "email": { "folder": "emails", "size": "800x1000" },
+    "site": { "signin_as": "admin", "_note": "WordPress: put a WordPress Playground blueprint in blueprint.json next to this file and the studio builds a fresh demo site for every take; or \"site\": \"own\" to film the address above, signed in by hand" },
+    "app": { "path": "/Applications/Example.app", "args": [] },
+    "phone": { "platform": "ios", "app": "com.example.app", "install": "", "device": "" },
+    "terminal": { "columns": 96, "rows": 26, "theme": "dark", "folder": "", "prompt": "" }
+  }
+}

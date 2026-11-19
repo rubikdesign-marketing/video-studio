@@ -1,0 +1,140 @@
+{
+ "job": "2026-11-18-halden-launch",
+ "slug": "2026-11-18-halden-launch",
+ "fps": 60,
+ "width": 1080,
+ "height": 1920,
+ "brand": "halden",
+ "preset": "calm",
+ "stage": "light",
+ "duration": 12,
+ "audio": "jobs/2026-11-18-halden-launch/audio.wav",
+ "audio_from": "mix.wav",
+ "scenes": [
+  {
+   "id": "S01",
+   "title": "The early riser",
+   "start": 0,
+   "end": 2.6,
+   "energy": 2,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Fresh bread,",
+      "*before* work."
+     ],
+     "at": 0.3,
+     "out": 2.25
+    }
+   ],
+   "shots": [
+    {
+     "id": "F01",
+     "at": 0.3,
+     "size": "abstract",
+     "capture": null
+    }
+   ]
+  },
+  {
+   "id": "S02",
+   "title": "The new time",
+   "start": 2.6,
+   "end": 6.7,
+   "energy": 3,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Doors open",
+      "at *6:30*."
+     ],
+     "at": 0.3,
+     "out": 3.75
+    }
+   ],
+   "shots": [
+    {
+     "id": "F02",
+     "at": 0.3,
+     "size": "medium",
+     "capture": null,
+     "label": "From tomorrow"
+    }
+   ]
+  },
+  {
+   "id": "S03",
+   "title": "Order the night before",
+   "start": 6.7,
+   "end": 9.9,
+   "energy": 3,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Order tonight."
+     ],
+     "at": 0.3,
+     "out": 1.4
+    },
+    {
+     "lines": [
+      "Pick up *warm*."
+     ],
+     "at": 1.75,
+     "out": 2.85
+    }
+   ],
+   "shots": [
+    {
+     "id": "F03",
+     "at": 0.3,
+     "size": "medium",
+     "capture": null
+    },
+    {
+     "id": "F04",
+     "at": 1.75,
+     "size": "medium",
+     "capture": null
+    }
+   ]
+  },
+  {
+   "id": "S04",
+   "title": "The name",
+   "start": 9.9,
+   "end": 12,
+   "energy": 2,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Halden *Bakehouse*"
+     ],
+     "at": 0.3,
+     "out": 2.1
+    }
+   ],
+   "shots": [
+    {
+     "id": "F05",
+     "at": 0.3,
+     "size": "abstract",
+     "capture": null,
+     "label": "Open daily from 6:30"
+    }
+   ]
+  }
+ ],
+ "planned_instant_changes": [],
+ "planned_holds": [
+  {
+   "scene": "S02",
+   "seconds": 1.5,
+   "what": "the time 6:30 held long enough to read"
+  }
+ ]
+}

@@ -12,11 +12,17 @@
 #   the preview in its place. The scenes around it and the sound are not touched. It needs a preview made by this
 #   tool after the last change to the voice or the shot list, and it stops if another render is running.
 # Each run first refreshes the film skeleton (tools/film/scaffold.mjs), so times always match the voice.
-# Only one render runs at a time: a second one waits, because two bundles at once crash the bundler.
+# Only one render runs at a time: a second one waits, because two bundles at once crash the bundler. A lock left by a
+#   render that was killed is cleared on its own.
+# The last good file is never lost: each render is written beside its destination, checked (a picture, the right number
+#   of frames), and only then put in place; the file it replaces moves to versions/ beside it (the last 3 are kept).
+# Every run is timed into the job's runs.jsonl (tools/film/costs.mjs reads it).
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STUDIO="$(cd "$HERE/../.." && pwd)"
-usage() { sed -n '2,15p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
+# shellcheck source=lib/safe.sh
+source "$HERE/lib/safe.sh"
+usage() { sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
 
 [ $# -gt 0 ] || usage
 [ -d "$1" ] || { echo "Not a job folder: $1"; exit 1; }
@@ -53,44 +59,48 @@ fi
 # One render at a time, shared by every render tool (tools/film/storyboard.mjs uses the same lock). The lock is a
 # folder (making one either works or fails, never half) holding our process id.
 LOCK="$STUDIO/engine/out/.render.lock"
-mkdir -p "$STUDIO/engine/out"
-until mkdir "$LOCK" 2>/dev/null; do
-  owner="$(cat "$LOCK/pid" 2>/dev/null || true)"
-  case "$([ -n "$owner" ] && kill -0 "$owner" 2>&1 || true)" in
-    *"No such process"*) rm -rf "$LOCK"; continue ;;   # left behind by a render that was killed
-  esac
-  if [ -n "$SPLICE" ]; then
-    echo "Another render is running (process ${owner:-unknown}), so the scene was not swapped in. Try again when it has finished."
-    echo "If you are sure nothing is rendering, delete the folder $LOCK and try again."
+if [ -n "$SPLICE" ]; then
+  if ! NO_WAIT=1 take_render_lock "$LOCK" "render.sh scene $SCENE --splice" "$NAME"; then
+    echo "Another render is running (process $(cat "$LOCK/pid" 2>/dev/null || echo unknown)), so the scene was not swapped in. Try again when it has finished."
     exit 1
   fi
-  [ -n "${waiting:-}" ] || echo "Another render is running (process ${owner:-starting}). Waiting for it to finish."
-  waiting=1; sleep 5
-done
-echo $$ > "$LOCK/pid"
-WORK=""
-trap 'rm -rf "$LOCK" ${WORK:+"$WORK"}' EXIT
+else
+  take_render_lock "$LOCK" "render.sh $MODE${SCENE:+ $SCENE}" "$NAME"
+fi
+WORK=""; PARTIAL=""; STARTED=$(date +%s); RESULT="failed"
+finish() {
+  # The lock is removed only if it is still ours (another render may have cleared and retaken a lock it judged stale).
+  [ "$(cat "$LOCK/pid" 2>/dev/null)" = "$$" ] && rm -rf "$LOCK"
+  rm -rf ${WORK:+"$WORK"} ${PARTIAL:+"$PARTIAL"}
+  node "$HERE/lib/runlog.mjs" add "$JOB" tool=render mode="$MODE" scene="$SCENE" splice="${SPLICE:-}" captions="${SUFFIX:+off}" \
+    seconds="$(( $(date +%s) - STARTED ))" ok="$([ "$RESULT" = ok ] && echo true || echo false)" 2>/dev/null || true
+}
+trap finish EXIT
 
 node "$HERE/scaffold.mjs" "$JOB"
 echo
 
-# render <composition> <output file> [remotion options]: renders, then proves the file is there.
+# render <composition> <output file> <expected frames> [remotion options]: renders beside the output, checks the
+# picture and its length in frames, then puts it in place, keeping the file it replaces in versions/.
 render() {
-  local composition="$1" file="$2"; shift 2
-  mkdir -p "$(dirname "$file")"; rm -f "$file"
-  (cd "$STUDIO/engine" && npx remotion render "$composition" "$file" ${PROPS[@]+"${PROPS[@]}"} "$@")
-  [ -s "$file" ] || { echo "The render did not write $file."; exit 1; }
+  local composition="$1" file="$2" want="$3"; shift 3
+  mkdir -p "$(dirname "$file")"
+  PARTIAL="$(dirname "$file")/.$(basename "${file%.*}").partial-$$.mp4"; rm -f "$PARTIAL"
+  (cd "$STUDIO/engine" && npx remotion render "$composition" "$PARTIAL" ${PROPS[@]+"${PROPS[@]}"} "$@")
+  check_video "$PARTIAL" "$want" || { echo "Nothing was replaced: the previous $(basename "$file") is unchanged."; exit 1; }
+  replace_keeping "$PARTIAL" "$file"; PARTIAL=""
   echo "wrote $file: $(ffprobe -v error -show_entries format=duration -of csv=p=0 "$file") s"
 }
 FULL=(--crf 16 --jpeg-quality 95 --audio-bitrate 320k)
 
-# film <what>: reads film.json. "starts" = the first frame of every scene but the first; "scene" = the scene's first
+# film <what>: reads film.json. "total" = the film's frame count; "starts" = the first frame of every scene but the first; "scene" = the scene's first
 # frame, the frame after its last, and the film's frame count. Frames are counted the way engine/src/jobs/_film.tsx does.
 film() {
   node -e '
     const film = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
     const frame = (seconds) => Math.round(seconds * film.fps);
     if (process.argv[2] === "starts") { console.log(film.scenes.slice(1).map((s) => frame(s.start)).join(",")); process.exit(0); }
+    if (process.argv[2] === "total") { console.log(frame(film.duration)); process.exit(0); }
     const scene = film.scenes.find((s) => s.id === process.argv[3]);
     if (!scene) { console.error(`The film has no scene ${process.argv[3]}. Its scenes are ${film.scenes.map((s) => s.id).join(", ")}.`); process.exit(1); }
     console.log(frame(scene.start), frame(scene.end), frame(film.duration), film.fps);
@@ -122,7 +132,7 @@ splice() {
   done
 
   WORK="$(mktemp -d "$OUT/.splice.XXXXXX")"
-  render "$SLUG-$SCENE" "$WORK/scene.mp4" "${PREVIEW_LOOK[@]}"
+  render "$SLUG-$SCENE" "$WORK/scene.mp4" "$((end - start))" "${PREVIEW_LOOK[@]}"
   [ "$(picture "$WORK/scene.mp4")" = "$(picture "$PREVIEW")" ] \
     || { echo "The new $SCENE does not match the preview's picture settings, so it was not swapped in. The preview is unchanged."; exit 1; }
   [ "$(frames "$WORK/scene.mp4")" = "$((end - start))" ] \
@@ -150,16 +160,18 @@ splice() {
 
   [ "$(frames "$WORK/spliced.mp4")" = "$total" ] \
     || { echo "The joined preview came out the wrong length, so it was not kept. The preview is unchanged."; exit 1; }
-  mv "$WORK/spliced.mp4" "$PREVIEW"
+  replace_keeping "$WORK/spliced.mp4" "$PREVIEW"
   echo "Swapped the new $SCENE into $PREVIEW (frames $start to $((end - 1)) of $total). Everything else in the preview, and the sound, is unchanged."
 }
 
+TOTAL="$(film total)"
 case "$MODE" in
   preview) export KEYFRAMES_AT; KEYFRAMES_AT="$(film starts)"   # fresh frames where scenes begin, for --splice
-           render "$SLUG" "$PREVIEW" "${PREVIEW_LOOK[@]}"
+           render "$SLUG" "$PREVIEW" "$TOTAL" "${PREVIEW_LOOK[@]}"
            cp "$FILM_JSON" "$PREVIEW_FROM" ;;
   scene)   if [ -n "$SPLICE" ]; then splice
-           else render "$SLUG-$SCENE" "$OUT/scenes/$SCENE$SUFFIX.mp4" "${FULL[@]}"; fi ;;
-  master)  render "$SLUG" "$OUT/raw$SUFFIX.mp4" "${FULL[@]}"
+           else read -r s e _ _ < <(film scene "$SCENE"); render "$SLUG-$SCENE" "$OUT/scenes/$SCENE$SUFFIX.mp4" "$((e - s))" "${FULL[@]}"; fi ;;
+  master)  render "$SLUG" "$OUT/raw$SUFFIX.mp4" "$TOTAL" "${FULL[@]}"
            bash "$STUDIO/tools/audio/master.sh" "$OUT/raw$SUFFIX.mp4" "$OUT/$NAME$SUFFIX" ;;
 esac
+RESULT=ok
