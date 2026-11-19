@@ -17,7 +17,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-24.04, macos-14]
+        # macos-14 images are retired ("configuration not supported"); macos-latest is Apple silicon.
+        # windows-latest is Windows Server, not Windows 11: report it as CI, separate from physical devices.
+        os: [windows-latest, ubuntu-24.04, macos-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -27,8 +29,12 @@ jobs:
           cache: npm
           cache-dependency-path: engine/package-lock.json
 
-      - name: Node version
-        run: node --version && npm --version
+      - name: Node and OS version
+        shell: bash
+        run: |
+          node --version && npm --version
+          node -e "const os=require('os'); console.log('os', os.platform(), os.arch(), os.release(), os.version())"
+          case "$RUNNER_OS" in macOS) sw_vers;; Linux) cat /etc/os-release | head -3;; esac
 
       # CI-only: the Chrome Headless Shell that Remotion downloads needs these system libraries on a bare Ubuntu runner.
       # (Libraries listed in Remotion's Linux dependencies documentation.) Customers' machines are not touched by this.
