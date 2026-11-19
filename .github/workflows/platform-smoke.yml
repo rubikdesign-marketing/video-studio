@@ -18,9 +18,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-24.04, macos-14]
-    env:
-      # A path with a space and a non-ASCII character, so every launcher and script is tested on a hard path.
-      WORK_PARENT: ${{ runner.temp }}
     steps:
       - uses: actions/checkout@v4
 
@@ -41,12 +38,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libnss3 libdbus-1-3 libatk1.0-0 libasound2t64 libxrandr2 libxkbcommon-x11-0 libxfixes3 libxcomposite1 libxdamage1 libgbm-dev libcups2 libatk-bridge2.0-0
 
+      # A path with a space and a non-ASCII character, so every launcher and script is tested on a hard path.
+      # (RUNNER_TEMP is read here: the runner context is not allowed in a job-level env block.)
       - name: Copy the checkout into "Vidéo studio" (space and accent in the path)
         shell: bash
         run: |
           node -e "
             const fs = require('fs'), path = require('path');
-            const dest = path.join(process.env.WORK_PARENT, 'Vidéo studio');
+            const dest = path.join(process.env.RUNNER_TEMP, 'Vidéo studio');
             fs.rmSync(dest, { recursive: true, force: true });
             fs.cpSync(process.cwd(), dest, { recursive: true, filter: (s) => !/[\\\\/](\.git|node_modules)([\\\\/]|$)/.test(s) });
             fs.appendFileSync(process.env.GITHUB_ENV, 'STUDIO_DIR=' + dest + '\n');
