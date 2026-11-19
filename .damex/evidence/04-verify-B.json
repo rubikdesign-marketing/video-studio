@@ -1,0 +1,146 @@
+{
+ "ran": true,
+ "fixture": {
+  "brief": "12 s vertical, demo brand, same-day shipping, no voice, library music, logo end, stop at first approval",
+  "flags": "-p --model sonnet --permission-mode acceptEdits --max-budget-usd 1.50"
+ },
+ "old": {
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "wall": "exit=0 wall=57s",
+  "api_duration_s": 51.7,
+  "turns": 13,
+  "tokens": {
+   "input": 20,
+   "output": 5567,
+   "cache_read": 861738,
+   "cache_write": 105044
+  },
+  "api_equivalent_usd": 0.5621,
+  "questions": 0,
+  "permission_denials": 3,
+  "files": [
+   "concepts.md",
+   "job.json"
+  ],
+  "quality": {
+   "job_json_valid": true,
+   "brand": "demo",
+   "next_stage": "idea",
+   "size_9x16": true,
+   "idea_output": false,
+   "mentions_12s": true,
+   "mentions_9x16": true,
+   "ends_on_logo": true,
+   "no_voice": true
+  }
+ },
+ "new_round1_blocked": {
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "wall": "exit=0 wall=49s",
+  "api_duration_s": 44,
+  "turns": 17,
+  "tokens": {
+   "input": 20,
+   "output": 4930,
+   "cache_read": 863864,
+   "cache_write": 103562
+  },
+  "api_equivalent_usd": 0.55,
+  "questions": 2,
+  "permission_denials": 4,
+  "files": [
+   "concepts.md",
+   "job.json"
+  ],
+  "quality": {
+   "job_json_valid": true,
+   "brand": "demo",
+   "next_stage": "idea",
+   "size_9x16": true,
+   "idea_output": false,
+   "mentions_12s": true,
+   "mentions_9x16": true,
+   "ends_on_logo": true,
+   "no_voice": true,
+   "brief_check": {
+    "exit": 1
+   },
+   "gate_status": {
+    "exit": 0
+   },
+   "dispatch_usage": {
+    "exit": 0
+   }
+  }
+ },
+ "new_round2_allow_list": {
+  "model": [
+   "claude-sonnet-5-5"
+  ],
+  "wall": "exit=0 wall=74s",
+  "api_duration_s": 64.6,
+  "turns": 13,
+  "tokens": {
+   "input": 20,
+   "output": 5558,
+   "cache_read": 885219,
+   "cache_write": 105878
+  },
+  "api_equivalent_usd": 0.5677,
+  "questions": 1,
+  "permission_denials": 2,
+  "files": [
+   "brief.json",
+   "ideas.md",
+   "job.json"
+  ],
+  "quality": {
+   "job_json_valid": true,
+   "brand": "demo",
+   "next_stage": "idea",
+   "size_9x16": true,
+   "idea_output": true,
+   "mentions_12s": true,
+   "mentions_9x16": true,
+   "ends_on_logo": true,
+   "no_voice": true,
+   "brief_check": {
+    "exit": 1
+   },
+   "gate_status": {
+    "exit": 0
+   },
+   "dispatch_usage": {
+    "exit": 0
+   }
+  },
+  "settings": "--settings .claude/settings.json (stands in for a trusted workspace)"
+ },
+ "subscription_usage": {
+  "five_hour": [
+   33,
+   37
+  ],
+  "weekly": [
+   6,
+   7
+  ],
+  "note": "app figures for the whole stretch incl. probes and lead"
+ },
+ "api_cost_note": "total_cost_usd is a list-price estimate; billing is subscription",
+ "findings": [
+  "project permissions.allow is ignored until the workspace is trusted",
+  "J=... && node ... does not match allow rules; SKILL.md instruction added, not retested",
+  "brief.mjs reads demo brand as kind product-demo",
+  "hooks.mjs find rejected agent platform flag",
+  "exporter does not rewrite studio.json"
+ ],
+ "not_proven": [
+  "n=1 per configuration",
+  "concept craft not judged"
+ ]
+}

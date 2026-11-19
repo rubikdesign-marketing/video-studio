@@ -1,0 +1,46 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "studio",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "stage_next": "script_and_voice_approval",
+  "approvals": {
+    "idea": "2026-11-19, by the maker in the request: 'treat your recommended idea as approved'. Concept: 'Write it well once'. Not a signed-off approval of the soul sheet text; the maker can still change it.",
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "moodboard_canvas": null,
+  "storyboard_canvas": null,
+  "figma_file": null,
+  "offer_wording": "Saved replies, new in your support inbox.",
+  "facts": [
+    { "claim": "Saved replies is a new feature of the support inbox", "source": "maker's brief, 2026-11-19", "confirmed": true },
+    { "claim": "A reply is saved once and is then available in the inbox when the next customer asks the same thing", "source": "inferred from the feature name; maker to confirm how it works", "confirmed": false }
+  ],
+  "design_style": "Paper (light page, calm product-led, confident motion)",
+  "hooks": [
+    { "family": "recognised tension (callout)", "formula": null, "spoken": "You've typed this answer before. Probably today.", "on_screen": "Same question. Again.", "first_frame": "Inbox with a new message and an empty reply box, cursor blinking", "score": null, "picked": true },
+    { "family": "command", "formula": null, "spoken": "Stop typing the same answer twice.", "on_screen": "Once is enough.", "first_frame": "Three near-identical customer messages stacked in the inbox", "score": null, "picked": false },
+    { "family": "announcement", "formula": null, "spoken": "Saved replies are here, in your support inbox.", "on_screen": "Saved replies", "first_frame": "The words 'Saved replies' set large on the light page, inbox behind", "score": null, "picked": false }
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": [],
+  "new_library_entry": null,
+  "usage_by_stage": {},
+  "notes": [
+    "Demo brand is a TEST brand with no product (brands/demo/README.md says not to make a real video with it). The maker asked for it anyway; treated as a dry run of the line.",
+    "No real product UI exists to capture for saved replies. Rules 10 and the studio principle 'never invent a screen' block the storyboard stage until a real capture or a confirmed stand-in is agreed.",
+    "Demo brand has no written voice guide. Wording follows the brand sheet's tone only (plain, warm, direct); nothing else was available.",
+    "node tools (hooks.mjs, beats.mjs) could not be run: the shell asked for approval and this session is non-interactive. Hooks are unscored and the beat sheet was not run."
+  ],
+  "skills_used": [],
+  "usage": []
+}

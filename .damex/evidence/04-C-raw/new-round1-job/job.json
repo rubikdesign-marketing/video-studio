@@ -1,0 +1,27 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "<maker>",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "stage_next": "script_and_voice",
+  "approval_mode": "guided",
+  "approvals": { "idea": "2026-11-19 (maker said to treat the recommended idea as approved)", "script_and_voice": null, "moodboard": null, "storyboard": null, "first_animation": null, "full_animation": null },
+  "concept": "A: Say it once",
+  "offer_wording": null,
+  "facts": ["Feature name: saved replies", "Lives in the support inbox", "Availability ('new') to be confirmed by the maker"],
+  "hooks": [
+    { "formula": "before-after-on-screen (demonstration)", "spoken": "You've answered this question four times today.", "on_screen": "Same question. Again.", "first_frame": "One typed answer, then the same answer retyped over it", "score": "7/8 (own judgement)", "picked": true },
+    { "formula": "advice-rejected (contrarian)", "spoken": "Everyone says reply faster. Nobody says reply less from scratch.", "on_screen": "Faster isn't the fix", "first_frame": "'Reply faster' struck through", "score": "6/8 (own judgement)", "picked": false },
+    { "formula": "audience-reason-not (callout)", "spoken": "Support teams: the slow tickets aren't the hard ones.", "on_screen": "The slow part isn't hard", "first_frame": "'Support teams' as the first text over a pile of identical tickets", "score": "6/8 (own judgement)", "picked": false }
+  ],
+  "new_library_entry": null,
+  "usage_by_stage": {},
+  "notes": ["Demo brand is a test brand with no product and no written voice guide: no product UI is shown; voice is Justin, the brand's only voice."],
+  "skills_used": [],
+  "usage": []
+}

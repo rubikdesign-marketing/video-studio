@@ -1,0 +1,70 @@
+{
+  "name": "saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "design_style": "paper",
+  "concept": "A: Once",
+  "framework": "studio-promo",
+  "stage_next": "script_and_voice",
+  "approval_mode": "guided",
+  "approvals": {
+    "idea": null,
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "moodboard_canvas": null,
+  "storyboard_canvas": null,
+  "figma_file": null,
+  "offer_wording": "Saved replies, new in your support inbox.",
+  "facts": [
+    "Saved replies is a new feature (from the brief)",
+    "It is in the support inbox (from the brief)",
+    "UNCONFIRMED: you write a reply once and reuse it on later tickets (taken from the feature's name)"
+  ],
+  "hooks": [
+    {
+      "formula": "before-after-on-screen (adapted: problem callout)",
+      "spoken": "You've typed that same answer all day.",
+      "on_screen": "Same answer. Again.",
+      "first_frame": "One sentence in amber on the paper page, already repeated twice, a third copy typing in",
+      "score": "7/8 (delay 2, confusion 2, irrelevance 2, disinterest 1). Claude's own judgement",
+      "picked": true
+    },
+    {
+      "formula": "advice-rejected (adapted: contrarian)",
+      "spoken": "The slow part isn't the answer. It's typing it again.",
+      "on_screen": "Typing it again",
+      "first_frame": "A finished answer sitting still, a blinking cursor beneath it",
+      "score": "7/8 (delay 2, confusion 1, irrelevance 2, disinterest 2). Claude's own judgement; not yet measured after rewrite",
+      "picked": false
+    },
+    {
+      "formula": "after-the-milestone (adapted: curiosity gap)",
+      "spoken": "Your best support answer is already written. Why retype it?",
+      "on_screen": "Why retype it?",
+      "first_frame": "One finished answer card in the centre, empty ticket shapes waiting around it",
+      "score": "7/8 (delay 2, confusion 2, irrelevance 2, disinterest 1). Claude's own judgement",
+      "picked": false
+    }
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": ["peak line 05, about 1.3 s, on the three-tickets moment"],
+  "new_library_entry": "one-to-many landing (one object's text duplicates onto several containers on one beat)",
+  "usage_by_stage": {},
+  "notes": [
+    "Demo brand has no product: no screen capture is possible, so the film uses type and drawn shapes only.",
+    "Demo brand has no written voice guide or pronunciation list; the style follows the promo playbook.",
+    "Idea treated as approved by the person's instruction in the first message."
+  ],
+  "skills_used": [],
+  "usage": []
+}

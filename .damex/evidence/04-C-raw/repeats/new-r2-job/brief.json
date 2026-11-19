@@ -1,0 +1,33 @@
+{
+ "in_their_words": "A 30 second 16:9 promo for the demo brand announcing a new feature: saved replies for the support inbox. Five scenes. Voice-over in the brand voice.",
+ "kind": "",
+ "for": "",
+ "viewer_should": "",
+ "deliver": [
+  {
+   "platform": "",
+   "size": "",
+   "master": true
+  }
+ ],
+ "length_cap_seconds": null,
+ "voice": "",
+ "must_show": [],
+ "must_not": [],
+ "materials": [],
+ "references": [],
+ "decisions": [
+  {
+   "what": "Length cap 30 s, binding. Voice-over, voice Justin (the brand's only voice). Master 16:9. Five scenes. Viewer should believe: saved replies make answering the same question quick without sounding canned. No audio is generated or played until the script is approved.",
+   "by": "owner",
+   "date": "2026-11-19",
+   "applies_to": "all"
+  },
+  {
+   "what": "Idea approved by the maker in advance: the recommended concept A, The fifth time.",
+   "by": "owner",
+   "date": "2026-11-19",
+   "applies_to": "all"
+  }
+ ]
+}

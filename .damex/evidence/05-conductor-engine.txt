@@ -1,0 +1,128 @@
+
+## 1. Routing: who does what
+$ node tools/conductor/route.mjs scene_code
+scene_code: sonnet (worker: scene-builder)
+examples: build or change one scene from its shots.json brief
+  -> exit 0
+$ node tools/conductor/route.mjs render
+render: script
+examples: preview render; scene render; master render; contact sheet; platform crop
+  -> exit 0
+$ node tools/conductor/route.mjs critique
+critique: sonnet (worker: frame-critic)
+examples: critique moodboard frames, key frames or a contact sheet
+  -> exit 0
+$ node tools/conductor/route.mjs lookup
+lookup: haiku (worker: checker)
+examples: find where a fact is recorded; confirm a file or number exists; summarise a check log
+  -> exit 0
+$ node tools/conductor/route.mjs idea_and_direction
+idea_and_direction: lead
+examples: pick the idea and angle; choose the energy and length cap; settle the moodboard direction
+  -> exit 0
+
+## 2. Fresh session on the real job: resume reads its gates
+$ node tools/conductor/dispatch.mjs resume <tmp>/jobs/halden-launch
+RESUME mode guided
+interrupted: none
+gates already satisfied (skipped): none
+NEXT: run stage "intake-and-idea", then ask the owner to approve "idea"
+  -> exit 0
+
+## 3. Approvals recorded against the job's real files
+$ node tools/conductor/gate.mjs approve <tmp>/jobs/halden-launch idea --inputs brief.json
+APPROVED idea by owner (1 files, c2ab6c234506, mode guided)
+  -> exit 0
+$ node tools/conductor/gate.mjs approve <tmp>/jobs/halden-launch script_and_voice --inputs audio
+APPROVED script_and_voice by owner (3 files, f2ac86edc197, mode guided)
+  -> exit 0
+$ node tools/conductor/gate.mjs approve <tmp>/jobs/halden-launch moodboard --inputs jobs/halden-launch/brief.json
+Cannot approve: input not found: jobs/halden-launch/brief.json
+  -> exit 2
+$ node tools/conductor/gate.mjs approve <tmp>/jobs/halden-launch storyboard --inputs shots.json,storyboard
+APPROVED storyboard by owner (7 files, 6bf415a6e947, mode guided)
+  -> exit 0
+$ node tools/conductor/gate.mjs status <tmp>/jobs/halden-launch
+mode: guided
+idea               OK       2026-11-19T12:31:59.902Z by owner
+script_and_voice   OK       2026-11-19T12:31:59.932Z by owner
+moodboard          MISSING
+storyboard         OK       2026-11-19T12:31:59.989Z by owner
+first_animation    MISSING
+full_animation     MISSING
+  -> exit 0
+
+## 4. Changing an approved file makes that approval stale
+$ node tools/conductor/gate.mjs check <tmp>/jobs/halden-launch storyboard
+STALE storyboard: inputs changed since approval; ask again
+  -> exit 3
+$ node tools/conductor/gate.mjs check <tmp>/jobs/halden-launch storyboard
+OK storyboard: approved 2026-11-19T12:31:59.989Z
+  -> exit 0
+
+## 5. Two scene-builders on disjoint scene files; a third is refused
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s01 --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S01.tsx
+ALLOW c1
+  -> exit 0
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s02 --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S02.tsx
+ALLOW c2
+  -> exit 0
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s03 --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S03.tsx
+STOP active cap: 2 of 2 workers already active (c1 scene-builder, c2 scene-builder). Release one first.
+  -> exit 4
+
+## 6. A helper may not write a file another active helper holds
+$ node tools/conductor/dispatch.mjs release <tmp>/jobs/halden-launch c2 --status done --tokens 38000
+RELEASED c2 done
+  -> exit 0
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task scenes-all --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes
+STOP write overlap: "engine/src/jobs/2026-11-18-halden-launch/scenes" collides with "engine/src/jobs/2026-11-18-halden-launch/scenes/S01.tsx" held by active claim c1 (scene-builder, task s01).
+  -> exit 4
+
+## 7. Bounded retries
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s03 --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S03.tsx
+ALLOW c3
+  -> exit 0
+$ node tools/conductor/dispatch.mjs release <tmp>/jobs/halden-launch c3 --status failed
+RELEASED c3 failed
+  -> exit 0
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s03 --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S03.tsx
+ALLOW c4
+  -> exit 0
+$ node tools/conductor/dispatch.mjs release <tmp>/jobs/halden-launch c4 --status failed
+RELEASED c4 failed
+  -> exit 0
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s03 --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S03.tsx
+STOP retry cap: task "s03" in stage "animation" has failed or stopped 2 times (limit: 1 try + 1 retry). Take it to the lead.
+  -> exit 4
+
+## 8. A model the settings do not allow is refused, never swapped
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s04 --worker scene-builder --model opus --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S04.tsx
+STOP model "opus" is blocked: not in availableModels [sonnet, haiku] (<tmp>/settings.json). Not switched to another model. Alternative: do this task in the lead session.
+  -> exit 4
+
+## 9. Paid work needs a recorded approval
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task kling-bg --worker capture-runner --model sonnet --writes jobs/halden-launch/gen --paid
+STOP paid work needs a recorded approval (gate paid_usage is missing). Ask the owner, then: gate.mjs approve <job_dir> paid_usage --inputs <file naming what may be spent>
+  -> exit 4
+
+## 10. Interrupted helper: the session dies with S04 claimed; a restart keeps its work
+$ node tools/conductor/dispatch.mjs release <tmp>/jobs/halden-launch c1 --status done --tokens 41000
+RELEASED c1 done
+  -> exit 0
+$ node tools/conductor/dispatch.mjs claim <tmp>/jobs/halden-launch --stage animation --task s04 --worker scene-builder --model sonnet --writes engine/src/jobs/2026-11-18-halden-launch/scenes/S04.tsx
+ALLOW c5
+  -> exit 0
+$ node tools/conductor/dispatch.mjs resume <tmp>/jobs/halden-launch
+RESUME mode guided
+interrupted c5 stage=animation task=s04 worker=scene-builder; partial work preserved at: engine/src/jobs/2026-11-18-halden-launch/scenes/S04.tsx; retries left: 1
+Keep that partial work. Look at it before any retry; do not delete it.
+gates already satisfied (skipped): idea, script_and_voice, storyboard
+NEXT: run stage "moodboard", then ask the owner to approve "moodboard"
+  -> exit 0
+
+## 11. What each stage and model used
+$ node tools/conductor/dispatch.mjs usage <tmp>/jobs/halden-launch
+claims: 5
+animation        sonnet   claims 5 (done 2, failed 2, partial 0, interrupted 1, active 0)  elapsed 0s  tokens 79000 (recorded for 2 of 5)
+  -> exit 0

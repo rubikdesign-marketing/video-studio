@@ -1,0 +1,70 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "<maker>",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "stage_next": "script_and_voice",
+  "approval_mode": "guided",
+  "approvals": {
+    "idea": "2026-11-19 (concept A, approved in the brief: 'treat your recommended idea as approved')",
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "chosen_concept": "A. The same answer, again",
+  "design_style": "plain editorial type on a light page, ending on the dark green page",
+  "offer_wording": "saved replies",
+  "facts": [
+    "Feature name: saved replies",
+    "Where: the support inbox",
+    "No price, date, time-saved figure or product screen: none given, and the demo brand has no product"
+  ],
+  "hooks": [
+    {
+      "formula": "audience-reason-not (callout family), reworded",
+      "spoken": "Support teams: stop rewriting that reply.",
+      "on_screen": "Stop retyping",
+      "first_frame": "One sentence of reply text on the light page, typed out in ink",
+      "score": "judged by Claude, not measured: delay 2, confusion 2, irrelevance 2, disinterest 1 = 7 of 8",
+      "picked": false
+    },
+    {
+      "formula": "callout / pain recognition, written as 'you'",
+      "spoken": "You just typed that same answer again.",
+      "on_screen": "Typed it again.",
+      "first_frame": "The same sentence typed on the light page, a grey copy of it already stacked below",
+      "score": "judged by Claude, not measured: delay 2, confusion 2, irrelevance 2, disinterest 2 = 8 of 8. Measured: 7 words, 2.8 s, claim out at 2.8 s",
+      "picked": true
+    },
+    {
+      "formula": "before-after-on-screen (demonstration family)",
+      "spoken": "This is one answer, typed. This is the same answer, one click.",
+      "on_screen": "Typed. One click.",
+      "first_frame": "A typed line, then a hard cut to the same line already in place",
+      "score": "judged by Claude, not measured: delay 2, confusion 1, irrelevance 1, disinterest 1 = 5 of 8, so it needs a rewrite before it is used as an ad variant. Measured: 12 words, 4.8 s",
+      "picked": false
+    }
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": [
+    "Scene 4, about 1.0 s, after the stack folds into one line (the signature moment)"
+  ],
+  "new_library_entry": "stack fold: repeated type lines compress into one line",
+  "usage_by_stage": {},
+  "notes": [
+    "Demo brand is a test brand with no product and no discovery file (brands/demo/README.md says not to make a real video with it). Made at the maker's explicit request.",
+    "No product screens: all pictures are drawn type and shape. Concept B (pick one) needs real captured footage, so it is saved for a later episode.",
+    "Voice is Justin, the demo brand's only voice. Nothing has been generated or played."
+  ],
+  "skills_used": [
+    {"skill": "video-studio", "stage": "idea, script", "asked_for": "stage order, approvals", "result": "helped", "why": "set the sequence and the no-invented-screen limit"}
+  ],
+  "usage": []
+}

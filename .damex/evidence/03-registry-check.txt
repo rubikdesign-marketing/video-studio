@@ -1,0 +1,5 @@
+schema damex.registry/1: 995 items, 233 sources, omitted_private 2
+counts: background 12, component 226, hook 155, motion 243, preset 14, reference 39, sound 281, workflow 25
+privacy scan: passed (7 banned words, manifest.json)
+release ~/Desktop/Marketer/projects/damex-video-engine: 995 customer items checked, 0 mismatches
+check passed
