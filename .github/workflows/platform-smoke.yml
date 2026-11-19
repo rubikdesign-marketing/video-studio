@@ -75,17 +75,7 @@ jobs:
 
       - name: Collect artifacts
         if: always()
-        shell: bash
-        run: |
-          node -e "
-            const fs = require('fs'), path = require('path');
-            const src = process.env.STUDIO_DIR, out = path.join(process.cwd(), 'ci-artifacts');
-            fs.mkdirSync(out, { recursive: true });
-            for (const f of ['.damex/smoke.json', '.damex/doctor.json', '.damex/doctor-no-ffmpeg.json', 'jobs/_sample/out/sample-preview.mp4']) {
-              try { fs.copyFileSync(path.join(src, f), path.join(out, path.basename(f))); } catch (e) { console.log('missing: ' + f); }
-            }
-            try { fs.cpSync(path.join(src, '.damex', 'logs'), path.join(out, 'logs'), { recursive: true }); } catch (e) {}
-          "
+        run: node .github/scripts/collect-artifacts.mjs
 
       - uses: actions/upload-artifact@v4
         if: always()
