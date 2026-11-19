@@ -271,7 +271,7 @@ function main() {
   }
   const job = path.resolve(jobArg);
   if (!fs.existsSync(job)) { say(`No job folder at ${jobArg}.`); process.exit(2); }
-  if (cmd !== 'log' && !fs.existsSync(PYTHON)) { say("The footage tool's Python environment is missing. Run: bash setup/install.sh"); process.exit(2); }
+  if (cmd !== 'log' && !fs.existsSync(PYTHON)) { say("The footage tool's Python environment is missing. Run: node setup/runtime/install.mjs --with footage-audio-python"); process.exit(2); }
   if (cmd === 'compare') { compare(job, o.clip); return; }
   if (cmd === 'paper') { paperCmd(job, o); return; }
   if (cmd === 'cut') { cutCmd(job); return; }

@@ -12,6 +12,8 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
+import { copyTree } from '../lib/fsx.mjs';
+import { killTree, groupLeader } from '../lib/proc.mjs';
 
 const require = createRequire(import.meta.url);
 export const TERMINAL_STEPS = ['open', 'run', 'type', 'press', 'wait', 'wait for', 'mark', 'clear', 'line'];
@@ -77,7 +79,7 @@ function settingsOf(product, script) {
     fontSize: o.font_size ?? t.font_size ?? 17,
     font: t.font ?? '"SF Mono", Menlo, Monaco, "Cascadia Mono", monospace',
     folder: o.folder ?? t.folder ?? null,
-    shell: t.shell ?? '/bin/zsh',
+    shell: t.shell ?? defaultShell(),
     env: t.env ?? {},
   };
 }
@@ -87,12 +89,32 @@ function seeded(text) {
   return () => { h ^= h << 13; h >>>= 0; h ^= h >> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; };
 }
 
+const shq = (x) => `'${String(x).replace(/'/g, `'\\''`)}'`;   // one word for a POSIX shell, whatever it holds
+
+export function defaultShell({ platform = process.platform, env = process.env, exists = fs.existsSync } = {}) {
+  if (platform === 'darwin') return '/bin/zsh';
+  return env.SHELL && exists(env.SHELL) ? env.SHELL : '/bin/bash';
+}
+
+/**
+ * The program and arguments that give a command a real terminal (colours, progress bars, its width), or null where there is
+ * none. macOS: BSD `script -q /dev/null cmd args...`. Linux: util-linux `script -q -c "<cmd>" /dev/null`, the command built
+ * as one string with every word quoted. Windows has no `script`.
+ */
+export function scriptCommand(shell, inner, cwd, command, { platform = process.platform } = {}) {
+  if (platform === 'darwin') return { cmd: '/usr/bin/script', args: ['-q', '/dev/null', shell, '-f', '-c', inner, 'studio', cwd, command] };
+  if (platform === 'win32') return null;
+  const words = [shell, ...(/(^|\/)zsh$/.test(shell) ? ['-f'] : []), '-c', inner, 'studio', cwd, command].map(shq).join(' ');
+  return { cmd: 'script', args: ['-q', '-c', words, '/dev/null'] };
+}
+
 /**
  * Runs the steps for real (mode "take" also draws them into recording.mp4). Returns what the take's capture.json
  * needs; writes cursor.json, tracks.json, marks/, terminal.cast and recording.mp4 into `work`.
  */
 export async function recordTerminal({ brand, product, script, opts, mode, work, h }) {
   const { say, stop, round, rel } = h;
+  if (process.platform === 'win32') stop('Terminal capture needs macOS or Linux (it uses the system `script` program). On Windows, record the terminal yourself and import the recording.');
   const s = settingsOf(product, script);
   const random = seeded(script.file);
   // The folder the commands run in: the brand's demo folder, copied fresh for the take, or an empty one.
@@ -101,7 +123,7 @@ export async function recordTerminal({ brand, product, script, opts, mode, work,
   if (s.folder) {
     const from = path.resolve(path.dirname(product.file), s.folder);
     if (!fs.existsSync(from)) stop(`${rel(product.file)}: the terminal folder ${from} is missing.`);
-    fs.cpSync(from, path.join(scratch, path.basename(from)), { recursive: true });
+    copyTree(from, path.join(scratch, path.basename(from)));
     cwd = path.join(scratch, path.basename(from));
   }
   const home = os.homedir();
@@ -146,8 +168,9 @@ export async function recordTerminal({ brand, product, script, opts, mode, work,
     const started = now();
     const inner = `stty cols ${s.cols} rows ${s.rows} 2>/dev/null; cd "$1" && eval "$2"; s=$?; printf '\\033]1337;studio=%s;%s\\007' "$s" "$PWD"`;
     const env = { ...process.env, ...s.env, TERM: 'xterm-256color', COLORTERM: 'truecolor', CLICOLOR: '1', CLICOLOR_FORCE: '1', FORCE_COLOR: '1', COLUMNS: String(s.cols), LINES: String(s.rows), PS1: '$ ' };
-    // macOS's own `script` gives the command a real terminal (colours, progress bars, its width).
-    const child = spawn('/usr/bin/script', ['-q', '/dev/null', s.shell, '-f', '-c', inner, 'studio', cwd, command], { cwd, env, detached: true, stdio: ['ignore', 'pipe', 'pipe'] });
+    // The system `script` program gives the command a real terminal (colours, progress bars, its width).
+    const sc = scriptCommand(s.shell, inner, cwd, command);
+    const child = spawn(sc.cmd, sc.args, { cwd, env, ...groupLeader(), stdio: ['ignore', 'pipe', 'pipe'] });
     let lastOut = now();
     let done = false;
     let buffer = '';
@@ -163,7 +186,7 @@ export async function recordTerminal({ brand, product, script, opts, mode, work,
       let text = b.toString('utf8');
       // `script` echoes the end of its (empty) input as "^D" first: never shown.
       if (first) { text = text.replace(/^\^D\x08\x08/, ''); first = false; }
-      if (/^script: /.test(text) && !buffer) { try { process.kill(-child.pid, 'SIGKILL'); } catch {} done = true; clearInterval(watch); resolve({ error: `macOS could not open a terminal session for it (${text.trim()})` }); return; }
+      if (/^script: /.test(text) && !buffer) { killTree(child, 'SIGKILL'); done = true; clearInterval(watch); resolve({ error: `the system could not open a terminal session for it (${text.trim()})` }); return; }
       buffer += text;
       // The end marker carries the exit code and the folder the command left the shell in.
       const end = buffer.match(/\x1b\]1337;studio=(\d+);([^\x07]*)\x07/);
@@ -175,7 +198,7 @@ export async function recordTerminal({ brand, product, script, opts, mode, work,
         lastOut = t;
         ops.push([t, 'w', text]);
         output += text;
-        if (PASSWORD_ASK.test(output.slice(-200))) { try { process.kill(-child.pid, 'SIGKILL'); } catch {} child.__asked = true; }
+        if (PASSWORD_ASK.test(output.slice(-200))) { killTree(child, 'SIGKILL'); child.__asked = true; }
       }
       if (end) finish(Number(end[1]));
       if (step.until && output.includes(step.until) && !done) { background.push(child); finish(null); }
@@ -186,7 +209,7 @@ export async function recordTerminal({ brand, product, script, opts, mode, work,
     child.on('exit', (code) => { if (child.__asked) { done = true; clearInterval(watch); resolve({ asked: true }); } else if (!background.includes(child)) finish(code); });
     const limit = step.limit ?? RUN_LIMIT;
     const watch = setInterval(() => {
-      if (now() - started > limit && !done) { try { process.kill(-child.pid, 'SIGKILL'); } catch {} done = true; clearInterval(watch); resolve({ timeout: limit }); }
+      if (now() - started > limit && !done) { killTree(child, 'SIGKILL'); done = true; clearInterval(watch); resolve({ timeout: limit }); }
     }, 100);
   });
 
@@ -250,7 +273,7 @@ export async function recordTerminal({ brand, product, script, opts, mode, work,
     }
     await sleep(h.TAIL);
   } finally {
-    for (const c of background) { try { process.kill(-c.pid, 'SIGTERM'); } catch {} }
+    for (const c of background) killTree(c, 'SIGTERM');
   }
   const seconds = now();
   fs.rmSync(scratch, { recursive: true, force: true });

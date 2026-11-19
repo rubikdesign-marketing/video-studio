@@ -1,9 +1,29 @@
 #!/bin/bash
+# Default is the cross-platform Node runtime (setup/runtime/). Add --brew first for the old Mac Homebrew flow below.
 # Health check for the Video Studio. Changes nothing; only reports.
 #   bash setup/doctor.sh          check everything
 #   bash setup/doctor.sh --quick  skip the test render
 # Exit code 0 = ready, 1 = something needs attention.
 cd "$(dirname "$0")/.." || exit 1
+# Default: hand off to the Node runtime (same on macOS, Linux and Windows). The old Homebrew flow is kept behind --brew.
+if [ "${1:-}" != "--brew" ]; then
+  NODE="$(command -v node 2>/dev/null || true)"
+  [ -n "$NODE" ] || { [ -x .runtime/node/bin/node ] && NODE="$PWD/.runtime/node/bin/node"; }
+  if [ -z "$NODE" ]; then
+    echo "Node.js is not installed (or not on PATH), and the studio needs Node 22.13 or newer."
+    echo "  Mac:   brew install node        or download Node 22 LTS from https://nodejs.org"
+    echo "  Linux: install Node 22 LTS from https://nodejs.org (the .tar.xz needs no admin: unpack it and add its bin folder to PATH)"
+    echo "Then run this again: bash setup/doctor.sh"
+    exit 1
+  fi
+  if ! "$NODE" -e 'const [a,b]=process.versions.node.split(".").map(Number);process.exit((a===22&&b>=13)||a>=24?0:1)'; then
+    echo "Node $("$NODE" -v) is too old. The studio needs Node 22.13 or newer (not 23)."
+    echo "  Mac: brew upgrade node, or download Node 22 LTS from https://nodejs.org"
+    exit 1
+  fi
+  exec "$NODE" setup/runtime/doctor.mjs "$@"
+fi
+shift
 QUICK=0; [ "${1:-}" = "--quick" ] && QUICK=1
 ok=0; bad=0; warn=0
 pass() { printf "  ok    %s\n" "$1"; ok=$((ok+1)); }

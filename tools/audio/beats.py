@@ -2,7 +2,7 @@
 """Find the beat of a music track, and check that a film's cuts land on it.
 
 Run it with the studio's own Python (it has librosa; the system python3 does not):
-  tools/footage/.venv/bin/python tools/audio/beats.py <command> ...
+  tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) tools/audio/beats.py <command> ...
 
 Commands:
   grid  <track> [--out <track>.beats.json] [--fps 30] [--first-downbeat <seconds>]

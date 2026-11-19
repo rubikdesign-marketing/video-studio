@@ -5,15 +5,18 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { toolEnv } from '../../lib/ff.mjs';
 
 export const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const TOOL = path.resolve(HERE, '..');
 export const STUDIO = path.resolve(TOOL, '..', '..');
 
-const fullFF = '/opt/homebrew/opt/ffmpeg-full/bin';
-export const FFMPEG = process.env.FFMPEG || (fs.existsSync(`${fullFF}/ffmpeg`) ? `${fullFF}/ffmpeg` : 'ffmpeg');
-export const FFPROBE = process.env.FFPROBE || (fs.existsSync(`${fullFF}/ffprobe`) ? `${fullFF}/ffprobe` : 'ffprobe');
-export const PYTHON = path.join(TOOL, '.venv', 'bin', 'python');
+// ffmpeg and ffprobe, found by setup/runtime/resolve.mjs (env FFMPEG / FFPROBE, DAMEX_*, .runtime, package managers, PATH).
+// FF_ENV is passed to the Python tools so they use the same programs.
+const FF_ENV = toolEnv({});
+export const FFMPEG = FF_ENV.FFMPEG || 'ffmpeg';
+export const FFPROBE = FF_ENV.FFPROBE || 'ffprobe';
+export const PYTHON = process.platform === 'win32' ? path.join(TOOL, '.venv', 'Scripts', 'python.exe') : path.join(TOOL, '.venv', 'bin', 'python');
 export const MODELS = path.join(os.homedir(), '.cache', 'hyperframes', 'whisper', 'models');
 
 /** Video and audio files ingest picks up from a job's footage folder. */
@@ -33,9 +36,9 @@ export function run(cmd, args, { allowFail = false, input, cwd, maxBuffer = 1 <<
 
 /** Run one of the footage tool's Python programs (tools/footage/py/<name>.py) in its own environment. */
 export function py(name, args, opts = {}) {
-  if (!fs.existsSync(PYTHON)) throw new Error('The footage tool\'s Python environment is missing. Run: bash setup/install.sh');
-  // Nothing about a job leaves this Mac: onnxruntime's and Hugging Face's telemetry are switched off for every run.
-  const env = { ORT_DISABLE_TELEMETRY: '1', HF_HUB_DISABLE_TELEMETRY: '1', MPLCONFIGDIR: path.join(os.tmpdir(), 'footage-mpl'), ...(opts.env || {}) };
+  if (!fs.existsSync(PYTHON)) throw new Error('The footage tool\'s Python environment is missing. Run: node setup/runtime/install.mjs --with footage-audio-python');
+  // Nothing about a job leaves this computer: onnxruntime's and Hugging Face's telemetry are switched off for every run.
+  const env = { ...FF_ENV, ORT_DISABLE_TELEMETRY: '1', HF_HUB_DISABLE_TELEMETRY: '1', MPLCONFIGDIR: path.join(os.tmpdir(), 'footage-mpl'), ...(opts.env || {}) };
   return run(PYTHON, ['-I', path.join(TOOL, 'py', `${name}.py`), ...args], { ...opts, env });
 }
 

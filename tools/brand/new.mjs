@@ -10,6 +10,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { copyTree } from '../lib/fsx.mjs';
 import { BRANDS, TEMPLATE, brandDir, brandNames, isBrandName } from './lib.mjs';
 
 const args = process.argv.slice(2);
@@ -31,7 +32,7 @@ if (!fs.existsSync(path.join(template, 'brand.json'))) die('brands/_template/ is
 if (from !== TEMPLATE && !fs.existsSync(path.join(brandDir(from), 'brand.json'))) die(`There is no brand "${from}" to copy. Brands here: ${brandNames().join(', ')}.`);
 
 // Everything starts as the template. The template's README explains the template itself, so it stays behind.
-fs.cpSync(template, target, { recursive: true });
+copyTree(template, target);
 fs.rmSync(path.join(target, 'README.md'), { force: true });
 if (from !== TEMPLATE) {
   // The other brand's look and voices replace the placeholders.
@@ -39,7 +40,7 @@ if (from !== TEMPLATE) {
     const source = path.join(brandDir(from), item);
     if (!fs.existsSync(source)) continue;
     fs.rmSync(path.join(target, item), { recursive: true, force: true });
-    fs.cpSync(source, path.join(target, item), { recursive: true });
+    copyTree(source, path.join(target, item));
   }
 }
 

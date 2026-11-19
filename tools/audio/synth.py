@@ -8,7 +8,7 @@ Usage:
   synth.py recipe <recipe.json> <out>    remake a sound from its recipe. The file may hold a recipe, one manifest
                                          line (with a "recipe"), or a whole index.json with --id <group/name>.
 
-Run it with the footage tools' Python: tools/footage/.venv/bin/python tools/audio/synth.py ...
+Run it with the footage tools' Python: tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) tools/audio/synth.py ...
 
 Every sound is made from random noise and sine waves, shaped by numbers. The same numbers and the same --seed always
 give the same sound, to the last bit of the WAV, so a sound in the library can be remade from the "recipe" in its

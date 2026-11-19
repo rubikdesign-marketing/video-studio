@@ -13,7 +13,7 @@ The background test: after a slight blur (to ignore grain), no row or column of 
 --range levels of brightness (default 28 of 255), the size of a soft gradient. Picture and sound are otherwise copied
 as they are (the picture re-encoded at high quality; the sound copied).
 
-Run it with the footage tools' Python: tools/footage/.venv/bin/python tools/film/cut.py ...
+Run it with the footage tools' Python: tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) tools/film/cut.py ...
 """
 import json, subprocess, sys
 

@@ -1,6 +1,6 @@
 """Tests for tools/audio/beats.py: tempo, beats, bar starts, snap and check on synthetic click tracks.
 
-Run: tools/footage/.venv/bin/python -m unittest tools/audio/tests/test_beats.py
+Run: tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) -m unittest tools/audio/tests/test_beats.py
 Each test makes its own click track in a temporary folder; nothing is downloaded.
 """
 import contextlib, io, json, os, sys, tempfile, unittest

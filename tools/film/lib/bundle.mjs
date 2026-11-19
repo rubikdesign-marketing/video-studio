@@ -2,7 +2,7 @@
 // One bundle of the engine, made once and reused until the engine's code changes.
 //
 //   import { ensureBundle } from './lib/bundle.mjs'; const serveUrl = await ensureBundle();
-//   node tools/film/lib/bundle.mjs            prints the bundle folder (making it if needed), for render.sh
+//   node tools/film/lib/bundle.mjs            prints the bundle folder (making it if needed), for render.mjs
 //
 // Every `npx remotion render` or `still` with the plain entry point bundles the whole engine again and copies its
 // public folder (14 GB on the owner's Mac). Here the public folder is linked, not copied, and the bundle is kept in

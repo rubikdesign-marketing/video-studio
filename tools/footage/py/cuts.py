@@ -5,20 +5,35 @@ band) or a change of room (the background changing colour across the line).
     python cuts.py <dialogue.wav> <cutlist.json> <out.png>
 """
 import json
+import os
 import subprocess
 import sys
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 RATE = 48000
 HALF = 0.3
 W, H = 300, 170
 
 
+def _font_paths():
+    """Fonts to try, per OS. The first that opens wins; PIL's built-in font is the last resort."""
+    if os.name == 'nt':
+        d = os.path.join(os.environ.get('WINDIR', 'C:\\Windows'), 'Fonts')
+        return [os.path.join(d, 'arial.ttf'), os.path.join(d, 'segoeui.ttf')]
+    if sys.platform == 'darwin':
+        return ['/System/Library/Fonts/Helvetica.ttc', '/System/Library/Fonts/Supplemental/Arial.ttf', '/Library/Fonts/Arial.ttf']
+    return ['/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', '/usr/share/fonts/dejavu/DejaVuSans.ttf',
+            '/usr/share/fonts/TTF/DejaVuSans.ttf', '/usr/share/fonts/liberation/LiberationSans-Regular.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf']
+
+
 def font(size):
-    for f in ('/System/Library/Fonts/Helvetica.ttc', '/System/Library/Fonts/Supplemental/Arial.ttf'):
+    for f in _font_paths():
         try:
             return ImageFont.truetype(f, size)
         except OSError:

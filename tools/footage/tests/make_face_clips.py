@@ -20,7 +20,9 @@ import numpy as np
 from mediapipe.tasks import python as mpt
 from mediapipe.tasks.python import vision
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'py'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 MODEL = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'models', 'face_landmarker.task')
 FPS = 30
 
@@ -95,7 +97,7 @@ def write(path, frames_iter, size, audio):
 
 
 def duration(wav):
-    return float(subprocess.run(['/opt/homebrew/opt/ffmpeg-full/bin/ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', wav], capture_output=True, text=True).stdout)
+    return float(subprocess.run([FFPROBE, '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', wav], capture_output=True, text=True).stdout)
 
 
 def main():

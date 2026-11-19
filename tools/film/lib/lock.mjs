@@ -1,7 +1,7 @@
-// The render lock, shared by every tool that starts a Remotion bundle (render.sh speaks the same format).
+// The render lock, shared by every tool that starts a Remotion bundle (render.mjs speaks the same format).
 //
 // The lock is a folder, engine/out/.render.lock: making a folder either works or fails, never half. Inside it:
-//   pid         the holder's process id (render.sh reads only this)
+//   pid         the holder's process id (render.mjs reads only this)
 //   owner.json  { pid, tool, job, started }   so a person can see who holds it
 //
 // A lock is stale, and is cleared without asking, when its holder's process no longer exists, or when it has no pid

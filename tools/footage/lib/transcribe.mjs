@@ -62,7 +62,7 @@ function asrCopy(sound, dir) {
 }
 
 function whisper(wav, dir, { language = 'auto' } = {}) {
-  if (!fs.existsSync(WHISPER_MODEL)) throw new Error(`The transcription model is missing (${path.basename(WHISPER_MODEL)}). Run: bash setup/install.sh`);
+  if (!fs.existsSync(WHISPER_MODEL)) throw new Error(`The transcription model is missing (${path.basename(WHISPER_MODEL)}). Run: node setup/runtime/install.mjs --with transcribe`);
   const base = path.join(dir, 'whisper');
   const args = ['-m', WHISPER_MODEL, '-f', wav, '-l', language, '-ojf', '-of', base, '--dtw', WHISPER_DTW, '-nfa', '-t', String(Math.max(4, os.cpus().length - 2)), '--prompt', FILLER_PROMPT, '-np'];
   // The Mac's graphics chip is much faster; inside Claude's command sandbox it is not reachable, so fall back.

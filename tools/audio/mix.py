@@ -24,9 +24,9 @@ Needs ffmpeg (full build); no Python packages.
 """
 import argparse, array, json, math, os, subprocess, sys
 
-FF = os.environ.get("FFMPEG", "/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg")
-if not os.path.exists(FF):
-    FF = "ffmpeg"
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'footage', 'py'))
+from _ff import FFMPEG as FF, FFPROBE  # noqa: E402
 UNDER_VOICE = (0.20, 0.30)      # music as a share of the voice while a line is spoken
 GAP_LIFT_DB = 3.0               # how much higher the music sits between lines
 SR = 8000                       # measuring rate
@@ -65,7 +65,7 @@ def run(cmd):
 
 
 def duration(path):
-    return float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path],
+    return float(subprocess.run([FFPROBE, "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path],
                                 capture_output=True, text=True).stdout.strip())
 
 

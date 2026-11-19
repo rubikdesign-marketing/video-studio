@@ -10,12 +10,15 @@ import sys, os, argparse, subprocess, json
 import numpy as np
 import onnxruntime as ort
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # run with -I: the helper beside this file
+from _ff import FFMPEG, FFPROBE  # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = os.path.join(HERE, '..', 'models', 'rvm_resnet50_fp32.onnx')
 
 
 def probe(path):
-    out = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height,r_frame_rate',
+    out = subprocess.run([FFPROBE, '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height,r_frame_rate',
                           '-of', 'json', path], capture_output=True, text=True, check=True).stdout
     s = json.loads(out)['streams'][0]; n, d = s['r_frame_rate'].split('/')
     return s['width'], s['height'], n + '/' + d
@@ -34,8 +37,8 @@ def main():
         sess = ort.InferenceSession(MODEL, providers=providers)
     except Exception:
         sess = ort.InferenceSession(MODEL, providers=['CPUExecutionProvider'])
-    dec = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', a.plate, '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], stdout=subprocess.PIPE)
-    enc = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', rate, '-i', '-',
+    dec = subprocess.Popen([FFMPEG, '-v', 'error', '-i', a.plate, '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], stdout=subprocess.PIPE)
+    enc = subprocess.Popen([FFMPEG, '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', rate, '-i', '-',
                             '-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-alpha_bits', '16', '-vendor', 'apl0', a.out],
                            stdin=subprocess.PIPE)
     rec = [np.zeros([1, 1, 1, 1], dtype=np.float32)] * 4

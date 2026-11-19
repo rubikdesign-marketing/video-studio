@@ -1,0 +1,160 @@
+{
+  "product": "Damex Video Engine",
+  "version": "0.1.0-rc1",
+  "default_out": "../../damex-video-engine",
+  "banned": ["tulvo", "toolvo", "dokan", "wedevs", "imagine ?notion", "rubikdesign", "\\brubik\\b"],
+  "allow": [
+    { "file": ".claude/skills/impeccable/**", "line": "rubik" },
+    { "file": ".claude/skills/design-taste-frontend/**", "line": "rubik" }
+  ],
+  "exclude": [
+    "brands/tulvo", "brands/dokan", "brands/rubik", "brands/halden",
+    "engine/public/brands/tulvo", "engine/public/brands/dokan", "engine/public/brands/rubik", "engine/public/brands/halden",
+    "engine/src/products/tulvo",
+    "engine/src/jobs",
+    "jobs",
+    "library/own-films/tulvo-*",
+    "library/references/_profiles/dokan_*",
+    "library/references/**/*.jpg",
+    "library/motion/*.mp4", "library/motion/*.jpg",
+    "library/backgrounds/*.mp4", "library/backgrounds/*.jpg",
+    "docs", "DESIGN.md", "CAPTURE-PLAN.md", "FOOTAGE-PLAN.md", "LIBRARY-PLAN.md", "NEXT-SESSION.md", "LICENSE-DRAFT.md",
+    ".claude/skills/remotion-*",
+    "tools/release", "release", ".github",
+    "ARCHITECTURE_PLAN.md", "studio/app/docs"
+  ],
+  "keep_inside_excluded": [
+    "engine/src/jobs/_film.tsx", "engine/src/jobs/index.ts", "engine/src/jobs/sample",
+    "jobs/_sample/job.json", "jobs/_sample/shots.json", "jobs/_sample/audio", "jobs/_sample/review", "jobs/_sample/storyboard/frames.json"
+  ],
+  "json_drop": {
+    "library/references/index.json": { "brand": "Dokan" }
+  },
+  "replace": {
+    ".claude/launch.json": [["\"tulvo-review\"", "\"studio-review\""]],
+    ".claude/skills/video-studio/stages/00-brand-setup.md": [["for example `brands/tulvo/`, as a worked example", "for example `brands/demo/`, as a worked example"]],
+    ".claude/skills/video-studio/stages/00b-product-discovery.md": [["(for Tulvo: the phase 2 positioning report)", "(for example, a positioning report)"]],
+    ".claude/skills/video-studio/stages/05-animation.md": [
+      ["built from `engine/src/products/tulvo/` (inside `<AppStage>`)", "built from `engine/src/products/<brand>/` (inside `<AppStage>`)"],
+      ["the preview server named `tulvo-review`", "the preview server named `studio-review`"]
+    ],
+    "studio/review.html": [["Tulvo review", "Video review"], ["tulvo-reviewer", "studio-reviewer"]],
+    "studio/app/src/notes/reviewer.ts": [["'tulvo-reviewer'", "'studio-reviewer'"]],
+    "studio/app/.gitignore": [["dist/\n", ""]],
+    "studio/server.mjs": [
+      [".replace(/\\bToolvo/g, 'Tulvo')", ""],
+      ["`Tulvo review page: ", "`Review page: "]
+    ],
+    "tools/capture/inpage.mjs": [["(found on Tulvo, 12 Nov 2026:", "(found on a real product, 12 Nov 2026:"]],
+    "tools/capture/tests/freshness.test.mjs": [["Tulvo AI  Approved", "Acme AI  Approved"], ["Tulvo AI  Beta", "Acme AI  Beta"]],
+    "tools/film/captions.mjs": [
+      ["// Captions for a Tulvo video,", "// Captions for a video,"],
+      ["\"Toolvo keeps work in one place.\"", "\"Akmee keeps work in one place.\""],
+      ["[{ real: \"Tulvo\", written: \"Toolvo\" }]", "[{ real: \"Acme\", written: \"Akmee\" }]"]
+    ],
+    "tools/capture/capture.mjs": [
+      ["Found on Tulvo, 11 Nov 2026", "Found on a real product, 11 Nov 2026"],
+      ["(Tulvo uses Firestore's)", "(Firestore's, for example)"],
+      ["capture.mjs signin tulvo", "capture.mjs signin demo"],
+      ["11 Nov 2026 on Tulvo)", "11 Nov 2026 on a real product)"]
+    ],
+    "tools/checks/frame_quality.py": [["[--brand tulvo]", "[--brand demo]"]],
+    "tools/plan/tests/beats.test.mjs": [["said: 'Tulvo puts all three", "said: 'Acme puts all three"]],
+    "tools/checks/energy_map.py": [["and the Tulvo Black Friday film (", "and the studio's own sale films ("]],
+    "tools/checks/tests/hook_legible.test.mjs": [["'Tulvo is launching on Product Hunt'", "'Acme is launching on Product Hunt'"]],
+    "tools/checks/tests/capture_place.test.mjs": [
+      ["on Tulvo's boards take 5 (read only)", "on a real product capture, boards take 5 (read only)"],
+      ["jobs/_tulvo-capture-test/capture/boards/take-5", "jobs/_capture-test/capture/boards/take-5"],
+      ["// The Tulvo take is the test material;", "// That take is the test material;"],
+      ["'Tulvo boards take 5 is not in this copy", "'The boards take 5 capture is not in this copy"]
+    ],
+    "tools/brand/lib.mjs": [["{ \"default_brand\": \"tulvo\" }", "{ \"default_brand\": \"demo\" }"]],
+    "tools/checks/lib/film.mjs": [["(12 Nov 2026, Tulvo's caption face,", "(12 Nov 2026, a launch brand's caption face,"]],
+    "tools/brand/check.mjs": [["for example: check.mjs tulvo", "for example: check.mjs demo"]],
+    "tools/audio/sounds.mjs": [["sounds.mjs kit tulvo", "sounds.mjs kit demo"]],
+    "tools/audio/voice.mjs": [["\"[excited] Toolvo's sale is live!\"", "\"[excited] Akmee's sale is live!\""]],
+    "tools/audio/voice_check.py": [["    text = re.sub(r\"\\btool\\s?vo\\b\", \"tulvo\", text)\n", ""]],
+    "tools/audio/sound.mjs": [["// Music and sound effects for a Tulvo video, generated on the team's ElevenLabs plan.", "// Music and sound effects for a video, generated on your ElevenLabs plan."]],
+    "brands/demo/voices.json": [[" (the same account Tulvo uses)", ""]],
+    "brands/demo/brand.json": [["Squarer controls than Tulvo,", "Squarer controls than most brands,"]],
+    "brands/demo/README.md": [["It differs from Tulvo on purpose:", "It is set apart from a typical product brand on purpose:"]],
+    "brands/_template/pronunciation.md": [["a product called \"Tulvo\" is written \"Toolvo\" in the script so the voice says TOOL-voh, and the captions still show \"Tulvo\".", "a product called \"Acme\" is written \"Akmee\" in the script so the voice says AK-mee, and the captions still show \"Acme\"."]],
+    "brands/_template/heard-as.json": [["For example: \\\"tool vo\\\": \\\"tulvo\\\".", "For example: \\\"ack me\\\": \\\"acme\\\"."]],
+    "setup/install.sh": [["paste the team's ElevenLabs key after", "paste your ElevenLabs key (optional) after"]],
+    "library/references/claude/claude_launch_introducing-claude-whiteboards-sheets-and-data_58s.study.md": [["give them Tulvo's own colours", "give them your brand's own colours"]],
+    "library/references/claude/claude_launch_introducing-personal-finance-in-claude_91s.study.md": [["build them from Tulvo's own colours", "build them from your brand's own colours"]],
+    "library/references/claude/claude_launch_your-apps-have-moved-into-claude_60s.study.md": [["Draw a Tulvo cursor;", "Draw your brand's own cursor;"]],
+    "library/motion/README.md": [
+      ["../library/motion/motion-tulvo.mp4", "../library/motion/motion-demo.mp4"],
+      ["on brands other than Tulvo and on the dark page", "on brands other than the first one and on the dark page"],
+      ["(the Tulvo boards take)", "(a product capture's boards take)"]
+    ],
+    "library/backgrounds/README.md": [
+      ["for the brands tulvo and demo.", "for two brands, one of them the demo brand."],
+      ["out/backgrounds-tulvo.mp4 --props='{\"brand\":\"tulvo\",", "out/backgrounds-demo.mp4 --props='{\"brand\":\"demo\","],
+      ["`backgrounds-tulvo.mp4` here is that reel at half size.", "Render it once to see them all; the reel is not shipped."],
+      ["--props='{\"brand\":\"tulvo\",\"energy\":\"alive\"}'", "--props='{\"brand\":\"demo\",\"energy\":\"alive\"}'"]
+    ],
+    "library/hooks/README.md": [["--brand tulvo", "--brand demo"]],
+    "library/hooks/index.json": [["\"url\": \"https://github.com/rubikdesign-marketing/video-studio\",", "\"url\": \"\","]],
+    "library/structure/frameworks.json": [["\"url\": \"https://github.com/rubikdesign-marketing/video-studio\",", "\"url\": \"\","]],
+    "knowledge/craft/13-design-styles.md": [["Proven on Tulvo's Black Friday film.", "Proven on a Black Friday sale film."]],
+    "knowledge/craft/11-data-visualisation.md": [
+      ["Two kinds appear in Tulvo videos:", "Two kinds appear in product videos:"],
+      ["the faithful rebuild in `engine/src/products/tulvo/screens/home/` (KPI tile, status bar chart, status pie, trend line).", "a faithful rebuild in `engine/src/products/<brand>/`."],
+      ["never presented as Tulvo's own results.", "never presented as the company's own results."]
+    ],
+    "knowledge/craft/10-flows.md": [
+      ["Most Tulvo videos are one or more flows.", "Most product videos are one or more flows."],
+      ["then the Tulvo way, same task", "then the product's way, same task"],
+      ["through the Tulvo connector, so captures", "through the product's own connector or import, so captures"]
+    ],
+    "knowledge/rules/starting-rules.md": [["\"Tulvo\" is said TOOL-voh; no whispered lines;", "Product names are said as the brand's pronunciation table says; no whispered lines;"]],
+    "knowledge/craft/00-principles.md": [
+      ["Last night's two Tulvo films were still for none.", "Two of the studio's early films were still for none."],
+      ["| Tulvo films last night |", "| The studio's early films |"],
+      ["but the Dokan Black Friday promo, a sale film, also", "but a Black Friday promo we measured, a sale film, also"]
+    ],
+    "knowledge/craft/05-ui-choreography.md": [
+      ["How real Tulvo screens are shown and moved.", "How real product screens are shown and moved."],
+      ["until that part of Tulvo has been used in the demo workspace.", "until that part of the product has been used in a demo account."]
+    ],
+    "knowledge/craft/07-sound.md": [["(for example, Tulvo is written \"Toolvo\" so it is said TOOL-voh)", "(for example, Acme is written \"Akmee\" so it is said AK-mee)"]],
+    "knowledge/playbooks/promo.md": [["`library/references/dokan/`, the launch films", "The launch films"]],
+    "knowledge/playbooks/edit.md": [["Inserts of real Tulvo UI follow", "Inserts of real product UI follow"]],
+    "templates/study-card.md": [
+      ["that a Tulvo video could follow too.", "that your videos could follow too."],
+      ["must not appear in a Tulvo video.", "must not appear in your videos."]
+    ],
+    "jobs/_sample/job.json": [["\"brand\": \"tulvo\"", "\"brand\": \"demo\""]],
+    "jobs/_sample/storyboard/frames.json": [["\"brand\": \"tulvo\"", "\"brand\": \"demo\""], ["for the Toolvo video studio.", "for the new video studio."]],
+    "jobs/_sample/audio/captions.json": [["\"text\": \"Tulvo\"", "\"text\": \"new\""]],
+    "jobs/_sample/audio/lines.json": [["for the Toolvo video studio.", "for the new video studio."]],
+    "jobs/_sample/audio/script.json": [["for the Toolvo video studio.", "for the new video studio."]],
+    "jobs/_sample/audio/words.json": [["{\"w\":\"Toolvo\",", "{\"w\":\"new\","]],
+    "engine/src/jobs/sample/film.json": [["\"brand\": \"tulvo\"", "\"brand\": \"demo\""], ["for the Toolvo video studio.", "for the new video studio."]],
+    "engine/src/jobs/sample/scenes/S01.tsx": [["for the Toolvo video studio.", "for the new video studio."]],
+    "engine/README.md": [["`src/products/tulvo/` is Tulvo's web app (`TulvoUi-<id>` compositions, `<AppStage>` to place a screen in a scene); its README says how to use it.", "Empty in a new studio: add your own product's screens here (`<AppStage>` places a screen in a scene)."]],
+    "engine/package.json": [["\"name\": \"tulvo-video-engine\"", "\"name\": \"video-engine\""], ["every Tulvo video is built on", "every video is built on"]],
+    "engine/package-lock.json": [["\"name\": \"tulvo-video-engine\"", "\"name\": \"video-engine\""]],
+    "engine/src/Root.tsx": [["one \"TulvoUi-<id>\" composition per screen", "one composition per screen"]],
+    "engine/src/library/motion/proof/LibraryProof.tsx": [
+      ["one 15 s, 9:16 Tulvo film made", "one 15 s, 9:16 film made"],
+      ["{ brand: 'tulvo', preset: 'confident' }", "{ brand: 'demo', preset: 'confident' }"],
+      ["(the logo opens and closes every Tulvo film)", "(the logo opens and closes the film)"],
+      ["lines=\"Tulvo *builds it.*\"", "lines=\"Acme *builds it.*\""],
+      ["        Tulvo <DrawnMark", "        Acme <DrawnMark"]
+    ]
+  },
+  "replace_regex": {
+    "library/motion/index.json": [
+      ["Tulvo's", "the product's"],
+      ["on Tulvo boards take", "on the product's boards take"],
+      ["\\(on Tulvo,", "(on the first brand,"],
+      ["tulvo-capture-test", "capture-test"],
+      ["motion-tulvo", "motion-demo"]
+    ],
+    "library/backgrounds/index.json": [["for the brands tulvo and demo", "for two brands, one of them the demo brand"]],
+    "library/backgrounds/measured.json": [["tulvo", "brand-a"]]
+  }
+}

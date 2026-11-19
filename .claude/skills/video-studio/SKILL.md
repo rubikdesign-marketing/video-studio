@@ -108,7 +108,7 @@ Studio and brand rules always win over a bundled skill. After every video, log t
 ## Other requests
 
 - **"Set up our brand" or "change our colours, logo, fonts"**: stage 0.
-- **"Study this video"**: copy it into `library/references/<brand>/` with a clear name, run `tools/study/profile.py`, then fill `templates/study-card.md` using `tools/study/sheets.sh`. Add it to `index.json`.
+- **"Study this video"**: copy it into `library/references/<brand>/` with a clear name, run `tools/study/profile.py`, then fill `templates/study-card.md` using `node tools/study/sheets.mjs`. Add it to `index.json`.
 - **"Learn this product update"**: walk the feature in the product, compare with `brands/<brand>/product/`, record what changed with the date and a screenshot.
 - **Review notes on a cut**: they arrive from the review page (`stages/05-animation.md`, "Review notes").
 
