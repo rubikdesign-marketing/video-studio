@@ -16,6 +16,42 @@ Measured on the 0.1.0-rc4 zip, unzipped into a folder with a space and an accent
 
 Not tested yet: an Intel Mac, a physical Windows 11 PC, Windows on Arm, ARM Linux. The core install before this work took about 1.5 minutes of machine time. The old 3 to 4 hours went on everything around it: the GitHub invite, installing Node and Homebrew, plugins, and optional models.
 
+## Current download
+
+| | |
+|---|---|
+| Version | 0.1.0-rc5 (release `5f8c24e`, source `ceddff7`) |
+| Link for buyers | https://drive.google.com/file/d/1qxptXagmNAv5czDQmfiR_j30SyuFDnab/view?usp=sharing |
+| File | `damex-video-engine-0.1.0-rc5.zip`, 100,485,934 bytes |
+| SHA-256 | `9ee8be50de9bdb765559de176780c8b783575c4b7e5d7b84df607acd1f4fc817` |
+| Checked | 19 Nov 2026: the file the link downloads matches this checksum |
+
+Anyone with the link can download it, so it only goes to buyers, and only in this private repository. Google Drive shows a "can't scan this file for viruses" page first because the file is over 100 MB. That is expected; the welcome email tells buyers to click **Download anyway**.
+
+When a new version replaces it, upload the new zip, check its checksum the same way, update this table, and stop sharing the old file.
+
+### Welcome email (send by hand until checkout emails it)
+
+> Hi {first name},
+>
+> Thanks for buying the Damex Video Engine. Here is your copy, one zip file that works on Mac, Windows and Linux.
+>
+> Download it here {download link}
+>
+> Google Drive will say it can't scan the file for viruses. That only means the file is large (100 MB). Click Download anyway.
+>
+> Then it takes three steps.
+>
+> 1. Unzip it into your Documents folder. You get a folder named video-engine.
+> 2. Open that folder in the Code tab of the Claude desktop app and say "start the studio". It takes about a minute, and you don't need to install anything first.
+> 3. Start a new chat in the same folder, say yes when Claude asks to trust it, and say "set up my brand".
+>
+> The full guide is ONBOARDING.md inside the folder, and your licence is LICENSE.md. Please keep the link inside your business, as the licence asks.
+>
+> If anything gets stuck, reply to this email and we'll sort it out with you.
+>
+> Damex Digital
+
 ## Ship a new version
 
 Run these from the studio folder on the release branch (`release-zip` today, which grew from `platform-04`).
