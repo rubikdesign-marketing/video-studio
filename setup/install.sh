@@ -172,6 +172,6 @@ say "5 of 5  Health check"
 bash setup/doctor.sh --brew
 status=$?
 echo
-if [ $status -eq 0 ]; then echo "The studio is ready. In Claude, say: make a video."
+if [ $status -eq 0 ]; then echo "The studio is ready. In Claude, type /video-menu (or say: make a video)."
 else echo "Fix the lines marked NEED above, then run: bash setup/doctor.sh"; fi
 exit $status

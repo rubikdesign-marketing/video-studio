@@ -162,7 +162,7 @@ export function printHuman(report) {
     }
   }
   const bad = report.checks.filter((c) => c.tier === 'core' && c.status === 'fail').length;
-  console.log(bad ? `\n${bad} core check${bad > 1 ? 's' : ''} need attention.` : '\nCore is ready. In the studio, say: make a video.');
+  console.log(bad ? `\n${bad} core check${bad > 1 ? 's' : ''} need attention.` : '\nCore is ready. In the studio, type /video-menu (or say: make a video).');
 }
 
 async function main() {

@@ -3,7 +3,7 @@
  "sources": [
   {
    "file": ".claude/skills/video-studio/SKILL.md",
-   "sha256": "2bcc4d59432414eddf7cfad61e32c9ad7abd86c2747d77a2a2b864d40c24388b"
+   "sha256": "c01535b053ca1e55b0b210cf36ae281964ed0bcd04a5dac128408f4327ddfd3a"
   },
   {
    "file": "engine/src/kit/Captions.tsx",

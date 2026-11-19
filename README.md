@@ -6,7 +6,7 @@ Shared openly so the team can set it up in one step. See `LICENSE.md` before usi
 
 ## Start here
 
-Follow `ONBOARDING.md`: paste one prompt into the Claude desktop app's Code tab, and Claude downloads the studio, installs everything and runs the health check. Then open the `video-studio` folder in Claude and say **"make a video"**.
+Follow `ONBOARDING.md`: paste one prompt into the Claude desktop app's Code tab, and Claude downloads the studio, installs everything and runs the health check. Then open the `video-studio` folder in Claude and type **/video-menu** (or say **"make a video"**).
 
 ## What is where
 

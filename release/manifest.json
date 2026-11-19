@@ -8,6 +8,7 @@
     { "file": ".claude/skills/design-taste-frontend/**", "line": "rubik" }
   ],
   "exclude": [
+    ".damex",
     "brands/tulvo", "brands/dokan", "brands/rubik", "brands/halden",
     "engine/public/brands/tulvo", "engine/public/brands/dokan", "engine/public/brands/rubik", "engine/public/brands/halden",
     "engine/src/products/tulvo",

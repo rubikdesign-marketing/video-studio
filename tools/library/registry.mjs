@@ -12,7 +12,8 @@
 //   registry.mjs kinds [--json]                              the count per kind, with 3 example ids each
 //
 // The release manifest (exclude globs, banned words, json_drop) belongs to the exporter and is only read:
-// --manifest <path> or DAMEX_RELEASE_MANIFEST. Without it only the folder rules apply and the privacy scan is "not run".
+// --manifest <path>, DAMEX_RELEASE_MANIFEST, or by default the versioned release/manifest.json. Without any of them only
+// the folder rules apply and the privacy scan is "not run".
 // Dependency-free ESM, node 22.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -714,7 +715,9 @@ export function findItems(items, words, { kind, tag, customer, limit } = {}) {
 // ---------- command line ----------
 function main(argv) {
   const [cmd, ...args] = argv;
-  const manifestPath = flag(args, 'manifest') || process.env.DAMEX_RELEASE_MANIFEST || null;
+  // The release recipe is versioned with the source (release/manifest.json); a flag or the variable overrides it.
+  const inTree = path.join(ROOT, 'release', 'manifest.json');
+  const manifestPath = flag(args, 'manifest') || process.env.DAMEX_RELEASE_MANIFEST || (fs.existsSync(inTree) ? inTree : null);
   if (cmd === 'build') {
     let manifest = null;
     try { manifest = loadManifest(manifestPath); } catch (e) { console.error(`cannot read the manifest ${manifestPath}: ${e.message}`); process.exit(1); }

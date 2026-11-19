@@ -36,7 +36,7 @@ Never put keys, passwords or sign-ins in a chat or a file. The studio never asks
 
 ## 2. Make a video
 
-Say **"make a video"** (or "make a feature demo about ..."). Claude walks you through six approvals, one per session:
+Type **/video-menu** to start, browse presets and components, resume a video or set up a brand. Or just say **"make a video"** (or "make a feature demo about ..."); a full brief skips the menu. Claude walks you through six approvals:
 
 | Step | You approve |
 |---|---|
@@ -47,7 +47,7 @@ Say **"make a video"** (or "make a feature demo about ..."). Claude walks you th
 | 5 First animation | One scene at full quality |
 | 6 Full animation | The whole film, then delivery |
 
-- **One step per session.** When a step is approved, start a new chat in the folder and say "continue the video". This keeps it fast and cheap.
+- **Guided or grouped.** Guided (the default) is one approval per step; starting a new chat after each one and saying "continue the video" keeps it fast and cheap. Prefer fewer stops? Ask for grouped approvals: one brief review (idea, script, look) and one final cut review. Approvals you gave are remembered, so a restart never asks again for unchanged work.
 - **Review notes:** the review page lets you pause the film, pin a note to a moment, and send. Claude picks the notes up and changes only those scenes.
 - **New company or product:** Claude sets up the brand first (stage 0), then researches the product, its customers and its key flows (stage 0B), before any video.
 

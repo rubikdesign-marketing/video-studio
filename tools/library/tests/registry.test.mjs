@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const TOOL = path.join(ROOT, 'tools/library/registry.mjs');
 const run = (args, opts = {}) => spawnSync('node', [TOOL, ...args], { cwd: ROOT, encoding: 'utf8', ...opts });
-const manifestPath = [process.env.DAMEX_RELEASE_MANIFEST, path.resolve(ROOT, '../../../release/manifest.json')].find((p) => p && fs.existsSync(p));
+const manifestPath = [process.env.DAMEX_RELEASE_MANIFEST, path.join(ROOT, 'release/manifest.json')].find((p) => p && fs.existsSync(p));
 const mArgs = manifestPath ? ['--manifest', manifestPath] : [];
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'registry-test-'));
 const sha = (f) => crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');

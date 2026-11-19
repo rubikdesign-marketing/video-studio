@@ -6,7 +6,7 @@ Made and supported by Damex Digital. See `LICENSE.md` for what your licence allo
 
 ## Start here
 
-Follow `ONBOARDING.md`. You paste one prompt into the Claude desktop app's Code tab, and Claude installs everything and runs a health check. Then open this folder in Claude and say **"set up my brand"**, then **"make a video"**.
+Follow `ONBOARDING.md`. You paste one prompt into the Claude desktop app's Code tab, and Claude installs everything and runs a health check. Then open this folder in Claude and type **/video-menu**: it starts a video, browses presets and components, resumes a job or sets up your brand. You can also just say **"set up my brand"**, then **"make a video"**.
 
 ## What is where
 
