@@ -4,9 +4,9 @@ import type { Seconds } from '../contracts/film';
 export const LANES = [
   { id: 'scenes', name: 'Scenes' },
   { id: 'voice', name: 'Voice' },
-  { id: 'text', name: 'Text' },
+  { id: 'text', name: 'On-screen words' },
   { id: 'notes', name: 'Notes' },
-  { id: 'energy', name: 'Energy' },
+  { id: 'energy', name: 'Pace' },
 ] as const;
 export type LaneId = (typeof LANES)[number]['id'];
 export interface LaneState { hidden: boolean; locked: boolean }
@@ -54,13 +54,14 @@ export function clockExact(t: Seconds): string {
 
 const freshLanes = (): Record<LaneId, LaneState> => ({
   scenes: { hidden: false, locked: false }, voice: { hidden: false, locked: false }, text: { hidden: false, locked: false },
-  notes: { hidden: false, locked: false }, energy: { hidden: false, locked: false },
+  // Pace (the scenes' energy) starts hidden: it is for whoever planned the film, not for a first look.
+  notes: { hidden: false, locked: false }, energy: { hidden: true, locked: false },
 });
 function storedLanes(): Record<LaneId, LaneState> {
   const lanes = freshLanes();
   try {
     const saved = JSON.parse((typeof localStorage === 'undefined' ? null : localStorage.getItem(LANES_KEY)) ?? '{}') as Partial<Record<LaneId, Partial<LaneState>>>;
-    for (const { id } of LANES) lanes[id] = { hidden: saved[id]?.hidden === true, locked: saved[id]?.locked === true };
+    for (const { id } of LANES) lanes[id] = { hidden: saved[id]?.hidden ?? lanes[id].hidden, locked: saved[id]?.locked === true };
   } catch { /* nothing remembered, or the browser will not say */ }
   return lanes;
 }

@@ -18,9 +18,23 @@
   padding-top: 0;
 }
 .notes-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
   color: var(--text-strong);
-  font-size: var(--size-15);
+  font-size: var(--size-13);
   font-weight: var(--weight-semibold);
+}
+.notes-title-scene {
+  overflow: hidden;
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+  font-weight: var(--weight-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .notes-row {
   display: flex;
@@ -49,23 +63,28 @@
   padding: 0;
   list-style: none;
 }
+/* A note is a row, not a card: the time leads, the words follow. Keep and must fix are said in words, by chips. */
 .notes-card {
   display: flex;
   align-items: flex-start;
   gap: var(--space-1);
-  border: 1px solid var(--line);
-  border-left-width: 3px;
   border-radius: var(--radius-control);
-  background: var(--surface-raised);
+  transition: background var(--duration-control) var(--ease);
 }
-.notes-card.is-keep {
-  border-left-color: var(--good);
-}
-.notes-card.is-must {
-  border-left-color: var(--warn);
+.notes-card:hover {
+  background: var(--surface-hover);
 }
 .notes-card.is-selected {
-  border-color: var(--accent);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.notes-card .ui-chip.is-must {
+  border-color: var(--warn);
+  color: var(--text-strong);
+}
+.notes-card .ui-chip.is-keep {
+  border-color: var(--good);
+  color: var(--text-strong);
 }
 .notes-card-main {
   flex: 1;
@@ -102,9 +121,14 @@
   background: var(--surface-canvas);
 }
 .notes-reply {
-  padding: var(--space-1) var(--space-2);
-  border-left: 2px solid var(--accent);
-  color: var(--text-body);
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  color: var(--text-strong);
+}
+.notes-reply-who {
+  margin-right: var(--space-1);
+  font-weight: var(--weight-semibold);
 }
 .notes-batches {
   display: flex;
@@ -135,4 +159,115 @@
 }
 .notes-guide strong {
   color: var(--text-strong);
+}
+
+/* The notes rail: tabs and progress on top, the list in the middle, the composer pinned at the bottom. */
+.rail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.rail-head {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+.rail-tabs {
+  display: flex;
+}
+.rail-tabs .ui-segmented-option {
+  flex: 1;
+}
+.rail-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.rail-progress-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.rail-progress-row strong {
+  color: var(--text-strong);
+}
+.rail-ticks {
+  display: grid;
+  gap: 3px;
+}
+.rail-ticks i {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.rail-ticks i.is-on {
+  background: var(--good);
+}
+.rail-progress .ui-button {
+  align-self: flex-start;
+  margin-top: var(--space-1);
+}
+.rail-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-2);
+}
+.rail-body > .notes-quiet {
+  padding: var(--space-3) var(--space-2);
+}
+.rail-back {
+  margin-bottom: var(--space-1);
+}
+.rail-foot {
+  flex: none;
+}
+
+/* The decision and its send panel. */
+.send-popover {
+  width: 340px;
+  padding: var(--space-4);
+}
+.send-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.send-title {
+  color: var(--text-strong);
+  font-size: var(--size-15);
+  font-weight: var(--weight-semibold);
+}
+.send-text {
+  color: var(--text-body);
+}
+.send-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.send-actions > .ui-button {
+  width: 100%;
+}
+.send-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+}
+.send-confirm p {
+  width: 100%;
+  color: var(--text-strong);
+}
+.decision .ui-icon {
+  flex: none;
 }

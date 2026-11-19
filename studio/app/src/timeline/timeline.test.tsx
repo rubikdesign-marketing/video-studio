@@ -45,14 +45,14 @@ describe('the timeline', () => {
   it('draws the ruler and five lanes from the film, each thing at its time', () => {
     editor.stores.notes.setState({ notes: [{ localId: 'a', time: 6.4, kind: 'change', topic: null, must: true, text: 'Bigger', box: null }] });
     render(<Timeline />);
-    for (const name of ['Scenes', 'Voice', 'On-screen text', 'Notes', 'Energy']) expect(lane(name)).toBeTruthy();
+    for (const name of ['Scenes', 'Voice', 'On-screen words', 'Notes', 'Pace']) expect(lane(name)).toBeTruthy();
     const scenes = within(lane('Scenes')).getAllByRole('button', { name: /^Scene \d/ });
-    expect(scenes.map((s) => [left(s), width(s)])).toEqual([[0, 350], [350, 510], [860, 360]]);
+    expect(scenes.map((s) => [left(s.parentElement as Element), width(s.parentElement as Element)])).toEqual([[0, 350], [350, 510], [860, 360]]);
     expect(within(lane('Voice')).getAllByRole('button', { name: /^Voice line/ })).toHaveLength(3);
     const second = cueButton(/scene 2: Picture fitted to the sound/).parentElement as HTMLElement;
     expect([left(second), width(second)]).toEqual([620, 205]);                    // (3.5 + 2.7) and (4.75 - 2.7) seconds
     expect(left(screen.getByRole('button', { name: 'Note 1 at 0:06, Must fix: Bigger' }))).toBe(640);
-    expect(within(lane('Energy')).getAllByRole('img').map((e) => e.getAttribute('aria-label'))).toEqual(['Scene 1 energy: 3 of 5', 'Scene 2 energy: 4 of 5', 'Scene 3 energy: 5 of 5']);
+    expect(within(lane('Pace')).getAllByRole('img').map((e) => e.getAttribute('aria-label'))).toEqual(['Scene 1 pace: 3 of 5', 'Scene 2 pace: 4 of 5', 'Scene 3 pace: 5 of 5']);
     expect(screen.getByRole('slider', { name: 'Playhead' }).getAttribute('aria-valuemax')).toBe('12.2');
   });
 
@@ -65,36 +65,37 @@ describe('the timeline', () => {
 });
 
 describe('lane controls', () => {
-  it('hide and show a lane with a real button, so the keyboard works', () => {
+  // Hide and lock live in one Lanes menu (EDITOR-V2-PLAN.md, phase A5), not on every lane.
+  const openLanes = () => fireEvent.click(screen.getByRole('button', { name: 'Lanes' }));
+  const showItem = (name: string) => screen.getAllByRole('menuitemcheckbox', { name })[0] as HTMLElement;
+  const lockItem = (name: string) => screen.getAllByRole('menuitemcheckbox', { name })[1] as HTMLElement;
+
+  it('hides and shows a lane from the Lanes menu, with real buttons', () => {
     render(<Timeline />);
-    const hide = screen.getByRole('button', { name: 'Hide the Voice lane' });
-    expect(hide.tagName).toBe('BUTTON');                                          // Enter and Space press a real button
-    expect((hide as HTMLButtonElement).disabled).toBe(false);
-    expect(hide.tabIndex).toBe(0);
-    hide.focus(); expect(document.activeElement).toBe(hide);
-    fireEvent.click(hide);                                                         // what Enter or Space does on a focused button
-    expect(within(lane('Voice')).queryAllByRole('button', { name: /^Voice line/ })).toHaveLength(0);
-    expect(lane('Voice').getAttribute('data-hidden')).toBe('true');
-    const show = screen.getByRole('button', { name: 'Show the Voice lane' });
-    expect(document.activeElement).toBe(show);                                     // focus stays on the control
-    fireEvent.click(show);
+    openLanes();
+    const voice = showItem('Voice');
+    expect([voice.tagName, voice.getAttribute('aria-checked')]).toEqual(['BUTTON', 'true']);
+    fireEvent.click(voice);
+    expect(screen.queryByRole('group', { name: 'Voice lane' })).toBeNull();
+    expect(showItem('Voice').getAttribute('aria-checked')).toBe('false');
+    fireEvent.click(showItem('Voice'));
     expect(within(lane('Voice')).getAllByRole('button', { name: /^Voice line/ })).toHaveLength(3);
   });
 
-  it('every lane has both controls, reachable by Tab', () => {
+  it('lists every lane to show, and the two that can be dragged to lock', () => {
     render(<Timeline />);
-    for (const name of ['Scenes', 'Voice', 'On-screen text', 'Notes', 'Energy']) {
-      for (const action of ['Hide', 'Lock']) {
-        const button = screen.getByRole('button', { name: `${action} the ${name} lane` });
-        expect([button.tagName, button.tabIndex, (button as HTMLButtonElement).disabled]).toEqual(['BUTTON', 0, false]);
-      }
-    }
+    openLanes();
+    for (const name of ['Scenes', 'Voice', 'On-screen words', 'Notes', 'Pace']) expect(showItem(name)).toBeTruthy();
+    expect(screen.getAllByRole('menuitemcheckbox', { name: 'On-screen words' })).toHaveLength(2);
+    expect(screen.getAllByRole('menuitemcheckbox', { name: 'Notes' })).toHaveLength(2);
+    expect(screen.getAllByRole('menuitemcheckbox', { name: 'Scenes' })).toHaveLength(1);
   });
 
   it('lock a lane: nothing in it can be picked or dragged, and it is remembered', () => {
     render(<Timeline />);
-    fireEvent.click(screen.getByRole('button', { name: 'Lock the On-screen text lane' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Lock the Scenes lane' }));
+    openLanes();
+    fireEvent.click(lockItem('On-screen words'));
+    expect(lane('On-screen words').getAttribute('data-locked')).toBe('true');
     const body = cueButton(/scene 2: Three beeps/);
     expect((body as HTMLButtonElement).disabled).toBe(true);
     pointer('pointerdown', body, 400); pointer('pointermove', window, 500); pointer('pointerup', window, 500);
@@ -102,11 +103,19 @@ describe('lane controls', () => {
     fireEvent.keyDown(body, { key: 'ArrowRight', altKey: true });
     expect(editor.stores.edits.getState().edits).toEqual([]);
     expect(editor.history.canUndo).toBe(false);
-    fireEvent.click(within(lane('Scenes')).getAllByRole('button', { name: /^Scene 1/ })[0] as Element);
-    expect(editor.stores.selection.getState().selection).toBeNull();
-    expect(JSON.parse(localStorage.getItem('studio-editor:timeline-lanes') ?? '{}')).toMatchObject({ text: { locked: true }, scenes: { locked: true }, voice: { locked: false } });
-    fireEvent.click(screen.getByRole('button', { name: 'Unlock the On-screen text lane' }));
+    expect(JSON.parse(localStorage.getItem('studio-editor:timeline-lanes') ?? '{}')).toMatchObject({ text: { locked: true }, voice: { locked: false } });
+    openLanes();                                                                     // the press on the film closed the menu
+    fireEvent.click(lockItem('On-screen words'));
     expect((cueButton(/scene 2: Three beeps/) as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it('leaves out the Voice lane when the film has no voice', () => {
+    editor.stores.film.setState({ film: { ...sampleFilm, scenes: sampleFilm.scenes.map((s) => ({ ...s, lines: [] })) } });
+    render(<Timeline />);
+    expect(screen.queryByRole('group', { name: 'Voice lane' })).toBeNull();
+    openLanes();
+    const voice = screen.getByRole('menuitemcheckbox', { name: /^Voice/ }) as HTMLButtonElement;
+    expect([voice.disabled, voice.textContent]).toEqual([true, '✓VoiceNo voice in this film'.replace('✓', '')]);
   });
 });
 
@@ -157,18 +166,20 @@ describe('the playhead', () => {
     expect(usePlayback.getState().time).toBe(12.2);                                 // never past the end
   });
 
-  it('has buttons for play, the scenes, repeat and speed', () => {
+  it('leaves play, speed and repeat to the one transport under the film', () => {
     render(<Timeline />);
-    fireEvent.click(screen.getByRole('button', { name: 'Next scene' }));
+    for (const name of ['Play', 'Next scene', 'Scene before', 'Repeat scene']) expect(screen.queryByRole('button', { name })).toBeNull();
+    expect(screen.queryByRole('radio', { name: 'Half' })).toBeNull();
+  });
+
+  it('goes to a scene on a click, and marks it as looking good with its tick', () => {
+    render(<Timeline />);
+    fireEvent.click(within(lane('Scenes')).getAllByRole('button', { name: /^Scene 2/ })[0] as Element);
     expect(usePlayback.getState().time).toBe(3.5);
-    fireEvent.click(screen.getByRole('button', { name: 'Repeat scene' }));
-    expect(usePlayback.getState().loop).toEqual([3.5, 8.6]);
-    expect(screen.getByRole('button', { name: 'Repeat scene' }).getAttribute('aria-pressed')).toBe('true');
-    fireEvent.click(screen.getByRole('radio', { name: 'Half' }));
-    expect(usePlayback.getState().rate).toBe(0.5);
-    fireEvent.click(screen.getByRole('button', { name: 'Scene before' }));
-    expect(usePlayback.getState().time).toBe(0);
-    expect(screen.getByRole('button', { name: 'Play' })).toBeTruthy();
+    expect(editor.stores.selection.getState().selection).toEqual({ kind: 'scene', scene: 'S02' });
+    fireEvent.click(screen.getByRole('button', { name: 'Mark scene 2 as looking good' }));
+    expect(editor.stores.notes.getState().goodScenes).toEqual(['S02']);
+    expect(screen.getByRole('button', { name: 'Scene 2 looks good. Undo' }).getAttribute('aria-pressed')).toBe('true');
   });
 });
 

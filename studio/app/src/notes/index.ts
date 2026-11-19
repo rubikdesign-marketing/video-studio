@@ -7,3 +7,8 @@ export { useComposer } from './composer';
 export { REVIEWER_KEY, useReviewer } from './reviewer';
 export { sendNotes, whatToSend } from './send';
 export { TOPICS } from './topics';
+export { Decision, decisionLabel } from './Decision';
+export { Rail, SceneProgress } from './Rail';
+export type { RailProps } from './Rail';
+export { useRail } from './railTab';
+export type { RailTab } from './railTab';

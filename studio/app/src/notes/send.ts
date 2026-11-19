@@ -12,7 +12,7 @@ export interface SendOptions {
 }
 export type SendResult = { ok: true; batch: Batch; message: string } | { ok: false; problem: string; needsName?: boolean };
 
-export const NAME_FIRST = 'Add your name at the top first, so it is clear who the notes are from.';
+export const NAME_FIRST = 'Add your name first, so it is clear who the notes are from.';
 export const SENT = 'Sent. Only the scenes your notes touch will be changed, and the new version will appear here.';
 export const APPROVED = 'Approved. This version is recorded as approved.';
 

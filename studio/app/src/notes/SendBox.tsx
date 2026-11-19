@@ -7,17 +7,18 @@ import { useReviewer } from './reviewer';
 import { sendNotes, whatToSend } from './send';
 import './notes.css';
 
-/** Sends from anywhere (the button, the Cmd+Enter shortcut). Says how it went in a toast. */
-export async function sendFromPage(approved: boolean): Promise<void> {
+/** Sends from anywhere (the send panel, the Cmd+Enter shortcut). Says how it went in a toast; true when it went. */
+export async function sendFromPage(approved: boolean): Promise<boolean> {
   const back = usePlayback.getState().time;
   const result = await sendNotes({ editor, reviewer: useReviewer.getState().name, approved, capture: captureAt });
   usePlayback.getState().seek(back);              // taking the pictures moved the film: put it back
   if (result.ok) {
     showToast(result.message, { tone: 'good' });
-    return;
+    return true;
   }
   showToast(result.problem, { tone: 'warn' });
   if (result.needsName) document.querySelector<HTMLInputElement>('[data-reviewer] input')?.focus();
+  return false;
 }
 
 /** Send, approve, and the four things worth checking first. */

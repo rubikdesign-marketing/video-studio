@@ -31,9 +31,113 @@
 .app-reviewer .ui-input {
   width: 140px;
 }
-.ui-chip.app-save-failed {
-  border-color: var(--warn);
+
+/* The bar: where you are on the left, the mode in the middle, status and the one decision on the right. */
+.app-where,
+.app-act {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.app-act {
+  justify-content: flex-end;
+  gap: var(--space-1);
+}
+.app-mid {
+  flex: none;
+}
+.app-where .ui-select {
+  max-width: 240px;
+}
+.app-icon {
+  width: var(--control-height);
+  padding: 0;
+}
+.app-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-right: var(--space-2);
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+  white-space: nowrap;
+}
+.app-status .ui-icon {
+  color: var(--good);
+}
+.app-status.app-save-failed {
   color: var(--text-strong);
+}
+.app-status.app-save-failed::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--warn);
+}
+.app-status-spin {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--line);
+  border-top-color: var(--text-strong);
+  border-radius: var(--radius-pill);
+  animation: app-spin 900ms linear infinite;
+}
+@keyframes app-spin {
+  to { transform: rotate(360deg); }
+}
+.app-new-version {
+  margin-right: var(--space-1);
+  border-color: var(--good);
+}
+.app-new-version .ui-icon {
+  color: var(--good);
+}
+.app-initials {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text-strong);
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+}
+.app-you > .ui-button {
+  padding: 0 var(--space-1);
+}
+.app-you-panel {
+  width: 300px;
+  padding: var(--space-3);
+}
+.app-you-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.app-you-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-body);
+  font-size: var(--size-12);
+}
+.decision {
+  margin-left: var(--space-1);
+}
+@media (max-width: 1100px) {
+  .app-title, .app-keys { display: none; }
+}
+@media (max-width: 760px) {
+  .app-bar { flex-wrap: wrap; row-gap: var(--space-2); }
+  .app-where { flex-basis: 100%; }
+  .app-mid { order: 3; }
+  .app-act { order: 4; }
+  .app-status { display: none; }
 }
 
 .app-section {

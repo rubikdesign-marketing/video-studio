@@ -9,7 +9,7 @@ import { boxFromDrag, fitFrame, isTall, sideBySide, type Rect, type Size } from 
 import { Overlays } from './Overlays';
 import { useCanvas } from './state';
 import { syncFollower } from './sync';
-import { Toolbar } from './Toolbar';
+import { Toolbar, ViewMenu } from './Toolbar';
 import { setStageVideo } from './video';
 import { versionLabel } from './versions';
 import './canvas.css';
@@ -41,10 +41,12 @@ export interface CanvasProps {
   marking: boolean;
   onBox(box: Box | null): void;
   onToggleMarking(): void;
+  /** Starts a note at the playhead, from the button at the end of the transport. */
+  onNote?(): void;
 }
 
 /** The film, with its guides, the area box, version compare and the floating toolbar. */
-export function Canvas({ box, marking, onBox, onToggleMarking }: CanvasProps) {
+export function Canvas({ box, marking, onBox, onNote }: CanvasProps) {
   const film = useFilm((s) => s.film);
   const job = useFilm((s) => s.job);
   const videos = useFilm((s) => s.videos);
@@ -195,7 +197,8 @@ export function Canvas({ box, marking, onBox, onToggleMarking }: CanvasProps) {
           <span className="canvas-tag canvas-tag--first">{versionLabel(videos, otherFile ?? '')}</span>
         </div>
       ) : null}
-      <Toolbar barRef={barRef} marking={marking} onToggleMarking={onToggleMarking} />
+      <ViewMenu />
+      <Toolbar barRef={barRef} onNote={onNote} />
     </div>
   );
 }

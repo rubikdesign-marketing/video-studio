@@ -39,7 +39,7 @@ export function SentBatches() {
                     {note.box ? <Chip>Area marked</Chip> : null}
                   </span>
                   <span className="notes-text">{note.text}</span>
-                  {note.reply ? <span className="notes-reply">{note.reply}</span> : null}
+                  {note.reply ? <span className="notes-reply"><span className="notes-reply-who">Claude</span>{note.reply}</span> : null}
                 </button>
               </li>
             ))}
