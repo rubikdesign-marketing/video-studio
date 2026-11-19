@@ -29,7 +29,10 @@
   "error": { "about": "A soft error, for a 'before' moment or a strike-out.", "layer": "interface", "library": "interface/error-soft-01" },
   "page-turn": { "about": "A page turn or card flip.", "layer": "foley", "library": "foley/page-turn-01" },
   "offer-sting": { "about": "A short bright sting as the offer or price lands.", "layer": "brand", "library": "chime/sting-bright-synth-04" },
-  "room-tone": { "about": "A quiet bed of room tone under a talking or footage film, so silence never sounds dead.", "layer": "ambience", "library": "ambience/room-apartment-window-01" },
+  "room-tone": { "about": "A quiet bed of room tone under a talking or footage film, so silence never sounds dead.", "layer": "ambience", "library": "ambience/room-clean-01" },
+  "phone-buzz": { "about": "A phone buzzing on a table: the physical side of a notification.", "layer": "foley", "library": "foley/phone-buzz-table-01" },
+  "finger-tap": { "about": "A fingertip tap on a phone screen, for a phone-framed demo.", "layer": "interface", "library": "click/finger-tap-glass-01" },
+  "finger-swipe": { "about": "A fingertip swipe on a phone screen.", "layer": "movement", "library": "swish/glass-swipe-02" },
   "music-bed": { "about": "A default music bed when the film is not scored for itself (music is normally made for the cut).", "layer": "music", "library": "music/minimal-pulse-01" }
  }
 }

@@ -1,0 +1,25 @@
+{
+ "job": "2026-11-19-product-motion-02",
+ "slug": "product-motion-02",
+ "fps": 30,
+ "width": 1080,
+ "height": 1920,
+ "brand": "tulvo",
+ "preset": "confident",
+ "stage": "dark",
+ "duration": 4.1,
+ "audio": "jobs/product-motion-02/audio.wav",
+ "planned_instant_changes": [],
+ "planned_holds": [],
+ "scenes": [
+  {
+   "id": "S01",
+   "title": "Product beat",
+   "start": 0,
+   "end": 4.1,
+   "energy": 3,
+   "lines": [],
+   "texts": []
+  }
+ ]
+}

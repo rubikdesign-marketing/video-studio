@@ -1,0 +1,110 @@
+[
+ {
+  "id": "phone-buzz",
+  "library": "foley/phone-buzz-table-01",
+  "cause": 0,
+  "gain": 0.6,
+  "because": "the phone buzzes as the comment card arrives (frame 0)",
+  "onset": 0.005,
+  "at": 0
+ },
+ {
+  "id": "impact-soft",
+  "library": "impact/thud-01",
+  "cause": 0.4,
+  "gain": 0.55,
+  "because": "the first caption line lands",
+  "onset": 0,
+  "at": 0.4
+ },
+ {
+  "id": "riser-short",
+  "library": "riser/smooth-swell-01",
+  "cause": 1.003,
+  "gain": 0.3,
+  "because": "the push in speeds up into the cut (ends on the cut)",
+  "onset": 0,
+  "at": 1.003
+ },
+ {
+  "id": "finger-tap-like",
+  "library": "click/finger-tap-glass-02",
+  "cause": 0.9,
+  "gain": 0.55,
+  "because": "a finger taps the comment's heart",
+  "onset": 0.004,
+  "at": 0.896
+ },
+ {
+  "id": "whip",
+  "library": "swish/whip-01",
+  "cause": 2.5,
+  "gain": 0.5,
+  "because": "the hard cut to the demo",
+  "onset": 0.014,
+  "at": 2.486
+ },
+ {
+  "id": "finger-tap",
+  "library": "click/finger-tap-glass-01",
+  "cause": 5,
+  "gain": 0.6,
+  "because": "the tap on the sidebar item (the tap ripple opens)",
+  "onset": 0.004,
+  "at": 4.996
+ },
+ {
+  "id": "small-whoosh",
+  "library": "whoosh/air-soft-01",
+  "cause": 5.6,
+  "gain": 0.35,
+  "because": "the camera starts to follow the pointer",
+  "onset": 0.044,
+  "at": 5.556
+ },
+ {
+  "id": "toast-pop",
+  "library": "pop/soft-pop-01",
+  "cause": 7.9,
+  "gain": 0.5,
+  "because": "the glow opens on New",
+  "onset": 0,
+  "at": 7.9
+ },
+ {
+  "id": "text-swish",
+  "library": "swish/paper-soft-01",
+  "cause": 9.3,
+  "gain": 0.4,
+  "because": "the proof caption arrives",
+  "onset": 0.023,
+  "at": 9.277
+ },
+ {
+  "id": "success-chime",
+  "library": "interface/success-glass-01",
+  "cause": 10.5,
+  "gain": 0.45,
+  "because": "the ring appears on the board title",
+  "onset": 0,
+  "at": 10.5
+ },
+ {
+  "id": "offer-sting",
+  "library": "chime/sting-bright-synth-04",
+  "cause": 13.3,
+  "gain": 0.55,
+  "because": "the offer line lands",
+  "onset": 0.099,
+  "at": 13.201
+ },
+ {
+  "id": "logo-sting",
+  "library": "chime/sting-warm-synth-01",
+  "cause": 14,
+  "gain": 0.5,
+  "because": "the wordmark appears",
+  "onset": 0.088,
+  "at": 13.912
+ }
+]

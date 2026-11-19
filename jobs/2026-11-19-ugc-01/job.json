@@ -1,0 +1,28 @@
+{
+ "name": "2026-11-19-ugc-01",
+ "brand": "tulvo",
+ "type": "ugc",
+ "created": "2026-11-19",
+ "maker": "studio",
+ "size": "9:16",
+ "platform": "reels",
+ "length_cap_seconds": 20,
+ "energy_preset": "confident",
+ "framework": "ugc-phone-take",
+ "style": "brands/tulvo/styles/ugc-phone-take/style.json",
+ "voice": null,
+ "music": null,
+ "stage_next": "none: internal draft",
+ "approvals": { "idea": "library/fixtures/ugc-01/card.json (owner, 2026-11-19: one original, cleared fixture)", "script_and_voice": null, "moodboard": null, "storyboard": null, "first_animation": null, "full_animation": null },
+ "organicOnly": true,
+ "rights": { "privateStudy": true, "publicUse": null, "note": "Kestrel Studio stills: no recorded public-use clearance. Internal draft, do not publish." },
+ "offer_wording": "Try it free (owner approval for this fixture: null)",
+ "facts": [],
+ "planned_instant_changes": [],
+ "planned_holds": [],
+ "engine": { "slug": "ugc-01", "fps": 30, "note": "tools/film/scaffold.mjs fixes 60 fps; build.mjs scaffolds through a link named ugc-01 (so the engine name is ugc-01) and then sets fps 30 and 16.0 s in film.json. Render with npx remotion render directly (render.sh would scaffold again at 60 fps)." },
+ "notes": [
+  "Proof of the Phase 2 preset. No voice: captions carry the line (audio/voice.wav is a silent placeholder so mix.py and the scaffold have a voice track; mix.py --ref-db stands in for the voice level).",
+  "Pictures: three 3840x2160 stills of the studio's own capture (take-5), graded once by tools/footage/lib/grade.mjs from edit/grade.json and read by both the preview and the export."
+ ]
+}

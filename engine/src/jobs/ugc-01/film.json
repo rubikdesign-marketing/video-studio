@@ -1,0 +1,87 @@
+{
+ "job": "2026-11-19-ugc-01",
+ "slug": "ugc-01",
+ "fps": 30,
+ "width": 1080,
+ "height": 1920,
+ "brand": "tulvo",
+ "preset": "confident",
+ "stage": "dark",
+ "duration": 16,
+ "audio": "jobs/ugc-01/audio.wav",
+ "audio_from": "mix.wav",
+ "scenes": [
+  {
+   "id": "S01",
+   "title": "Hook",
+   "start": 0,
+   "end": 2.5,
+   "energy": 4,
+   "lines": [
+    {
+     "id": "01",
+     "start": 0.4,
+     "end": 2.2,
+     "text": "Here's my whole lead pipeline"
+    }
+   ],
+   "texts": []
+  },
+  {
+   "id": "S02",
+   "title": "Demo",
+   "start": 2.5,
+   "end": 9,
+   "energy": 3,
+   "lines": [
+    {
+     "id": "02",
+     "start": 2.8,
+     "end": 5.3,
+     "text": "One tap to the launch board"
+    },
+    {
+     "id": "03",
+     "start": 5.8,
+     "end": 8.4,
+     "text": "Then hit New to start a brief"
+    }
+   ],
+   "texts": []
+  },
+  {
+   "id": "S03",
+   "title": "Proof",
+   "start": 9,
+   "end": 13,
+   "energy": 3,
+   "lines": [
+    {
+     "id": "04",
+     "start": 9.3,
+     "end": 12.6,
+     "text": "Approvals, briefs and campaigns, one view"
+    }
+   ],
+   "texts": []
+  },
+  {
+   "id": "S04",
+   "title": "Offer and logo",
+   "start": 13,
+   "end": 16,
+   "energy": 4,
+   "lines": [
+    {
+     "id": "05",
+     "start": 13.3,
+     "end": 15.3,
+     "text": "Try it free"
+    }
+   ],
+   "texts": []
+  }
+ ],
+ "planned_instant_changes": [],
+ "planned_holds": []
+}

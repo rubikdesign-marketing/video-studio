@@ -1,0 +1,9 @@
+{
+ "version": 1,
+ "default": { "exposure": 0, "temperature": 0, "contrast": 0, "saturation": 0, "look": "none" },
+ "clips": {
+  "demo-1": { "exposure": 0, "temperature": 0, "contrast": 0, "saturation": 0, "look": "clean-cool" },
+  "demo-2": { "exposure": 0, "temperature": 0, "contrast": 0, "saturation": 0, "look": "clean-cool" },
+  "demo-3": { "exposure": 0, "temperature": 0, "contrast": 0, "saturation": 0, "look": "clean-cool" }
+ }
+}

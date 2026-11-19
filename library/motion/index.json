@@ -31,7 +31,8 @@
     "capture-relayout": "A wide capture re-laid out for 9:16, 1:1 and 4:5, the camera following the action inside the recording; a phone-size take full frame (relayout.ts, CaptureShot in a tall or square frame).",
     "caption": "Short-form caption styles a brand may choose for 9:16 (decision 6); the fixed caption design stays the default.",
     "opener": "Hook openers: the first two seconds, made in the engine, a pattern interrupt without anyone else's footage (knowledge/craft/15-hooks.md).",
-    "shader": "Shader backgrounds on Paper Shaders, coloured from the brand, frame-accurate (render with --gl=angle)."
+    "shader": "Shader backgrounds on Paper Shaders, coloured from the brand, frame-accurate (render with --gl=angle).",
+    "ugc": "Creator-style moves for phone and screen-share films: the comment a film answers, the marks of a screen recording, a sticker reaction (engine/src/kit/ugc/)."
   },
   "moves": [
     {
@@ -1605,7 +1606,7 @@
       "name": "look-calm-explainer",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "Unhurried and premium: classic pointer on slow arcs, soft hover glow, slow eased zooms that go less far (1.6x), long holds, no tilt, calm pace. Staged as a flat card (CaptureShot). Joins its shots with cross-dissolve and container grow (CaptureJoin).",
       "use_when": "Explainers and calm product stories.",
@@ -1632,7 +1633,7 @@
       "name": "look-product-demo",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "The default. Clear and confident: classic pointer with a magnet pull and blur on fast moves, ring clicks, auto-zoom on each action with a gentle follow, sped-up waits. Staged as a flat card (or the browser frame) (CaptureShot). Joins its shots with zoom through, match cut and push (CaptureJoin).",
       "use_when": "Most product demos.",
@@ -1659,7 +1660,7 @@
       "name": "look-launch",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "Big and cinematic: the brand's arrow, a soft pulse on clicks, hover glow, zooms that land with a soft spring, and a slow float in depth on wides. Staged as the floating screen (CaptureShot). Joins its shots with shared element, depth push and whip (CaptureJoin).",
       "use_when": "Launches and big announcements.",
@@ -1685,7 +1686,7 @@
       "name": "look-tutorial",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "Patient and precise: a large classic pointer, rings, every key as a cap, a steady zoom on every click with no follow, long holds. Staged as the browser frame, with a numbered badge on each step (CaptureShot). Joins its shots with straight cuts and soft slides (CaptureJoin).",
       "use_when": "Tutorials and how-tos.",
@@ -1711,7 +1712,7 @@
       "name": "look-social-vertical",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "Fast and bold for sound-off feeds: a large brand arrow, a line burst on clicks, tight following zooms that snap in with a spring, typing sped up early. The phone-shaped crop comes in part B; for now it is a flat card. Staged as a tall crop of the action (CaptureShot). Joins its shots with snap cut and whip (CaptureJoin).",
       "use_when": "Social cuts.",
@@ -1737,7 +1738,7 @@
       "name": "look-feature-montage",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "Many things quickly: a small dot, no zooms, a slow 6% push through each clip. Staged as a grid of screens (CaptureShot). Joins its shots with grid zoom and stack shuffle (CaptureJoin).",
       "use_when": "Montages of several features.",
@@ -1763,7 +1764,7 @@
       "name": "look-documentary",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "Honest and raw: the real recorded pointer path, no click effect, no key caps, an almost still camera (a 2% push). Real waits are still labelled when sped up. Staged as the full screen, no frame (CaptureShot). Joins its shots with straight cuts (CaptureJoin).",
       "use_when": "Proof films and honest walkthroughs.",
@@ -1789,7 +1790,7 @@
       "name": "look-two-people",
       "family": "capture-look",
       "component": "CaptureShot",
-      "file": "engine/src/kit/CaptureClip.tsx",
+      "file": "engine/src/kit/capture/staging.tsx",
       "module": "engine/src/kit/capture/looks.ts",
       "does": "Collaboration: a named pointer in the accent colour, ring clicks, auto-zoom with follow. Staged as two takes side by side, marks aligned (CaptureShot). Joins its shots with window split (CaptureJoin).",
       "use_when": "Moments about working together.",
@@ -4605,6 +4606,7 @@
       "use_when": "The all-purpose premium backdrop under a headline, an offer or a product window; calm openings and end cards.",
       "avoid_when": "A film that already sits on a busy capture, or a brand whose page and soft colours are almost the same (it then reads as a flat page).",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -4637,6 +4639,7 @@
       "use_when": "Warmer, more tactile films: handmade goods, studios, editorial launches.",
       "avoid_when": "Very clean interface films where grain reads as dirt; small or heavily compressed exports (grain costs file size).",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -4669,6 +4672,7 @@
       "use_when": "A reveal, a launch title, the 'big moment' of a film; strongest on the dark page.",
       "avoid_when": "Calm explainers or long holds behind body text; on the light page the beams are pale and read as a soft haze.",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -4701,6 +4705,7 @@
       "use_when": "Product films that want more movement than a gradient but nothing busy; section openers.",
       "avoid_when": "Under small type or a dense card: the folds have soft ridges that compete with fine detail.",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -4733,6 +4738,7 @@
       "use_when": "One centred word, a number or a logo: the type sits in the ring's clear centre.",
       "avoid_when": "Long lines or two-line headlines (they cross the ring), and layouts with content off centre, and lines wider than about a third of the frame.",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -4765,6 +4771,7 @@
       "use_when": "AI, data and 'how it works' films; strongest on the dark page.",
       "avoid_when": "Calm or human stories; under small type (thin bright threads cut through letters even at reduced strength).",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -4797,6 +4804,7 @@
       "use_when": "A launch or title card that wants a gentle pull towards the centre.",
       "avoid_when": "Long holds or calm explainers (the turning reads as a vortex if watched for long), or anything off centre.",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -4829,6 +4837,7 @@
       "use_when": "Data, maps, planning and 'see everything' films; a calm graphic texture.",
       "avoid_when": "Under a chart or a map that has contours of its own.",
       "technique": null,
+      "device_fallback": "none: needs WebGL",
       "props": {
         "page": "\"light\" or \"dark\": the brand page it is coloured for. Optional: follows the stage it sits on.",
         "intensity": "\"calm\" (default), \"alive\" or \"bold\": how fast it moves and how strong its colours are. Set once per film or change on a cut.",
@@ -8136,6 +8145,177 @@
       "flash_check": "flashes.py passes on the preview (at most one flash in any second, none over the area limit).",
       "added_on": "2026-11-18",
       "house_rule": "Banned by default in knowledge/craft/03-transitions.md (the template-pack film-burn look). Use only with the owner's yes for this film, recorded in job.json."
+    },
+    {
+      "name": "ugc-comment-reply",
+      "family": "ugc",
+      "component": "CommentReply",
+      "file": "engine/src/kit/ugc/CommentReply.tsx",
+      "does": "The question card a UGC film answers: a comment (avatar, handle, heart count) drops in at the top under a \"Replying to @handle\" line, can take a like tap, shrinks up to the top as the answer lands, and leaves.",
+      "use_when": "A UGC hook that answers a comment (\"Wait, how do you keep every lead in one place?\"); the card is the question, the film is the answer.",
+      "avoid_when": "Films with no creator voice; brands that avoid imitating a social app; a real person's comment (write an original line, never quote a real one).",
+      "technique": null,
+      "props": {
+        "comment": "the question, as written (about 90 characters at most)",
+        "handle": "the commenter's handle, with or without @",
+        "label": "the line above the card (default \"Replying to @handle\"; \"\" for none)",
+        "likes": "the number beside the heart (leave out for no heart)",
+        "at": "seconds when it arrives (scene clock)",
+        "preroll": "seconds of the arrival already done at `at` (for a card part-way in on frame 0)",
+        "out": "seconds when it leaves",
+        "dockAt": "seconds when it shrinks up to dockY (the answer lands)",
+        "dockY": "where the docked card sits, share of frame height",
+        "likeAt": "seconds of the heart tap",
+        "x / y": "middle of the card, shares of the frame",
+        "size": "comment size, per cent of the short side (5.6 tall, 4.6 wide)",
+        "fill / ink / accent": "colours; the brand's stage by default (an inverse card)"
+      },
+      "sound": {
+        "group": "foley",
+        "feel": [
+          "short",
+          "low",
+          "tense"
+        ],
+        "when": "at (the card arrives)",
+        "note": "foley/phone-buzz-table-01 under the arrival; a soft pop (pop group) on the like. Used this way in jobs/2026-11-19-ugc-01."
+      },
+      "sizes": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "timing": {
+        "arrive_s": 0.75,
+        "typical_hold_s": "1.5 to 3",
+        "exit_s": 0.49
+      },
+      "expected_render_cost": "Light: a few DOM boxes and two SVG paths; no filter or video; about the same as a text move.",
+      "device_fallback": "None needed: plain 2D (HTML and SVG), no WebGL, no shader, no image, no emoji font. Renders the same without a GPU.",
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "composition": "move-ugc-comment-reply",
+      "preview": "library/motion/ugc-comment-reply.mp4",
+      "preview_sha256": "1a1d339b4707cad9ddfde0e8b4569bdab057c87a20c1c1672923800643c79be0",
+      "reviewed": true,
+      "reviewed_on": "2026-11-19",
+      "planned_instant_changes": [],
+      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of the 9:16 and 16:9 frames looked at; 1:1 and 4:5 not looked at. Used in the real ugc-01 hook.",
+      "added_on": "2026-11-19"
+    },
+    {
+      "name": "ugc-screen-rec-tell",
+      "family": "ugc",
+      "component": "ScreenRecTell",
+      "file": "engine/src/kit/ugc/ScreenRecTell.tsx",
+      "does": "The marks of a screen recording: a REC dot (it breathes) with a running m:ss timer, a tap ripple (touch disc plus an opening ring) wherever a finger lands, and an original, anonymous phone drawn around the screen. Also exported alone: RecBadge, TapRipple and phoneBox.",
+      "use_when": "Phone-first and screen-share films that should read as \"I recorded my own screen\" without a person on screen.",
+      "avoid_when": "Films about a desktop product that are not phone-framed (use RecBadge and TapRipple alone); anything that should look polished rather than raw.",
+      "technique": null,
+      "props": {
+        "frame": "draw the phone around the children (default true)",
+        "children": "what the phone's screen shows",
+        "taps": "[{ at, x, y }]: seconds and shares of the screen",
+        "at / out": "seconds when the badge appears and goes",
+        "label": "default \"REC\"",
+        "timer": "show the timer (default true)",
+        "timerFrom": "seconds already on the timer at `at`",
+        "x / y": "badge place, shares of the screen",
+        "dot": "the REC dot colour (the brand's warm colour by default)",
+        "tapColour": "the ripple colour (the brand accent by default)",
+        "body": "the phone body colour (the stage shade by default)",
+        "size": "badge size, per cent of the screen's short side"
+      },
+      "sound": {
+        "group": "click",
+        "feel": [
+          "soft",
+          "short",
+          "glassy"
+        ],
+        "when": "each tap",
+        "note": "click/finger-tap-glass-01 to 03 on every tap; swish/glass-swipe-0x on a swipe."
+      },
+      "sizes": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "timing": {
+        "ripple_s": 0.55,
+        "timer_steps": "one digit change per second (instant by nature)"
+      },
+      "expected_render_cost": "Light: DOM boxes and one blurred shadow; the phone clips its children with overflow hidden.",
+      "device_fallback": "None needed: plain 2D (HTML and SVG), no WebGL, no shader, no image, no emoji font. Renders the same without a GPU.",
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "composition": "move-ugc-screen-rec-tell",
+      "preview": "library/motion/ugc-screen-rec-tell.mp4",
+      "preview_sha256": "371b7ed46d91fbc6043fd228f3b3c0a5daed9850ba3150d28648680d6110a7b2",
+      "reviewed": true,
+      "reviewed_on": "2026-11-19",
+      "planned_instant_changes": [],
+      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of 9:16 and 16:9 looked at; 1:1 and 4:5 not looked at. RecBadge and TapRipple used in the real ugc-01 demo.",
+      "added_on": "2026-11-19"
+    },
+    {
+      "name": "ugc-sticker-pop",
+      "family": "ugc",
+      "component": "StickerPop",
+      "file": "engine/src/kit/ugc/StickerPop.tsx",
+      "does": "A small creator-style reaction pops onto the frame with a bounce, wobbles and goes: a heart, star, tick in a disc, sparkle or starburst drawn from paths with a white outline and a soft shadow, and a few specks flying off (seeded, so the same every render).",
+      "use_when": "A reaction beat: a tick on a result, a heart on something liked. At most four pops in a film.",
+      "avoid_when": "Serious or formal films; the same beat as a drawn mark or a ring (one emphasis per beat).",
+      "technique": null,
+      "props": {
+        "shape": "heart | star | tick | spark | burst",
+        "at / out": "seconds when it pops and leaves",
+        "x / y": "middle, shares of the frame",
+        "size": "width, per cent of the short side (18)",
+        "rotate": "tilt in degrees (-9)",
+        "colour": "\"accent\", \"warm\", \"ink\" or a six-digit colour",
+        "outline": "default the brand's light ink",
+        "mark": "the tick's mark colour",
+        "specks": "0 to 12 specks",
+        "seed": "seed of the specks' directions"
+      },
+      "sound": {
+        "group": "pop",
+        "feel": [
+          "soft",
+          "short",
+          "playful"
+        ],
+        "when": "at (the pop)",
+        "note": "pop/soft-pop-01 or pop/pluck-bright-01."
+      },
+      "sizes": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "timing": {
+        "pop_s": 0.75,
+        "wobble": "settles in about 1.2 s"
+      },
+      "expected_render_cost": "Light: one inline SVG with a drop shadow, plus up to 12 small dots.",
+      "device_fallback": "None needed: plain 2D (HTML and SVG), no WebGL, no shader, no image, no emoji font. Renders the same without a GPU.",
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "composition": "move-ugc-sticker-pop",
+      "preview": "library/motion/ugc-sticker-pop.mp4",
+      "preview_sha256": "fe214ce94b735317bec7e4e695c779a6b4bb8128b2e04b666428dca2f6af68b6",
+      "reviewed": true,
+      "reviewed_on": "2026-11-19",
+      "planned_instant_changes": [],
+      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of 9:16 and 16:9 looked at; 1:1 and 4:5 not looked at. Not used in ugc-01 (the ring already marks the proof beat).",
+      "added_on": "2026-11-19"
     }
   ],
   "review": {

@@ -461,6 +461,78 @@
    "original": "0164.mp3 (s0164)",
    "fetched": "2026-11-18",
    "sha256": "b585210d8049bf1fdcf8087436f217eee86d2927f60f0c2ccec157961df81d05"
+  },
+  {
+   "id": "foley/phone-buzz-table-01",
+   "file": "foley/phone-buzz-table-01.mp3",
+   "name": "Phone buzz on a table",
+   "feel": [
+    "short",
+    "low",
+    "tense",
+    "organic"
+   ],
+   "use_for": "A phone buzzing twice on a wooden table: the physical buzz under a notification banner.",
+   "seconds": 0.54,
+   "peak_db": -3.0,
+   "loudest_lufs": -15.4,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "buzz",
+    "seconds": 0.7,
+    "seed": 21,
+    "tone": "neutral",
+    "weight": "medium",
+    "pulses": 2,
+    "on": 0.2,
+    "gap": 0.09,
+    "motor": 172.0,
+    "table": 118.0,
+    "rattle": 0.5,
+    "thud": 0.6
+   },
+   "fetched": "2026-11-19",
+   "sha256": "14239b9e7c887a186154ab608edabb510e0f146aa33efa4973833fadbbd5430d"
+  },
+  {
+   "id": "foley/phone-buzz-table-02",
+   "file": "foley/phone-buzz-table-02.mp3",
+   "name": "Phone buzz on a table, three pulses",
+   "feel": [
+    "long",
+    "low",
+    "tense",
+    "organic"
+   ],
+   "use_for": "A longer three-pulse buzz on a table, for an incoming call or a stronger alert.",
+   "seconds": 0.722,
+   "peak_db": -3.0,
+   "loudest_lufs": -15.9,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "buzz",
+    "seconds": 1.0,
+    "seed": 22,
+    "tone": "neutral",
+    "weight": "medium",
+    "pulses": 3,
+    "on": 0.17,
+    "gap": 0.08,
+    "motor": 165,
+    "table": 105,
+    "rattle": 0.5,
+    "thud": 0.6
+   },
+   "fetched": "2026-11-19",
+   "sha256": "75c0aeb896eccdd176d21b0a168cae57dffeeb72b440a475dbe7565d52cd2831"
   }
  ]
 }

@@ -1,0 +1,892 @@
+{
+ "schema": "damex-receipts/1",
+ "version": 1,
+ "for_prompt": "04",
+ "from_prompt": "05",
+ "source_ref": "creative-library-05@47480ad+uncommitted",
+ "verified_by": "verifier-4",
+ "verified_on": "2026-11-19",
+ "method": "Exporter rules read from video-studio/release/manifest.json and tools/release/export.mjs (read-only). The exporter reads committed files only, so a copy of it was run in a scratch folder against this worktree's tracked plus untracked files (ignoring .gitignore) with --report-only; its staged-file list and banned-word scan feed the 'exporter_*' fields. Nothing was committed.",
+ "rc2_comparison": "RC2 (a644abd, source 27b2d75) contains none of the files below: no library/fixtures, no grade.mjs, no engine/src/kit/ugc, no ugc-* motion entry (243 moves, 0 ugc), none of the 9 sounds, no tulvo stills or take-5 files.",
+ "exporter_findings": [
+  "Committed as is, the exporter would stop: 41 banned-word hits in 8 files, of which 24 in library/fixtures/ugc-01/card.json, 1 in library/fixtures/ugc-01/README.md and 6 in .damex/** (notes). The other 10 hits (library/references, knowledge/craft/07-sound.md) are in this worktree's tree whatever this branch does.",
+  "release/manifest.json has no rule for library/fixtures or .damex. Add both to 'exclude' (fixtures hold privateStudy-only references).",
+  "Included and allowed once committed: the 9 sounds with their index entries and CREDITS.md, kit.json, the three kit/ugc moves and their gallery code, grade.mjs, the mix.py and synth.py changes and the tests.",
+  "Not shipped: the 3 motion preview mp4 (library/motion/*.mp4), the preset (brands/tulvo), the ugc-01 and product-motion-02 jobs (engine/src/jobs, jobs), all fixture stills (jobs)."
+ ],
+ "sounds": [
+  {
+   "path": "library/sounds/foley/phone-buzz-table-01.mp3",
+   "sha256": "14239b9e7c887a186154ab608edabb510e0f146aa33efa4973833fadbbd5430d",
+   "bytes": 10964,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/foley/phone-buzz-table-02.mp3",
+   "sha256": "75c0aeb896eccdd176d21b0a168cae57dffeeb72b440a475dbe7565d52cd2831",
+   "bytes": 14108,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/click/finger-tap-glass-01.mp3",
+   "sha256": "a96dc55aae5dbb5174f9d340c38f3876255b0e3174397c9cd580354058cc6f5e",
+   "bytes": 1844,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/click/finger-tap-glass-02.mp3",
+   "sha256": "dd32b69f6e18321440562e0869231bdfffb299a4a6848c83d0677ad4a657728c",
+   "bytes": 1796,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/click/finger-tap-glass-03.mp3",
+   "sha256": "27fe30df4982cd7f4cf65064013ff7f43b182b8cbb2c3469d8773b03ebae29b3",
+   "bytes": 2972,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/swish/glass-swipe-01.mp3",
+   "sha256": "ad16cc861c1fd096db27fa4cbcf653be2ce4f731338e1e2bb3f7ce68f8e8d99b",
+   "bytes": 4796,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/swish/glass-swipe-02.mp3",
+   "sha256": "9453be422fae60c560880cf09d20fdd572cbb6a6a45e1256244b0e16b99dd44d",
+   "bytes": 5372,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/swish/glass-swipe-03.mp3",
+   "sha256": "111dcc6c3ef54ab58ac046ecc0cacc13153571a75c211c8f1520e5dddd8533b3",
+   "bytes": 7052,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  },
+  {
+   "path": "library/sounds/ambience/room-clean-01.mp3",
+   "sha256": "55c6d1c94b56d8d7b87e01c88f401ea452ca1dd99e4d0b3ff79e8fdc4bfb1321",
+   "bytes": 455276,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "sound",
+   "licence": "CC0-1.0",
+   "attribution": "Original: synthesised in-house with tools/audio/synth.py (author field in the index: 'Video Studio (tools/audio/synth.py)'). Seeded; remade bit-exact from its recipe in the index (verified for all 9 by verifier-4). Credited in library/sounds/CREDITS.md, 'Made in-house, 9 files (19 Nov 2026)'. No third-party audio; no attribution required.",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "recipe_remade_identical": true,
+   "preview": "n/a: the mp3 is the playable asset",
+   "include_in_artifact": "yes",
+   "reason": "Not excluded by release/manifest.json; CC0 and made in-house, so shipping is allowed. Ship it with its index entry and CREDITS.md (neither is excluded). Nobody has listened to it yet (library/sounds/README.md 'Not checked')."
+  }
+ ],
+ "motion_previews": [
+  {
+   "path": "library/motion/ugc-comment-reply.mp4",
+   "sha256": "1a1d339b4707cad9ddfde0e8b4569bdab057c87a20c1c1672923800643c79be0",
+   "bytes": 79232,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "motion-preview",
+   "licence": "CC0-1.0",
+   "attribution": "original, written in-house; credit: none",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "preview": "this file is the preview (960x540, 60 fps, 4.2 s)",
+   "include_in_artifact": "no",
+   "reason": "release/manifest.json excludes library/motion/*.mp4. The frames also use the tulvo palette and invented figures ('24 leads', '12 briefs', 'All clear'). The motion index entry and the code do ship, so a customer gets the move without the clip. NOTE tools/checks/tests/motion_library.test.mjs (line 22, and the new line 71) asserts the preview file exists and matches its checksum, which cannot pass in a release that has no mp4."
+  },
+  {
+   "path": "library/motion/ugc-screen-rec-tell.mp4",
+   "sha256": "371b7ed46d91fbc6043fd228f3b3c0a5daed9850ba3150d28648680d6110a7b2",
+   "bytes": 24196,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "motion-preview",
+   "licence": "CC0-1.0",
+   "attribution": "original, written in-house; credit: none",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "preview": "this file is the preview (960x540, 60 fps, 4.2 s)",
+   "include_in_artifact": "no",
+   "reason": "release/manifest.json excludes library/motion/*.mp4. The frames also use the tulvo palette and invented figures ('24 leads', '12 briefs', 'All clear'). The motion index entry and the code do ship, so a customer gets the move without the clip. NOTE tools/checks/tests/motion_library.test.mjs (line 22, and the new line 71) asserts the preview file exists and matches its checksum, which cannot pass in a release that has no mp4."
+  },
+  {
+   "path": "library/motion/ugc-sticker-pop.mp4",
+   "sha256": "fe214ce94b735317bec7e4e695c779a6b4bb8128b2e04b666428dca2f6af68b6",
+   "bytes": 24676,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "motion-preview",
+   "licence": "CC0-1.0",
+   "attribution": "original, written in-house; credit: none",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "index_sha256_matches": true,
+   "preview": "this file is the preview (960x540, 60 fps, 4.2 s)",
+   "include_in_artifact": "no",
+   "reason": "release/manifest.json excludes library/motion/*.mp4. The frames also use the tulvo palette and invented figures ('24 leads', '12 briefs', 'All clear'). The motion index entry and the code do ship, so a customer gets the move without the clip. NOTE tools/checks/tests/motion_library.test.mjs (line 22, and the new line 71) asserts the preview file exists and matches its checksum, which cannot pass in a release that has no mp4."
+  }
+ ],
+ "fixture": [
+  {
+   "path": "library/fixtures/ugc-01/card.json",
+   "sha256": "0b9e830ec40ba8241bbd9fe8fdb9bb8e653a2cc9df9d02d8f0810c49555bf6e3",
+   "bytes": 15874,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 24,
+   "kind": "fixture-card",
+   "licence": "none recorded (studio-internal planning file)",
+   "attribution": "studio-made",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "preview": "n/a",
+   "include_in_artifact": "no",
+   "reason": "Names tulvo 24 times, Kestrel Studio, app.tulvo.io and the unapproved offer wording. NOT excluded by release/manifest.json: committed as is, the exporter's banned-word scan fails (it fails closed). Add library/fixtures to manifest.exclude. Also card.json line 128 holds a stale kit.json sha256 (b8bb159b...; the file is now 92907b4c...)."
+  },
+  {
+   "path": "library/fixtures/ugc-01/README.md",
+   "sha256": "d8ae12f097cede545867e52dccce215b0d00f0a1e8243deb2e82cdb43f51a7ca",
+   "bytes": 2118,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 1,
+   "kind": "fixture-doc",
+   "licence": "none recorded",
+   "attribution": "studio-made",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "preview": "n/a",
+   "include_in_artifact": "no",
+   "reason": "Names Kestrel Studio and Ferro Bike Works and says publicUse and bundling are null. Not excluded by the manifest; 1 banned-word hit. Same fix as card.json."
+  },
+  {
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/marks/lead-pipeline.png",
+   "sha256": "12eb2442a9a8ebe955486f49df558e8e5575ed39f922985c63ef271803d8b84d",
+   "bytes": 233748,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:demo-1-lead-pipeline-still",
+   "licence": "none recorded: studio's own capture of the Kestrel Studio demo workspace",
+   "attribution": "studio-made (take-5, 2026-11-12)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "the PNG is the picture",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/marks/campaign-board.png",
+   "sha256": "05270295d70db4e38f71c1a18862aae017baa850b0440cbf448b7df4009166ec",
+   "bytes": 250643,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:demo-2-campaign-board-still",
+   "licence": "none recorded: studio's own capture of the Kestrel Studio demo workspace",
+   "attribution": "studio-made (take-5, 2026-11-12)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "the PNG is the picture",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/marks/campaign-board-new.png",
+   "sha256": "0e4ebeb1b9fcb8aefe0eaddad763660ce2a065aa081bc8159c784e979329e8ec",
+   "bytes": 252202,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:demo-3-campaign-board-new-still",
+   "licence": "none recorded: studio's own capture of the Kestrel Studio demo workspace",
+   "attribution": "studio-made (take-5, 2026-11-12)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "the PNG is the picture",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/capture.json",
+   "sha256": "f56662b1e83678267fdcb5787f8aa156ca05e7c8031e0575a0bb0b3cf27000cb",
+   "bytes": 4523,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:capture-record",
+   "licence": "none recorded: studio's own capture of the Kestrel Studio demo workspace",
+   "attribution": "studio-made (take-5, 2026-11-12)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "n/a",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/cursor.json",
+   "sha256": "303118f9522290ce2a398eae88341ac81f525a0c46df5ab98c9ea66e81316f32",
+   "bytes": 3131,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:pointer-track",
+   "licence": "none recorded: studio's own capture of the Kestrel Studio demo workspace",
+   "attribution": "studio-made (take-5, 2026-11-12)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "n/a",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/tracks.json",
+   "sha256": "b8fafa1b99a6a6f58ceb9f7af3a82c9a5026e8249f60d6e65bce75dd7e1bed1c",
+   "bytes": 46469,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:camera-tracks",
+   "licence": "none recorded: studio's own capture of the Kestrel Studio demo workspace",
+   "attribution": "studio-made (take-5, 2026-11-12)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "n/a",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "brands/tulvo/brand.json",
+   "sha256": "b22619988071c3e7c3b7bab55d17c6df932213c6972766d887b12ecf997f90ed",
+   "bytes": 9349,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:brand-numbers",
+   "licence": "Tulvo's own brand file; no written clearance for third-party bundling",
+   "attribution": "Tulvo brand files",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "n/a",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "brands/tulvo/logo/tulvo-wordmark.png",
+   "sha256": "c10c3e5a8e7b457ebf8df75829c8676c235f1c73d891c01d766f9f118d91d5b1",
+   "bytes": 9291,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:wordmark-light-stage",
+   "licence": "Tulvo's own brand file; no written clearance for third-party bundling",
+   "attribution": "Tulvo brand files",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "card_sha256_matches": true,
+   "preview": "the PNG is the picture",
+   "include_in_artifact": "no",
+   "reason": "privateStudy only; publicUse and bundling are null. The manifest excludes 'jobs' and 'brands/tulvo', so the exporter drops it. Do not add it to any bundle until the owner records a yes."
+  },
+  {
+   "path": "library/sounds/kit.json",
+   "sha256": "92907b4cccb71186d1ba87ff8f3434aa168c63014bae2a976bcfadf2e1de35ba",
+   "bytes": 5289,
+   "in_rc2_a644abd": true,
+   "exporter_would_stage_if_committed_today": true,
+   "exporter_banned_word_hits": 0,
+   "kind": "fixture-source:sound-kit-map",
+   "licence": "CC0-1.0 per CREDITS.md",
+   "attribution": "studio-made",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true
+   },
+   "card_sha256_matches": false,
+   "preview": "n/a",
+   "include_in_artifact": "yes",
+   "reason": "kit.json is the studio's own mapping and ships (not excluded). Its sha256 no longer matches the card because this branch edited it (3 slots added, room-tone now room-clean-01)."
+  }
+ ],
+ "derived": [
+  {
+   "path": "jobs/2026-11-19-ugc-01/out/2026-11-19-ugc-01.mp4",
+   "sha256": "a900c545c76529daeabea42141a39b4f52ea8d69fedca3d43360dc243bddf431",
+   "bytes": 3819577,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "derived-export",
+   "licence": "n/a (derived from privateStudy sources and CC0 sounds)",
+   "attribution": "studio-made",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "preview": "the mp4 is the film",
+   "include_in_artifact": "no",
+   "reason": "Output of privateStudy pictures; jobs/*/out is git-ignored and the manifest excludes jobs."
+  },
+  {
+   "path": "jobs/2026-11-19-product-motion-02/out/2026-11-19-product-motion-02.mp4",
+   "sha256": "d865099f76127b74099192e79be9ccc7261204845a3a7e28851158811ebeccfe",
+   "bytes": 856321,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "derived-export",
+   "licence": "n/a (derived from privateStudy sources and CC0 sounds)",
+   "attribution": "studio-made",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "preview": "the mp4 is the film",
+   "include_in_artifact": "no",
+   "reason": "Output of privateStudy pictures; jobs/*/out is git-ignored and the manifest excludes jobs."
+  },
+  {
+   "path": "brands/tulvo/styles/ugc-phone-take/style.json",
+   "sha256": "e865a607a45707c4e05ae0d5d6b99729474747c1cfe79d87d93977d53c236946",
+   "bytes": 4578,
+   "in_rc2_a644abd": false,
+   "exporter_would_stage_if_committed_today": false,
+   "exporter_banned_word_hits": 0,
+   "kind": "derived-preset",
+   "licence": "n/a (derived from privateStudy sources and CC0 sounds)",
+   "attribution": "studio-made",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null
+   },
+   "preview": "n/a",
+   "include_in_artifact": "no",
+   "reason": "brands/tulvo is excluded by the manifest. The preset is also stale against the shipped film (see 05-phase4.md)."
+  }
+ ],
+ "code_and_docs": [
+  {
+   "path": "engine/src/library/motion/sized-families.ts",
+   "status": "M",
+   "sha256": "6a99bcc5b039ba85a00ce0746ecefd338d4cd41986fb407947ebcdbfc607a2d4",
+   "bytes": 870,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "library/motion/README.md",
+   "status": "M",
+   "sha256": "4d44242b20a690c1989dc09b32f1c1c66088b6458ab2e91294b752bcf9826a12",
+   "bytes": 18907,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "library/motion/index.json",
+   "status": "M",
+   "sha256": "ae2843596f9025df573e74da81cfb1cceb8c4a997db7e8b8faf4fa6ebde6930f",
+   "bytes": 349047,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "tools/audio/mix.py",
+   "status": "M",
+   "sha256": "67e37f422ef9ea7156c33e4d13443dcb58ea1555440617e49f4908e2c48645e2",
+   "bytes": 17345,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "tools/audio/synth.py",
+   "status": "M",
+   "sha256": "957361d74ba6c2e5c5fb3bc531f6609880aa10391e8d8548eddafcd9c769aad7",
+   "bytes": 47655,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "tools/audio/tests/test_synth.py",
+   "status": "M",
+   "sha256": "950601139477b23d74e97c55224178e913991714ed21b66e4bf7f1bf4d5bd32e",
+   "bytes": 12708,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "tools/checks/tests/motion_library.test.mjs",
+   "status": "M",
+   "sha256": "e49566500118385e4b6e1a46798663cd0e50826f0eed659338dc0f5f0019bf80",
+   "bytes": 5508,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/product-motion-02/Film.tsx",
+   "status": "??",
+   "sha256": "51fe590595ff93512a7bfecbc3c7d3d505e3c76b6769bc0129f0f724b6d347d1",
+   "bytes": 1117,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/product-motion-02/entry.tsx",
+   "status": "??",
+   "sha256": "406613c0053c0d63f0425837fe7e89c97507732cd6349a10a27b44ada1aedeb7",
+   "bytes": 567,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/product-motion-02/film.json",
+   "status": "??",
+   "sha256": "302966486aa1531b699e1dadecd4912b2d8a0b963f9d30ad292e5b5421067491",
+   "bytes": 442,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/product-motion-02/scenes/S01.tsx",
+   "status": "??",
+   "sha256": "8cce45e098b619506f48bb21c2c28e2ac0bd700de5045826a4100c2539dff9a6",
+   "bytes": 2309,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/Film.tsx",
+   "status": "??",
+   "sha256": "22fd1bfbd500c62225d66dbb3d380264e3ebdf3140278753e8cc0e4a234b35f5",
+   "bytes": 2053,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/entry.tsx",
+   "status": "??",
+   "sha256": "81710c38e0b3793c54f3eaf0953cebae8c768af73ed556c399cfb7c9bc418ada",
+   "bytes": 519,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/film.json",
+   "status": "??",
+   "sha256": "01fbb5798538546aca09fc4b7b0145dd899508a0c8ed947e817c9e983a6230a4",
+   "bytes": 1365,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/scenes/S01.tsx",
+   "status": "??",
+   "sha256": "f4fc330793f0d46795a4a6fef9d2613b29647ebf712b13064149fb127402ad96",
+   "bytes": 1340,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/scenes/S02.tsx",
+   "status": "??",
+   "sha256": "4544f8e564fbb4f1abf9456269477d48f40a59d65f57616357edba2ab9e5f11c",
+   "bytes": 3474,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/scenes/S03.tsx",
+   "status": "??",
+   "sha256": "cf9dceeb03f95663e0d9772cf524d176981ec6241ea26b403f86e77cc4b8b8ad",
+   "bytes": 2142,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/scenes/S04.tsx",
+   "status": "??",
+   "sha256": "e0e751a7ea7102c31c64e7522b3bdccb46c400fcea4d30c78b8d713dccc2e00f",
+   "bytes": 2009,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/jobs/ugc-01/ugc.tsx",
+   "status": "??",
+   "sha256": "c52547cd899aecfdf3dbe20aed50b65d40023bcbe48a873a90d020689ccb6556",
+   "bytes": 8030,
+   "include_in_artifact": "no",
+   "in_rc2_a644abd": false,
+   "reason": "excluded by the manifest"
+  },
+  {
+   "path": "engine/src/kit/ugc/CommentReply.tsx",
+   "status": "??",
+   "sha256": "58fe0256eba8db31ae624e56b740172b4b7606b4870932bfb8e09c2d7c13aa9c",
+   "bytes": 7055,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "engine/src/kit/ugc/ScreenRecTell.tsx",
+   "status": "??",
+   "sha256": "eedb828af7e08c277e6ed5e2bd8acd93fa73e0fe7e904e7d05400b802dffdec1",
+   "bytes": 8380,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "engine/src/kit/ugc/StickerPop.tsx",
+   "status": "??",
+   "sha256": "9d453fea175e2551d544dead29303f20acade72b2bffa2d14a6926aca5af91dd",
+   "bytes": 5624,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "engine/src/kit/ugc/index.ts",
+   "status": "??",
+   "sha256": "ee5ababc2813562d8de3ccb85d09a159d5ff55ea5e5d65602c1997e9e26382b1",
+   "bytes": 604,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "engine/src/library/motion/entry.tsx",
+   "status": "??",
+   "sha256": "1d7f001af1ef604c6738c57643b4661554ba18617038b2c75c279ca364dd3528",
+   "bytes": 503,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "engine/src/library/motion/ugc/batch1.tsx",
+   "status": "??",
+   "sha256": "fb234eb8695f3c104a542e38d70c8d98d3bf2a81f94f1536d0f1d81fd4c4fe54",
+   "bytes": 2092,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "engine/src/library/motion/ugc/index.ts",
+   "status": "??",
+   "sha256": "638c7bcacedec53f5dc600109be326378eb65935a7e311284c0134f675e17796",
+   "bytes": 180,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "tools/audio/tests/test_mix_options.py",
+   "status": "??",
+   "sha256": "2973715a566a905cacdd6adcfe57ff67e8e19a896aa1e01daeae2c0ac61892ea",
+   "bytes": 8028,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "tools/footage/lib/grade.mjs",
+   "status": "??",
+   "sha256": "ae5013f507dc1c218bae2a29190eb06c32f9b0817a95090ef9df880a1236b6c9",
+   "bytes": 14880,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "tools/footage/tests/grade.test.mjs",
+   "status": "??",
+   "sha256": "4a95490adacac32e3503ad831701234fa2790543ecac0251fcb0de9bd72a0a0c",
+   "bytes": 10324,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": false,
+   "reason": "original in-house code or docs, not excluded by the manifest"
+  },
+  {
+   "path": "library/sounds/CREDITS.md",
+   "status": "M",
+   "sha256": "97675918c5fb2ddd2fc20639c67ec463362a26c7407b31194b60efbef3eb2441",
+   "bytes": 7970,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "manifest text; library/motion/index.json goes through replace_regex (tulvo strings) and the simulated export reported no replacement problem for it"
+  },
+  {
+   "path": "library/sounds/README.md",
+   "status": "M",
+   "sha256": "861a54e43cb0496cb3c6668601b54800a9aca0f2f74b4bed0d38d6e438b73d28",
+   "bytes": 5697,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "manifest text; library/motion/index.json goes through replace_regex (tulvo strings) and the simulated export reported no replacement problem for it"
+  },
+  {
+   "path": "library/sounds/kit.json",
+   "status": "M",
+   "sha256": "92907b4cccb71186d1ba87ff8f3434aa168c63014bae2a976bcfadf2e1de35ba",
+   "bytes": 5289,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "manifest text; library/motion/index.json goes through replace_regex (tulvo strings) and the simulated export reported no replacement problem for it"
+  },
+  {
+   "path": "library/sounds/ambience/index.json",
+   "status": "M",
+   "sha256": "aecaadb0e52619d0bf63964ddaf197d151c12bd4d763c17e28d1af5d58b0c4c8",
+   "bytes": 11905,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "manifest text; library/motion/index.json goes through replace_regex (tulvo strings) and the simulated export reported no replacement problem for it"
+  },
+  {
+   "path": "library/sounds/click/index.json",
+   "status": "M",
+   "sha256": "374fad6750cb1e237bd544d191d53da193a2764513aea222195c1dfc60548e1b",
+   "bytes": 17206,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "manifest text; library/motion/index.json goes through replace_regex (tulvo strings) and the simulated export reported no replacement problem for it"
+  },
+  {
+   "path": "library/sounds/foley/index.json",
+   "status": "M",
+   "sha256": "f58e91f4bbac8a54c8830b1a79a8d8d395216f708518f41f14985e13197b298e",
+   "bytes": 14846,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "manifest text; library/motion/index.json goes through replace_regex (tulvo strings) and the simulated export reported no replacement problem for it"
+  },
+  {
+   "path": "library/sounds/swish/index.json",
+   "status": "M",
+   "sha256": "e8b55348b795d5b1b15344cd573d411bf22a52ab9d48f8f56af5ff0951431b11",
+   "bytes": 16403,
+   "include_in_artifact": "yes",
+   "in_rc2_a644abd": true,
+   "reason": "manifest text; library/motion/index.json goes through replace_regex (tulvo strings) and the simulated export reported no replacement problem for it"
+  }
+ ],
+ "code_and_docs_note": "engine/src/jobs/** entries are listed for completeness: excluded by the manifest (engine/src/jobs), so they do not ship.",
+ "corrective_5": {
+  "on": "2026-11-19",
+  "note": "Checksums above were refreshed after the corrective pass (the film was re-exported; see .damex/evidence/05-corrective.md). Prompt 04 action still needed: add library/fixtures and .damex to release/manifest.json exclude (not done here: Prompt 04 owns the manifest and tools/release). Also: tools/checks/tests/motion_library.test.mjs asserts preview mp4 files that the manifest drops; run it in the source tree, not in the exported artifact.",
+  "manifest_excludes_needed": [
+   "library/fixtures",
+   ".damex"
+  ],
+  "new_files": [
+   {
+    "path": "tools/checks/tests/recbadge_contrast.test.mjs",
+    "sha256": "4dc5703106c63d8d61d394209e965aa32ade901bb61c3a5519c292d3c67ed671",
+    "include_in_artifact": "yes (a test with no banned words; it skips when brands/ is not in the artifact)"
+   }
+  ],
+  "tracked_recipe": ".gitignore now un-ignores jobs/*/edit/grade.json (jobs/ is excluded from the export anyway)"
+ }
+}

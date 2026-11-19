@@ -1,0 +1,7 @@
+{
+ "version": 1,
+ "default": { "exposure": 0, "temperature": 0, "contrast": 0, "saturation": 0, "look": "none" },
+ "clips": {
+  "take-5": { "exposure": 0.15, "temperature": -8, "contrast": 8, "saturation": 6, "look": "soft-daylight" }
+ }
+}

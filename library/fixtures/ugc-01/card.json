@@ -1,0 +1,318 @@
+{
+ "id": "ugc-01",
+ "name": "Kestrel board in one take (UGC-style product slice)",
+ "status": "defined, not built. Phase 1 card; no render exists.",
+ "decided": "owner, 2026-11-19: one original, cleared fixture; no third-party example clips",
+ "product": {
+  "brand": "tulvo",
+  "brief": "Tulvo builds boards and pages inside a workspace from a description; the slice shows a real Kestrel Studio lead pipeline and campaign board being opened, in a short phone-first, hands-off 'screen share' style."
+ },
+ "organicOnly": true,
+ "excludedMaterial": [
+  "ViralHooks clips (organic study only, never ad material)",
+  "library/references/** media (private study material)",
+  "any footage of a person (none in the repo; none cleared)"
+ ],
+ "sourceLocators": [
+  {
+   "role": "demo-1-lead-pipeline-still",
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/marks/lead-pipeline.png",
+   "sha256": "12eb2442a9a8ebe955486f49df558e8e5575ed39f922985c63ef271803d8b84d",
+   "kind": "image/png",
+   "probe": "3840x2160, rgb24, full range, no colour tags (treat as sRGB), captured 2026-11-12 at 4.365 s of take 5",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo.",
+    "note": "privateStudy is true because the studio recorded its own product's demo workspace (Kestrel Studio) for internal capture tests. publicUse and bundling stay null until the owner records a yes; the demo client names on screen (e.g. Ferro Bike Works) are not confirmed fictional."
+   }
+  },
+  {
+   "role": "demo-2-campaign-board-still",
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/marks/campaign-board.png",
+   "sha256": "05270295d70db4e38f71c1a18862aae017baa850b0440cbf448b7df4009166ec",
+   "kind": "image/png",
+   "probe": "3840x2160, rgb24, full range, no colour tags, mark at 8.872 s",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo.",
+    "note": "privateStudy is true because the studio recorded its own product's demo workspace (Kestrel Studio) for internal capture tests. publicUse and bundling stay null until the owner records a yes; the demo client names on screen (e.g. Ferro Bike Works) are not confirmed fictional."
+   }
+  },
+  {
+   "role": "demo-3-campaign-board-new-still",
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/marks/campaign-board-new.png",
+   "sha256": "0e4ebeb1b9fcb8aefe0eaddad763660ce2a065aa081bc8159c784e979329e8ec",
+   "kind": "image/png",
+   "probe": "3840x2160, rgb24, full range, no colour tags, mark at 11.868 s (pointer hovering New)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo.",
+    "note": "privateStudy is true because the studio recorded its own product's demo workspace (Kestrel Studio) for internal capture tests. publicUse and bundling stay null until the owner records a yes; the demo client names on screen (e.g. Ferro Bike Works) are not confirmed fictional."
+   }
+  },
+  {
+   "role": "capture-record",
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/capture.json",
+   "sha256": "f56662b1e83678267fdcb5787f8aa156ca05e7c8031e0575a0bb0b3cf27000cb",
+   "kind": "application/json",
+   "probe": "60 fps recording at 3840x2160 for 12.867 s was made; the recording file itself is not in the repo, but it exists in the main checkout at jobs/_tulvo-capture-test/capture/boards/take-5/recording.mp4 (3840x2160, 60 fps, 12.867 s; privateStudy only, the same rights as the take-5 stills)",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills.",
+    "note": "Contains the demo workspace's page URLs under app.tulvo.io; strip before any public bundle."
+   }
+  },
+  {
+   "role": "pointer-track",
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/cursor.json",
+   "sha256": "303118f9522290ce2a398eae88341ac81f525a0c46df5ab98c9ea66e81316f32",
+   "kind": "application/json",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills.",
+    "note": "Contains the demo workspace's page URLs under app.tulvo.io; strip before any public bundle."
+   }
+  },
+  {
+   "role": "camera-tracks",
+   "path": "jobs/_tulvo-capture-test/capture/boards/take-5/tracks.json",
+   "sha256": "b8fafa1b99a6a6f58ceb9f7af3a82c9a5026e8249f60d6e65bce75dd7e1bed1c",
+   "kind": "application/json",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills.",
+    "note": "Contains the demo workspace's page URLs under app.tulvo.io; strip before any public bundle."
+   }
+  },
+  {
+   "role": "brand-numbers",
+   "path": "brands/tulvo/brand.json",
+   "sha256": "b22619988071c3e7c3b7bab55d17c6df932213c6972766d887b12ecf997f90ed",
+   "kind": "application/json",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found.",
+    "note": "Logo use in a published film is the normal brand case; null here only because no record says so for this fixture."
+   }
+  },
+  {
+   "role": "wordmark-light-stage",
+   "path": "brands/tulvo/logo/tulvo-wordmark.png",
+   "sha256": "c10c3e5a8e7b457ebf8df75829c8676c235f1c73d891c01d766f9f118d91d5b1",
+   "kind": "image/png",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found.",
+    "note": "Logo use in a published film is the normal brand case; null here only because no record says so for this fixture."
+   }
+  },
+  {
+   "role": "sound-kit-map",
+   "path": "library/sounds/kit.json",
+   "sha256": "92907b4cccb71186d1ba87ff8f3434aa168c63014bae2a976bcfadf2e1de35ba",
+   "kind": "application/json",
+   "rights": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true,
+    "basis": "library/sounds/CREDITS.md: every sound is CC0 or made by the studio (synth.py); kit.json is the studio's own mapping.",
+    "note": "The listed library sounds are CC0 per CREDITS.md; the 'Not checked' note in library/sounds/README.md (nobody has listened) still applies."
+   }
+  }
+ ],
+ "rights": {
+  "_about": "Per source, by role. true = a record in the repo says so; null = unknown, not granted. Per-use: privateStudy (internal study and drafts), publicUse (a published film or ad), bundling (shipping the file inside a repo or library bundle). The same data, with notes, sits in each sourceLocators entry.",
+  "bySource": {
+   "demo-1-lead-pipeline-still": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo."
+   },
+   "demo-2-campaign-board-still": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo."
+   },
+   "demo-3-campaign-board-new-still": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo."
+   },
+   "capture-record": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills."
+   },
+   "pointer-track": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills."
+   },
+   "camera-tracks": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills."
+   },
+   "brand-numbers": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found."
+   },
+   "wordmark-light-stage": {
+    "privateStudy": true,
+    "publicUse": null,
+    "bundling": null,
+    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found."
+   },
+   "sound-kit-map": {
+    "privateStudy": true,
+    "publicUse": true,
+    "bundling": true,
+    "basis": "library/sounds/CREDITS.md: every sound is CC0 or made by the studio (synth.py); kit.json is the studio's own mapping."
+   }
+  },
+  "overall": {
+   "privateStudy": true,
+   "publicUse": null,
+   "bundling": null,
+   "voiceOver": "pending: paid TTS approval or pending: owner recording",
+   "personFootage": "none exists; none cleared"
+  }
+ },
+ "slice": {
+  "targetSeconds": 16.0,
+  "fps": 30,
+  "frames": 480,
+  "treatment": "Three product stills from the real capture, reframed from 16:9 to 9:16 with CaptureClip/relayout moves (stage-phone-crop, camera-push-in, product-ring/product-callout); creator-style captions; no person on screen. The 60 fps take-5 recording is the better source if the owner re-supplies it.",
+  "beats": [
+   {
+    "id": "hook",
+    "start": 0.0,
+    "end": 2.5,
+    "shows": "demo-1-lead-pipeline-still pushed in, opener-notification-drop, one on-screen line of at most seven words (family 'demonstration' or 'problem' from node tools/hooks/hooks.mjs find; chosen at build)",
+    "voice": "pending: paid TTS approval or pending: owner recording"
+   },
+   {
+    "id": "demo",
+    "start": 2.5,
+    "end": 9.0,
+    "shows": "lead-pipeline to campaign-board (a click-through cut at the 'Campaign Launch Board' sidebar item), then the hover on New (demo-3); camera-follow on the pointer from cursor.json/tracks.json",
+    "voice": "pending: paid TTS approval or pending: owner recording"
+   },
+   {
+    "id": "proof",
+    "start": 9.0,
+    "end": 13.0,
+    "shows": "the board on screen held with product-ring on the board title and one caption naming only what is visible (no numbers, no result claims)",
+    "voice": "pending: paid TTS approval or pending: owner recording"
+   },
+   {
+    "id": "cta",
+    "start": 13.0,
+    "end": 16.0,
+    "shows": "wordmark on the light stage and the offer line",
+    "offerWording": "Try it free (wording from jobs/2026-11-18-library-proof/job.json; owner approval for this fixture: null)",
+    "voice": "pending: paid TTS approval or pending: owner recording"
+   }
+  ],
+  "captionsFromScript": true,
+  "voice": "none in the keyless preview; captions carry the line. Final voice is pending: paid TTS approval or pending: owner recording."
+ },
+ "output": {
+  "size": "1080x1920 (9:16)",
+  "fps": 30,
+  "durationSeconds": {
+   "min": 12,
+   "max": 20,
+   "target": 16
+  },
+  "captionSafeArea": "nothing that matters within 5% of any edge (54 px sides, 96 px top and bottom); captions in the bottom band, 82% to 93% of frame height (y 1574 to 1786), per knowledge/craft/12-frame-quality.md; the studio's 9:16 plan check (tools/checks/capture_relayout.mjs) must keep the acted-on thing and pointer inside the safe area on every frame",
+  "colour": "BT.709 SDR delivery (primaries, transfer and matrix tagged bt709, limited range, yuv420p); stills are untagged sRGB and are treated as BT.709 SDR",
+  "loudness": {
+   "integratedLUFS": -14,
+   "toleranceLU": 1,
+   "truePeakMaxDBTP": -1,
+   "tool": "tools/audio/master.sh",
+   "note": "master.sh's own pass/fail only fails a peak above -0.5 dBTP; the required gate for this card is -1 dBTP, so check the measured 'after' value by hand."
+  },
+  "keylessPreview": "renders with no network, no API key and no paid provider: captions only, synth/CC0 kit sounds, no TTS",
+  "checks": [
+   "tools/checks smoothness.py: no jumps or judder",
+   "flashes.py: pass",
+   "audio after master.sh: -15 to -13 LUFS and true peak at or below -1 dBTP",
+   "ffprobe: 1080x1920, 30 fps, 12 to 20 s, bt709",
+   "every sound has a cause on screen; no two of a kind within 0.3 s"
+  ]
+ },
+ "soundPlan": {
+  "source": "library/sounds/kit.json slot IDs (brand files in brands/tulvo/sounds win where present; say which slots came from the library in the hand-over)",
+  "bed": {
+   "slot": "room-tone",
+   "library": "ambience/room-apartment-window-01",
+   "seconds": 16.0,
+   "note": "exactly the length of the slice; low under the whole film so captions-only silence does not sound dead; has a known fan-hum doubt, listen first"
+  },
+  "music": {
+   "slot": "music-bed",
+   "library": "music/minimal-pulse-01",
+   "offsetSeconds": 0.251,
+   "use": "optional; off by default for a UGC feel; if on, duck under any voice"
+  },
+  "beats": {
+   "hook": [
+    "notification (interface/notification-soft-01) at 0.0",
+    "impact-soft (impact/thud-01) at 0.0 on the first line landing",
+    "riser-short (riser/smooth-swell-01) 1.2 to 2.5 into the cut"
+   ],
+   "demo": [
+    "whip (swish/whip-01) on the cut at 2.5",
+    "soft-click (click/mouse-tap-01) on each pointer click, matched to cursor.json",
+    "small-whoosh (whoosh/air-soft-01) on the camera follow",
+    "toast-pop (pop/soft-pop-01) when the New hover opens"
+   ],
+   "proof": [
+    "text-swish (swish/paper-soft-01) as the caption arrives",
+    "success-chime (interface/success-glass-01) as the ring lands"
+   ],
+   "cta": [
+    "offer-sting (chime/sting-bright-synth-04) as the offer line lands",
+    "logo-sting (chime/sting-warm-synth-01) on the wordmark"
+   ]
+  },
+  "levelRule": "effects at a third to two thirds of the voice level (07-sound.md); with no voice, hold effects about 6 dB below the bed-plus-music peak and verify with master.sh"
+ },
+ "gaps": [
+  "No video file is committed: the film uses three 3840x2160 stills. The take-5 recording DOES exist in the main checkout (jobs/_tulvo-capture-test/capture/boards/take-5/recording.mp4, 3840x2160, 60 fps, 12.867 s) and is usable as a source for real motion; its rights are the same as the take-5 stills (privateStudy only, publicUse and bundling null). A copy was used for the second example (product-motion-02) only",
+  "Source is 16:9; no 9:16 or phone-native capture exists",
+  "No cleared person footage: no talking head, no hands, no face. UGC voice and presence are pending",
+  "Voice-over: pending: paid TTS approval or pending: owner recording",
+  "publicUse and bundling rights on the Kestrel Studio stills are null (not recorded); demo client names on screen not confirmed fictional",
+  "Sound gaps for this slice (see .damex/notes/05-phase1-gaps.md): phone buzz and screen-tap foley, cafe or co-working ambience",
+  "Motion gaps: comment-reply bubble, sticker or emoji pop, screen-recording tell",
+  "master.sh gate (-0.5 dBTP) is looser than this card's -1 dBTP",
+  "Nobody has listened to the kit sounds used here (library/sounds/README.md 'Not checked')"
+ ]
+}

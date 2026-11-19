@@ -73,6 +73,10 @@ The library plan's phases 4 and 5 added 100 moves, each built to work in all fou
 - Checked: every preview passes `smoothness.py` and `flashes.py`; each move was looked at in all four sizes by its builder, and a fresh-eyes review of one settled frame of all 100 in 9:16, 1:1 and 4:5 found 24 problems, all fixed and looked at again. `tools/checks/tests/motion_library.test.mjs` keeps the catalogue and the gallery in step.
 - Not checked: each move on brands other than Tulvo and on the dark page (most were looked at on the light page only); the calm and hype presets (the confident preset was used throughout); moves inside real films beyond the library's proof film (`jobs/2026-11-18-library-proof/`).
 
+## Creator-style moves for phone films (19 Nov 2026)
+
+Three plain-2D moves in `engine/src/kit/ugc/` (no WebGL, no image, no emoji font; every time is seconds on the scene clock, every random is seeded): `CommentReply` (the question card a UGC film answers), `ScreenRecTell` with `RecBadge` and `TapRipple` (a REC dot and timer, a tap ripple and an original phone), `StickerPop` (heart, star, tick, sparkle or starburst drawn from paths). Gallery: `move-ugc-*` in the "ugc" folder; render one with `npx remotion render src/library/motion/entry.tsx move-ugc-comment-reply ../library/motion/ugc-comment-reply.mp4 --scale=0.5 --public-dir=out/lib-public` (`entry.tsx` bundles the sized gallery alone, for a checkout where `src/index.ts` will not bundle). Used for real in `jobs/2026-11-19-ugc-01`. Each is in all four sizes; 9:16 and 16:9 stills were looked at.
+
 ## Moves for product captures
 
 The capture families in `index.json` (`capture-pointer`, `capture-effect`, `capture-camera`, `capture-time`, `capture-look`) are settings of `CaptureClip` (`engine/src/kit/CaptureClip.tsx`), not components of their own. Each has a composition `move-<name>` in the "capture" folder of Remotion Studio that plays a fitting stretch of a real capture, found from its own events: the newest capture, or the one named in its `capture` prop. Their previews here were rendered at half size from a practice capture.

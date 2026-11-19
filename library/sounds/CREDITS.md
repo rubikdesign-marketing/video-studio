@@ -27,6 +27,13 @@ Downloaded from kenney.nl with a browser User-Agent through the site's own downl
 - Used: only sounds in the "Free and royalty-free" set, fetched as `https://bigsoundbank.com/UPLOAD/mp3/<number>.mp3` (the MP3 the site serves for each sound number; the `original` field gives the number). Long recordings were cut to the part used (a click, a pop, a 2.6 s typing burst, a 16 s ambience window).
 - Four sounds (s2212, s1290, s0480, s0097) answered 403 to the same download and were not used.
 
+### Made in-house, 9 files (19 Nov 2026)
+`foley/phone-buzz-table-01`, `foley/phone-buzz-table-02`, `click/finger-tap-glass-01`, `click/finger-tap-glass-02`, `click/finger-tap-glass-03`, `swish/glass-swipe-01`, `swish/glass-swipe-02`, `swish/glass-swipe-03` and `ambience/room-clean-01`: original, synthesised in-house with `tools/audio/synth.py` (kinds `buzz` and `tap`, ambience style `clean`; seeded, so each is remade from its recipe in the index). Given away as CC0 like the studio's other synthesised sounds. No third-party audio.
+
+### Looked at and not used (19 Nov 2026 additions)
+- Kenney Interface Sounds (https://kenney.nl/assets/interface-sounds, CC0, already used: 45 files in the library): nothing in it is a fingertip on glass or a phone buzz; its clicks and taps are electronic UI sounds, so nothing more was taken. No download was made.
+- plinkfx (`LICENSE-SOUNDS`, CC0): recipes only, no audio files; not used.
+
 ### Looked at and not used
 - maximilianfeix/plinkfx (commit `7e5f6a477037679a29df9c5141e9853b1267e7d8`): CC0 sounds ("The sounds in plinkfx are dedicated to the public domain under CC0 1.0 Universal ... and every audio file rendered from them", `LICENSE-SOUNDS`), but the repository ships recipes in TypeScript and no audio files; rendering them needs its own build and running its code. Nothing was taken from it in this batch.
 
