@@ -271,3 +271,120 @@
 .decision .ui-icon {
   flex: none;
 }
+
+.notes-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  width: 100%;
+}
+.notes-quick .ui-chip {
+  gap: 6px;
+  padding-right: var(--space-1);
+}
+.notes-quick .ui-icon {
+  vertical-align: -2px;
+  margin-right: 3px;
+}
+.notes-key {
+  min-width: 16px;
+  padding: 0 3px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--text-quiet);
+  font: inherit;
+  font-size: 10px;
+  text-align: center;
+}
+.notes-unspan {
+  min-height: 22px;
+  width: 22px;
+  margin-left: var(--space-1);
+  padding: 0;
+  vertical-align: middle;
+}
+
+/* The guided review card: a solid panel over the bottom of the film, above the transport. */
+.guide-card {
+  position: absolute;
+  left: 50%;
+  bottom: 76px;
+  z-index: 7;
+  transform: translateX(-50%);
+  width: min(460px, calc(100% - var(--space-5)));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-float);
+  color: var(--text-strong);
+  animation: ui-rise var(--duration-panel) var(--ease);
+}
+.guide-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.guide-stop {
+  min-height: 24px;
+  padding: 0 var(--space-2);
+}
+.guide-title {
+  color: var(--text-strong);
+  font-size: var(--size-15);
+  font-weight: var(--weight-semibold);
+  text-wrap: balance;
+}
+.guide-text {
+  color: var(--text-body);
+}
+.guide-watching {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.guide-hint {
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+.guide-key {
+  margin-left: 2px;
+  padding: 0 4px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font: inherit;
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+/* Claude's replies, checked one by one. */
+.replies-intro {
+  padding: var(--space-2) var(--space-2) var(--space-3);
+}
+.replies-item {
+  flex-direction: column;
+  align-items: stretch;
+}
+.replies-item[data-mark] {
+  opacity: 0.75;
+}
+.replies-yours {
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.replies-actions {
+  display: flex;
+  gap: var(--space-1);
+  padding: 0 var(--space-2) var(--space-2);
+}

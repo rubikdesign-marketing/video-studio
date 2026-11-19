@@ -5,6 +5,7 @@ import { usePlayback } from '../playback';
 import { editor, useEditedFilm, useNotes, useSelection } from '../store';
 import { Button, Chip, Field, Icon, Segmented } from '../ui';
 import { addNoteInOrder, playhead } from './actions';
+import { REACTIONS, react } from './reactions';
 import { useComposer } from './composer';
 import { TOPICS } from './topics';
 import './notes.css';
@@ -23,7 +24,7 @@ export function addComposedNote(): boolean {
     return false;
   }
   if (usePlayback.getState().playing) usePlayback.getState().toggle();
-  addNoteInOrder(editor, { time: playhead(), text: c.text, kind: c.kind, topic: c.topic, must: c.must, box: c.box });
+  addNoteInOrder(editor, { time: c.span ? c.span.start : playhead(), end: c.span?.end ?? null, text: c.text, kind: c.kind, topic: c.topic, must: c.must, box: c.box });
   c.clear();
   return true;
 }
@@ -77,18 +78,38 @@ export function NoteEditor() {
     }
   };
 
-  const here = sceneAt(film, selected ? selected.time : time);
+  const span = selected ? null : composer.span;
+  const here = sceneAt(film, selected ? selected.time : span ? span.start : time);
   const marked = selected ? selected.box : composer.box;
 
   return (
     <div className="notes-editor" ref={root} onKeyDown={onKeyDown}>
       <h3 className="notes-title">
-        <span>
-          {selected ? 'Note at ' : 'New note at '}
-          <span className="time">{formatTime(selected ? selected.time : time)}</span>
-        </span>
+        {span ? (
+          <span>
+            New note from <span className="time">{formatTime(span.start)}</span> to <span className="time">{formatTime(span.end)}</span>
+            <Button variant="quiet" className="notes-unspan" aria-label="Note one moment instead" title="Note one moment instead (Esc)" onClick={() => composer.set({ span: null })}>
+              <Icon name="close" size={14} />
+            </Button>
+          </span>
+        ) : (
+          <span>
+            {selected ? 'Note ' : 'New note at '}
+            {selected?.end ? <>from <span className="time">{formatTime(selected.time)}</span> to <span className="time">{formatTime(selected.end)}</span></> : <span className="time">{formatTime(selected ? selected.time : time)}</span>}
+          </span>
+        )}
         {here ? <span className="notes-title-scene">{sceneName(film, here.id)}: {here.title}</span> : null}
       </h3>
+      {selected ? null : (
+        <div className="notes-quick" role="group" aria-label="Quick reactions">
+          {REACTIONS.map((r) => (
+            <Chip key={r.key} onClick={() => react(r)}>
+              <span title={`Adds this note at once (${r.key})`}>{r.kind === 'keep' ? <Icon name="heart" size={13} /> : null}{r.label}</span>
+              <kbd className="notes-key" aria-hidden="true">{r.key}</kbd>
+            </Chip>
+          ))}
+        </div>
+      )}
       <Segmented label="Kind of note" options={kinds} value={note.kind} onChange={(kind) => change({ kind })} />
       <Field label="Note" hideLabel multiline rows={3} value={note.text} onChange={(text) => change({ text })} placeholder={ask[note.kind]} />
       <div className="notes-row" role="group" aria-label="About">

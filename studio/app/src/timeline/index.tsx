@@ -5,6 +5,9 @@ import { usePlayback } from '../playback';
 import { formatKeys, registerPlaybackShortcuts, TABLE } from '../shortcuts';
 import { editor, useEditedFilm, useNotes, useSelection } from '../store';
 import { Button, Icon, MenuItem, Popover, showToast } from '../ui';
+import { useComposer } from '../notes/composer';
+import { useRail } from '../notes/railTab';
+import { ScrubPreview } from './ScrubPreview';
 import { dragCue, SNAP_PIXELS, snapPoints } from './snap';
 import './timeline.css';
 import { clock, clockExact, HEAD, LANES, scrollAfterZoom, ticks, tickStep, useTimelineView, type LaneId } from './view';
@@ -46,7 +49,7 @@ function Bar({ duration, zoom, hasVoice }: { duration: Seconds; zoom(factor: num
       <div className="tl-bar-group">
         <LanesMenu hasVoice={hasVoice} />
       </div>
-      <span className="tl-hint">Drag on-screen words to retime them. Click a scene to go there.</span>
+      <span className="tl-hint">Hover to preview. Drag on-screen words to retime them. Drag in Notes to note a stretch.</span>
       <div className="tl-bar-group tl-bar-zoom">
         <Button variant="quiet" aria-label="Zoom out" title={`Zoom out (${formatKeys(TABLE.zoomOut.keys)})`} onClick={() => zoom(1 / 1.5)} disabled={fitted}>−</Button>
         <Button variant="quiet" aria-label="Zoom in" title={`Zoom in (${formatKeys(TABLE.zoomIn.keys)})`} onClick={() => zoom(1.5)}>+</Button>
@@ -142,7 +145,7 @@ function Playhead({ pps, scroller }: { pps: number; scroller: { current: HTMLDiv
 // ---------------------------------------------------------------- lanes
 
 /** One lane. A hidden lane is left out altogether; the Lanes menu brings it back. */
-function Lane({ id, name, pps, duration, children }: { id: LaneId; name: string; pps: number; duration: Seconds; children: ReactNode }) {
+function Lane({ id, name, pps, duration, children, onPointerDown }: { id: LaneId; name: string; pps: number; duration: Seconds; children: ReactNode; onPointerDown?(e: ReactPointerEvent<HTMLDivElement>): void }) {
   const state = useTimelineView((s) => s.lanes[id]);
   if (state.hidden) return null;
   return (
@@ -151,7 +154,7 @@ function Lane({ id, name, pps, duration, children }: { id: LaneId; name: string;
         <span className="tl-head-name" title={name}>{name}</span>
         {state.locked ? <span className="tl-head-lock" title="Locked in the Lanes menu">Locked</span> : null}
       </div>
-      <div className="tl-lane" style={{ width: px(duration * pps) }}>{children}</div>
+      <div className="tl-lane" style={{ width: px(duration * pps) }} onPointerDown={state.locked ? undefined : onPointerDown}>{children}</div>
     </div>
   );
 }
@@ -243,15 +246,19 @@ function CueBlock({ film, scene, index, cue, pps, selected, locked }: { film: Fi
 function NotePin({ note, number, pps, selected, locked }: { note: DraftNote; number: number; pps: number; selected: boolean; locked: boolean }) {
   const kind = note.kind === 'keep' ? 'Keep this' : note.must ? 'Must fix' : 'Change';
   return (
-    <button
-      type="button" className="tl-item tl-pin" disabled={locked} data-kind={note.kind} data-must={note.must || undefined} aria-current={selected || undefined}
-      style={{ left: px(note.time * pps) }} title={note.text || undefined}
-      aria-label={`Note ${number} at ${clock(note.time)}, ${kind}${note.text ? `: ${note.text}` : ''}`}
-      onClick={() => { editor.select({ kind: 'note', localId: note.localId }); usePlayback.getState().seek(note.time); }}
-    >
-      <span className="tl-pin-mark" aria-hidden="true" />
-      <span className="tl-pin-number" aria-hidden="true">{number}</span>
-    </button>
+    <>
+      {note.end ? <span className="tl-item tl-span" data-kind={note.kind} data-must={note.must || undefined} aria-hidden="true"
+        style={{ left: px(note.time * pps), width: px((note.end - note.time) * pps) }} /> : null}
+      <button
+        type="button" className="tl-item tl-pin" disabled={locked} data-kind={note.kind} data-must={note.must || undefined} aria-current={selected || undefined}
+        style={{ left: px(note.time * pps) }} title={note.text || undefined}
+        aria-label={`Note ${number} ${note.end ? `from ${clock(note.time)} to ${clock(note.end)}` : `at ${clock(note.time)}`}, ${kind}${note.text ? `: ${note.text}` : ''}`}
+        onClick={() => { editor.select({ kind: 'note', localId: note.localId }); usePlayback.getState().seek(note.time); }}
+      >
+        <span className="tl-pin-mark" aria-hidden="true" />
+        <span className="tl-pin-number" aria-hidden="true">{number}</span>
+      </button>
+    </>
   );
 }
 
@@ -268,6 +275,33 @@ function Lanes({ film }: { film: Film }) {
   const selection = useSelection();
   const duration = film.duration;
   const hasVoice = film.scenes.some((s) => s.lines.length > 0);
+  const span = useComposer((s) => s.span);
+  const track = useRef<HTMLDivElement>(null);
+  const [marking, setMarking] = useState<{ a: Seconds; b: Seconds } | null>(null);
+
+  /** Dragging across the Notes lane marks a stretch for the next note; a plain click there moves the playhead. */
+  const markInLane = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 || (e.target as HTMLElement).closest('.tl-pin')) return;
+    const left = e.currentTarget.getBoundingClientRect().left;
+    const at = (x: number) => Math.min(duration, Math.max(0, (x - left) / pps));
+    const a = at(e.clientX); let b = a;
+    setMarking({ a, b });
+    const move = (ev: PointerEvent) => { b = at(ev.clientX); setMarking({ a, b }); };
+    const up = () => {
+      window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up);
+      setMarking(null);
+      const start = Math.min(a, b); const end = Math.max(a, b);
+      const p = usePlayback.getState();
+      if (end - start < 0.15) { p.pause(); p.seek(start); return; }
+      p.pause(); p.seek(start);
+      useComposer.getState().set({ span: { start, end } });
+      useRail.getState().setTab('send');
+      editor.select(null);
+      useComposer.getState().askFocus();
+    };
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+  };
+  const band = marking ? { start: Math.min(marking.a, marking.b), end: Math.max(marking.a, marking.b) } : span;
 
   /** Zooms around a point of the scrolling area (the pointer, or the middle). */
   const zoom = (factor: number, pointerX?: number) => {
@@ -316,7 +350,7 @@ function Lanes({ film }: { film: Film }) {
     <>
       <Bar duration={duration} zoom={(factor) => zoom(factor)} hasVoice={hasVoice} />
       <div className="tl-scroll" ref={scroller}>
-        <div className="tl-track" style={{ width: px(HEAD + duration * pps) }}>
+        <div className="tl-track" ref={track} style={{ width: px(HEAD + duration * pps) }}>
           <Ruler film={film} pps={pps} />
           <Lane id="scenes" name="Scenes" pps={pps} duration={duration}>
             {film.scenes.map((scene, i) => (
@@ -340,7 +374,8 @@ function Lanes({ film }: { film: Film }) {
                 selected={selection?.kind === 'cue' && selection.scene === scene.id && selection.cue === i} />
             )))}
           </Lane>
-          <Lane id="notes" name="Notes" pps={pps} duration={duration}>
+          <Lane id="notes" name="Notes" pps={pps} duration={duration} onPointerDown={markInLane}>
+            {band ? <span className="tl-item tl-marking" aria-hidden="true" style={{ left: px(band.start * pps), width: px((band.end - band.start) * pps) }} /> : null}
             {notes.map((note, i) => (
               <NotePin key={note.localId} note={note} number={i + 1} pps={pps} locked={lanes.notes.locked} selected={selection?.kind === 'note' && selection.localId === note.localId} />
             ))}
@@ -357,6 +392,7 @@ function Lanes({ film }: { film: Film }) {
           <Playhead pps={pps} scroller={scroller} />
         </div>
       </div>
+      <ScrubPreview track={track} pps={pps} duration={duration} />
     </>
   );
 }

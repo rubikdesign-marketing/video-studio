@@ -3,10 +3,10 @@ import { api, plainMessage, type JobSummary } from './api';
 import { Canvas, useCanvas, versionOptions } from './canvas';
 import { Inspector } from './inspector';
 import { PaperEdit } from './modes/paper';
-import { Decision, Rail, sendFromPage, startNote, toggleMarking, useComposer, useRail, useReviewer } from './notes';
+import { Decision, Replies, useReplies, GuideButton, GuideCard, REACTIONS, Rail, guideGood, markSpan, react, sendFromPage, startNote, toggleGuide, toggleMarking, useComposer, useGuide, useRail, useReviewer } from './notes';
 import { registerPlaybackShortcuts, usePlayback } from './playback';
 import { Shell, usePanelsStore } from './shell';
-import { CommandMenu, ShortcutSheet, TABLE, formatKeys, openMenu, openSheet, registerCoreShortcuts, registerNoteShortcuts, registerPanelShortcuts, useShortcuts } from './shortcuts';
+import { CommandMenu, ShortcutSheet, TABLE, formatKeys, openMenu, openSheet, registerCoreShortcuts, registerNoteShortcuts, registerPanelShortcuts, registerReviewShortcuts, useShortcuts } from './shortcuts';
 import { editor, history, useFilm, useHistory, useNotes, useSaveLabel, useSaving, useSelection } from './store';
 import { ThemeSwitch, useTheme } from './theme';
 import { Timeline } from './timeline';
@@ -190,6 +190,21 @@ function TopBar({ jobs, job, onJob, modeSwitch, decision }: { jobs: JobSummary[]
   );
 }
 
+/** The notes rail with the Replies tab when Claude has answered the last batch. */
+function ReviewRail() {
+  const replies = useReplies();
+  return (
+    <Rail inspector={<Inspector />} progressExtra={<GuideButton />}
+      replies={replies.items.length ? { count: replies.items.length, content: <Replies /> } : undefined} />
+  );
+}
+
+/** The decision button, told how many replies are still to check. */
+function ReviewDecision() {
+  const { unchecked } = useReplies();
+  return <Decision repliesToCheck={unchecked} />;
+}
+
 /** Shown when the film was rendered again under unsaved text changes. */
 function StaleNotice() {
   const stale = useSaving((s) => s.stale);
@@ -237,6 +252,8 @@ function usePageShortcuts() {
           startNote();
         },
         markGood: () => {
+          // While the scene-by-scene review asks, G is its "looks good" answer and moves on.
+          if (useGuide.getState().status === 'asking' && !useGuide.getState().noted) return guideGood();
           const scene = sceneAt(editor.stores.film.getState().film, usePlayback.getState().time);
           if (scene) editor.setSceneGood(scene.id, !editor.stores.notes.getState().goodScenes.includes(scene.id));
         },
@@ -253,7 +270,11 @@ function usePageShortcuts() {
           if (other) canvas.set({ compare: !canvas.compare, compareWith: canvas.compareWith ?? other.file });
         },
         send: () => void sendFromPage(false),
+        ...Object.fromEntries(REACTIONS.map((r) => [`react${r.key}`, () => { openRight(); react(r); }])),
+        spanStart: () => { openRight(); markSpan('start', usePlayback.getState().duration); },
+        spanEnd: () => { openRight(); markSpan('end', usePlayback.getState().duration); },
       }),
+      registerReviewShortcuts({ guide: () => { openRight(); toggleGuide(); } }),
     ];
     const save = () => void editor.flush().catch(() => {});
     window.addEventListener('pagehide', save);
@@ -297,10 +318,11 @@ function ReviewApp({ modeSwitch }: { modeSwitch: ReactNode }) {
   return (
     <>
       <Shell
-        topBar={<TopBar jobs={list} job={job} onJob={open} modeSwitch={modeSwitch} decision={ready ? <Decision /> : null} />}
+        topBar={<TopBar jobs={list} job={job} onJob={open} modeSwitch={modeSwitch} decision={ready ? <ReviewDecision /> : null} />}
         toggles={false}
         canvas={
           notice ?? (
+            <>
             <Canvas
               box={selectedNote ? selectedNote.box : composer.box}
               marking={composer.marking}
@@ -308,13 +330,15 @@ function ReviewApp({ modeSwitch }: { modeSwitch: ReactNode }) {
               onToggleMarking={() => toggleMarking(selectedNote)}
               onNote={() => { const panels = usePanelsStore.getState(); if (!panels.isOpen('right')) panels.toggle('right'); useRail.getState().setTab('send'); startNote(); }}
             />
+            <GuideCard onSend={() => document.querySelector<HTMLButtonElement>('.decision button')?.click()} />
+            </>
           )
         }
         right={
           ready ? (
             <>
               <StaleNotice />
-              <Rail inspector={<Inspector />} />
+              <ReviewRail />
             </>
           ) : null
         }

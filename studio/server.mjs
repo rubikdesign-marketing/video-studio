@@ -94,7 +94,9 @@ function sendBatch(job, payload) {
       frame = `review/frames/b${tag}-n${i + 1}.jpg`;
       fs.writeFileSync(path.join(JOBS, job, frame), Buffer.from(x.frame.split(',')[1], 'base64'));
     }
-    return { id: `b${tag}-n${i + 1}`, time: Number(x.time.toFixed(2)), scene: scene?.id || null, scene_title: scene?.title || null,
+    // A note can cover a stretch: `end` is kept only when it is a real time after `time` (EDITOR-V2-PLAN.md, phase B3).
+    const end = typeof x.end === 'number' && Number.isFinite(x.end) && x.end > x.time ? { end: Number(x.end.toFixed(2)) } : {};
+    return { id: `b${tag}-n${i + 1}`, time: Number(x.time.toFixed(2)), ...end, scene: scene?.id || null, scene_title: scene?.title || null,
       kind: x.kind === 'keep' ? 'keep' : 'change', topic: x.topic || null, must: !!x.must,
       text: x.text.trim(), box: x.box || null, frame, resolved: false, reply: null };
   });
@@ -104,7 +106,7 @@ function sendBatch(job, payload) {
     sent_at: new Date().toISOString(), status: 'sent', approved: !!payload.approved, good_scenes: good, notes };
   writeJson(path.join(dir, `batch-${tag}.json`), batch);
   const log = path.join(ROOT, 'knowledge', 'feedback-log', `${job}.jsonl`); fs.mkdirSync(path.dirname(log), { recursive: true });
-  for (const note of notes) fs.appendFileSync(log, JSON.stringify({ date: batch.sent_at, job, video: batch.video, batch: n, reviewer: batch.reviewer, time: note.time, scene: note.scene, kind: note.kind, topic: note.topic, must: note.must, text: note.text }) + '\n');
+  for (const note of notes) fs.appendFileSync(log, JSON.stringify({ date: batch.sent_at, job, video: batch.video, batch: n, reviewer: batch.reviewer, time: note.time, ...(note.end ? { end: note.end } : {}), scene: note.scene, kind: note.kind, topic: note.topic, must: note.must, text: note.text }) + '\n');
   if (batch.approved) fs.appendFileSync(log, JSON.stringify({ date: batch.sent_at, job, video: batch.video, batch: n, reviewer: batch.reviewer, approved: true }) + '\n');
   writeJson(path.join(dir, 'draft.json'), { notes: [], good_scenes: [] });
   return batch;

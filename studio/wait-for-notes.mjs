@@ -67,7 +67,7 @@ const check = () => {
     const order = [...batch.notes].sort((a, b) => (b.must - a.must) || (a.time - b.time));
     for (const n of order) {
       const what = n.kind === 'keep' ? 'KEEP THIS (do not change it; record what works)' : n.must ? 'MUST CHANGE' : 'change';
-      console.log(`\n[${n.id}] ${what} at ${n.time} s${n.scene ? `, scene ${n.scene} (${n.scene_title})` : ''}${n.topic ? `, about ${n.topic}` : ''}`);
+      console.log(`\n[${n.id}] ${what} ${n.end ? `from ${n.time} to ${n.end} s` : `at ${n.time} s`}${n.scene ? `, scene ${n.scene} (${n.scene_title})` : ''}${n.topic ? `, about ${n.topic}` : ''}`);
       console.log(`  "${n.text}"`);
       if (n.box) console.log(`  pointing at: left ${Math.round(n.box.x * 100)}%, top ${Math.round(n.box.y * 100)}%, ${Math.round(n.box.w * 100)}% wide, ${Math.round(n.box.h * 100)}% tall`);
       if (n.frame) console.log(`  frame: ${path.join(jobDir, n.frame)}`);

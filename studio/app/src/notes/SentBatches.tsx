@@ -31,7 +31,7 @@ export function SentBatches() {
                 <button type="button" className="notes-card-main" onClick={() => usePlayback.getState().seek(note.time)}>
                   {note.frame ? <img className="notes-frame" src={api.frameUrl(job, note.frame)} alt="" /> : null}
                   <span className="notes-meta">
-                    <strong className="time">{formatTime(note.time)}</strong>
+                    <strong className="time">{note.end ? `${formatTime(note.time)} to ${formatTime(note.end)}` : formatTime(note.time)}</strong>
                     <span>{sceneName(film, note.scene)}</span>
                     {note.kind === 'keep' ? <Chip>Keep</Chip> : null}
                     {note.must ? <Chip>Must fix</Chip> : null}

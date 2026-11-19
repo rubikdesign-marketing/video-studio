@@ -34,7 +34,7 @@ export function NotesList() {
               }}
             >
               <span className="notes-meta">
-                <strong className="time">{formatTime(note.time)}</strong>
+                <strong className="time">{note.end ? `${formatTime(note.time)} to ${formatTime(note.end)}` : formatTime(note.time)}</strong>
                 <span>{sceneName(film, sceneAt(film, note.time)?.id)}</span>
                 {note.kind === 'keep' ? <Chip className="is-keep">Keep</Chip> : null}
                 {note.must ? <Chip className="is-must">Must fix</Chip> : null}
