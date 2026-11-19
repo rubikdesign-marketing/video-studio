@@ -1,0 +1,134 @@
+{
+ "job": "2026-11-18-halden-saturday-croissants",
+ "slug": "2026-11-18-halden-saturday-croissants",
+ "fps": 60,
+ "width": 1080,
+ "height": 1920,
+ "brand": "halden",
+ "preset": "calm",
+ "stage": "light",
+ "duration": 12,
+ "audio": "jobs/2026-11-18-halden-saturday-croissants/audio.wav",
+ "audio_from": "mix.wav",
+ "scenes": [
+  {
+   "id": "S01",
+   "title": "The early riser",
+   "start": 0,
+   "end": 2.6,
+   "energy": 2,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Saturday is",
+      "*croissant* day."
+     ],
+     "at": 0.3,
+     "out": 2.25
+    }
+   ],
+   "shots": [
+    {
+     "id": "S01-1",
+     "at": 0.3,
+     "size": "abstract",
+     "capture": null
+    }
+   ]
+  },
+  {
+   "id": "S02",
+   "title": "The new time",
+   "start": 2.6,
+   "end": 6.7,
+   "energy": 3,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Out of the oven",
+      "at *7*."
+     ],
+     "at": 0.3,
+     "out": 3.75
+    }
+   ],
+   "shots": [
+    {
+     "id": "S02-1",
+     "at": 0.3,
+     "size": "medium",
+     "capture": null,
+     "label": "Every Saturday"
+    }
+   ]
+  },
+  {
+   "id": "S03",
+   "title": "Order the night before",
+   "start": 6.7,
+   "end": 9.9,
+   "energy": 3,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Only 60 a week."
+     ],
+     "at": 0.3,
+     "out": 1.4
+    },
+    {
+     "lines": [
+      "Order *ahead*."
+     ],
+     "at": 1.75,
+     "out": 2.85
+    }
+   ],
+   "shots": [
+    {
+     "id": "S03-1",
+     "at": 0.3,
+     "size": "medium",
+     "capture": null
+    },
+    {
+     "id": "S03-2",
+     "at": 1.75,
+     "size": "medium",
+     "capture": null
+    }
+   ]
+  },
+  {
+   "id": "S04",
+   "title": "The name",
+   "start": 9.9,
+   "end": 12,
+   "energy": 2,
+   "lines": [],
+   "texts": [
+    {
+     "lines": [
+      "Halden *Bakehouse*"
+     ],
+     "at": 0.3,
+     "out": 2.1
+    }
+   ],
+   "shots": [
+    {
+     "id": "S04-1",
+     "at": 0.3,
+     "size": "abstract",
+     "capture": null,
+     "label": "Saturdays from 7"
+    }
+   ]
+  }
+ ],
+ "planned_instant_changes": [],
+ "planned_holds": []
+}

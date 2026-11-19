@@ -141,18 +141,24 @@ others=$(ls brands 2>/dev/null | grep -v '^_' | grep -vx "$BRAND" | tr '\n' ' ')
 [ -n "$others" ] && pass "other brands: $others"
 
 echo "Keys"
-if [ -f .env ] && grep -Eq '^ELEVENLABS_API_KEY=.+' .env; then pass "ElevenLabs key is set in .env"
-elif [ -f .env ]; then fail "ElevenLabs key is empty" "open .env and paste the team key after ELEVENLABS_API_KEY="
-else fail ".env does not exist" "bash setup/install.sh creates it; then paste the team key"; fi
+# Paid providers are optional: without one, the studio still makes films from type, motion, screen captures, your own
+# footage and the sound library. Each line says what the missing key turns off.
+if [ ! -f .env ]; then note ".env does not exist" "bash setup/install.sh creates it. Without it no paid provider is used; type, motion, capture, footage and library sound still work"
+else
+  if grep -Eq '^ELEVENLABS_API_KEY=.+' .env; then pass "ElevenLabs key is set (voice-over, generated music and effects)"
+  else note "no ElevenLabs key: no generated voice-over, music or effects" "films without a voice and with library sound still work. To add it, paste your key after ELEVENLABS_API_KEY= in .env (paid plan; commercial use needs a paid plan)"; fi
+  if grep -Eq '^(KLING_API_KEY=.+|KLING_ACCESS_KEY=.+)' .env; then pass "Kling key is set (generated footage and images; every paid request goes through .generations/ledger.json)"
+  else note "no Kling key: no generated footage or images" "only needed for generated shots. Add KLING_API_KEY= to .env to turn it on"; fi
+fi
 git check-ignore -q .env 2>/dev/null && pass ".env is kept out of GitHub" || note ".env is not ignored by git yet" "this folder is not a git repository, or .gitignore is missing"
 
 echo "Tools"
-for t in tools/study/profile.py tools/study/sheets.sh tools/audio/voice_check.py tools/checks/smoothness.py tools/checks/frame_quality.py tools/checks/onscreen_text.py tools/checks/capture_motion.mjs tools/checks/capture_glue.mjs tools/checks/capture_transitions.mjs tools/checks/capture_relayout.mjs tools/checks/text_size.mjs tools/checks/captions_clear.mjs tools/checks/flashes.py tools/checks/energy_map.py tools/checks/lib/film.mjs tools/checks/lib/capture_place.mjs tools/film/sources.mjs tools/capture/freshness.mjs tools/audio/voice.mjs tools/audio/sound.mjs tools/audio/mix.py tools/audio/master.sh tools/audio/capture_sounds.mjs tools/audio/listen.mjs tools/audio/earshot.sh tools/media/openverse.mjs tools/film/captions.mjs tools/film/scaffold.mjs tools/film/render.sh tools/film/storyboard.mjs tools/film/seen_scroll.mjs tools/brand/lib.mjs tools/brand/sync.mjs tools/brand/check.mjs tools/brand/new.mjs tools/capture/capture.mjs tools/capture/yourchrome.mjs tools/capture/kinds.mjs tools/capture/answers.mjs tools/capture/parts.mjs tools/capture/email.mjs tools/capture/site.mjs tools/capture/terminal.mjs tools/capture/phone.mjs tools/capture/package.json studio/server.mjs studio/review.html studio/paper.html studio/wait-for-notes.mjs; do
+for t in tools/study/profile.py tools/study/sheets.sh tools/audio/voice_check.py tools/checks/smoothness.py tools/checks/frame_quality.py tools/checks/onscreen_text.py tools/checks/capture_motion.mjs tools/checks/capture_glue.mjs tools/checks/capture_transitions.mjs tools/checks/capture_relayout.mjs tools/checks/text_size.mjs tools/checks/captions_clear.mjs tools/checks/flashes.py tools/checks/energy_map.py tools/checks/lib/film.mjs tools/checks/lib/capture_place.mjs tools/film/sources.mjs tools/capture/freshness.mjs tools/audio/voice.mjs tools/audio/sound.mjs tools/audio/mix.py tools/audio/master.sh tools/audio/capture_sounds.mjs tools/audio/listen.mjs tools/audio/earshot.sh tools/media/openverse.mjs tools/film/captions.mjs tools/film/scaffold.mjs tools/film/render.sh tools/film/storyboard.mjs tools/film/costs.mjs tools/film/cut.py tools/film/kling.mjs tools/film/lib/lock.mjs tools/film/lib/bundle.mjs tools/film/lib/ledger.mjs tools/film/lib/runlog.mjs tools/film/lib/safe.sh tools/plan/brief.mjs tools/plan/revisions.mjs tools/plan/style.mjs templates/brief.json tools/film/seen_scroll.mjs tools/brand/lib.mjs tools/brand/sync.mjs tools/brand/check.mjs tools/brand/new.mjs tools/capture/capture.mjs tools/capture/yourchrome.mjs tools/capture/kinds.mjs tools/capture/answers.mjs tools/capture/parts.mjs tools/capture/email.mjs tools/capture/site.mjs tools/capture/terminal.mjs tools/capture/phone.mjs tools/capture/package.json studio/server.mjs studio/review.html studio/paper.html studio/wait-for-notes.mjs; do
   [ -f "$t" ] && pass "$t" || fail "$t is missing" "pull the latest studio from GitHub"
 done
 
 # The checks' own tests (phase 7): fast, no browser, no render. The engine-plan tests need the engine's esbuild.
-if node --test tools/capture/tests/*.test.mjs tools/checks/tests/film.test.mjs tools/checks/tests/captions_clear.test.mjs tools/checks/tests/text_size.test.mjs tools/checks/tests/hook_legible.test.mjs tools/checks/tests/motion_library.test.mjs tools/film/tests/*.test.mjs >/dev/null 2>&1; then pass "the freshness, captions, text size, hook readability, motion catalogue and proof-of-source tests pass"
+if node --test tools/capture/tests/*.test.mjs tools/checks/tests/film.test.mjs tools/checks/tests/captions_clear.test.mjs tools/checks/tests/text_size.test.mjs tools/checks/tests/hook_legible.test.mjs tools/checks/tests/motion_library.test.mjs tools/film/tests/*.test.mjs tools/plan/tests/*.test.mjs >/dev/null 2>&1; then pass "the freshness, captions, text size, hook readability, motion catalogue, proof-of-source, render safety, paid-generation ledger, brief and revision tests pass"
 else fail "a check's own tests fail" "run: node --test tools/capture/tests/*.test.mjs tools/checks/tests/*.test.mjs tools/film/tests/*.test.mjs"; fi
 if [ -d engine/node_modules/esbuild ]; then
   node --test tools/checks/tests/capture_place.test.mjs >/dev/null 2>&1 && pass "the checks read captures through the engine's plan" || fail "the checks cannot read captures through the engine's plan" "run: node --test tools/checks/tests/capture_place.test.mjs"
@@ -174,11 +180,11 @@ if [ $QUICK -eq 0 ] && [ -d engine/node_modules/remotion ]; then
 fi
 
 echo
-echo "Connect these yourself in the Claude desktop app (the script cannot see them):"
-echo "  - Figma connector, signed in to the shared Figma account"
-echo "  - Tulvo connector, attached to the demo workspace"
-echo "  - Tulvo signed in inside the browser pane"
-echo "  - GitHub signed in (gh auth login), so lessons sync"
+echo "Optional, in the Claude desktop app (the script cannot see them):"
+echo "  - If your videos show your web product: sign in to it in the browser pane, in a demo account with no real customer data"
+echo "  - If your product has a Claude connector, add it, so the studio can set up demo data for a video"
+echo "  - Figma connector, only if you want moodboards and storyboards in Figma (the studio's own pages work without it)"
+echo "  - GitHub signed in (gh auth login), only to get studio updates and share lessons"
 echo
 echo "$ok ok, $bad need attention, $warn notes"
 [ $bad -eq 0 ]

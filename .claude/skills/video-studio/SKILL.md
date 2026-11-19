@@ -96,6 +96,14 @@ Studio and brand rules always win over a bundled skill. After every video, log t
 - **"Learn this product update"**: walk the feature in the product, compare with `brands/<brand>/product/`, record what changed with the date and a screenshot.
 - **Review notes on a cut**: they arrive from the review page (`stages/05-animation.md`, "Review notes").
 
+## Next episode in a saved style
+
+When a brand has an approved film the creator wants more of, save its style once: `node tools/plan/style.mjs save jobs/<job> --name <style>`. A new episode then starts from it: `node tools/plan/style.mjs new jobs/<date>-<name> --style <brand>/<style> "<their words>"`. The size, cuts, kind, voice, energy, stage, scene structure, scene code, sound recipe, references and corrections already verified are settled; idea, moodboard and look approvals are skipped. Ask only what `brief.mjs check` lists, fill the words, then storyboard and animation as usual. Platform cuts from an approved master: `tools/footage/.venv/bin/python tools/film/cut.py <master> 4:5 <out>`, which refuses when a crop would lose anything on screen.
+
+## Time and money per job
+
+Every render, storyboard and master writes its time to `jobs/<job>/runs.jsonl`; every paid generation goes through `.generations/ledger.json` (`node tools/film/kling.mjs ledger`), which never pays twice for the same request. `node tools/film/costs.mjs jobs/<job>` shows both, apart from AI tokens and approval waits. When the app shows a session's token use, add it: `node tools/film/lib/runlog.mjs add jobs/<job> tool=ai stage=<stage> input_tokens=... cached_input_tokens=... output_tokens=...`. Never estimate a number that was not recorded.
+
 ## Keeping usage low
 
 Every video follows "The token plan, for every video" in `skill-map.md`: one stage per session; helper roles from `.claude/agents/` on the right model (`checker` on the cheapest; `scene-builder`, `capture-runner`, `frame-critic`, `reference-studier`, `researcher` on the middle one); Ponytail on; skills and sub-guides loaded narrowly; scripts measure and you read their summaries and contact sheets; half-size renders until the master; usage logged per stage in `job.json`.

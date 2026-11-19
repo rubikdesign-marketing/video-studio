@@ -1,0 +1,45 @@
+{
+ "stage": "light",
+ "planned_instant_changes": [],
+ "planned_holds": [{ "scene": "S02", "seconds": 1.5, "what": "the time 6:30 held long enough to read" }],
+ "scenes": [
+  {
+   "id": "S01", "title": "The early riser", "beat": "hook", "energy": 2, "seconds": 2.6,
+   "transition_in": null, "hand_off": null,
+   "shots": [
+    { "frame": "F01", "text": "Fresh bread,\n*before* work.", "size": "abstract", "capture": null, "focal_point": "centre",
+      "point": "There is now bread before the working day starts.", "eye": "the word before",
+      "move": "words rise one at a time, slow", "sound": "soft room tone", "borrow": [{ "ref": 0, "for": "pacing" }, { "ref": 0, "for": "type" }] }
+   ]
+  },
+  {
+   "id": "S02", "title": "The new time", "beat": "proof", "energy": 3, "seconds": 3.2,
+   "transition_in": { "number": 1, "name": "hand-off object" }, "hand_off": "the word before slides into the clock",
+   "shots": [
+    { "frame": "F02", "text": "Doors open\nat *6:30*.", "size": "medium", "capture": null, "focal_point": "centre, the time",
+      "point": "The bakery opens at 6:30.", "eye": "6:30", "proves": 0,
+      "move": "the time lands and holds", "sound": "a low warm tick as 6:30 lands", "borrow": [{ "ref": 0, "for": "type" }] }
+   ]
+  },
+  {
+   "id": "S03", "title": "Order the night before", "beat": "offer", "energy": 3, "seconds": 3.2,
+   "transition_in": { "number": 3, "name": "camera carry" }, "hand_off": null,
+   "shots": [
+    { "frame": "F03", "text": "Order tonight.", "size": "medium", "capture": null, "focal_point": "upper third",
+      "point": "You can order the evening before.", "eye": "Order tonight", "proves": 1,
+      "move": "line types on, calm", "sound": "paper rustle", "borrow": [{ "ref": 0, "for": "pacing" }] },
+    { "frame": "F04", "text": "Pick up *warm*.", "size": "medium", "capture": null, "focal_point": "lower third",
+      "point": "It is warm when you collect it.", "eye": "warm", "proves": 1,
+      "move": "second line settles under the first", "sound": "soft chime" }
+   ]
+  },
+  {
+   "id": "S04", "title": "The name", "beat": "close", "energy": 2, "seconds": 3.0,
+   "transition_in": { "number": 2, "name": "container transform" }, "hand_off": null,
+   "shots": [
+    { "frame": "F05", "text": "Halden *Bakehouse*", "size": "abstract", "capture": null, "focal_point": "centre, the logo",
+      "point": "This is who to order from.", "eye": "the name", "move": "logo and name settle, hold to the end", "sound": "room tone fades" }
+   ]
+  }
+ ]
+}

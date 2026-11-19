@@ -51,3 +51,6 @@ tools/footage/models/
 tools/footage/bin/
 # The Product Hunt reel's engine data holds a real person's face positions and words: kept on this Mac, like the job's edit folder.
 engine/src/jobs/ph-launch-reel/
+
+# The paid-generation ledger (tools/film/lib/ledger.mjs): task ids and request ids of this Mac's paid calls.
+.generations/

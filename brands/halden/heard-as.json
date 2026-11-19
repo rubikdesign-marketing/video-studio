@@ -1,0 +1,3 @@
+{
+  "_about": "The transcriber sometimes mishears product words even when the voice says them correctly. Each entry maps what it writes (lower-case) to the word that was actually said, so the voice check does not raise a false difference. For example: \"tool vo\": \"tulvo\". Add an entry only after a person has listened and confirmed the voice was right."
+}
