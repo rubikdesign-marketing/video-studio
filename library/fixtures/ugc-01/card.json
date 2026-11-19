@@ -141,51 +141,67 @@
   "bySource": {
    "demo-1-lead-pipeline-still": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "demo-2-campaign-board-still": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "demo-3-campaign-board-new-still": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "brands/tulvo/product/capture.json (safe_to_show: Kestrel Studio; never_show list) + take-5 capture.json (privacy_flags: [], warnings: []). No signed owner clearance for public use is recorded in the repo.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "capture-record": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "Studio-made capture metadata (take-5); same record as the stills."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "pointer-track": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "Studio-made capture metadata (take-5); same record as the stills."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "camera-tracks": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "Studio-made capture metadata (take-5); same record as the stills."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "Studio-made capture metadata (take-5); same record as the stills.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "brand-numbers": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "wordmark-light-stage": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null,
-    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found."
+    "publicUse": true,
+    "bundling": false,
+    "basis": "Tulvo's own brand files (brands/tulvo/). Owner's own marks; no written clearance for third-party bundling found.",
+    "publicUseScope": "tulvo-own-organic",
+    "decision": "Lead decision 2026-11-19, delegated by the owner (\"decide for me\"): Kestrel Studio is the designated demo account (brands/tulvo/product/capture.json safe_to_show) and the take-5 capture recorded privacy_flags: []. Public use is limited to Tulvo's own organic channels; paid ads need the owner's yes. Bundling: never, because brand product captures do not ship in the customer artifact."
    },
    "sound-kit-map": {
     "privateStudy": true,
@@ -196,21 +212,23 @@
   },
   "overall": {
    "privateStudy": true,
-   "publicUse": null,
-   "bundling": null,
+   "publicUse": "tulvo-own-organic",
+   "bundling": false,
    "voiceOver": "pending: paid TTS approval or pending: owner recording",
-   "personFootage": "none exists; none cleared"
+   "personFootage": "none exists; none cleared",
+   "paidAds": "pending owner",
+   "decidedOn": "2026-11-19"
   }
  },
  "slice": {
-  "targetSeconds": 16.0,
+  "targetSeconds": 16,
   "fps": 30,
   "frames": 480,
   "treatment": "Three product stills from the real capture, reframed from 16:9 to 9:16 with CaptureClip/relayout moves (stage-phone-crop, camera-push-in, product-ring/product-callout); creator-style captions; no person on screen. The 60 fps take-5 recording is the better source if the owner re-supplies it.",
   "beats": [
    {
     "id": "hook",
-    "start": 0.0,
+    "start": 0,
     "end": 2.5,
     "shows": "demo-1-lead-pipeline-still pushed in, opener-notification-drop, one on-screen line of at most seven words (family 'demonstration' or 'problem' from node tools/hooks/hooks.mjs find; chosen at build)",
     "voice": "pending: paid TTS approval or pending: owner recording"
@@ -218,23 +236,23 @@
    {
     "id": "demo",
     "start": 2.5,
-    "end": 9.0,
+    "end": 9,
     "shows": "lead-pipeline to campaign-board (a click-through cut at the 'Campaign Launch Board' sidebar item), then the hover on New (demo-3); camera-follow on the pointer from cursor.json/tracks.json",
     "voice": "pending: paid TTS approval or pending: owner recording"
    },
    {
     "id": "proof",
-    "start": 9.0,
-    "end": 13.0,
+    "start": 9,
+    "end": 13,
     "shows": "the board on screen held with product-ring on the board title and one caption naming only what is visible (no numbers, no result claims)",
     "voice": "pending: paid TTS approval or pending: owner recording"
    },
    {
     "id": "cta",
-    "start": 13.0,
-    "end": 16.0,
+    "start": 13,
+    "end": 16,
     "shows": "wordmark on the light stage and the offer line",
-    "offerWording": "Try it free (wording from jobs/2026-11-18-library-proof/job.json; owner approval for this fixture: null)",
+    "offerWording": "Try it today (lead decision 2026-11-19, delegated by owner; no pricing claim)",
     "voice": "pending: paid TTS approval or pending: owner recording"
    }
   ],
@@ -272,7 +290,7 @@
   "bed": {
    "slot": "room-tone",
    "library": "ambience/room-apartment-window-01",
-   "seconds": 16.0,
+   "seconds": 16,
    "note": "exactly the length of the slice; low under the whole film so captions-only silence does not sound dead; has a known fan-hum doubt, listen first"
   },
   "music": {

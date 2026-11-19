@@ -1,6 +1,6 @@
 /*
  * S04: Offer and logo (hand-built). A wipe from the bottom to the light stage at events.ctaWipe, the offer line
- * "Try it free" at events.offer, the wordmark at events.logo.
+ * "Try it today" at events.offer, the wordmark at events.logo.
  */
 import type { FC } from 'react';
 import { AbsoluteFill, Easing, interpolate, useVideoConfig } from 'remotion';
@@ -18,7 +18,7 @@ const Offer: FC<{ t: number }> = ({ t }) => {
   const u = interpolate(t, [e.offer - 1 / 30, e.offer + 0.3], [0, 1], { easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   return (
     <div style={{ fontFamily: fonts.headline.css, fontWeight: 700, fontSize: 170, lineHeight: 1, color: stage.ink, opacity: u, translate: `0 ${(1 - u) * 36}px`, textAlign: 'center', letterSpacing: -4 }}>
-      Try it <span style={{ color: stage.accent }}>free</span>
+      Try it <span style={{ color: stage.accent }}>today</span>
     </div>
   );
 };

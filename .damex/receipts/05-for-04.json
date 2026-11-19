@@ -270,8 +270,8 @@
  "fixture": [
   {
    "path": "library/fixtures/ugc-01/card.json",
-   "sha256": "0b9e830ec40ba8241bbd9fe8fdb9bb8e653a2cc9df9d02d8f0810c49555bf6e3",
-   "bytes": 15874,
+   "sha256": "955db456f247a4e27a68896750c1f107f9c17a5c8508feaa2caed58f6a1fd82c",
+   "bytes": 19516,
    "in_rc2_a644abd": false,
    "exporter_would_stage_if_committed_today": true,
    "exporter_banned_word_hits": 24,
@@ -280,8 +280,8 @@
    "attribution": "studio-made",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "preview": "n/a",
    "include_in_artifact": "no",
@@ -299,8 +299,8 @@
    "attribution": "studio-made",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "preview": "n/a",
    "include_in_artifact": "no",
@@ -318,8 +318,8 @@
    "attribution": "studio-made (take-5, 2026-11-12)",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "the PNG is the picture",
@@ -338,8 +338,8 @@
    "attribution": "studio-made (take-5, 2026-11-12)",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "the PNG is the picture",
@@ -358,8 +358,8 @@
    "attribution": "studio-made (take-5, 2026-11-12)",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "the PNG is the picture",
@@ -378,8 +378,8 @@
    "attribution": "studio-made (take-5, 2026-11-12)",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "n/a",
@@ -398,8 +398,8 @@
    "attribution": "studio-made (take-5, 2026-11-12)",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "n/a",
@@ -418,8 +418,8 @@
    "attribution": "studio-made (take-5, 2026-11-12)",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "n/a",
@@ -438,8 +438,8 @@
    "attribution": "Tulvo brand files",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "n/a",
@@ -458,8 +458,8 @@
    "attribution": "Tulvo brand files",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "card_sha256_matches": true,
    "preview": "the PNG is the picture",
@@ -490,8 +490,8 @@
  "derived": [
   {
    "path": "jobs/2026-11-19-ugc-01/out/2026-11-19-ugc-01.mp4",
-   "sha256": "a900c545c76529daeabea42141a39b4f52ea8d69fedca3d43360dc243bddf431",
-   "bytes": 3819577,
+   "sha256": "a848a4fd1f953c0ebebb683242566558b525a68ce8335fc840d1d442630c2bb8",
+   "bytes": 3839447,
    "in_rc2_a644abd": false,
    "exporter_would_stage_if_committed_today": false,
    "exporter_banned_word_hits": 0,
@@ -528,8 +528,8 @@
   },
   {
    "path": "brands/tulvo/styles/ugc-phone-take/style.json",
-   "sha256": "e865a607a45707c4e05ae0d5d6b99729474747c1cfe79d87d93977d53c236946",
-   "bytes": 4578,
+   "sha256": "fa5e8e743883c48fc6bc74367238982b3207e5b90ec612761b3ae664bd3ad813",
+   "bytes": 4623,
    "in_rc2_a644abd": false,
    "exporter_would_stage_if_committed_today": false,
    "exporter_banned_word_hits": 0,
@@ -538,8 +538,8 @@
    "attribution": "studio-made",
    "rights": {
     "privateStudy": true,
-    "publicUse": null,
-    "bundling": null
+    "publicUse": "tulvo-own-organic",
+    "bundling": false
    },
    "preview": "n/a",
    "include_in_artifact": "no",
@@ -667,8 +667,8 @@
   {
    "path": "engine/src/jobs/ugc-01/film.json",
    "status": "??",
-   "sha256": "01fbb5798538546aca09fc4b7b0145dd899508a0c8ed947e817c9e983a6230a4",
-   "bytes": 1365,
+   "sha256": "19e960981543bfd6747364107e09eb153303558c5b540042fcc39b27a170bb77",
+   "bytes": 1366,
    "include_in_artifact": "no",
    "in_rc2_a644abd": false,
    "reason": "excluded by the manifest"
@@ -703,8 +703,8 @@
   {
    "path": "engine/src/jobs/ugc-01/scenes/S04.tsx",
    "status": "??",
-   "sha256": "e0e751a7ea7102c31c64e7522b3bdccb46c400fcea4d30c78b8d713dccc2e00f",
-   "bytes": 2009,
+   "sha256": "77e9e3c51f4e475d04df4e51c8cab94d3c39ca573506aaf77f1649090b41a3c9",
+   "bytes": 2011,
    "include_in_artifact": "no",
    "in_rc2_a644abd": false,
    "reason": "excluded by the manifest"
@@ -888,5 +888,12 @@
    }
   ],
   "tracked_recipe": ".gitignore now un-ignores jobs/*/edit/grade.json (jobs/ is excluded from the export anyway)"
+ },
+ "decisions": {
+  "on": "2026-11-19",
+  "by": "lead, delegated by owner",
+  "take5PublicUse": "Tulvo own organic channels only; paid ads need owner yes",
+  "take5Bundling": false,
+  "offerWording": "Try it today (no pricing claim)"
  }
 }

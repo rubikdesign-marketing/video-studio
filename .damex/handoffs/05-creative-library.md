@@ -1,17 +1,21 @@
 # 05 · Creative library — handoff
 
-**Status:** All four phases done; corrective pass applied and lead re-verified (2026-11-19). Dispatch cap reached (5/5): STOPPED. Nothing committed.
+**Status:** Done. Committed on `creative-library-05` (670d84d, plus the decisions commit). Not pushed. Dispatch cap reached (5/5).
 
-**Refs:** authoring `projects/tulvo/video-studio-05`, `creative-library-05` @ `47480ad` (+834/-34 in 15 tracked files, plus new files). Shipped `damex-video-engine` @ `a644abd`.
+**Refs:** `projects/tulvo/video-studio-05` from `47480ad`. Shipped `damex-video-engine` @ `a644abd`.
 
-**Samples:** `jobs/2026-11-19-ugc-01/out/2026-11-19-ugc-01.mp4` (1080x1920, 30/1, 16.0 s, bt709, ebur128 -14.3 LUFS, TP -1.8 dBTP; sync 0.06–0.11 frame). `jobs/2026-11-19-product-motion-02/out/2026-11-19-product-motion-02.mp4` (re-exported by lead after the look retune; 4.117 s, bt709, -14.9 LUFS, TP -6.0).
+**Decisions (2026-11-19, lead, delegated by owner):**
+- Take-5 material: Tulvo's own organic channels only; paid ads need the owner's yes; bundling never. Basis: Kestrel Studio `safe_to_show`, take-5 privacy_flags [].
+- Offer: "Try it today" (no pricing claim).
 
-**Evidence:** tests node 84/84, audio 53/53 (footage venv). grade.json tracked in both jobs. 8 shader moves declare "needs WebGL". Detail: `.damex/evidence/05-phase{2,3,4}.md`, `05-corrective.md`.
+**Samples (lead-verified):**
+- `jobs/2026-11-19-ugc-01/out/2026-11-19-ugc-01.mp4`: 1080x1920, 30 fps, 16 s, bt709, -14.07 LUFS / -1.75 dBTP (master.sh), sync ≤ 0.11 frame, no flashes, 13 s cut fixed.
+- `jobs/2026-11-19-product-motion-02/out/…mp4`: 4.1 s, bt709, -14.02 LUFS.
 
-**Receipts:** `.damex/receipts/05-for-04.json` (checksums refreshed), `05-for-01.md`.
+**Finding for Prompt 02:** the engine's webpack cache (`engine/node_modules/.cache/webpack`) served stale scene code after a `.tsx` edit, and the render showed the old CTA. Fixed by moving the cache aside. Render paths should bust or disable that cache.
 
-**Open:** Prompt 04 must exclude `library/fixtures` and `.damex` in `release/manifest.json`. Public-use and bundling rights for take-5 are null. Offer wording is unapproved. Office ambience with voices is missing. No listening or real-time viewing pass. Skin was tested on synthetic patches only. smoothness flags the 13.1 s wipe frame unless it is declared planned.
+**Open:** Prompt 04 manifest excludes for `library/fixtures` and `.damex`; paid-ad use; office ambience with voices; no listening pass; skin tested on synthetic patches only.
 
-**Workers:** 5 of 5 (Sonnet). Usage 98% weekly; hidden unavailable. No paid work or downloads.
+**Usage:** 98% weekly; hidden usage unavailable. No paid work or downloads.
 
-**Next command:** owner reviews the samples, then `git -C projects/tulvo/video-studio-05 add -A && git commit` on approval.
+**Next command:** owner reviews the ugc-01 export.

@@ -31,7 +31,7 @@
   "allowed": ["owner-cleared product capture stills or recordings"],
   "never": ["ViralHooks clips", "library/references/** media", "any footage of a person without a clearance record"]
  },
- "cta": { "offerWording": "Try it free", "wordmark": "light stage", "ownerApprovalForWording": null },
+ "cta": { "offerWording": "Try it today", "wordmark": "light stage", "ownerApprovalForWording": "delegated to lead 2026-11-19; no pricing claim" },
  "sound": {
   "kit": "library/sounds/kit.json (brand files in brands/tulvo/sounds win where present)",
   "bed": { "slot": "room-tone", "library": "ambience/room-clean-01", "note": "nobody has listened to it: listen first" },

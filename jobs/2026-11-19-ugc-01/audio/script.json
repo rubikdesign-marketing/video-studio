@@ -3,5 +3,5 @@
  { "id": "02", "start": 2.8, "end": 5.3, "text": "One tap to the launch board", "highlight": "launch board" },
  { "id": "03", "start": 5.8, "end": 8.4, "text": "Then hit New to start a brief", "highlight": "New" },
  { "id": "04", "start": 9.3, "end": 12.6, "text": "Approvals, briefs and campaigns, one view", "highlight": "one view" },
- { "id": "05", "start": 13.3, "end": 15.3, "text": "Try it free", "highlight": "free", "offer": true }
+ { "id": "05", "start": 13.3, "end": 15.3, "text": "Try it today", "highlight": "today", "offer": true }
 ]
