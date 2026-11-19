@@ -21,7 +21,7 @@
     "docs", "DESIGN.md", "CAPTURE-PLAN.md", "FOOTAGE-PLAN.md", "LIBRARY-PLAN.md", "NEXT-SESSION.md", "LICENSE-DRAFT.md",
     ".claude/skills/remotion-*",
     "tools/release", "release", ".github",
-    "ARCHITECTURE_PLAN.md", "studio/app/docs"
+    "ARCHITECTURE_PLAN.md", "EDITOR-V2-PLAN.md", "studio/app/docs"
   ],
   "keep_inside_excluded": [
     "engine/src/jobs/_film.tsx", "engine/src/jobs/index.ts", "engine/src/jobs/sample",
