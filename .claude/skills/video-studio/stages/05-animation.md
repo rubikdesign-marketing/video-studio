@@ -9,7 +9,7 @@ Two approvals: **First animation**, then **Full animation**. Every tool below pr
 - `knowledge/craft/02-motion.md`, then the one craft file each scene needs (type, UI, light, advanced motion)
 - `knowledge/craft/07-sound.md` when you reach sound
 - `knowledge/craft/08-directors-checks.md` before any hand-over
-- Skills to load (see "Skills the studio uses" in `SKILL.md`): `remotion-best-practices` before writing any scene code; `motion-design`, `motion-foundations` (and `motion-advanced` for complex moves) while animating; `bang-motion`'s techniques (rebuilt with Remotion's own timing) and `knowledge/craft/14-motion-systems.md` while animating; `hyperframes` for a move Remotion handles poorly; `fixing-motion-performance` when the smoothness check flags a scene; `hallmark` and `impeccable` critique on the contact sheet before a cut goes to a person
+- Skills to load (see "Skills the studio uses" in `SKILL.md`): `remotion-best-practices` before writing any scene code (its stand-in if missing: "When a named skill or file is missing" in `skill-map.md`); `motion-design`, `motion-foundations` (and `motion-advanced` for complex moves) while animating; `bang-motion`'s techniques (rebuilt with Remotion's own timing) and `knowledge/craft/14-motion-systems.md` while animating; `hyperframes` for a move Remotion handles poorly; `fixing-motion-performance` when the smoothness check flags a scene; `hallmark` and `impeccable` critique on the contact sheet before a cut goes to a person
 
 ## 1. Turn the shot list into a film skeleton
 
@@ -63,7 +63,7 @@ After handing over a cut:
 1. Start the review page: the preview server named `tulvo-review` (it runs `studio/server.mjs`). Tell the maker it is open at the job's video. They pause, write a note pinned to that moment, say whether it is a change or something to keep, pick a topic, point at an area if they want, mark whole scenes as good, collect a few, and press Send. They can also approve the version from the page.
 2. Run `node studio/wait-for-notes.mjs jobs/<job>` in the background. When the maker presses Send it prints the notes and exits, which wakes you. Each note has its time, its scene, who wrote it, its kind (change or keep), its topic, whether it is a must-fix, the text, the marked area and a saved frame.
 3. Read the batch in this order:
-   - **Approved:** if the reviewer approved the version, record the approval in `job.json` and move to the next stage.
+   - **Approved:** if the reviewer approved the version, record the approval in `job.json` and with `node tools/conductor/gate.mjs approve jobs/<job> <first_animation or full_animation> --inputs <the approved render>`, then move to the next stage.
    - **Must fix** notes first, then the other change notes. Look at each note's frame and the marked area.
    - **Keep** notes are praise. Do not change what they point at. Record what worked in the ledger entry for this video, and treat it as a candidate for the motion library.
    - **Good scenes** are left exactly as they are.

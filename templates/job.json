@@ -9,6 +9,7 @@
   "energy_preset": "calm | confident | hype",
   "voice": "Ray",
   "stage_next": "idea",
+  "approval_mode": "guided | grouped (guided: one approval per stage; grouped: a brief review and a final cut review)",
   "approvals": {
     "idea": null,
     "script_and_voice": null,

@@ -4,6 +4,18 @@ The studio bundles 76 open-source skills in `.claude/skills/` (Remotion's and Cl
 
 Load a skill with the Skill tool at the moment its task starts. Never read them all up front: one or two per task.
 
+## When a named skill or file is missing
+
+Customer installs leave out the studio's planning files. Skills fetched by the installer can also be missing if the fetch failed or the Mac was offline. Never stop or guess because of this. Use the stand-in, and name the gap in the hand-over.
+
+| Named here | Stand-in |
+|---|---|
+| `DESIGN.md` (build status) | `README.md` and `RELEASE.json` |
+| `CAPTURE-PLAN.md` (looks in 7.9, vertical in 7.7, demo recipes in 2 and 4) | `tools/capture/README.md`; the looks via `node tools/library/registry.mjs find look --kind preset` |
+| `remotion-best-practices` and `remotion-markup/*` | `engine/README.md`, `knowledge/craft/09-advanced-motion.md` and the craft file for the topic; refetch with `bash setup/update-skills.sh --missing` |
+| `real-sfx`, `real-sound` | `tools/audio/sound.mjs` and `knowledge/craft/07-sound.md`; refetch as above |
+| `knowledge/feedback-log/` | It is an output folder: create it on the first write |
+
 ## Who wins when skills disagree
 
 1. The owner's words in the conversation.

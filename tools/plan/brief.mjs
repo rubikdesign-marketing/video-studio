@@ -5,20 +5,26 @@
 //   brief.mjs check <job_dir> [--json]    the questions that would change the film (at most three, most consequential
 //                                         first) and the shots that cannot yet prove what they promise
 //   brief.mjs show <job_dir>              the short version for a stage session: brief, decisions, open revision notes
+//   brief.mjs set <job_dir> <field> "<value>"   answers one question from check, so it is not asked again
+//                                         fields: kind, for, viewer_should, voice, length_cap_seconds, size
 //   brief.mjs decide <job_dir> "<what was decided>" [--applies S03,S04] [--by owner]
-//                                         records an answer once, for every later stage
+//                                         records any other answer once, for every later stage
 //
 // The questions are worded for a person; Claude asks them in its own words, with the recommended answer, and only
 // these. Anything the studio can look up or decide on its own is not asked.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { assumptions, questions, shotProblems, summary } from './lib/brief.mjs';
+import { assumptions, questions, setField, shotProblems, summary } from './lib/brief.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const [cmd, jobArg, ...rest] = process.argv.slice(2);
 const flag = (name) => { const i = rest.indexOf(`--${name}`); return i >= 0 ? rest[i + 1] : undefined; };
-if (!cmd || !jobArg) { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1, 14).map((l) => l.replace(/^\/\/ ?/, '')).join('\n')); process.exit(cmd ? 2 : 0); }
+if (!cmd || !jobArg) {
+  const lines = fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1);
+  console.log(lines.slice(0, lines.findIndex((l) => !l.startsWith('//'))).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+  process.exit(cmd ? 2 : 0);
+}
 const jobDir = path.resolve(jobArg);
 const file = path.join(jobDir, 'brief.json');
 const read = (f) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null);
@@ -41,7 +47,12 @@ const job = read(path.join(jobDir, 'job.json')) || {};
 const shots = read(path.join(jobDir, 'shots.json'));
 const revisions = read(path.join(jobDir, 'revisions.json'));
 
-if (cmd === 'decide') {
+if (cmd === 'set') {
+  const [field, ...value] = rest.filter((a) => !a.startsWith('--'));
+  try { write(setField(brief, field, value.join(' '))); } catch (e) { console.log(e.message); process.exit(2); }
+  const left = questions(read(file), { job }).length;
+  console.log(`Set ${field}. ${left ? `${left} question(s) left: node tools/plan/brief.mjs check ${jobArg}` : 'Nothing in the brief needs asking.'}`);
+} else if (cmd === 'decide') {
   const what = rest.filter((a, i) => !a.startsWith('--') && !rest[i - 1]?.startsWith('--')).join(' ');
   if (!what) { console.log('What was decided?'); process.exit(2); }
   brief.decisions = [...(brief.decisions || []), { what, by: flag('by') || 'owner', date: new Date().toISOString().slice(0, 10), applies_to: flag('applies') ? flag('applies').split(',') : 'all' }];

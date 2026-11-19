@@ -16,7 +16,7 @@ Start with what the creator said, word for word: `node tools/plan/brief.mjs new 
 - It states back what their words already settle ("vertical" is 9:16): say it in one line so they can correct it; do not ask it.
 - It lists only the questions whose answers change what gets made, most consequential first. Ask at most three at a time, each with the recommended answer, in plain words. The usual first ones: the master size; what kind of film (product demo, launch reel, edit of their footage, a person talking, an animated short); and, for every reference, **what they like about it**: the camera, the pacing, the presenter's delivery, the look, the type or the sound. That answer decides what gets copied. A reference liked for its delivery needs a short performance test before anything else is made; one liked for its camera needs a motion test, not a still.
 - For every claim the film makes ("it connects", "it's fast"), ask what the viewer literally sees that proves it, and write it as `must_show[].evidence`.
-- Record each answer once with `brief.mjs decide`. Every later stage reads `brief.mjs show` instead of re-asking.
+- Record each answer once. An answer to a `check` question goes in with `node tools/plan/brief.mjs set jobs/<job> <field> "<value>"` (fields: kind, for, viewer_should, voice, length_cap_seconds, size), which stops `check` asking it. Anything else goes in with `brief.mjs decide`. Run `check` once more at the end, not after every answer. Every later stage reads `brief.mjs show` instead of re-asking.
 
 Do not ask for facts you can look up in `knowledge/` or the brand folder.
 
@@ -44,4 +44,4 @@ The three must differ from each other in idea, not only in styling. Recommend on
 
 ## 4. Hand-over
 
-Create `jobs/<date>-<name>/job.json` from `templates/job.json`. Present the three soul sheets and the recommendation. Stop for the Idea approval. Record the chosen concept and the length cap in `job.json`.
+Create `jobs/<date>-<name>/job.json` from `templates/job.json`. Present the three soul sheets and the recommendation. Stop for the Idea approval. Record the chosen concept and the length cap in `job.json`. When the person says yes (or their brief already approves it), also run `node tools/conductor/gate.mjs approve jobs/<job> idea --inputs <soul sheets file name, e.g. soul-sheets.md>` (paths inside the job folder) (add `--mode grouped` if they chose grouped approvals) so a restart does not ask again.

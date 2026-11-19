@@ -2,7 +2,7 @@
 // Run: node --test tools/plan/tests/*.test.mjs
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { assumptions, questions, shotProblems, summary } from '../lib/brief.mjs';
+import { assumptions, questions, setField, shotProblems, summary } from '../lib/brief.mjs';
 import { diff, resolveScope, verify } from '../lib/revisions.mjs';
 
 test('brief: an empty brief asks the size first, then the kind, at most what matters', () => {
@@ -139,4 +139,26 @@ test('revisions: a copy note is not done by a timing shift, and what frames cann
   v = verify({ items: [{ action: 'change', aspect: 'copy', scope: ['S02'], says: 'new words' }, { action: 'keep', scope: ['S01'], aspect: 'content', says: 'k' }] },
     diff({ ...before, code: { 'parts.tsx': 'a' } }, shared, (a) => (a === 'S02#1.jpg' ? 20 : Infinity)));
   assert.equal(v.items[0].status, 'needs a person'); assert.match(v.items[0].result, /shared code/);
+});
+
+test('brief: "the demo brand" names a brand, not a product demo', () => {
+  assert.deepEqual(assumptions({ in_their_words: 'A 30 second promo for the demo brand announcing saved replies.' }).find((a) => a.id === 'kind')?.value, 'launch-reel');
+  assert.equal(assumptions({ in_their_words: 'A reel for the Demo brand.' }).find((a) => a.id === 'kind'), undefined);
+  assert.equal(assumptions({ in_their_words: 'A short demo of the export button.' }).find((a) => a.id === 'kind')?.value, 'product-demo');
+});
+
+test('brief: setField answers one question at a time, and check stops asking it', () => {
+  let b = { in_their_words: 'A 30 second 16:9 promo for the demo brand announcing saved replies.' };
+  const ids = () => questions(b).map((x) => x.id);
+  assert.deepEqual(ids(), ['viewer', 'voice', 'length']);
+  b = setField(b, 'viewer_should', 'believe retyping answers is over');
+  b = setField(b, 'voice', 'voice-over');
+  b = setField(b, 'length_cap_seconds', '30');
+  assert.deepEqual(ids(), []);
+  assert.equal(b.length_cap_seconds, 30);
+  b = setField(b, 'size', '9:16');
+  assert.deepEqual(b.deliver, [{ platform: '', size: '9:16', master: true }]);
+  assert.throws(() => setField(b, 'voice', 'robot'), /voice must be one of/);
+  assert.throws(() => setField(b, 'length_cap_seconds', 'short'), /a number of seconds/);
+  assert.throws(() => setField(b, 'colour', 'red'), /Can set: /);
 });
