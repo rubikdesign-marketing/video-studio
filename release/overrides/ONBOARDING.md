@@ -2,30 +2,31 @@
 
 The Video Engine makes videos with Claude, one video at a time, to the same standard every time. Claude stops for your approval at six steps, and nothing is final until you say so.
 
-Setup takes about 20 minutes.
+Setup takes about 5 minutes, most of it downloading.
 
 ## 1. Set up (once)
 
 You need:
 
-- **A computer:** a Mac (Apple silicon or Intel), a Windows 10 or 11 PC, or a Linux PC (Ubuntu 24.04 or similar). Windows and Linux are new in this version.
+- **A computer:** a Mac (Apple silicon or Intel), a Windows 10 or 11 PC, or a Linux PC (Ubuntu 24.04 or similar).
 - **Claude:** a plan that includes Claude Code. On a Mac or Windows, use the Claude desktop app. On Linux, use Claude Code in a terminal.
-- **Node.js 22** (22.13 or newer, from nodejs.org) and **Google Chrome**.
+- **Google Chrome**, to film your product.
 
-No admin rights are needed for the studio itself.
+You do not need to install anything else, and no admin password is needed. If your computer has no suitable Node.js, the studio downloads its own copy into its folder.
 
-1. Accept the GitHub invitation in your purchase email. It gives you access to the Video Engine repository.
-2. Open the Claude desktop app, choose the **Code** tab, open any folder (your Documents folder is fine), and paste this, with the repository link from your purchase email:
+1. **Download** the zip from the link in your purchase email. Download the file itself. Do not add it to your own Google Drive.
+2. **Unzip it into your Documents folder.** On a Mac, double-click the zip. On Windows, right-click it and choose **Extract All**. You get a folder named `video-engine`. Move it into Documents if it is not there already.
+3. **Start it.** Open the Claude desktop app, choose the **Code** tab, open the `video-engine` folder, and paste this:
 
    ```text
-   Set up the Damex Video Engine for me. Download <repository link from my purchase email> into my Documents folder as "video-engine" (if it is already there, get the latest version instead). Then run the installer in that folder and stay with it until it finishes: on Windows "powershell -ExecutionPolicy Bypass -File setup\install.ps1", on a Mac or Linux "bash setup/install.sh". Ask me before installing anything that needs an admin password. Fix anything the health check says needs attention, then tell me in plain words what is ready and what I still have to do.
+   Start the studio. On a Mac or Linux run "bash setup/start.sh", on Windows run "powershell -ExecutionPolicy Bypass -File setup\start.ps1". Stay with it until it finishes, then tell me in plain words whether the studio is ready.
    ```
 
-   The installer sets up only what your first video needs. Extra tools (noise removal, transcription, mastering) are added when a step needs them. The health check, `node setup/runtime/doctor.mjs`, says which are ready on your computer.
+   It takes about 2 minutes. It downloads the video engine's parts for your computer, then checks them.
 
-3. When it is done, open the folder `Documents/video-engine` in the Code tab. When Claude asks whether to trust it and install its plugins, say yes. From now on, always work in this folder.
-
-4. **Optional: add your ElevenLabs key** for generated voice, music and sound effects. Open a terminal (Terminal on a Mac or Linux, PowerShell on Windows) and run these two lines one after the other. The second asks for the key without showing it and keeps it on your computer only:
+   Prefer a terminal? Run the same command in the `video-engine` folder yourself.
+4. **Start a new chat in the same folder.** When Claude asks whether to trust the folder and install its plugins, say yes. From now on, always work in this folder.
+5. **Optional: add your ElevenLabs key** for generated voice, music and sound effects. Open a terminal (Terminal on a Mac or Linux, PowerShell on Windows) and run these two lines one after the other. The second asks for the key without showing it and keeps it on your computer only:
 
    ```bash
    cd ~/Documents/video-engine
@@ -35,7 +36,11 @@ No admin rights are needed for the studio itself.
    node setup/runtime/key.mjs
    ```
 
+   If the terminal says `node` is not found, use the studio's own copy instead: `.runtime/node/bin/node setup/runtime/key.mjs` (on Windows: `.runtime\node\node.exe setup\runtime\key.mjs`).
+
 Never put keys or passwords in a chat or a file. The studio never asks for them.
+
+Extra tools (noise removal, transcription, mastering) are not part of setup. Claude adds each one the first time a video needs it, and asks before anything that needs an admin password.
 
 ## 2. Set up your brand
 
@@ -72,8 +77,8 @@ Every video follows the token plan in the skill map: one step per session, helpe
 
 ## 6. Updates and help
 
-- **Updates:** while your update plan is active, say **"update the studio"** in the folder. Claude gets the latest version and runs the health check.
-- **Something broke?** Tell Claude "fix the studio, not just this video". For anything Claude can't fix, contact Damex Digital support through the address in your purchase email.
+- **Updates:** while your update plan is active, we email you a link to each new version. Unzip it next to your current folder (for example as `video-engine-new`), open the new folder in the Code tab and say: **"Start the studio and bring my work from Documents/video-engine"**. Claude runs the start step with `--import-from` and your brands, videos, key and product sign-ins come across. Your old folder stays as it was until you delete it.
+- **Something broke?** Tell Claude "fix the studio, not just this video". If Claude says files are missing, say "start the studio" again: it puts back anything a copy or sync dropped. For anything Claude can't fix, contact Damex Digital support through the address in your purchase email.
 
 ## 7. Where things are
 

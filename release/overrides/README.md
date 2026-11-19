@@ -6,7 +6,9 @@ Made and supported by Damex Digital. See `LICENSE.md` for what your licence allo
 
 ## Start here
 
-Follow `ONBOARDING.md`. You paste one prompt into the Claude desktop app's Code tab, and Claude installs everything and runs a health check. Then open this folder in Claude and say **"set up my brand"**, then **"make a video"**.
+Follow `ONBOARDING.md`. Open this folder in the Claude desktop app's Code tab and say **"start the studio"** (or run `bash setup/start.sh` on a Mac or Linux, `powershell -ExecutionPolicy Bypass -File setup\start.ps1` on Windows). It takes about 2 minutes. Then start a new chat in this folder and say **"set up my brand"**, then **"make a video"**.
+
+`setup/dotfiles/` holds the studio's hidden files (`.claude` and others) under visible names, so a copy or sync cannot lose them. The start step puts them back.
 
 ## What is where
 
@@ -23,7 +25,7 @@ Follow `ONBOARDING.md`. You paste one prompt into the Claude desktop app's Code 
 
 ## Updates
 
-While your update plan is active, say **"update the studio"** in this folder to get the latest version. If you stop the plan, you keep the version you have.
+While your update plan is active, we email you a link to each new version. Unzip it next to this folder, open the new folder in Claude and say **"start the studio and bring my work from <this folder>"**. Your brands, videos, key and product sign-ins come across; this folder stays as it is. If you stop the plan, you keep the version you have.
 
 ## Never in this folder
 
@@ -31,7 +33,7 @@ Keys (`.env`), product sign-ins (`.capture/`), renders and recordings (`jobs/*/o
 
 ## What you need, and other licences
 
-- A Mac (Apple silicon or Intel), a Windows 10 or 11 PC, or a Linux PC, with a Claude plan that includes Claude Code, Node.js 22 (22.13 or newer) and Google Chrome. Some optional features are system-specific. Phone recording from the iOS Simulator needs a Mac with Xcode, and terminal recording needs a Mac or Linux. On other systems, record yourself and import the recording.
+- A Mac (Apple silicon or Intel), a Windows 10 or 11 PC, or a Linux PC, with a Claude plan that includes Claude Code and Google Chrome. Node.js 22.13 or newer is used if you have it; if not, the start step downloads a portable copy into `.runtime/node` (no admin). Some optional features are system-specific. Phone recording from the iOS Simulator needs a Mac with Xcode, and terminal recording needs a Mac or Linux. On other systems, record yourself and import the recording.
 - **Bundled tools:** DeepFilterNet (noise removal, MIT or Apache 2.0) is downloaded per system when you first need it.
 - **Remotion** is free for individuals and companies of up to 3 people. Larger companies need a Remotion company licence ("Remotion for Creators", per person who makes videos): remotion.dev/license.
 - **Optional:** an ElevenLabs plan for generated voice, music and sound effects. A Kling account for generated footage.

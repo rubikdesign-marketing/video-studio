@@ -116,13 +116,23 @@ async function main() {
   const npm = npmInvocation('npm');
   const npx = npmInvocation('npx');
   const lock = fs.existsSync(path.join(engine, 'package-lock.json'));
-  console.log(`\n== 1 of 2  Engine packages (${lock ? 'npm ci' : 'npm install'})`);
+  console.log(`\n== 1 of 3  Engine packages (${lock ? 'npm ci' : 'npm install'})`);
   let r = await runLogged(npm.cmd, [...npm.prefix, lock ? 'ci' : 'install', '--no-audit', '--no-fund'], { cwd: engine, logName: 'install-npm' });
   if (r.code !== 0) { console.error(`\nPackage install failed (exit ${r.code}). Full log: ${r.logFile}`); process.exit(1); }
 
-  console.log('\n== 2 of 2  Render browser (Remotion Chrome Headless Shell, one time)');
+  console.log('\n== 2 of 3  Render browser (Remotion Chrome Headless Shell, one time)');
   r = await runLogged(npx.cmd, [...npx.prefix, 'remotion', 'browser', 'ensure'], { cwd: engine, logName: 'install-browser' });
   if (r.code !== 0) { console.error(`\nThe render browser did not download (exit ${r.code}). Full log: ${r.logFile}`); process.exit(1); }
+
+  // The capture tool (playwright-core, no browser download: it drives the Google Chrome already installed). Small, and
+  // capture.mjs tells people to run this file when it is missing, so it belongs to the core install.
+  const capture = path.join(STUDIO, 'tools', 'capture');
+  console.log('\n== 3 of 3  Capture tool packages');
+  if (fs.existsSync(path.join(capture, 'package.json'))) {
+    const capLock = fs.existsSync(path.join(capture, 'package-lock.json'));
+    r = await runLogged(npm.cmd, [...npm.prefix, capLock ? 'ci' : 'install', '--no-audit', '--no-fund'], { cwd: capture, logName: 'install-capture' });
+    if (r.code !== 0) console.error(`The capture tool did not install (exit ${r.code}); videos still render. Full log: ${r.logFile}`);
+  } else console.log('No capture tool in this copy; skipped.');
 
   console.log('\nCore install done. Check it: node setup/runtime/doctor.mjs   Then: node setup/runtime/sample.mjs');
 }
