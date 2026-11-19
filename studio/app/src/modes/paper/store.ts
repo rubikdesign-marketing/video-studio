@@ -140,6 +140,40 @@ export function createPaper(options: PaperOptions) {
     const what = `Move the sentence ${excerpt(clips(), block)}`;
     change(where === 'first' ? `${what} to the start` : `${what} ${where}`, { blocks });
   }
+  /** Moves a sentence to any place, for a drag (editor v2, phase C). `to` is where it ends up. */
+  function moveSentenceTo(from: number, to: number): void {
+    const blocks = [...get().blocks]; const block = blocks[from];
+    if (!block || to < 0 || to >= blocks.length || to === from) return;
+    blocks.splice(from, 1); blocks.splice(to, 0, block);
+    change(`Move the sentence ${excerpt(clips(), block)}`, { blocks });
+  }
+  /**
+   * Uses one take of a line said more than once: that take comes back without its fillers and the other takes are cut.
+   * Replaces the old workaround of cutting the kept take and pressing Keep all on another.
+   */
+  function chooseTake(clip: string, sentence: number): void {
+    const retake = (get().data?.paper.proposals.retakes ?? []).find((r) => r.clip === clip && r.takes.includes(sentence));
+    if (!retake) return;
+    const words = clipOf(clips(), clip)?.words ?? [];
+    const blocks = get().blocks.map((b) => {
+      if (b.clip !== clip || !retake.takes.includes(b.sentence)) return b;
+      if (b.sentence !== sentence) return { ...b, words: [] };
+      return b.words.length ? b : { ...b, words: sentenceOf(b).filter((i) => { const w = words[i]; return !!w && !isFiller(w); }) };
+    });
+    const chosen = blocks.find((b) => b.clip === clip && b.sentence === sentence);
+    change(`Use the take ${chosen ? excerpt(clips(), chosen) : ''}`.trim(), { blocks });
+  }
+  /** Cuts every filler word in the sentences that are kept, or brings them all back. One step in the history. */
+  function fillers(cut: boolean): void {
+    const all = clips();
+    const blocks = get().blocks.map((b) => {
+      if (!b.words.length) return b;
+      const clip = clipOf(all, b.clip); const kept = new Set(b.words);
+      for (const i of sentenceOf(b)) { const w = clip?.words[i]; if (w && isFiller(w)) { if (cut) kept.delete(i); else kept.add(i); } }
+      return { ...b, words: sentenceOf(b).filter((i) => kept.has(i)) };
+    });
+    change(cut ? 'Cut the filler words' : 'Bring back the filler words', { blocks });
+  }
   function cutSentence(blockIndex: number): void {
     const block = get().blocks[blockIndex];
     if (!block || !block.words.length) return;
@@ -207,7 +241,7 @@ export function createPaper(options: PaperOptions) {
 
   return {
     store: store as StoreApi<PaperState>,
-    start, open, toggleWord, moveSentence, cutSentence, keepAll, openWith, togglePause, toggleJoin, setNote, send, saveLabel, payload,
+    start, open, toggleWord, moveSentence, moveSentenceTo, chooseTake, fillers, cutSentence, keepAll, openWith, togglePause, toggleJoin, setNote, send, saveLabel, payload,
     flush: () => saver.flush(),
     clipUrl: (clip: string) => { const job = get().job; return job ? api.clipMediaUrl(job, clip) : ''; },
     keyOf,

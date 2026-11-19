@@ -49,6 +49,7 @@ export const TABLE = {
   paperDown: entry('paper.down', 'Alt+ArrowDown', 'Move this sentence down', 'Paper edit'),
   paperCut: entry('paper.cut', 'Alt+Backspace', 'Cut this sentence, or bring it back', 'Paper edit'),
   paperStop: entry('paper.stop', 'Escape', 'Stop playing', 'Paper edit'),
+  paperRead: entry('paper.read', 'Shift+R', 'Switch between Edit and Read', 'Paper edit'),
   // Panels and theme (Worker 1)
   toggleLeft: entry('panels.left', '[', 'Show or hide the left panel', 'Panels'),
   toggleRight: entry('panels.right', ']', 'Show or hide the right panel', 'Panels'),
@@ -99,7 +100,7 @@ export const registerNoteShortcuts = (handlers: Handlers<'newNote' | 'markGood' 
 /** The guided review: start it from anywhere; Again and Next only while it waits at the end of a scene. */
 export const registerReviewShortcuts = (handlers: Handlers<'guide' | 'guideAgain' | 'guideNext'>) => bind(handlers);
 /** Paper edit mode: the sentence keys. Space for "play or stop the edit" goes through `registerPlaybackShortcuts({ playPause })`. */
-export const registerPaperShortcuts = (handlers: Handlers<'paperUp' | 'paperDown' | 'paperCut' | 'paperStop'>) => bind(handlers);
+export const registerPaperShortcuts = (handlers: Handlers<'paperUp' | 'paperDown' | 'paperCut' | 'paperStop' | 'paperRead'>) => bind(handlers);
 /** Worker 1: panels and the theme. */
 export const registerPanelShortcuts = (handlers: Handlers<'toggleLeft' | 'toggleRight' | 'toggleTimeline' | 'toggleTheme'>) => bind(handlers);
 

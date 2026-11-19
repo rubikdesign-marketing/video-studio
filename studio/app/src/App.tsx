@@ -3,14 +3,14 @@ import { api, plainMessage, type JobSummary } from './api';
 import { Canvas, useCanvas, versionOptions } from './canvas';
 import { Inspector } from './inspector';
 import { PaperEdit } from './modes/paper';
-import { Decision, Replies, useReplies, GuideButton, GuideCard, REACTIONS, Rail, guideGood, markSpan, react, sendFromPage, startNote, toggleGuide, toggleMarking, useComposer, useGuide, useRail, useReviewer } from './notes';
+import { Decision, GuideButton, GuideCard, REACTIONS, Rail, Replies, YouMenu, guideGood, markSpan, react, sendFromPage, startNote, toggleGuide, toggleMarking, useComposer, useGuide, useRail, useReplies } from './notes';
 import { registerPlaybackShortcuts, usePlayback } from './playback';
 import { Shell, usePanelsStore } from './shell';
 import { CommandMenu, ShortcutSheet, TABLE, formatKeys, openMenu, openSheet, registerCoreShortcuts, registerNoteShortcuts, registerPanelShortcuts, registerReviewShortcuts, useShortcuts } from './shortcuts';
 import { editor, history, useFilm, useHistory, useNotes, useSaveLabel, useSaving, useSelection } from './store';
-import { ThemeSwitch, useTheme } from './theme';
+import { useTheme } from './theme';
 import { Timeline } from './timeline';
-import { Button, Field, Icon, MenuItem, Popover, Segmented, Select, Toasts, Tooltip, cx, showToast } from './ui';
+import { Button, Icon, Segmented, Select, Toasts, Tooltip, cx, showToast } from './ui';
 import { sceneAt } from './canvas';
 import './App.css';
 
@@ -75,31 +75,6 @@ function Notice({ title, children, action }: { title: string; children?: ReactNo
       {children ? <p>{children}</p> : null}
       {action}
     </div>
-  );
-}
-
-/** Your name on notes, the theme, and which panels show. Set once, so kept out of the bar. */
-function YouMenu() {
-  const reviewer = useReviewer();
-  const panels = usePanelsStore();
-  const initials = reviewer.name.trim().split(/\s+/).filter(Boolean).map((w) => w[0]?.toUpperCase()).slice(0, 2).join('');
-  return (
-    <Popover className="app-you" align="end" ariaLabel={reviewer.name ? `You: ${reviewer.name}` : 'You: name, theme and panels'}
-      label={initials ? <span className="app-initials">{initials}</span> : <Icon name="user" />} panelClassName="app-you-panel">
-      {() => (
-        <div className="app-you-body">
-          <span data-reviewer>
-            <Field label="Your name, shown on notes you send" value={reviewer.name} onChange={reviewer.setName} placeholder="For example, Maya" />
-          </span>
-          <div className="app-you-row"><span>Theme</span><ThemeSwitch /></div>
-          <div role="group" aria-label="Panels">
-            <p className="ui-menu-title">Show</p>
-            <MenuItem checked={panels.isOpen('right')} hint={formatKeys(TABLE.toggleRight.keys)} onClick={() => panels.toggle('right')}>Notes panel</MenuItem>
-            <MenuItem checked={panels.isOpen('timeline')} hint={formatKeys(TABLE.toggleTimeline.keys)} onClick={() => panels.toggle('timeline')}>Timeline</MenuItem>
-          </div>
-        </div>
-      )}
-    </Popover>
   );
 }
 

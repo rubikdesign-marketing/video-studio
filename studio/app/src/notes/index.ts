@@ -17,3 +17,4 @@ export type { RailTab } from './railTab';
 export { GuideButton, GuideCard, guideAgain, guideGood, guideNext, stopGuide, toggleGuide, useGuide } from './Guide';
 export type { GuideState, GuideStatus } from './Guide';
 export { Replies, useReplies, useReplyMarks } from './Replies';
+export { YouMenu } from './YouMenu';

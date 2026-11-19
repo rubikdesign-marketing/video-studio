@@ -388,3 +388,15 @@
   gap: var(--space-1);
   padding: 0 var(--space-2) var(--space-2);
 }
+.decision--split {
+  display: inline-flex;
+}
+.decision--split > .ui-button {
+  border-radius: var(--radius-control) 0 0 var(--radius-control);
+}
+.decision--split > .ui-popover > .ui-button {
+  width: 28px;
+  padding: 0;
+  border-left: 1px solid color-mix(in srgb, var(--on-accent) 25%, transparent);
+  border-radius: 0 var(--radius-control) var(--radius-control) 0;
+}
