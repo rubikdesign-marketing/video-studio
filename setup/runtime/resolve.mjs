@@ -16,6 +16,14 @@ export function nodeOk(version) {
   return (major === 22 && minor >= 13) || major >= 24;
 }
 
+/** True when this file is the one node was started with. Compares real paths: the studio can sit behind a symlink
+ *  (macOS /var -> /private/var, a linked folder), and the loader reports the resolved path while argv keeps the typed one. */
+export function isMain(metaUrl, argv1 = process.argv[1]) {
+  if (!argv1) return false;
+  const real = (f) => { try { return fs.realpathSync(f); } catch { return path.resolve(f); } };
+  return real(argv1) === real(fileURLToPath(metaUrl));
+}
+
 const pathFor = (platform) => (platform === 'win32' ? path.win32 : path.posix);
 const exe = (name, platform) => (platform === 'win32' ? `${name}.exe` : name);
 

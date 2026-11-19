@@ -100,3 +100,22 @@ test('Remotion\'s ffprobe runs from its own folder, with LD_LIBRARY_PATH on Linu
   assert.equal(c.env.LD_LIBRARY_PATH, `${c.cwd}:/x`);
   assert.equal(runContext({ path: '/usr/bin/ffprobe', source: 'PATH' }).cwd, undefined);
 });
+
+test('isMain sees through a symlinked folder (macOS /var -> /private/var)', async () => {
+  const { default: fs } = await import('node:fs');
+  const { default: os } = await import('node:os');
+  const { default: p } = await import('node:path');
+  const { fileURLToPath, pathToFileURL } = await import('node:url');
+  const { isMain } = await import('./resolve.mjs');
+  const dir = fs.mkdtempSync(p.join(os.tmpdir(), 'Vidéo '));
+  try {
+    const real = p.join(dir, 'real'); fs.mkdirSync(real);
+    fs.writeFileSync(p.join(real, 'a.mjs'), '');
+    const link = p.join(dir, 'link');
+    try { fs.symlinkSync(real, link, 'dir'); } catch { return; } // no symlink rights (Windows without developer mode): nothing to test
+    assert.equal(isMain(pathToFileURL(p.join(real, 'a.mjs')).href, p.join(link, 'a.mjs')), true);
+    assert.equal(isMain(pathToFileURL(p.join(real, 'a.mjs')).href, p.join(real, 'other.mjs')), false);
+    assert.equal(isMain(pathToFileURL(p.join(real, 'a.mjs')).href, undefined), false);
+    void fileURLToPath;
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

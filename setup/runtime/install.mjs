@@ -4,7 +4,7 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { NODE_FLOOR, STUDIO, fixFor, nodeOk, npmInvocation } from './resolve.mjs';
+import { isMain, NODE_FLOOR, STUDIO, fixFor, nodeOk, npmInvocation } from './resolve.mjs';
 import { runLogged } from './run.mjs';
 
 export const CAPABILITIES = {
@@ -68,4 +68,4 @@ async function main() {
   console.log('\nCore install done. Check it: node setup/runtime/doctor.mjs   Then: node setup/runtime/sample.mjs');
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
+if (isMain(import.meta.url)) await main();

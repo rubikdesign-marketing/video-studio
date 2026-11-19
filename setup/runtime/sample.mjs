@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { STUDIO, npmInvocation, resolveBinary, runContext } from './resolve.mjs';
+import { isMain, STUDIO, npmInvocation, resolveBinary, runContext } from './resolve.mjs';
 import { capture, runLogged } from './run.mjs';
 
 export function renderArgs({ composition, output, full, propsFile }) {
@@ -65,4 +65,4 @@ async function main() {
   console.log(`\nwrote ${final}\n  duration ${duration.toFixed(2)} s, size ${(size / 1048576).toFixed(2)} MB (probed with ${probe.source})`);
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
+if (isMain(import.meta.url)) await main();

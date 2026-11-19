@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { capture } from './run.mjs';
 import {
-  NODE_FLOOR, STUDIO, compositorPackage, currentOs, fixFor, nodeOk, npmInvocation, redact,
+  isMain, NODE_FLOOR, STUDIO, compositorPackage, currentOs, fixFor, nodeOk, npmInvocation, redact,
   resolveBinary, resolveChrome, resolveUv, runContext, venvPython, which,
 } from './resolve.mjs';
 
@@ -45,7 +45,8 @@ export async function buildReport({ root = STUDIO, env = process.env, platform =
     ? check('npm', 'core', 'pass', `npm ${npmv.out.trim()}`)
     : check('npm', 'core', 'fail', 'npm did not start', 'npm comes with Node: reinstall Node. ' + fixFor('node', platform)));
 
-  const bad = ['DAMEX_FFMPEG', 'DAMEX_FFPROBE', 'DAMEX_CHROME'].filter((k) => env[k] && !fs.existsSync(env[k]));
+  // Only the core tool's override can fail core. A broken DAMEX_FFMPEG or DAMEX_CHROME makes its capability show 'missing' (with a fix) below.
+  const bad = ['DAMEX_FFPROBE'].filter((k) => env[k] && !fs.existsSync(env[k]));
   checks.push(bad.length
     ? check('env-overrides', 'core', 'fail', bad.map((k) => `${k} points to a file that does not exist: ${env[k]}`).join('; '),
       `unset ${bad.join(' ')} or point ${bad.length > 1 ? 'them' : 'it'} at a real file`)
@@ -171,4 +172,4 @@ async function main() {
   process.exit(report.checks.some((c) => c.tier === 'core' && c.status === 'fail') ? 1 : 0);
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
+if (isMain(import.meta.url)) await main();
