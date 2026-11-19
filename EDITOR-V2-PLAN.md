@@ -38,6 +38,13 @@ One reading column with the take and time in a margin, a handle and a menu per s
 - **Suggested cuts to fit the target** (Paper edit): needs a new footage-tool step that ranks sentences; the page only shows them. Next build.
 - Claude's progress as named steps ("reading notes", "changing the film"): the run log does not record them yet. The page shows what exists: rendering progress and a new version arriving.
 
+## Status (19 Nov 2026)
+
+Phases A, B and C are built on `studio-editor-v2`. Checked: 296 app tests, 24 server tests, typecheck, build, and the
+running editor on the Halden example film (desktop, Paper theme, phone width) and on a transcript-only copy of a
+real paper edit. Not checked: video playback of a paper edit (the copy had no clips), a real batch answered by Claude
+end to end, and Windows.
+
 ## Checks
 
 `npm run typecheck`, `npm test` (282 passing before the build), `npm run build`, the server tests in `studio/tests`, and a look at the running editor on a real job at desktop and phone width.

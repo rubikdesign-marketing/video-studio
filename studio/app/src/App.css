@@ -132,12 +132,14 @@
 @media (max-width: 1100px) {
   .app-title, .app-keys { display: none; }
 }
+/* A phone: where you are on the first row, then the mode and the decision. Undo, redo and the command menu keep
+   their keys; on a phone they leave the bar so nothing overlaps. */
 @media (max-width: 760px) {
   .app-bar { flex-wrap: wrap; row-gap: var(--space-2); }
   .app-where { flex-basis: 100%; }
-  .app-mid { order: 3; }
-  .app-act { order: 4; }
-  .app-status { display: none; }
+  .app-mid { order: 3; flex: none; }
+  .app-act { order: 4; flex: 1 1 auto; }
+  .app-status, .app-icon { display: none; }
 }
 
 .app-section {
