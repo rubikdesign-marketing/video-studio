@@ -33,6 +33,10 @@ Keys (`.env`), product sign-ins (`.capture/`), renders and recordings (`jobs/*/o
 - Say "update the studio" in the folder to get the latest version.
 - Changes to the studio itself (rules, tools, engine, skills) go in their own commits, with a line in `DESIGN.md` section 14.
 
+## Selling it: the Damex Video Engine
+
+The white-label version sold by Damex Digital ships as **one zip** for Mac, Windows and Linux, from 0.1.0-rc4 on (19 Nov 2026). Buyers unzip it, open the folder in Claude and say "start the studio", and it is ready in under a minute. How to ship a version, test it and send it: `tools/release/README.md`.
+
 ## Licences
 
 Remotion is free for individuals and companies of up to three people; larger companies need a Remotion company licence. ElevenLabs needs its own paid plan. Fonts are under their own licences, noted in each brand's `brand.md`. The reference films belong to the companies that made them and are not in this repository.

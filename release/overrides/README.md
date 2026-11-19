@@ -29,7 +29,7 @@ While your update plan is active, we email you a link to each new version. Unzip
 
 ## Never in this folder
 
-Keys (`.env`), product sign-ins (`.capture/`), renders and recordings (`jobs/*/out/` and similar) stay on your computer. `.gitignore` keeps them out of the folder's history.
+Keys (`.env`), product sign-ins (`.capture/`), renders and recordings (`jobs/*/out/` and similar) stay on your computer. Never send them to anyone, and never share this folder with them inside. If you keep the folder in Git, `.gitignore` keeps them out of its history.
 
 ## What you need, and other licences
 

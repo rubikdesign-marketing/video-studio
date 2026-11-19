@@ -498,6 +498,13 @@ The order to finish in, so the Tulvo team can be given the studio, then other co
 ### Footage editing, first real edit (13 Nov 2026)
 The Product Hunt launch reel (`jobs/ph-launch-reel/`) was built from 43 raw clips in one session, ahead of the footage plan's phases 2 to 8, in the simple form that video needed: picks by measurement (`edit/listen/`), DeepFilterNet voice cleaning and a joined dialogue with room tone (`edit/assemble.py`), MediaPipe face tracks (`tools/footage/py/faces.py`), skin-matched plates (`tools/footage/py/plates.py`), Robust Video Matting cutouts (`tools/footage/py/matte.py`), and the engine's `kit/footage/footage.tsx` (a shot with a face-anchored camera and a layer behind the person). Models live in `tools/footage/models/`, downloaded per Mac and kept out of git. Not yet folded into `footage.mjs`; the phase 2 paper-edit tool from the other session was left untouched.
 
+### Selling the engine: zip delivery (19 Nov 2026, done)
+- Buyers of the Damex Video Engine get a link to one zip, the same for Mac, Windows and Linux, instead of a GitHub invite. It replaces the per-company GitHub copy decided on 11 Nov for buyers; team members still clone this repository.
+- Setup is one step: `setup/start.sh` or `setup\start.ps1`. It puts back hidden files, fetches a portable Node if needed (no admin), installs the core only when missing, and runs the core checks. No tests or sample render at setup; optional tools come when a video needs them.
+- Updates: a new zip, then the start step with `--import-from <old folder>` carries the buyer's work across.
+- Measured on 0.1.0-rc4, unzip to ready: 17 s on an Apple-silicon Mac, 15 s on Ubuntu 24.04, 52 s on Windows Server (CI run 44529719869). Before, setup took buyers 3 to 4 hours.
+- Process, receipts and what is still open (link protection, emailing the link automatically): `tools/release/README.md`.
+
 ### Housekeeping
 - `engine/out/` holds test renders that can be deleted.
 - About 60 browser snapshot files were left in `Desktop/Marketer/.playwright-mcp` by a helper.

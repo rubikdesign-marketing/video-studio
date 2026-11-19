@@ -22,7 +22,7 @@ A licence to use the Damex Video Engine version you bought, for as long as you l
 ## What you may not do
 
 1. Sell, rent, sublicense or give away the Video Engine, or anything built mainly from it, changed or not.
-2. Share your copy, or access to our repository, with anyone outside your business.
+2. Share your copy, or your download link, with anyone outside your business.
 3. Use it to make videos for clients as a service, unless we have agreed to that in writing.
 4. Remove this licence or the notice that Damex Digital made the Video Engine.
 
