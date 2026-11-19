@@ -2,7 +2,7 @@
 lengths are what was asked, every kind renders, ambience loops without a seam, a whoosh is loudest in its middle and
 an impact at its start.
 
-Run: tools/footage/.venv/bin/python -I -m unittest discover -s tools/audio/tests -p 'test_*.py'
+Run: tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) -I -m unittest discover -s tools/audio/tests -p 'test_*.py'
 """
 import json, os, subprocess, sys, tempfile, unittest
 

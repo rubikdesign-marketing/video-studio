@@ -33,16 +33,22 @@ export function venvPython(venvDir, platform = process.platform) {
   return platform === 'win32' ? p.join(venvDir, 'Scripts', 'python.exe') : p.join(venvDir, 'bin', 'python');
 }
 
-/** The Remotion compositor package that carries this platform's bundled ffmpeg and ffprobe, or null if unsupported. */
-export function compositorPackage(platform = process.platform, arch = process.arch) {
-  const key = `${platform}-${arch}`;
-  return {
-    'darwin-arm64': 'compositor-darwin-arm64',
-    'darwin-x64': 'compositor-darwin-x64',
-    'linux-x64': 'compositor-linux-x64-gnu',
-    'linux-arm64': 'compositor-linux-arm64-gnu',
-    'win32-x64': 'compositor-win32-x64-msvc',
-  }[key] ?? null;
+/** glibc or musl, for Linux (Alpine and similar are musl). null elsewhere. Remotion ships a compositor for each. */
+export function detectLibc(platform = process.platform) {
+  if (platform !== 'linux') return null;
+  try { return process.report?.getReport?.().header?.glibcVersionRuntime ? 'gnu' : 'musl'; } catch { return 'gnu'; }
+}
+
+/**
+ * The Remotion compositor package that carries this platform's bundled ffmpeg and ffprobe, or null if unsupported.
+ * darwin arm64 and x64, linux x64 and arm64 (glibc "gnu" or "musl"), win32 x64 (msvc). Windows on Arm has none: run the
+ * x64 Node there, which Windows runs under emulation.
+ */
+export function compositorPackage(platform = process.platform, arch = process.arch, libc = 'gnu') {
+  if (platform === 'darwin' && (arch === 'arm64' || arch === 'x64')) return `compositor-darwin-${arch}`;
+  if (platform === 'linux' && (arch === 'arm64' || arch === 'x64')) return `compositor-linux-${arch}-${libc === 'musl' ? 'musl' : 'gnu'}`;
+  if (platform === 'win32' && arch === 'x64') return 'compositor-win32-x64-msvc';
+  return null;
 }
 
 /**
@@ -99,7 +105,7 @@ export function resolveBinary(tool, opts = {}) {
       : { path: null, source: override, error: `${override} points to a file that does not exist: ${env[override]}` };
   }
   if (tool === 'ffprobe' || tool === 'ffmpeg-bundled') {
-    const pkg = compositorPackage(platform, arch);
+    const pkg = compositorPackage(platform, arch, opts.libc ?? detectLibc(platform) ?? 'gnu');
     const bundled = pkg && p.join(root, 'engine', 'node_modules', '@remotion', pkg, exe(tool === 'ffprobe' ? 'ffprobe' : 'ffmpeg', platform));
     if (bundled && exists(bundled)) return { path: bundled, source: 'remotion' };
     if (tool === 'ffmpeg-bundled') return { path: null, source: 'remotion' };

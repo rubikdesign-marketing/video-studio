@@ -10,9 +10,9 @@ else {
 }
 function Fail-Node($why) {
   Write-Host $why
-  Write-Host 'Install Node 22 LTS, no admin needed for the portable zip:'
-  Write-Host '  winget install OpenJS.NodeJS.LTS'
-  Write-Host '  or download the Windows .zip from https://nodejs.org, unzip it to .runtime\node inside the studio folder, and run this again.'
+  Write-Host 'Install Node 22 LTS in one of two ways:'
+  Write-Host '  winget install OpenJS.NodeJS.LTS   (Windows asks for admin approval once)'
+  Write-Host '  or, with no admin rights: download the Windows .zip from https://nodejs.org, unzip it to .runtime\node inside the studio folder, and run this again.'
   exit 1
 }
 if (-not $Node) { Fail-Node 'Node.js was not found, and the studio needs Node 22.13 or newer.' }

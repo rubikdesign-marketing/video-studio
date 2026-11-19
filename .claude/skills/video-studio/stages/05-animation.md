@@ -21,7 +21,7 @@ Running the scaffold again after a timing change updates the timings and never t
 
 ## 2. First animation
 
-`bash tools/film/render.sh jobs/<job> preview` renders the whole film at half size. With placeholders in place this is already the animatic: real voice, real timings, on-screen text at its cues.
+`node tools/film/render.mjs jobs/<job> preview` renders the whole film at half size. With placeholders in place this is already the animatic: real voice, real timings, on-screen text at its cues.
 
 Then build what the playbook asks for at this approval (for a promo: three alternative openings and one scene at full polish). The openings are the three hooks recorded at the script stage (`job.json`, `hooks`), each built to `knowledge/craft/15-hooks.md` sections 1, 2 and 5. Run `node tools/checks/hook_legible.mjs <render> --expect "<the hook's on-screen line>"` on each opening and again on the final film in every size that ships: the written line must be readable with the sound off by 3 s. A failure names the moment; look at that frame before changing anything. If the job uses a clip from viralhooks.org, `node tools/hooks/clips.mjs check jobs/<job>` must pass (`15-hooks.md` section 8). Hand over with the note from `08-directors-checks.md`. Stop for approval.
 
@@ -31,7 +31,7 @@ Then build what the playbook asks for at this approval (for a promo: three alter
 - Colours, fonts and timings come only from the kit. Cues come from the `scene` prop, never typed-in numbers.
 - Product screens that must move are built from `engine/src/products/tulvo/` (inside `<AppStage>`) and compared with the real capture.
 - Build to `knowledge/craft/14-motion-systems.md`: the camera goes to what is speaking and text appears after it arrives; entrances 0.7–1.3 s, exits 0.35–0.55 s; no more than three things moving at once; durations on the music's grid when music leads.
-- `bash tools/film/render.sh jobs/<job> scene S03` renders one scene alone. Look at it with `tools/study/sheets.sh` before moving on.
+- `node tools/film/render.mjs jobs/<job> scene S03` renders one scene alone. Look at it with `node tools/study/sheets.mjs` before moving on.
 
 ## 4. Sound
 
@@ -43,7 +43,7 @@ Then build what the playbook asks for at this approval (for a promo: three alter
 
 ## 5. Master and check
 
-1. `bash tools/film/render.sh jobs/<job> master` renders at full quality with the mix, masters the sound to −14 LUFS, and writes `out/<name>.mp4` and a 720p preview. Add `--no-captions` for the version without captions.
+1. `node tools/film/render.mjs jobs/<job> master` renders at full quality with the mix, masters the sound to −14 LUFS, and writes `out/<name>.mp4` and a 720p preview. Add `--no-captions` for the version without captions.
 2. Run every check on the master:
    - `python3 -I tools/checks/smoothness.py <file> --planned-cuts <times from shots.json>`
    - `python3 -I tools/checks/frame_quality.py <file>`
@@ -51,7 +51,7 @@ Then build what the playbook asks for at this approval (for a promo: three alter
    - `python3 -I tools/study/profile.py <file> jobs/<job>/out` and compare with the energy map and the targets in `knowledge/craft/00-principles.md`
    - `node tools/audio/listen.mjs <file> --job jobs/<job> --critique`: the sound against seven professional launch films, with fixes and times. Name each fix it suggests and whether it was made
    - The anti-slide and restraint checks on the contact sheet (`knowledge/craft/14-motion-systems.md` sections 3 and 7)
-3. Look at every flagged moment frame by frame with `tools/study/sheets.sh window`. Fix it, or say why it stands.
+3. Look at every flagged moment frame by frame with `node tools/study/sheets.mjs window`. Fix it, or say why it stands.
 4. Do the ten-percent pass.
 
 Hand over with the four-part note. Say plainly that nobody has watched it at speed or listened to it. Stop for approval.
@@ -68,8 +68,8 @@ After handing over a cut:
    - **Keep** notes are praise. Do not change what they point at. Record what worked in the ledger entry for this video, and treat it as a candidate for the motion library.
    - **Good scenes** are left exactly as they are.
    Change only the scene files the change notes touch. Then update the preview:
-   - **One scene changed:** run `bash tools/film/render.sh jobs/<job> scene S02 --splice` (with the scene's id). It renders only that scene and swaps it into `out/preview.mp4` in its place. Every other frame and the whole sound track stay exactly as they were, so the reviewer sees the fix without waiting for the whole film.
-   - **Several scenes changed, or the voice or the shot list changed:** render the whole preview again with `bash tools/film/render.sh jobs/<job> preview`. The splice also stops and asks for this when the scene times have moved since the preview was made, when there is no preview yet, or when another render is running.
+   - **One scene changed:** run `node tools/film/render.mjs jobs/<job> scene S02 --splice` (with the scene's id). It renders only that scene and swaps it into `out/preview.mp4` in its place. Every other frame and the whole sound track stay exactly as they were, so the reviewer sees the fix without waiting for the whole film.
+   - **Several scenes changed, or the voice or the shot list changed:** render the whole preview again with `node tools/film/render.mjs jobs/<job> preview`. The splice also stops and asks for this when the scene times have moved since the preview was made, when there is no preview yet, or when another render is running.
    Then re-run the checks.
    Before changing anything, write the batch into the revision ledger, so the next cut is checked against it: the cut they reviewed must have a snapshot (`node tools/plan/revisions.mjs snapshot jobs/<job> --as <name>`; take one of every cut you hand over), then one `revisions.mjs note` per change note (`--action change --scope <scenes> --aspect <topic> --says "<their words>"`, with `--target` when it can be measured: slower, hold>=2, length<=30), and one `--action keep --scope rest --says "keep everything else"` unless they asked for more. After the change, run `node tools/plan/revisions.mjs verify jobs/<job> --round <name>` and fix anything it marks **Not done** or **changed without a note** before replying. Quote its table in the reply.
 4. Mark the batch done with a one-line reply per note: `node studio/wait-for-notes.mjs jobs/<job> --done <batch> '[{"id":"b001-n1","reply":"what changed"}]'`. The page shows the replies and offers the new version.

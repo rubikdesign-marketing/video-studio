@@ -7,7 +7,7 @@ It works for any brand set up in `brands/`, and for many kinds of product: web a
 ## What you need
 
 - Google Chrome, installed the usual way.
-- The tool itself: `bash setup/install.sh` sets it up. The health check (`bash setup/doctor.sh`) says if it is missing.
+- The tool itself: `node setup/runtime/install.mjs` sets it up. The health check (`node setup/runtime/doctor.mjs`) says if it is missing.
 - The brand's product file, `brands/<brand>/product/capture.json`: where the product lives, the demo account, the clean screen, the demo date and time, and what must never be filmed. How to fill it in is in `brands/_template/product/README.md`.
 
 ## Which Chrome records

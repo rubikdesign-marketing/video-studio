@@ -15,9 +15,9 @@ a time sounds at that time. Needs ffmpeg only.
 """
 import json, math, os, re, subprocess, sys, tempfile
 
-FF = os.environ.get("FFMPEG", "/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg")
-if not os.path.exists(FF):
-    FF = "ffmpeg"
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'footage', 'py'))
+from _ff import FFMPEG as FF, FFPROBE  # noqa: E402
 SR = 48000
 
 
@@ -38,7 +38,7 @@ def measure(path):
     moments = [float(x) for x in re.findall(r"\bM:\s*(-?[\d.]+)", err)]
     integ = re.findall(r"I:\s*(-?[\d.]+) LUFS", err)
     peak = re.findall(r"Peak:\s*(-?[\d.]+|-inf) dBFS", err)
-    probe = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path],
+    probe = subprocess.run([FFPROBE, "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path],
                            capture_output=True, text=True).stdout.strip()
     seconds = float(probe) if probe else 0.0
     loudest = max([m for m in moments if m > -120], default=-120.0)

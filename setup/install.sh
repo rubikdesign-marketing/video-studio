@@ -82,11 +82,20 @@ fi
 # its model inside) and Microsoft's DNSMOS speech-quality models (CC BY 4.0). Demucs (MIT; separates music from a voice;
 # about 1-2 GB with PyTorch) only with: bash setup/install.sh --extras
 DF="tools/footage/bin/deep-filter"
-if [ ! -x "$DF" ]; then
-  arch="$(uname -m)"; [ "$arch" = "arm64" ] && arch="aarch64"
+# Release assets listed for DeepFilterNet v0.5.6 on GitHub (checked 2026-11-19). Linux x64 uses the static musl build.
+case "$(uname -s)-$(uname -m)" in
+  Darwin-arm64) DF_ASSET=aarch64-apple-darwin ;;
+  Darwin-x86_64) DF_ASSET=x86_64-apple-darwin ;;
+  Linux-x86_64) DF_ASSET=x86_64-unknown-linux-musl ;;
+  Linux-aarch64|Linux-arm64) DF_ASSET=aarch64-unknown-linux-gnu ;;
+  *) DF_ASSET="" ;;
+esac
+if [ -z "$DF_ASSET" ]; then
+  echo "Noise removal has no DeepFilterNet build for this system ($(uname -s) $(uname -m))."
+elif [ ! -x "$DF" ]; then
   mkdir -p tools/footage/bin
   echo "Fetching DeepFilterNet (noise removal, about 28 MB)..."
-  curl -sL --fail -o "$DF" "https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-$arch-apple-darwin" && chmod +x "$DF" \
+  curl -sL --fail -o "$DF" "https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-$DF_ASSET" && chmod +x "$DF" \
     || { rm -f "$DF"; echo "DeepFilterNet did not download. The health check at the end will say so."; }
 fi
 # Face tracking for framing (FOOTAGE-PLAN.md phase 4): MediaPipe's face landmarker (Apache 2.0). Positions only.

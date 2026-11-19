@@ -6,24 +6,26 @@ This guide gets you set up in about 20 minutes and shows how we keep improving t
 
 ## 1. Set up (once, one step)
 
-You need a Mac with the Claude desktop app and Google Chrome.
+You need a Mac (Apple silicon or Intel), a Windows 10 or 11 PC, or a Linux PC, with Node.js 22 (22.13 or newer) and Google Chrome. On a Mac or Windows, use the Claude desktop app; on Linux, use Claude Code in a terminal. No admin rights are needed for the core studio.
 
 1. Open the Claude desktop app, choose the **Code** tab, open any folder (your Documents folder is fine), and paste this:
 
    ```text
-   Set up the Video Studio for me. Download https://github.com/rubikdesign-marketing/video-studio into ~/Documents/video-studio (if it is already there, get the latest version instead). Then run "bash setup/install.sh" in that folder and stay with it until it finishes. Ask me before installing anything that needs my Mac password. Fix anything the health check says needs attention, then tell me in plain words what is ready and what I still have to do.
+   Set up the Video Studio for me. Download https://github.com/rubikdesign-marketing/video-studio into my Documents folder as "video-studio" (if it is already there, get the latest version instead). Then run the studio installer in that folder and stay with it until it finishes: on Windows "powershell -ExecutionPolicy Bypass -File setup\install.ps1", on a Mac or Linux "bash setup/install.sh". Ask me before installing anything that needs an admin password. Fix anything the health check says needs attention, then tell me in plain words what is ready and what I still have to do.
    ```
+
+   The installer sets up only what the first video needs. Extra tools (noise removal, transcription, mastering) are added later when a step needs them, and the health check (`node setup/runtime/doctor.mjs`) says which are ready on your computer.
 
 2. When it is done, **add the folder to Claude**: in the Code tab, open the folder `Documents/video-studio`. When Claude asks whether to trust it and install its plugins (Superpowers, claude-mem, Matt Pocock's skills, Ponytail), say yes. From now on, always work in this folder.
 
-3. **Add the ElevenLabs key** (the owner gives it to you privately). Open Terminal, then paste these two lines one after the other. The second asks for the key without showing it and keeps it on your Mac only:
+3. **Add the ElevenLabs key** (the owner gives it to you privately). Open a terminal (Terminal on a Mac or Linux, PowerShell on Windows), go to the studio folder, and run the key helper. It asks for the key without showing it and keeps it on your computer only:
 
    ```bash
    cd ~/Documents/video-studio
    ```
 
    ```bash
-   read -rs "KEY?Paste the ElevenLabs key, then press Return: " && printf 'ELEVENLABS_API_KEY=%s\n' "$KEY" > .env && chmod 600 .env && unset KEY && echo "Saved."
+   node setup/runtime/key.mjs
    ```
 
 4. **Product sign-in for filming:** in the studio folder, say "sign in to Tulvo for capture" and sign in yourself in the Chrome window that opens. To record in your everyday Chrome instead, install Microsoft's free Playwright Extension in Chrome once.

@@ -19,7 +19,7 @@ real faults do. Joins are covered by hard stops, hard starts and level jumps ins
 Writes report.json and one spectrogram image per flagged moment into the report folder.
 Exit code 0 = clean, 1 = something flagged. Needs ffmpeg; no Python packages.
 """
-import argparse, array, difflib, json, math, os, re, subprocess, sys
+import argparse, array, difflib, json, math, os, re, subprocess, sys, tempfile
 
 SR = 16000
 FRAME = 160                      # 10 ms
@@ -135,7 +135,7 @@ def default_heard_as():
 def words_check(path, script_path, model, heard_as=None):
     if not os.path.exists(model):
         return dict(skipped=f"no transcription model at {model}")
-    tmp = os.path.join(os.environ.get("TMPDIR", "/tmp"), "voice_check_16k.wav")
+    tmp = os.path.join(tempfile.gettempdir(), "voice_check_16k.wav")
     subprocess.run([FFMPEG, "-v", "error", "-y", "-i", path, "-ac", "1", "-ar", "16000", tmp])
     out = subprocess.run(["whisper-cli", "-m", model, "-f", tmp, "-np", "-nt", "-ng"], capture_output=True, text=True).stdout
     if not out.strip():

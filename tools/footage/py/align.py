@@ -21,7 +21,9 @@ from scipy.signal import butter, sosfilt
 HOP = 0.01
 MIN_PAUSE = 0.12
 WINDOW = 0.35
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 
 
 def load(path, rate=16000):

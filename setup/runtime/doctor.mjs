@@ -39,6 +39,12 @@ export async function buildReport({ root = STUDIO, env = process.env, platform =
     ? check('node', 'core', 'pass', `Node ${nodeVersion}`)
     : check('node', 'core', 'fail', `Node ${nodeVersion} (needs ${NODE_FLOOR} or newer, not 23)`, fixFor('node', platform)));
 
+  // Remotion ships no compositor (its bundled ffmpeg and render engine) for Windows on Arm; the x64 Node runs there under emulation.
+  if (platform === 'win32' && arch === 'arm64') {
+    checks.push(check('node-arch', 'core', 'fail', 'this is an arm64 Node on Windows, and Remotion has no arm64 Windows build',
+      'install the x64 Node (it runs under emulation): winget install OpenJS.NodeJS.LTS --architecture x64   (or unzip the win-x64 portable Node from https://nodejs.org)'));
+  }
+
   const npm = npmInvocation('npm', { platform });
   const npmv = await capture(npm.cmd, [...npm.prefix, '--version'], { env });
   checks.push(npmv.code === 0
@@ -123,9 +129,11 @@ export async function buildReport({ root = STUDIO, env = process.env, platform =
   const demucs = which('demucs', { env, platform }) || [path.join(os.homedir(), '.local', 'bin', 'demucs')].find((p) => fs.existsSync(p));
   cap('demucs', demucs ? 'ready' : 'missing', demucs || 'not installed (optional)', 'node setup/runtime/install.mjs --with demucs');
 
-  platform === 'darwin' && fs.existsSync('/usr/bin/script')
-    ? cap('capture-terminal', 'ready', '/usr/bin/script')
-    : cap('capture-terminal', 'unsupported', `not claimed on ${platform} until tested`, 'macOS only for now');
+  const scriptBin = platform === 'darwin' ? (fs.existsSync('/usr/bin/script') ? '/usr/bin/script' : null) : platform === 'linux' ? which('script', { env, platform }) : null;
+  scriptBin
+    ? cap('capture-terminal', 'ready', scriptBin)
+    : cap('capture-terminal', 'unsupported', platform === 'linux' ? 'the `script` program (util-linux) is missing' : `terminal capture needs macOS or Linux, not ${platform}`,
+      platform === 'linux' ? 'sudo apt install bsdutils' : 'record the terminal yourself and import the recording');
   if (platform === 'darwin') {
     const xc = await capture('xcrun', ['--find', 'simctl'], { env });
     cap('capture-ios', xc.code === 0 ? 'ready' : 'missing', xc.code === 0 ? 'Xcode simulator tools found' : 'full Xcode is not installed', 'install Xcode from the Mac App Store (optional)');

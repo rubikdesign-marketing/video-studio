@@ -1,5 +1,5 @@
 """Tests for the sound repair steps (FOOTAGE-PLAN.md phase 3), on small synthetic signals with known answers.
-Run: tools/footage/.venv/bin/python -I -m unittest discover -s tools/footage/tests -p 'test_*.py'
+Run: tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) -I -m unittest discover -s tools/footage/tests -p 'test_*.py'
 """
 import json
 import os

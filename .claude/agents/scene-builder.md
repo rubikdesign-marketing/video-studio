@@ -10,7 +10,7 @@ You write one scene's code in `engine/src/jobs/<job>/scenes/<id>.tsx` from its b
 
 Load first: `remotion-best-practices`. Then, only if the scene needs them: `motion-design` and `motion-foundations` (timing), `motionmaxxing` (its curves and `references/ui-demo.md` for product shots), the remotion-markup guide for the technique in play (transitions, text highlights, motion blur, 3D), `hyperframes` only if the brief says HyperFrames.
 
-Use the kit in `engine/src/kit/` and the motion library before writing anything new. Product shots use `CaptureClip` with the look named in the brief. Render the scene alone at half size, run `tools/checks/smoothness.py` on it, and look at a contact sheet (`tools/study/sheets.sh`) before reporting.
+Use the kit in `engine/src/kit/` and the motion library before writing anything new. Product shots use `CaptureClip` with the look named in the brief. Render the scene alone at half size, run `tools/checks/smoothness.py` on it, and look at a contact sheet (`node tools/study/sheets.mjs`) before reporting.
 
 ## Always
 

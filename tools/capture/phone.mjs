@@ -15,22 +15,31 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import os from 'node:os';
+import { which as findOnPath } from '../../setup/runtime/resolve.mjs';
 
 export const PHONE_STEPS = ['open', 'tap', 'type', 'swipe', 'press', 'wait', 'wait for', 'mark', 'line'];
 const OPTIONS = ['kind', 'steps', 'theme', 'platform', 'device', '_about'];
 const KEYS = { home: ['HOME', 'KEYCODE_HOME'], back: [null, 'KEYCODE_BACK'], enter: [null, 'KEYCODE_ENTER'], return: [null, 'KEYCODE_ENTER'], lock: ['LOCK', 'KEYCODE_POWER'] };
 const SWIPES = { up: [0.5, 0.75, 0.5, 0.3], down: [0.5, 0.3, 0.5, 0.75], left: [0.8, 0.5, 0.2, 0.5], right: [0.2, 0.5, 0.8, 0.5] };
 
-const which = (bin) => {
-  const r = spawnSync('/bin/sh', ['-c', `command -v ${bin}`], { encoding: 'utf8' });
-  return r.status === 0 ? r.stdout.trim() : null;
-};
+const which = (bin) => findOnPath(bin);   // PATH lookup without a shell; honours PATHEXT on Windows
+
+/** Where the Android SDK's adb may be: ANDROID_HOME / ANDROID_SDK_ROOT first, then the default folder for this OS. */
+export function adbCandidates({ platform = process.platform, env = process.env, home = os.homedir() } = {}) {
+  const exe = platform === 'win32' ? 'adb.exe' : 'adb';
+  const roots = [env.ANDROID_HOME, env.ANDROID_SDK_ROOT];
+  if (platform === 'darwin') roots.push(path.join(home, 'Library', 'Android', 'sdk'));
+  else if (platform === 'win32') roots.push(path.join(env.LOCALAPPDATA || path.join(home, 'AppData', 'Local'), 'Android', 'Sdk'));
+  else roots.push(path.join(home, 'Android', 'Sdk'));
+  return roots.filter(Boolean).map((r) => path.join(r, 'platform-tools', exe));
+}
 const run = (bin, args, opts = {}) => spawnSync(bin, args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, timeout: opts.timeout ?? 60000, ...opts });
 
-/** What this Mac has for phone apps: for the health check and for plain stops. */
+/** What this computer has for phone apps: for the health check and for plain stops. */
 export function phoneTools() {
   const simctl = run('xcrun', ['--find', 'simctl']).status === 0;
-  const adb = which('adb') ?? [path.join(process.env.HOME ?? '', 'Library/Android/sdk/platform-tools/adb')].find((p) => fs.existsSync(p)) ?? null;
+  const adb = which('adb') ?? adbCandidates().find((p) => fs.existsSync(p)) ?? null;
   const idb = which('idb');
   return { simctl, adb, idb };
 }
@@ -101,7 +110,8 @@ class IOS {
     const types = JSON.parse(this.simctl(['list', 'devicetypes', '-j'], 'list its device types')).devicetypes;
     const type = types.find((t) => t.identifier === dev.deviceTypeIdentifier);
     const plist = type ? path.join(type.bundlePath, 'Contents', 'Resources', 'profile.plist') : null;
-    const read = (k) => Number(run('/usr/bin/plutil', ['-extract', k, 'raw', plist]).stdout.trim());
+    // plutil is a macOS program, and the iOS Simulator exists only on a Mac; elsewhere the defaults below are used.
+    const read = (k) => (process.platform === 'darwin' ? Number(run('/usr/bin/plutil', ['-extract', k, 'raw', plist]).stdout.trim()) : NaN);
     this.scale = plist ? read('mainScreenScale') || 3 : 3;
     const px = plist ? [read('mainScreenWidth'), read('mainScreenHeight')] : null;
     this.points = px?.every((x) => x > 0) ? px.map((x) => Math.round(x / this.scale)) : [402, 874];
@@ -253,6 +263,7 @@ export async function recordPhone({ product, script, opts, mode, work, h, settin
   const tools = phoneTools();
   const platform = (cfg.platform ?? (tools.simctl ? 'ios' : 'android')).toLowerCase();
   if (!['ios', 'android'].includes(platform)) stop(`"phone": { "platform": "${cfg.platform}" } is "ios" or "android".`);
+  if (platform === 'ios' && process.platform !== 'darwin') stop('Phone app takes on iOS need the iOS Simulator, which only exists on a Mac with Xcode. On this computer, record the app yourself (an Android emulator or a phone) and import the recording.');
   if (platform === 'ios' && !tools.simctl) stop('Phone app takes on iOS need the iOS Simulator, which comes with Xcode (free, from the Mac App Store, about 15 GB). This Mac has only the command line tools. Install Xcode, open it once to finish, then run: sudo xcode-select -s /Applications/Xcode.app. Until then, record the app by hand with Cap.');
   if (platform === 'android' && !tools.adb) stop('Phone app takes on Android need the Android emulator, which comes with Android Studio (free, from developer.android.com/studio). Install it, make a virtual device in its Device Manager and start it. Until then, record the app by hand with Cap.');
   const phone = platform === 'ios' ? new IOS(cfg, tools, h) : new Android(cfg, tools, h);

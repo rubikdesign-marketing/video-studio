@@ -8,7 +8,7 @@ model: sonnet
 
 You study one video in `library/references/` and fill `templates/study-card.md`.
 
-Run `tools/study/profile.py` and `tools/study/sheets.sh`, read their summaries and sheets. Load `reverse-any-video` and `style-sampling` for the method. Nothing from the reference is ever placed in a studio video: the card records principles, timings and moves, not assets.
+Run `tools/study/profile.py` and `node tools/study/sheets.mjs`, read their summaries and sheets. Load `reverse-any-video` and `style-sampling` for the method. Nothing from the reference is ever placed in a studio video: the card records principles, timings and moves, not assets.
 
 ## Always
 

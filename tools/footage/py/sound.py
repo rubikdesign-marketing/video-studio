@@ -25,7 +25,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # run with -I: t
 from report import update  # noqa: E402
 from scipy.signal import butter, medfilt, sosfilt, welch
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 RATE = 48000
 
 CLARITY_LOW = 20      # voice less than this many dB above the noise: noisy
@@ -37,7 +39,7 @@ TONAL = 0.12          # spectral flatness of the pauses below this: tonal (music
 
 def load(path):
     """All channels, as an array of shape (samples, channels)."""
-    ch = int(subprocess.run(['/opt/homebrew/opt/ffmpeg-full/bin/ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True, check=True).stdout.strip() or 1)
+    ch = int(subprocess.run([FFPROBE, '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True, check=True).stdout.strip() or 1)
     raw = subprocess.run([FFMPEG, '-v', 'error', '-i', path, '-ar', str(RATE), '-f', 'f32le', '-'], capture_output=True, check=True).stdout
     return np.frombuffer(raw, np.float32).reshape(-1, ch).copy()
 
