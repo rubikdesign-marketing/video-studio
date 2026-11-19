@@ -284,10 +284,17 @@ async function playwright() {
 
 /** The installed Chrome's own user agent, without the word "Headless", so the product sees a normal Chrome. */
 function chromeAgent() {
-  const bin = { darwin: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', linux: '/usr/bin/google-chrome' }[process.platform];
+  const env = process.env;
+  const known = {
+    darwin: ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'],
+    linux: ['/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser'],
+    win32: [env.ProgramFiles, env['ProgramFiles(x86)'], env.LOCALAPPDATA].filter(Boolean).map((base) => path.join(base, 'Google', 'Chrome', 'Application', 'chrome.exe')),
+  }[process.platform] ?? [];
+  const bin = [env.DAMEX_CHROME, ...known].filter(Boolean).find((candidate) => fs.existsSync(candidate));
+  if (!bin) return undefined;
   try {
     const major = execFileSync(bin, ['--version'], { encoding: 'utf8' }).match(/(\d+)\./)[1];
-    const os = process.platform === 'darwin' ? 'Macintosh; Intel Mac OS X 10_15_7' : 'X11; Linux x86_64';
+    const os = { darwin: 'Macintosh; Intel Mac OS X 10_15_7', win32: 'Windows NT 10.0; Win64; x64' }[process.platform] ?? 'X11; Linux x86_64';
     return `Mozilla/5.0 (${os}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${major}.0.0.0 Safari/537.36`;
   } catch { return undefined; }
 }

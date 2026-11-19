@@ -13,7 +13,7 @@ export const STUDIO = path.resolve(TOOL, '..', '..');
 const fullFF = '/opt/homebrew/opt/ffmpeg-full/bin';
 export const FFMPEG = process.env.FFMPEG || (fs.existsSync(`${fullFF}/ffmpeg`) ? `${fullFF}/ffmpeg` : 'ffmpeg');
 export const FFPROBE = process.env.FFPROBE || (fs.existsSync(`${fullFF}/ffprobe`) ? `${fullFF}/ffprobe` : 'ffprobe');
-export const PYTHON = path.join(TOOL, '.venv', 'bin', 'python');
+export const PYTHON = process.platform === 'win32' ? path.join(TOOL, '.venv', 'Scripts', 'python.exe') : path.join(TOOL, '.venv', 'bin', 'python');
 export const MODELS = path.join(os.homedir(), '.cache', 'hyperframes', 'whisper', 'models');
 
 /** Video and audio files ingest picks up from a job's footage folder. */
