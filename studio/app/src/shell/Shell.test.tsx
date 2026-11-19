@@ -38,7 +38,7 @@ describe('Shell', () => {
       expect(screen.getByText(text)).toBeTruthy();
     }
     expect(panel('Left panel').style.width).toBe('280px');
-    expect(panel('Right panel').style.width).toBe('320px');
+    expect(panel('Notes panel').style.width).toBe('320px');
     expect(panel('Timeline').style.height).toBe('220px');
   });
 
@@ -57,7 +57,7 @@ describe('Shell', () => {
 
     // The right panel and the timeline grow the other way.
     fireEvent.keyDown(handle('Resize the right panel'), { key: 'ArrowLeft' });
-    expect(panel('Right panel').style.width).toBe('336px');
+    expect(panel('Notes panel').style.width).toBe('336px');
     fireEvent.keyDown(handle('Resize the timeline'), { key: 'ArrowUp' });
     expect(panel('Timeline').style.height).toBe('236px');
     fireEvent.keyDown(handle('Resize the timeline'), { key: 'End' });
@@ -104,17 +104,17 @@ describe('Shell', () => {
     await openPage();
     fireEvent.keyDown(handle('Resize the left panel'), { key: 'ArrowRight', shiftKey: true });
     fireEvent.keyDown(handle('Resize the timeline'), { key: 'ArrowUp' });
-    fireEvent.click(toggleButton(/right panel/));
+    fireEvent.click(toggleButton(/notes panel/));
 
     await openPage();
     expect(panel('Left panel').style.width).toBe('344px');
     expect(panel('Timeline').style.height).toBe('236px');
-    expect(panel('Right panel').hidden).toBe(true);
+    expect(panel('Notes panel').hidden).toBe(true);
 
-    fireEvent.click(toggleButton(/right panel/));
+    fireEvent.click(toggleButton(/notes panel/));
     await openPage();
-    expect(panel('Right panel').hidden).toBe(false);
-    expect(panel('Right panel').style.width).toBe('320px');
+    expect(panel('Notes panel').hidden).toBe(false);
+    expect(panel('Notes panel').style.width).toBe('320px');
   });
 
   it('falls back to the usual layout when what was saved is unreadable or out of range', async () => {
@@ -126,7 +126,7 @@ describe('Shell', () => {
     window.localStorage.setItem(PANELS_STORAGE_KEY, JSON.stringify({ sizes: { left: 9000, right: 'wide' } }));
     await openPage();
     expect(panel('Left panel').style.width).toBe('480px');
-    expect(panel('Right panel').style.width).toBe('320px');
+    expect(panel('Notes panel').style.width).toBe('320px');
   });
 
   it('works when storage is blocked', async () => {
@@ -146,7 +146,7 @@ describe('Shell', () => {
     setWidth(true);
     const { usePanelsStore } = await openPage();
     expect(panel('Left panel').hidden).toBe(true);
-    expect(panel('Right panel').hidden).toBe(true);
+    expect(panel('Notes panel').hidden).toBe(true);
     expect(panel('Timeline').hidden).toBe(false);
     expect(screen.queryByRole('separator', { name: 'Resize the left panel' })).toBeNull();
     expect(handle('Resize the timeline')).toBeTruthy();
@@ -156,12 +156,12 @@ describe('Shell', () => {
     expect(panel('Left panel').className).toContain('is-drawer');
 
     // One drawer at a time.
-    fireEvent.click(toggleButton(/right panel/));
+    fireEvent.click(toggleButton(/notes panel/));
     expect(panel('Left panel').hidden).toBe(true);
-    expect(panel('Right panel').hidden).toBe(false);
+    expect(panel('Notes panel').hidden).toBe(false);
 
     fireEvent.keyDown(window, { key: 'Escape' });
-    expect(panel('Right panel').hidden).toBe(true);
+    expect(panel('Notes panel').hidden).toBe(true);
 
     fireEvent.click(toggleButton(/left panel/));
     fireEvent.click(screen.getByRole('button', { name: 'Close the panel' }));
@@ -169,5 +169,31 @@ describe('Shell', () => {
 
     // Opening a drawer does not change what a wide window remembers.
     expect(usePanelsStore.getState().collapsed).toEqual({ left: false, right: false, timeline: false });
+  });
+
+  it('has no left panel and no switch for it when the page gives none (Review, EDITOR-V2-PLAN.md phase A)', async () => {
+    cleanup();
+    vi.resetModules();
+    const { Shell } = await import('./Shell');
+    render(<Shell topBar="Top" canvas="Film" right="Right content" timeline="Lanes" />);
+    expect(screen.queryByLabelText('Left panel', { selector: 'aside' })).toBeNull();
+    expect(screen.queryByRole('separator', { name: 'Resize the left panel' })).toBeNull();
+    expect(screen.queryByRole('button', { name: /left panel/ })).toBeNull();
+    expect(toggleButton(/notes panel/)).toBeTruthy();
+  });
+
+  it('leaves the switches to the page on a wide window, and shows them on a narrow one where the panels are drawers', async () => {
+    cleanup();
+    vi.resetModules();
+    let { Shell } = await import('./Shell');
+    render(<Shell topBar="Top" canvas="Film" right="Right content" timeline="Lanes" toggles={false} />);
+    expect(screen.queryByRole('group', { name: 'Panels' })).toBeNull();
+
+    setWidth(true);
+    cleanup();
+    vi.resetModules();
+    ({ Shell } = await import('./Shell'));
+    render(<Shell topBar="Top" canvas="Film" right="Right content" timeline="Lanes" toggles={false} />);
+    expect(toggleButton(/notes panel/)).toBeTruthy();
   });
 });

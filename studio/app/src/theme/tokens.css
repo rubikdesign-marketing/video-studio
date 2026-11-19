@@ -70,6 +70,11 @@
   --text-quiet: var(--raw-white-55);
   /* The canvas is dark in both themes, so text on it has its own role. */
   --text-on-canvas: var(--raw-white-96);
+  /* Controls that sit on the canvas (the transport, the View button, the guided review card's surround). Same in both themes. */
+  --text-on-canvas-body: var(--raw-white-70);
+  --canvas-raised: var(--raw-white-10);
+  --canvas-hover: var(--raw-white-12);
+  --canvas-line: var(--raw-white-12);
   --line: var(--raw-white-12);
   --accent: var(--raw-lime);
   --on-accent: var(--raw-night-ink);

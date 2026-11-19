@@ -18,9 +18,23 @@
   padding-top: 0;
 }
 .notes-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
   color: var(--text-strong);
-  font-size: var(--size-15);
+  font-size: var(--size-13);
   font-weight: var(--weight-semibold);
+}
+.notes-title-scene {
+  overflow: hidden;
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+  font-weight: var(--weight-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .notes-row {
   display: flex;
@@ -49,23 +63,28 @@
   padding: 0;
   list-style: none;
 }
+/* A note is a row, not a card: the time leads, the words follow. Keep and must fix are said in words, by chips. */
 .notes-card {
   display: flex;
   align-items: flex-start;
   gap: var(--space-1);
-  border: 1px solid var(--line);
-  border-left-width: 3px;
   border-radius: var(--radius-control);
-  background: var(--surface-raised);
+  transition: background var(--duration-control) var(--ease);
 }
-.notes-card.is-keep {
-  border-left-color: var(--good);
-}
-.notes-card.is-must {
-  border-left-color: var(--warn);
+.notes-card:hover {
+  background: var(--surface-hover);
 }
 .notes-card.is-selected {
-  border-color: var(--accent);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.notes-card .ui-chip.is-must {
+  border-color: var(--warn);
+  color: var(--text-strong);
+}
+.notes-card .ui-chip.is-keep {
+  border-color: var(--good);
+  color: var(--text-strong);
 }
 .notes-card-main {
   flex: 1;
@@ -102,9 +121,14 @@
   background: var(--surface-canvas);
 }
 .notes-reply {
-  padding: var(--space-1) var(--space-2);
-  border-left: 2px solid var(--accent);
-  color: var(--text-body);
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  color: var(--text-strong);
+}
+.notes-reply-who {
+  margin-right: var(--space-1);
+  font-weight: var(--weight-semibold);
 }
 .notes-batches {
   display: flex;
@@ -135,4 +159,244 @@
 }
 .notes-guide strong {
   color: var(--text-strong);
+}
+
+/* The notes rail: tabs and progress on top, the list in the middle, the composer pinned at the bottom. */
+.rail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.rail-head {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+.rail-tabs {
+  display: flex;
+}
+.rail-tabs .ui-segmented-option {
+  flex: 1;
+}
+.rail-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.rail-progress-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.rail-progress-row strong {
+  color: var(--text-strong);
+}
+.rail-ticks {
+  display: grid;
+  gap: 3px;
+}
+.rail-ticks i {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.rail-ticks i.is-on {
+  background: var(--good);
+}
+.rail-progress .ui-button {
+  align-self: flex-start;
+  margin-top: var(--space-1);
+}
+.rail-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-2);
+}
+.rail-body > .notes-quiet {
+  padding: var(--space-3) var(--space-2);
+}
+.rail-back {
+  margin-bottom: var(--space-1);
+}
+.rail-foot {
+  flex: none;
+}
+
+/* The decision and its send panel. */
+.send-popover {
+  width: 340px;
+  padding: var(--space-4);
+}
+.send-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.send-title {
+  color: var(--text-strong);
+  font-size: var(--size-15);
+  font-weight: var(--weight-semibold);
+}
+.send-text {
+  color: var(--text-body);
+}
+.send-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.send-actions > .ui-button {
+  width: 100%;
+}
+.send-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+}
+.send-confirm p {
+  width: 100%;
+  color: var(--text-strong);
+}
+.decision .ui-icon {
+  flex: none;
+}
+
+.notes-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  width: 100%;
+}
+.notes-quick .ui-chip {
+  gap: 6px;
+  padding-right: var(--space-1);
+}
+.notes-quick .ui-icon {
+  vertical-align: -2px;
+  margin-right: 3px;
+}
+.notes-key {
+  min-width: 16px;
+  padding: 0 3px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--text-quiet);
+  font: inherit;
+  font-size: 10px;
+  text-align: center;
+}
+.notes-unspan {
+  min-height: 22px;
+  width: 22px;
+  margin-left: var(--space-1);
+  padding: 0;
+  vertical-align: middle;
+}
+
+/* The guided review card: a solid panel over the bottom of the film, above the transport. */
+.guide-card {
+  position: absolute;
+  left: 50%;
+  bottom: 76px;
+  z-index: 7;
+  transform: translateX(-50%);
+  width: min(460px, calc(100% - var(--space-5)));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-float);
+  color: var(--text-strong);
+  animation: ui-rise var(--duration-panel) var(--ease);
+}
+.guide-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.guide-stop {
+  min-height: 24px;
+  padding: 0 var(--space-2);
+}
+.guide-title {
+  color: var(--text-strong);
+  font-size: var(--size-15);
+  font-weight: var(--weight-semibold);
+  text-wrap: balance;
+}
+.guide-text {
+  color: var(--text-body);
+}
+.guide-watching {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.guide-hint {
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+.guide-key {
+  margin-left: 2px;
+  padding: 0 4px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font: inherit;
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+/* Claude's replies, checked one by one. */
+.replies-intro {
+  padding: var(--space-2) var(--space-2) var(--space-3);
+}
+.replies-item {
+  flex-direction: column;
+  align-items: stretch;
+}
+.replies-item[data-mark] {
+  opacity: 0.75;
+}
+.replies-yours {
+  color: var(--text-quiet);
+  font-size: var(--size-12);
+}
+.replies-actions {
+  display: flex;
+  gap: var(--space-1);
+  padding: 0 var(--space-2) var(--space-2);
+}
+.decision--split {
+  display: inline-flex;
+}
+.decision--split > .ui-button {
+  border-radius: var(--radius-control) 0 0 var(--radius-control);
+}
+.decision--split > .ui-popover > .ui-button {
+  width: 28px;
+  padding: 0;
+  border-left: 1px solid color-mix(in srgb, var(--on-accent) 25%, transparent);
+  border-radius: 0 var(--radius-control) var(--radius-control) 0;
 }

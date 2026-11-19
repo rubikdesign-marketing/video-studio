@@ -9,7 +9,7 @@ import { isMac, isTyping, matchKeys, type KeyPress } from './keys';
 type Entry = Omit<Shortcut, 'run'>;
 const entry = (id: string, keys: string, label: string, group: string): Entry => ({ id, keys, label, group });
 
-export const GROUPS = ['Playback', 'Timeline', 'Notes', 'Paper edit', 'Editing', 'Panels', 'Help'] as const;
+export const GROUPS = ['Playback', 'Timeline', 'Review', 'Notes', 'Paper edit', 'Editing', 'Panels', 'Help'] as const;
 
 export const TABLE = {
   // Playback and timeline (Worker 2)
@@ -34,11 +34,22 @@ export const TABLE = {
   toggleSafeZones: entry('canvas.safe-zones', 'S', 'Show or hide the safe zones', 'Notes'),
   compareVersions: entry('canvas.compare', 'C', 'Compare two versions', 'Notes'),
   send: entry('notes.send', 'Mod+Enter', 'Send the notes', 'Notes'),
+  // Editor v2, phase B: quick reactions, notes over a stretch, and the guided review.
+  react1: entry('notes.react-1', '1', 'Quick note: too fast', 'Notes'),
+  react2: entry('notes.react-2', '2', 'Quick note: too slow', 'Notes'),
+  react3: entry('notes.react-3', '3', 'Quick note: hard to read', 'Notes'),
+  react4: entry('notes.react-4', '4', 'Quick note: keep this', 'Notes'),
+  spanStart: entry('notes.span-start', 'I', 'Mark a stretch from here', 'Notes'),
+  spanEnd: entry('notes.span-end', 'O', 'Mark a stretch to here', 'Notes'),
+  guide: entry('review.guide', 'Shift+G', 'Review scene by scene', 'Review'),
+  guideAgain: entry('review.again', 'R', 'Watch this scene again', 'Review'),
+  guideNext: entry('review.next', 'Enter', 'Go on to the next scene', 'Review'),
   // Paper edit mode. They act on the sentence the keyboard focus is in. Space (play or stop the edit) is `playPause`.
   paperUp: entry('paper.up', 'Alt+ArrowUp', 'Move this sentence up', 'Paper edit'),
   paperDown: entry('paper.down', 'Alt+ArrowDown', 'Move this sentence down', 'Paper edit'),
   paperCut: entry('paper.cut', 'Alt+Backspace', 'Cut this sentence, or bring it back', 'Paper edit'),
   paperStop: entry('paper.stop', 'Escape', 'Stop playing', 'Paper edit'),
+  paperRead: entry('paper.read', 'Shift+R', 'Switch between Edit and Read', 'Paper edit'),
   // Panels and theme (Worker 1)
   toggleLeft: entry('panels.left', '[', 'Show or hide the left panel', 'Panels'),
   toggleRight: entry('panels.right', ']', 'Show or hide the right panel', 'Panels'),
@@ -85,9 +96,11 @@ function bind<K extends Name>(handlers: Handlers<K>): () => void {
 /** Worker 2: playback and the timeline. Pass what each key should do; leave out what is not built yet. */
 export const registerPlaybackShortcuts = (handlers: Handlers<'playPause' | 'frameBack' | 'frameForward' | 'secondBack' | 'secondForward' | 'previousScene' | 'nextScene' | 'loopScene' | 'slower' | 'faster' | 'fitTimeline' | 'zoomIn' | 'zoomOut'>) => bind(handlers);
 /** Worker 3: notes, the canvas and sending. */
-export const registerNoteShortcuts = (handlers: Handlers<'newNote' | 'markGood' | 'removeSelected' | 'pointAtArea' | 'toggleSafeZones' | 'compareVersions' | 'send'>) => bind(handlers);
+export const registerNoteShortcuts = (handlers: Handlers<'newNote' | 'markGood' | 'removeSelected' | 'pointAtArea' | 'toggleSafeZones' | 'compareVersions' | 'send' | 'react1' | 'react2' | 'react3' | 'react4' | 'spanStart' | 'spanEnd'>) => bind(handlers);
+/** The guided review: start it from anywhere; Again and Next only while it waits at the end of a scene. */
+export const registerReviewShortcuts = (handlers: Handlers<'guide' | 'guideAgain' | 'guideNext'>) => bind(handlers);
 /** Paper edit mode: the sentence keys. Space for "play or stop the edit" goes through `registerPlaybackShortcuts({ playPause })`. */
-export const registerPaperShortcuts = (handlers: Handlers<'paperUp' | 'paperDown' | 'paperCut' | 'paperStop'>) => bind(handlers);
+export const registerPaperShortcuts = (handlers: Handlers<'paperUp' | 'paperDown' | 'paperCut' | 'paperStop' | 'paperRead'>) => bind(handlers);
 /** Worker 1: panels and the theme. */
 export const registerPanelShortcuts = (handlers: Handlers<'toggleLeft' | 'toggleRight' | 'toggleTimeline' | 'toggleTheme'>) => bind(handlers);
 

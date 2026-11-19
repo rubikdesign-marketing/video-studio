@@ -15,7 +15,7 @@ export function playhead(): number {
   return video && video.readyState >= 1 ? video.currentTime : usePlayback.getState().time;
 }
 
-export interface NewNote { time: number; text: string; kind: NoteKind; topic: string | null; must: boolean; box: Box | null }
+export interface NewNote { time: number; text: string; kind: NoteKind; topic: string | null; must: boolean; box: Box | null; end?: number | null }
 
 /**
  * Adds a note and keeps the notes in film order, as the old review page does, so a sent batch reads from the
@@ -32,10 +32,11 @@ export function addNoteInOrder(ed: Ed, note: NewNote): string {
     must: note.kind === 'keep' ? false : note.must,
     text: note.text.trim(),
     box: note.box,
+    ...(note.end != null && note.end > note.time ? { end: Number(note.end.toFixed(3)) } : {}),
   };
   const after = [...before, added].sort((a, b) => a.time - b.time);
   ed.history.run({
-    label: `Add a note at ${clock(added.time)}`,
+    label: added.end ? `Add a note from ${clock(added.time)} to ${clock(added.end)}` : `Add a note at ${clock(added.time)}`,
     do: () => ed.stores.notes.setState({ notes: after }),
     undo: () => ed.stores.notes.setState({ notes: before }),
   });

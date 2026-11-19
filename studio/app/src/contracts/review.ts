@@ -6,6 +6,8 @@ export interface Box { x: number; y: number; w: number; h: number } // shares of
 export interface DraftNote {
   localId: string; time: Seconds; kind: NoteKind; topic: string | null;
   must: boolean; text: string; box: Box | null;
+  /** When the note covers a stretch of time, where it ends. Left out for a note about one moment (editor v2, phase B3). */
+  end?: Seconds;
 }
 export type Edit =
   | { op: 'text.words'; scene: string; cue: number; lines: string[] }

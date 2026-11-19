@@ -3,8 +3,9 @@ import { formatTime, sceneAt, sceneName } from '../canvas/format';
 import type { DraftNote } from '../contracts/review';
 import { usePlayback } from '../playback';
 import { editor, useEditedFilm, useNotes, useSelection } from '../store';
-import { Button, Chip, Field, Segmented } from '../ui';
+import { Button, Chip, Field, Icon, Segmented } from '../ui';
 import { addNoteInOrder, playhead } from './actions';
+import { REACTIONS, react } from './reactions';
 import { useComposer } from './composer';
 import { TOPICS } from './topics';
 import './notes.css';
@@ -23,7 +24,7 @@ export function addComposedNote(): boolean {
     return false;
   }
   if (usePlayback.getState().playing) usePlayback.getState().toggle();
-  addNoteInOrder(editor, { time: playhead(), text: c.text, kind: c.kind, topic: c.topic, must: c.must, box: c.box });
+  addNoteInOrder(editor, { time: c.span ? c.span.start : playhead(), end: c.span?.end ?? null, text: c.text, kind: c.kind, topic: c.topic, must: c.must, box: c.box });
   c.clear();
   return true;
 }
@@ -54,7 +55,6 @@ export function NoteEditor() {
   const film = useEditedFilm();
   const selection = useSelection();
   const notes = useNotes((s) => s.notes);
-  const good = useNotes((s) => s.goodScenes);
   const composer = useComposer();
   const time = usePlayback((s) => s.time);
   const root = useRef<HTMLDivElement>(null);
@@ -78,18 +78,40 @@ export function NoteEditor() {
     }
   };
 
-  const here = sceneAt(film, time);
-  const isGood = !!here && good.includes(here.id);
+  const span = selected ? null : composer.span;
+  const here = sceneAt(film, selected ? selected.time : span ? span.start : time);
   const marked = selected ? selected.box : composer.box;
 
   return (
     <div className="notes-editor" ref={root} onKeyDown={onKeyDown}>
       <h3 className="notes-title">
-        {selected ? 'Note at ' : 'Your note at '}
-        <span className="time">{formatTime(selected ? selected.time : time)}</span>
+        {span ? (
+          <span>
+            New note from <span className="time">{formatTime(span.start)}</span> to <span className="time">{formatTime(span.end)}</span>
+            <Button variant="quiet" className="notes-unspan" aria-label="Note one moment instead" title="Note one moment instead (Esc)" onClick={() => composer.set({ span: null })}>
+              <Icon name="close" size={14} />
+            </Button>
+          </span>
+        ) : (
+          <span>
+            {selected ? 'Note ' : 'New note at '}
+            {selected?.end ? <>from <span className="time">{formatTime(selected.time)}</span> to <span className="time">{formatTime(selected.end)}</span></> : <span className="time">{formatTime(selected ? selected.time : time)}</span>}
+          </span>
+        )}
+        {here ? <span className="notes-title-scene">{sceneName(film, here.id)}: {here.title}</span> : null}
       </h3>
+      {selected ? null : (
+        <div className="notes-quick" role="group" aria-label="Quick reactions">
+          {REACTIONS.map((r) => (
+            <Chip key={r.key} onClick={() => react(r)}>
+              <span title={`Adds this note at once (${r.key})`}>{r.kind === 'keep' ? <Icon name="heart" size={13} /> : null}{r.label}</span>
+              <kbd className="notes-key" aria-hidden="true">{r.key}</kbd>
+            </Chip>
+          ))}
+        </div>
+      )}
       <Segmented label="Kind of note" options={kinds} value={note.kind} onChange={(kind) => change({ kind })} />
-      <Field label="Note" hideLabel multiline rows={4} value={note.text} onChange={(text) => change({ text })} placeholder={ask[note.kind]} />
+      <Field label="Note" hideLabel multiline rows={3} value={note.text} onChange={(text) => change({ text })} placeholder={ask[note.kind]} />
       <div className="notes-row" role="group" aria-label="About">
         <span className="notes-label">About</span>
         {TOPICS.map((topic) => (
@@ -99,8 +121,9 @@ export function NoteEditor() {
         ))}
       </div>
       <div className="notes-row">
-        <Button aria-pressed={composer.marking} onClick={() => toggleMarking(selected)}>
-          {composer.marking ? 'Remove the area' : marked ? 'Point at another area' : 'Point at an area'}
+        <Button variant="quiet" aria-pressed={composer.marking || !!marked} title="Point at an area of the picture (B)" onClick={() => toggleMarking(selected)}>
+          <Icon name="area" />
+          {composer.marking ? 'Remove the area' : marked ? 'Another area' : 'Point at an area'}
         </Button>
         {note.kind === 'change' ? (
           <Chip selected={note.must} onClick={() => change({ must: !note.must })}>
@@ -113,26 +136,17 @@ export function NoteEditor() {
             <Button variant="quiet" onClick={() => editor.removeNote(selected.localId)}>
               Remove
             </Button>
-            <Button variant="primary" onClick={() => editor.select(null)}>
+            <Button onClick={() => editor.select(null)}>
               Done
             </Button>
           </>
         ) : (
-          <Button variant="primary" onClick={() => addComposedNote()}>
+          <Button onClick={() => addComposedNote()} title="Add the note (Cmd or Ctrl + Enter)">
             Add note
           </Button>
         )}
       </div>
       {composer.marking ? <p className="notes-quiet">Drag on the film to mark the area this note is about.</p> : null}
-      <div className="notes-row">
-        <Button
-          aria-pressed={isGood}
-          disabled={!here}
-          onClick={() => here && editor.setSceneGood(here.id, !isGood)}
-        >
-          {isGood ? `${sceneName(film, here?.id)} is marked as good` : 'This scene is good'}
-        </Button>
-      </div>
     </div>
   );
 }

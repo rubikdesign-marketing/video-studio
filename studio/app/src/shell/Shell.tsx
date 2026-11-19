@@ -7,21 +7,22 @@ import './shell.css';
 export interface ShellProps {
   /** Film, version, reviewer, theme, render status. */
   topBar: ReactNode;
-  /** Scenes, notes, versions. */
-  left: ReactNode;
+  /** An optional panel on the left. Review has none (EDITOR-V2-PLAN.md, phase A); without it there is no switch for it. */
+  left?: ReactNode;
   /** The film, its overlays and the floating toolbar. */
   canvas: ReactNode;
-  /** Inspector and note editor. */
+  /** The notes rail: notes, the composer, and the inspector while something is selected. */
   right: ReactNode;
   /** Ruler and lanes. */
   timeline: ReactNode;
+  /** Names for the switches, so they say what the panel holds rather than where it is. */
+  names?: Partial<Record<PanelName, string>>;
+  /** False when the page offers the panel switches somewhere else (Review puts them in the You menu). On a narrow
+   * window they always show, because the side panels are drawers there and need a way in. */
+  toggles?: boolean;
 }
 
-const toggles: { name: PanelName; label: string; title: string }[] = [
-  { name: 'left', label: 'Left', title: 'Show or hide the left panel' },
-  { name: 'right', label: 'Right', title: 'Show or hide the right panel' },
-  { name: 'timeline', label: 'Timeline', title: 'Show or hide the timeline' },
-];
+const defaultNames: Record<PanelName, string> = { left: 'Left', right: 'Notes', timeline: 'Timeline' };
 
 /** Keeps the store's `narrow` flag in step with the window width. */
 function useNarrowWatch(): void {
@@ -37,9 +38,15 @@ function useNarrowWatch(): void {
 }
 
 /** The workspace: top bar, left panel, canvas, right panel and timeline (ARCHITECTURE_PLAN.md section 3.2). */
-export function Shell({ topBar, left, canvas, right, timeline }: ShellProps) {
+export function Shell({ topBar, left, canvas, right, timeline, names, toggles: showToggles = true }: ShellProps) {
   useNarrowWatch();
-  const { sizes, narrow, drawer, toggle, isOpen, closeDrawer } = usePanelsStore();
+  const { sizes, narrow, drawer, toggle, isOpen: open, closeDrawer } = usePanelsStore();
+  const hasLeft = left !== undefined && left !== null;
+  const isOpen = (name: PanelName) => (name === 'left' && !hasLeft ? false : open(name));
+  const label = { ...defaultNames, ...names };
+  const toggles = (['left', 'right', 'timeline'] as PanelName[])
+    .filter((name) => name !== 'left' || hasLeft)
+    .map((name) => ({ name, label: label[name], title: `Show or hide the ${label[name].toLowerCase()} panel` }));
 
   useEffect(() => {
     if (!drawer) return;
@@ -66,23 +73,23 @@ export function Shell({ topBar, left, canvas, right, timeline }: ShellProps) {
     <div className={cx('shell', narrow && 'is-narrow')}>
       <header className="shell-top">
         <div className="shell-top-slot">{topBar}</div>
-        <div className="shell-toggles" role="group" aria-label="Panels">
+        {showToggles || narrow ? <div className="shell-toggles" role="group" aria-label="Panels">
           {toggles.map(({ name, label, title }) => (
             <Button key={name} variant="quiet" aria-pressed={isOpen(name)} aria-label={title} title={title} onClick={() => toggle(name)}>
               {label}
             </Button>
           ))}
-        </div>
+        </div> : null}
       </header>
 
       <div className="shell-middle">
-        {side('left', 'Left panel', left)}
-        {!narrow && isOpen('left') ? <ResizeHandle panel="left" controls="shell-left" /> : null}
+        {hasLeft ? side('left', `${label.left} panel`, left) : null}
+        {hasLeft && !narrow && isOpen('left') ? <ResizeHandle panel="left" controls="shell-left" /> : null}
         <main className="shell-canvas" aria-label="Canvas">
           {canvas}
         </main>
         {!narrow && isOpen('right') ? <ResizeHandle panel="right" controls="shell-right" /> : null}
-        {side('right', 'Right panel', right)}
+        {side('right', `${label.right} panel`, right)}
         {narrow && drawer ? (
           <button type="button" className="shell-scrim" aria-label="Close the panel" onClick={closeDrawer} />
         ) : null}

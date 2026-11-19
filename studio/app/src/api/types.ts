@@ -12,7 +12,7 @@ export interface FilmResponse { film: Film; videos: VideoVersion[]; filmModified
 
 /** A note as it sits in a sent batch. */
 export interface BatchNote {
-  id: string; time: Seconds; scene: string | null; scene_title: string | null; kind: NoteKind; topic: string | null;
+  id: string; time: Seconds; end?: Seconds; scene: string | null; scene_title: string | null; kind: NoteKind; topic: string | null;
   must: boolean; text: string; box: Box | null; frame: string | null; resolved: boolean; reply: string | null;
 }
 export interface Batch {

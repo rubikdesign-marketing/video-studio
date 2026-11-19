@@ -12,8 +12,7 @@ export function NotesList() {
   if (!notes.length) {
     return (
       <p className="notes-quiet">
-        Pause where something should change, say what you would like instead, and add the note. Collect a few, then send them together.
-        You can also mark what already works, so it is kept.
+        Pause where something feels off and press N, or tick the scenes that already look good. Collect a few notes, then send them together.
       </p>
     );
   }
@@ -35,10 +34,10 @@ export function NotesList() {
               }}
             >
               <span className="notes-meta">
-                <strong className="time">{formatTime(note.time)}</strong>
+                <strong className="time">{note.end ? `${formatTime(note.time)} to ${formatTime(note.end)}` : formatTime(note.time)}</strong>
                 <span>{sceneName(film, sceneAt(film, note.time)?.id)}</span>
-                {note.kind === 'keep' ? <Chip>Keep</Chip> : null}
-                {note.must ? <Chip>Must fix</Chip> : null}
+                {note.kind === 'keep' ? <Chip className="is-keep">Keep</Chip> : null}
+                {note.must ? <Chip className="is-must">Must fix</Chip> : null}
                 {note.topic ? <Chip>{note.topic}</Chip> : null}
                 {note.box ? <Chip>Area marked</Chip> : null}
               </span>

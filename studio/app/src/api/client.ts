@@ -14,6 +14,9 @@ export interface ClientOptions {
 export function toDraftNote(raw: unknown, index: number): DraftNote {
   const n = (raw && typeof raw === 'object' ? raw : {}) as Partial<DraftNote>;
   const box = n.box && typeof n.box === 'object' ? n.box : null;
+  const time = typeof n.time === 'number' && Number.isFinite(n.time) ? n.time : 0;
+  // A note over a stretch keeps its end through a save and a reload; anything else stays a note about one moment.
+  const end = typeof n.end === 'number' && Number.isFinite(n.end) && n.end > time ? { end: n.end } : {};
   return {
     localId: typeof n.localId === 'string' && n.localId ? n.localId : `saved-${index + 1}`,
     time: typeof n.time === 'number' && Number.isFinite(n.time) ? n.time : 0,
@@ -22,6 +25,7 @@ export function toDraftNote(raw: unknown, index: number): DraftNote {
     must: n.must === true,
     text: typeof n.text === 'string' ? n.text : '',
     box: box ? { x: Number(box.x) || 0, y: Number(box.y) || 0, w: Number(box.w) || 0, h: Number(box.h) || 0 } : null,
+    ...end,
   };
 }
 

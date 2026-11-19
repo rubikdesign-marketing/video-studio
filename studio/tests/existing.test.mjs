@@ -85,6 +85,8 @@ describe('the review server as it was', () => {
         { time: 1.234, text: '  Make this bigger ', kind: 'change', topic: 'text', must: true, box: { x: 0, y: 0, w: 0.5, h: 0.5 }, frame: `data:image/jpeg;base64,${jpeg.toString('base64')}` },
         { time: 4, text: 'Love this', kind: 'keep' },
         { time: 5, text: '' },
+        { time: 5.5, end: 7.126, text: 'Too slow here', kind: 'change' },
+        { time: 6, end: 5, text: 'An end before the start is dropped', kind: 'change' },
       ],
     });
     assert.equal(r.status, 200);
@@ -96,6 +98,8 @@ describe('the review server as it was', () => {
       notes: [
         { id: 'b001-n1', time: 1.23, scene: 'S01', scene_title: 'Opening', kind: 'change', topic: 'text', must: true, text: 'Make this bigger', box: { x: 0, y: 0, w: 0.5, h: 0.5 }, frame: 'review/frames/b001-n1.jpg', resolved: false, reply: null },
         { id: 'b001-n2', time: 4, scene: 'S02', scene_title: 'Closing', kind: 'keep', topic: null, must: false, text: 'Love this', box: null, frame: null, resolved: false, reply: null },
+        { id: 'b001-n3', time: 5.5, end: 7.13, scene: 'S02', scene_title: 'Closing', kind: 'change', topic: null, must: false, text: 'Too slow here', box: null, frame: null, resolved: false, reply: null },
+        { id: 'b001-n4', time: 6, scene: 'S02', scene_title: 'Closing', kind: 'change', topic: null, must: false, text: 'An end before the start is dropped', box: null, frame: null, resolved: false, reply: null },
       ],
     });
     assert.ok(!Number.isNaN(Date.parse(batch.sent_at)));
@@ -103,8 +107,9 @@ describe('the review server as it was', () => {
     assert.deepEqual(fs.readFileSync(root.path('jobs/demo/review/frames/b001-n1.jpg')), jpeg);
     assert.deepEqual(root.read('jobs/demo/review/draft.json'), { notes: [], good_scenes: [] });
     const log = fs.readFileSync(root.path('knowledge/feedback-log/demo.jsonl'), 'utf8').trim().split('\n').map((l) => JSON.parse(l));
-    assert.deepEqual(log.map((l) => l.text), ['Make this bigger', 'Love this']);
+    assert.deepEqual(log.map((l) => l.text), ['Make this bigger', 'Love this', 'Too slow here', 'An end before the start is dropped']);
     assert.deepEqual(Object.keys(log[0]), ['date', 'job', 'video', 'batch', 'reviewer', 'time', 'scene', 'kind', 'topic', 'must', 'text']);
+    assert.deepEqual(Object.keys(log[2]), ['date', 'job', 'video', 'batch', 'reviewer', 'time', 'end', 'scene', 'kind', 'topic', 'must', 'text']);
 
     const frame = await server.get('/frames/demo/b001-n1.jpg');
     assert.equal(frame.status, 200);

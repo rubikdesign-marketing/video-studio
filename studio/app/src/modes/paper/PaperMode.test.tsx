@@ -15,6 +15,13 @@ let posts: { url: string; body: PaperPayload }[];
 const settle = async (ms = 0) => { await act(async () => { await new Promise((r) => setTimeout(r, ms)); }); };
 const word = (text: string) => screen.getByRole('button', { name: text });
 const sentence = (n: number) => screen.getByRole('article', { name: new RegExp(`^Sentence ${n} of`) });
+/** Opens a sentence's one menu (if it is not open yet) and picks an item. */
+const menuItem = (n: number, item: string) => {
+  const button = within(sentence(n)).getByRole('button', { name: 'Sentence actions' });
+  if (button.getAttribute('aria-expanded') !== 'true') fireEvent.click(button);
+  return within(sentence(n)).getByRole('menuitem', { name: new RegExp(`^${item}`) }) as HTMLButtonElement;
+};
+const isOut = (n: number) => sentence(n).getAttribute('data-out') === 'true';
 const wordsOf = (n: number) => within(sentence(n)).getAllByRole('button').filter((b) => b.classList.contains('pp-word')).map((b) => `${b.textContent}${b.getAttribute('aria-pressed') === 'true' ? '✂' : ''}`).join(' ');
 
 beforeEach(() => {
@@ -47,9 +54,13 @@ describe('paper edit mode', () => {
     await open();
     expect(screen.getAllByRole('article')).toHaveLength(4);
     expect(wordsOf(1)).toBe('Um,✂ this is the first sentence.');
-    expect(wordsOf(3)).toBe('We✂ make✂ videos✂ quickly.✂');
-    expect(sentence(3).getAttribute('data-out')).toBe('true');
-    expect(within(sentence(1)).getByText('take-1 · 0:00.5')).toBeTruthy();
+    // A sentence cut whole folds to one quiet line, with its own way back: a retake offers to use that take.
+    expect(isOut(3)).toBe(true);
+    expect(within(sentence(3)).getByText('We make videos quickly.')).toBeTruthy();
+    expect(within(sentence(3)).getByRole('button', { name: 'Use this take' })).toBeTruthy();
+    expect(within(sentence(1)).getByText('take-1')).toBeTruthy();
+    expect(within(sentence(1)).getByText('0:00.5')).toBeTruthy();
+    expect(within(sentence(1)).getByText('Opening')).toBeTruthy();
     expect(within(sentence(3)).getByText('Take 1 of 2')).toBeTruthy();
     expect(within(sentence(4)).getByText('Take 2 of 2, the one proposed')).toBeTruthy();
     expect(within(sentence(4)).getByText('opening idea')).toBeTruthy();
@@ -57,15 +68,20 @@ describe('paper edit mode', () => {
     expect(word('of.').getAttribute('data-filler')).toBe('true');
     expect(word('Um,').getAttribute('data-filler')).toBeNull();                        // a cut word is only struck through
     expect(word('this').getAttribute('title')).toBe('0:00.9');
-    expect(screen.getByText('About 7.4 s of 6 s')).toBeTruthy();
+    const length = screen.getByRole('region', { name: 'Length' });
+    expect(within(length).getByText('7.4 s')).toBeTruthy();
+    expect(within(length).getByText('of 6 s target')).toBeTruthy();
+    expect(within(length).getByText('1 s over')).toBeTruthy();
     expect((screen.getByRole('combobox', { name: 'Video' }) as HTMLSelectElement).selectedOptions[0]?.textContent).toBe('Sample footage');
     expect(within(screen.getByRole('combobox', { name: 'Video' })).getByText('Second film (sent)')).toBeTruthy();
-    expect(within(sentence(1)).getByRole('button', { name: 'Move up' }).hasAttribute('disabled')).toBe(true);
-    expect(within(sentence(4)).getByRole('button', { name: 'Move down' }).hasAttribute('disabled')).toBe(true);
-    expect(within(sentence(3)).getByRole('button', { name: 'Keep all' })).toBeTruthy();
-    expect(within(sentence(1)).getByRole('button', { name: 'Cut sentence' })).toBeTruthy();
-    expect(within(sentence(1)).getByRole('button', { name: 'Keep all' })).toBeTruthy();   // part cut: both are offered
-    expect(within(sentence(2)).queryByRole('button', { name: 'Keep all' })).toBeNull();
+    // One handle and one menu per sentence, in place of five buttons.
+    expect(menuItem(1, 'Move up').disabled).toBe(true);
+    expect(menuItem(4, 'Move down').disabled).toBe(true);
+    expect(menuItem(1, 'Cut the sentence')).toBeTruthy();
+    expect(menuItem(1, 'Keep every word')).toBeTruthy();                                // part cut: both are offered
+    menuItem(2, 'Hear it');
+    expect(within(sentence(2)).queryByRole('menuitem', { name: 'Keep every word' })).toBeNull();
+    expect(within(sentence(2)).getByRole('button', { name: 'Drag to move this sentence' })).toBeTruthy();
   });
 
   it('cuts a word and brings it back by click and by keyboard, then saves', async () => {
@@ -97,18 +113,47 @@ describe('paper edit mode', () => {
 
   it('moves, cuts and restores sentences with the tools', async () => {
     await open();
-    fireEvent.click(within(sentence(2)).getByRole('button', { name: 'Move up' }));
+    fireEvent.click(menuItem(2, 'Move up'));
     expect(wordsOf(1)).toMatch(/^Here is a second/);
-    fireEvent.click(within(sentence(1)).getByRole('button', { name: 'Move down' }));
+    fireEvent.click(menuItem(1, 'Move down'));
     expect(wordsOf(2)).toMatch(/^Here is a second/);
-    fireEvent.click(within(sentence(4)).getByRole('button', { name: 'To the start' }));
+    fireEvent.click(menuItem(4, 'Move to the start'));
     expect(wordsOf(1)).toBe('We make videos very quickly.');
-    fireEvent.click(within(sentence(1)).getByRole('button', { name: 'Cut sentence' }));
-    expect(wordsOf(1)).toBe('We✂ make✂ videos✂ very✂ quickly.✂');
-    fireEvent.click(within(sentence(1)).getByRole('button', { name: 'Keep all' }));
+    fireEvent.click(menuItem(1, 'Cut the sentence'));
+    expect(isOut(1)).toBe(true);
+    fireEvent.click(within(sentence(1)).getByRole('button', { name: 'Use this take' }));
     expect(wordsOf(1)).toBe('We make videos very quickly.');
-    fireEvent.click(within(sentence(2)).getByRole('button', { name: 'Keep all' }));
+    fireEvent.click(menuItem(2, 'Keep every word'));
     expect(wordsOf(2)).toBe('Um, this is the first sentence.');
+  });
+
+  it('moves a sentence anywhere by dragging its handle, as one step', async () => {
+    await open();
+    const handle = within(sentence(4)).getByRole('button', { name: 'Drag to move this sentence' });
+    const data = { setData: () => {}, effectAllowed: '' };
+    fireEvent.dragStart(handle, { dataTransfer: data });
+    fireEvent.dragOver(sentence(1), { dataTransfer: data, clientY: -100 });          // above the middle: before it
+    fireEvent.drop(sentence(1), { dataTransfer: data });
+    expect(wordsOf(1)).toBe('We make videos very quickly.');
+    expect(history.labels.undo).toBe('Move the sentence “We make videos very…”');
+    act(() => history.undo());
+    expect(wordsOf(4)).toBe('We make videos very quickly.');
+  });
+
+  it('chooses between takes of a line said twice, and reads the edit without its cuts', async () => {
+    await open();
+    const takes = screen.getByRole('radiogroup', { name: 'Takes in take-2' });
+    expect(within(takes).getAllByRole('radio').map((r) => (r as HTMLInputElement).checked)).toEqual([false, true]);
+    fireEvent.click(within(takes).getAllByRole('radio')[0]!);
+    expect(wordsOf(3)).toBe('We make videos quickly.');
+    expect(isOut(4)).toBe(true);
+    expect(history.labels.undo).toBe('Use the take “We make videos quickly”');
+    fireEvent.click(screen.getByRole('radio', { name: 'Read' }));
+    expect(screen.queryByRole('button', { name: 'Um,' })).toBeNull();                   // cut words go
+    expect(word('this').textContent).toBe('This');                                     // and the sentence starts with a capital
+    expect(screen.getAllByRole('article')).toHaveLength(3);                              // a sentence cut whole goes too
+    fireEvent.click(screen.getByRole('radio', { name: 'Edit' }));
+    expect(word('Um,')).toBeTruthy();
   });
 
   it('keeps a pause, approves a flagged join and takes both back', async () => {
@@ -117,7 +162,7 @@ describe('paper edit mode', () => {
     const pause = screen.getByRole('button', { name: 'pause 1.2 s → 0.5 s' });
     fireEvent.click(pause);
     expect(screen.getByRole('button', { name: 'pause 1.2 s kept' }).getAttribute('aria-pressed')).toBe('true');
-    expect(screen.getByText('About 7.4 s of 6 s · 1 join to check')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Check 1 join/ })).toBeTruthy();
     const flag = screen.getByRole('note');
     expect(flag.textContent).toContain('Check this join: joins words said apart inside a sentence; drops "one"');
     disk.check.joins = disk.check.joins.map((j) => (j.key === flaggedJoin.key ? { ...j, approved: true } : j));   // what the server will answer
@@ -125,7 +170,8 @@ describe('paper edit mode', () => {
     await settle(400);
     expect(posts.at(-1)?.body).toMatchObject({ keep_pauses: ['take-1:5'], approved_joins: [flaggedJoin.key] });
     expect(screen.getByRole('note').textContent).toContain('Approved: joins words said apart');
-    expect(screen.getByText('About 7.4 s of 6 s')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /Check 1 join/ })).toBeNull();
+    expect(screen.getByRole('button', { name: /Send for the rough cut/ })).toBeTruthy();
     fireEvent.click(within(screen.getByRole('note')).getByRole('button', { name: 'Undo' }));
     expect(paper.store.getState().approvedJoins).toEqual([]);
   });
@@ -135,8 +181,9 @@ describe('paper edit mode', () => {
     const ideas = screen.getByRole('region', { name: 'Ideas for the opening line' });
     expect(within(ideas).getByText('short, says what it is')).toBeTruthy();
     expect(within(ideas).getByText('no strong signal')).toBeTruthy();
-    expect(screen.getByRole('region', { name: 'Lines said more than once' }).textContent).toContain('take-2: said 2 times.');
-    fireEvent.click(within(ideas).getAllByRole('button', { name: 'Open with it' })[1] as Element);   // the cut take
+    expect(within(ideas).getByText('Opening now')).toBeTruthy();
+    expect(within(screen.getByRole('region', { name: 'Lines said more than once' })).getAllByRole('radio')).toHaveLength(2);
+    fireEvent.click(within(ideas).getAllByRole('button', { name: 'Open with this' })[1] as Element);   // the cut take
     expect(wordsOf(1)).toBe('We make videos quickly.');
     expect(history.labels.undo).toBe('Open with “We make videos quickly”');
   });
@@ -145,6 +192,9 @@ describe('paper edit mode', () => {
     disk.check.joins.push(flaggedJoin);
     await open();
     fireEvent.change(screen.getByLabelText('Anything for the editor'), { target: { value: 'Keep it warm' } });
+    // While a join is open the decision asks to check it; sending stays one click away in its menu.
+    fireEvent.click(screen.getByRole('button', { name: 'More choices' }));
+    expect(within(screen.getByRole('region', { name: 'When it reads right' })).getByText(/1 join is not checked yet/)).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'Send: ready for the rough cut' }));
     await settle();
     expect(within(screen.getByRole('region', { name: 'When it reads right' })).getByRole('status').textContent).toBe('1 join still needs a look: each one is marked in the text.');
@@ -153,7 +203,7 @@ describe('paper edit mode', () => {
     await settle();
     expect(posts.at(-1)).toMatchObject({ url: '/api/paper/send?job=demo', body: { note: 'Keep it warm', approved: false, reviewer: 'Sam' } });
     expect(within(screen.getByRole('region', { name: 'When it reads right' })).getByRole('status').textContent).toBe('Sent with your notes.');
-    expect(screen.getByText('Sent')).toBeTruthy();
+    expect(screen.getAllByText('Sent').length).toBeGreaterThan(0);
     expect(within(screen.getByRole('combobox', { name: 'Video' })).getByText('Sample footage (sent)')).toBeTruthy();
   });
 
@@ -191,16 +241,19 @@ describe('paper edit mode', () => {
     expect(wordsOf(1)).toMatch(/^Here is a second/);
     expect(document.activeElement?.closest('article')).toBe(sentence(1));             // focus went with the sentence
     act(() => { handleKey({ key: 'Backspace', altKey: true, target: document.activeElement }); });
-    expect(wordsOf(1)).toMatch(/^Here✂ is✂/);
+    await settle(30);
+    expect(isOut(1)).toBe(true);
+    expect(document.activeElement?.closest('article')).toBe(sentence(1));             // focus stays, on its way back
     act(() => { handleKey({ key: 'ArrowDown', altKey: true, target: document.activeElement }); });
     await settle(30);
-    expect(wordsOf(2)).toMatch(/^Here✂ is✂/);
+    expect(isOut(2)).toBe(true);
   });
 
   it('takes over the name typed on the old paper page, and opens another job from the list', async () => {
     useReviewer.setState({ name: '' }); localStorage.setItem('paper-who', 'Old Name');
     await open();
-    expect((screen.getByLabelText('Your name') as HTMLInputElement).value).toBe('Old Name');
+    fireEvent.click(screen.getByRole('button', { name: /^You/ }));                    // the name lives in the You menu now
+    expect((screen.getByLabelText('Your name, shown on notes you send') as HTMLInputElement).value).toBe('Old Name');
     fireEvent.change(screen.getByRole('combobox', { name: 'Video' }), { target: { value: 'second' } });
     await settle(); await settle();
     expect(paper.store.getState().job).toBe('second');

@@ -1,16 +1,16 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { api, plainMessage, type JobSummary } from './api';
-import { Canvas, VersionList, useCanvas, versionOptions } from './canvas';
-import { Inspector, SceneList } from './inspector';
+import { Canvas, useCanvas, versionOptions } from './canvas';
+import { Inspector } from './inspector';
 import { PaperEdit } from './modes/paper';
-import { NoteEditor, NotesList, SendBox, SentBatches, sendFromPage, startNote, toggleMarking, useComposer, useReviewer } from './notes';
+import { Decision, GuideButton, GuideCard, REACTIONS, Rail, Replies, YouMenu, guideGood, markSpan, react, sendFromPage, startNote, toggleGuide, toggleMarking, useComposer, useGuide, useRail, useReplies } from './notes';
 import { registerPlaybackShortcuts, usePlayback } from './playback';
 import { Shell, usePanelsStore } from './shell';
-import { CommandMenu, ShortcutSheet, registerCoreShortcuts, registerNoteShortcuts, registerPanelShortcuts, useShortcuts } from './shortcuts';
+import { CommandMenu, ShortcutSheet, TABLE, formatKeys, openMenu, openSheet, registerCoreShortcuts, registerNoteShortcuts, registerPanelShortcuts, registerReviewShortcuts, useShortcuts } from './shortcuts';
 import { editor, history, useFilm, useHistory, useNotes, useSaveLabel, useSaving, useSelection } from './store';
-import { ThemeSwitch, useTheme } from './theme';
+import { useTheme } from './theme';
 import { Timeline } from './timeline';
-import { Button, Chip, Field, Segmented, Select, Toasts, Tooltip, showToast } from './ui';
+import { Button, Icon, Segmented, Select, Toasts, Tooltip, cx, showToast } from './ui';
 import { sceneAt } from './canvas';
 import './App.css';
 
@@ -78,81 +78,106 @@ function Notice({ title, children, action }: { title: string; children?: ReactNo
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
+/** Where the film stands, in one quiet line: saved, rendering, reconnecting, or a new version to watch. */
+function Status() {
+  const rendering = useFilm((s) => s.rendering);
+  const newVersion = useFilm((s) => s.newVersion);
+  const video = useFilm((s) => s.video);
+  const live = useFilm((s) => s.live);
+  const save = useSaveLabel();
+  if (newVersion && newVersion !== video) {
+    return (
+      <Button className="app-new-version" onClick={() => { editor.chooseVideo(newVersion); setParams({ v: newVersion }); }}>
+        <Icon name="play" />
+        New version ready. Watch it
+      </Button>
+    );
+  }
+  if (rendering.active) {
+    return (
+      <span className="app-status" role="status">
+        <span className="app-status-spin" aria-hidden="true" />
+        {rendering.scene && rendering.of ? `Rendering scene ${rendering.scene} of ${rendering.of}` : `Rendering, ${Math.round(rendering.elapsed)} s so far`}
+      </span>
+    );
+  }
+  if (live === 'reconnecting') return <span className="app-status" role="status">Reconnecting to the studio…</span>;
   return (
-    <section className="app-section" aria-label={title}>
-      <h2 className="app-section-title">{title}</h2>
-      {children}
-    </section>
+    <Tooltip label={save.message ?? 'Notes and text changes save by themselves.'}>
+      <span className={cx('app-status', save.status === 'failed' && 'app-save-failed')} role="status">
+        {save.status === 'saved' ? <Icon name="circleCheck" size={14} /> : null}
+        {save.label}
+      </span>
+    </Tooltip>
   );
 }
 
-function TopBar({ jobs, job, onJob, modeSwitch }: { jobs: JobSummary[]; job: string | null; onJob(job: string): void; modeSwitch: ReactNode }) {
+function TopBar({ jobs, job, onJob, modeSwitch, decision }: { jobs: JobSummary[]; job: string | null; onJob(job: string): void; modeSwitch: ReactNode; decision?: ReactNode }) {
   const videos = useFilm((s) => s.videos);
   const video = useFilm((s) => s.video);
-  const rendering = useFilm((s) => s.rendering);
-  const newVersion = useFilm((s) => s.newVersion);
-  const live = useFilm((s) => s.live);
-  const save = useSaveLabel();
   const canUndo = useHistory((s) => s.canUndo);
   const canRedo = useHistory((s) => s.canRedo);
   const labels = useHistory((s) => s.labels);
-  const reviewer = useReviewer();
   const name = jobs.find((j) => j.job === job)?.name ?? job ?? '';
   const lower = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 
   return (
     <div className="app-bar">
-      <h1 className="app-title">Video Studio</h1>
-      {modeSwitch}
-      {jobs.length > 1 && job ? (
-        <Select label="Film" hideLabel value={job} onChange={onJob} options={jobs.map((j) => ({ value: j.job, label: j.name }))} />
-      ) : name ? (
-        <span className="app-film">{name}</span>
-      ) : null}
-      {video && videos.length ? (
-        <Select
-          label="Version"
-          hideLabel
-          value={video}
-          onChange={(file) => {
-            editor.chooseVideo(file);
-            setParams({ v: file });
-          }}
-          options={versionOptions(videos)}
-        />
-      ) : null}
-      {newVersion && newVersion !== video ? (
-        <Button variant="primary" onClick={() => editor.chooseVideo(newVersion)}>
-          A new version has arrived. Watch it
+      <div className="app-where">
+        <h1 className="app-title">Video Studio</h1>
+        {jobs.length > 1 && job ? (
+          <Select label="Film" hideLabel value={job} onChange={onJob} options={jobs.map((j) => ({ value: j.job, label: j.name }))} />
+        ) : name ? (
+          <span className="app-film">{name}</span>
+        ) : null}
+        {video && videos.length ? (
+          <Select
+            label="Version"
+            hideLabel
+            value={video}
+            onChange={(file) => {
+              editor.chooseVideo(file);
+              setParams({ v: file });
+            }}
+            options={versionOptions(videos)}
+          />
+        ) : null}
+      </div>
+      <div className="app-mid">{modeSwitch}</div>
+      <div className="app-act">
+        <Status />
+        <Button variant="quiet" className="app-icon" disabled={!canUndo} aria-label={labels.undo ? `Undo: ${lower(labels.undo)}` : 'Undo'} title={labels.undo ? `Undo: ${lower(labels.undo)}` : 'Nothing to undo'} onClick={() => history.undo()}>
+          <Icon name="undo" />
         </Button>
-      ) : null}
-      {rendering.active ? (
-        <Chip>
-          {rendering.scene && rendering.of ? `Rendering scene ${rendering.scene} of ${rendering.of}` : `Rendering, ${Math.round(rendering.elapsed)}s so far`}
-        </Chip>
-      ) : null}
-      {live === 'reconnecting' ? <Chip>Reconnecting to the studio…</Chip> : null}
-      <span className="app-spacer" />
-      <Tooltip label={save.message ?? 'Notes and text changes save by themselves.'}>
-        <Chip className={save.status === 'failed' ? 'app-save-failed' : undefined}>{save.label}</Chip>
-      </Tooltip>
-      <Tooltip label={labels.undo ? `Undo: ${lower(labels.undo)}` : 'Nothing to undo'}>
-        <Button variant="quiet" disabled={!canUndo} onClick={() => history.undo()}>
-          Undo
+        <Button variant="quiet" className="app-icon" disabled={!canRedo} aria-label={labels.redo ? `Redo: ${lower(labels.redo)}` : 'Redo'} title={labels.redo ? `Redo: ${lower(labels.redo)}` : 'Nothing to redo'} onClick={() => history.redo()}>
+          <Icon name="redo" />
         </Button>
-      </Tooltip>
-      <Tooltip label={labels.redo ? `Redo: ${lower(labels.redo)}` : 'Nothing to redo'}>
-        <Button variant="quiet" disabled={!canRedo} onClick={() => history.redo()}>
-          Redo
+        <Button variant="quiet" className="app-icon" aria-label="Find a command" title={`Find a command (${formatKeys(TABLE.menu.keys)})`} onClick={() => openMenu()}>
+          <Icon name="search" />
         </Button>
-      </Tooltip>
-      <span data-reviewer className="app-reviewer">
-        <Field label="Your name" hideLabel placeholder="Your name" value={reviewer.name} onChange={reviewer.setName} />
-      </span>
-      <ThemeSwitch />
+        <Button variant="quiet" className="app-icon app-keys" aria-label="Keyboard shortcuts" title={`Keyboard shortcuts (${formatKeys(TABLE.sheet.keys)})`} onClick={() => openSheet()}>
+          <Icon name="keyboard" />
+        </Button>
+        <YouMenu />
+        {decision}
+      </div>
     </div>
   );
+}
+
+/** The notes rail with the Replies tab when Claude has answered the last batch. */
+function ReviewRail() {
+  const replies = useReplies();
+  return (
+    <Rail inspector={<Inspector />} progressExtra={<GuideButton />}
+      replies={replies.items.length ? { count: replies.items.length, content: <Replies /> } : undefined} />
+  );
+}
+
+/** The decision button, told how many replies are still to check. */
+function ReviewDecision() {
+  const { unchecked } = useReplies();
+  return <Decision repliesToCheck={unchecked} />;
 }
 
 /** Shown when the film was rendered again under unsaved text changes. */
@@ -202,6 +227,8 @@ function usePageShortcuts() {
           startNote();
         },
         markGood: () => {
+          // While the scene-by-scene review asks, G is its "looks good" answer and moves on.
+          if (useGuide.getState().status === 'asking' && !useGuide.getState().noted) return guideGood();
           const scene = sceneAt(editor.stores.film.getState().film, usePlayback.getState().time);
           if (scene) editor.setSceneGood(scene.id, !editor.stores.notes.getState().goodScenes.includes(scene.id));
         },
@@ -218,7 +245,11 @@ function usePageShortcuts() {
           if (other) canvas.set({ compare: !canvas.compare, compareWith: canvas.compareWith ?? other.file });
         },
         send: () => void sendFromPage(false),
+        ...Object.fromEntries(REACTIONS.map((r) => [`react${r.key}`, () => { openRight(); react(r); }])),
+        spanStart: () => { openRight(); markSpan('start', usePlayback.getState().duration); },
+        spanEnd: () => { openRight(); markSpan('end', usePlayback.getState().duration); },
       }),
+      registerReviewShortcuts({ guide: () => { openRight(); toggleGuide(); } }),
     ];
     const save = () => void editor.flush().catch(() => {});
     window.addEventListener('pagehide', save);
@@ -262,42 +293,27 @@ function ReviewApp({ modeSwitch }: { modeSwitch: ReactNode }) {
   return (
     <>
       <Shell
-        topBar={<TopBar jobs={list} job={job} onJob={open} modeSwitch={modeSwitch} />}
-        left={
-          ready ? (
-            <>
-              <Section title="Scenes">
-                <SceneList />
-              </Section>
-              <Section title="Notes to send">
-                <NotesList />
-              </Section>
-              <Section title="Versions">
-                <VersionList />
-              </Section>
-              <Section title="Sent earlier">
-                <SentBatches />
-              </Section>
-            </>
-          ) : null
-        }
+        topBar={<TopBar jobs={list} job={job} onJob={open} modeSwitch={modeSwitch} decision={ready ? <ReviewDecision /> : null} />}
+        toggles={false}
         canvas={
           notice ?? (
+            <>
             <Canvas
               box={selectedNote ? selectedNote.box : composer.box}
               marking={composer.marking}
               onBox={(box) => (selectedNote ? editor.changeNote(selectedNote.localId, { box }) : composer.set({ box }))}
               onToggleMarking={() => toggleMarking(selectedNote)}
+              onNote={() => { const panels = usePanelsStore.getState(); if (!panels.isOpen('right')) panels.toggle('right'); useRail.getState().setTab('send'); startNote(); }}
             />
+            <GuideCard onSend={() => document.querySelector<HTMLButtonElement>('.decision button')?.click()} />
+            </>
           )
         }
         right={
           ready ? (
             <>
               <StaleNotice />
-              <Inspector />
-              <NoteEditor />
-              <SendBox />
+              <ReviewRail />
             </>
           ) : null
         }
