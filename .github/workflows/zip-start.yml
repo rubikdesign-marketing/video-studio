@@ -1,0 +1,101 @@
+name: zip-start
+
+# The buyer's path, end to end: build the release zip once, then on each system unzip it into a hard path, hide the
+# runner's own Node (so the portable-Node download is exercised), run the one start step, and render the sample film.
+# Manual runs and pushes to release-zip only (the repo is private; runs are billed). macOS is tested on the owner's Mac.
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'JSON list of runners to test the zip on'
+        required: false
+        default: '["windows-latest", "ubuntu-24.04"]'
+  push:
+    branches: [release-zip]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Export the release and build the zip
+        run: |
+          git config --global user.email ci@example.invalid && git config --global user.name ci
+          node tools/release/export.mjs --ref HEAD --version ci-${GITHUB_SHA::7} --out "$RUNNER_TEMP/release"
+          node tools/release/package.mjs --from "$RUNNER_TEMP/release" --out "$RUNNER_TEMP/zip"
+          ls -la "$RUNNER_TEMP/zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-zip
+          path: ${{ runner.temp }}/zip/*.zip
+          retention-days: 3
+
+  start:
+    needs: build
+    name: start (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJSON(inputs.os || '["windows-latest", "ubuntu-24.04"]') }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-zip
+          path: ${{ runner.temp }}/download
+
+      # CI-only: a bare Ubuntu runner lacks the system libraries Chrome Headless Shell needs (Remotion's Linux list).
+      - name: Chrome Headless Shell libraries (Ubuntu, CI only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libnss3 libdbus-1-3 libatk1.0-0 libasound2t64 libxrandr2 libxkbcommon-x11-0 libxfixes3 libxcomposite1 libxdamage1 libgbm-dev libcups2 libatk-bridge2.0-0
+
+      - name: Unzip, start with no Node on PATH, render the sample (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $docs = Join-Path $env:RUNNER_TEMP 'Vidéo docs'
+          New-Item -ItemType Directory -Force -Path $docs | Out-Null
+          $zip = Get-ChildItem (Join-Path $env:RUNNER_TEMP 'download') -Filter *.zip | Select-Object -First 1
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath $docs
+          $studio = Join-Path $docs 'video-engine'
+          if (Test-Path (Join-Path $studio '.claude')) { throw '.claude should arrive inside setup\dotfiles, not at the top' }
+          $env:Path = ($env:Path -split ';' | Where-Object { $_ -and -not (Test-Path (Join-Path $_ 'node.exe')) }) -join ';'
+          if (Get-Command node -ErrorAction SilentlyContinue) { throw 'node is still on PATH' }
+          $t = Get-Date
+          powershell -ExecutionPolicy Bypass -File (Join-Path $studio 'setup\start.ps1')
+          if ($LASTEXITCODE -ne 0) { throw "start failed ($LASTEXITCODE)" }
+          Write-Host ("start took {0:N0} s" -f ((Get-Date) - $t).TotalSeconds)
+          if (-not (Test-Path (Join-Path $studio '.claude\skills\video-studio\SKILL.md'))) { throw '.claude was not put back' }
+          if (-not (Test-Path (Join-Path $studio '.runtime\node\node.exe'))) { throw 'portable Node was not fetched' }
+          $env:Path = (Join-Path $studio '.runtime\node') + ';' + $env:Path
+          Set-Location -LiteralPath $studio
+          node setup\runtime\sample.mjs
+          if ($LASTEXITCODE -ne 0) { throw "sample render failed ($LASTEXITCODE)" }
+          powershell -ExecutionPolicy Bypass -File (Join-Path $studio 'setup\start.ps1')
+          if ($LASTEXITCODE -ne 0) { throw "second start failed ($LASTEXITCODE)" }
+
+      - name: Unzip, start with no Node on PATH, render the sample (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          docs="$RUNNER_TEMP/Vidéo docs"
+          mkdir -p "$docs" && unzip -q "$RUNNER_TEMP"/download/*.zip -d "$docs"
+          studio="$docs/video-engine"
+          [ ! -e "$studio/.claude" ] || { echo ".claude should arrive inside setup/dotfiles"; exit 1; }
+          t=$(date +%s)
+          env -i HOME="$HOME" PATH=/usr/bin:/bin TMPDIR="$RUNNER_TEMP" bash "$studio/setup/start.sh"
+          echo "start took $(( $(date +%s)-t )) s"
+          [ -f "$studio/.claude/skills/video-studio/SKILL.md" ] || { echo ".claude was not put back"; exit 1; }
+          [ -x "$studio/.runtime/node/bin/node" ] || { echo "portable Node was not fetched"; exit 1; }
+          cd "$studio" && env -i HOME="$HOME" PATH="$studio/.runtime/node/bin:/usr/bin:/bin" TMPDIR="$RUNNER_TEMP" node setup/runtime/sample.mjs
+          env -i HOME="$HOME" PATH=/usr/bin:/bin TMPDIR="$RUNNER_TEMP" bash "$studio/setup/start.sh"
