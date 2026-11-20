@@ -9,16 +9,16 @@ export function stripMissingPreviews(stageDir, indexFiles = []) {
     const full = path.join(stageDir, file);
     const data = JSON.parse(fs.readFileSync(full, 'utf8'));
     let dropped = 0;
-    const walk = (node, inArray) => {
-      if (Array.isArray(node)) return node.forEach((item) => walk(item, true));
+    const walk = (node) => {
+      if (Array.isArray(node)) return node.forEach(walk);
       if (!node || typeof node !== 'object') return;
-      if (inArray && typeof node.preview === 'string' && !fs.existsSync(path.join(stageDir, node.preview))) {
+      if (typeof node.preview === 'string' && !fs.existsSync(path.join(stageDir, node.preview))) {
         delete node.preview;
         dropped++;
       }
-      Object.values(node).forEach((v) => walk(v, false));
+      Object.values(node).forEach(walk);
     };
-    walk(data, false);
+    walk(data);
     fs.writeFileSync(full, JSON.stringify(data, null, 1) + '\n');
     report.push({ file, dropped });
   }

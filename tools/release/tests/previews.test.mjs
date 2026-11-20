@@ -42,3 +42,21 @@ test('stripMissingPreviews walks a top-level array and nested arrays', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('stripMissingPreviews also cleans nested plain objects', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'previews-'));
+  try {
+    fs.writeFileSync(path.join(dir, 'ok.mp4'), 'x');
+    fs.writeFileSync(path.join(dir, 'i.json'), JSON.stringify({
+      reel: { composition: 'Motion', preview: 'gone.mp4' },
+      keep: { preview: 'ok.mp4' },
+      moves: [{ id: 'a', preview: 'gone.mp4' }],
+    }));
+    assert.deepEqual(stripMissingPreviews(dir, ['i.json']), [{ file: 'i.json', dropped: 2 }]);
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(dir, 'i.json'), 'utf8')), {
+      reel: { composition: 'Motion' }, keep: { preview: 'ok.mp4' }, moves: [{ id: 'a' }],
+    });
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
