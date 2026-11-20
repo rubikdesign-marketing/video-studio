@@ -19,6 +19,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { applyJsonDrop } from './lib/json-drop.mjs';
+import { stripMissingPreviews } from './lib/previews.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const RELEASE_DIR = path.join(STUDIO, 'release');
@@ -139,6 +140,8 @@ for (const [file, rules] of Object.entries(manifest.replace_regex ?? {})) {
 }
 // Entries dropped from JSON lists (a reference film by a company that must not appear): see lib/json-drop.mjs.
 problems.push(...applyJsonDrop(stage, manifest.json_drop));
+// Preview links to files the release leaves out (motion and background mp4s) are removed: see lib/previews.mjs.
+for (const { file, dropped } of stripMissingPreviews(stage, manifest.strip_missing_previews ?? [])) console.log(`Preview links removed: ${file} ${dropped}`);
 
 // 4b. Build the review editor (studio/app), after the replacements so the built files carry them, and before the
 // scan so the scan reads them too. Buyers get a working /editor without a build of their own. Needs npm and the

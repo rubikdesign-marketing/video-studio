@@ -31,6 +31,7 @@
   "json_drop": {
     "library/references/index.json": [{ "brand": "Dokan" }, { "brand": "Rubik (brief)" }]
   },
+  "strip_missing_previews": ["library/motion/index.json", "library/backgrounds/index.json"],
   "replace": {
     ".claude/launch.json": [["\"tulvo-review\"", "\"studio-review\""]],
     ".claude/skills/video-studio/stages/00-brand-setup.md": [["for example `brands/tulvo/`, as a worked example", "for example `brands/demo/`, as a worked example"]],
