@@ -6,6 +6,10 @@
    "sha256": "c01535b053ca1e55b0b210cf36ae281964ed0bcd04a5dac128408f4327ddfd3a"
   },
   {
+   "file": "brands/demo/styles/ugc-phone-take/style.json",
+   "sha256": "24a608ec04ed91a272f528cf6068f74d1d09b07f4a43cf3bc73495e41621ba13"
+  },
+  {
    "file": "engine/src/kit/Captions.tsx",
    "sha256": "00928d1d43ae4996bbf5d10c022754949308e1a8de4f6632e018479b7ef56c08"
   },
@@ -690,6 +694,22 @@
    "sha256": "d96d9aed8ee84e380347cc1affb60b10a277c01087e6ddf1f62158de95d61e72"
   },
   {
+   "file": "engine/src/kit/ugc/CommentReply.tsx",
+   "sha256": "58fe0256eba8db31ae624e56b740172b4b7606b4870932bfb8e09c2d7c13aa9c"
+  },
+  {
+   "file": "engine/src/kit/ugc/ScreenRecTell.tsx",
+   "sha256": "eedb828af7e08c277e6ed5e2bd8acd93fa73e0fe7e904e7d05400b802dffdec1"
+  },
+  {
+   "file": "engine/src/kit/ugc/StickerPop.tsx",
+   "sha256": "9d453fea175e2551d544dead29303f20acade72b2bffa2d14a6926aca5af91dd"
+  },
+  {
+   "file": "engine/src/kit/ugc/index.ts",
+   "sha256": "ee5ababc2813562d8de3ccb85d09a159d5ff55ea5e5d65602c1997e9e26382b1"
+  },
+  {
    "file": "engine/src/kit/ui.tsx",
    "sha256": "cad4236001ee1bd6837f3b8d13b2ab58a6ac6d97df084ae7eb6273a2672838ae"
   },
@@ -728,6 +748,10 @@
   {
    "file": "engine/src/library/motion/demos/type.tsx",
    "sha256": "34707e37c1188502cfcee2f9e6ed306df8cdf1a364d563b24fef60c08c500fba"
+  },
+  {
+   "file": "engine/src/library/motion/entry.tsx",
+   "sha256": "1d7f001af1ef604c6738c57643b4661554ba18617038b2c75c279ca364dd3528"
   },
   {
    "file": "engine/src/library/motion/index.tsx",
@@ -775,7 +799,7 @@
   },
   {
    "file": "engine/src/library/motion/sized-families.ts",
-   "sha256": "3b46468ec50b64adcff0c90193c2e0668277d789386b57d1e271c2fa4de104e4"
+   "sha256": "6a99bcc5b039ba85a00ce0746ecefd338d4cd41986fb407947ebcdbfc607a2d4"
   },
   {
    "file": "engine/src/library/motion/sized.tsx",
@@ -830,6 +854,14 @@
    "sha256": "c8d4e3d9bc52be030da90cab623be23fbfe8d98d6f7819c350a91c0aac927af0"
   },
   {
+   "file": "engine/src/library/motion/ugc/batch1.tsx",
+   "sha256": "fb234eb8695f3c104a542e38d70c8d98d3bf2a81f94f1536d0f1d81fd4c4fe54"
+  },
+  {
+   "file": "engine/src/library/motion/ugc/index.ts",
+   "sha256": "638c7bcacedec53f5dc600109be326378eb65935a7e311284c0134f675e17796"
+  },
+  {
    "file": "knowledge/craft/13-design-styles.md",
    "sha256": "856bc79da7194eb4a7d99d987f933be0cdd74956723172f8099b857afe9f0ef8"
   },
@@ -859,19 +891,19 @@
   },
   {
    "file": "library/motion/index.json",
-   "sha256": "4f6c9741ea401fc5198805e79cd43d14ab8da3bea0acb00ec560abb6b6d714d0"
+   "sha256": "ae2843596f9025df573e74da81cfb1cceb8c4a997db7e8b8faf4fa6ebde6930f"
   },
   {
    "file": "library/references/index.json",
-   "sha256": "c5a9c8def2b9852bed99ab74880d6060b00f44216f17bf01743aa1c6017c36c4"
+   "sha256": "1c6d1ea927e93ce2b6f427a1a5b4e5960401c1c7d30b7442a5343a7f8af73a36"
   },
   {
    "file": "library/sounds/CREDITS.md",
-   "sha256": "3b5fba09cd929c50bc722563df42fa26b4e8526bd277925c2ca5b517989b4715"
+   "sha256": "97675918c5fb2ddd2fc20639c67ec463362a26c7407b31194b60efbef3eb2441"
   },
   {
    "file": "library/sounds/ambience/index.json",
-   "sha256": "c5c8b9141f3d4064b2664c198c77eae2e6c55cd426b24ee44ac5f88ff67c87db"
+   "sha256": "aecaadb0e52619d0bf63964ddaf197d151c12bd4d763c17e28d1af5d58b0c4c8"
   },
   {
    "file": "library/sounds/chime/index.json",
@@ -883,11 +915,11 @@
   },
   {
    "file": "library/sounds/click/index.json",
-   "sha256": "83b49f816f9288b342c7bcfcb82945d15c55ca928f092b561489db7b4c066c22"
+   "sha256": "374fad6750cb1e237bd544d191d53da193a2764513aea222195c1dfc60548e1b"
   },
   {
    "file": "library/sounds/foley/index.json",
-   "sha256": "111de0d9e5d71ee4546777dfcc83f1d761e73a3c303ce1fe26533c9b1be45065"
+   "sha256": "f58e91f4bbac8a54c8830b1a79a8d8d395216f708518f41f14985e13197b298e"
   },
   {
    "file": "library/sounds/glitch/index.json",
@@ -903,7 +935,7 @@
   },
   {
    "file": "library/sounds/kit.json",
-   "sha256": "b8bb159bfc21c65e2b042a21b4971a9dc4154f89ad1d0b008b9c1b65ea18eff6"
+   "sha256": "92907b4cccb71186d1ba87ff8f3434aa168c63014bae2a976bcfadf2e1de35ba"
   },
   {
    "file": "library/sounds/music/index.json",
@@ -919,7 +951,7 @@
   },
   {
    "file": "library/sounds/swish/index.json",
-   "sha256": "a8fde12e8849a5c487ca2cb81366b0934264b803843396045213226361fa7061"
+   "sha256": "e8b55348b795d5b1b15344cd573d411bf22a52ab9d48f8f56af5ff0951431b11"
   },
   {
    "file": "library/sounds/transition/index.json",
@@ -936,15 +968,15 @@
  ],
  "counts": {
   "background": 12,
-  "component": 226,
+  "component": 231,
   "hook": 155,
-  "motion": 243,
-  "preset": 14,
+  "motion": 246,
+  "preset": 15,
   "reference": 39,
-  "sound": 281,
+  "sound": 293,
   "workflow": 25
  },
- "omitted_private": 2,
+ "omitted_private": 4,
  "items": [
   {
    "id": "background:aurora",
@@ -2444,6 +2476,46 @@
     "preview_customer": false
    },
    "device_tier": "any"
+  },
+  {
+   "id": "component:comment-reply",
+   "kind": "component",
+   "name": "CommentReply",
+   "summary": "The question card a UGC film answers: a comment (avatar, handle, heart count) drops in at the top under a \"Replying to @handle\" line, can t…",
+   "tags": [
+    "comment-reply",
+    "component",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/CommentReply.tsx",
+    "export": "CommentReply"
+   },
+   "props": {
+    "comment": "string",
+    "handle?": "string",
+    "label?": "string",
+    "likes?": "string | number",
+    "at?": "number",
+    "preroll?": "number",
+    "out?": "number",
+    "dockAt?": "number",
+    "dockY?": "number",
+    "likeAt?": "number",
+    "x?": "number",
+    "y?": "number",
+    "size?": "number",
+    "fill?": "string",
+    "ink?": "string",
+    "accent?": "string",
+    "style?": "CSSProperties"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "gpu"
   },
   {
    "id": "component:confetti",
@@ -5351,6 +5423,38 @@
    "device_tier": "any"
   },
   {
+   "id": "component:rec-badge",
+   "kind": "component",
+   "name": "RecBadge",
+   "summary": "The REC mark: a dot that breathes (a smooth pulse of the clock, never random) and a timer that counts whole seconds.",
+   "tags": [
+    "component",
+    "rec-badge",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/ScreenRecTell.tsx",
+    "export": "RecBadge"
+   },
+   "props": {
+    "at?": "number",
+    "out?": "number",
+    "label?": "string",
+    "timer?": "boolean",
+    "timerFrom?": "number",
+    "x?": "number",
+    "y?": "number",
+    "dot?": "string",
+    "size?": "number"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "component:recentre-build",
    "kind": "component",
    "name": "RecentreBuild",
@@ -5749,6 +5853,41 @@
    "locator": {
     "file": "engine/src/kit/ui.tsx",
     "export": "Screen"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:screen-rec-tell",
+   "kind": "component",
+   "name": "ScreenRecTell",
+   "summary": "The marks of a screen recording: a REC dot (it breathes) with a running m:ss timer, a tap ripple (touch disc plus an opening ring) wherever…",
+   "tags": [
+    "component",
+    "screen-rec-tell",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/ScreenRecTell.tsx",
+    "export": "ScreenRecTell"
+   },
+   "props": {
+    "frame": "draw the phone around the children (default true)",
+    "children": "what the phone's screen shows",
+    "taps": "[{ at, x, y }]: seconds and shares of the screen",
+    "at / out": "seconds when the badge appears and goes",
+    "label": "default \"REC\"",
+    "timer": "show the timer (default true)",
+    "timerFrom": "seconds already on the timer at `at`",
+    "x / y": "badge place, shares of the screen",
+    "dot": "the REC dot colour (the brand's warm colour by default)",
+    "tapColour": "the ripple colour (the brand accent by default)",
+    "body": "the phone body colour (the stage shade by default)",
+    "size": "badge size, per cent of the screen's short side"
    },
    "availability": {
     "source": true,
@@ -6328,6 +6467,42 @@
    "device_tier": "any"
   },
   {
+   "id": "component:sticker-pop",
+   "kind": "component",
+   "name": "StickerPop",
+   "summary": "A small creator-style reaction pops onto the frame with a bounce, wobbles and goes: a heart, star, tick in a disc, sparkle or starburst dra…",
+   "tags": [
+    "component",
+    "sticker-pop",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/StickerPop.tsx",
+    "export": "StickerPop"
+   },
+   "props": {
+    "shape?": "StickerShape",
+    "at?": "number",
+    "out?": "number",
+    "x?": "number",
+    "y?": "number",
+    "size?": "number",
+    "rotate?": "number",
+    "colour?": "string",
+    "outline?": "string",
+    "mark?": "string",
+    "specks?": "number",
+    "seed?": "number",
+    "style?": "CSSProperties"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "gpu"
+  },
+  {
    "id": "component:stream-answer",
    "kind": "component",
    "name": "StreamAnswer",
@@ -6496,6 +6671,27 @@
     "preview_customer": false
    },
    "device_tier": "gpu"
+  },
+  {
+   "id": "component:tap-ripple",
+   "kind": "component",
+   "name": "TapRipple",
+   "summary": "The finger's touch: a soft disc that shrinks onto the glass and a ring that opens and fades. Size is per cent of the short side.",
+   "tags": [
+    "component",
+    "tap-ripple",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/ScreenRecTell.tsx",
+    "export": "TapRipple"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
   },
   {
    "id": "component:text-window",
@@ -19453,6 +19649,125 @@
    "device_tier": "any"
   },
   {
+   "id": "motion:ugc-comment-reply",
+   "kind": "motion",
+   "name": "ugc-comment-reply",
+   "summary": "The question card a UGC film answers: a comment (avatar, handle, heart count) drops in at the top under a \"Replying to @handle\" line, can t…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "4:5",
+    "9:16",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/CommentReply.tsx",
+    "export": "CommentReply",
+    "catalog": "library/motion/index.json#moves/ugc-comment-reply",
+    "preview": "library/motion/ugc-comment-reply.mp4"
+   },
+   "props": {
+    "comment": "the question, as written (about 90 characters at most)",
+    "handle": "the commenter's handle, with or without @",
+    "label": "the line above the card (default \"Replying to @handle\"; \"\" for none)",
+    "likes": "the number beside the heart (leave out for no heart)",
+    "at": "seconds when it arrives (scene clock)",
+    "preroll": "seconds of the arrival already done at `at` (for a card part-way in on frame 0)",
+    "out": "seconds when it leaves",
+    "dockAt": "seconds when it shrinks up to dockY (the answer lands)",
+    "dockY": "where the docked card sits, share of frame height",
+    "likeAt": "seconds of the heart tap",
+    "x / y": "middle of the card, shares of the frame",
+    "size": "comment size, per cent of the short side (5.6 tall, 4.6 wide)",
+    "fill / ink / accent": "colours; the brand's stage by default (an inverse card)"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "motion:ugc-screen-rec-tell",
+   "kind": "motion",
+   "name": "ugc-screen-rec-tell",
+   "summary": "The marks of a screen recording: a REC dot (it breathes) with a running m:ss timer, a tap ripple (touch disc plus an opening ring) wherever…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "4:5",
+    "9:16",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/ScreenRecTell.tsx",
+    "export": "ScreenRecTell",
+    "catalog": "library/motion/index.json#moves/ugc-screen-rec-tell",
+    "preview": "library/motion/ugc-screen-rec-tell.mp4"
+   },
+   "props": {
+    "frame": "draw the phone around the children (default true)",
+    "children": "what the phone's screen shows",
+    "taps": "[{ at, x, y }]: seconds and shares of the screen",
+    "at / out": "seconds when the badge appears and goes",
+    "label": "default \"REC\"",
+    "timer": "show the timer (default true)",
+    "timerFrom": "seconds already on the timer at `at`",
+    "x / y": "badge place, shares of the screen",
+    "dot": "the REC dot colour (the brand's warm colour by default)",
+    "tapColour": "the ripple colour (the brand accent by default)",
+    "body": "the phone body colour (the stage shade by default)",
+    "size": "badge size, per cent of the screen's short side"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "motion:ugc-sticker-pop",
+   "kind": "motion",
+   "name": "ugc-sticker-pop",
+   "summary": "A small creator-style reaction pops onto the frame with a bounce, wobbles and goes: a heart, star, tick in a disc, sparkle or starburst dra…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "4:5",
+    "9:16",
+    "ugc"
+   ],
+   "locator": {
+    "file": "engine/src/kit/ugc/StickerPop.tsx",
+    "export": "StickerPop",
+    "catalog": "library/motion/index.json#moves/ugc-sticker-pop",
+    "preview": "library/motion/ugc-sticker-pop.mp4"
+   },
+   "props": {
+    "shape": "heart | star | tick | spark | burst",
+    "at / out": "seconds when it pops and leaves",
+    "x / y": "middle, shares of the frame",
+    "size": "width, per cent of the short side (18)",
+    "rotate": "tilt in degrees (-9)",
+    "colour": "\"accent\", \"warm\", \"ink\" or a six-digit colour",
+    "outline": "default the brand's light ink",
+    "mark": "the tick's mark colour",
+    "specks": "0 to 12 specks",
+    "seed": "seed of the specks' directions"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "motion:voice-swap",
    "kind": "motion",
    "name": "voice-swap",
@@ -20193,6 +20508,27 @@
     "staging": "split",
     "marks": "none",
     "transitions": "window-split"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "preset:style-demo-ugc-phone-take",
+   "kind": "preset",
+   "name": "demo/ugc-phone-take (saved style)",
+   "summary": "Saved style: ugc, 4 scenes, from job undefined",
+   "tags": [
+    "demo",
+    "saved-style",
+    "ugc"
+   ],
+   "locator": {
+    "file": "brands/demo/styles/ugc-phone-take/style.json",
+    "catalog": "brands/demo/styles/ugc-phone-take/style.json#style"
    },
    "availability": {
     "source": true,
@@ -21276,6 +21612,30 @@
    "license": "CC0-1.0 (Joseph Sardin (BigSoundBank.com))"
   },
   {
+   "id": "sound:ambience-room-clean-01",
+   "kind": "sound",
+   "name": "Clean room tone, no hum",
+   "summary": "A quiet room with no mains hum and no fan: soft air only. A 16 s loop under a talking or screen-share film. No voices (office ambience with…",
+   "tags": [
+    "ambience",
+    "calm",
+    "low",
+    "soft",
+    "studio",
+    "wide"
+   ],
+   "locator": {
+    "file": "library/sounds/ambience/room-clean-01.mp3",
+    "catalog": "library/sounds/ambience/index.json#sounds/ambience/room-clean-01"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
    "id": "sound:ambience-room-house-01",
    "kind": "sound",
    "name": "Sound atmosphere in a house",
@@ -21898,6 +22258,77 @@
     "preview_customer": false
    },
    "license": "CC0-1.0 (Joseph Sardin (BigSoundBank.com))"
+  },
+  {
+   "id": "sound:click-finger-tap-glass-01",
+   "kind": "sound",
+   "name": "Finger tap on glass",
+   "summary": "A fingertip tap on a phone screen: the touch in a phone-framed demo.",
+   "tags": [
+    "click",
+    "glassy",
+    "organic",
+    "short",
+    "soft",
+    "studio"
+   ],
+   "locator": {
+    "file": "library/sounds/click/finger-tap-glass-01.mp3",
+    "catalog": "library/sounds/click/index.json#sounds/click/finger-tap-glass-01"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
+   "id": "sound:click-finger-tap-glass-02",
+   "kind": "sound",
+   "name": "Finger tap on glass, higher",
+   "summary": "A slightly brighter fingertip tap on glass.",
+   "tags": [
+    "bright",
+    "click",
+    "glassy",
+    "short",
+    "studio",
+    "tight"
+   ],
+   "locator": {
+    "file": "library/sounds/click/finger-tap-glass-02.mp3",
+    "catalog": "library/sounds/click/index.json#sounds/click/finger-tap-glass-02"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
+   "id": "sound:click-finger-tap-glass-03",
+   "kind": "sound",
+   "name": "Finger double tap on glass",
+   "summary": "Two quick taps on glass: a double tap, or two presses in a row.",
+   "tags": [
+    "click",
+    "glassy",
+    "light",
+    "short",
+    "studio"
+   ],
+   "locator": {
+    "file": "library/sounds/click/finger-tap-glass-03.mp3",
+    "catalog": "library/sounds/click/index.json#sounds/click/finger-tap-glass-03"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
   },
   {
    "id": "sound:click-glass-press-01",
@@ -22810,6 +23241,54 @@
     "preview_customer": false
    },
    "license": "CC0-1.0 (Joseph Sardin (BigSoundBank.com))"
+  },
+  {
+   "id": "sound:foley-phone-buzz-table-01",
+   "kind": "sound",
+   "name": "Phone buzz on a table",
+   "summary": "A phone buzzing twice on a wooden table: the physical buzz under a notification banner.",
+   "tags": [
+    "foley",
+    "low",
+    "organic",
+    "short",
+    "studio",
+    "tense"
+   ],
+   "locator": {
+    "file": "library/sounds/foley/phone-buzz-table-01.mp3",
+    "catalog": "library/sounds/foley/index.json#sounds/foley/phone-buzz-table-01"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
+   "id": "sound:foley-phone-buzz-table-02",
+   "kind": "sound",
+   "name": "Phone buzz on a table, three pulses",
+   "summary": "A longer three-pulse buzz on a table, for an incoming call or a stronger alert.",
+   "tags": [
+    "foley",
+    "long",
+    "low",
+    "organic",
+    "studio",
+    "tense"
+   ],
+   "locator": {
+    "file": "library/sounds/foley/phone-buzz-table-02.mp3",
+    "catalog": "library/sounds/foley/index.json#sounds/foley/phone-buzz-table-02"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
   },
   {
    "id": "sound:foley-zipper-01",
@@ -25829,6 +26308,66 @@
    "license": "CC0-1.0 (Kenney (kenney.nl))"
   },
   {
+   "id": "sound:slot-finger-swipe",
+   "kind": "sound",
+   "name": "Kit slot: finger-swipe",
+   "summary": "A fingertip swipe on a phone screen.",
+   "tags": [
+    "glassy",
+    "kit-slot",
+    "movement",
+    "short",
+    "soft",
+    "studio",
+    "subtle",
+    "swish"
+   ],
+   "locator": {
+    "file": "library/sounds/kit.json",
+    "catalog": "library/sounds/kit.json#slots/finger-swipe"
+   },
+   "props": {
+    "library": "swish/glass-swipe-02",
+    "layer": "movement"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
+   "id": "sound:slot-finger-tap",
+   "kind": "sound",
+   "name": "Kit slot: finger-tap",
+   "summary": "A fingertip tap on a phone screen, for a phone-framed demo.",
+   "tags": [
+    "click",
+    "glassy",
+    "interface",
+    "kit-slot",
+    "organic",
+    "short",
+    "soft",
+    "studio"
+   ],
+   "locator": {
+    "file": "library/sounds/kit.json",
+    "catalog": "library/sounds/kit.json#slots/finger-tap"
+   },
+   "props": {
+    "library": "click/finger-tap-glass-01",
+    "layer": "interface"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
    "id": "sound:slot-impact-deep",
    "kind": "sound",
    "name": "Kit slot: impact-deep",
@@ -26095,6 +26634,35 @@
    "license": "CC0-1.0 (Joseph Sardin (BigSoundBank.com))"
   },
   {
+   "id": "sound:slot-phone-buzz",
+   "kind": "sound",
+   "name": "Kit slot: phone-buzz",
+   "summary": "A phone buzzing on a table: the physical side of a notification.",
+   "tags": [
+    "foley",
+    "kit-slot",
+    "low",
+    "organic",
+    "short",
+    "studio",
+    "tense"
+   ],
+   "locator": {
+    "file": "library/sounds/kit.json",
+    "catalog": "library/sounds/kit.json#slots/phone-buzz"
+   },
+   "props": {
+    "library": "foley/phone-buzz-table-01",
+    "layer": "foley"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
    "id": "sound:slot-reverse-swell",
    "kind": "sound",
    "name": "Kit slot: reverse-swell",
@@ -26222,19 +26790,19 @@
    "summary": "A quiet bed of room tone under a talking or footage film, so silence never sounds dead.",
    "tags": [
     "ambience",
-    "bigsoundbank",
     "calm",
     "kit-slot",
     "low",
-    "organic",
-    "subtle"
+    "soft",
+    "studio",
+    "wide"
    ],
    "locator": {
     "file": "library/sounds/kit.json",
     "catalog": "library/sounds/kit.json#slots/room-tone"
    },
    "props": {
-    "library": "ambience/room-apartment-window-01",
+    "library": "ambience/room-clean-01",
     "layer": "ambience"
    },
    "availability": {
@@ -26242,7 +26810,7 @@
     "customer": true,
     "preview_customer": false
    },
-   "license": "CC0-1.0 (Joseph Sardin (BigSoundBank.com))"
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
   },
   {
    "id": "sound:slot-small-whoosh",
@@ -26629,6 +27197,78 @@
    "locator": {
     "file": "library/sounds/swish/cloth-04.mp3",
     "catalog": "library/sounds/swish/index.json#sounds/swish/cloth-04"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
+   "id": "sound:swish-glass-swipe-01",
+   "kind": "sound",
+   "name": "Finger swipe on glass",
+   "summary": "A quick flick of a finger across a phone screen.",
+   "tags": [
+    "fast",
+    "glassy",
+    "short",
+    "studio",
+    "subtle",
+    "swish"
+   ],
+   "locator": {
+    "file": "library/sounds/swish/glass-swipe-01.mp3",
+    "catalog": "library/sounds/swish/index.json#sounds/swish/glass-swipe-01"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
+   "id": "sound:swish-glass-swipe-02",
+   "kind": "sound",
+   "name": "Finger swipe on glass, medium",
+   "summary": "A normal swipe across a phone screen; scrolling a feed or paging a card.",
+   "tags": [
+    "glassy",
+    "short",
+    "soft",
+    "studio",
+    "subtle",
+    "swish"
+   ],
+   "locator": {
+    "file": "library/sounds/swish/glass-swipe-02.mp3",
+    "catalog": "library/sounds/swish/index.json#sounds/swish/glass-swipe-02"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "license": "CC0-1.0 (Video Studio (tools/audio/synth.py))"
+  },
+  {
+   "id": "sound:swish-glass-swipe-03",
+   "kind": "sound",
+   "name": "Finger swipe on glass, slow",
+   "summary": "A slower drag of a fingertip over glass, with a touch of skin squeak.",
+   "tags": [
+    "glassy",
+    "slow",
+    "soft",
+    "studio",
+    "subtle",
+    "swish"
+   ],
+   "locator": {
+    "file": "library/sounds/swish/glass-swipe-03.mp3",
+    "catalog": "library/sounds/swish/index.json#sounds/swish/glass-swipe-03"
    },
    "availability": {
     "source": true,
