@@ -10,7 +10,13 @@
 - Export: studio server started on 127.0.0.1:4317, /editor returned 200. `POST /api/export?job=_sample` with {"ratio":"9:16","height":720,"quality":"preview"} -> requested; the server started the export worker itself; polling /api/exports: requested -> running -> done at about 15 s (worker 11 s). Output export-001-9x16-720.mp4 (692077 bytes).
 - Probe (Remotion's bundled ffprobe, the one the studio uses): h264, 406x720, 732 frames, 12.2 s. Request file: export-request.json.
 
+## Recording gaps
+- The server was started with the portable Node, as `node studio/server.mjs 4317` (portable Node first on PATH), not through a start script.
+- The ffmpeg that did the crop was the Mac's Homebrew ffmpeg, found on PATH/Homebrew by setup/runtime/resolve.mjs, not shipped in the zip. A buyer's machine without a full ffmpeg was not exercised.
+
 ## Not tested
 - Step 1, CI on windows-latest and ubuntu-24.04 for this candidate (pending owner approval)
 - Physical Windows 11; Linux and Windows on this candidate; Intel Mac; ARM Linux/Windows
 - The Export click itself in a browser (the same server API was called directly)
+- Export on a machine without a full ffmpeg
+- Export click on Windows/Linux
