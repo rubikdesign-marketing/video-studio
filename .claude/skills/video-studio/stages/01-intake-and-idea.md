@@ -16,9 +16,32 @@ Start with what the creator said, word for word: `node tools/plan/brief.mjs new 
 - It states back what their words already settle ("vertical" is 9:16): say it in one line so they can correct it; do not ask it.
 - It lists only the questions whose answers change what gets made, most consequential first. Ask at most three at a time, each with the recommended answer, in plain words. The usual first ones: the master size; what kind of film (product demo, launch reel, edit of their footage, a person talking, an animated short); and, for every reference, **what they like about it**: the camera, the pacing, the presenter's delivery, the look, the type or the sound. That answer decides what gets copied. A reference liked for its delivery needs a short performance test before anything else is made; one liked for its camera needs a motion test, not a still.
 - For every claim the film makes ("it connects", "it's fast"), ask what the viewer literally sees that proves it, and write it as `must_show[].evidence`.
-- Record each answer once. An answer to a `check` question goes in with `node tools/plan/brief.mjs set jobs/<job> <field> "<value>"` (fields: kind, for, viewer_should, voice, length_cap_seconds, size), which stops `check` asking it. Anything else goes in with `brief.mjs decide`. Run `check` once more at the end, not after every answer. Every later stage reads `brief.mjs show` instead of re-asking.
+- Record each answer once. A field goes in with `node tools/plan/brief.mjs set jobs/<job> <field> "<value>"`, which stops `check` asking it: `kind`, `for`, `viewer_should`, `voice`, `length_cap_seconds` and `size` are checked and normalised, and any other field is set as given (`brand`, `product`, `awareness`, `angle`, `look`, `hook.family`, …). Anything else goes in with `brief.mjs decide`. Run `check` once more at the end, not after every answer. Every later stage reads `brief.mjs show` instead of re-asking.
 
 Do not ask for facts you can look up in `knowledge/` or the brand folder.
+
+### The pre-flight checklist
+
+`check` opens with eight items. **Nothing is captured, generated, scripted or proposed until all eight are known and the creator has confirmed the plan.** Each one is known when:
+
+| # | Item | Known when | Look up before asking |
+|---|---|---|---|
+| 1 | Brand | `brand` names a set-up folder in `brands/` | their words, `job.json`, `studio.json`. Not set up: stage 0 first |
+| 2 | Product | `product` names the product and the one feature or moment | `brands/<brand>/product/`. No approved discovery: stage 0B first. Not needed for an edit of footage or an animated short |
+| 3 | Audience | `for` (who exactly) and `awareness` (cold, problem-aware, solution-aware, product-aware) | discovery section 2: propose the ideal customer, ask them to confirm |
+| 4 | Message angle | `angle` (the one sentence the film argues), `viewer_should`, and at least one `must_show` with its `evidence` | discovery section 3, key messages |
+| 5 | Style and look | `look`: one of the six styles, a reference's look, or `propose` | the brand's last five films in `ledger.json`, so the look differs |
+| 6 | Hook | `hook.family` or `hook.idea`, or `propose` (three openings from three families) | `hooks.mjs find --awareness <level> --brand <brand>` |
+| 7 | Video type and references | `kind`, and every reference with what they like about it (or `no_reference: true`) | `check` shows library films to point at: "like this one?" |
+| 8 | Size, length and voice | the master size, `length_cap_seconds`, `voice` | their words ("vertical") |
+
+Thorough is these eight, not more. Do not ask about colours, fonts, logo, music track, transitions or captions: the brand and the later stages settle those. A creator who says "you choose" on look or hook has answered: record `propose`.
+
+### The plan, in brief
+
+When `check` shows all eight known, run `node tools/plan/brief.mjs plan jobs/<job>`. It writes `jobs/<job>/plan.md`: the film in one line, who it is for, the angle and its proof, the look, the hook, the references and what is borrowed from each, a scene outline timed to the length cap with the proof placed on its beat, and what the studio will use (playbook, craft guides, the brand's references and study cards, the library, the leading skills from `skill-map.md`). Show it to the creator as it is: short, in their words. On their yes, `brief.mjs decide jobs/<job> "plan confirmed"`. A change sends you back to `set`, then `plan` again.
+
+The scene outline is the spine for everything after: the three concepts fill it, the script is timed against it (`beats.mjs`), and the storyboard's `shots.json` gets one scene per beat. Load the skills `plan.md` names at the moment their task starts, not before.
 
 ## 2. The material
 
@@ -28,11 +51,9 @@ If the film shows a web product: walk the task in the product in the browser pan
 
 If the product cannot honestly do something the brief assumes, say so now.
 
-If the creator has made a film in this brand before and liked it, offer the short path first: `node tools/plan/style.mjs list <brand>`, then "Next episode in a saved style" in `SKILL.md`.
-
 ## 3. Three concepts
 
-Each concept is a filled `templates/soul-sheet.md`, plus:
+Only after the plan is confirmed. All three keep the confirmed audience, angle, proof and length; they differ in idea. Where the plan says `propose` for the look or the hook, the concepts are where those are proposed. Each concept is a filled `templates/soul-sheet.md` laid on the plan's scene outline, plus:
 
 - A recommended length cap, energy preset and design style (one of the six in `knowledge/craft/13-design-styles.md`), with one line of reasoning each.
 - The flow pattern it uses (`knowledge/craft/10-flows.md`).

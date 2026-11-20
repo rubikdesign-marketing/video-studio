@@ -2,18 +2,60 @@
 // Run: node --test tools/plan/tests/*.test.mjs
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { assumptions, questions, setField, shotProblems, summary } from '../lib/brief.mjs';
+import { assumptions, plan, preflight, questions, setField, shotProblems, summary } from '../lib/brief.mjs';
 import { diff, resolveScope, verify } from '../lib/revisions.mjs';
 
 test('brief: an empty brief asks the size first, then the kind, at most what matters', () => {
-  const q = questions({ references: [{ source: 'their reel' }] });
+  const q = questions({ brand: 'tulvo', references: [{ source: 'their reel' }] });
   assert.deepEqual(q.slice(0, 3).map((x) => x.id), ['size', 'kind', 'ref-0']);
   assert.match(q[2].question, /camera, the pacing, the presenter's delivery/);
 });
 
-test('brief: a complete brief asks nothing', () => {
-  const brief = { kind: 'product-demo', viewer_should: 'try it', voice: 'none', length_cap_seconds: 20, deliver: [{ size: '9:16', master: true }], references: [{ source: 'r', liked_for: ['pacing'] }], must_show: [{ what: 'export', evidence: 'the file lands in Downloads' }] };
-  assert.deepEqual(questions(brief), []);
+const complete = () => ({ brand: 'tulvo', product: 'Tulvo, exporting a board', kind: 'product-demo', for: 'agency owners', awareness: 'problem-aware', angle: 'one click replaces the weekly report', viewer_should: 'try it', look: 'paper', hook: { family: 'demonstration' }, voice: 'none', length_cap_seconds: 20, deliver: [{ size: '9:16', master: true }], references: [{ source: 'r', liked_for: ['pacing'] }], must_show: [{ what: 'export', evidence: 'the file lands in Downloads' }] });
+
+test('brief: a complete brief asks nothing and passes the checklist', () => {
+  assert.deepEqual(questions(complete()), []);
+  assert.ok(preflight(complete()).every((c) => c.done));
+});
+
+test('preflight: the eight items, with what is open and why', () => {
+  const ids = preflight({}).map((c) => c.id);
+  assert.deepEqual(ids, ['brand', 'product', 'audience', 'angle', 'look', 'hook', 'type', 'delivery']);
+  const ctx = { brands: { tulvo: { setUp: true, discovery: false } }, defaultBrand: 'tulvo' };
+  const c = Object.fromEntries(preflight(complete(), { ctx }).map((x) => [x.id, x]));
+  assert.equal(c.brand.done, true);
+  assert.equal(c.product.done, false);
+  assert.match(c.product.todo, /run stage 0B/);
+  const edit = preflight({ ...complete(), kind: 'footage-edit', product: '', must_show: [] }, { ctx });
+  assert.equal(edit.find((x) => x.id === 'product').done, true, 'an edit of footage needs no product discovery');
+});
+
+test('preflight: the brand comes from their words, then job.json, then the studio default', () => {
+  const ctx = { brands: { tulvo: {}, dokan: {} }, defaultBrand: 'tulvo' };
+  assert.equal(assumptions({ in_their_words: 'a dokan reel' }, ctx).find((a) => a.id === 'brand').value, 'dokan');
+  assert.equal(assumptions({ in_their_words: 'a reel' }, { ...ctx, jobBrand: 'dokan' }).find((a) => a.id === 'brand').because, 'job.json');
+  assert.equal(assumptions({ in_their_words: 'a reel' }, ctx).find((a) => a.id === 'brand').value, 'tulvo');
+});
+
+test('questions: the kind and the reference come with library examples; look and hook can be left to the studio', () => {
+  const index = [{ file: 'a/launch.mp4', type: 'launch', title: 'L', study_card: 'x' }, { file: 'b/tut.mp4', type: 'tutorial', title: 'T' }];
+  const q = questions({ brand: 'tulvo' }, { ctx: { references: index } });
+  assert.deepEqual(q.find((x) => x.id === 'kind').examples.map((e) => e.type), ['launch', 'tutorial']);
+  const r = questions({ brand: 'tulvo', kind: 'launch-reel' }, { ctx: { references: index } }).find((x) => x.id === 'reference');
+  assert.deepEqual(r.examples.map((e) => e.title), ['L']);
+  const left = { ...complete(), look: 'propose', hook: { family: 'propose' } };
+  assert.ok(preflight(left).every((c) => c.done));
+});
+
+test('plan: refuses until the checklist is complete, then lays the beats across the cap', () => {
+  assert.equal(plan({}), null);
+  const framework = { id: 'f', name: 'F', beats: [{ id: 'hook', name: 'Hook', job: 'open', seconds: [3, 5], required: true }, { id: 'proof', name: 'Proof', job: 'show it', size: [0.4, 0.6], required: true }, { id: 'close', name: 'Close', job: 'end', size: [0.1, 0.2], required: true }] };
+  const p = plan(complete(), { framework });
+  assert.match(p.lines[0], /20 s product-demo for tulvo/);
+  assert.equal(p.outline[0].from, 0);
+  assert.equal(p.outline.at(-1).to, 20);
+  assert.deepEqual(p.outline.find((s) => s.beat === 'proof').shows, ['the file lands in Downloads']);
+  assert.ok(p.uses.some((u) => u.includes('knowledge/playbooks/demo.md')));
 });
 
 test('brief: a claim with no visible evidence is asked about', () => {
@@ -150,11 +192,14 @@ test('brief: "the demo brand" names a brand, not a product demo', () => {
 test('brief: setField answers one question at a time, and check stops asking it', () => {
   let b = { in_their_words: 'A 30 second 16:9 promo for the demo brand announcing saved replies.' };
   const ids = () => questions(b).map((x) => x.id);
-  assert.deepEqual(ids(), ['viewer', 'voice', 'length']);
+  const answered = ['viewer', 'voice', 'length'];
+  for (const id of answered) assert.ok(ids().includes(id), `${id} is asked before it is answered`);
+  const others = ids().filter((id) => !answered.includes(id));
   b = setField(b, 'viewer_should', 'believe retyping answers is over');
   b = setField(b, 'voice', 'voice-over');
   b = setField(b, 'length_cap_seconds', '30');
-  assert.deepEqual(ids(), []);
+  // Each answer stops its own question; the pre-flight questions it does not answer are still asked.
+  assert.deepEqual(ids(), others);
   assert.equal(b.length_cap_seconds, 30);
   b = setField(b, 'size', '9:16');
   assert.deepEqual(b.deliver, [{ platform: '', size: '9:16', master: true }]);
