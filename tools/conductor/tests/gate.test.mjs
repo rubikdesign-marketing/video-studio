@@ -72,3 +72,16 @@ test('approve accepts inputs written from the studio folder (jobs/<job>/file) or
   assert.notEqual(r.code, 0);
   assert.match(r.err + r.out, /input not found: outside\.md/);
 });
+
+test("job.json with the template's approval_mode placeholder reads as guided, so status and resume still run", () => {
+  const template = JSON.parse(fs.readFileSync(path.resolve(import.meta.dirname, '../../../templates/job.json'), 'utf8'));
+  const dir = job({ 'job.json': JSON.stringify(template) });
+  const status = run('gate.mjs', ['status', dir]);
+  assert.equal(status.code, 0, status.err);
+  assert.match(status.out, /guided/);
+  const resume = run('dispatch.mjs', ['resume', dir]);
+  assert.equal(resume.code, 0, resume.err);
+  assert.match(resume.out, /mode guided/);
+  const grouped = job({ 'job.json': JSON.stringify({ approval_mode: 'grouped (a brief review and a final cut review)' }) });
+  assert.match(run('dispatch.mjs', ['resume', grouped]).out, /mode grouped/);
+});

@@ -37,7 +37,13 @@ export function gatesFor(mode) {
 export function modeOf(jobDir, given) {
   if (given) return given;
   const r = load(jobDir); if (r.mode) return r.mode;
-  return readJson(path.join(jobDir, 'job.json'), {})?.approval_mode || 'guided';
+  return modeFromJob(readJson(path.join(jobDir, 'job.json'), {})?.approval_mode);
+}
+/** job.json's approval_mode as a mode: "guided" or "grouped", or the first word when it is one of them (the template's
+ *  placeholder reads "guided | grouped (...)"). Anything else is the default, guided. */
+export function modeFromJob(value) {
+  const first = String(value ?? '').trim().split(/[\s|(]/)[0].toLowerCase();
+  return first === 'grouped' ? 'grouped' : 'guided';
 }
 
 /**
