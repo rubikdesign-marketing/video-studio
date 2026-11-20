@@ -1,6 +1,12 @@
 .env
 node_modules/
 jobs/*/out/
+# Editor exports: the requests, a worker's claim on one, its pid, and the files. Never committed, so a test export
+# under jobs/_sample can never ride into the release with jobs/_sample/review.
+jobs/*/review/export-*.json
+jobs/*/review/*.claim-*
+jobs/*/review/.export-worker.pid
+jobs/*/out/export-*.mp4
 jobs/*/renders/
 jobs/*/footage/
 # Footage editing: working copies, sound, transcripts, the log and sheets are made from footage of real people, so
