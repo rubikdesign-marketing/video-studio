@@ -268,7 +268,8 @@ function saveEdits(job, d) {
 }
 
 const EXPORT = { ratio: ['16:9', '9:16', '1:1'], height: [720, 1080, 2160], quality: ['preview', 'master'] };
-/** An export request is a numbered file in the review folder. The export worker (tools/film/export-worker.mjs) takes it, renders it and reports back in the same file. */
+/** An export request is a numbered file in the review folder. The export worker (tools/film/export-worker.mjs) takes it, cuts it
+ *  from the film already rendered (rendering only when there is none yet) and reports back in the same file. */
 function requestExport(job, d) {
   if (!d || !EXPORT.ratio.includes(d.ratio) || !EXPORT.height.includes(d.height) || !EXPORT.quality.includes(d.quality)) {
     return [400, { error: 'An export needs a shape (16:9, 9:16 or 1:1), a height (720, 1080 or 2160) and a quality (preview or master).' }];
@@ -355,7 +356,8 @@ function hubFor(job) {
       const x = readJson(path.join(JOBS, job, 'review', file));
       if (!x) continue;
       hub.known.exports.set(file, s);
-      emit({ type: 'export', n: x.export ?? Number(/\d+/.exec(file)[0]), status: x.status || 'requested', ...(x.file ? { file: x.file } : {}), ...(x.error ? { error: x.error } : {}) });
+      emit({ type: 'export', n: x.export ?? Number(/\d+/.exec(file)[0]), status: x.status || 'requested', ...(x.file ? { file: x.file } : {}), ...(x.error ? { error: x.error } : {}),
+        ...(x.detail ? { detail: x.detail } : {}), ...(x.edits_pending ? { edits_pending: x.edits_pending } : {}), ...(x.source ? { source: x.source, source_rendered_at: x.source_rendered_at } : {}) });
     }
     const r = renderState();
     if (r?.active && (r.job === null || r.job === job)) { hub.rendering = true; emit({ type: 'rendering', active: true, elapsed: Math.max(0, Math.round((Date.now() - r.started) / 1000)) }); }
