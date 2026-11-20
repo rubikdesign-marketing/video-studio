@@ -44,7 +44,7 @@ const FEEL = {
 function key() {
   const f = path.join(STUDIO, '.env');
   const m = fs.existsSync(f) && fs.readFileSync(f, 'utf8').match(/^ELEVENLABS_API_KEY=(.+)$/m);
-  if (!m || !m[1].trim()) die('No ElevenLabs key. Run bash setup/install.sh, then paste the key into .env');
+  if (!m || !m[1].trim()) die('No ElevenLabs key. Run: node setup/runtime/install.mjs, then paste the key into .env');
   return m[1].trim();
 }
 async function post(url, body) {

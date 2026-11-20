@@ -16,6 +16,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { brandDir, brandOfJob, rel } from '../brand/lib.mjs';
+import { resolvePython } from '../../setup/runtime/resolve.mjs';
+import { toolEnv } from '../lib/ff.mjs';
+
+const PY = resolvePython().path ?? 'python3';   // python3 on macOS/Linux, python or py on Windows
+const PY_ENV = toolEnv();
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -55,7 +60,7 @@ function heardAs(job) {
 }
 function key() {
   const envFile = path.join(STUDIO, '.env');
-  if (!fs.existsSync(envFile)) die('No .env file. Run: bash setup/install.sh, then paste the ElevenLabs key into .env');
+  if (!fs.existsSync(envFile)) die('No .env file. Run: node setup/runtime/install.mjs, then paste the ElevenLabs key into .env');
   const m = fs.readFileSync(envFile, 'utf8').match(/^ELEVENLABS_API_KEY=(.+)$/m);
   if (!m || !m[1].trim()) die('ELEVENLABS_API_KEY is empty in .env');
   return m[1].trim();
@@ -120,7 +125,7 @@ function choose() {
     const txt = path.join(lines, `${line.id}.txt`); fs.writeFileSync(txt, spokenText(line.text));
     const scored = takes.map((f) => {
       const out = path.join(lines, f.replace('.mp3', '.voicecheck'));
-      spawnSync('python3', ['-I', path.join(STUDIO, 'tools/audio/voice_check.py'), path.join(lines, f), '--script', txt, '--out', out, ...heardAs(job)]);
+      spawnSync(PY, ['-I', path.join(STUDIO, 'tools/audio/voice_check.py'), path.join(lines, f), '--script', txt, '--out', out, ...heardAs(job)], { env: PY_ENV });
       const rep = readJson(path.join(out, 'report.json'));
       const faults = rep.clipping.length + rep.hard_stops.length + rep.hard_starts.length + rep.dropouts.length;
       const match = rep.words && rep.words.match != null ? rep.words.match : null;
@@ -169,7 +174,7 @@ function join() {
   writeJson(path.join(audio, 'words.json'), words);
   writeJson(path.join(audio, 'lines.json'), lineTimes);
   const full = path.join(audio, 'script.txt'); fs.writeFileSync(full, script.map((l) => spokenText(l.text)).join('\n'));
-  const check = spawnSync('python3', ['-I', path.join(STUDIO, 'tools/audio/voice_check.py'), out, '--script', full, '--out', path.join(audio, 'voice.voicecheck'), ...heardAs(job)], { encoding: 'utf8' });
+  const check = spawnSync(PY, ['-I', path.join(STUDIO, 'tools/audio/voice_check.py'), out, '--script', full, '--out', path.join(audio, 'voice.voicecheck'), ...heardAs(job)], { encoding: 'utf8', env: PY_ENV });
   console.log(check.stdout.trim());
   console.log(`voice.wav ${got.toFixed(2)} s, ${words.length} words, ${script.length} lines.`);
   console.log('Level jumps between lines are expected to be small; if the check lists any, regenerate the odd line.');

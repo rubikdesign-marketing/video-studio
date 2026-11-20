@@ -1,0 +1,247 @@
+name	family	does
+blur-in	type	Each word of a headline is there, soft, at once; it reaches its place first and comes into focus last.
+tracking-settle	type	The letters of one line start a little wider apart and close up, from rest, slowing into the brand's own spacing.
+rotating-word	type	The last word of a line swaps for another inside a box that resizes to fit, while the rest of the line holds still. The words are on one rol
+number-roll	type	The digits of a number roll to their value in fixed-width figures, the last digit landing last. A number that arrives comes up from empty th
+type-on	type	Characters appear at a human rhythm: bursts of a few letters, with small pauses at spaces and punctuation.
+swap-word	type	One word rolls out through the top of the line and its replacement rolls in from below, while the rest of the line holds. The two are never 
+drawn-mark	type	An underline, or a ring drawn as a hand draws one (a little square, a little uneven, its end passing outside its start), is drawn on its chi
+focus-pull	emphasis	Everything except the chosen child dims and softens.
+lift	emphasis	A card rises off the surface: it grows 2 to 3% and its shadow grows and softens. On a dark page, where a shadow hardly shows, it also catche
+stagger	emphasis	The items of a group arrive in order from a source: the left, the centre, or a point.
+count-with-bar	data	A number counts up while its bar grows. The last step of the count lands as the bar comes to rest.
+bar-grow	data	One bar grows from its baseline to its value and slows into place.
+line-draw	data	A line draws itself along a path, and its end mark appears last.
+ring-sweep	data	A ring fills clockwise from the top to its share of a whole.
+camera	camera	A wrapper that moves a whole shot one way: a slow drift, a push in on a point, or a follow behind the pointer. A push closes in at one stead
+container-transform	transition	A small card grows to become the whole frame, its content appearing in the last third; reversed, the frame shrinks back into the card.
+push-through	transition	The camera pushes into one element until its colour fills the frame, and that colour is the page of the next scene. What grows is a plain pl
+relay-scroll	transition	The outgoing content speeds up and off, blurring along its way, is swapped in one frame, and the incoming content starts a little low and sl
+zoom-through-swap	transition	The outgoing group shrinks, speeding up, and dissolves over one tick into the next, which is already shrinking from large and slows to its s
+slide-off-reveal	transition	Finished content speeds up and off one side, blurring along its way, while the next title, already beneath it, comes up.
+light-sweep	transition	One soft band of light crosses a surface once. The band carries a faint wash of the accent, so it also shows on near-white cards.
+parallax-camera	camera	Three planes at different depths slide at different speeds as the camera moves: the far plane 35% as far as the product and out of focus, th
+momentum-cut	transition	The outgoing shot starts to slide, speeding up; a hard cut; the incoming shot is already moving the same way, at the same speed, and settles
+shared-element	transition	One element travels on a shallow arc from its place in one layout to its place in the next, changing size and corner radius. Its place sets 
+cursor-lead	camera	A large cursor travels on an arc and clicks; the camera sets off a quick length after it, covers 70% of the way while pushing in, and lands 
+icon-door	transition	An icon tile sits in front of a miniature of a live screen. The camera pushes through in about 600 ms as the tile slides away, and the minia
+cursor-classic	capture-pointer	A clean, generic arrow with a soft shadow, about 1.5 times a real pointer, in the brand's pointer colours. It turns into a hand over buttons
+cursor-brand	capture-pointer	The same arrow filled with the brand's accent colour and a rounder, heavier outline.
+cursor-dot	capture-pointer	A small solid dot with a light ring.
+cursor-halo	capture-pointer	A small accent dot inside a soft ring of light.
+cursor-spotlight	capture-pointer	The classic arrow lights a soft circle around itself while the rest of the screen dims slightly.
+cursor-presenter	capture-pointer	A larger arrow with a bold outline that still reads on a phone.
+cursor-named	capture-pointer	An accent arrow with a name tag, as in shared editors.
+cursor-touch	capture-pointer	A soft see-through dot that presses down, with a ring on each tap and a short fading line while dragging.
+cursor-hidden	capture-pointer	No pointer; the camera and the click effects lead.
+click-ring	capture-effect	A thin accent ring spreads from the click point and fades, starting as the button goes down.
+click-pulse	capture-effect	A soft accent fill pulses over the button that was clicked (its tracked box), or a soft disc where nothing is tracked.
+click-burst	capture-effect	Eight short accent lines burst out from the click and fade. In a film that is not hype it becomes a ring.
+click-squish	capture-effect	No mark on the screen: the pointer presses deeper (to 82%) and springs back.
+hover-magnet	capture-effect	In the last fifth of a move the pointer is pulled onto its target a little faster, as if drawn in. The click still lands at the recorded pla
+hover-glow	capture-effect	The tracked thing under a resting pointer gets a soft accent glow; it fades as the pointer moves on.
+typing-caret-glow	capture-effect	The field being typed in glows with an accent edge that brightens on each key. The engine does not know the caret's exact place, so the whol
+typing-key-caps	capture-effect	Shortcuts (or every key, in tutorials) show as key caps near the bottom of the screen; each cap presses as its key goes down.
+camera-auto-zoom	capture-camera	Before each action the camera eases in on the real thing it happens to (from tracks.json) with room around it, holds through the action and 
+camera-follow	capture-camera	While zoomed in, the camera drifts towards the pointer 150 ms behind it and covers 30% of the way, never so far that the thing leaves the sh
+camera-push-in	capture-camera	A slow move in on a thing, a click or a box, by hand.
+camera-pull-out	capture-camera	Starts close on a detail and reveals the whole screen.
+camera-snap-zoom	capture-camera	A fast zoom with a tiny settle, for beats. In a film that is not hype it is an ordinary push in.
+camera-dolly-tilt	capture-camera	The screen starts turned in depth (at most 10 degrees) and straightens as the camera moves in a little. Turns fade away as the camera closes
+camera-float	capture-camera	The screen drifts very slowly in depth (about 2 degrees), alive through holds. Wides only.
+camera-crane-reveal	capture-camera	Starts tight on one thing and rises to the whole page, leaning back a little in depth on the way.
+camera-orbit	capture-camera	A small turn around the floating screen, from one side to the other (at most 10 degrees). Wides only.
+camera-rack-focus	capture-camera	One thing is sharp and the rest softens and dims; the sharp area moves to a second thing.
+camera-pan-across	capture-camera	A smooth slide across the screen at a set zoom, from one thing to another.
+time-speed-ramp	capture-time	A long real wait (marked by the capture tool) or long typing plays faster, easing into and out of the faster speed, with a "Sped up" label i
+time-freeze	capture-time	One moment of the recording holds while the camera pushes in slowly (5%), then eases back as the picture plays on.
+time-jump	capture-time	A dead stretch is left out with a clean cut.
+time-rewind	capture-time	The recording runs backwards for a moment, easing in and out, then plays on from there or cuts back to where it was.
+time-pin	capture-time	An event (a click, a mark, a step) lands on a chosen film time, such as a word of the voice. The pauses between actions are stretched or squ
+time-loop	capture-time	In its last stretch the clip dissolves back to its first frame while the camera and the pointer go back, so it can play in a loop.
+look-calm-explainer	capture-look	Unhurried and premium: classic pointer on slow arcs, soft hover glow, slow eased zooms that go less far (1.6x), long holds, no tilt, calm pa
+look-product-demo	capture-look	The default. Clear and confident: classic pointer with a magnet pull and blur on fast moves, ring clicks, auto-zoom on each action with a ge
+look-launch	capture-look	Big and cinematic: the brand's arrow, a soft pulse on clicks, hover glow, zooms that land with a soft spring, and a slow float in depth on w
+look-tutorial	capture-look	Patient and precise: a large classic pointer, rings, every key as a cap, a steady zoom on every click with no follow, long holds. Staged as 
+look-social-vertical	capture-look	Fast and bold for sound-off feeds: a large brand arrow, a line burst on clicks, tight following zooms that snap in with a spring, typing spe
+look-feature-montage	capture-look	Many things quickly: a small dot, no zooms, a slow 6% push through each clip. Staged as a grid of screens (CaptureShot). Joins its shots wit
+look-documentary	capture-look	Honest and raw: the real recorded pointer path, no click effect, no key caps, an almost still camera (a 2% push). Real waits are still label
+look-two-people	capture-look	Collaboration: a named pointer in the accent colour, ring clicks, auto-zoom with follow. Staged as two takes side by side, marks aligned (Ca
+stage-card	capture-staging	A flat card on the stage: rounded, a line border and a soft shadow (craft file 05, Staging a screen).
+stage-browser	capture-staging	A clean browser frame drawn by the engine, light: back, forward and reload as plain lines and the address from capture.json, no window dots 
+stage-browser-dark	capture-staging	The browser frame in the brand's dark stage colours.
+stage-frameless	capture-staging	The capture fills the frame, no window.
+stage-float	capture-staging	A floating screen in depth, turned up to 12 degrees, drifting slowly on the film's clock over a soft depth shadow.
+stage-isometric	capture-staging	The screen laid back in an isometric view with a solid edge.
+stage-laptop	capture-staging	A generic laptop: dark bezel, a plain metal deck, no logo, no notch.
+stage-monitor	capture-staging	A generic desktop monitor with a plain stand.
+stage-tablet	capture-staging	A generic tablet slab, landscape.
+stage-phone	capture-staging	A generic phone slab (no notch, no island) showing a tall crop of a wide take that follows the action.
+stage-phone-crop	capture-staging	A tall card cropping the wide take around the action (social vertical).
+stage-stacked	capture-staging	Stacked windows: the live take in front, two stills of the take's own marks (or other takes) behind, offset up and right.
+stage-split	capture-staging	Two takes side by side on one clock; align "marks" lands their shared marks on the same film frame.
+stage-split-three	capture-staging	Three takes side by side on one clock.
+stage-pip	capture-staging	Picture in picture: a second take in a small window on the main one's corner.
+stage-grid	capture-staging	A grid of screens, all playing on one clock: other takes, or stretches of the same take around its marks.
+stage-wall	capture-staging	A wall of screens, turned a little, columns drifting up and down; tiles are frozen frames of the takes' marks (real pixels).
+stage-before-after	capture-staging	A line wipes between two takes of the same screen, with a handle and "Before" and "After" labels (sentence case, the film's words).
+stage-email	capture-staging	A neutral mail window; its header shows the real mail's subject and sender when given, and no words otherwise.
+stage-terminal	capture-staging	A neutral terminal window in the brand's dark stage, with a title or none.
+product-lift	capture-product	The thing's own layer (cut from the recording at its tracked rectangle) rises: 2.8% larger, a deeper shadow, raised by less than it grows so
+product-isolate	capture-product	The thing stays; everything else fades to the stage colour.
+product-fly-out	capture-product	The thing comes forward to the middle (no further than the recording's sharpness allows, at most 62% of the width) while the screen blurs an
+product-focus	capture-product	The rest dims (38%) and softens; the thing stays sharp (craft 05: 30 to 50%).
+product-outline	capture-product	A rounded line traces itself around the thing in the accent colour.
+product-underline	capture-product	A line draws under the words.
+product-ring	capture-product	A clean ellipse draws round the thing from its top left.
+product-sweep	capture-product	A soft band of light crosses the thing once (the light sweep, glued).
+product-magnifier	capture-product	A round loupe over a small detail, enlarged up to what the recording's sharpness allows.
+product-callout	capture-product	A short label in the film's words with a straight leader line to the thing; flips side near an edge.
+product-arrow	capture-product	A clean drawn arrow from one thing to another, drawn on, head last.
+product-connect	capture-product	A line from one thing to another with a bright stretch running along it, to show data moving.
+product-steps	capture-product	Numbered badges on the things of each step; the tutorial look adds one on each click by itself.
+product-retype	capture-product	The field's own typing, cut from the recording, plays again from the cue at any speed, with the field glowing on each key.
+product-toast	capture-product	The product's own message gets a gentle extra pop (its real layer, 5.5% at most) and a shadow, when it appears.
+product-success	capture-product	A brand-coloured check on the thing's corner, or confetti, when a result lands. Hype and launch only: elsewhere it draws nothing.
+product-blur-reveal	capture-product	The thing starts blurred and sharpens into view.
+product-privacy	capture-product	A strong blur on a thing (real layer) that follows it through scrolls and camera moves, from the first frame.
+capture-sounds	capture-sound	Places the brand's interface sounds from a capture's event log on the film's clock (through the time map): a click on the frame the button g
+join-zoom-through	capture-transition	The camera dives into the clicked thing and comes out on the next page: both shots grow about the pointer at one steady rate (A to 1.8x, B f
+join-shared-element	capture-transition	The clicked thing's own pixels lift off shot A and fly on a shallow arc, changing size, into its place in shot B (B's own pixels from the mi
+join-match-cut	capture-transition	A cut on the click's exact frame (cursor.json), with shot B starting on shot A's camera view and easing out after a short hold, so the point
+join-snap-cut	capture-transition	A cut with the incoming shot snapping in from 105% over a quick length. Hype only; elsewhere a straight cut.
+join-cut	capture-transition	A straight cut at the button's release.
+join-container-grow	capture-transition	The clicked thing becomes a rounded container (its own pixels at first) that grows into the next full screen; the next screen shows inside i
+join-push	capture-transition	The next screen pushes the last one out, as one strip, the way the pointer last moved before the click.
+join-slide	capture-transition	A soft slide: the last screen drifts 6% the pointer's way while the next comes in from 6% the other side and fades up over it.
+join-depth-push	capture-transition	The screen recedes to 84%, darkens and softens while the next comes forward from 90% in front of it.
+join-circle-reveal	capture-transition	The next screen opens as a circle from the click point, on shot A's camera view, with a hairline edge that fades as it opens.
+join-card-flip	capture-transition	The screen turns over in depth (180 degrees, dipping to 90%) to show the next one on its back.
+join-stack-shuffle	capture-transition	The two screens slide past each other like cards (both shrink to 68% as they pass, far enough apart that the one in front changes with no ov
+join-grid-zoom	capture-transition	Zoom out from the screen to a 3 x 3 wall of screens (the others are stills of the takes' own marks), then into the neighbour the pointer was
+join-scroll-relay	capture-transition	One page scrolls out as the next scrolls in on one strip, starting at the speed the take was scrolling at the join (tracks.json scroll colum
+join-cursor-drag	capture-transition	The pointer goes to the next screen peeking at the edge, grabs it and drags it into place over the last one, then goes on to where the next 
+join-whip	capture-transition	A fast pan with motion blur, the pointer's way. Hype only; elsewhere a push.
+join-window-split	capture-transition	One window becomes two: the screen shrinks to the left half of a split while the next comes out from behind it to the right; both stay, on o
+join-device-swap	capture-transition	The same moment moves from a laptop to a phone: the laptop slides away left and fades while the phone comes in from the right.
+join-blur-dissolve	capture-transition	A soft blur through to the next shot: the last softens, the next fades up sharpening over it, both cameras easing out together.
+join-cross-dissolve	capture-transition	The next shot fades up over the last while both cameras ease out together from the last shot's view, so the same page lies on itself and onl
+relayout-vertical-follow	capture-relayout	9:16 full bleed for the social vertical look: the frame is the screen, the camera tracks the action inside the wide take at the sharpest the
+relayout-vertical-card	capture-relayout	9:16 with the screen as a card on the stage (product demo): the card reaches up under the apps' top bars and down to the caption slot; the a
+relayout-vertical-browser	capture-relayout	9:16 in a clean browser window (tutorial look, step badges kept), the address from capture.json.
+relayout-vertical-phone-frame	capture-relayout	A wide take followed inside a generic phone frame on a 9:16 stage.
+relayout-vertical-calm	capture-relayout	The calm explainer look re-laid for 9:16: card staging, slower follows, longer holds, closest view 1.6 frame px per page px.
+relayout-vertical-launch	capture-relayout	The launch look re-laid for 9:16: a flat card (a screen that must be read is never tilted), springy follows.
+relayout-vertical-documentary	capture-relayout	The documentary look re-laid for 9:16: the real recorded pointer path, full bleed; it holds one scale only when that still reads, otherwise 
+relayout-vertical-montage	capture-relayout	The feature montage look re-laid for 9:16: two stretches of the take stacked (three would leave each too small to read), each with its own f
+relayout-vertical-two-people	capture-relayout	The two people look re-laid for 9:16: two takes stacked on one clock, named pointers.
+relayout-vertical-emphasis	capture-relayout	An outline on the clicked thing in a 9:16 follow: part B's product animations take their place through the follow camera (anchorOf), so they
+relayout-vertical-join	capture-relayout	A zoom through join at the click in 9:16: each shot is planned with the region it is drawn in, so the clicked thing and the pointer line up 
+relayout-vertical-safe-areas	capture-relayout	The social vertical follow with the three platforms' buttons and captions drawn over it: a preview aid only (SafeAreaOverlay), never in a fi
+relayout-square	capture-relayout	1:1 card, the camera following the action.
+relayout-portrait	capture-relayout	4:5 card, the camera following the action.
+relayout-phone-take	capture-relayout	A take recorded at phone size (capture.json page taller than wide) placed full frame in 9:16 with the touch pointer; the camera follows up a
+relayout-phone-take-framed	capture-relayout	A phone-size take in a generic phone frame (no company's shape), as tall as the frame allows above the caption slot.
+opener-punch-in	opener	The line is in frame at once, then the camera cuts hard to a tight crop on the starred word and eases back out to the whole line, with an ac
+opener-fill-frame	opener	Each word is set so large it touches the frame's edges and replaces the last on a beat; the starred word sits on an accent fill; then the wh
+opener-sudden-stop	opener	Rows of the line rush across the frame, motion blurred, and brake to a dead stop on the line; an accent bar snaps under it.
+opener-at-the-lens	opener	A brand-coloured card flies at the camera, grows past the frame and dissolves, and the line is pulled into focus behind it as it passes.
+opener-number-slam	opener	The old figure slams down to size, is struck through, and the new figure slams in below. A short shake as it lands is available with `shake`
+opener-split-screen	opener	Two halves (before in the soft fill, after in the accent colour) slide to meet while the hook line sits on a solid plate across the seam.
+opener-strike-out	opener	The old belief is on screen from the first frame and is struck through row by row; the claim rises in below it, word by word.
+opener-question	opener	A question builds word by word with a caret after the newest word; the last word lands in the accent voice, pulses once, and the caret keeps
+opener-glitch-cut	opener	A digital interruption: the line torn into slices with a colour ghost and accent bars, decaying to the clean line, with one small hiccup at 
+opener-spotlight	opener	The frame starts dark; a soft pool of light is already travelling in from the edge onto the line and widens until the frame is lit.
+opener-notification-drop	opener	A large phone-style notification drops in carrying the hook, with two older ones stacked behind, and buzzes sideways once on landing.
+opener-whip-in	opener	A whip-pan: an accent panel whips out to the left while the line whips in from the right and stops dead, both motion blurred.
+shader-mesh-gradient	shader	Four soft fields of the page, soft, accent and second colours flow slowly into one another across the whole frame. Needs WebGL: render with 
+shader-grain-gradient	shader	Large soft blobs of the soft and accent colours drift over a pale tint of the soft colour, with a fine grain of their own, so the whole fram
+shader-god-rays	shader	Soft beams of brand light fall from just above the top edge and turn slowly, with a gentle bloom. Needs WebGL: render with --gl=angle.
+shader-warp	shader	Broad bands of the page, soft and accent colours fold slowly through one another like silk; the middle keeps under half the contrast of the 
+shader-smoke-ring	shader	A slow ring of accent-coloured smoke circles the middle of the frame, with the page clear inside it. Needs WebGL: render with --gl=angle.
+shader-neuro-noise	shader	Fine glowing threads of the accent and second colours drift like a network; the middle keeps a third of their strength. Needs WebGL: render 
+shader-swirl	shader	Broad soft bands of the soft and accent colours turn slowly round the middle of the frame, like stirred paint. Needs WebGL: render with --gl
+shader-simplex-noise	shader	Broad fields in faint contour steps from the page through the soft colour to a tint of the accent drift like a contour map. Needs WebGL: ren
+mask-rise	type	Each word rises into view from behind its own edge, as if from a slot, one after another; the exit drops the text back behind the edge, fast
+mask-rise-letters	type	The mask rise letter by letter, here from the centre outwards (by="letter", order="centre").
+mask-rise-lines	type	The mask rise line by line: each line rises whole, a quick length after the one before.
+fade-up	type	Words fade in and rise a short way, one after another. The quietest arrival.
+letter-cascade	type	Letters fade in one after another with a slight rise. One move for left-to-right, random-order and centre-out cascades.
+soft-wipe	type	A soft-edged mask sweeps across each line from the reading side and writes it on.
+blur-sweep	type	A band of blur passes along the line: sharp and in place behind it, not yet there ahead of it.
+focus-in	type	The whole text starts slightly large and soft and pulls into focus and size together, like a lens focusing.
+outline-fill	type	Letters appear as outlines in ink, then fill from the bottom up, staggered.
+giant-crop	type	One word so large the frame crops it rises slowly through the frame as a statement backdrop; sized from frame width so it crops the same way
+block-reveal	type	A solid block in the accent colour wipes across each line and, as it leaves, uncovers the text.
+slam	type	An oversized word or short line drops in from larger than the frame and lands hard with a tiny settle, blurred while fast. The exit punches 
+word-pop	type	Words pop in one by one from a small scale with the preset's overshoot, each about its own centre. The exit shrinks and fades them together.
+drop-bounce	type	Letters fall from above one after another, bounce once into place and stay. The exit lets them fall away through the bottom in turn.
+flip-up	type	Words or letters stand up from lying flat, tipping about their bottom edge in perspective. The exit folds them back down.
+arc-swing	type	Words swing up on an arc about the left end of their baseline and land upright, with a little blur while fast. The exit swings them up and a
+scatter-assemble	type	Letters start scattered over the frame at seeded places and tilts, then fly into the line in shuffled order and lock in. The exit throws the
+from-lens	type	The line comes from behind the viewer: huge, soft and see-through, shrinking to its place as it sharpens. The exit sends it back into the di
+smear-in	type	Words slide in sideways very fast with a strong directional smear and lean, which clears as they stop. The exit carries them on the same way
+human-type	type	Large film type typed at a human rhythm: uneven gaps between keys, a longer pause after spaces and punctuation, and a caret that is solid wh
+retype	type	Types a phrase, holds it for a reading pause, deletes back to a point (about twice as fast as it typed) and types the replacement, so a clai
+stream-answer	type	An assistant's answer arrives in chunks of one to three words, each fading in softly, wrapping inside a column, with a small block cursor af
+scramble-lock	type	Every letter cycles through random characters of its own kind and locks onto its real letter one after another, from the start or from the c
+split-flap	type	Every letter is a flip tile on a departure board: it flips through the alphabet, the top half falling over the bottom, until it shows its ow
+drum-roll	type	Every letter is a drum that rolls up through the alphabet and stops on its own letter, one after another; blurred while it spins, sharp when
+pixel-decode	type	A line resolves from coarse blocks to sharp type in six steps, as an image does when it loads. An SVG filter on the real text, so it needs n
+glitch-in	type	The line arrives through six steps of digital glitch: a few bands slide sideways and a thin split in the accent and second colours, then it 
+anagram	type	The letters of a line shuffle into place: from a shuffled order (or from another phrase made of the same letters) each letter travels on its
+highlighter	emphasis	A soft accent marker sweeps behind the chosen words, with a slightly uneven, seeded edge; the ink stays on top.
+mark-word	emphasis	A crisp accent box is drawn round the chosen words with a stroke-dash line. The line opens a little room around the marked words, so the mar
+mark-word-strike	emphasis	A straight accent line strikes through the chosen words. The line opens a little room around the marked words, so the mark never touches its
+mark-word-bracket	emphasis	Two square brackets are drawn round the chosen words. The line opens a little room around the marked words, so the mark never touches its ne
+mark-word-underline	emphasis	A straight accent underline is drawn under the chosen words. The line opens a little room around the marked words, so the mark never touches
+shimmer	emphasis	A band of light passes once through the letters of the chosen words, ink to a light tone and back.
+colour-front	emphasis	A front of colour runs along the chosen words letter by letter, turning ink to accent as a wave.
+gradient-ink	emphasis	The chosen word fills with a slow drifting gradient of the accent and a lighter tone of it. The lighter tone is chosen to keep 4.5:1 against
+payoff-punch	emphasis	The payoff word swells with the preset's overshoot and turns accent while the rest dims a little, then settles.
+weight-wave	emphasis	The chosen word goes from regular to heavy through the variable font weight (shift mode); neighbours ease aside. The line is set at the face
+weight-wave-ripple	emphasis	A crest of weight runs through the letters of the chosen word, each returning to its own weight (wave mode). The line is set at the face's r
+letter-wave	emphasis	The letters of the chosen word rise and fall once, one after another: a small nudge.
+voice-swap	emphasis	A word crossfades from the headline voice to the accent voice with a little blur while its slot resizes and the line re-flows smoothly.
+caption-box	caption	Short-form caption style: the spoken phrase in large type with a highlight box in the brand's caption highlight colour that slides from word
+caption-pop	caption	Short-form caption style: the phrase in large type and the word being spoken swells and turns the highlight colour, popping slightly as it s
+one-word-stack	type	A sentence shown one very large word at a time, each word replacing the last on its cue.
+recentre-build	type	Words are added one by one to a centred line, and the line glides to stay centred as each arrives.
+make-room	type	A word is put into a line that is already there; its neighbours slide apart to make room while it rises in.
+ticker	type	A band of repeating text scrolling across the frame in a seamless loop, one row per line, rows in opposite directions, on brand bands if wan
+on-path	type	Text set along a gentle curve that draws on along the path; the curve is built from the frame's size.
+text-window	type	Huge type used as a window: the letters are cut out of a brand-coloured page so the picture behind shows only through them; then the window 
+word-morph	type	One word changes into another in the same place: the old blurs and shrinks out while the new blurs in, overlapping, and the width animates b
+exit-set	type	Text already on screen leaves in a chosen way: drop, mask-fall, blur-out, scatter, letter-fade or wipe. Each exit is shorter than an entry a
+push-wipe	transition	The incoming scene pushes the outgoing one off the frame, both moving together, hard and fast with motion blur. Never an empty frame.
+feather-wipe	transition	A soft-edged wipe crosses the frame at an angle; both scenes swell and settle slightly as it passes.
+iris-wipe	transition	A circle opens from a point (a button, a number) to show the next scene, or closes to a point. A thin accent line runs on the edge.
+clock-wipe	transition	A radial sweep, like a clock hand, goes once round and reveals the next scene. Hero length.
+door-split	transition	The outgoing scene splits in the middle and its halves slide apart, like doors, with the next scene behind and a soft shade at each edge.
+blinds	transition	The next scene is revealed through slices that open one after another from their middles, like venetian blinds.
+panel-wipe	transition	A solid accent panel sweeps across and covers the frame for a few frames; the next scene is there as it leaves. With trail, a panel in the i
+dip-to-colour	transition	The scene dips into the brand's accent or page colour (never black), holds a few frames, and comes out in the next scene. No sound by defaul
+blur-through	transition	The outgoing scene blurs and grows slightly as it leaves; the incoming scene is as blurred on the swap, then sharpens and settles. They cros
+exposure-bloom	transition	The frame over-exposes into a bloom of the brand's lighter ink (brighter, softer, a little larger), the swap is hidden at the peak, and the 
+invert-flash	transition	A small push in, then on the cut the whole frame (page included) is inverted for exactly two frames, the last frame of the old scene and the
+whip-pan	transition	Both scenes travel sideways at whip speed with strong directional blur; the swap is at peak speed, the incoming scene already moving the sam
+zoom-blur	transition	A radial zoom blur: the outgoing scene rushes at the camera, smeared outwards from the centre (a trail of scaled copies with falling opacity
+spin-whip	transition	A quick clockwise rotation about the middle of the frame with rotational blur (a trail of turned copies); the swap is at peak spin, the inco
+parallax-push	transition	The outgoing scene's layers slide away at different speeds, the front fastest and the back slowest, as the next scene pushes in over them at
+match-cut	transition	A shape in the outgoing scene and one in the incoming scene occupy exactly the same place on the cut: the outgoing scene eases its scale and
+cube-turn	transition	The two scenes are two faces of one cube; the cube turns a quarter turn (a scene and a quick length, about 960 ms) to bring the next face ro
+card-flip	transition	The scene lifts off the page as a card with round corners and a shadow, flips over about its upright axis (or its level one with `over`) and
+page-turn	transition	The scene is a page: its right edge lifts and curls over a moving upright fold, the turned-over part (plain back of the page) lies on top an
+tile-reveal	transition	The frame becomes a grid of tiles (about five and a half on the short side, so a tall frame has more rows, not taller tiles); a wave runs di
+pixelate-through	transition	The scene breaks into square blocks that grow (even in ratio) to about a ninth of the frame's short side, the blocks change from the outgoin
+luma-dissolve	transition	The next scene appears through soft-edged patches that grow and join like ink in water: a threshold sweeps through a fixed, seeded cloud of 
+title-takeover	transition	One big word lands over the scene in the headline voice and ink (the scene shrinks back and fades a little); then its letters become windows
+logo-mask-wipe	transition	The brand's mark opens in the middle of the frame as a window onto the next scene (the frame outside it shaded), then grows, even in ratio, 
+light-leak	transition	A warm wash of light, tinted toward the brand's accent, drifts across the frame; the scene changes at its peak, hidden inside the light.
+glitch-cut	transition	For about a quarter of a second the picture tears into slices that slip sideways, with two brand-coloured ghosts and accent bars, and the sc
+ripple	transition	A ripple spreads from a point; inside the wavefront the next scene is already there, and the ring bends the picture like water.
+ink-bleed	transition	The next scene bleeds in through organic ink blots that start at a few points, swell and merge, each with a thin accent rim.
+film-burn	transition	A burn spreads in from one edge, ragged like film catching fire, with a near-black scorched band with a warm orange glow and a pale hot rim,
+ugc-comment-reply	ugc	The question card a UGC film answers: a comment (avatar, handle, heart count) drops in at the top under a "Replying to @handle" line, can ta
+ugc-screen-rec-tell	ugc	The marks of a screen recording: a REC dot (it breathes) with a running m:ss timer, a tap ripple (touch disc plus an opening ring) wherever 
+ugc-sticker-pop	ugc	A small creator-style reaction pops onto the frame with a bounce, wobbles and goes: a heart, star, tick in a disc, sparkle or starburst draw

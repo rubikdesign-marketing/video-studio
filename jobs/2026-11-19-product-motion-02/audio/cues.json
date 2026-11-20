@@ -1,0 +1,11 @@
+[
+ {
+  "id": "success-chime",
+  "library": "interface/success-glass-01",
+  "cause": 1.5333333333333334,
+  "gain": 0.45,
+  "because": "the ring appears on the board title",
+  "onset": 0,
+  "at": 1.533
+ }
+]

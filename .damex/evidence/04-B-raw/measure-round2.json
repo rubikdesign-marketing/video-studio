@@ -1,0 +1,141 @@
+{
+  "measured_at": "2026-11-19T11:03:54.698Z",
+  "old": {
+    "side": "old",
+    "status": "exit=0 wall=57s",
+    "model": [
+      "claude-sonnet-5-5"
+    ],
+    "model_usage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 20,
+        "outputTokens": 5567,
+        "cacheReadInputTokens": 861738,
+        "cacheCreationInputTokens": 105044,
+        "webSearchRequests": 0,
+        "costUSD": 0.5620597999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 645,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 105044,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "is_error": false,
+    "subtype": "success",
+    "duration_s": 51.7,
+    "num_turns": 13,
+    "tokens": {
+      "input": 20,
+      "output": 5567,
+      "cache_read": 861738,
+      "cache_write": 105044
+    },
+    "api_equivalent_usd": 0.5620597999999999,
+    "result_chars": 1575,
+    "questions_in_result": 0,
+    "permission_denials": 3,
+    "result_head": "The reel is at the Idea approval, which is the first approval, and I've stopped there. I wrote three concepts but haven't built or rendered anything. Nothing has been seen or heard, and I couldn't run the hook-scoring tool because it needed an approval I didn't have.\n\nThe job is `jobs/2026-11-19-same-day-shipping/`, set to 9:16, a 12 s cap, confident energy and no voice. The three concepts are in `concepts.md` in that folder.\n\n- **A. \"Order now. Out today.\"** A light paper look. A parcel label's date stamp reads \"today\" at the start and again at the end.\n- **B. \"Days, gone\" (my recommendation)",
+    "jobs": [
+      "2026-11-19-same-day-shipping"
+    ],
+    "quality": {
+      "job_json_valid": true,
+      "brand": "demo",
+      "next_stage": "idea",
+      "size_9x16": true,
+      "length_cap": null,
+      "idea_output": false,
+      "mentions_12s": true,
+      "mentions_9x16": true,
+      "ends_on_logo": true,
+      "no_voice": true
+    },
+    "job_files": [
+      "concepts.md",
+      "job.json"
+    ],
+    "files_written": 2,
+    "written_outside_jobs": []
+  },
+  "new": {
+    "side": "new",
+    "status": "exit=0 wall=74s",
+    "model": [
+      "claude-sonnet-5-5"
+    ],
+    "model_usage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 20,
+        "outputTokens": 5558,
+        "cacheReadInputTokens": 885219,
+        "cacheCreationInputTokens": 105878,
+        "webSearchRequests": 0,
+        "costUSD": 0.5676538999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 412,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 105878,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "is_error": false,
+    "subtype": "success",
+    "duration_s": 64.6,
+    "num_turns": 13,
+    "tokens": {
+      "input": 20,
+      "output": 5558,
+      "cache_read": 885219,
+      "cache_write": 105878
+    },
+    "api_equivalent_usd": 0.5676538999999999,
+    "result_chars": 1628,
+    "questions_in_result": 1,
+    "permission_denials": 2,
+    "result_head": "The job is set up and the three concepts are written. I've stopped at the Idea approval, as you asked.\n\nYou told me 9:16, 12 s hard cap, no voice, library music only, ends on the logo. The viewer should believe that orders placed today ship today. The demo brand has no product screens, so all three concepts are drawn motion and type. I didn't invent a cut-off time, price or region.\n\n**Which concept do you want?**\n- **A. \"Today\" (recommended):** an order card lands on the word TODAY, then slides out as a parcel with a green tick. It closes on \"Same-day shipping\", then the logo. It makes only th",
+    "jobs": [
+      "2026-11-19-same-day-shipping"
+    ],
+    "quality": {
+      "job_json_valid": true,
+      "brand": "demo",
+      "next_stage": "idea",
+      "size_9x16": true,
+      "length_cap": null,
+      "idea_output": true,
+      "mentions_12s": true,
+      "mentions_9x16": true,
+      "ends_on_logo": true,
+      "no_voice": true,
+      "brief_check": {
+        "exit": 1,
+        "out": "Taken from their words (say it back; they can correct it): size 9:16 (\"vertical\"), kind product-demo (\"demo\"), voice none (\"no voice\").\n\nAsk:\n  - What should a viewer do or believe after one watch?\n    why: It decides the last shot and what every shot must prove.\n  - How long at most?\n    why: The cap sets how many beats fit and how long each product shot can hold.\n    recommended: 12 s (from job.json)\n"
+      },
+      "gate_status": {
+        "exit": 0,
+        "out": "mode: guided\nidea               MISSING\nscript_and_voice   MISSING\nmoodboard          MISSING\nstoryboard         MISSING\nfirst_animation    MISSING\nfull_animation     MISSING\n"
+      },
+      "dispatch_usage": {
+        "exit": 0,
+        "out": "claims: 0\n"
+      }
+    },
+    "job_files": [
+      "brief.json",
+      "ideas.md",
+      "job.json"
+    ],
+    "files_written": 5,
+    "written_outside_jobs": [
+      ".claude/settings.json",
+      "studio.json"
+    ]
+  }
+}

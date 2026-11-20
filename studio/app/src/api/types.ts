@@ -1,0 +1,90 @@
+import type { Film, Seconds, VideoVersion } from '../contracts/film';
+import type { Box, DraftNote, Edit, ExportRequest, NoteKind } from '../contracts/review';
+
+/** A job as the job list gives it (`GET /api/jobs`): enough to pick a film, without its on-screen text. */
+export interface JobSummary {
+  job: string; name: string; type: string; stage_next: string; videos: VideoVersion[]; duration: Seconds | null;
+  scenes: { id: string; title: string; start: Seconds; end: Seconds; energy: number; lines: { start: Seconds; end: Seconds; text: string }[] }[];
+}
+
+/** `GET /api/film`. `filmModified` is when film.json last changed; edits are saved against it. */
+export interface FilmResponse { film: Film; videos: VideoVersion[]; filmModified: number }
+
+/** A note as it sits in a sent batch. */
+export interface BatchNote {
+  id: string; time: Seconds; end?: Seconds; scene: string | null; scene_title: string | null; kind: NoteKind; topic: string | null;
+  must: boolean; text: string; box: Box | null; frame: string | null; resolved: boolean; reply: string | null;
+}
+export interface Batch {
+  batch: number; job: string; video: string | null; reviewer: string | null; sent_at: string; status: string;
+  approved: boolean; good_scenes: string[]; notes: BatchNote[];
+}
+
+/** The notes being written, not yet sent. */
+export interface Draft { notes: DraftNote[]; goodScenes: string[] }
+/** `GET /api/review`. */
+export interface Review { draft: Draft; batches: Batch[] }
+
+/** What `POST /api/send` takes. `frames` holds a captured picture (a JPEG data address) for a note, by its `localId`. */
+export interface SendRequest {
+  video: string | null; reviewer: string; approved: boolean; notes: DraftNote[]; goodScenes: string[];
+  frames?: Record<string, string>;
+}
+
+export interface SavedEdits { filmModified: number; edits: Edit[] }
+export interface ExportReceipt extends ExportRequest { export: number; job: string; requested_at: string; status: string }
+/** Where an export has got to: asked for, being made, finished (`file` is in the job's out folder) or stopped (`error` says why). */
+export type ExportStatus = 'requested' | 'running' | 'done' | 'failed';
+/** `detail`: under a failure, what to do or what the program said. `source`: the film it was cut from (`out/preview.mp4` or
+ *  `out/<job>.mp4`), rendered at `source_rendered_at`. `edits_pending`: text changes saved in the editor that are not in that film. */
+export interface ExportRecord extends ExportRequest {
+  export: number; status: ExportStatus; file?: string; error?: string; detail?: string;
+  source?: string; source_rendered_at?: string; edits_pending?: number;
+}
+
+/**
+ * What the server says while a page is listening (`GET /api/events`).
+ * `render` (scene by scene) is in the contract but the render tools do not record it today, so the server sends
+ * `rendering` with the seconds so far instead. Screens should handle both.
+ */
+export type StudioEvent =
+  | { type: 'render'; scene: number; of: number }
+  | { type: 'rendering'; active: boolean; elapsed: Seconds }
+  | { type: 'version'; file: string }
+  | { type: 'batch'; n: number; status: string }
+  | { type: 'export'; n: number; status: ExportStatus; file?: string; error?: string; detail?: string; edits_pending?: number; source?: string; source_rendered_at?: string };
+
+export type EventsStatus = 'connecting' | 'live' | 'reconnecting' | 'closed';
+
+// ---------------------------------------------------------------- paper edit (the transcript of raw footage)
+
+/** One spoken word of a clip, with its times in the clip. */
+export interface PaperWord { text: string; start: Seconds; end: Seconds; filler?: 'yes' | 'maybe' | string; repeat?: boolean }
+export interface PaperClip {
+  name: string; words: PaperWord[];
+  /** Each sentence as the indexes of its words. */
+  sentences: number[][];
+  duration: Seconds | null;
+  /** False when the clip is sound only. */
+  video: boolean;
+}
+/** One sentence in the edit: which clip, which sentence, and the word indexes that are kept. */
+export interface PaperBlock { clip: string; sentence: number; words: number[] }
+export interface PaperProposals {
+  hooks?: { clip: string; sentence: number; text: string; reasons: string[] }[];
+  retakes?: { clip: string; takes: number[]; keep: number }[];
+  pauses?: { clip: string; after: number; seconds: number; to: number }[];
+}
+export interface Paper {
+  blocks: PaperBlock[]; keep_pauses?: string[]; approved_joins?: string[]; note?: string; reviewer?: string;
+  status?: string; approved?: boolean; target_seconds?: number | null; proposals: PaperProposals;
+}
+export interface PaperJoin { key: string; after: string; kind: string; flagged: boolean; reasons: string[]; approved: boolean }
+/** What the server works out from the edit: the stretches to play, the joins and the length. */
+export interface PaperCheck { runs: { clip: string; start: Seconds; end: Seconds }[]; joins: PaperJoin[]; seconds: Seconds }
+/** `GET /api/paper`. */
+export interface PaperData { paper: Paper; clips: PaperClip[]; check: PaperCheck; job: { name?: string } }
+export interface PaperJob { job: string; name: string; status: string }
+/** What `POST /api/paper/save` takes, in the old page's field order. `/api/paper/send` adds `approved`. */
+export interface PaperPayload { blocks: PaperBlock[]; keep_pauses: string[]; approved_joins: string[]; note: string; reviewer: string; approved?: boolean }
+export interface PaperSaved { ok: boolean; check: PaperCheck; status: string }

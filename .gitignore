@@ -1,11 +1,19 @@
 .env
 node_modules/
 jobs/*/out/
+# Editor exports: the requests, a worker's claim on one, its pid, and the files. Never committed, so a test export
+# under jobs/_sample can never ride into the release with jobs/_sample/review.
+jobs/*/review/export-*.json
+jobs/*/review/*.claim-*
+jobs/*/review/.export-worker.pid
+jobs/*/out/export-*.mp4
 jobs/*/renders/
 jobs/*/footage/
 # Footage editing: working copies, sound, transcripts, the log and sheets are made from footage of real people, so
 # they stay on the Mac like the footage itself.
-jobs/*/edit/
+jobs/*/edit/*
+# The colour recipe is small, holds no footage, and is what rebuilds a film's grade: it is tracked.
+!jobs/*/edit/grade.json
 tools/footage/.venv/
 # earshot's listening models and caches (about 1.1 GB), fetched by setup/install.sh.
 tools/audio/.earshot/
@@ -51,3 +59,19 @@ tools/footage/models/
 tools/footage/bin/
 # The Product Hunt reel's engine data holds a real person's face positions and words: kept on this Mac, like the job's edit folder.
 engine/src/jobs/ph-launch-reel/
+
+# The paid-generation ledger (tools/film/lib/ledger.mjs): task ids and request ids of this Mac's paid calls.
+.generations/
+
+# Sound packs handed to the studio with no known licence: local use only, never synced (tools/audio/local_pack.py)
+library/sounds-local/
+
+# Motion study: scraped third-party prompts, videos and sheets stay local (reference use only)
+.damex/motion-study/raw/
+.damex/motion-study/videos/
+.damex/motion-study/sheets/
+.damex/motion-study/corpus.json
+.damex/motion-study/batch-*.json
+.damex/motion-study/study/
+.damex/motion-study/posters/
+.damex/motion-study/frames/

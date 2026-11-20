@@ -8,7 +8,7 @@ Usage:
   synth.py recipe <recipe.json> <out>    remake a sound from its recipe. The file may hold a recipe, one manifest
                                          line (with a "recipe"), or a whole index.json with --id <group/name>.
 
-Run it with the footage tools' Python: tools/footage/.venv/bin/python tools/audio/synth.py ...
+Run it with the footage tools' Python: tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) tools/audio/synth.py ...
 
 Every sound is made from random noise and sine waves, shaped by numbers. The same numbers and the same --seed always
 give the same sound, to the last bit of the WAV, so a sound in the library can be remade from the "recipe" in its
@@ -157,14 +157,36 @@ STING = {
     "width": (0.6, "stereo width, 0..1"),
 }
 AMBIENCE = {
-    "style": ("room", "room | aircon | city | wind | rain"),
+    "style": ("room", "room | clean | aircon | city | wind | rain  (clean: a quiet room with no mains hum and no fan)"),
     "hum": (60.0, "mains hum, Hz (50 or 60), for room and aircon"),
     "crossfade": (1.5, "seconds of the end folded into the start to make the loop seamless"),
     "width": (0.7, "stereo width (how different the two sides are), 0..1"),
     "density": (1.0, "how busy: gusts, cars passing, drops of rain (0.3..3)"),
 }
 
+BUZZ = {
+    "pulses": (2, "how many buzzes (1..4)"),
+    "on": (0.2, "seconds each buzz lasts"),
+    "gap": (0.09, "seconds of quiet between buzzes"),
+    "motor": (172.0, "the vibration motor's frequency, Hz"),
+    "table": (118.0, "the table top's main resonance, Hz (the wooden body rings a fifth above it)"),
+    "rattle": (0.5, "the phone's case rattling on the table, 0..1"),
+    "thud": (0.6, "the knock where each buzz starts, 0..1"),
+}
+TAP = {
+    "style": ("tap", "tap | swipe: a fingertip knocking on glass, or sliding across it"),
+    "taps": (1, "how many taps (1..3), for the tap style"),
+    "spacing": (0.11, "seconds between taps"),
+    "pitch": (1.0, "moves the body of the tap and the glass ring up or down, 0.6..1.6"),
+    "ring": (0.35, "the glass ringing after the knock, 0..1"),
+    "nail": (0.0, "a fingernail's click in front of the tap, 0..1"),
+    "speed": (1.0, "swipe style: how fast the finger moves (0.6..1.6); a faster swipe is shorter and brighter"),
+    "squeak": (0.25, "swipe style: the stick and slip of skin on glass, 0..1"),
+}
+
 KINDS = {
+    "buzz":       (BUZZ, 0.8, "a phone buzzing on a table: motor pulses, a rattling case and the table top's own resonance"),
+    "tap":        (TAP, 0.14, "a fingertip on glass: a soft knock with a glassy ring, or a short slide (style swipe)"),
     "whoosh":     (WHOOSH, 0.8, "filtered air rushing past: a band of noise that climbs, peaks and falls away"),
     "swish":      (SWISH, 0.35, "a short, bright, quick whoosh, like cloth or a fast hand"),
     "riser":      (RISER, 2.5, "tension building: noise and gliding tones rising, ending on a cut, a fade or a hit"),
@@ -596,6 +618,91 @@ def make_sting(n, p):
     return out * tail[:, None]
 
 
+def resonator(x, hz, q, gain=1.0):
+    """The signal through a narrow resonance at hz (a tabletop, a glass pane): a peaking band-pass at unit gain."""
+    from scipy.signal import iirpeak
+    b, a = iirpeak(hz / (0.5 * SR), q)
+    from scipy.signal import tf2sos
+    return gain * sosfilt(tf2sos(b, a), x)
+
+
+def make_buzz(n, p):
+    """A phone vibrating on a table. The motor is a low tone (with harmonics) that spins up and down inside each pulse;
+    the case rattles in time with it; the table top and the wood under it ring when each pulse knocks them."""
+    t = np.arange(n) / SR
+    k, w = TONES[p["tone"]], WEIGHTS[p["weight"]]
+    pulses = int(np.clip(p["pulses"], 1, 4))
+    on, gap = float(p["on"]), float(p["gap"])
+    start = 0.012
+    env = np.zeros(n)
+    knock = np.zeros(n)
+    for i in range(pulses):
+        s0 = start + i * (on + gap)
+        a = np.clip((t - s0) / 0.012, 0, 1)                    # the motor takes 12 ms to bite
+        d = np.clip((s0 + on - t) / 0.03, 0, 1)                # and about 30 ms to stop
+        env += (a * d) * (t >= s0)
+        c = int(s0 * SR)
+        if c < n:
+            knock[c] += 1.0 - 0.12 * i
+    env = np.clip(env, 0, 1)
+    r_motor, r_rattle, r_knock = rng_for(p, 1), rng_for(p, 2), rng_for(p, 3)
+    # the motor: its speed follows the pulse (spins up, spins down), plus a little wander
+    spin = lowpass(env ** 0.6, 60, 2)
+    f = float(p["motor"]) * (0.72 + 0.28 * np.clip(spin, 0, 1)) * (1 + 0.01 * smooth_random(r_motor, n, 20))
+    motor = tones(f, harmonics=5, rolloff=1.0) * env
+    # the case rattles at the motor's rhythm: noise in a band, cut into bursts once per turn
+    ph = glide(f)
+    chop = np.clip(0.5 + 0.9 * np.sin(ph + 1.1), 0, 1) ** 2
+    rattle = band_noise(r_rattle, n, 2300 * k, 1.1, 0.3) * chop * env * float(p["rattle"])
+    # the table: each knock rings a low resonance and a higher wooden one; the motor itself shakes them too
+    kick = np.zeros(n)
+    for c in np.nonzero(knock)[0]:
+        L = min(frames(0.012), n - c)
+        kick[c:c + L] += knock[c] * r_knock.standard_normal(L) * np.hanning(2 * L)[L:]
+    table_hz = float(p["table"])
+    shake = motor * 0.5 + kick * 8 * float(p["thud"])
+    table = resonator(shake, table_hz, 7.0, 2.2) + resonator(shake, table_hz * 1.5, 5.0, 1.2) + resonator(shake, table_hz * 2.9, 4.0, 0.6)
+    body = 0.55 * (0.7 + 0.15 * w)
+    y = motor * 0.55 + rattle * 0.75 + table * body
+    return y
+
+
+def make_tap(n, p):
+    """A fingertip on a glass screen. tap: a soft knock (a damped low body), a short bright click as skin meets glass
+    and a faint glassy ring; the optional nail adds a hard tick in front. swipe: skin sliding on glass, a band of noise
+    that gets brighter and louder through the middle, with the stick and slip of friction."""
+    k, pitch = TONES[p["tone"]], float(np.clip(p["pitch"], 0.6, 1.6))
+    out = np.zeros(n)
+    if p["style"] == "swipe":
+        speed = float(np.clip(p["speed"], 0.6, 1.6))
+        r = rng_for(p, 1)
+        env = hump(n, 0.45, 1.6, 2.2) ** 1.2
+        sweep = 1800 * pitch * k * 2 ** (1.1 * np.linspace(0, 1, n) * speed ** 0.5)
+        y = band_noise(r, n, sweep, 0.9, 0.25, 0.1, top=9000) * env
+        stick = 1 + float(p["squeak"]) * 0.7 * smooth_random(rng_for(p, 2), n, 55 * speed)
+        y = y * np.clip(stick, 0.2, None)
+        squeal = np.sin(glide(2900 * pitch * k * (1 + 0.04 * smooth_random(rng_for(p, 3), n, 9)))) * env ** 2
+        y += float(p["squeak"]) * 0.12 * squeal
+        return y + 0.12 * lowpass(band_noise(rng_for(p, 4), n, 300, 0.8), 600) * env
+    taps = int(np.clip(p["taps"], 1, 3))
+    for i in range(taps):
+        c = int((0.004 + i * float(p["spacing"])) * SR)
+        r = rng_for(p, 10 + i)
+        L = n - c
+        if L < 64:
+            break
+        tt = np.arange(L) / SR
+        jitter = 1 + 0.06 * (r.random() - 0.5)
+        body = np.sin(2 * np.pi * 210 * pitch * jitter * tt * (1 + 0.5 * np.exp(-tt / 0.01))) * np.exp(-tt / 0.018) * 0.9
+        skin = lowpass(band_noise(r, L, 1400 * pitch * k, 1.2), 4500 * k, 2) * np.exp(-tt / 0.004) * 0.9
+        click = band_noise(r, L, 4200 * pitch * k, 0.7) * np.exp(-tt / 0.0016) * 0.7
+        glass = sum(np.sin(2 * np.pi * fq * pitch * jitter * tt + r.random() * 6) * np.exp(-tt / dc) * g for fq, dc, g in
+                    ((2630, 0.014, 1.0), (3970, 0.009, 0.7), (6150, 0.006, 0.4))) * float(p["ring"]) * 0.45
+        nail = band_noise(r, L, 6500 * k, 0.5) * np.exp(-tt / 0.0008) * float(p["nail"]) * 1.2
+        out[c:] += (body + skin + click + glass + nail) * (1 - 0.18 * i)
+    return out
+
+
 def make_ambience(n, p):
     """Made longer than asked, then the extra end is cross-faded into the start, so the last sample runs straight
     into the first and the file loops with no seam."""
@@ -613,6 +720,13 @@ def make_ambience(n, p):
             y += 0.08 * (np.sin(2 * np.pi * float(p["hum"]) * t) + 0.5 * np.sin(4 * np.pi * float(p["hum"]) * t))
             y += 0.25 * (0.6 + 0.4 * w) * band_noise(r, m, 70, 0.8)
             return y * (1 + 0.08 * smooth_random(r, m, 0.2))
+        if style == "clean":
+            # no tone in it anywhere: broad, soft air shaped by slow breathing, nothing narrow below 200 Hz. The very
+            # lowest octaves are rolled off with a gentle slope and no resonance, so no band stands up out of its neighbours.
+            y = band_noise(r, m, 420 * k, 2.4, 0.0, -0.35, top=7000 * k) * 0.8
+            y += 0.18 * band_noise(r, m, 1800 * k, 1.6, 0.0, -0.1, top=9000 * k)
+            y *= 1 + 0.07 * smooth_random(r, m, 0.18)
+            return highpass(y, 90, 2)
         if style == "aircon":
             fan = band_noise(r, m, 450 * k, 1.8, 0.4, -0.2, top=10000 * k)
             blade = 1 + 0.12 * np.sin(2 * np.pi * 13.5 * t + ch)
@@ -650,7 +764,7 @@ def make_ambience(n, p):
                 fq = r.uniform(1500, 4500) * k
                 big[c:c + L] += np.sin(2 * np.pi * fq * tt * (1 + 2 * tt)) * np.exp(-tt / 0.006) * r.uniform(0.2, 0.6)
             return hiss + drops + 0.5 * big + 0.2 * band_noise(r, m, 200, 1.0) * (0.5 + 0.5 * w)
-        raise SystemExit(f"ambience: unknown style {style!r} (room, aircon, city, wind, rain)")
+        raise SystemExit(f"ambience: unknown style {style!r} (room, clean, aircon, city, wind, rain)")
 
     a, b = side(0), side(1)
     width = float(np.clip(p["width"], 0, 1))
@@ -664,7 +778,7 @@ def make_ambience(n, p):
     return out
 
 
-MAKERS = {"whoosh": make_whoosh, "swish": make_whoosh, "riser": make_riser, "downer": make_downer,
+MAKERS = {"buzz": make_buzz, "tap": make_tap, "whoosh": make_whoosh, "swish": make_whoosh, "riser": make_riser, "downer": make_downer,
           "reverse": make_reverse, "impact": make_impact, "glitch": make_glitch, "transition": make_transition,
           "sting": make_sting, "ambience": make_ambience}
 

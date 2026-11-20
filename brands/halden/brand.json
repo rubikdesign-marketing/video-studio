@@ -1,0 +1,135 @@
+{
+  "_about": "EXAMPLE BRAND. Halden Bakehouse is invented for the studio's example films and the first-time-user trial. Not a real business.",
+  "_checked": "2026-11-11",
+  "name": "Halden Bakehouse",
+  "colours": {
+    "_about": "Flour cream page, rye-brown ink, crust amber accent; a warm oven-dark page.",
+    "light": {
+      "page": "#F7EFE3",
+      "ink": "#2B1D14",
+      "second": "#7A6553",
+      "accent": "#B5642A",
+      "warm": "#D9A441",
+      "soft": "#EBDCC6",
+      "line": "#E2D3BE",
+      "_on_accent": "Left out on purpose, to prove the engine picks the ink that reads better on the accent."
+    },
+    "dark": {
+      "page": "#1C120C",
+      "ink": "#F7EFE3",
+      "second": "#CDB49A",
+      "accent": "#E8A25C",
+      "warm": "#F2C66D",
+      "soft": "#3A2617",
+      "line": "#F7EFE324"
+    },
+    "_confetti": "Left out on purpose: the engine then makes confetti from the roles above."
+  },
+  "stages": {
+    "light": {
+      "lights": [
+        {
+          "x": 0.16,
+          "y": 0.06,
+          "radius": 1,
+          "colour": "#FFFFFF",
+          "opacity": 0.8
+        }
+      ],
+      "grain": 0.3,
+      "vignette": 0,
+      "screen_glow": 0
+    },
+    "dark": {
+      "lights": [
+        {
+          "x": 0.2,
+          "y": 0.14,
+          "radius": 0.9,
+          "colour": "#3A2617",
+          "opacity": 0.85
+        },
+        {
+          "x": 0.86,
+          "y": 0.92,
+          "radius": 0.8,
+          "colour": "#2A1A10",
+          "opacity": 0.9
+        },
+        {
+          "x": 0.72,
+          "y": 0.22,
+          "radius": 0.5,
+          "colour": "#E8A25C",
+          "opacity": 0.16
+        }
+      ],
+      "grain": 0.06,
+      "vignette": 0.5,
+      "screen_glow": 0.25
+    }
+  },
+  "fonts": {
+    "_about": "Inter for headlines and labels; Instrument Serif italic for the one starred word.",
+    "headline": {
+      "family": "Inter",
+      "package": "@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2",
+      "weight_range": "100 900",
+      "weight": 600,
+      "tracking_em": -0.035,
+      "line_height": 1.08
+    },
+    "accent": {
+      "family": "Instrument Serif",
+      "package": "@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2",
+      "style": "italic",
+      "weight": 400,
+      "scale": 1.08,
+      "tracking_em": -0.01
+    },
+    "label": {
+      "family": "Inter",
+      "package": "@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2",
+      "weight_range": "100 900",
+      "weight": 500,
+      "tracking_em": -0.01
+    },
+    "product": null
+  },
+  "logo": {
+    "_about": "Drawn for the example: a loaf mark and the name.",
+    "light": {
+      "wordmark": "logo/halden-wordmark-on-light.svg",
+      "mark": "logo/halden-mark-on-light.svg"
+    },
+    "dark": {
+      "wordmark": "logo/halden-wordmark-on-dark.svg",
+      "mark": "logo/halden-mark-on-dark.svg"
+    }
+  },
+  "shape": {
+    "_about": "Soft corners.",
+    "control_radius": 0.006,
+    "window_radius": 0.012,
+    "pill_radius": "full"
+  },
+  "captions": {
+    "weight": 600,
+    "text": "#FFFFFF",
+    "highlight": "#F2C66D",
+    "glass_top": "#2A1A10",
+    "glass_bottom": "#140C07"
+  },
+  "product_ui": null,
+  "rejected": {
+    "colours": [
+      "red"
+    ],
+    "patterns": [
+      "dot grids"
+    ],
+    "type": [
+      "coding-style (monospaced) typefaces"
+    ]
+  }
+}

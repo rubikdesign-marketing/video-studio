@@ -15,6 +15,8 @@ import path from 'node:path';
 import net from 'node:net';
 import { spawn, spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
+import { killTree, groupLeader } from '../lib/proc.mjs';
+import { npmInvocation } from '../../setup/runtime/resolve.mjs';
 
 // Pinned: a version at least two weeks old when this was written (12 Nov 2026), so a take made today and one made
 // next month build the same tool. Change it on purpose, and test a WordPress take after.
@@ -191,14 +193,15 @@ export async function startSite({ site, studio, brand, say, stop, quiet = false 
   say(`Building the demo site from ${path.relative(studio, site.file)} (WordPress ${bp.wp ?? 'latest'}, PHP ${bp.php ?? '8.3'}${bp.plugins.length ? `, plugins: ${bp.plugins.join(', ')}` : ''}${bp.users.length ? `, demo users: ${bp.users.join(', ')}` : ''})...`);
   if (first) say('  the first time on this Mac it downloads WordPress Playground (about 1 GB, kept in .capture/npm-cache) and WordPress; later builds take under a minute');
   const log = fs.openSync(path.join(work, 'playground.log'), 'w');
-  const child = spawn('npx', args, { cwd: work, detached: true, stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, npm_config_cache: cache, npm_config_update_notifier: 'false', npm_config_fund: 'false', NODE_NO_WARNINGS: '1' } });
+  const npx = npmInvocation('npx');   // Windows cannot start npx.cmd without a shell
+  const child = spawn(npx.cmd, [...npx.prefix, ...args], { cwd: work, ...groupLeader(), stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, npm_config_cache: cache, npm_config_update_notifier: 'false', npm_config_fund: 'false', NODE_NO_WARNINGS: '1' } });
   let out = '';
   const take = (b) => { const s = b.toString(); out += s; fs.writeSync(log, s); };
   child.stdout.on('data', take);
   child.stderr.on('data', take);
   let exited = null;
   child.on('exit', (code, signal) => { exited = { code, signal }; });
-  const kill = () => { try { process.kill(-child.pid, 'SIGTERM'); } catch {} };
+  const kill = () => { killTree(child, 'SIGTERM'); };
   // The site never outlives the tool: Ctrl+C, a stop or a crash all take it down.
   process.once('exit', kill);
   const t0 = Date.now();
@@ -217,7 +220,7 @@ export async function startSite({ site, studio, brand, say, stop, quiet = false 
     if (exited) return;
     kill();
     for (let i = 0; i < 40 && !exited; i++) await new Promise((r) => setTimeout(r, 100));
-    if (!exited) { try { process.kill(-child.pid, 'SIGKILL'); } catch {} }
+    if (!exited) killTree(child, 'SIGKILL');
     process.removeListener('exit', kill);
     fs.closeSync(log);
   };

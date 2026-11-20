@@ -1,0 +1,21 @@
+{
+ "_about": "The one list of on-screen causes, in film seconds (30 fps, every value a whole frame). The scenes draw from it and build.mjs places each sound from it, so picture and sound cannot drift apart.",
+ "fps": 30,
+ "commentIn": 0.0,
+ "commentLike": 0.9,
+ "commentOut": 2.2,
+ "captionHook": 0.4,
+ "cutDemo": 2.5,
+ "pointerArrive": 4.9,
+ "click": 5.0,
+ "swap": 5.1,
+ "cameraFollow": 5.6,
+ "hover": 7.9,
+ "cutProof": 9.0,
+ "captionProof": 9.3,
+ "ring": 10.5,
+ "ctaWipe": 13.0,
+ "offer": 13.3,
+ "logo": 14.0,
+ "end": 16.0
+}

@@ -14,7 +14,9 @@ import sys
 
 import numpy as np
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 RATE = 48000
 
 

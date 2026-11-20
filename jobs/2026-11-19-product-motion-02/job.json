@@ -1,0 +1,20 @@
+{
+ "name": "2026-11-19-product-motion-02",
+ "brand": "tulvo",
+ "type": "product-motion",
+ "created": "2026-11-19",
+ "maker": "verifier-4",
+ "size": "9:16",
+ "platform": "reels",
+ "length_cap_seconds": 6,
+ "energy_preset": "confident",
+ "framework": "ugc-phone-take",
+ "voice": null,
+ "music": null,
+ "stage_next": "none: internal verification example",
+ "organicOnly": true,
+ "rights": { "privateStudy": true, "publicUse": null, "bundling": null, "note": "Made from the studio's own take-5 recording of the Kestrel Studio demo workspace (privateStudy only). Verification example: do not publish, do not bundle." },
+ "engine": { "slug": "product-motion-02", "fps": 30 },
+ "moves": { "product": "product-ring (CaptureClip emphasis kind 'ring')", "ugc": "ugc-screen-rec-tell (RecBadge)", "grade": "soft-daylight + exposure 0.15, temperature -8, contrast 8, saturation 6 (edit/grade.json)" },
+ "notes": ["Copied from the jobs/2026-11-19-ugc-01 pattern: build.mjs makes the sound and the graded clip, render.sh renders and masters. No voice, no captions: a 5 s product beat."]
+}

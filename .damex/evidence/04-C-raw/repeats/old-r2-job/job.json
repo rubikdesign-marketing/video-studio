@@ -1,0 +1,66 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "studio",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "stage_next": "script_and_voice",
+  "approvals": {
+    "idea": "2026-11-19: maker said to treat the recommended idea (Type it once) as approved, in the request. Not a separate sign-off.",
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "moodboard_canvas": null,
+  "storyboard_canvas": null,
+  "figma_file": null,
+  "offer_wording": null,
+  "facts": [
+    "Saved replies is a new feature of the support inbox (from the maker's brief). No price, date or numbers were given, so none are used.",
+    "Not confirmed: that the feature is live today. The close says 'are in your support inbox'. Change it if it ships later."
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": [],
+  "new_library_entry": "Typed answer collapses into a short name (the 'type it once' move). To be built at stage 5.",
+  "hooks": [
+    {
+      "formula": "problem (family; library id not looked up, tool not run)",
+      "spoken": "You've typed that same answer a hundred times today.",
+      "on_screen": "Same answer. Again.",
+      "first_frame": "The same reply being typed again, already mid-sentence, a second copy starting underneath.",
+      "score": "7/8, my judgement, not measured",
+      "picked": true
+    },
+    {
+      "formula": "outcome first (family)",
+      "spoken": "Your best answer, ready in two keystrokes.",
+      "on_screen": "Write it once.",
+      "first_frame": "A short name typed into a box, the full answer filling in beside it.",
+      "score": "6/8, my judgement. 'Two keystrokes' is a claim nobody has checked, so it needs the real product.",
+      "picked": false
+    },
+    {
+      "formula": "question (family)",
+      "spoken": "Why are you still retyping the same reply?",
+      "on_screen": "Still retyping?",
+      "first_frame": "A support inbox with the same question in five rows.",
+      "score": "6/8, my judgement. Reads as a telling-off.",
+      "picked": false
+    }
+  ],
+  "skills_used": [],
+  "usage": [],
+  "notes": [
+    "WARNING: brands/demo/README.md says the demo brand is invented, has no product and 'do not make a real video with it'. Saved replies has no captures, no product folder and no discovery.md, so stage 0B has not been done.",
+    "No brand voice is written down for demo (rules.md and pronunciation.md are empty). The script uses a plain, warm, confident voice, which is my reading, not a brand rule.",
+    "Only voice on file is Justin (suits tutorial, demo). The job template default 'Ray' is not in voices.json.",
+    "hooks.mjs and beats.mjs were not run (permission). Beat table and word counts below are by hand.",
+    "No audio generated, by instruction."
+  ]
+}

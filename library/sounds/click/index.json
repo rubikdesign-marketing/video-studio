@@ -461,6 +461,116 @@
    "original": "packages/uisfx/sounds/glass/press.mp3",
    "fetched": "2026-11-18",
    "sha256": "6ddcc77230543de86af182325cc28ae7d9153756e666c5387e5c89f221fa671f"
+  },
+  {
+   "id": "click/finger-tap-glass-01",
+   "file": "click/finger-tap-glass-01.mp3",
+   "name": "Finger tap on glass",
+   "feel": [
+    "soft",
+    "short",
+    "glassy",
+    "organic"
+   ],
+   "use_for": "A fingertip tap on a phone screen: the touch in a phone-framed demo.",
+   "seconds": 0.111,
+   "peak_db": -3.0,
+   "loudest_lufs": -28.4,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "tap",
+    "seconds": 0.14,
+    "seed": 31,
+    "tone": "neutral",
+    "weight": "medium",
+    "style": "tap",
+    "taps": 1,
+    "spacing": 0.11,
+    "pitch": 0.9,
+    "ring": 0.35,
+    "nail": 0.0,
+    "speed": 1.0,
+    "squeak": 0.25
+   },
+   "fetched": "2026-11-19",
+   "sha256": "a96dc55aae5dbb5174f9d340c38f3876255b0e3174397c9cd580354058cc6f5e"
+  },
+  {
+   "id": "click/finger-tap-glass-02",
+   "file": "click/finger-tap-glass-02.mp3",
+   "name": "Finger tap on glass, higher",
+   "feel": [
+    "short",
+    "tight",
+    "glassy",
+    "bright"
+   ],
+   "use_for": "A slightly brighter fingertip tap on glass.",
+   "seconds": 0.113,
+   "peak_db": -3.1,
+   "loudest_lufs": -27.7,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "tap",
+    "seconds": 0.14,
+    "seed": 32,
+    "tone": "neutral",
+    "weight": "medium",
+    "style": "tap",
+    "taps": 1,
+    "spacing": 0.11,
+    "pitch": 1.0,
+    "ring": 0.45,
+    "nail": 0.0,
+    "speed": 1.0,
+    "squeak": 0.25
+   },
+   "fetched": "2026-11-19",
+   "sha256": "dd32b69f6e18321440562e0869231bdfffb299a4a6848c83d0677ad4a657728c"
+  },
+  {
+   "id": "click/finger-tap-glass-03",
+   "file": "click/finger-tap-glass-03.mp3",
+   "name": "Finger double tap on glass",
+   "feel": [
+    "short",
+    "light",
+    "glassy"
+   ],
+   "use_for": "Two quick taps on glass: a double tap, or two presses in a row.",
+   "seconds": 0.219,
+   "peak_db": -3.0,
+   "loudest_lufs": -25.4,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "tap",
+    "seconds": 0.3,
+    "seed": 33,
+    "tone": "neutral",
+    "weight": "medium",
+    "style": "tap",
+    "taps": 2,
+    "spacing": 0.11,
+    "pitch": 1.2,
+    "ring": 0.35,
+    "nail": 0.0,
+    "speed": 1.0,
+    "squeak": 0.25
+   },
+   "fetched": "2026-11-19",
+   "sha256": "27fe30df4982cd7f4cf65064013ff7f43b182b8cbb2c3469d8773b03ebae29b3"
   }
  ]
 }

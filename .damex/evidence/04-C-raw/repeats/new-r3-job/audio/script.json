@@ -1,0 +1,10 @@
+[
+ { "id": "01", "text": "[confident, a little wry] You just typed that same reply again.", "gap_after": 0.7, "beat": "hook", "energy": 4, "highlight": "again" },
+ { "id": "02", "text": "[warm] Your best answer already exists.", "gap_after": 0.7, "beat": "turn", "energy": 2, "highlight": "already exists" },
+ { "id": "03", "text": "[confident] With saved replies, you write an answer once.", "gap_after": 0.7, "beat": "proof", "energy": 3, "highlight": "saved replies" },
+ { "id": "04", "text": "Type a slash, pick it, and it's in the thread.", "gap_after": 0.7, "beat": "proof", "energy": 3, "highlight": "slash" },
+ { "id": "05", "text": "Change the name, tweak a line, and send.", "gap_after": 1.0, "beat": "proof", "energy": 2, "highlight": "send" },
+ { "id": "06", "text": "[bright] Same answer, less typing.", "gap_after": 0.5, "beat": "peak", "energy": 5, "highlight": "less typing" },
+ { "id": "07", "text": "[warm, settled] Saved replies. Now in your support inbox.", "gap_after": 0.8, "beat": "offer", "energy": 4, "highlight": "Saved replies" },
+ { "id": "08", "text": "[warm] Write it once.", "beat": "close", "energy": 4, "highlight": "once" }
+]

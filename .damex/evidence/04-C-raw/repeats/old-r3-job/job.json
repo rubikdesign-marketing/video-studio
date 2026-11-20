@@ -1,0 +1,38 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "<maker>",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "stage_next": "script_and_voice",
+  "approvals": {
+    "idea": "2026-11-19: the maker said to treat the recommended idea as approved. Only one soul sheet was written, not three.",
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "moodboard_canvas": null,
+  "storyboard_canvas": null,
+  "figma_file": null,
+  "offer_wording": "Saved replies, now in your support inbox.",
+  "facts": [
+    "UNCONFIRMED: the new feature is called Saved replies and lives in the support inbox (from the brief; no product notes exist for this brand).",
+    "UNCONFIRMED: a person can save a reply and pick it later in a conversation (the script assumes this; check against the real product)."
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": [],
+  "new_library_entry": "the repeated sentence stack that collapses into one line (type-only hand-off)",
+  "usage_by_stage": {},
+  "notes": [
+    "Demo brand is a test brand with no product and no discovery.md. Scenes 3 and 4 need real captures that do not exist yet.",
+    "No audio has been generated or played at this stage."
+  ],
+  "skills_used": [],
+  "usage": []
+}

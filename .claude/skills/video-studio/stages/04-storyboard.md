@@ -14,6 +14,7 @@ Ends with the **Storyboard** approval. The storyboard is made of the film's own 
 - `library/backgrounds/index.json` (the backgrounds that already work)
 - `knowledge/craft/11-data-visualisation.md` if any chart or number is on screen
 - `knowledge/craft/00-principles.md`
+- `jobs/<job>/recipe.md` when the job has one: its structure and timings, motion language, transitions and engine moves; and `knowledge/craft/17-motion-graphics.md` sections 3 to 7 (choreography, transitions, pace by kind of film, type in motion, opening and ending). A move the recipe needs that the engine lacks is built as the film's new library move, or approximated and named in the hand-over
 - Product shots: `tools/capture/README.md` and `CAPTURE-PLAN.md` section 7.9 (looks, pointers, camera, staging, animations, transitions); capture scripts are written now and approved with the storyboard
 - Skills to load (see "Skills the studio uses" in `SKILL.md`): `motion-design` for each shot's motion notes; `bang-motion` (`references/techniques.md`) for shot sizes, the camera going to what is speaking, and its transition menu; `impeccable` for the key frames' type, colour and layout; `hallmark` and `impeccable` critique before the storyboard goes to a person
 
@@ -36,6 +37,8 @@ For each shot, build how it looks **at rest**, in its scene file: the background
 ## 4. Render the frames
 
 `node tools/film/storyboard.mjs jobs/<job>` renders one still per shot into `jobs/<job>/storyboard/` and writes `frames.json` with the notes for each. It has to be allowed to run outside the command sandbox.
+
+Before rendering, give every shot in `shots.json` a `point` (one sentence: what it proves) and an `eye` (the one thing to look at), and run `node tools/plan/brief.mjs check jobs/<job>`. It lists shots with no point or eye, actions with no proof moment, claims in the brief that no shot shows (`proves`), and reference qualities no shot borrows (`borrow`). A shot that shows an action (a click, a drag, a hand picking something up, a paste) names the moment that proves it, `"proof": { "what": "the row lands in Notion", "at": 2.1 }` (seconds from the scene's start, or "70%" of the shot), and the storyboard draws that frame beside the resting one. For a hand and a product, that is the moment of contact; for a presenter, the board shows a still but approval needs a few seconds of speech with sound. A revision of a few scenes: `storyboard.mjs jobs/<job> --only S03,S05` redraws only those and keeps the rest.
 
 ## 5. Lay them out on a design canvas
 

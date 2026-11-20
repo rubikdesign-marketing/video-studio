@@ -1,0 +1,25 @@
+{
+ "stage": "dark",
+ "planned_instant_changes": [{ "scene": "S04", "what": "hard cut on 'Make it yours'" }],
+ "planned_holds": [{ "scene": "S03", "seconds": 1.3, "what": "the finished saved-reply card, after line 05" }],
+ "scenes": [
+  { "id": "S01", "title": "Same answer, again", "lines": ["01"], "beat": "hook", "energy": 4, "transition_in": null, "hand_off": null,
+    "shots": [{ "text": "Same answer.\nAgain.", "size": "medium", "capture": null, "focal_point": "centre, the typing sentence", "move": "one sentence types itself into a card; copies of it stack up the frame as the camera pulls back", "sound": "soft key ticks" }] },
+  { "id": "S02", "title": "Every day", "lines": ["02"], "beat": "turn", "energy": 3, "transition_in": { "number": 15, "name": "Zoom-through swap" }, "hand_off": "the stack of cards shrinks and becomes one grey card in a queue",
+    "shots": [{ "text": "Same questions.\nEvery day.", "size": "wide", "capture": null, "focal_point": "the empty reply box on the lowest card", "move": "a queue of question cards slides in; the reply box stays empty, cursor blinking", "sound": "low tone under" }] },
+  { "id": "S03", "title": "Write it once", "lines": ["03", "04", "05", "06"], "beat": "proof", "energy": 4, "transition_in": { "number": 4, "name": "Macro push-through" }, "hand_off": "the blinking cursor becomes the edge of a saved-reply card",
+    "shots": [
+      { "text": "Saved replies", "line": "03", "size": "macro", "capture": null, "focal_point": "the card's title", "move": "title types in on a card edge, push in", "sound": "settle tone" },
+      { "text": "Write it once.", "line": "04", "size": "medium", "capture": null, "focal_point": "the card body", "move": "one answer types out and folds into a labelled card", "sound": "key ticks, soft fold" },
+      { "text": "", "line": "05", "size": "wide", "capture": null, "focal_point": "the card among the queue", "move": "question cards arrive again; each lights the same card; hold once on the finished card", "sound": "low swell into the hold" },
+      { "text": "", "line": "06", "size": "medium", "capture": null, "focal_point": "the card sliding toward a reply box", "move": "card is found in a short list and drops into the reply box, slow and calm", "sound": "single soft tick" }
+    ] },
+  { "id": "S04", "title": "Make it yours", "lines": ["07"], "beat": "peak", "energy": 5, "transition_in": { "number": 12, "name": "Hard cut" }, "hand_off": null,
+    "shots": [{ "text": "Make it yours.\nSend it.", "size": "medium", "capture": null, "focal_point": "the one word that changes, then the send arrow", "move": "one word is edited, the send arrow clears the question; the queue shortens card by card", "sound": "two steady hits, one per phrase" }] },
+  { "id": "S05", "title": "New in your inbox", "lines": ["08", "09"], "beat": "offer", "energy": 4, "transition_in": { "number": 19, "name": "Shape becomes object" }, "hand_off": "the cleared queue becomes the logo mark",
+    "shots": [
+      { "text": "Saved replies.\nNew in your support inbox.", "line": "08", "size": "abstract", "capture": null, "focal_point": "centre", "move": "calm field, logo mark opens, text rises", "sound": "music lifts" },
+      { "text": "", "line": "09", "size": "abstract", "capture": null, "focal_point": "centre", "move": "text holds, logo rests", "sound": "music resolves" }
+    ] }
+ ]
+}

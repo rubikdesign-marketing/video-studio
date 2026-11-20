@@ -18,28 +18,23 @@
 //                   (edit/cutlist.json). earshot also finds picture cuts in the frames by itself.
 // and prints a short report in plain words.
 //
-// earshot runs on this Mac only (CPU), offline once its models are fetched (setup/install.sh). Its models live in
+// earshot runs on this computer only (CPU), offline once its models are fetched (node setup/runtime/install.mjs --with earshot). Its models live in
 // tools/audio/.earshot/. The first call loads them (20-40 s); --quick skips the model passes (measure only).
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { earshotBin } from './earshot.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const EARSHOT_HOME = path.join(STUDIO, 'tools', 'audio', '.earshot');
 const say = (s) => process.stdout.write(`${s}\n`);
 const readJson = (f, d = null) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return d; } };
 
-function earshotBin() {
-  const local = path.join(os.homedir(), '.local', 'bin', 'earshot');
-  if (fs.existsSync(local)) return local;
-  try { return execFileSync('which', ['earshot'], { encoding: 'utf8' }).trim(); } catch { return null; }
-}
 
 function earshot(args) {
   const bin = earshotBin();
-  if (!bin) throw new Error('earshot is not installed. Run: bash setup/install.sh');
+  if (!bin) throw new Error('earshot is not installed. Run: node setup/runtime/install.mjs --with earshot');
   // Caches go inside earshot's own folder: its install is read-only inside Claude's command sandbox.
   const env = { ...process.env, EARSHOT_HOME, EARSHOT_OFFLINE: '1', HF_HUB_OFFLINE: '1', HF_HUB_DISABLE_TELEMETRY: '1', TOKENIZERS_PARALLELISM: 'false', NUMBA_CACHE_DIR: path.join(EARSHOT_HOME, 'numba'), MPLCONFIGDIR: path.join(EARSHOT_HOME, 'matplotlib') };
   return execFileSync(bin, args, { env, encoding: 'utf8', maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'pipe'] });

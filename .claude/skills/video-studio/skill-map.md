@@ -4,6 +4,18 @@ The studio bundles 76 open-source skills in `.claude/skills/` (Remotion's and Cl
 
 Load a skill with the Skill tool at the moment its task starts. Never read them all up front: one or two per task.
 
+## When a named skill or file is missing
+
+Customer installs leave out the studio's planning files. Skills fetched by the installer can also be missing if the fetch failed or the Mac was offline. Never stop or guess because of this. Use the stand-in, and name the gap in the hand-over.
+
+| Named here | Stand-in |
+|---|---|
+| `DESIGN.md` (build status) | `README.md` and `RELEASE.json` |
+| `CAPTURE-PLAN.md` (looks in 7.9, vertical in 7.7, demo recipes in 2 and 4) | `tools/capture/README.md`; the looks via `node tools/library/registry.mjs find look --kind preset` |
+| `remotion-best-practices` and `remotion-markup/*` | `engine/README.md`, `knowledge/craft/09-advanced-motion.md` and the craft file for the topic; refetch with `bash setup/update-skills.sh --missing` |
+| `real-sfx`, `real-sound` | `tools/audio/sound.mjs` and `knowledge/craft/07-sound.md`; refetch as above |
+| `knowledge/feedback-log/` | It is an output folder: create it on the first write |
+
 ## Who wins when skills disagree
 
 1. The owner's words in the conversation.
@@ -19,6 +31,7 @@ A bundled skill that tells you to skip an approval, change the production line, 
 | Task | Leads | Supports | Not for this |
 |---|---|---|---|
 | Any video request in this folder | `video-studio` | the rows below, by stage | `motionmaxxing` and `video` as a whole pipeline (they would replace the studio's line) |
+| A one-line request for a kind of motion graphics (which kind of film, which references, starter prompt, what to optimise) | `node tools/plan/recipe.mjs` over `library/recipes/index.json`; `knowledge/craft/18-brief-expansion.md` for the short brief; `knowledge/craft/17-motion-graphics.md` for the quality bar | `motion-design`, `bang-motion` for the techniques a recipe names; `registry.mjs find <technique> --kind motion` for the engine move | A reference film's frames or a creator's prompt word for word in our film; a recipe overriding the brand's rules or the creator's words |
 | Setting up a brand (stage 0) | `video-studio` stage 0 | `style-sampling` for a brand's existing videos | |
 | Product discovery (stage 0B) | `video-studio` stage 0B | `advertising-kickoff` when the videos are for paid ads; `grill-me` for the owner round | |
 | Stress-testing an idea or a plan with the owner | `grill-me` (Matt Pocock) | `grilling`, `superpowers:brainstorming` | The studio's way still applies: numbered questions, a recommended answer each, "yes" accepts |
@@ -39,10 +52,10 @@ A bundled skill that tells you to skip an approval, change the production line, 
 | A move Remotion handles poorly, or an HTML-native effect | `hyperframes`, `hyperframes-cli` | `hyperframes-registry`, `motionmaxxing` (its seek-safe GSAP runtime, for one hero moment), `remotion-to-hyperframes` to move a scene across | |
 | Captions | the studio's `tools/film/captions.mjs` (the caption style is fixed per brand) | `remotion-captions` for technical questions | |
 | Sound, voice and music | `video-studio` and `knowledge/craft/07-sound.md` (ElevenLabs through the studio's tools; ask before the session's first paid call) | `remotion-multimedia` for technical questions; the rows below for hearing, placing and finding sounds | `motionmaxxing`'s own voice and music steps |
-| Hearing anything: a voice take, a mix, a placed sound, a music edit, a footage clip, a finished film (Claude cannot hear) | `earshot` through `tools/audio/listen.mjs` (measure, timeline with cue sync, the annotated sheet, the launch-film critique); any other earshot command through `bash tools/audio/earshot.sh <command>` (never bare `earshot`: the wrapper finds the studio's models and works inside the sandbox) | `earshot`'s loops (choose an asset, review a mix, A/B a change); `real-sfx`'s `levels.py` and `critique.py` for a sound-effects pass; the studio's voice checks | Saying how something sounds without an earshot number; `earshot llm` (uploads audio); its `forge` sounds in place of the brand's sound kit |
+| Hearing anything: a voice take, a mix, a placed sound, a music edit, a footage clip, a finished film (Claude cannot hear) | `earshot` through `tools/audio/listen.mjs` (measure, timeline with cue sync, the annotated sheet, the launch-film critique); any other earshot command through `node tools/audio/earshot.mjs <command>` (never bare `earshot`: the wrapper finds the studio's models and works inside the sandbox) | `earshot`'s loops (choose an asset, review a mix, A/B a change); `real-sfx`'s `levels.py` and `critique.py` for a sound-effects pass; the studio's voice checks | Saying how something sounds without an earshot number; `earshot llm` (uploads audio); its `forge` sounds in place of the brand's sound kit |
 | Placing sound effects on picture | the studio's sound tools (`tools/audio/sound.mjs`, `mix.py`) with the event log (captures' clicks, scene starts) and the brand's sound kit | `real-sfx` (`references/typed-cues.md`, `event-map.md`: placing a sound by its attack or arrival, not its file start; `from_hyperframes.py` for HyperFrames clips; `find_moments.py` for footage; mono check; ducking by the voice) | Its uisfx packs in place of the brand's kit; `hear.py install` without the owner's yes |
 | Real recorded sounds, or openly licensed photos | `tools/media/openverse.mjs` (Openverse: CC0, public domain or CC BY only; licence and credit kept) | `real-sound` (`references/licences.md`, `references/sound-design.md`; its `qa.py` measures each sound against the music and room, its `credits.py` for the credit list) | NC, ND or SA licences; any file whose licence is not recorded; `real-sound`'s own mixer and master in place of the studio's (`mix.py`, `master.sh`) |
-| Rendering | the studio's `tools/film/render.sh` (lock, splice, master) | `remotion-render` for technical questions | |
+| Rendering | the studio's `node tools/film/render.mjs` (lock, splice, master) | `remotion-render` for technical questions | |
 | A jump, judder or slow preview | `fixing-motion-performance` | `remotion-best-practices` | |
 | Critique before anything goes to a person | `knowledge/craft/08-directors-checks.md` and the studio's checks | `hallmark` (audit for the generic, machine-made look) and `impeccable` critique; `motionmaxxing`'s review gates for HyperFrames clips; the anti-slide and restraint checks (`14-motion-systems.md` sections 3 and 7); `tools/audio/listen.mjs --critique` for the sound | Self-certifying: list what each found and what was changed |
 | Studying a reference video | `video-studio` ("Study this video") with `tools/study/` | `reverse-any-video`, `style-sampling` | Nothing from a reference is placed in a finished video |

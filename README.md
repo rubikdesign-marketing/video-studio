@@ -6,7 +6,7 @@ Shared openly so the team can set it up in one step. See `LICENSE.md` before usi
 
 ## Start here
 
-Follow `ONBOARDING.md`: paste one prompt into the Claude desktop app's Code tab, and Claude downloads the studio, installs everything and runs the health check. Then open the `video-studio` folder in Claude and say **"make a video"**.
+Follow `ONBOARDING.md`: paste one prompt into the Claude desktop app's Code tab, and Claude downloads the studio, installs everything and runs the health check. Then open the `video-studio` folder in Claude and type **/video-menu** (or say **"make a video"**).
 
 ## What is where
 
@@ -32,6 +32,10 @@ Keys (`.env`), product sign-ins (`.capture/`), renders and recordings (`jobs/*/o
 
 - Say "update the studio" in the folder to get the latest version.
 - Changes to the studio itself (rules, tools, engine, skills) go in their own commits, with a line in `DESIGN.md` section 14.
+
+## Selling it: the Damex Video Engine
+
+The white-label version sold by Damex Digital ships as **one zip** for Mac, Windows and Linux, from 0.1.0-rc4 on (19 Nov 2026). Buyers unzip it, open the folder in Claude and say "start the studio", and it is ready in under a minute. How to ship a version, test it and send it: `tools/release/README.md`.
 
 ## Licences
 

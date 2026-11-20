@@ -2,7 +2,7 @@
 lengths are what was asked, every kind renders, ambience loops without a seam, a whoosh is loudest in its middle and
 an impact at its start.
 
-Run: tools/footage/.venv/bin/python -I -m unittest discover -s tools/audio/tests -p 'test_*.py'
+Run: tools/footage/.venv/bin/python (on Windows: tools/footage/.venv/Scripts/python.exe) -I -m unittest discover -s tools/audio/tests -p 'test_*.py'
 """
 import json, os, subprocess, sys, tempfile, unittest
 
@@ -31,6 +31,9 @@ CASES = [
     ("transition", {"style": "whoosh-hit"}), ("transition", {"style": "rise-hit"}), ("transition", {"style": "reverse-hit"}),
     ("transition", {"style": "suck"}), ("transition", {"style": "tape-stop"}), ("transition", {"style": "spin"}),
     ("sting", {"seconds": 2.0}),
+    ("buzz", {"seconds": 0.7}), ("buzz", {"seconds": 1.0, "pulses": 3, "on": 0.17, "gap": 0.08}),
+    ("tap", {"seconds": 0.14}), ("tap", {"seconds": 0.3, "taps": 2}), ("tap", {"seconds": 0.3, "style": "swipe"}),
+    ("ambience", {"seconds": 4, "crossfade": 1, "style": "clean"}),
     ("ambience", {"seconds": 4, "crossfade": 1, "style": "room"}), ("ambience", {"seconds": 4, "crossfade": 1, "style": "aircon"}),
     ("ambience", {"seconds": 4, "crossfade": 1, "style": "city"}), ("ambience", {"seconds": 4, "crossfade": 1, "style": "wind"}),
     ("ambience", {"seconds": 4, "crossfade": 1, "style": "rain"}),
@@ -145,7 +148,7 @@ class Shapes(unittest.TestCase):
         self.assertLess(middle, last)
 
     def test_ambience_loops_without_a_seam(self):
-        for style in ("room", "aircon", "city", "wind", "rain"):
+        for style in ("room", "clean", "aircon", "city", "wind", "rain"):
             with self.subTest(style=style):
                 y, _ = render("ambience", {"seconds": 4, "crossfade": 1, "style": style})
                 for ch in range(y.shape[1]):
@@ -165,6 +168,74 @@ class Shapes(unittest.TestCase):
         self.assertLess(corr, 0.9)                          # the two sides are not the same signal
         s, _ = render("sting", {"seconds": 2.0})
         self.assertEqual(s.shape[1], 2)
+
+
+def hum_excess(y, lo=30, hi=200):
+    """The biggest narrow peak between lo and hi Hz: its level (3 bins, 1 Hz each) above the median of the bins 5 to 25 Hz
+    either side, in dB, and where it is. A fan or a mains hum shows as a peak of 10 dB or more."""
+    from scipy.signal import welch
+    x = mono(y).astype(float)
+    f, pw = welch(x, SR, nperseg=SR, noverlap=SR // 2)
+    db = 10 * np.log10(pw + 1e-20)
+    worst = (-99.0, 0.0)
+    for i in range(lo, hi + 1):
+        near = np.r_[db[i - 25:i - 4], db[i + 5:i + 26]]
+        ex = float(db[i - 1:i + 2].max() - np.median(near))
+        if ex > worst[0]:
+            worst = (ex, float(f[i]))
+    return worst
+
+
+class PhoneAndGlass(unittest.TestCase):
+    def test_new_kinds_are_deterministic_and_seeded(self):
+        for kind, s in (("buzz", {"seconds": 0.7}), ("tap", {"seconds": 0.14}), ("tap", {"seconds": 0.3, "style": "swipe"})):
+            with self.subTest(kind=kind, **s):
+                a, _ = synth.render(kind, dict(s, seed=9))
+                b, _ = synth.render(kind, dict(s, seed=9))
+                c, _ = synth.render(kind, dict(s, seed=10))
+                self.assertTrue(np.array_equal(a, b))
+                self.assertFalse(np.array_equal(a, c))
+
+    def test_buzz_is_pulses_with_a_table_ring(self):
+        y, _ = render("buzz", {"seconds": 0.7})
+        env = np.convolve(mono(y) ** 2, np.ones(SR // 100) / (SR // 100), "same")
+        loud = env > 0.1 * env.max()
+        edges = np.flatnonzero(np.diff(loud.astype(int)) == 1)
+        self.assertEqual(len(edges), 2)                       # two buzzes with a gap between
+        # most of its energy is low (a motor and a table), but it is not a bare sine: the case rattle puts energy above 1 kHz
+        spec = np.abs(np.fft.rfft(mono(y).astype(float))) ** 2
+        f = np.fft.rfftfreq(len(y), 1 / SR)
+        self.assertGreater(spec[f < 500].sum(), 0.5 * spec.sum())
+        self.assertGreater(spec[f > 1000].sum(), 0.002 * spec.sum())
+        self.assertGreater(float(np.mean(np.abs(mono(y)[:SR // 20]))), 0.01)   # it starts at once
+
+    def test_tap_is_short_and_loudest_at_its_start_and_a_swipe_is_in_the_middle(self):
+        y, _ = render("tap", {"seconds": 0.14})
+        self.assertLess(int(np.argmax(np.abs(y))), int(0.02 * SR))
+        s, _ = render("tap", {"seconds": 0.3, "style": "swipe"})
+        self.assertTrue(0.2 < int(np.argmax(np.convolve(mono(s) ** 2, np.ones(480) / 480, "same"))) / len(s) < 0.8)
+
+    def test_clean_room_has_no_hum_under_200_hz(self):
+        """No narrow peak under 200 Hz more than 6 dB above its neighbours, for several seeds; and the check does see a hum
+        (the old room style with its mains hum fails it)."""
+        for seed in (1, 11, 51):
+            with self.subTest(seed=seed):
+                y, _ = synth.render("ambience", {"seconds": 16, "style": "clean", "seed": seed})
+                excess, at = hum_excess(y)
+                self.assertLessEqual(excess, 6.0, f"a peak {excess:.1f} dB over its neighbours at {at:.0f} Hz")
+        old, _ = synth.render("ambience", {"seconds": 16, "style": "room", "seed": 1})
+        self.assertGreater(hum_excess(old)[0], 6.0)
+
+    def test_the_library_room_bed_has_no_hum(self):
+        path = os.path.join(AUDIO, "..", "..", "library", "sounds", "ambience", "room-clean-01.mp3")
+        if not os.path.exists(path):
+            self.skipTest("library file not present")
+        with tempfile.TemporaryDirectory() as tmp:
+            wav = os.path.join(tmp, "r.wav")
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", path, "-ar", str(SR), wav], check=True)
+            y, _ = sf.read(wav)
+        self.assertEqual(round(len(y) / SR), 16)
+        self.assertLessEqual(hum_excess(y)[0], 6.0)
 
 
 class Files(unittest.TestCase):

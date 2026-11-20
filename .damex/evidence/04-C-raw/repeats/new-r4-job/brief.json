@@ -1,0 +1,27 @@
+{
+ "in_their_words": "A 30 second 16:9 promo for the demo brand announcing a new feature: saved replies for the support inbox. Five scenes. Voice-over in the brand voice. Take it through the idea and the script: treat your recommended idea as approved, then write the script and the scene list. Do not generate or play any audio. Stop at the script approval.",
+ "kind": "",
+ "for": "",
+ "viewer_should": "",
+ "deliver": [
+  {
+   "platform": "",
+   "size": "",
+   "master": true
+  }
+ ],
+ "length_cap_seconds": null,
+ "voice": "",
+ "must_show": [],
+ "must_not": [],
+ "materials": [],
+ "references": [],
+ "decisions": [
+  {
+   "what": "30 s cap, voice-over (Justin), 5 scenes, idea 'Typed once' approved by the person; no audio to be generated at this stage",
+   "by": "owner",
+   "date": "2026-11-19",
+   "applies_to": "all"
+  }
+ ]
+}

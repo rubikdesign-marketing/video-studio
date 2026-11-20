@@ -1,0 +1,171 @@
+{
+ "measured_at": "2026-11-19T11:16:46.882Z",
+ "old": {
+  "side": "old",
+  "status": "exit=0 wall=122s",
+  "models": {
+   "claude-sonnet-5-5": {
+    "in": 22,
+    "out": 9711,
+    "cache_read": 1039238,
+    "cache_write": 66681,
+    "usd": 0.4678
+   }
+  },
+  "subtype": "success",
+  "is_error": false,
+  "terminal_reason": "completed",
+  "duration_s": 107.6,
+  "turns": 17,
+  "tokens": {
+   "input": 22,
+   "output": 9711,
+   "cache_read": 1039238,
+   "cache_write": 66681
+  },
+  "api_equivalent_usd": 0.4678,
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "denials": [
+   "Bash: cd /private/tmp/claude-501/damex-verify/old; cat knowledge/rules/starting-rules.md | head -60; ls jobs/_sample jobs/_sample/audio; cat jobs/_sample/audio/script",
+   "Bash: node tools/hooks/hooks.mjs find --type promo --platform web --awareness solution --brand demo",
+   "Bash: node tools/plan/beats.mjs frameworks",
+   "Bash: node tools/hooks/hooks.mjs find --type promo --platform web --awareness solution --brand demo"
+  ],
+  "result": "The idea and script are written, and I stopped at the script approval. No audio was generated or played. Nobody has heard the voice. The script and scene list are my draft, so please read them before approving.\n\n## Idea (treated as approved, as you asked)\n**\"Write it well once.\"** A customer question keeps coming back, and the answer you already wrote is simply there. It is a 30 s promo in 16:9, with a confident launch energy and the Paper style (light page, the inbox is the whole show). The voice is Justin, the only voice the demo brand has.\n\n## Script and scenes\nScene times are estimates at about 2.5 words a second. They come to about 28.5 s against the 30 s cap.\n\n| Scene | Beat | Voice-over | On screen | Est. time |\n|---|---|---|---|---|\n| 1 | Hook | \"You've typed this answer before. Probably today.\" | Same question. Again. | 0 to 4.4 s |\n| 2 | Turn | \"So why type it again?\" | Once is enough. | 4.4 to 7.5 s |\n| 3 | Proof | \"Save a reply once, and it's waiting in your inbox the next time a customer asks.\" / \"Same good answer, every time, without the retyping.\" | Saved in your inbox | 7.5 to 18.5 s |\n| 4 | Peak | \"Meet saved replies. New in your support inbox.\" | Saved replies | 18.5 to 22.5 s |\n| 5 | Close | \"Write it well once. Send it every time.\" | Write it well once. | 22.5 to about 28.5 s |\n\nThe two hooks I did not pick are saved as ad variants:\n- \"Stop typing the same answer twice.\"\n- \"Saved replies are here, in your support inbox.\"\n\n## Things to check\n- **Demo brand is a test brand with no product.** Its README says not to make a real video with it, and there is no real saved-replies screen to capture. The studio rules forbid invented screens, so the storyboard stage is blocked until you give me a real capture or agree a stand-in.\n- **How the feature works is my guess.** I assumed you save a reply once and it is offered in the inbox when the question returns. Please confirm or correct this. The offer wording \"Saved replies, new in your support inbox.\" also needs your OK.\n- **The brand has no written voice guide.** I followed its plain, direct tone and nothing more. Justin is tagged for tutorials and demos, not promos, so check the read when you listen.\n- **Only one proof moment.** The promo playbook asks for three. I kept to one because that is all the feature claim supports in 30 s.\n- **Two studio tools could not run.** The hook scoring and beat-sheet checks need approval this session could not give. The hooks are unscored, the beat sheet was not run, and I read the lines aloud in my head only.\n- **I skipped the other two concepts and the product walk.** You pre-approved the recommended idea, and there is no product to walk.\n\nFiles are in `jobs/2026-11-19-saved-replies/`:\n- `job.json`\n- `soul-sheet.md`\n- `scenes.md`\n- `audio/script.json`",
+  "jobs": [
+   "2026-11-19-saved-replies"
+  ],
+  "quality": {
+   "job_json_valid": true,
+   "brand": "demo",
+   "size": "16:9",
+   "length_cap_seconds": 30,
+   "stage_next": "script_and_voice_approval",
+   "idea_approval": "2026-11-19, by the maker in the request: 'treat your recommended idea as approved'. Concept: 'Write it well once'. Not a signed-off approval of the soul sheet text; the maker can still change it.",
+   "approval_mode": "(field absent)",
+   "script_file": "audio/script.json",
+   "scene_numbers_seen": "1,5",
+   "audio_files": [],
+   "script_words": 134
+  },
+  "files": [
+   "audio/script.json",
+   "job.json",
+   "scenes.md",
+   "soul-sheet.md"
+  ]
+ },
+ "new": {
+  "side": "new",
+  "status": "exit=0 wall=169s",
+  "models": {
+   "claude-sonnet-5-5": {
+    "in": 50,
+    "out": 16937,
+    "cache_read": 2730818,
+    "cache_write": 84955,
+    "usd": 0.7824
+   }
+  },
+  "subtype": "success",
+  "is_error": false,
+  "terminal_reason": "completed",
+  "duration_s": 164.7,
+  "turns": 41,
+  "tokens": {
+   "input": 50,
+   "output": 16937,
+   "cache_read": 2730818,
+   "cache_write": 84955
+  },
+  "api_equivalent_usd": 0.7824,
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "denials": [
+   "Bash: cd /private/tmp/claude-501/damex-verify/new/jobs/2026-11-19-saved-replies; mkdir -p audio; cat > job.json <<'EOF'\n{\n  \"name\": \"2026-11-19-saved-replies\",\n  \"bra",
+   "Bash: cd /private/tmp/claude-501/damex-verify/new/jobs/2026-11-19-saved-replies; sed -i 's/\"Same question.\\\\nSame reply.\"/\"The fifth time.\"/; s/\"text\": \"Write it once"
+  ],
+  "result": "The idea is approved and the script and scene list are written. I stopped there, as you asked. I did not make or play any audio.\n\n## Idea (approved as my recommendation)\n**\"Typed it again.\"** The same support reply is typed out again and again, then all the copies fold into one saved card. The viewer should believe saved replies end the retyping, and know the feature is live.\n- **Format:** 30 s cap, 16:9, confident energy, Justin as the voice.\n- **Look:** editorial type on the off-white page, with deep green and an amber edge on the saved card.\n- **Signature moment (scene 4):** the copies collapse into one card and \"Saved replies\" settles on it.\n- **Other two concepts:** I considered \"Inbox, calmer\" and \"The reply library\" and dropped them. One needs inbox screens we don't have, and the other turns into a feature tour.\n\n## Script (voice-over, about 24 s)\n| Line | Scene | Beat | Energy | Voice-over | On screen |\n|---|---|---|---|---|---|\n| 01 | S01 | Hook | 4 | You've typed this answer before. Probably today. | Typed that. Again. |\n| 02 | S02 | Turn | 2 | Same question. Same reply. | The fifth time. |\n| 03 | S03 | Proof | 2 | Write it once. Save it. | Once. |\n| 04 | S03 | Proof | 2 | Next time a customer asks, it's right there. | Ready. |\n| 05 | S03 | Proof | 2 | Pick it, check it, send it. | Your words. |\n| 06 | S04 | Peak | 5 | Saved replies. | Saved replies |\n| 07 | S04 | Offer | 4 | Your best answer, ready in every conversation. | Every thread. |\n| 08 | S05 | Close | 4 | Live in your support inbox today. | Today. |\n\n- **Hook:** I scored the chosen opening 7/8 on the four hook killers. The scores are my judgement. The two alternates scored 6/8 and are kept as ad variants.\n- **Beat sheet:** the tool still flags Proof and Close as short. The scenes fill that with holds, and the film ends on a logo tail. The \"no rest before the peak\" flag is cleared.\n- **Offer wording:** fixed as \"Saved replies\".\n\n## Scene list (five scenes, type and drawn shapes only)\n1. **S01 Typed that:** a reply types out, then the same words type again, faster.\n2. **S02 The fifth time:** the copies stack and fade, and one word carries across to the next scene.\n3. **S03 Once / Ready / Your words:** one clean reply, a bookmark mark draws on it, then the saved card rises.\n4. **S04 Saved replies:** the copies fold into the card and the title settles, then \"Every thread.\"\n5. **S05 Today:** the logo lands and rests, then a short silent tail.\n\n## Things to know\n- **No real product UI exists.** Demo brand has no product and no discovery file, and the studio's rules ban invented screens. So the film is drawn type and shapes, with no inbox screen. A real inbox capture would need a real product.\n- **Facts to confirm:**\n  - \"Live today\" is an assumption from your brief.\n  - \"Pick it, check it, send it\" assumes you can pick a saved reply and review it before sending. Please confirm or I'll cut it.\n- **Demo brand is a test brand.** Its README says not to make a real video with it, and it has no written voice guide, only the Justin voice. \"Brand voice\" here means warm, trustworthy and clear, which I inferred.\n- **Not checked:** timings are estimated at 2.5 words a second, because no voice exists yet. The beat sheet should be re-run once the real voice is made.\n\nFiles are in `jobs/2026-11-19-saved-replies/`: `soul-sheets.md`, `audio/script.json`, `shots.json` and `job.json`. The idea approval is recorded. The script approval is still open.\n\nIs the script approved? If yes, I'd generate the voice next. That is a paid ElevenLabs call, so I'll wait for your go-ahead.",
+  "jobs": [
+   "2026-11-19-saved-replies"
+  ],
+  "quality": {
+   "job_json_valid": true,
+   "brand": "demo",
+   "size": "16:9",
+   "length_cap_seconds": 30,
+   "stage_next": "script_and_voice",
+   "idea_approval": "2026-11-19 (maker: recommended idea treated as approved)",
+   "approval_mode": "guided",
+   "script_file": "audio/script.json",
+   "scene_numbers_seen": "01,02,03,04,05",
+   "audio_files": [],
+   "script_words": 131,
+   "brief_check": {
+    "exit": 1,
+    "out": "Taken from their words (say it back; they can correct it): size 16:9 (\"16:9\"), kind product-demo (\"demo\").\n\nAsk:\n  - What should a viewer do or believe after one watch?\n    why: It decides the last shot and what every shot must prove.\n  - Who speaks: a voice-over, a person on camera, two people talking, or nobody (music and type)?\n    why: It decides how the film is timed: to the voice, to the music, or to the action.\n    recommended: voice-over\n  - How long at most?\n    why: The cap sets how many beats fit and how long each product shot can hold.\n    recommended: 30 s (from job.json)\n\nShots that cannot yet prove what they promise (10):\n  - S01 shot 1: no point. one sentence: what this shot proves.\n  - S02 shot 1: no point. one sentence: what this shot proves.\n  - S02 shot 1: an action with no proof moment. add proof: { what, at } (the moment of contact or the result), so the storyboard "
+   },
+   "gate_status": {
+    "exit": 0,
+    "out": "mode: guided\nidea               OK       2026-11-19T11:16:22.239Z by owner\nscript_and_voice   MISSING\nmoodboard          MISSING\nstoryboard         MISSING\nfirst_animation    MISSING\nfull_animation     MISSING\n"
+   },
+   "dispatch_usage": {
+    "exit": 0,
+    "out": "claims: 0\n"
+   }
+  },
+  "files": [
+   "audio/script.json",
+   "brief.json",
+   "job.json",
+   "receipts.json",
+   "shots.json",
+   "soul-sheets.md"
+  ]
+ }
+}

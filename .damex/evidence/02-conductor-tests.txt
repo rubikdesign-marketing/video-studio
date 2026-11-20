@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: short route: approve a gate, and a rerun skips it
+ok 1 - short route: approve a gate, and a rerun skips it
+  ---
+  duration_ms: 163.374667
+  type: 'test'
+  ...
+# Subtest: a changed input makes the gate stale; changing it back makes it good again
+ok 2 - a changed input makes the gate stale; changing it back makes it good again
+  ---
+  duration_ms: 128.961125
+  type: 'test'
+  ...
+# Subtest: approve refuses a missing input and prints usage with no arguments
+ok 3 - approve refuses a missing input and prints usage with no arguments
+  ---
+  duration_ms: 47.57875
+  type: 'test'
+  ...
+# Subtest: grouped mode: one brief review satisfies idea, script and moodboard; storyboard is optional
+ok 4 - grouped mode: one brief review satisfies idea, script and moodboard; storyboard is optional
+  ---
+  duration_ms: 169.286334
+  type: 'test'
+  ...
+# Subtest: interrupted resume: partial work is kept, one retry is allowed, the second is stopped
+ok 5 - interrupted resume: partial work is kept, one retry is allowed, the second is stopped
+  ---
+  duration_ms: 226.530333
+  type: 'test'
+  ...
+# Subtest: a done task starts clean; a failed one counts
+ok 6 - a done task starts clean; a failed one counts
+  ---
+  duration_ms: 218.14325
+  type: 'test'
+  ...
+# Subtest: caps: at most 2 active workers
+ok 7 - caps: at most 2 active workers
+  ---
+  duration_ms: 207.798
+  type: 'test'
+  ...
+# Subtest: caps: 3 dispatches per stage, 6 in animation
+ok 8 - caps: 3 dispatches per stage, 6 in animation
+  ---
+  duration_ms: 595.127792
+  type: 'test'
+  ...
+# Subtest: an overlapping write set with an active claim is stopped
+ok 9 - an overlapping write set with an active claim is stopped
+  ---
+  duration_ms: 286.307542
+  type: 'test'
+  ...
+# Subtest: a blocked model is surfaced, never switched
+ok 10 - a blocked model is surfaced, never switched
+  ---
+  duration_ms: 126.530417
+  type: 'test'
+  ...
+# Subtest: paid work is stopped without an approval, allowed with a valid one, stopped again when stale
+ok 11 - paid work is stopped without an approval, allowed with a valid one, stopped again when stale
+  ---
+  duration_ms: 187.572875
+  type: 'test'
+  ...
+# Subtest: usage prints claims per stage and model, and tokens only when supplied
+ok 12 - usage prints claims per stage and model, and tokens only when supplied
+  ---
+  duration_ms: 187.010708
+  type: 'test'
+  ...
+# Subtest: route prints the route and rejects an unknown class
+ok 13 - route prints the route and rejects an unknown class
+  ---
+  duration_ms: 115.31475
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2708.769833

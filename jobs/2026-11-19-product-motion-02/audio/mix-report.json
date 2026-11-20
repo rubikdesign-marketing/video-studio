@@ -1,0 +1,11 @@
+{
+ "seconds": 4.1,
+ "voice_db": -20.0,
+ "lines": 1,
+ "effects": 1,
+ "attempts": 2,
+ "music_share_under_voice": 0.3,
+ "music_share_in_gaps": 0.321,
+ "loudest_effect_share_of_voice": 0.449,
+ "peak": 0.184
+}

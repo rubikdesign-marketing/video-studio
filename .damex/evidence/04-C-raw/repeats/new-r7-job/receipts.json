@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "mode": "guided",
+  "gates": {
+    "idea": {
+      "approved_at": "2026-11-19T11:31:02.117Z",
+      "by": "owner",
+      "mode": "guided",
+      "inputs": [
+        "soul-sheets.md"
+      ],
+      "hash": "237dffa5dc7ce7e285222dd903deb875e9ccf93f090055d59e07b71993c38cb0",
+      "files": 1,
+      "folds": []
+    }
+  }
+}

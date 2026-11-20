@@ -1,0 +1,96 @@
+name: platform-smoke
+
+# Core native smoke test on each target OS. Manual runs and pushes to platform-04 only (the repo is private; runs are billed).
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'JSON list of runners, e.g. ["windows-latest"] to rerun one OS (saves billed minutes)'
+        required: false
+        default: '["windows-latest", "ubuntu-24.04", "macos-latest"]'
+  push:
+    branches: [platform-04]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: smoke (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-14 images are retired ("configuration not supported"); macos-latest is Apple silicon.
+        # windows-latest is Windows Server, not Windows 11: report it as CI, separate from physical devices.
+        os: ${{ fromJSON(inputs.os || '["windows-latest", "ubuntu-24.04", "macos-latest"]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: engine/package-lock.json
+
+      - name: Node and OS version
+        shell: bash
+        run: |
+          node --version && npm --version
+          node -e "const os=require('os'); console.log('os', os.platform(), os.arch(), os.release(), os.version())"
+          case "$RUNNER_OS" in macOS) sw_vers;; Linux) cat /etc/os-release | head -3;; esac
+
+      # CI-only: the Chrome Headless Shell that Remotion downloads needs these system libraries on a bare Ubuntu runner.
+      # (Libraries listed in Remotion's Linux dependencies documentation.) Customers' machines are not touched by this.
+      - name: Chrome Headless Shell libraries (Ubuntu, CI only)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libnss3 libdbus-1-3 libatk1.0-0 libasound2t64 libxrandr2 libxkbcommon-x11-0 libxfixes3 libxcomposite1 libxdamage1 libgbm-dev libcups2 libatk-bridge2.0-0
+
+      # A path with a space and a non-ASCII character, so every launcher and script is tested on a hard path.
+      # (RUNNER_TEMP is read here: the runner context is not allowed in a job-level env block.)
+      - name: Copy the checkout into "Vidéo studio" (space and accent in the path)
+        shell: bash
+        run: |
+          node -e "
+            const fs = require('fs'), path = require('path');
+            const dest = path.join(process.env.RUNNER_TEMP, 'Vidéo studio');
+            fs.rmSync(dest, { recursive: true, force: true });
+            fs.cpSync(process.cwd(), dest, { recursive: true, filter: (s) => !/[\\\\/](\.git|node_modules)([\\\\/]|$)/.test(s) });
+            fs.appendFileSync(process.env.GITHUB_ENV, 'STUDIO_DIR=' + dest + '\n');
+          "
+
+      - name: Smoke test (Windows, via install.ps1)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        working-directory: ${{ env.STUDIO_DIR }}
+        run: |
+          pwsh setup/install.ps1
+          node setup/runtime/smoke.mjs --root .
+
+      - name: Smoke test (macOS and Linux, via install.sh)
+        if: runner.os != 'Windows'
+        shell: bash
+        working-directory: ${{ env.STUDIO_DIR }}
+        run: |
+          bash setup/install.sh
+          node setup/runtime/smoke.mjs --root .
+
+      - name: Probe fs.cpSync on an accented path (diagnostic, never fails the job)
+        if: always()
+        continue-on-error: true
+        run: node .github/scripts/probe-cpsync.mjs
+
+      - name: Collect artifacts
+        if: always()
+        run: node .github/scripts/collect-artifacts.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-${{ matrix.os }}
+          path: ci-artifacts
+          retention-days: 7
+          if-no-files-found: warn

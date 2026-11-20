@@ -5,14 +5,30 @@ description: Make a video (promo, feature demo, tutorial, or an edit of raw foot
 
 # Video Studio
 
-One video at a time, six approvals, each a save point. Works for any brand in `brands/`. Read only what the current stage needs.
+One video at a time, each approval a save point. Works for any brand in `brands/`. Read only what the current stage needs.
 
 ## Start of every session
 
-1. If a job is in progress, read `jobs/<job>/job.json`. It names the brand and the next stage. If there is no job, start at stage 1. If the brand is not set up yet, start at stage 0. If the brand has no approved `brands/<brand>/product/discovery.md` and the video shows its product, run stage 0B first.
+0. With no task in the first message, offer `/video-menu`. With a complete brief, or a job named to resume, go straight on.
+1. If a job is in progress, read `jobs/<job>/job.json`. It names the brand and the next stage. Then run `node tools/conductor/dispatch.mjs resume jobs/<job>`: it marks interrupted helper work as preserved and names the next step, skipping gates already approved for unchanged inputs (`node tools/conductor/gate.mjs status jobs/<job>`). If there is no job, start at stage 1. If the brand is not set up yet, start at stage 0. If the brand has no approved `brands/<brand>/product/discovery.md` and the video shows its product, run stage 0B first.
 2. Read the one stage file for that stage. Do not read the others.
    - **Every new video request starts with the pre-flight checklist** (stage 1, "The pre-flight checklist"): `brief.mjs check` must show brand, product, audience, message angle, look, hook, video type with references, and size, length and voice all known, and the creator must confirm the plan from `brief.mjs plan`, before anything is captured, generated, scripted or proposed. This holds for a quick one-off too.
-3. At the end of the stage, write the outputs, update `job.json`, give the hand-over note, and stop for approval. The next stage starts in a fresh session.
+3. At the end of the stage, write the outputs, update `job.json`, and record the approval with `gate.mjs approve` once it is given. In guided mode, give the hand-over note and stop for approval; the next stage is cheapest in a fresh session. In grouped mode, carry on to the next review point.
+
+## Approvals: guided or grouped
+
+`job.json` holds `approval_mode`.
+- **Guided** (the default): one approval per stage, as in the table below.
+- **Grouped**: for people who want fewer interruptions. A **brief review** settles idea, script and voice, and the look in one sitting. A **final cut review** covers the film. The storyboard is shown at the brief review when it is ready by then, or it is folded into the final cut review when the film is short and has no product capture.
+
+In either mode, stop and ask only about:
+- unresolved decisions that change the film
+- brand requirements
+- asset rights and third-party logos
+- sending anything outside this Mac
+- paid usage
+
+Everything else the studio decides and says back. The full routing and caps for helper work are in `conductor.md` (this folder).
 
 ## Stages
 
@@ -63,10 +79,12 @@ One video at a time, six approvals, each a save point. Works for any brand in `b
 | Checks before an approval | `knowledge/craft/08-directors-checks.md` |
 | Shape and rules per video type | `knowledge/playbooks/<type>.md` |
 | Reference films, study cards, measurements | `library/references/index.json` |
+| Kinds of motion-graphics film: defaults, starter prompts, what to optimise | `library/recipes/index.json` through `node tools/plan/recipe.mjs` |
+| What people rate highly in motion graphics; turning a one-line request into a brief | `knowledge/craft/17-motion-graphics.md`, `18-brief-expansion.md` |
 | Backgrounds and animations ready to use | `library/` and `engine/README.md` |
 | Studio rules and pending lessons | `knowledge/rules/`, `brands/<brand>/lessons/` |
 | Templates | `templates/` |
-| Tools | `tools/` (each prints its usage when run with no arguments) |
+| Tools | `tools/` (each prints its usage when run with no arguments). Run a studio tool as one plain command with the job path written out, for example `node tools/plan/brief.mjs set jobs/<job> voice voice-over`. Don't use `J=...` variables, `&&` chains or pipes: the allow list in `.claude/settings.json` only matches plain commands, so anything else stops for a permission prompt. |
 
 Read one craft file at a time, only when the stage file names it.
 
@@ -78,28 +96,38 @@ The short version:
 
 | Stage or task | Leads |
 |---|---|
+| A one-line motion-graphics request | `node tools/plan/recipe.mjs` (match, show, apply) and `knowledge/craft/18-brief-expansion.md` |
 | Ideas, scripts and on-screen words | the stage guide; `zero-slop` as the last pass on every line a viewer reads or hears; `ugc-ad-scripts` for creator ads |
 | Look of frames (moodboard, storyboard, end cards) | `impeccable`; `hallmark` and `impeccable` critique before a person sees it |
-| Motion | `knowledge/craft/14-motion-systems.md` (shot sizes, choreography, restraint, rhythm, anti-slide); `bang-motion` for its techniques; `motion-design`, `motion-foundations`; `motionmaxxing` curves and studies for feel |
+| Motion | the job's `recipe.md` and `knowledge/craft/17-motion-graphics.md` when there is one; `knowledge/craft/14-motion-systems.md` (shot sizes, choreography, restraint, rhythm, anti-slide); `bang-motion` for its techniques; `motion-design`, `motion-foundations`; `motionmaxxing` curves and studies for feel |
 | Hearing anything (Claude cannot hear) | `earshot` through `tools/audio/listen.mjs`: never say how something sounds without its number |
 | Placing and finding sounds | the studio's sound tools; `real-sfx` for placement by a sound's attack; `tools/media/openverse.mjs` and `real-sound` for real recorded sounds with their licences |
-| Scene code | `remotion-best-practices`; `hyperframes` for what Remotion handles poorly |
+| Scene code | `remotion-best-practices` (stand-in if missing: `skill-map.md`); `hyperframes` for what Remotion handles poorly |
 | Jumps and judder | `fixing-motion-performance` |
 | Paid ads around a video | `advertising-kickoff` (it routes the ad skills) |
 | Changing the studio's own tools | Superpowers (brainstorming, plans, debugging, verification) |
 
 Studio and brand rules always win over a bundled skill. After every video, log the skills used in `job.json` (`skills_used`) and follow "Keeping the skills sharp" in `skill-map.md`.
 
+## Motion-graphics requests
+
+Someone may ask for a kind of film in one line ("a slick launch video", "kinetic type for our podcast", "explain how our API works"). The studio knows the kinds: `library/recipes/index.json` holds one recipe per kind of motion-graphics film, learned from about 290 well-liked films made with Claude and the prompts behind them. Each has the words people use for it, its defaults, a beat structure with timings, a starter prompt, the few questions worth asking, what to optimise, what to avoid, the engine moves it leans on, and reference films to study.
+
+- `node tools/plan/recipe.mjs match "<their words>"` picks the recipe (`brief.mjs new` names it too). `show <id>` prints the card; `apply jobs/<job> <id>` records it in the brief and writes `jobs/<job>/recipe.md`, which every later stage reads.
+- The recipe is the starting point, not the film: the brand's rules, the brief and the creator's words win over it. Concepts at stage 1 still differ from each other; one of them is usually the recipe played straight.
+- The craft behind the recipes is `knowledge/craft/17-motion-graphics.md` (what people rate highly, smoothness, choreography, transitions, pace by kind of film, the generic AI-made look); the method for turning a one-line request into a full brief is `knowledge/craft/18-brief-expansion.md`.
+- Reference films in a recipe are for study only. Nothing from them, and no creator's prompt word for word, goes into a film.
+
 ## Other requests
 
 - **"Set up our brand" or "change our colours, logo, fonts"**: stage 0.
-- **"Study this video"**: copy it into `library/references/<brand>/` with a clear name, run `tools/study/profile.py`, then fill `templates/study-card.md` using `tools/study/sheets.sh`. Add it to `index.json`.
+- **"Study this video"**: copy it into `library/references/<brand>/` with a clear name, run `tools/study/profile.py`, then fill `templates/study-card.md` using `node tools/study/sheets.mjs`. Add it to `index.json`.
 - **"Learn this product update"**: walk the feature in the product, compare with `brands/<brand>/product/`, record what changed with the date and a screenshot.
 - **Review notes on a cut**: they arrive from the review page (`stages/05-animation.md`, "Review notes").
 
 ## Keeping usage low
 
-Every video follows "The token plan, for every video" in `skill-map.md`: one stage per session; helper roles from `.claude/agents/` on the right model (`checker` on the cheapest; `scene-builder`, `capture-runner`, `frame-critic`, `reference-studier`, `researcher` on the middle one); Ponytail on; skills and sub-guides loaded narrowly; scripts measure and you read their summaries and contact sheets; half-size renders until the master; usage logged per stage in `job.json`.
+Every video follows "The token plan, for every video" in `skill-map.md` and the caps in `conductor.md`: in guided mode, one stage per session; helper roles from `.claude/agents/` on the right model (`checker` on the cheapest; `scene-builder`, `capture-runner`, `frame-critic`, `reference-studier`, `researcher` on the middle one); Ponytail on; skills and sub-guides loaded narrowly; scripts measure and you read their summaries and contact sheets; half-size renders until the master; usage logged per stage in `job.json`.
 
 ## Rendering
 
@@ -107,4 +135,8 @@ The render browser cannot start inside the command sandbox. A render command mus
 
 ## Build status
 
-See `DESIGN.md`, section 11, for what is built, tested and still to come.
+See `DESIGN.md`, section 11, for what is built, tested and still to come (studio copy only; a customer install has `README.md` and `RELEASE.json` instead).
+
+## Finding things in the library
+
+Never read the catalogs whole. Use `node tools/library/registry.mjs find <words> [--kind motion|background|preset|recipe|component|sound|hook|reference|workflow]`: at most five short results. Then use `get <id>` for the one you need. `kinds` gives an overview.

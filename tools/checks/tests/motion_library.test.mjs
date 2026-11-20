@@ -2,6 +2,7 @@
 // a preview on disk and a gallery scene under the same name; the moves added by the library plan (18 Nov 2026) also
 // say their sizes, their sound and their credit, and the ones the house rules ban by default say so.
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -43,4 +44,39 @@ test('the moves added by the library plan each have a gallery scene, their sizes
 test('moves the house rules ban by default are marked', () => {
   const marked = new Set(added.filter((m) => m.house_rule).map((m) => m.name));
   for (const name of ['blinds', 'invert-flash', 'glitch-cut', 'film-burn', 'glitch-in']) assert.ok(marked.has(name), `${name} needs a house_rule note`);
+});
+
+// ---- creator-style moves (19 Nov 2026) and the look-* file references
+const ugc = index.moves.filter((m) => m.added_on === '2026-11-19');
+
+test('every capture look names the file that really exports CaptureShot', () => {
+  const looks = index.moves.filter((m) => m.name.startsWith('look-') && m.component === 'CaptureShot');
+  assert.equal(looks.length, 8);
+  for (const m of looks) {
+    assert.ok(fs.existsSync(path.join(studio, m.file)), `${m.name}: ${m.file} is missing`);
+    assert.match(fs.readFileSync(path.join(studio, m.file), 'utf8'), /export const CaptureShot\b/, `${m.name}: ${m.file} does not export CaptureShot`);
+  }
+});
+
+test('the creator-style moves have a gallery scene, a matching preview, editable props, sizes, timing, cost and a 2D fallback', () => {
+  assert.deepEqual(ugc.map((m) => m.name).sort(), ['ugc-comment-reply', 'ugc-screen-rec-tell', 'ugc-sticker-pop']);
+  const demos = fs.readFileSync(path.join(studio, 'engine/src/library/motion/ugc/batch1.tsx'), 'utf8');
+  for (const m of ugc) {
+    assert.ok(demos.includes(`name: '${m.name}'`), `${m.name}: no gallery scene`);
+    assert.equal(m.composition, `move-${m.name}`);
+    assert.deepEqual([...m.sizes].sort(), ['16:9', '1:1', '4:5', '9:16']);
+    assert.ok(Object.keys(m.props).length >= 5, `${m.name}: say its editable props`);
+    assert.ok(m.timing && m.expected_render_cost && /no WebGL/i.test(m.device_fallback), `${m.name}: timing, render cost and 2D fallback`);
+    assert.equal(m.attribution, 'original, written in-house');
+    assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(studio, m.preview))).digest('hex'), m.preview_sha256, `${m.name}: preview checksum`);
+    const code = fs.readFileSync(path.join(studio, m.file), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    assert.ok(!/Math\.random|Date\.now|new Date\(/.test(code), `${m.name}: nothing random or timed by the clock`);
+    assert.ok(!/WebGL|three|@paper-design/i.test(code), `${m.name}: plain 2D only`);
+  }
+});
+
+test('every shader move says plainly what happens without WebGL (a fallback, or "none: needs WebGL")', () => {
+  const shaders = index.moves.filter((m) => m.name.startsWith('shader-'));
+  assert.equal(shaders.length, 8);
+  for (const m of shaders) assert.ok(typeof m.device_fallback === 'string' && /^none: needs WebGL$|static gradient|CSS/i.test(m.device_fallback), `${m.name}: device_fallback must be a real fallback or "none: needs WebGL"`);
 });

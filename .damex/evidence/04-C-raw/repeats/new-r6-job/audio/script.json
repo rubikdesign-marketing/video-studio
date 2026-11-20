@@ -1,0 +1,9 @@
+[
+ { "id": "01", "text": "[confident, warm] You've typed that same answer all day.", "beat": "hook", "energy": 4, "gap_after": 0.7, "highlight": "same answer" },
+ { "id": "02", "text": "Now you only write it once.", "beat": "turn", "energy": 3, "gap_after": 0.7, "highlight": "once" },
+ { "id": "03", "text": "Save the answer you trust.", "beat": "proof", "energy": 2, "gap_after": 0.6, "highlight": "you trust" },
+ { "id": "04", "text": "Use it on the next ticket, and the one after.", "beat": "proof", "energy": 2, "gap_after": 0.8, "highlight": "the next ticket" },
+ { "id": "05", "text": "Same answer. Same care. No retyping.", "beat": "peak", "energy": 5, "gap_after": 1.3, "highlight": "No retyping" },
+ { "id": "06", "text": "Saved replies, new in your support inbox.", "beat": "offer", "energy": 4, "gap_after": 0.8, "highlight": "Saved replies" },
+ { "id": "07", "text": "Write it once, and get on with your day.", "beat": "close", "energy": 4, "highlight": "once" }
+]

@@ -2,6 +2,8 @@
 name: checker
 description: Runs the studio checks on a render or a stage output and reports pass or fail with numbers. Use before any cut or board goes to a person, and after any fix.
 model: haiku
+effort: low
+maxTurns: 15
 ---
 
 # Checker

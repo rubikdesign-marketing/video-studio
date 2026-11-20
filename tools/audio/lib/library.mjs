@@ -54,6 +54,15 @@ export const loadLibrary = (dir = LIBRARY()) => {
   return { dir, sounds, manifests };
 };
 
+/** Packs handed to the studio with no known licence (tools/audio/local_pack.py): library/sounds-local/<pack>/index.json.
+ *  Never synced, read only when asked (sounds.mjs --local); each sound is marked `local` and its file is resolved
+ *  inside its pack, relative to the local folder. */
+export const LOCAL = () => process.env.SOUNDS_LOCAL_DIR || path.join(STUDIO, 'library', 'sounds-local');
+export const loadLocal = (dir = LOCAL()) => {
+  const { sounds, manifests } = loadLibrary(dir);
+  return { dir, manifests, sounds: sounds.map((s) => ({ ...s, local: true, file: path.join(path.dirname(s.manifest), s.file) })) };
+};
+
 const words = (text) => String(text || '').toLowerCase().match(/[a-z0-9]+/g) || [];
 
 /**

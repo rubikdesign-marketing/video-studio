@@ -15,7 +15,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { FFMPEG, TOOL, py, readJson, round, run, writeJson } from './common.mjs';
 
-const DEEP_FILTER = path.join(TOOL, 'bin', 'deep-filter');
+const DEEP_FILTER = path.join(TOOL, 'bin', process.platform === 'win32' ? 'deep-filter.exe' : 'deep-filter');
 const DEMUCS = path.join(os.homedir(), '.local', 'bin', 'demucs');
 export const DIALOGUE_LUFS = -20;
 const GUARD = 0.05; // a repair may lower the voice's score (SIG) or the overall score by at most this much
@@ -112,7 +112,7 @@ function repairTrack(t, ctx) {
     did(name, `left out: every strength lowered the voice's score`, { skipped: true, before: base });
   };
   if (flags.has('music under speech')) {
-    if (!fs.existsSync(DEMUCS)) did('separate music', 'not done: Demucs is not installed (bash setup/install.sh --extras)', { skipped: true });
+    if (!fs.existsSync(DEMUCS)) did('separate music', 'not done: Demucs is not installed (node setup/runtime/install.mjs --with demucs)', { skipped: true });
     else guarded('separate music', 'music under the voice taken out (Demucs); its rights still need checking', [{ label: 'voice only', make: (i, o) => {
       const out = path.join(tmp, `demucs-${t.name}`);
       run(DEMUCS, ['--two-stems=vocals', '-n', 'htdemucs', '-o', out, i], { env: { HF_HUB_DISABLE_TELEMETRY: '1' } });
@@ -212,8 +212,8 @@ export function repairClip(job, clip, { links = [], say = () => {} } = {}) {
 
 /** earshot's words for how the repaired sound differs from the original (louder, darker, cleaner...). Null without earshot. */
 export function hearDifference(before, after) {
-  const sh = path.join(TOOL, '..', 'audio', 'earshot.sh');
-  const r = run('bash', [sh, 'ab', before, after], { allowFail: true });
+  const sh = path.join(TOOL, '..', 'audio', 'earshot.mjs');
+  const r = run(process.execPath, [sh, 'ab', before, after], { allowFail: true });
   if (r.status !== 0) return null;
   const line = String(r.out).split('\n').find((l) => l.startsWith('A = '));
   if (!line) return null;

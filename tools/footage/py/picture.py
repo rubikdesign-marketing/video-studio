@@ -25,8 +25,9 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # run with -I: the helper beside this file
 from report import update  # noqa: E402
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
-FFPROBE = '/opt/homebrew/opt/ffmpeg-full/bin/ffprobe'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 
 SOFT = 0.9            # sharp below this: soft focus (crisp test footage 1.4-1.6, a 3 px blur 0.86)
 NOISY = 3.0           # noise above this: grainy

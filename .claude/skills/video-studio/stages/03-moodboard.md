@@ -14,6 +14,7 @@ The moodboard is where the look is explored and chosen. Its frames are designs. 
 - `brands/<brand>/brand.md` and `brand.json`
 - `library/backgrounds/index.json` and the preview stills beside it
 - The study cards named on the soul sheet
+- `jobs/<job>/recipe.md` when the job has one (its style, energy and avoid list)
 - Skills to load (see "Skills the studio uses" in `SKILL.md`): `impeccable` while choosing type, colour and layout; `style-sampling` when a reference sets the look; `hallmark` and `impeccable` critique before the board goes to a person
 
 ## Build the canvas
@@ -32,7 +33,7 @@ One artboard each, laid out in rows by group:
 4. **Three style frames at full polish.** The opening, the signature moment and the ending, at 16:9.
 5. **Colour script.** One small frame per beat showing only colour and light, in a single row.
 6. **Motion references.** For each planned technique, its name from `library/motion/index.json` or `knowledge/craft/09-advanced-motion.md`, a frame from its study card or library preview, and one line on how it will be used here. Technique, not look. Then the film's **motion signature** in one line (how things enter, how the camera moves, how scenes join, the one special moment) and its **restraint level** from the energy preset (`knowledge/craft/14-motion-systems.md` sections 3 and 8). `bang-motion`'s style brief is a useful checklist for these; the brand's palette, typeface and look stay.
-7. **Sound mood.** Tempo range, instruments, the energy preset, and what the signature moment sounds like, in words. If real recorded sounds will carry part of it (a room, a foley moment, a hero impact), name the searches for `tools/media/openverse.mjs` (CC0, public domain or CC BY only) and let earshot pick between candidates by the description (`bash tools/audio/earshot.sh rank <folder> "<description>"`); a person listens to the shortlist.
+7. **Sound mood.** Tempo range, instruments, the energy preset, and what the signature moment sounds like, in words. If real recorded sounds will carry part of it (a room, a foley moment, a hero impact), name the searches for `tools/media/openverse.mjs` (CC0, public domain or CC BY only) and let earshot pick between candidates by the description (`node tools/audio/earshot.mjs rank <folder> "<description>"`); a person listens to the shortlist.
 
 Offer two directions when the brief is open: lay the second set of style frames out as a second row, and recommend one.
 

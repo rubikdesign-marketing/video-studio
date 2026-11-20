@@ -1,0 +1,10 @@
+[
+ { "id": "01", "text": "[warm, direct] You've typed this answer before. Probably today.", "gap_after": 0.7, "beat": "hook", "energy": 4, "highlight": "typed this answer" },
+ { "id": "02", "text": "[knowing] Same question. Same reply.", "gap_after": 0.7, "beat": "turn", "energy": 2, "highlight": "Same reply" },
+ { "id": "03", "text": "[easy] Write it once. Save it.", "gap_after": 0.7, "beat": "proof", "energy": 2, "highlight": "Save it" },
+ { "id": "04", "text": "Next time a customer asks, it's right there.", "gap_after": 0.7, "beat": "proof", "energy": 2, "highlight": "right there" },
+ { "id": "05", "text": "[calm] Pick it, check it, send it.", "gap_after": 1.0, "beat": "proof", "energy": 2, "highlight": "send it" },
+ { "id": "06", "text": "[lifting] Saved replies.", "gap_after": 0.8, "beat": "peak", "energy": 5, "highlight": "Saved replies" },
+ { "id": "07", "text": "Your best answer, ready in every conversation.", "gap_after": 0.7, "beat": "offer", "energy": 4, "highlight": "best answer" },
+ { "id": "08", "text": "[warm, settled] Live in your support inbox today.", "beat": "close", "energy": 4, "highlight": "today" }
+]

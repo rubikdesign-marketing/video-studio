@@ -1,0 +1,43 @@
+{
+ "name": "2026-11-19-saved-replies",
+ "brand": "demo",
+ "type": "promo",
+ "created": "2026-11-19",
+ "maker": "owner",
+ "size": "16:9",
+ "length_cap_seconds": 30,
+ "energy_preset": "confident",
+ "voice": "Justin",
+ "stage_next": "script_and_voice",
+ "approval_mode": "guided",
+ "approvals": {
+  "idea": "treated as approved by the owner in the brief (concept A, recommended)",
+  "script_and_voice": null,
+  "moodboard": null,
+  "storyboard": null,
+  "first_animation": null,
+  "full_animation": null
+ },
+ "concept": "A: Again",
+ "offer_wording": "Saved replies",
+ "facts": [
+  "Feature name: Saved replies",
+  "Lives in the support inbox",
+  "Slash opens it and a reply can be edited before sending: NOT confirmed"
+ ],
+ "hooks": [
+  { "formula": "before-after-on-screen", "spoken": "You just typed that same reply again.", "on_screen": "Same reply. Again.", "first_frame": "One sentence on the dark page, then the same sentence stacking beneath it.", "score": "7/8 (judgement)", "picked": true },
+  { "formula": "head-to-head", "spoken": "Typed by hand or one slash? Same ten tickets, not close.", "on_screen": "Typed versus saved", "first_frame": "Two columns of the same tickets", "score": "6/8 (judgement)", "picked": false },
+  { "formula": "audience-reason-not", "spoken": "Replies aren't slow because you type slowly.", "on_screen": "Why replies feel slow", "first_frame": "A pile of old tickets, one reply searched for", "score": "6/8 (judgement)", "picked": false }
+ ],
+ "planned_instant_changes": [],
+ "planned_holds": [],
+ "new_library_entry": "repeat-collapse",
+ "usage_by_stage": {},
+ "notes": [
+  "Demo brand has no product and no written voice; no real saved-replies screen exists. See soul-sheets.md storyboard note.",
+  "No audio generated, by the owner's instruction."
+ ],
+ "skills_used": [],
+ "usage": []
+}

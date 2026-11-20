@@ -1,0 +1,1821 @@
+{
+ "about": "Techniques seen in the motion study, mapped to the engine's 246 moves (engine-moves.tsv). seen_in counts the studied records whose technique or transition notes mention the technique (keyword match, one count per record; the repost pm:roundtablespace-d3a1be is left out). Records judged from tags or a poster have thin notes, so counts are floors, and a keyword can occasionally match a record where the technique is minor. examples are the best-liked matching records (many prompt-motion records have no likes recorded). coverage: full means a move does this today; partial means parts exist or it exists only for screen captures; none means no move.",
+ "records_counted": 291,
+ "techniques": [
+  {
+   "technique": "Logo end: mark gains its tile, makes room, wordmark types on",
+   "seen_in": 76,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "ad / social promo cut",
+    "personal intro / résumé / portfolio reel",
+    "data story / charts"
+   ],
+   "engine_moves": [
+    "make-room",
+    "type-on",
+    "logo-mask-wipe",
+    "exposure-bloom"
+   ],
+   "coverage": "partial",
+   "note": "The parts exist but not as one end move. tdinh-me-815acb (most-liked shapes record): a 0.1 s bloom with a ring hides the mark gaining its app tile (about 0.35 s), then the icon shrinks left in about 0.15 s and the wordmark types at about 8 characters a second. End holds of 1-1.5 s work; 2-3 s static cards lose attention.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:shneural-2abdfa",
+    "revid:6",
+    "revid:12"
+   ]
+  },
+  {
+   "technique": "Typed text at a human rhythm, with a caret",
+   "seen_in": 66,
+   "categories": [
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "mobile app promo",
+    "showreel / capability reel",
+    "illustrated or character story"
+   ],
+   "engine_moves": [
+    "human-type",
+    "type-on",
+    "retype",
+    "stream-answer"
+   ],
+   "coverage": "full",
+   "note": "Covered. The study warns against using it more than once or twice a film (francoxavier33 typed five headlines) and against slow typed openers (revid:62 spent 4.5 s on a terminal before anything happened).",
+   "examples": [
+    "revid:6",
+    "revid:9",
+    "pm:ror-fly-9950f1",
+    "revid:13"
+   ]
+  },
+  {
+   "technique": "Number count-up and rolling digits",
+   "seen_in": 64,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "data story / charts",
+    "personal intro / résumé / portfolio reel",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [
+    "number-roll",
+    "count-with-bar",
+    "opener-number-slam"
+   ],
+   "coverage": "full",
+   "note": "The rolling count itself is covered. The milestone version (ghosted leading zeros, a line drawn in lockstep, a burst on landing) and counts tied to items are not; see the gaps. The study's rule: a count must land on a true figure and never be caught mid-count.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "revid:2",
+    "revid:6",
+    "pm:ror-fly-9950f1"
+   ]
+  },
+  {
+   "technique": "Particles assembling into, or dissolving from, a logo, word, number or data",
+   "seen_in": 59,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "lyric or music-synced video",
+    "ad / social promo cut",
+    "mobile app promo"
+   ],
+   "engine_moves": [],
+   "coverage": "none",
+   "note": "The engine has no particle family. Particles carry some of the strongest films: data dots re-forming from grid to map to number to donut (jesscaroline7-1ff7cb, 39 s with no cut), a particle object that is also the logo (robvjourney-ce3e1a), title to dust (nolkeeg-bf062e), illustration to dots and back (revid:2, 9.9k likes). Also the cheapest look when used as decoration (particle sphere in the showreel kit).",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "revid:2",
+    "pm:shneural-2abdfa",
+    "pm:ajith-io-b5626e"
+   ]
+  },
+  {
+   "technique": "Generative pattern fields (Truchet, halftone, voxel waves, op-art)",
+   "seen_in": 40,
+   "categories": [
+    "showreel / capability reel",
+    "kinetic typography reel",
+    "lyric or music-synced video",
+    "process or system diagram explainer",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "shader-simplex-noise",
+    "shader-mesh-gradient",
+    "tile-reveal"
+   ],
+   "coverage": "partial",
+   "note": "The shader family covers soft gradients only. These fields are the core of the convergent showreel kit the study warns about, and dot grids are outside every design family in craft file 13. Only the isometric block wave (fionntobin-97b7af) and a halftone texture (polydao-7a572b, rneayan-474bcf) have a place, behind a scoped look.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "revid:2",
+    "pm:shneural-2abdfa",
+    "pm:ajith-io-b5626e"
+   ]
+  },
+  {
+   "technique": "Line chart drawing on",
+   "seen_in": 37,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "ad / social promo cut",
+    "UI morph (one element through many states)",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [
+    "line-draw"
+   ],
+   "coverage": "full",
+   "note": "Covered. A rider on the line (revid:2's character running along the curve) and a glowing head (adamdesgns-478d6d) are small additions.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "revid:2",
+    "revid:6",
+    "revid:13"
+   ]
+  },
+  {
+   "technique": "Hard cuts locked to a beat grid",
+   "seen_in": 37,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "lyric or music-synced video",
+    "timeline / history narrative",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "momentum-cut",
+    "join-snap-cut",
+    "time-pin"
+   ],
+   "coverage": "partial",
+   "note": "tools/audio/beats.py finds the grid and checks cuts against it, so the timing side exists. What is missing is a move that plans scene lengths in bars and escalates (2 beats, 1 beat, half beat) as the best reels do (stephanlivera-df17a2, zheke-38deff, ajith-io-b5626e). Even 1.0 s or 2.0 s cuts read as a slideshow (hanifproduktif-54bdee, raphaelaubryy-4b137e).",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:twoclipping-5cba86",
+    "revid:2",
+    "pm:ajith-io-b5626e"
+   ]
+  },
+  {
+   "technique": "Running devices that persist across cuts (clock, meter, chapter progress)",
+   "seen_in": 36,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "mobile app promo",
+    "data story / charts",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [],
+   "coverage": "none",
+   "note": "No move keeps a running device on screen across scenes. The meaningful kind carries a film (revid:2 date stamp and story percentage, 9.9k likes; ror-fly-9950f1 six-step tracker; nolkeeg-bf062e chapter bar; brainextends-e19ac3 player bar). The decorative kind (corner timecode, BPM, scene labels naming techniques) is the most-cited AI tell in the study; the move must refuse decoration.",
+   "examples": [
+    "revid:2",
+    "pm:ajith-io-b5626e",
+    "revid:6",
+    "pm:himanshutwtxs-5f4b43"
+   ]
+  },
+  {
+   "technique": "Zoom or fly through a detail, tunnel or starfield into a new world",
+   "seen_in": 33,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "mobile app promo",
+    "lyric or music-synced video",
+    "illustrated or character story"
+   ],
+   "engine_moves": [
+    "zoom-through-swap",
+    "zoom-blur",
+    "push-through",
+    "join-zoom-through"
+   ],
+   "coverage": "partial",
+   "note": "zoom-through-swap swaps groups; push-through enters a flat element. A dive into a detail of the picture (monokern-ade5b6 pupil: about 0.45 s, 2-frame flash, 0.15 s radial settle), a multi-scale powers-of-ten journey (dale-vaz-cc612a) and a warp starfield (nolkeeg-bf062e, jesscaroline7-1ff7cb) are missing. Tunnels and warps are also part of the showreel kit the study calls cheap.",
+   "examples": [
+    "revid:2",
+    "pm:twoclipping-221cab",
+    "revid:9",
+    "revid:17"
+   ]
+  },
+  {
+   "technique": "Chrome, glossy 3D objects and metaball blobs",
+   "seen_in": 33,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "ad / social promo cut",
+    "kinetic typography reel",
+    "mobile app promo"
+   ],
+   "engine_moves": [],
+   "coverage": "none",
+   "note": "No 3D object family. Craft file 13 keeps mesh blobs out; the study files chrome spheres and metaballs under the 'AI-made' kit, except where the blob is the brand object itself (leadnotifi-e83f94).",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "revid:22",
+    "revid:24",
+    "pm:jacksonfall-54b2ac"
+   ]
+  },
+  {
+   "technique": "Mascot and character animation",
+   "seen_in": 32,
+   "categories": [
+    "illustrated or character story",
+    "product launch film",
+    "ad / social promo cut",
+    "mobile app promo",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [
+    "ugc-sticker-pop",
+    "word-pop"
+   ],
+   "coverage": "none",
+   "note": "No character family: blink, breathing, expression swap, a hop along an arc, a simple figure on the beat. Seen as hosts in product films (revid:15, revid:29, revid:57, thilina-a-891c09, kangaroohere-b10f8d) and as leads in illustrated stories.",
+   "examples": [
+    "revid:2",
+    "revid:9",
+    "revid:15",
+    "revid:29"
+   ]
+  },
+  {
+   "technique": "Ring, donut and dial gauges",
+   "seen_in": 30,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "ad / social promo cut",
+    "illustrated or character story",
+    "data story / charts"
+   ],
+   "engine_moves": [
+    "ring-sweep",
+    "count-with-bar"
+   ],
+   "coverage": "full",
+   "note": "Covered by ring-sweep. A liquid-fill gauge (leadnotifi-e83f94) is the one variant missing.",
+   "examples": [
+    "pm:himanshutwtxs-5f4b43",
+    "revid:16",
+    "revid:24",
+    "pm:steventey-0d20e4"
+   ]
+  },
+  {
+   "technique": "Flash and exposure bloom joins",
+   "seen_in": 30,
+   "categories": [
+    "showreel / capability reel",
+    "illustrated or character story",
+    "product launch film",
+    "particles / generative / physics",
+    "personal intro / résumé / portfolio reel"
+   ],
+   "engine_moves": [
+    "exposure-bloom",
+    "invert-flash",
+    "dip-to-colour",
+    "light-leak"
+   ],
+   "coverage": "partial",
+   "note": "exposure-bloom covers the bloom to white (nolkeeg-bf062e, samaote-5e2fc2). A one-frame full-colour flash to sell a hard snap (himanshutwtxs-5f4b43) and a 2-frame white flash hiding a zoom (monokern-ade5b6) are small options to add, not new moves.",
+   "examples": [
+    "pm:himanshutwtxs-5f4b43",
+    "pm:notdwd-c2037d",
+    "revid:22",
+    "revid:25"
+   ]
+  },
+  {
+   "technique": "Hand-drawn lines, marker notes and icons drawn on",
+   "seen_in": 30,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "lyric or music-synced video",
+    "mobile app promo",
+    "concept explainer"
+   ],
+   "engine_moves": [
+    "drawn-mark",
+    "line-draw",
+    "product-arrow"
+   ],
+   "coverage": "partial",
+   "note": "drawn-mark rings and underlines words and line-draw traces chart paths. Missing: a handwritten note with an arrow (himanshutwtxs-5f4b43), an icon traced in offset outlines (revid:17), an illustration drawing in step with narration (ajith-io-c52e09, 640 likes).",
+   "examples": [
+    "revid:2",
+    "revid:6",
+    "pm:himanshutwtxs-5f4b43",
+    "revid:17"
+   ]
+  },
+  {
+   "technique": "Wall, fan or curved carousel of cards in depth",
+   "seen_in": 29,
+   "categories": [
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "mobile app promo",
+    "showreel / capability reel",
+    "experiment / meta"
+   ],
+   "engine_moves": [
+    "stage-wall",
+    "parallax-camera",
+    "stage-stacked",
+    "stage-grid"
+   ],
+   "coverage": "partial",
+   "note": "stage-wall is a flat, slightly turned wall of capture frames. Curved 3D walls entered with a radial snap (revid:64), carousels with floor reflections (6dd14e), helixes and fans (ajith-io-ea7f2d, miskinho-443898) are missing.",
+   "examples": [
+    "revid:4",
+    "revid:12",
+    "revid:15",
+    "revid:17"
+   ]
+  },
+  {
+   "technique": "Blur dissolves and blur-through joins",
+   "seen_in": 28,
+   "categories": [
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "showreel / capability reel",
+    "lyric or music-synced video",
+    "personal intro / résumé / portfolio reel"
+   ],
+   "engine_moves": [
+    "blur-through",
+    "join-blur-dissolve",
+    "luma-dissolve",
+    "join-cross-dissolve"
+   ],
+   "coverage": "full",
+   "note": "Covered. The study rates fades and blurs through black as weak joins because they leave empty frames (viktoroddy-98c1d8, gautam-mer1-2ae354); the stronger joins keep an object on screen.",
+   "examples": [
+    "revid:2",
+    "pm:notdwd-c2037d",
+    "revid:14",
+    "revid:18"
+   ]
+  },
+  {
+   "technique": "Cursor that causes every change",
+   "seen_in": 28,
+   "categories": [
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "UI morph (one element through many states)",
+    "ad / social promo cut",
+    "personal intro / résumé / portfolio reel"
+   ],
+   "engine_moves": [
+    "cursor-lead",
+    "cursor-classic",
+    "click-ring",
+    "hover-magnet",
+    "click-squish"
+   ],
+   "coverage": "full",
+   "note": "Covered by the capture pointers and cursor-lead. The best UI films make the cursor the cause of each state (5cba86, revid:58); notdwd-c2037d turns the cursor to face its direction and grows it on hover, which cursor-classic nearly does.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "pm:notdwd-c2037d",
+    "revid:16",
+    "revid:202"
+   ]
+  },
+  {
+   "technique": "Pixel art, ASCII and dot-matrix type",
+   "seen_in": 28,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "illustrated or character story",
+    "ad / social promo cut",
+    "mobile app promo"
+   ],
+   "engine_moves": [
+    "pixel-decode"
+   ],
+   "coverage": "partial",
+   "note": "pixel-decode is a transition, not a look. Pixel sprites and ASCII renders appear in pluginplay-3d4006, revid:29, revid:62, rames-jusso-589f80. Out of scope for most brands; would need a scoped look first.",
+   "examples": [
+    "revid:9",
+    "revid:17",
+    "revid:24",
+    "revid:26"
+   ]
+  },
+  {
+   "technique": "Oversized word slam",
+   "seen_in": 27,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "concept explainer",
+    "ad / social promo cut",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [
+    "slam",
+    "opener-fill-frame",
+    "giant-crop",
+    "opener-number-slam"
+   ],
+   "coverage": "full",
+   "note": "Covered. Most common in hype reels and ads; in the top reels a slam is one beat, not the whole grammar.",
+   "examples": [
+    "pm:shneural-2abdfa",
+    "pm:ajith-io-b5626e",
+    "revid:6",
+    "revid:7"
+   ]
+  },
+  {
+   "technique": "Camera push to the element that matters",
+   "seen_in": 27,
+   "categories": [
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "mobile app promo",
+    "showreel / capability reel",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [
+    "camera",
+    "camera-push-in",
+    "camera-auto-zoom",
+    "cursor-lead"
+   ],
+   "coverage": "full",
+   "note": "Covered. Measured: revid:57 about 0.5 s ease-out push to a Submit button, pressed state about 0.4 s later. Small UI in a wide frame without a push is a named failure (demonugc-4c5753).",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "revid:2",
+    "pm:twoclipping-221cab",
+    "revid:16"
+   ]
+  },
+  {
+   "technique": "Photo collage, image clouds and beat-cut image swaps",
+   "seen_in": 27,
+   "categories": [
+    "product launch film",
+    "ad / social promo cut",
+    "illustrated or character story",
+    "photo or collage edit",
+    "mobile app promo"
+   ],
+   "engine_moves": [
+    "stagger",
+    "stage-grid",
+    "momentum-cut"
+   ],
+   "coverage": "partial",
+   "note": "No move for an image cloud that bursts and gathers (rossaxbt-3085b7) or image swaps on every phrase above a speaker (revid:38). Real photos and real content are what the strong product films use instead of invented UI.",
+   "examples": [
+    "pm:twoclipping-221cab",
+    "revid:9",
+    "pm:lexnlin-038035",
+    "revid:17"
+   ]
+  },
+  {
+   "technique": "Echo stacks, repeated-word textures and ticker bands",
+   "seen_in": 26,
+   "categories": [
+    "showreel / capability reel",
+    "lyric or music-synced video",
+    "product launch film",
+    "illustrated or character story",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "ticker",
+    "giant-crop"
+   ],
+   "coverage": "partial",
+   "note": "ticker covers scrolling bands. Outlined echo copies of a word, and a word repeated to tile the frame, are missing. Mostly part of the showreel kit (revid:24, sudo-kiran-49176d, heyiammallik-e72d17).",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "revid:2",
+    "pm:shneural-2abdfa",
+    "pm:ajith-io-b5626e"
+   ]
+  },
+  {
+   "technique": "Agent chat choreography",
+   "seen_in": 26,
+   "categories": [
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "mobile app promo",
+    "personal intro / résumé / portfolio reel",
+    "concept explainer"
+   ],
+   "engine_moves": [
+    "stream-answer",
+    "type-on",
+    "swap-word"
+   ],
+   "coverage": "partial",
+   "note": "stream-answer covers the answer text only. The rest of an agent beat is missing: avatar, typing dots, bubble, a status chip whose label changes, tool-call ticks and an approval card (revid:57, charlesmendez-73b6e4, majorbaguette-fb11d7, kmasiff-cc72cb). AI products are the largest single subject in the product groups.",
+   "examples": [
+    "revid:12",
+    "revid:21",
+    "pm:ajith-io-c52e09",
+    "revid:26"
+   ]
+  },
+  {
+   "technique": "Node graphs, pipelines and flow diagrams with travelling pulses",
+   "seen_in": 25,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "personal intro / résumé / portfolio reel",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "product-connect",
+    "line-draw",
+    "stagger"
+   ],
+   "coverage": "partial",
+   "note": "product-connect (a bright stretch along a line) is capture-only. Missing for authored diagrams: nodes that draw in, edges with pulses, a branch chosen by a moving path (amol909s-27533e), a bracket lighting towards a final (madhav-xo-f97f20). Glowing AI node networks are named as cheap; plain diagrams with a point are not.",
+   "examples": [
+    "pm:ajith-io-b5626e",
+    "revid:24",
+    "revid:25",
+    "pm:steventey-0d20e4"
+   ]
+  },
+  {
+   "technique": "Accent word in a second type voice (serif italic)",
+   "seen_in": 23,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "personal intro / résumé / portfolio reel",
+    "ad / social promo cut",
+    "concept explainer"
+   ],
+   "engine_moves": [
+    "voice-swap",
+    "gradient-ink",
+    "payoff-punch"
+   ],
+   "coverage": "full",
+   "note": "A type pairing rather than a move; the brand's accent voice covers it. Heavy sans plus one italic serif word is the most repeated pairing in the best reels, and also a sign of the stock showreel prompt when used everywhere.",
+   "examples": [
+    "revid:18",
+    "revid:22",
+    "revid:24",
+    "revid:28"
+   ]
+  },
+  {
+   "technique": "Bars growing, bar races and histograms",
+   "seen_in": 23,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "mobile app promo",
+    "personal intro / résumé / portfolio reel",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "bar-grow",
+    "count-with-bar",
+    "stagger"
+   ],
+   "coverage": "partial",
+   "note": "bar-grow covers one bar. Races that re-rank (jesscaroline7-1ff7cb podium, heyiammallik-e72d17 two-tool race) and dots falling into a histogram that turns into a curve (marouanegazouzi-6071d5) are missing.",
+   "examples": [
+    "revid:14",
+    "revid:18",
+    "revid:22",
+    "revid:28"
+   ]
+  },
+  {
+   "technique": "Push into an element until its colour is the next page",
+   "seen_in": 23,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "mobile app promo",
+    "lyric or music-synced video",
+    "product feature demo (UI walkthrough)"
+   ],
+   "engine_moves": [
+    "push-through",
+    "container-transform",
+    "iris-wipe",
+    "zoom-through-swap"
+   ],
+   "coverage": "full",
+   "note": "push-through matches the measured versions (revid:16 about 0.25 s into a green check, then about 0.3 s of plain colour; bizibeast-10f264 about 0.4 s into a red tile). A word's full stop that whips aside and grows into the next field (stephanlivera-df17a2) is a variant worth adding as an option.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:twoclipping-5cba86",
+    "revid:2",
+    "pm:shneural-2abdfa"
+   ]
+  },
+  {
+   "technique": "Headline built word by word",
+   "seen_in": 22,
+   "categories": [
+    "product launch film",
+    "mobile app promo",
+    "photo or collage edit",
+    "lyric or music-synced video",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "fade-up",
+    "blur-in",
+    "mask-rise",
+    "recentre-build",
+    "stagger",
+    "make-room"
+   ],
+   "coverage": "full",
+   "note": "The commonest type move in the corpus and well covered. The best films land the last word or full stop in the accent (revid:16). Keep the 40-50 ms word gap the engine already uses.",
+   "examples": [
+    "revid:6",
+    "revid:15",
+    "revid:16",
+    "pm:twoclipping-6dd14e"
+   ]
+  },
+  {
+   "technique": "Live UI controls on springs",
+   "seen_in": 22,
+   "categories": [
+    "showreel / capability reel",
+    "UI morph (one element through many states)",
+    "mobile app promo",
+    "product launch film",
+    "product feature demo (UI walkthrough)"
+   ],
+   "engine_moves": [],
+   "coverage": "none",
+   "note": "Nothing authors a toggle flip, a slider that rubber-bands past its maximum, or a tab indicator whose leading edge runs ahead of the trailing edge. The capture moves act on recordings. Seen in 5cba86 (12.6k), demonugc-4c5753, revid:15 (toggle starts the theme flood), revid:31, kmasiff-cc72cb.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "pm:twoclipping-221cab",
+    "revid:10",
+    "revid:14"
+   ]
+  },
+  {
+   "technique": "Icons orbiting a logo or core",
+   "seen_in": 22,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "personal intro / résumé / portfolio reel",
+    "ad / social promo cut",
+    "mobile app promo"
+   ],
+   "engine_moves": [
+    "stagger",
+    "parallax-camera"
+   ],
+   "coverage": "none",
+   "note": "No orbit move. Seen with logos and app icons (revid:21, revid:57, notdwd-c2037d squares orbiting into a cross, rammanq-f5a90f holdings round a headline). Often decoration; fine when the orbit then lands into an order.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:ajith-io-b5626e",
+    "pm:notdwd-c2037d",
+    "revid:18"
+   ]
+  },
+  {
+   "technique": "Word swap on a held line",
+   "seen_in": 21,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "ad / social promo cut",
+    "mobile app promo",
+    "3D / chrome / WebGL piece"
+   ],
+   "engine_moves": [
+    "swap-word",
+    "rotating-word",
+    "word-morph",
+    "voice-swap"
+   ],
+   "coverage": "full",
+   "note": "Covered inside a line. Not covered at scene scale, where a fixed stem holds while the payload, its treatment and the page colour change on every beat (zheke-38deff).",
+   "examples": [
+    "pm:lexnlin-038035",
+    "revid:14",
+    "pm:twoclipping-6dd14e",
+    "revid:26"
+   ]
+  },
+  {
+   "technique": "Seamless loop and bookend endings",
+   "seen_in": 21,
+   "categories": [
+    "showreel / capability reel",
+    "lyric or music-synced video",
+    "illustrated or character story",
+    "kinetic typography reel",
+    "UI morph (one element through many states)"
+   ],
+   "engine_moves": [
+    "time-loop"
+   ],
+   "coverage": "partial",
+   "note": "time-loop is capture-only. Authored loops where the last frame equals the first (5cba86, 221cab) and bookends where the opening object returns to close the idea (revid:2, hbcoop-de365c, monokern-ade5b6, loicrambo-ad6830) are missing as a pattern.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "revid:2",
+    "pm:twoclipping-221cab",
+    "revid:25"
+   ]
+  },
+  {
+   "technique": "Glitch, RGB split and chromatic fringes",
+   "seen_in": 20,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "photo or collage edit",
+    "experiment / meta",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "glitch-in",
+    "glitch-cut",
+    "opener-glitch-cut"
+   ],
+   "coverage": "full",
+   "note": "The engine has the moves, but craft file 13 keeps glitch and RGB split out of every design family. The study finds them mostly in the convergent showreel kit; a one-frame RGB flash on an impact (revid:22, revid:28) is the only use worth keeping, and only for hype.",
+   "examples": [
+    "pm:shneural-2abdfa",
+    "revid:6",
+    "revid:10",
+    "revid:22"
+   ]
+  },
+  {
+   "technique": "Shape morph between primitives",
+   "seen_in": 20,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "UI morph (one element through many states)",
+    "ad / social promo cut",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "word-morph",
+    "container-transform"
+   ],
+   "coverage": "none",
+   "note": "Craft file 09 describes shape morph (350-500 ms, matched points) but there is no move. Seen in stephanlivera-df17a2 (17.1k), revid:14, 3xtihor-0f6911, hbcoop-de365c (dot to line to circle to sphere), revid:9 mascot shapes.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:ajith-io-b5626e",
+    "pm:twoclipping-221cab",
+    "revid:9"
+   ]
+  },
+  {
+   "technique": "Word-timed captions, lyrics and reading subtitles",
+   "seen_in": 19,
+   "categories": [
+    "illustrated or character story",
+    "concept explainer",
+    "lyric or music-synced video",
+    "product feature demo (UI walkthrough)",
+    "photo or collage edit"
+   ],
+   "engine_moves": [
+    "caption-box",
+    "caption-pop",
+    "stream-answer"
+   ],
+   "coverage": "partial",
+   "note": "caption-box and caption-pop are short-form, one phrase at a time. Missing: the editorial reading subtitle (whole sentence on screen, words lighting as the voice reaches them: revid:7, 2.1k likes) and lyric lines that each take their own layout (samaote-5e2fc2, revid:25, revid:2 at 9.9k likes).",
+   "examples": [
+    "revid:2",
+    "revid:7",
+    "revid:12",
+    "pm:ajith-io-c52e09"
+   ]
+  },
+  {
+   "technique": "Iris and circle wipes",
+   "seen_in": 19,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "mobile app promo",
+    "concept explainer",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [
+    "iris-wipe",
+    "clock-wipe",
+    "join-circle-reveal"
+   ],
+   "coverage": "full",
+   "note": "Covered. The best versions open from a meaningful point (the carried dot in revid:22, about 4 frames at 60 fps). An aperture with blades (221cab) is the one variant missing.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:ajith-io-b5626e",
+    "pm:twoclipping-221cab",
+    "revid:15"
+   ]
+  },
+  {
+   "technique": "Map with a route drawing and pins dropping; globes",
+   "seen_in": 18,
+   "categories": [
+    "showreel / capability reel",
+    "mobile app promo",
+    "personal intro / résumé / portfolio reel",
+    "product launch film",
+    "product feature demo (UI walkthrough)"
+   ],
+   "engine_moves": [
+    "line-draw",
+    "stagger"
+   ],
+   "coverage": "none",
+   "note": "No map move. danilowm-d3720d draws a route and drops pins; revid:43 fills a dotted globe with pins and a counter; jesscaroline7-1ff7cb scatters data dots onto a map. The engine has a remotion-maps skill to build from.",
+   "examples": [
+    "pm:twoclipping-221cab",
+    "revid:9",
+    "pm:ultimaxbt-2ddf1e",
+    "pm:jacksonfall-54b2ac"
+   ]
+  },
+  {
+   "technique": "Confetti and celebration bursts",
+   "seen_in": 18,
+   "categories": [
+    "product launch film",
+    "mobile app promo",
+    "lyric or music-synced video",
+    "showreel / capability reel",
+    "process or system diagram explainer"
+   ],
+   "engine_moves": [
+    "product-success",
+    "ugc-sticker-pop",
+    "click-burst"
+   ],
+   "coverage": "partial",
+   "note": "product-success and click-burst exist. The study lists confetti on success as a cheap look in two of six top product films (product-ui-2); craft file 09 allows one burst with a cause.",
+   "examples": [
+    "pm:ror-fly-9950f1",
+    "revid:15",
+    "revid:25",
+    "revid:31"
+   ]
+  },
+  {
+   "technique": "Highlighter or marker behind key words",
+   "seen_in": 17,
+   "categories": [
+    "product launch film",
+    "mobile app promo",
+    "ad / social promo cut",
+    "product feature demo (UI walkthrough)",
+    "data story / charts"
+   ],
+   "engine_moves": [
+    "highlighter",
+    "mark-word",
+    "colour-front"
+   ],
+   "coverage": "full",
+   "note": "Covered. Works best as the one accent per headline (revid:15, revid:29, francoxavier33-d2dfd2).",
+   "examples": [
+    "revid:6",
+    "revid:15",
+    "pm:twoclipping-6dd14e",
+    "revid:27"
+   ]
+  },
+  {
+   "technique": "One object carried through every scene",
+   "seen_in": 17,
+   "categories": [
+    "showreel / capability reel",
+    "ad / social promo cut",
+    "product launch film",
+    "UI morph (one element through many states)",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "shared-element",
+    "match-cut",
+    "join-shared-element"
+   ],
+   "coverage": "partial",
+   "note": "shared-element moves one element across one join; join-shared-element is capture-only. No move keeps one object alive across a whole film and lands it as part of the final type. The study names this the strongest single pattern: revid:22, revid:14, revid:19, hbcoop-de365c, ajith-io-b5626e, miskinho-443898.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:ajith-io-b5626e",
+    "revid:9",
+    "pm:himanshutwtxs-5f4b43"
+   ]
+  },
+  {
+   "technique": "Depth drift and 3D camera flights past floating panels",
+   "seen_in": 17,
+   "categories": [
+    "product launch film",
+    "process or system diagram explainer",
+    "3D / chrome / WebGL piece",
+    "mobile app promo",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "parallax-camera",
+    "camera",
+    "camera-float",
+    "camera-orbit"
+   ],
+   "coverage": "partial",
+   "note": "parallax-camera slides three flat planes. Longer flights past many panels (heyiammallik-e72d17, danilowm-d3720d, revid:55 orbit round a 3D house with pins) are beyond it; camera-orbit is capture-only and capped at 10 degrees.",
+   "examples": [
+    "revid:17",
+    "revid:25",
+    "revid:40",
+    "revid:55"
+   ]
+  },
+  {
+   "technique": "Terminal or boot sequence as an opener",
+   "seen_in": 16,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "personal intro / résumé / portfolio reel",
+    "code or developer-tool film",
+    "illustrated or character story"
+   ],
+   "engine_moves": [
+    "human-type",
+    "type-on",
+    "stage-terminal",
+    "glitch-in"
+   ],
+   "coverage": "partial",
+   "note": "Parts exist, but stage-terminal is a capture stage and there is no authored terminal with status lines resolving and a progress bar. Seen as the developer hook in astrodevil-3f2054, robvjourney-ce3e1a and madhav-xo-f97f20; slow versions are a failure mode.",
+   "examples": [
+    "revid:42",
+    "pm:viktoroddy-98c1d8",
+    "revid:62",
+    "pm:astrodevil-3f2054"
+   ]
+  },
+  {
+   "technique": "One word per beat, each on a new colour field",
+   "seen_in": 15,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "kinetic typography reel",
+    "mobile app promo",
+    "personal intro / résumé / portfolio reel"
+   ],
+   "engine_moves": [
+    "one-word-stack",
+    "opener-fill-frame",
+    "slam",
+    "dip-to-colour"
+   ],
+   "coverage": "partial",
+   "note": "one-word-stack swaps words but does not change the full-frame colour per word, vary the treatment per word, or lock to a beat grid. Seen in the most-liked record of all (pm:stephanlivera-df17a2, 17.1k likes: half-beat cards at 0.233 s), revid:21, revid:62, astrodevil-3f2054, heyiammallik-e72d17.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "revid:6",
+    "revid:17",
+    "revid:18"
+   ]
+  },
+  {
+   "technique": "Bouncing ball with squash, stretch and ghost trails; simple physics",
+   "seen_in": 15,
+   "categories": [
+    "showreel / capability reel",
+    "particles / generative / physics",
+    "product launch film",
+    "lyric or music-synced video",
+    "experiment / meta"
+   ],
+   "engine_moves": [
+    "drop-bounce"
+   ],
+   "coverage": "none",
+   "note": "drop-bounce covers letters. A ball or object with squash and stretch, onion-skin ghosts, a dotted trail and true gravity is missing (revid:22, himanshutwtxs-5f4b43, 3xtihor-0f6911, hbcoop-de365c, kantamk-61f410). Common as a showreel opener; useful in explainers about timing or physics.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:shneural-2abdfa",
+    "pm:himanshutwtxs-5f4b43",
+    "revid:22"
+   ]
+  },
+  {
+   "technique": "Stamp label slammed onto an image or row",
+   "seen_in": 15,
+   "categories": [
+    "product launch film",
+    "lyric or music-synced video",
+    "illustrated or character story",
+    "concept explainer",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "slam",
+    "mark-word"
+   ],
+   "coverage": "none",
+   "note": "mark-word draws boxes and strikes but nothing thumps a rotated stamp onto a picture. Seen in revid:7 (2.1k), revid:53, revid:56, revid:61, ceowinkz-7c776b, sudo-kiran-6609ed.",
+   "examples": [
+    "revid:2",
+    "revid:7",
+    "revid:25",
+    "pm:sab8a-364a5a"
+   ]
+  },
+  {
+   "technique": "Strike-through of a word or claim",
+   "seen_in": 14,
+   "categories": [
+    "product launch film",
+    "data story / charts",
+    "product feature demo (UI walkthrough)",
+    "particles / generative / physics",
+    "showreel / capability reel"
+   ],
+   "engine_moves": [
+    "mark-word-strike",
+    "opener-strike-out",
+    "retype"
+   ],
+   "coverage": "full",
+   "note": "Covered. revid:6 times it well: strike in 0.1 s, hold 0.3 s, then a hard cut to a colour field with the new word already set.",
+   "examples": [
+    "revid:6",
+    "revid:7",
+    "pm:himanshutwtxs-5f4b43",
+    "pm:ajith-io-c52e09"
+   ]
+  },
+  {
+   "technique": "Drawn underline, ring or signature line",
+   "seen_in": 14,
+   "categories": [
+    "showreel / capability reel",
+    "ad / social promo cut",
+    "lyric or music-synced video",
+    "personal intro / résumé / portfolio reel",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "drawn-mark",
+    "mark-word-underline",
+    "product-underline",
+    "line-draw"
+   ],
+   "coverage": "full",
+   "note": "Covered for marks on words. A line that draws itself into a logo or signature is close to line-draw but is not described as an end move.",
+   "examples": [
+    "revid:2",
+    "pm:lexnlin-038035",
+    "pm:samuel-spitz-974923",
+    "pm:astrodevil-3f2054"
+   ]
+  },
+  {
+   "technique": "Panel, band and staircase wipes",
+   "seen_in": 14,
+   "categories": [
+    "mobile app promo",
+    "illustrated or character story",
+    "showreel / capability reel",
+    "product launch film",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "panel-wipe",
+    "blinds",
+    "tile-reveal",
+    "push-wipe",
+    "feather-wipe"
+   ],
+   "coverage": "partial",
+   "note": "Single panels and blinds are covered. Missing: the staggered band wipe with soft tails and a coloured fringe (polydao-7a572b, about 0.2 s) and the stepped staircase wipe (heyiammallik-e72d17, about 0.45 s, about eight steps; revid:24).",
+   "examples": [
+    "pm:shneural-2abdfa",
+    "revid:17",
+    "revid:24",
+    "pm:ho-ba-f3f0e9"
+   ]
+  },
+  {
+   "technique": "Collapse to a point, then flare or ring into the logo",
+   "seen_in": 14,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "particles / generative / physics"
+   ],
+   "engine_moves": [
+    "exposure-bloom",
+    "logo-mask-wipe"
+   ],
+   "coverage": "none",
+   "note": "No move collapses a scene to a point and resolves the light into the mark. Measured: marouanegazouzi-6071d5 about 0.75 s (push and blur 2 frames, point 1 frame, anamorphic bloom 0.4 s, orb to logo 0.2 s); revid:13 grid tilts, spins and ends on a dot in 1.1 s; ring flash into the end card in astrodevil-3f2054 and 3xtihor-0f6911.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "revid:13",
+    "revid:14",
+    "revid:22"
+   ]
+  },
+  {
+   "technique": "Split screen and before/after",
+   "seen_in": 14,
+   "categories": [
+    "ad / social promo cut",
+    "product launch film",
+    "mobile app promo",
+    "process or system diagram explainer",
+    "experiment / meta"
+   ],
+   "engine_moves": [
+    "stage-before-after",
+    "stage-split",
+    "door-split",
+    "opener-split-screen"
+   ],
+   "coverage": "partial",
+   "note": "Before/after and split are capture stages, door-split is a transition. A held split whose divide travels and carries a line across the seam (samaote-5e2fc2) is missing.",
+   "examples": [
+    "pm:shneural-2abdfa",
+    "revid:19",
+    "revid:31",
+    "revid:45"
+   ]
+  },
+  {
+   "technique": "Cards or icons absorbed into an icon, or converging into the logo",
+   "seen_in": 14,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "product feature demo (UI walkthrough)",
+    "process or system diagram explainer",
+    "data story / charts"
+   ],
+   "engine_moves": [
+    "scatter-assemble",
+    "container-transform",
+    "logo-mask-wipe"
+   ],
+   "coverage": "none",
+   "note": "scatter-assemble works on letters only. Measured: wozu-co-242285 cards shrink and blur into the app icon in about 0.15 s, then the icon becomes the window in about 0.15 s; brainextends-e19ac3 covers fold into the logo; rossaxbt-3085b7 a 120-image burst collapses into the logo.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "revid:14",
+    "revid:21",
+    "revid:53"
+   ]
+  },
+  {
+   "technique": "Step tracker and checklist ticks",
+   "seen_in": 14,
+   "categories": [
+    "product feature demo (UI walkthrough)",
+    "product launch film",
+    "process or system diagram explainer",
+    "showreel / capability reel",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "product-steps",
+    "stagger",
+    "drawn-mark"
+   ],
+   "coverage": "partial",
+   "note": "product-steps exists for captures only. ror-fly-9950f1 runs a six-step tracker along the bottom through a 30 s single shot; jake11moran-f60e35 draws rings and ticks on a checklist.",
+   "examples": [
+    "pm:ror-fly-9950f1",
+    "revid:16",
+    "pm:ajith-io-c52e09",
+    "revid:36"
+   ]
+  },
+  {
+   "technique": "Text on rotating rings, circles and cylinders",
+   "seen_in": 12,
+   "categories": [
+    "showreel / capability reel",
+    "kinetic typography reel",
+    "personal intro / résumé / portfolio reel",
+    "ad / social promo cut",
+    "lyric or music-synced video"
+   ],
+   "engine_moves": [
+    "on-path"
+   ],
+   "coverage": "partial",
+   "note": "on-path sets text on a flat gentle curve only. Concentric rings turning in opposite directions and a rotating 3D cylinder of type are missing (pm:ajith-io-b5626e, zheke-38deff, 3xtihor-0f6911). Showreel kit; low value for client films.",
+   "examples": [
+    "pm:ajith-io-b5626e",
+    "revid:25",
+    "revid:28",
+    "pm:3xtihor-0f6911"
+   ]
+  },
+  {
+   "technique": "Whip and smear transitions",
+   "seen_in": 12,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "experiment / meta",
+    "personal intro / résumé / portfolio reel",
+    "3D / chrome / WebGL piece"
+   ],
+   "engine_moves": [
+    "whip-pan",
+    "smear-in",
+    "momentum-cut",
+    "spin-whip",
+    "join-whip"
+   ],
+   "coverage": "partial",
+   "note": "Horizontal and rotational whips are covered. The vertical whip-tilt with a tint flash (notdwd-c2037d / notdwd-7de38a: blur builds over about 6 frames, cut at peak, page settles over about 12 frames) is missing.",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:shneural-2abdfa",
+    "pm:notdwd-c2037d",
+    "pm:twoclipping-6dd14e"
+   ]
+  },
+  {
+   "technique": "Exploded views and callouts with leader lines",
+   "seen_in": 12,
+   "categories": [
+    "process or system diagram explainer",
+    "product launch film",
+    "lyric or music-synced video",
+    "concept explainer",
+    "3D / chrome / WebGL piece"
+   ],
+   "engine_moves": [
+    "product-callout",
+    "product-arrow"
+   ],
+   "coverage": "partial",
+   "note": "product-callout is capture-only and single-label. revid:55 lifts roof layers apart with leader lines drawing to each; revid:10 pulses exploded parts to the beat; blueoctopusai-dd17bd pins labels to 3D parts.",
+   "examples": [
+    "revid:10",
+    "pm:ror-fly-9950f1",
+    "revid:25",
+    "revid:37"
+   ]
+  },
+  {
+   "technique": "Count paired with a sparkline or line drawn in lockstep",
+   "seen_in": 11,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "lyric or music-synced video",
+    "UI morph (one element through many states)",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "count-with-bar",
+    "line-draw",
+    "number-roll"
+   ],
+   "coverage": "partial",
+   "note": "count-with-bar pairs a count with a bar only. viktoroddy-98c1d8 (0 to 1,000,000 over about 3.5 s with ghosted zeros and a ring on landing) and astrodevil-3f2054 (hero figure plus sparkline per shot) need a count tied to a line.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "revid:2",
+    "revid:16",
+    "revid:46"
+   ]
+  },
+  {
+   "technique": "Unit grid, waffle or calendar filling with a matching count",
+   "seen_in": 11,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "data story / charts",
+    "personal intro / résumé / portfolio reel"
+   ],
+   "engine_moves": [
+    "stagger",
+    "number-roll"
+   ],
+   "coverage": "partial",
+   "note": "Only by hand from stagger plus number-roll. fionntobin-97b7af counts the filled cells as they fill; palashbagchi11-0a4b6b fills a waffle to a share with a second colour for a subset; revid:6 (3.2k likes) fills a utilisation grid from 31% to 94%; product films fill calendars slot by slot (revid:13, revid:18, revid:57). Note the style rule against dot grids: use squares or cells.",
+   "examples": [
+    "revid:6",
+    "revid:13",
+    "revid:16",
+    "revid:18"
+   ]
+  },
+  {
+   "technique": "Recap wall or bento of the film's own earlier scenes",
+   "seen_in": 11,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "photo or collage edit",
+    "experiment / meta",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [
+    "stage-grid",
+    "join-grid-zoom",
+    "stage-wall"
+   ],
+   "coverage": "partial",
+   "note": "Exists only for screen captures. For authored scenes: the frame shrinks to a card among cards of every earlier scene (slvdev-64c45a, about 0.35 s), tiles keep playing and spell the closing line (shneural-2abdfa, 6.8k likes), or a flash recap of 3-7 frames per earlier word (zheke-38deff).",
+   "examples": [
+    "pm:shneural-2abdfa",
+    "pm:twoclipping-221cab",
+    "pm:sab8a-364a5a",
+    "pm:levabashidze-2d713a"
+   ]
+  },
+  {
+   "technique": "One UI component morphing through many states",
+   "seen_in": 10,
+   "categories": [
+    "UI morph (one element through many states)",
+    "showreel / capability reel",
+    "product launch film",
+    "mobile app promo",
+    "product feature demo (UI walkthrough)"
+   ],
+   "engine_moves": [
+    "container-transform",
+    "shared-element",
+    "join-container-grow"
+   ],
+   "coverage": "partial",
+   "note": "container-transform grows one card to full frame and shared-element moves one element between layouts; neither reshapes a host through a chain of states. This is the most-liked product film in the corpus (pm:twoclipping-5cba86, 12.6k likes, 13 states in 14 s) and recurs in revid:58, revid:43, demonugc-4c5753, jazzen-chen-4542ae, jake11moran-f60e35.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "pm:twoclipping-221cab",
+    "revid:14",
+    "pm:ultimaxbt-2ddf1e"
+   ]
+  },
+  {
+   "technique": "Light sweep or glint across type and logo",
+   "seen_in": 10,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "personal intro / résumé / portfolio reel",
+    "3D / chrome / WebGL piece",
+    "mobile app promo"
+   ],
+   "engine_moves": [
+    "light-sweep",
+    "shimmer",
+    "product-sweep"
+   ],
+   "coverage": "full",
+   "note": "Covered. Keep it to one pass on a reveal, as craft file 09 says.",
+   "examples": [
+    "revid:6",
+    "revid:10",
+    "revid:28",
+    "pm:robj3d3-b18fad"
+   ]
+  },
+  {
+   "technique": "Notification and toast arrivals",
+   "seen_in": 9,
+   "categories": [
+    "product launch film",
+    "mobile app promo",
+    "showreel / capability reel",
+    "UI morph (one element through many states)",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "opener-notification-drop",
+    "product-toast",
+    "word-pop"
+   ],
+   "coverage": "partial",
+   "note": "product-toast works on a capture's own layer and opener-notification-drop is an opener. Authored notification stacks that gather round a phone or caption (revid:15, revid:44, steventey-0d20e4) need a stack move.",
+   "examples": [
+    "pm:twoclipping-5cba86",
+    "revid:14",
+    "revid:15",
+    "pm:steventey-0d20e4"
+   ]
+  },
+  {
+   "technique": "Rotating list wheel landing on one item",
+   "seen_in": 9,
+   "categories": [
+    "product launch film",
+    "product feature demo (UI walkthrough)",
+    "lyric or music-synced video",
+    "illustrated or character story",
+    "3D / chrome / WebGL piece"
+   ],
+   "engine_moves": [
+    "rotating-word",
+    "relay-scroll"
+   ],
+   "coverage": "partial",
+   "note": "rotating-word swaps one word. A wheel of many items with icons that spins fast then lands slowly (jake11moran-f60e35, a 0.2 s pause before the question mark pops) and a scroll with the focused item sharp (fliki:29) are missing.",
+   "examples": [
+    "revid:42",
+    "revid:50",
+    "fliki:29",
+    "pm:davidshulmanfl-371638"
+   ]
+  },
+  {
+   "technique": "Mask rise of words and letters",
+   "seen_in": 8,
+   "categories": [
+    "product launch film",
+    "showreel / capability reel",
+    "kinetic typography reel",
+    "product feature demo (UI walkthrough)",
+    "code or developer-tool film"
+   ],
+   "engine_moves": [
+    "mask-rise",
+    "mask-rise-letters",
+    "mask-rise-lines"
+   ],
+   "coverage": "full",
+   "note": "Covered. Measured in the corpus at about 0.12 s for a five-letter word (fionntobin-97b7af).",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "revid:21",
+    "pm:brainextends-e19ac3",
+    "pm:daniel-haida-8691d4"
+   ]
+  },
+  {
+   "technique": "Colour or theme flood from a control, and contraction into the next object",
+   "seen_in": 8,
+   "categories": [
+    "showreel / capability reel",
+    "mobile app promo",
+    "product launch film",
+    "product feature demo (UI walkthrough)"
+   ],
+   "engine_moves": [
+    "iris-wipe",
+    "push-through",
+    "dip-to-colour"
+   ],
+   "coverage": "partial",
+   "note": "iris-wipe opens from a point and push-through enters an element, but neither grows from a control to swap the theme in place, nor contracts the flood into a target that carries the content on. Measured: revid:15 toggle flip 0.18 s, flood about 0.2 s, next headline 0.15 s later; prompts ask for 0.3-0.35 s overscaled past the farthest corner (221cab, 2ddf1e).",
+   "examples": [
+    "pm:twoclipping-221cab",
+    "revid:15",
+    "pm:ultimaxbt-2ddf1e",
+    "pm:brainextends-e19ac3"
+   ]
+  },
+  {
+   "technique": "Glass material: frosted panels and lettering",
+   "seen_in": 8,
+   "categories": [
+    "product launch film",
+    "kinetic typography reel",
+    "experiment / meta",
+    "ad / social promo cut",
+    "abstract geometric (Swiss, Bauhaus, shapes)"
+   ],
+   "engine_moves": [
+    "light-sweep",
+    "lift"
+   ],
+   "coverage": "partial",
+   "note": "Glass is one of the six design styles, so frosted panels are styled, but there is no move for refraction, a lens over type, or frosted letters clipped from the picture behind (notdwd-c2037d, rossaxbt-3085b7, 221cab liquid glass, zheke-38deff lens).",
+   "examples": [
+    "pm:twoclipping-221cab",
+    "pm:notdwd-c2037d",
+    "revid:46",
+    "pm:zheke-38deff"
+   ]
+  },
+  {
+   "technique": "Letters drop, bounce or tumble into place",
+   "seen_in": 7,
+   "categories": [
+    "showreel / capability reel",
+    "product launch film",
+    "ad / social promo cut"
+   ],
+   "engine_moves": [
+    "drop-bounce",
+    "scatter-assemble",
+    "word-pop"
+   ],
+   "coverage": "full",
+   "note": "Covered for type. The squash-and-stretch ball that often opens these reels is not (see the physics gap).",
+   "examples": [
+    "pm:stephanlivera-df17a2",
+    "pm:himanshutwtxs-5f4b43",
+    "revid:21",
+    "revid:22"
+   ]
+  },
+  {
+   "technique": "Illustrated scene changes inside a fixed frame (day to night, weather, passing wipes)",
+   "seen_in": 7,
+   "categories": [
+    "illustrated or character story",
+    "timeline / history narrative",
+    "3D / chrome / WebGL piece"
+   ],
+   "engine_moves": [
+    "light-leak",
+    "parallax-camera",
+    "feather-wipe"
+   ],
+   "coverage": "none",
+   "note": "No scene-atmosphere moves: sky ramps, window lights, weather layers, an endless multi-plane scroll through a still window, curtains and passing-object wipes (itsolelehmann-e47532, x4b47x-9cc84f, demitiyageekzen-7770ad). Illustrated stories are a small share of the corpus.",
+   "examples": [
+    "pm:itsolelehmann-e47532",
+    "pm:abderrahmen-g-9e8ed0",
+    "pm:x4b47x-9cc84f",
+    "pm:pluginplay-3d4006"
+   ]
+  },
+  {
+   "technique": "Words that act out their meaning",
+   "seen_in": 4,
+   "categories": [
+    "showreel / capability reel",
+    "kinetic typography reel"
+   ],
+   "engine_moves": [],
+   "coverage": "none",
+   "note": "No move deforms type to perform its word (SQUASH squashed, STRETCH tall, STRAIGHT snapping to a line). Seen in zheke-38deff, souravbhar871-61f424, revid:28, hanifproduktif-54bdee; the study names meaning-led motion as what separates strong type films from weak ones.",
+   "examples": [
+    "revid:24",
+    "revid:28",
+    "pm:hanifproduktif-54bdee",
+    "pm:zheke-38deff"
+   ]
+  },
+  {
+   "technique": "Running total that follows items landing and leaving",
+   "seen_in": 4,
+   "categories": [
+    "product launch film",
+    "data story / charts"
+   ],
+   "engine_moves": [
+    "number-roll",
+    "stagger"
+   ],
+   "coverage": "partial",
+   "note": "Can be wired by hand from number-roll and stagger, but no move ties the sum to each item's landing. bizibeast-10f264 opens on it ($1 to $196, then down to $15); thayto-dev-44b911 and revid:47 use it too.",
+   "examples": [
+    "pm:steventey-0d20e4",
+    "revid:47",
+    "pm:thayto-dev-44b911",
+    "pm:bizibeast-10f264"
+   ]
+  },
+  {
+   "technique": "Vessel filling with liquid",
+   "seen_in": 4,
+   "categories": [
+    "process or system diagram explainer",
+    "ad / social promo cut",
+    "mobile app promo"
+   ],
+   "engine_moves": [
+    "count-with-bar",
+    "ring-sweep"
+   ],
+   "coverage": "none",
+   "note": "No move. ror-fly-9950f1 fills a glass in real ratios with a counter in step; leadnotifi-e83f94 fills a round gauge while a score counts; thilina-a-891c09 fills a jar from 7 to 14.",
+   "examples": [
+    "pm:ror-fly-9950f1",
+    "pm:sarut0bisasuke-cefa43",
+    "pm:leadnotifi-e83f94",
+    "pm:thilina-a-891c09"
+   ]
+  },
+  {
+   "technique": "Scramble, decode and split-flap text",
+   "seen_in": 3,
+   "categories": [
+    "experiment / meta",
+    "product launch film",
+    "showreel / capability reel"
+   ],
+   "engine_moves": [
+    "scramble-lock",
+    "split-flap",
+    "drum-roll",
+    "anagram"
+   ],
+   "coverage": "full",
+   "note": "Covered. Rare in the corpus (shneural-2abdfa, marouanegazouzi-6071d5).",
+   "examples": [
+    "pm:shneural-2abdfa",
+    "pm:robj3d3-b18fad",
+    "pm:marouanegazouzi-6071d5"
+   ]
+  }
+ ],
+ "gaps": [
+  {
+   "technique": "One UI component morphing through many states",
+   "seen_in": 10,
+   "why_it_matters": "The most-liked product film in the corpus (pm:twoclipping-5cba86, 12.6k likes, about four times the next) is one element morphing through 13 states with no cuts, and the same discipline recurs in revid:58, revid:43, demonugc-4c5753 and jazzen-chen-4542ae. It is the clearest way to show a product doing real work without a feature list.",
+   "build_hint": "Move `morph-chain` (new family `ui`). One host <MorphChain states={[{at, w, h, radius, fill, content}]} anchor='centre'> whose size, radius and fill follow a closed-form spring per retarget (springs.settle, summed on retarget so a new target never jumps). Content swap: old content blurs out over about 0.12 s, the box resizes over about 0.15 s, new content is sharp by about 0.3 s; MotionBlur along the resize velocity. One state per beat at 120 BPM (about 1 s), 0.4 s reading holds. Optional `loop` makes the last state equal the first. Pairs with cursor-lead so the cursor causes each change and the camera keeps the state filling the frame.",
+   "priority": "high"
+  },
+  {
+   "technique": "One object carried through every scene",
+   "seen_in": 17,
+   "why_it_matters": "The study's strongest repeated finding: the best films hang every scene on one object that ends as part of the final type (revid:22 dot, revid:14 red dot with zero cuts, revid:19, hbcoop-de365c, miskinho-443898). The engine only moves an element across a single join.",
+   "build_hint": "Film-level layer `Carrier` rendered above the scene sequence, driven by film time, not scene time. Props: keys=[{at, rect|anchorId, shape:'dot'|'pill'|'line'|path, fill}], `landOn` = an anchor measured from the end card's text layout (the full stop or the dot of an i). Between keys it travels on `arc()` with easing.travel and reshapes through `shape-morph`; joins 0.1-0.17 s with 0.4 s holds (revid:14). Scenes expose anchors by id so the carrier can become a tittle, a toggle knob, a chart highlight, then the full stop. Calm and confident presets only by default.",
+   "priority": "high"
+  },
+  {
+   "technique": "Particles assembling into, or dissolving from, a logo, word, number or data",
+   "seen_in": 59,
+   "why_it_matters": "There is no particle family, yet particles carry some of the best data films (jesscaroline7-1ff7cb: one dot per place re-forming from grid to map to number to donut for 39 s without a cut) and launch films (robvjourney-ce3e1a particle logo, revid:13 burst into the logo, revid:2 illustration to dots and back at 9.9k likes).",
+   "build_hint": "Move `particle-form` (new family `particle`). <ParticleForm from={target} to={target} count={n} seed at length> where a target is text (sampled from an offscreen canvas of the brand voice), an SVG path, a grid, a list of data points or 'scatter'. Each particle's position is a pure function of time: seeded start, per-particle delay (0-25% of the length), eased path with slight curl noise, settle on its target with no overshoot. One canvas, drawn in brand ink and accent. Lengths: dissolve about 0.6-0.8 s, re-form about 0.8-1.0 s (revid:2, nolkeeg-bf062e). Guard: refuse as background decoration (a particle sphere is part of the cheap kit); use squares not dots where the style bans dots.",
+   "priority": "high"
+  },
+  {
+   "technique": "Shape morph between primitives",
+   "seen_in": 20,
+   "why_it_matters": "Described in craft file 09 but never built; it is the joint in the most-liked reel (stephanlivera-df17a2, 17.1k) and in revid:14 and hbcoop-de365c, and it is the building block the carrier and the morph chain both need.",
+   "build_hint": "Move `shape-morph` (family emphasis). <ShapeMorph shapes={[path|'circle'|'square'|'pill'|'star']} at each={0.35-0.5 s}>. Resample every path to the same point count by arc length, align the start point and winding to the nearest rotation, interpolate points with easing.arrive; keep corner count where possible (craft 09). Optional colour change with the accent-settle rule. Exposes the current path so `Carrier` and `MorphChain` can reuse it.",
+   "priority": "high"
+  },
+  {
+   "technique": "Live UI controls on springs",
+   "seen_in": 22,
+   "why_it_matters": "Product films are the largest group in the corpus, and the best ones show controls behaving physically: a toggle that starts a theme flood (revid:15), a slider that rubber-bands, a tab indicator whose edges move on different springs (5cba86, demonugc-4c5753). The capture moves can only replay recordings.",
+   "build_hint": "Three moves in the new `ui` family: `toggle-flip` (knob travels in about 0.18 s with springs.settle, track colour follows with the accent-settle rule; emits its knob rect for a flood), `slider-drag` (value follows a cursor path; past max the thumb rubber-bands as max + (x-max)*0.3 and springs back), `tab-indicator` (leading edge on a stiffer spring than the trailing edge so the pill stretches then catches up). Built from brand control radius and colours; cursor-lead drives them.",
+   "priority": "high"
+  },
+  {
+   "technique": "Colour or theme flood from a control, and contraction into the next object",
+   "seen_in": 8,
+   "why_it_matters": "The flood is the one surprise in several of the best product films (revid:15 toggle knob floods the film into dark mode; 221cab and 2ddf1e flood and then contract into the next object). It is also the sanctioned way in craft file 13 to move from one design family to another once.",
+   "build_hint": "Move `flood` (family transition). <Flood from={rect} page={StageName} at contractTo?={rect} next>. A circle grows from the control's centre with scale from its radius to the farthest corner plus 10%, over 0.3-0.35 s (easing.leave), so it never reads as a flash; `next` starts on the new page 0.15 s after full cover. With `contractTo`, the reverse: the page shrinks into the target's rect and radius, carrying the next content inside it (shared-element rules). Theme swap: the next scene renders with the new stage palette.",
+   "priority": "high"
+  },
+  {
+   "technique": "One word per beat, each on a new colour field",
+   "seen_in": 15,
+   "why_it_matters": "The most-liked record of all builds to a burst of word cards at half a beat (0.233 s at 128 BPM) on changing colour fields (stephanlivera-df17a2, 17.1k), and the same device lands the climax in revid:21, revid:62, astrodevil-3f2054 and heyiammallik-e72d17. Used once, it is the hype preset's best tool.",
+   "build_hint": "Move `word-burst` (family type). <WordBurst words={[]} beats={grid from tools/audio/beats.py} unit='half'|'beat' fields={stage names cycled from the brand} treatments={['fill','outline','accent','reverse']}>. Each word is a hard cut on its beat, enters with a 5-frame smear settle (smear-in at a short length), one treatment per word. Escalation helper: plan scene lengths in bars (2 beats, then 1, then half) and check with `beats.py check`. Guard: at most one burst per film, never even 1.0 s steps.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Running devices that persist across cuts (clock, meter, chapter progress)",
+   "seen_in": 36,
+   "why_it_matters": "A running date stamp and a climbing story percentage hold revid:2 (9.9k likes) together through 73 cuts; a step tracker carries ror-fly-9950f1's 30 s single shot; a chapter bar and a persistent player bar do the same in nolkeeg-bf062e and brainextends-e19ac3. The decorative cousin (corner timecode, BPM, technique labels) is the most-cited AI tell.",
+   "build_hint": "Move `running-overlay` (new family `overlay`), placed at film level like captions. Kinds: `clock` (date or year that advances with story keys), `meter` (a percentage or count that only rises, number-roll digits), `steps` (numbered steps that fill and tick, drawn-mark ticks), `chapter-bar` (a thin bar 0 to 1 per chapter). Props: keys=[{at, value}], corner, size from the caption safe areas. Guard in code: needs a `means` string naming what it measures; refuses timecodes, frame counts, BPM and scene labels.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Recap wall or bento of the film's own earlier scenes",
+   "seen_in": 11,
+   "why_it_matters": "A recap of the film's own scenes is a strong closer (shneural-2abdfa, 6.8k likes; slvdev-64c45a; zheke-38deff flash recap) and the engine already does it for screen captures, so the gap is narrow.",
+   "build_hint": "Move `recap-wall` (family transition). Takes the film's scene list and renders each scene component inside a rounded tile via <Sequence from={-sceneFrame}> (or <Freeze> at a chosen frame), so tiles keep playing. Variants: `pull-back` (the live frame shrinks into its tile among the others in about 0.35 s, easing.arrive, slvdev-64c45a), `bento` (2-up, 4-up, 6-up in about 0.5 s, chosen tiles carry the closing words), `flash` (3-7 frames per earlier scene, about 0.6 s, then the end mark). Reuse stage-grid's layout code.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Agent chat choreography",
+   "seen_in": 26,
+   "why_it_matters": "AI agents and assistants are the most common subject in the product groups. The engine streams the answer text but not the rest of an agent beat, so these films fall back on generic chat mock-ups.",
+   "build_hint": "Move `agent-chat` (new family `ui`, authored rather than captured). <AgentChat turns={[{role, text, at, status?, tools?, approval?}]}>: avatar pops, typing dots for 0.5-0.8 s, bubble grows from its corner, stream-answer for the text, a status chip whose label changes through swap-word, tool-call rows that tick with drawn-mark, an approval card with two buttons that a cursor-lead click resolves. Measured cue: camera push to the button about 0.5 s, pressed state about 0.4 s later (revid:57).",
+   "priority": "medium"
+  },
+  {
+   "technique": "Unit grid, waffle or calendar filling with a matching count",
+   "seen_in": 11,
+   "why_it_matters": "Proof by counting things you can see: fionntobin-97b7af counts filled cells, palashbagchi11-0a4b6b fills a waffle to a share, revid:6 (3.2k) fills a utilisation grid, and many product films fill a calendar. The data family has only four moves.",
+   "build_hint": "Move `unit-fill` (family data). <UnitFill rows cols filled={n} highlight={subset} order='reading'|'random'|'centre' count>. Cells are squares in brand radius (not dots), fill with stagger in reading order; a number-roll beside it shows exactly the filled count each frame. Highlight fills a second colour after the main fill lands.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Count paired with a sparkline or line drawn in lockstep",
+   "seen_in": 11,
+   "why_it_matters": "A big true number with one small graphic drawing beside it is the layout grammar of the best data reels (astrodevil-3f2054, viktoroddy-98c1d8's milestone count to 1,000,000).",
+   "build_hint": "Extend count-with-bar or add `count-with-line`: one progress value drives both the number-roll and the line-draw so they cannot drift; option `ghostZeros` greys leading digits until reached; option `land` adds one ring from ring-sweep's stroke on the final value. Length 2.5-3.5 s for a milestone.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Cards or icons absorbed into an icon, or converging into the logo",
+   "seen_in": 14,
+   "why_it_matters": "A calm, clear way to show many problems becoming one product (wozu-co-242285) or a launch landing on the mark (brainextends-e19ac3, rossaxbt-3085b7).",
+   "build_hint": "Move `absorb` (family transition). <Absorb items={rects} into={rect} at>: each item shrinks towards the target's centre on its own arc with a 20-40 ms stagger and blurs as it nears, about 0.15 s for the last one; the target pops 3% with springs.settle as the last arrives. Then container-transform can grow the icon into the window.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Collapse to a point, then flare or ring into the logo",
+   "seen_in": 14,
+   "why_it_matters": "A strong end move for confident and hype films (marouanegazouzi-6071d5, revid:13) that replaces the cheap particle burst on the logo.",
+   "build_hint": "Move `collapse-flare` (family transition). Outgoing scene pushes and blurs for 2 frames, scales to a point over about 0.1 s, a horizontal streak blooms to the page colour over about 0.4 s (exposure-bloom's maths), then the light contracts to the logo tile over about 0.2 s. Accent tint, never pure white on Paper.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Bouncing ball with squash, stretch and ghost trails; simple physics",
+   "seen_in": 15,
+   "why_it_matters": "Opens several of the best reels and explains timing in explainers (revid:22, himanshutwtxs-5f4b43, hbcoop-de365c), but it is also part of the stock showreel kit, so it should not be a default.",
+   "build_hint": "Move `bounce` (new family `physics`). Closed-form ballistic arcs with a restitution factor per bounce; squash on contact proportional to impact speed (volume kept: sx = 1/sy), stretch along velocity; optional onion-skin ghosts every 2-3 frames at falling opacity and a dotted trail. Event times exported so sounds can be placed on hits (tools/audio). About 0.27 s per bounce matches a half beat at 120 BPM.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Words that act out their meaning",
+   "seen_in": 4,
+   "why_it_matters": "Meaning-led motion is what the study says separates strong type films from template reels (zheke-38deff, souravbhar871-61f424, revid:28).",
+   "build_hint": "Move `verb-type` (family type) with a small set of named deformations applied to the real text: squash (scaleY 0.6 with widened tracking), stretch (scaleY 1.6), snap (letters jump to a baseline from jumbled offsets), scatter, slow, fast (smear). <VerbType word verb at>. Each lasts one beat; the brand voice stays.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Word-timed captions, lyrics and reading subtitles",
+   "seen_in": 19,
+   "why_it_matters": "Narrated explainers and lyric films need the whole sentence on screen with words lighting up (revid:7, 2.1k likes) and line-by-line layouts (samaote-5e2fc2, revid:25).",
+   "build_hint": "Caption style `reading` beside caption-box and caption-pop: the full sentence set at editorial size, words go from 40% to full ink as the voice word table reaches them (from tools/audio/voice.mjs timings). Lyric mode takes a layout per line from a small set (on a line, on an arc, in cells, across a split). Only with cleared words and music.",
+   "priority": "medium"
+  },
+  {
+   "technique": "Stamp label slammed onto an image or row",
+   "seen_in": 15,
+   "why_it_matters": "A cheap-to-build emphasis that appears across launch and explainer films (revid:7, revid:53, revid:56).",
+   "build_hint": "Emphasis move `stamp`: a bordered label in the accent voice drops from 130% scale with a 4-8 degree turn, lands in about 0.12 s, a 2% squash, and a faint ink-spread ring. One per film.",
+   "priority": "low"
+  },
+  {
+   "technique": "Map with a route drawing and pins dropping; globes",
+   "seen_in": 18,
+   "why_it_matters": "Useful for place-based products (danilowm-d3720d, jesscaroline7-1ff7cb) but rare in the corpus.",
+   "build_hint": "Build on the remotion-maps skill: a route from line-draw along projected coordinates, pins that drop with springs.settle on their arrival times, a count beside them.",
+   "priority": "low"
+  },
+  {
+   "technique": "Seamless loop and bookend endings",
+   "seen_in": 21,
+   "why_it_matters": "Loops suit UI morph films posted as social clips (5cba86, 221cab); bookends close an idea (hbcoop-de365c, monokern-ade5b6).",
+   "build_hint": "A film-level check rather than a move: `loop: true` in the composition asserts frame 0 and the last frame match within a small pixel difference, and a `bookend` scene helper replays the opening scene's state at the end.",
+   "priority": "low"
+  },
+  {
+   "technique": "Vertical whip and staircase wipes",
+   "seen_in": 5,
+   "why_it_matters": "Two measured transitions missing from a large transition set (notdwd-c2037d whip-tilt; heyiammallik-e72d17 staircase).",
+   "build_hint": "Add `axis='vertical'` to whip-pan (blur builds over about 6 frames, cut at peak, about 12 frames to settle, optional tint flash) and a `stairs` option to tile-reveal (about eight diagonal steps over about 0.45 s, stepped, not smooth).",
+   "priority": "low"
+  }
+ ]
+}

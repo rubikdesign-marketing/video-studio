@@ -19,11 +19,13 @@
 // Exit code 0 when readable in time, 1 when not, 2 when it could not run.
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+import { toolEnv } from '../lib/ff.mjs';
 import { emOf, parseTsv } from './text_size.mjs';
 import { contrast, inkAndGround, judgeHook, wordsOf } from './lib/hook_text.mjs';
 
-const FFMPEG = fs.existsSync('/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg') ? '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg' : 'ffmpeg';
-const FFPROBE = fs.existsSync('/opt/homebrew/opt/ffmpeg-full/bin/ffprobe') ? '/opt/homebrew/opt/ffmpeg-full/bin/ffprobe' : 'ffprobe';
+const FF = toolEnv({});   // ffmpeg and ffprobe, found by setup/runtime/resolve.mjs
+const FFMPEG = FF.FFMPEG || 'ffmpeg';
+const FFPROBE = FF.FFPROBE || 'ffprobe';
 const args = process.argv.slice(2);
 const opt = (name, fallback) => { const i = args.indexOf(`--${name}`); const v = i >= 0 ? args[i + 1] : undefined; return v === undefined || v.startsWith('--') ? fallback : v; };
 const say = (s) => process.stdout.write(`${s}\n`);

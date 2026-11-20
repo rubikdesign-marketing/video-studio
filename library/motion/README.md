@@ -73,6 +73,23 @@ The library plan's phases 4 and 5 added 100 moves, each built to work in all fou
 - Checked: every preview passes `smoothness.py` and `flashes.py`; each move was looked at in all four sizes by its builder, and a fresh-eyes review of one settled frame of all 100 in 9:16, 1:1 and 4:5 found 24 problems, all fixed and looked at again. `tools/checks/tests/motion_library.test.mjs` keeps the catalogue and the gallery in step.
 - Not checked: each move on brands other than Tulvo and on the dark page (most were looked at on the light page only); the calm and hype presets (the confident preset was used throughout); moves inside real films beyond the library's proof film (`jobs/2026-11-18-library-proof/`).
 
+## Creator-style moves for phone films (19 Nov 2026)
+
+Three plain-2D moves in `engine/src/kit/ugc/` (no WebGL, no image, no emoji font; every time is seconds on the scene clock, every random is seeded): `CommentReply` (the question card a UGC film answers), `ScreenRecTell` with `RecBadge` and `TapRipple` (a REC dot and timer, a tap ripple and an original phone), `StickerPop` (heart, star, tick, sparkle or starburst drawn from paths). Gallery: `move-ugc-*` in the "ugc" folder; render one with `npx remotion render src/library/motion/entry.tsx move-ugc-comment-reply ../library/motion/ugc-comment-reply.mp4 --scale=0.5 --public-dir=out/lib-public` (`entry.tsx` bundles the sized gallery alone, for a checkout where `src/index.ts` will not bundle). Used for real in a UGC film made in this studio. Each is in all four sizes; 9:16 and 16:9 stills were looked at.
+
+## Shapes, interface states and particles (20 Nov 2026)
+
+Eight moves from the motion-graphics study's list of gaps (`knowledge/craft/17-motion-graphics.md`), in `engine/src/kit/moves/`, all plain 2D on Remotion's own `spring` and `interpolate`, with the timings measured in the liked films and overshoot under 1.5%:
+
+- `ShapeMorph` (`shape-morph`): one shape becomes another; every outline is 120 points from the top centre, clockwise (`shape.ts`), so corners stay sharp. `Carrier` and `Flood` reuse it.
+- `MorphChain` (`morph-chain`, family `ui`): one component through many states; content blurs out in 0.12 s, the box resizes in 0.15 s, new content sharp by 0.3 s.
+- `Carrier` (`carrier`): one object through every scene on the film clock, landing in anchors the scenes give; `useFullStop` measures where the closing line's full stop is drawn.
+- `ParticleForm` (`particle-form`, family `particle`): squares only, and it refuses decoration (a `means` is required; forms that are all scatter are refused). Grids fill most of each cell and shared places pack into tiles, so nothing reads as a dot pattern.
+- `ToggleFlip`, `SliderDrag`, `TabIndicator` (`toggle-flip`, `slider-drag`, `tab-indicator`, family `ui`): authored controls; `toggleKnob()` gives the knob's rect for a flood.
+- `Flood` (`flood`): the other page grows from a control past the farthest corner in 0.32 s, the next scene starts 0.15 s after cover, and the page can contract into the next object.
+
+Checked: each preview rendered at half size on the light page with the confident preset, passes `smoothness.py` and `flashes.py`, and its contact sheet was looked at; the carrier's full stop was checked at full size. Not checked: the dark page, the calm and hype presets, other frame sizes, other brands, and use inside a real film.
+
 ## Moves for product captures
 
 The capture families in `index.json` (`capture-pointer`, `capture-effect`, `capture-camera`, `capture-time`, `capture-look`) are settings of `CaptureClip` (`engine/src/kit/CaptureClip.tsx`), not components of their own. Each has a composition `move-<name>` in the "capture" folder of Remotion Studio that plays a fitting stretch of a real capture, found from its own events: the newest capture, or the one named in its `capture` prop. Their previews here were rendered at half size from a practice capture.

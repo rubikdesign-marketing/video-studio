@@ -18,14 +18,24 @@
 
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 
 export const EXTENSION_ID = 'mmlmfjhmonkocbjadbfplnigmagldckm';
 export const EXTENSION_STORE = `https://chromewebstore.google.com/detail/playwright-extension/${EXTENSION_ID}`;
 export const PROTOCOL = 2;
-export const CHROME_BIN = { darwin: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', linux: '/usr/bin/google-chrome', win32: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' }[process.platform];
+// The person's own Chrome: DAMEX_CHROME first, then the usual install places per OS (same list as capture.mjs),
+// including a per-user install on Windows and google-chrome-stable / Chromium on Linux.
+const CHROME_CANDIDATES = {
+  darwin: ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', path.join(os.homedir(), 'Applications', 'Google Chrome.app', 'Contents', 'MacOS', 'Google Chrome')],
+  linux: ['/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser'],
+  win32: [process.env.ProgramFiles, process.env['ProgramFiles(x86)'], process.env.LOCALAPPDATA].filter(Boolean).map((base) => path.join(base, 'Google', 'Chrome', 'Application', 'chrome.exe')),
+}[process.platform] ?? [];
+export const CHROME_BIN = [process.env.DAMEX_CHROME, ...CHROME_CANDIDATES].filter(Boolean).find((p) => fs.existsSync(p)) ?? CHROME_CANDIDATES[0];
 
 const PICTURE_EVENTS = new Set(['Page.screencastFrame', 'Page.screencastVisibilityChanged']);
 

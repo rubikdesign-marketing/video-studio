@@ -37,6 +37,22 @@ export const filmSchema = z.object({
       texts: z.array(
         z.object({ lines: z.union([z.tuple([z.string()]), z.tuple([z.string(), z.string()])]), at: seconds, out: seconds }),
       ),
+      /** The shots of the shot list, each arriving at `at` on the scene's own clock. Older film.json files have none. */
+      shots: z
+        .array(
+          z.object({
+            id: z.string(),
+            at: seconds,
+            size: z.string(),
+            /** The capture's file inside the job folder, or null. */
+            capture: z.string().nullable(),
+            /** The shot's background settings from the shot list, as the job's own background reads them. */
+            background: z.record(z.string(), z.unknown()).optional(),
+            /** Small supporting words the shot shows beside its text ("From tomorrow"), from the shot list's "label". */
+            label: z.string().optional(),
+          }),
+        )
+        .default([]),
     }),
   ),
 });

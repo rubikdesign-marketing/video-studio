@@ -58,11 +58,40 @@ export function assumptions(brief, ctx = {}) {
     if (size) out.push({ id: 'size', value: size, because: w.match(/\b(vertical|portrait|9:16|reels?|tiktok|shorts|stor(y|ies)|square|1:1|landscape|horizontal|16:9|youtube)\b/)[0] });
   }
   if (!brief.kind) {
-    const kind = /\b(demo|walkthrough|how it works)\b/.test(w) ? 'product-demo' : /\b(kinetic|type reel|launch|announc\w*)\b/.test(w) ? 'launch-reel' : /\b(my footage|our footage|clips? (i|we) shot|edit (my|our))\b/.test(w) ? 'footage-edit' : /\b(talking to (the )?camera|testimonial|ugc|presenter)\b/.test(w) ? 'ugc' : /\b(animated short|cartoon|character)\b/.test(w) ? 'animated-short' : null;
-    if (kind) out.push({ id: 'kind', value: kind, because: w.match(/\b(demo|walkthrough|how it works|kinetic|type reel|launch|announc\w*|my footage|our footage|talking to (the )?camera|testimonial|ugc|presenter|animated short|cartoon|character)\b/)[0] });
+    // "the demo brand" names the sample brand, not a product demo.
+    const kind = /\b(demo(?!\s+brand)|walkthrough|how it works)\b/.test(w) ? 'product-demo' : /\b(kinetic|type reel|launch|announc\w*)\b/.test(w) ? 'launch-reel' : /\b(my footage|our footage|clips? (i|we) shot|edit (my|our))\b/.test(w) ? 'footage-edit' : /\b(talking to (the )?camera|testimonial|ugc|presenter)\b/.test(w) ? 'ugc' : /\b(animated short|cartoon|character)\b/.test(w) ? 'animated-short' : null;
+    if (kind) out.push({ id: 'kind', value: kind, because: w.match(/\b(demo(?!\s+brand)|walkthrough|how it works|kinetic|type reel|launch|announc\w*|my footage|our footage|talking to (the )?camera|testimonial|ugc|presenter|animated short|cartoon|character)\b/)[0] });
   }
   if (!brief.voice && /\b(no voice|no voice-?over|music only|just music|silent)\b/.test(w)) out.push({ id: 'voice', value: 'none', because: 'no voice' });
   return out;
+}
+
+const VOICES = ['voice-over', 'presenter', 'dialogue', 'none'];
+export const SETTABLE = ['kind', 'for', 'viewer_should', 'voice', 'length_cap_seconds', 'size'];
+
+/**
+ * Fill one field of the brief from an answer, so `check` stops asking that question. Returns a new brief.
+ * size sets the master's size (adding a master when there is none). Free-form answers go to `decisions` instead.
+ */
+export function setField(brief, field, value) {
+  const v = String(value ?? '').trim();
+  if (!SETTABLE.includes(field)) throw new Error(`Can set: ${SETTABLE.join(', ')}. Record anything else with decide.`);
+  if (!v) throw new Error(`${field} needs a value`);
+  const b = { ...brief };
+  if (field === 'kind' && !KINDS.includes(v)) throw new Error(`kind must be one of ${KINDS.join(', ')}`);
+  if (field === 'voice' && !VOICES.includes(v)) throw new Error(`voice must be one of ${VOICES.join(', ')}`);
+  if (field === 'length_cap_seconds') {
+    const n = Number(v.replace(/\s*(s|sec|secs|seconds)$/i, ''));
+    if (!(n > 0)) throw new Error('length_cap_seconds must be a number of seconds, e.g. 30');
+    b.length_cap_seconds = n; return b;
+  }
+  if (field === 'size') {
+    const deliver = (b.deliver || []).filter((d) => !empty(d.size) || d.master).map((d) => ({ ...d }));
+    const master = deliver.find((d) => d.master);
+    if (master) master.size = v; else deliver.unshift({ platform: '', size: v, master: true });
+    b.deliver = deliver; return b;
+  }
+  b[field] = v; return b;
 }
 
 export function questions(brief, { job = {}, ctx = {} } = {}) {

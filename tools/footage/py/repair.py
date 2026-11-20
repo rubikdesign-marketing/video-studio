@@ -29,12 +29,14 @@ import sys
 import numpy as np
 from scipy.signal import butter, fftconvolve, iirnotch, sosfiltfilt, filtfilt, welch
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 RATE = 48000
 
 
 def load(path, ch=None):
-    probe = subprocess.run(['/opt/homebrew/opt/ffmpeg-full/bin/ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True).stdout.strip()
+    probe = subprocess.run([FFPROBE, '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True).stdout.strip()
     n = int(probe or 1)
     raw = subprocess.run([FFMPEG, '-v', 'error', '-i', path, '-ar', str(RATE), '-f', 'f32le', '-'], capture_output=True, check=True).stdout
     x = np.frombuffer(raw, np.float32).astype(np.float64).reshape(-1, n)
@@ -98,7 +100,7 @@ def expand(curve, hop, n):
 # ---------------------------------------------------------------- tracks and microphones
 
 def tracks(path):
-    probe = subprocess.run(['/opt/homebrew/opt/ffmpeg-full/bin/ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True).stdout.strip()
+    probe = subprocess.run([FFPROBE, '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True).stdout.strip()
     n = int(probe or 1)
     if n < 2:
         return {'kind': 'one microphone', 'tracks': ['main']}
@@ -141,7 +143,7 @@ def split(path, out_dir):
 
 
 def channels(path):
-    probe = subprocess.run(['/opt/homebrew/opt/ffmpeg-full/bin/ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True).stdout.strip()
+    probe = subprocess.run([FFPROBE, '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=channels', '-of', 'csv=p=0', path], capture_output=True, text=True).stdout.strip()
     return int(probe or 1)
 
 

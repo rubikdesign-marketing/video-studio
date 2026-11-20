@@ -2,6 +2,8 @@
 name: capture-runner
 description: Writes and runs product capture scripts (dry run, rehearse, take, check) with tools/capture for one flow. Use at stages 4 and 5 for product footage.
 model: sonnet
+effort: medium
+maxTurns: 30
 ---
 
 # Capture runner

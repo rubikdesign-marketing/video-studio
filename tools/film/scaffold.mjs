@@ -4,7 +4,8 @@
 //   scaffold.mjs <job_dir>          build or refresh the skeleton
 //   scaffold.mjs --slug <job_dir>   only print the job's name inside the engine
 //
-// Reads   job.json, shots.json (templates/shots.json), audio/lines.json, audio/captions.json
+// Reads   job.json, shots.json (templates/shots.json), audio/lines.json, audio/captions.json, audio/words.json (for shots
+//         that name their "word")
 //         The brand is job.json "brand", else studio.json "default_brand". Brands are refreshed first (tools/brand/sync.mjs).
 // Writes  engine/src/jobs/<slug>/film.json        the brand, and scene times fitted to the voice
 //         engine/src/jobs/<slug>/Film.tsx         the brand, the scenes in order, the sound, the captions
@@ -12,15 +13,21 @@
 //         engine/src/jobs/index.ts                registers every scaffolded job with the engine
 //         engine/public/jobs/<slug>/              audio.wav (audio/mix.wav, else audio/voice.wav) and captions.json
 //
+// A shot arrives with the voice line it names ("line"), else with the words it names ("word": the first words it lands on,
+// timed from audio/words.json; words respelled for the voice in the brand's pronunciation.md match their real spelling),
+// else with the scene's line at its position. In a scene where any shot names a word, shots naming neither share the time between.
 // Run it again whenever the voice or the shot list changes: everything is refreshed except scene files.
 // A scene starts LEAD before its first voice line and ends where the next one starts. Options: --lead 0.3 --tail 0.5
 // A silent scene ("silent": true, "seconds": 2.5) has no voice line, such as an end card. It can only come at the
 // end: it starts where the film used to end, after the sound, and adds its seconds to the film.
+// A film with no voice at all (job.json "voice": "none": music and type, a footage edit, an animated short) is timed
+// from each scene's "seconds" instead, end to end from 0. It needs no lines.json or captions.json; its sound is
+// audio/mix.wav, else audio/music.wav, else silence of the film's length.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { brandOfJob } from '../brand/lib.mjs';
+import { brandDir, brandOfJob } from '../brand/lib.mjs';
 import { syncBrands } from '../brand/sync.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -31,7 +38,8 @@ const PRESETS = ['calm', 'confident', 'hype'];
 const STAGES = ['light', 'dark'];
 const OLD_STAGE_NAMES = { paper: 'light', night: 'dark' }; // shot lists written before stages were named by role
 const SHOT_SIZES = ['wide', 'medium', 'macro', 'abstract'];
-const TEXT_CLEAR = 0.35; // on-screen text leaves this long before the next text, or before its scene ends
+const TEXT_CLEAR = 0.35; // on-screen text leaves this long before the next shot with other text or none, or before its scene ends
+const MIN_TEXT = 0.6; // on-screen text that stays less long than this, in seconds, gets a warning
 const END_CARD = [1.5, 6]; // a silent end card shorter or longer than this, in seconds, gets a warning
 
 const args = process.argv.slice(2);
@@ -41,6 +49,7 @@ const TAIL = option('tail', 0.5); // the film runs this long after the sound end
 
 const die = (msg) => { console.error(msg); process.exit(1); };
 const warn = (msg) => console.warn('  check: ' + msg);
+let VOICELESS = false; // set from job.json below; read by readScenes
 const readJson = (file, hint = '') => (fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : die(`Missing ${file}. ${hint}`));
 const round = (seconds) => Math.round(seconds * 1000) / 1000;
 const stamp = (seconds) => seconds.toFixed(2);
@@ -64,21 +73,45 @@ function transitionNumbers() {
   return [...catalogue.matchAll(/^\| (\d+) \|/gm)].map((row) => Number(row[1]));
 }
 
+/** A word reduced to its letters and digits, for comparing. */
+const bare = (text) => text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+
+/** The brand's pronunciation table as a map from the respelled word to its real spelling, both bare. */
+function respellings(brand) {
+  const file = path.join(brandDir(brand), 'pronunciation.md');
+  if (!fs.existsSync(file)) return new Map();
+  return new Map(fs.readFileSync(file, 'utf8').split('\n').map((row) => row.split('|').map((cell) => cell.trim()))
+    .filter((cells) => cells.length >= 4 && cells[2] && cells[1] !== 'Word' && !/^-+$/.test(cells[1]))
+    .map((cells) => [bare(cells[2]), bare(cells[1])]));
+}
+
+/** Where a phrase is first spoken in the given lines, at or after word number `from`: { index, start } or null. */
+function findWords(words, phrase, lineIds, from, respell) {
+  const wanted = phrase.split(/\s+/).map(bare).filter(Boolean);
+  const said = (word) => { const b = bare(word.w); return [b, respell.get(b)]; };
+  if (!wanted.length) return null;
+  for (let i = from; i < words.length; i++) {
+    const run = words.slice(i, i + wanted.length);
+    if (run.length === wanted.length && run.every((word, k) => lineIds.includes(word.line) && said(word).includes(wanted[k]))) return { index: i, start: words[i].s };
+  }
+  return null;
+}
+
 /** Checks the shot list against the voice and returns its scenes with their voice lines attached. */
-function readScenes(shots, voiceLines, jobDir) {
+function readScenes(shots, voiceLines, jobDir, words = [], respell = new Map()) {
   if (!Array.isArray(shots.scenes) || !shots.scenes.length) die('shots.json has no scenes.');
   const known = transitionNumbers();
   const used = [];
   const scenes = shots.scenes.map((scene, i) => {
     const where = `shots.json, scene ${scene.id ?? i + 1}`;
     if (!/^S\d\d$/.test(scene.id ?? '')) die(`${where}: the id must look like S01.`);
-    const silent = scene.silent === true;
+    const silent = scene.silent === true || VOICELESS;
     if (scene.silent !== undefined && typeof scene.silent !== 'boolean') die(`${where}: "silent" must be true or false.`);
     if (silent) {
       if (scene.lines?.length) die(`${where}: a silent scene has no voice lines. Remove "lines", or remove "silent".`);
       if (typeof scene.seconds !== 'number' || !(scene.seconds > 0)) die(`${where}: a silent scene needs "seconds", how long it stays on screen, for example 2.5.`);
-      if (scene.seconds < END_CARD[0]) warn(`${scene.id}: the silent end card lasts ${scene.seconds} s. Under ${END_CARD[0]} s is too quick to read a logo and a web address.`);
-      if (scene.seconds > END_CARD[1]) warn(`${scene.id}: the silent end card lasts ${scene.seconds} s. Over ${END_CARD[1]} s of silence feels like the video has stalled.`);
+      if (!VOICELESS && scene.seconds < END_CARD[0]) warn(`${scene.id}: the silent end card lasts ${scene.seconds} s. Under ${END_CARD[0]} s is too quick to read a logo and a web address.`);
+      if (!VOICELESS && scene.seconds > END_CARD[1]) warn(`${scene.id}: the silent end card lasts ${scene.seconds} s. Over ${END_CARD[1]} s of silence feels like the video has stalled.`);
     } else {
       if (scene.seconds !== undefined) die(`${where}: "seconds" is only for silent scenes. A scene with voice takes its length from the voice.`);
       if (!Array.isArray(scene.lines) || !scene.lines.length) die(`${where}: "lines" must name at least one voice line, or mark the scene "silent": true with "seconds".`);
@@ -87,7 +120,14 @@ function readScenes(shots, voiceLines, jobDir) {
     if (!Array.isArray(scene.shots) || !scene.shots.length) die(`${where}: it needs at least one shot.`);
     const lines = (scene.lines ?? []).map((id) => voiceLines.find((line) => line.id === id) ?? die(`${where}: voice line "${id}" is not in audio/lines.json.`));
     used.push(...lines.map((line) => line.id));
+    let searchFrom = 0; // a shot's words are looked for after the words of the shot before it
     for (const shot of scene.shots) {
+      if (shot.word !== undefined) {
+        const found = findWords(words, shot.word, shot.line ? [shot.line] : scene.lines ?? [], searchFrom, respell);
+        if (!found) die(`${where}: shot ${shot.frame ?? ''} names the word "${shot.word}", which is not spoken in ${shot.line ? 'line ' + shot.line : 'the scene\'s lines'} after the shot before it (audio/words.json).`);
+        shot.wordAt = found.start;
+        searchFrom = found.index + 1;
+      }
       if (!SHOT_SIZES.includes(shot.size)) die(`${where}: shot size "${shot.size}" must be one of ${SHOT_SIZES.join(', ')}.`);
       if (shot.line && silent) die(`${where}: a shot names voice line "${shot.line}", but the scene is silent.`);
       if (shot.line && !scene.lines.includes(shot.line)) die(`${where}: a shot names voice line "${shot.line}", which the scene does not cover.`);
@@ -123,7 +163,8 @@ function readScenes(shots, voiceLines, jobDir) {
  * same position. Shots beyond the scene's lines share the time that is left evenly.
  */
 function shotTimes(scene, sceneStart, sceneEnd) {
-  const times = scene.shots.map((shot, k) => (shot.line ? scene.lines.find((line) => line.id === shot.line) : scene.lines[k])?.start);
+  const byWord = scene.shots.some((shot) => shot.wordAt !== undefined);
+  const times = scene.shots.map((shot, k) => shot.wordAt ?? (shot.line ? scene.lines.find((line) => line.id === shot.line) : byWord ? undefined : scene.lines[k])?.start);
   if (times[0] === undefined) times[0] = sceneStart + LEAD; // a silent scene: its first shot lands just after the scene starts
   times.forEach((time, k) => {
     if (time !== undefined) return;
@@ -155,12 +196,18 @@ function timeScenes(scenes, soundEnd, cardStart = soundEnd) {
     const holdsToEnd = scene.silent && i === scenes.length - 1; // the end card's text stays until the last frame
     const arrivals = shotTimes(scene, start, end);
     const shots = scene.shots.map((shot, k) => ({ ...shot, at: arrivals[k] }));
-    const withText = shots.filter((shot) => shot.text);
-    const texts = withText.map((shot, k) => ({
-      lines: shot.text.split('\n').slice(0, 2).map((clause) => clause.trim()),
-      at: round(shot.at - start),
-      out: round(withText[k + 1] ? withText[k + 1].at - TEXT_CLEAR - start : holdsToEnd ? end - start : end - TEXT_CLEAR - start),
-    }));
+    // A text repeated on neighbouring shots is one text that holds across them. It leaves before the next shot that
+    // shows other text or none.
+    const texts = [];
+    shots.forEach((shot, k) => {
+      if (!shot.text || shot.text === shots[k - 1]?.text) return;
+      let last = k;
+      while (shots[last + 1]?.text === shot.text) last++;
+      const next = shots[last + 1];
+      const out = next ? next.at - TEXT_CLEAR : holdsToEnd ? end : end - TEXT_CLEAR;
+      if (out - shot.at < MIN_TEXT) warn(`${scene.id}: "${shot.text.replace(/\n/g, ' / ')}" is on screen for ${stamp(Math.max(0, out - shot.at))} s, under ${MIN_TEXT} s.`);
+      texts.push({ lines: shot.text.split('\n').slice(0, 2).map((clause) => clause.trim()), at: round(shot.at - start), out: round(out - start) });
+    });
     return { ...scene, start: round(start), end: round(end), shots, texts };
   });
 }
@@ -183,14 +230,15 @@ function brief(scene, job) {
     ' *',
     ' * Voice',
     ...(scene.silent
-      ? [` *   None, this is a silent scene that holds for ${stamp(scene.end - scene.start)} s after the sound has ended.`]
+      ? [VOICELESS ? ` *   None: the film has no voice. This scene lasts ${stamp(scene.end - scene.start)} s.` : ` *   None, this is a silent scene that holds for ${stamp(scene.end - scene.start)} s after the sound has ended.`]
       : scene.lines.map((line) => row(`${line.id}  ${stamp(line.start)}-${stamp(line.end)}`, line.text))),
   ];
   scene.shots.forEach((shot, k) => {
     out.push(
       ' *',
-      ` * Shot ${k + 1}, from ${stamp(shot.at)} s`,
-      row('On-screen text', shot.text ? shot.text.replace(/\n/g, ' / ') : 'none'),
+      ` * Shot ${k + 1}${shot.frame ? ` (${shot.frame})` : ''}, from ${stamp(shot.at)} s`,
+      row('On-screen text', shot.text ? shot.text.replace(/\n/g, ' / ') : shot.text_held_from ? `held from ${shot.text_held_from}` : 'none'),
+      ...(shot.word ? [row('Arrives on', `"${shot.word}"`)] : []),
       row('Shot size', shot.size),
       row('Shows', shot.capture || 'no capture'),
       row('Focal point', shot.focal_point || 'not given'),
@@ -264,7 +312,8 @@ export const job: Job = { film, Film };
 
 /** index.ts lists every job folder in the engine that has a film, so deleting a folder and re-running removes it. */
 function indexFile() {
-  const slugs = fs.readdirSync(ENGINE_JOBS).filter((name) => fs.existsSync(path.join(ENGINE_JOBS, name, 'Film.tsx'))).sort();
+  // Only scaffolded jobs (they have a film.json): a hand-built film in this folder registers itself in Root.tsx.
+  const slugs = fs.readdirSync(ENGINE_JOBS).filter((name) => ['Film.tsx', 'film.json'].every((file) => fs.existsSync(path.join(ENGINE_JOBS, name, file)))).sort();
   const name = (slug) => 'job_' + slug.replace(/-/g, '_');
   return `// Written by tools/film/scaffold.mjs: one entry per job folder here. Do not edit; run the scaffold again.
 import type { Job } from './_film';
@@ -295,11 +344,28 @@ const jobName = path.basename(jobDir);
 const slug = slugOf(jobDir);
 const job = readJson(path.join(jobDir, 'job.json'));
 const shots = readJson(path.join(jobDir, 'shots.json'), 'Copy templates/shots.json and fill it from the approved shot list.');
-const voiceLines = readJson(path.join(jobDir, 'audio/lines.json'), 'Run tools/audio/voice.mjs join first.');
+VOICELESS = String(job.voice ?? '').toLowerCase() === 'none';
 const captionsFile = path.join(jobDir, 'audio/captions.json');
+let voiceLines;
+let sound;
+if (VOICELESS) {
+  fs.mkdirSync(path.join(jobDir, 'audio'), { recursive: true });
+  voiceLines = fs.existsSync(path.join(jobDir, 'audio/lines.json')) ? readJson(path.join(jobDir, 'audio/lines.json')) : [];
+  if (voiceLines.length) die('job.json says "voice": "none", but audio/lines.json has voice lines. Remove one or the other.');
+  if (!fs.existsSync(captionsFile)) fs.writeFileSync(captionsFile, JSON.stringify({ lines: [] }) + '\n');
+  const total = (shots.scenes ?? []).reduce((a, scene) => a + (Number(scene.seconds) || 0), 0);
+  sound = ['mix.wav', 'music.wav'].map((name) => path.join(jobDir, 'audio', name)).find((file) => fs.existsSync(file));
+  if (!sound) {
+    sound = path.join(jobDir, 'audio', 'silence.wav');
+    spawnSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo', '-t', String(Math.max(total, 0.1)), sound]);
+    console.log(`  no music yet: ${stamp(total)} s of silence in audio/silence.wav`);
+  }
+} else {
+  voiceLines = readJson(path.join(jobDir, 'audio/lines.json'), 'Run tools/audio/voice.mjs join first. (A film with no voice says "voice": "none" in job.json.)');
+  sound = ['mix.wav', 'voice.wav'].map((name) => path.join(jobDir, 'audio', name)).find((file) => fs.existsSync(file))
+    ?? die(`No sound in ${path.join(jobDir, 'audio')}: it needs mix.wav or voice.wav.`);
+}
 if (!Array.isArray(readJson(captionsFile, 'Run tools/film/captions.mjs first.').lines)) die(`${captionsFile} is not a captions file.`);
-const sound = ['mix.wav', 'voice.wav'].map((name) => path.join(jobDir, 'audio', name)).find((file) => fs.existsSync(file))
-  ?? die(`No sound in ${path.join(jobDir, 'audio')}: it needs mix.wav or voice.wav.`);
 
 const [width, height] = SIZES[job.size] ?? die(`job.json: size "${job.size}" must be one of ${Object.keys(SIZES).join(', ')}.`);
 const preset = PRESETS.includes(job.energy_preset) ? job.energy_preset : die(`job.json: energy_preset "${job.energy_preset}" must be one of ${PRESETS.join(', ')}.`);
@@ -321,9 +387,20 @@ console.log(`\nScaffolding ${jobName} as "${slug}", brand ${brand}`);
 // End cards come in just after the voice, whatever the mix's music tail is. mix.py reads the end cards from shots.json
 // and lets the music run on under them, so the card is never in silence.
 const voiceFile = path.join(jobDir, 'audio', 'voice.wav');
-const cardStart = round((fs.existsSync(voiceFile) ? soundLength(voiceFile) : soundLength(sound)) + TAIL);
-const scenes = timeScenes(readScenes(shots, voiceLines, jobDir), round(soundLength(sound) + TAIL), cardStart);
+const cardStart = VOICELESS ? 0 : round((fs.existsSync(voiceFile) ? soundLength(voiceFile) : soundLength(sound)) + TAIL);
+const wordsFile = path.join(jobDir, 'audio/words.json');
+const usesWords = shots.scenes?.some((scene) => scene.shots?.some((shot) => shot.word !== undefined));
+const words = usesWords ? readJson(wordsFile, 'Shots name their words, so the voice\'s word timings are needed.') : [];
+// The length cap agreed at the idea stage is binding: the tail after the sound is shortened to keep the film inside it.
+let tail = TAIL;
+if (typeof job.length_cap_seconds === 'number' && !shots.scenes.some((scene) => scene.silent)) {
+  const room = round(job.length_cap_seconds - soundLength(sound));
+  if (room < 0) warn(`the sound alone runs ${stamp(soundLength(sound))} s, over the ${job.length_cap_seconds} s cap in job.json.`);
+  else if (room < tail) { tail = room; console.log(`  tail after the sound shortened to ${stamp(tail)} s to stay inside the ${job.length_cap_seconds} s cap`); }
+}
+const scenes = timeScenes(readScenes(shots, voiceLines, jobDir, words, respellings(brand)), round(soundLength(sound) + tail), cardStart);
 const duration = scenes.at(-1).end;
+if (VOICELESS && typeof job.length_cap_seconds === 'number' && duration > job.length_cap_seconds + 0.01) warn(`the scenes add up to ${stamp(duration)} s, over the ${job.length_cap_seconds} s cap in job.json.`);
 if (scenes.some((scene) => scene.silent) && path.basename(sound) === 'mix.wav' && soundLength(sound) < duration - 0.05) {
   warn(`the mix stops at ${stamp(soundLength(sound))} s but the end card runs to ${stamp(duration)} s, so the music cuts out under it. Run tools/audio/mix.py again, then this.`);
 }
@@ -341,7 +418,11 @@ const film = {
   duration,
   audio: `jobs/${slug}/audio.wav`,
   audio_from: path.basename(sound),
-  scenes: scenes.map(({ id, title, start, end, energy, lines, texts }) => ({ id, title, start, end, energy, lines, texts })),
+  // Each shot's arrival on the scene's own clock, with what it shows, for scene code to take its cues from.
+  scenes: scenes.map(({ id, title, start, end, energy, lines, texts, shots: list }) => ({
+    id, title, start, end, energy, lines, texts,
+    shots: list.map((shot, k) => ({ id: shot.frame ?? `${id}-${k + 1}`, at: round(shot.at - start), size: shot.size, capture: shot.capture ?? null, ...(shot.background ? { background: shot.background } : {}), ...(typeof shot.label === 'string' ? { label: shot.label } : {}) })),
+  })),
   // For tools/checks/smoothness.py --planned-cuts: an instant change happens where its scene starts.
   planned_instant_changes: (shots.planned_instant_changes ?? []).map((change) => ({ ...change, at: startOf(change.scene) })),
   planned_holds: shots.planned_holds ?? [],

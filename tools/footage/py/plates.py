@@ -10,6 +10,9 @@
 import sys, os, json, subprocess
 import numpy as np, cv2
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # run with -I: the helper beside this file
+from _ff import FFMPEG  # noqa: E402
+
 def srgb_to_lin(c): c = c / 255.0; return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
 
 def skin(clip_dir, t0, t1, n=7):
@@ -63,7 +66,7 @@ def main():
               f"unsharp=5:5:{look.get('sharpen', 0.35)}:5:5:0,format=yuv420p")
         out = os.path.join(out_dir, f"{s['id']}.mp4")
         src = os.path.join(clips, s['clip'], 'edit.mp4')
-        r = subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', src, '-vf', vf, '-an', '-c:v', 'libx264', '-preset', 'slow', '-crf', '12',
+        r = subprocess.run([FFMPEG, '-v', 'error', '-y', '-i', src, '-vf', vf, '-an', '-c:v', 'libx264', '-preset', 'slow', '-crf', '12',
                             '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv', '-movflags', '+faststart', out],
                            capture_output=True, text=True)
         if r.returncode: sys.exit(f"{s['id']}: ffmpeg failed\n{r.stderr[-800:]}")

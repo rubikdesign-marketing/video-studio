@@ -1,0 +1,236 @@
+ITEM 1 Default lead selection
+  [ok] ROOT .claude/settings.json has no model key
+  [ok] no settings.local.json model key
+  [ok] capture-runner.md model=sonnet is an alias (no full id)
+  [ok] capture-runner.md has no full model ID anywhere
+  [ok] checker.md model=haiku is an alias (no full id)
+  [ok] checker.md has no full model ID anywhere
+  [ok] frame-critic.md model=sonnet is an alias (no full id)
+  [ok] frame-critic.md has no full model ID anywhere
+  [ok] reference-studier.md model=sonnet is an alias (no full id)
+  [ok] reference-studier.md has no full model ID anywhere
+  [ok] researcher.md model=sonnet is an alias (no full id)
+  [ok] researcher.md has no full model ID anywhere
+  [ok] scene-builder.md model=sonnet is an alias (no full id)
+  [ok] scene-builder.md has no full model ID anywhere
+  [ok] models.mjs lead from user fixture = opus[1m]
+  [ok] unset lead stays null (got null)
+  [ok] plain output says not set, no invention
+  [ok] real settings lead = opus[1m] from ~/.claude/settings.json
+  [ok] lead does not come from ROOT project settings
+ITEM 2 Model routing
+  [ok] idea_and_direction -> lead (CLI agrees)
+  [ok] idea_and_direction: no worker needed for lead
+  [ok] script_and_wording -> lead (CLI agrees)
+  [ok] script_and_wording: no worker needed for lead
+  [ok] storyboard_decisions -> lead (CLI agrees)
+  [ok] storyboard_decisions: no worker needed for lead
+  [ok] integration -> lead (CLI agrees)
+  [ok] integration: no worker needed for lead
+  [ok] approval_and_asks -> lead (CLI agrees)
+  [ok] approval_and_asks: no worker needed for lead
+  [ok] measure -> script (CLI agrees)
+  [ok] measure: no worker needed for script
+  [ok] render -> script (CLI agrees)
+  [ok] render: no worker needed for script
+  [ok] mechanical_check -> script (CLI agrees)
+  [ok] mechanical_check: no worker needed for script
+  [ok] run_checks -> haiku (checker) (CLI agrees)
+  [ok] run_checks: agent checker model field=haiku matches route
+  [ok] lookup -> haiku (checker) (CLI agrees)
+  [ok] lookup: agent checker model field=haiku matches route
+  [ok] scene_code -> sonnet (scene-builder) (CLI agrees)
+  [ok] scene_code: agent scene-builder model field=sonnet matches route
+  [ok] capture -> sonnet (capture-runner) (CLI agrees)
+  [ok] capture: agent capture-runner model field=sonnet matches route
+  [ok] critique -> sonnet (frame-critic) (CLI agrees)
+  [ok] critique: agent frame-critic model field=sonnet matches route
+  [ok] study -> sonnet (reference-studier) (CLI agrees)
+  [ok] study: agent reference-studier model field=sonnet matches route
+  [ok] research -> sonnet (researcher) (CLI agrees)
+  [ok] research: agent researcher model field=sonnet matches route
+  [ok] checker maxTurns 15 = policy 15
+  [ok] checker has effort
+  [ok] scene-builder maxTurns 40 = policy 40
+  [ok] scene-builder has effort
+  [ok] capture-runner maxTurns 30 = policy 30
+  [ok] capture-runner has effort
+  [ok] frame-critic maxTurns 12 = policy 12
+  [ok] frame-critic has effort
+  [ok] reference-studier maxTurns 25 = policy 25
+  [ok] reference-studier has effort
+  [ok] researcher maxTurns 25 = policy 25
+  [ok] researcher has effort
+  [ok] unknown class exits 2
+ITEM 3 Bounded retries
+  [ok] first claim allowed
+  [ok] partial release keeps writes: RELEASED c1 partial (outputs kept: out/a; counts toward the retry cap)
+  [ok] retry (second try) allowed: ALLOW c2
+  [ok] second retry (third try) STOPPED: STOP retry cap: task "t1" in stage "animation" has failed or stopped 2 times (limit: 1 try + 1 retry). Take it to the lead.
+  [ok] a different task still allowed
+  [ok] ledger keeps partial record
+  [ok] after done a re-claim is allowed (reset)
+ITEM 4 Unavailable model / paid
+  [ok] haiku blocked, lead named: STOP model "haiku" is blocked: not in availableModels [opus, sonnet] (/tmp/claude-501/verA-YJCw3g/avail.json). Not switched to another model. Alternative: do this task in the lead session.
+  [ok] nothing recorded for blocked claim (no swap)
+  [ok] sonnet still allowed (not auto-swapped target needed)
+  [ok] deniedModels full id blocks haiku
+  [ok] managed list further restricts sonnet
+  [ok] --paid without approval STOPPED: STOP paid work needs a recorded approval (gate paid_usage is missing). Ask the o
+  [ok] approve paid_usage
+  [ok] --paid with approval allowed
+  [ok] --paid with stale approval STOPPED
+ITEM 5 Skipped / reused work
+  [ok] APPROVED idea by owner (2 files, 4162159323f7, mode guided)
+  [ok] check OK: OK idea: approved 2026-11-19T09:14:26.916Z
+  [ok] rerun skips idea, next is script-and-voice
+  [ok] one-byte change (o->p) -> STALE exit 3
+  [ok] resume next = redo idea (stale): NEXT: run stage "intake-and-idea", then ask the owner to approve "idea" (its inputs changed since the last approval)
+  [ok] reverting restores OK
+  [ok] one byte added inside hashed folder -> stale
+  [ok] new empty file in folder -> stale
+  [ok] deleted input file -> stale
+  [ok] unapproved gate MISSING exit 1
+  [ok] grouped brief_review satisfies folded idea+moodboard
+  [ok] approve with missing input refused
+ITEM 6 Allow/stop matrix
+  [ok] claim 1 allowed
+  [ok] claim 2 allowed
+  [ok] third active STOP: STOP active cap: 2 of 2 workers already active (c1 checker, 
+  [ok] release then new claim allowed
+  [ok] child path vs held parent (active cap hit first maybe): STOP active cap: 2 of 2 workers already active (c2
+  [ok] overlapping writes (child of held) STOP: STOP write overlap: "out/b/deep" collides with "out/b" held by active 
+  [ok] parent of held STOP
+  [ok] normalised ./out/b/ STOP
+  [ok] out/bb is not overlap of out/b (sibling prefix)
+  [ok] storyboard dispatch 1 allowed
+  [ok] storyboard dispatch 2 allowed
+  [ok] storyboard dispatch 3 allowed
+  [ok] 4th in default stage STOP: STOP stage cap: 3 of 3 dispatches already used in stage "storyboard".
+  [ok] animation stage cap 6 (allowed 6)
+  [ok] double release rejected
+  [ok] unknown claim release rejected
+  [ok] missing flags rejected
+  [ok] 6 parallel claims -> exactly 2 allowed (got 2)
+ITEM 7 Recovery
+  [ok] claim made
+  [ok] lock held by live child
+  [ok] stale lock left behind after SIGKILL
+  [ok] resume (new process) cleared stale lock and reports c1: interrupted c1 stage=animation task=k worker=checker; partial work preserved at: out/k; retries left: 1
+  [ok] every ledger line is valid JSON
+  [ok] lock released
+  [ok] retry of interrupted task allowed (1 retry): ALLOW c2
+  [ok] interrupted + failed counts, next STOP
+  [ok] receipts.json valid after 8 SIGKILLs mid-write (corrupt 0)
+  leftover tmp files after SIGKILL: 0
+  [ok] status works after kills
+  [ok] no leftover .tmp files (informational: SIGKILL between write and rename may leave one)
+  [ok] torn trailing ledger line tolerated
+  [ok] claim after torn line works: ALLOW c2
+  [FAIL] ledger lines after claim following a torn line: 1 unparsable (append glued to torn fragment loses the new claim if >0)
+ITEM 8 Export links
+  tracked+new files 4617, kept after export 3824, excluded 793
+  files scanned 19, path refs checked 363
+  UNRESOLVED .claude/agents/capture-runner.md:20 `engine/out/.render.lock` existsNow=false afterExport=false
+  UNRESOLVED .claude/agents/checker.md:26 `engine/out/.render.lock` existsNow=false afterExport=false
+  UNRESOLVED .claude/agents/frame-critic.md:20 `engine/out/.render.lock` existsNow=false afterExport=false
+  UNRESOLVED .claude/agents/reference-studier.md:20 `engine/out/.render.lock` existsNow=false afterExport=false
+  UNRESOLVED .claude/agents/researcher.md:18 `engine/out/.render.lock` existsNow=false afterExport=false
+  UNRESOLVED .claude/agents/scene-builder.md:22 `engine/out/.render.lock` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:36 `stages/00-brand-setup.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:37 `stages/00b-product-discovery.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:38 `stages/01-intake-and-idea.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:39 `stages/02-script-and-voice.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:40 `stages/03-moodboard.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:41 `stages/04-storyboard.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:42 `stages/05-animation.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:43 `stages/06-delivery-and-learning.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:117 `tools/footage/.venv/bin/python` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/SKILL.md:121 `.generations/ledger.json` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/conductor.md:25 `JOB/receipts.json` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:40 `references/anti-ppt.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:43 `references/techniques.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:55 `references/typed-cues.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:56 `references/licences.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:56 `references/sound-design.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:70 `hyperframes/references/types/launch.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:70 `motionmaxxing/references/idea.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:70 `motionmaxxing/references/world.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:70 `motionmaxxing/references/close.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:71 `motionmaxxing/references/ui-demo.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:73 `hyperframes/references/types/explainer.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:73 `hyperframes/references/story.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:74 `hyperframes/references/types/data.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:75 `hyperframes/references/types/vertical.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:76 `hyperframes/references/types/music.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:76 `motionmaxxing/references/sound-sync.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:77 `hyperframes/references/types/3d.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:77 `remotion-markup/3d.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:78 `remotion-markup/video-editing.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:78 `remotion-markup/silence-detection.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:78 `remotion-markup/cropping.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:78 `remotion-markup/color-correction.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:86 `hyperframes/references/film.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:87 `bang-motion/references/techniques.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:87 `motionmaxxing/references/motion.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:87 `hyperframes/references/motion.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:89 `bang-motion/references/anti-ppt.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:89 `motionmaxxing/references/type.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:89 `remotion-markup/measuring-text.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:89 `remotion-markup/text-highlights.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:90 `hyperframes/references/captions.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:91 `motionmaxxing/references/layout.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:92 `remotion-markup/light-leaks.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:92 `remotion-markup/motion-blur.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:92 `remotion-markup/effects.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:93 `real-sound/references/sound-design.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:93 `real-sfx/references/event-map.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:93 `hyperframes/references/sound.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:98 `viral-hooks/references/` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:99 `bang-motion/SKILL.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:99 `motionmaxxing/references/judgment.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:99 `motionmaxxing/references/slop.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:99 `motionmaxxing/taste/verdicts.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/skill-map.md:99 `hyperframes/references/review.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/00-brand-setup.md:9 `brands/tulvo/` existsNow=true afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/00-brand-setup.md:30 `logo/` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/00-brand-setup.md:30 `fonts/` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/00-brand-setup.md:32 `product/` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/00-brand-setup.md:47 `stages/00b-product-discovery.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/04-storyboard.md:18 `references/techniques.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/05-animation.md:32 `engine/src/products/tulvo/` existsNow=true afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/05-animation.md:38 `references/typed-cues.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/05-animation.md:39 `tools/footage/.venv/bin/python` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/05-animation.md:82 `engine/out/.render.lock` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/06-delivery-and-learning.md:10 `deliver/sources.txt` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/06-delivery-and-learning.md:18 `media/CREDITS.md` existsNow=false afterExport=false
+  UNRESOLVED .claude/skills/video-studio/stages/06-delivery-and-learning.md:23 `learn/retention.json` existsNow=false afterExport=false
+  [FAIL] refs to excluded files with no stand-in: 2
+  (refs to paths absent even in ROOT, informational: 72)
+ITEM 9 Registry
+  [ok] find a --limit 99 -> 5 lines
+  [ok] find hook --limit 99 -> 5
+  [ok] find motion --limit 99 -> 5
+  [ok] find sound --limit 99 -> 5
+  [ok] find preset --limit 99 -> 5
+  [ok] find e --limit 99 -> 5
+  [ok] find --kind hook --limit 1000000 -> 5
+  [ok] find --limit -1 -> 5
+  registry items: 995
+  [ok] get sound:transition-whoosh-hit-03 -> exit 0
+  [ok] get sound:glitch-crush-03 -> exit 0
+  [ok] get component:caption-bar -> exit 0
+  [ok] get unknown id non-zero
+  check output tail: counts: background 12, component 226, hook 155, motion 243, preset 14, reference 39, sound 281, workflow 25 / privacy scan: not run (no manifest: pass --manifest or set DAMEX_RELEASE_MANIFEST) / release ~/Desktop/Marketer/projects/damex-video-engine: 995 customer items checked, 0 mismatches / check passed
+  [ok] check --release OLD exit 0
+
+SUMMARY
+  item 1: PASS
+  item 2: PASS
+  item 3: PASS
+  item 4: PASS
+  item 5: PASS
+  item 6: PASS
+  item 7: FAIL -> ledger lines after claim following a torn line: 1 unparsable (append glued to torn fragment loses the new claim if >0)
+  item 8: FAIL -> refs to excluded files with no stand-in: 2
+  item 9: PASS

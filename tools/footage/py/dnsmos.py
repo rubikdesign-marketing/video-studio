@@ -24,7 +24,9 @@ import onnxruntime as ort  # noqa: E402
 
 ort.disable_telemetry_events()
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 RATE = 16000
 WINDOW = 9.01
 MODEL = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'models', 'dnsmos', 'sig_bak_ovr.onnx')
@@ -40,7 +42,7 @@ def session():
     global _session
     if _session is None:
         if not os.path.exists(MODEL):
-            raise SystemExit('The speech-quality model is missing (tools/footage/models/dnsmos). Run: bash setup/install.sh')
+            raise SystemExit('The speech-quality model is missing (tools/footage/models/dnsmos). Run: node setup/runtime/install.mjs --with footage-audio-python')
         opts = ort.SessionOptions()
         opts.log_severity_level = 3
         _session = ort.InferenceSession(MODEL, opts, providers=['CPUExecutionProvider'])

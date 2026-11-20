@@ -16,7 +16,9 @@ import sys
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-FFMPEG = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '.'))
+from _ff import FFMPEG, FFPROBE  # noqa: E402
 FW = 480          # frame width on the sheet
 WAVE_W = 256
 VEC = 180
@@ -26,10 +28,24 @@ BG = (22, 22, 24)
 SKIN_ANGLE = 123  # degrees from +Cb: the line natural skin tones of every complexion sit on
 
 
+def _font_paths():
+    """Fonts to try, per OS. The first that opens wins; PIL's built-in font is the last resort."""
+    if os.name == 'nt':
+        d = os.path.join(os.environ.get('WINDIR', 'C:\\Windows'), 'Fonts')
+        return [os.path.join(d, 'arial.ttf'), os.path.join(d, 'segoeui.ttf')]
+    if sys.platform == 'darwin':
+        return ['/System/Library/Fonts/Helvetica.ttc', '/System/Library/Fonts/Supplemental/Arial.ttf', '/Library/Fonts/Arial.ttf']
+    return ['/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', '/usr/share/fonts/dejavu/DejaVuSans.ttf',
+            '/usr/share/fonts/TTF/DejaVuSans.ttf', '/usr/share/fonts/liberation/LiberationSans-Regular.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf']
+
+
 def font(size):
-    for f in ('/System/Library/Fonts/Helvetica.ttc', '/System/Library/Fonts/Supplemental/Arial.ttf', '/Library/Fonts/Arial.ttf'):
-        if os.path.exists(f):
+    for f in _font_paths():
+        try:
             return ImageFont.truetype(f, size)
+        except OSError:
+            continue
     return ImageFont.load_default()
 
 
@@ -99,7 +115,7 @@ def main():
     src = os.path.join(d, 'edit.mp4')
     shots = json.load(open(os.path.join(d, 'shots.json')))['shots'] if os.path.exists(os.path.join(d, 'shots.json')) else None
     words = json.load(open(os.path.join(d, 'words.json')))['words'] if os.path.exists(os.path.join(d, 'words.json')) else []
-    dur = float(subprocess.run(['/opt/homebrew/opt/ffmpeg-full/bin/ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src], capture_output=True, text=True, check=True).stdout)
+    dur = float(subprocess.run([FFPROBE, '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src], capture_output=True, text=True, check=True).stdout)
     if not shots:
         shots = [{'start': 0, 'end': dur}]
     os.makedirs(os.path.join(d, 'scopes'), exist_ok=True)

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // The shared sound library: find a sound, hear a group, check the files, see a brand's kit, and put a sound in a job.
 //
-//   sounds.mjs find [--group whoosh] [--feel soft,airy] [--text "card lands"] [--longest 1] [--max 10]
+//   sounds.mjs find [--group whoosh] [--feel soft,airy] [--text "card lands"] [--longest 1] [--max 10] [--local]
+//       --local also searches packs in library/sounds-local/ (no known licence: local use only, never synced)
 //   sounds.mjs list                          every group, how many sounds it has and how many the plan asked for
 //   sounds.mjs check                         every file against its manifest: checksum, licence, level, credit, size
 //   sounds.mjs sheet --group whoosh [--out engine/out/sheet-whoosh.mp3]
@@ -18,7 +19,7 @@
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { checkLibrary, findSounds, GROUPS, LIBRARY, loadKit, loadLibrary, resolveSlot, sfxIdOf, STUDIO } from './lib/library.mjs';
+import { checkLibrary, findSounds, GROUPS, LIBRARY, LOCAL, loadKit, loadLibrary, loadLocal, resolveSlot, sfxIdOf, STUDIO } from './lib/library.mjs';
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -33,8 +34,10 @@ const die = (message, code = 2) => {
 };
 const secs = (s) => `${Number(s).toFixed(2)} s`;
 
+const LOCAL_WARNING = 'Local pack (library/sounds-local): no known licence. Use it only in films the owner publishes on their own channels until the licence is confirmed, and never commit the file.';
+const withLocal = () => (args.includes('--local') ? [...loadLibrary().sounds, ...loadLocal().sounds] : loadLibrary().sounds);
 if (cmd === 'find') {
-  const { sounds } = loadLibrary();
+  const sounds = withLocal();
   const found = findSounds(sounds, {
     group: flag('--group'),
     feel: (flag('--feel', '') || '').split(',').filter(Boolean),
@@ -43,7 +46,8 @@ if (cmd === 'find') {
     max: Number(flag('--max', 10)),
   });
   if (!found.length) die('Nothing in the library matches. Try fewer feel words, or `sounds.mjs list` to see the groups.', 1);
-  for (const { sound: s } of found) console.log(`${s.id.padEnd(34)} ${secs(s.seconds).padStart(8)}  ${(s.feel || []).join(', ')}\n${''.padEnd(34)} ${s.use_for}`);
+  for (const { sound: s } of found) console.log(`${s.id.padEnd(34)} ${secs(s.seconds).padStart(8)}  ${(s.feel || []).join(', ')}${s.local ? '  [local]' : ''}\n${''.padEnd(34)} ${s.use_for ?? s.file}`);
+  if (found.some((r) => r.sound.local)) console.log(`\n${LOCAL_WARNING}`);
 } else if (cmd === 'list') {
   const { counts, total, mb } = checkLibrary();
   for (const [group, asked] of Object.entries(GROUPS)) console.log(`${group.padEnd(11)} ${String(counts[group] || 0).padStart(4)} of about ${asked}`);
@@ -104,14 +108,15 @@ if (cmd === 'find') {
   if (!Number.isFinite(at) || at < 0) die('Say when, in film seconds: --at 3.2');
   const gain = Number(flag('--gain', 0.45));
   if (!(gain >= 0.2 && gain <= 0.8)) die('--gain is a share of the voice, between 0.2 and 0.8 (knowledge/craft/07-sound.md).');
-  const sound = loadLibrary().sounds.find((s) => s.id === id) || die(`No sound "${id}" in the library. sounds.mjs find shows ids.`, 1);
+  const sound = withLocal().find((s) => s.id === id) || die(`No sound "${id}" in the library${args.includes('--local') ? '' : ' (add --local for packs in library/sounds-local)'}. sounds.mjs find shows ids.`, 1);
+  if (sound.local) console.log(LOCAL_WARNING);
   const audio = path.join(path.resolve(job), 'audio');
   fs.mkdirSync(path.join(audio, 'sfx'), { recursive: true });
   const sfxId = sfxIdOf(id);
-  fs.copyFileSync(path.join(LIBRARY(), sound.file), path.join(audio, 'sfx', `${sfxId}.mp3`));
+  fs.copyFileSync(path.join(sound.local ? LOCAL() : LIBRARY(), sound.file), path.join(audio, 'sfx', `${sfxId}.mp3`));
   const list = path.join(audio, 'sfx.json');
   const cues = fs.existsSync(list) ? JSON.parse(fs.readFileSync(list, 'utf8')) : [];
-  cues.push({ id: sfxId, at, gain, source: `library/sounds/${sound.file}`, library: id, cause: flag('--cause', '') });
+  cues.push({ id: sfxId, at, gain, source: `library/${sound.local ? 'sounds-local' : 'sounds'}/${sound.file}`, library: id, cause: flag('--cause', '') });
   cues.sort((a, b) => a.at - b.at);
   fs.writeFileSync(list, JSON.stringify(cues, null, 1));
   console.log(`Added ${id} at ${secs(at)}, ${Math.round(gain * 100)}% of the voice, to ${path.relative(STUDIO, list)}. mix.py places it.`);

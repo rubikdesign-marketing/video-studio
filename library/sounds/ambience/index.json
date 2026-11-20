@@ -346,6 +346,40 @@
       "original": "0100.mp3 (s0100)",
       "fetched": "2026-11-18",
       "sha256": "37cda2ba6e64dd9a811d1d8bbd1dcce77088dca1a0b46c7f07d03e0a0f10825a"
+    },
+    {
+      "id": "ambience/room-clean-01",
+      "file": "ambience/room-clean-01.mp3",
+      "name": "Clean room tone, no hum",
+      "feel": [
+        "calm",
+        "soft",
+        "wide",
+        "low"
+      ],
+      "use_for": "A quiet room with no mains hum and no fan: soft air only. A 16 s loop under a talking or screen-share film. No voices (office ambience with people is an open gap).",
+      "seconds": 16.0,
+      "peak_db": -3.0,
+      "loudest_lufs": -13.4,
+      "channels": 2,
+      "source": "studio",
+      "author": "Video Studio (tools/audio/synth.py)",
+      "licence": "CC0-1.0",
+      "source_url": null,
+      "recipe": {
+        "kind": "ambience",
+        "seconds": 16.0,
+        "seed": 51,
+        "tone": "neutral",
+        "weight": "medium",
+        "style": "clean",
+        "hum": 60.0,
+        "crossfade": 1.5,
+        "width": 0.7,
+        "density": 1.0
+      },
+      "fetched": "2026-11-19",
+      "sha256": "55c6d1c94b56d8d7b87e01c88f401ea452ca1dd99e4d0b3ff79e8fdc4bfb1321"
     }
   ]
 }

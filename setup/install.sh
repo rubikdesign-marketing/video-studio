@@ -1,9 +1,29 @@
 #!/bin/bash
+# Default is the cross-platform Node runtime (setup/runtime/). Add --brew first for the old Mac Homebrew flow below.
 # One-step setup for the Video Studio on a Mac.
 #   bash setup/install.sh
 # Safe to run again: it only adds what is missing. It never touches your key once .env exists.
 set -u
 cd "$(dirname "$0")/.." || exit 1
+# Default: hand off to the Node runtime (same on macOS, Linux and Windows). The old Homebrew flow is kept behind --brew.
+if [ "${1:-}" != "--brew" ]; then
+  NODE="$(command -v node 2>/dev/null || true)"
+  [ -n "$NODE" ] || { [ -x .runtime/node/bin/node ] && NODE="$PWD/.runtime/node/bin/node"; }
+  if [ -z "$NODE" ]; then
+    echo "Node.js is not installed (or not on PATH), and the studio needs Node 22.13 or newer."
+    echo "  Mac:   brew install node        or download Node 22 LTS from https://nodejs.org"
+    echo "  Linux: install Node 22 LTS from https://nodejs.org (the .tar.xz needs no admin: unpack it and add its bin folder to PATH)"
+    echo "Then run this again: bash setup/install.sh"
+    exit 1
+  fi
+  if ! "$NODE" -e 'const [a,b]=process.versions.node.split(".").map(Number);process.exit((a===22&&b>=13)||a>=24?0:1)'; then
+    echo "Node $("$NODE" -v) is too old. The studio needs Node 22.13 or newer (not 23)."
+    echo "  Mac: brew upgrade node, or download Node 22 LTS from https://nodejs.org"
+    exit 1
+  fi
+  exec "$NODE" setup/runtime/install.mjs "$@"
+fi
+shift
 say() { printf "\n== %s\n" "$1"; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
@@ -62,11 +82,20 @@ fi
 # its model inside) and Microsoft's DNSMOS speech-quality models (CC BY 4.0). Demucs (MIT; separates music from a voice;
 # about 1-2 GB with PyTorch) only with: bash setup/install.sh --extras
 DF="tools/footage/bin/deep-filter"
-if [ ! -x "$DF" ]; then
-  arch="$(uname -m)"; [ "$arch" = "arm64" ] && arch="aarch64"
+# Release assets listed for DeepFilterNet v0.5.6 on GitHub (checked 2026-11-19). Linux x64 uses the static musl build.
+case "$(uname -s)-$(uname -m)" in
+  Darwin-arm64) DF_ASSET=aarch64-apple-darwin ;;
+  Darwin-x86_64) DF_ASSET=x86_64-apple-darwin ;;
+  Linux-x86_64) DF_ASSET=x86_64-unknown-linux-musl ;;
+  Linux-aarch64|Linux-arm64) DF_ASSET=aarch64-unknown-linux-gnu ;;
+  *) DF_ASSET="" ;;
+esac
+if [ -z "$DF_ASSET" ]; then
+  echo "Noise removal has no DeepFilterNet build for this system ($(uname -s) $(uname -m))."
+elif [ ! -x "$DF" ]; then
   mkdir -p tools/footage/bin
   echo "Fetching DeepFilterNet (noise removal, about 28 MB)..."
-  curl -sL --fail -o "$DF" "https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-$arch-apple-darwin" && chmod +x "$DF" \
+  curl -sL --fail -o "$DF" "https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-$DF_ASSET" && chmod +x "$DF" \
     || { rm -f "$DF"; echo "DeepFilterNet did not download. The health check at the end will say so."; }
 fi
 # Face tracking for framing (FOOTAGE-PLAN.md phase 4): MediaPipe's face landmarker (Apache 2.0). Positions only.
@@ -140,9 +169,9 @@ fi
 chmod +x tools/study/*.sh tools/study/*.py tools/audio/*.py tools/checks/*.py setup/*.sh 2>/dev/null
 
 say "5 of 5  Health check"
-bash setup/doctor.sh
+bash setup/doctor.sh --brew
 status=$?
 echo
-if [ $status -eq 0 ]; then echo "The studio is ready. In Claude, say: make a video."
+if [ $status -eq 0 ]; then echo "The studio is ready. In Claude, type /video-menu (or say: make a video)."
 else echo "Fix the lines marked NEED above, then run: bash setup/doctor.sh"; fi
 exit $status

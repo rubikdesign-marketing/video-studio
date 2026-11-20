@@ -36,10 +36,13 @@
 //         engine/public/jobs/<job>/capture/<id>/  the best take's recording, cursor and tracks, for the engine
 // The sign-in lives in .capture/<brand>/ (never synced). The tool never types, reads or keeps a password or code.
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { spawnSync, execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { toolEnv } from '../lib/ff.mjs';
+import { copyTree } from '../lib/fsx.mjs';
 import { brandDir, brandOfJob, rel, STUDIO } from '../brand/lib.mjs';
 import { connectYourChrome, EXTENSION_STORE } from './yourchrome.mjs';
 import { dresser, nudger, showRecorder, readyFacts, covering, visibleMatches, privacyScan, wordsOnScreen, layoutNow, lookalikes, trackedNow, scrollerOf, FIRST_NAMES } from './inpage.mjs';
@@ -84,7 +87,7 @@ const BACKGROUND_HOSTS = [
   // Live-update channels that stay open as long as the page is open (Tulvo uses Firestore's).
   'Firestore/Listen/channel', 'Firestore/Write/channel', 'firebaseio.com', '.pusher.com', 'ably.io', 'ably-realtime.com', '/realtime/v1/', 'pubnub.com',
 ];
-const FFMPEG = fs.existsSync('/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg') ? '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg' : 'ffmpeg';
+const FFMPEG = toolEnv({}).FFMPEG || 'ffmpeg';   // found by setup/runtime/resolve.mjs
 
 // Things most products' pages carry that never belong in a film. A brand turns these off with
 // "clean_screen": { "studio_defaults": false }.
@@ -279,15 +282,22 @@ function settingOf(product, script, warnings) {
 
 async function playwright() {
   try { return (await import('playwright-core')).chromium; }
-  catch { stop('The capture tool is not installed yet. Run: bash setup/install.sh   (or: cd tools/capture && npm ci)'); }
+  catch { stop('The capture tool is not installed yet. Run: node setup/runtime/install.mjs   (or: cd tools/capture && npm ci)'); }
 }
 
 /** The installed Chrome's own user agent, without the word "Headless", so the product sees a normal Chrome. */
 function chromeAgent() {
-  const bin = { darwin: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', linux: '/usr/bin/google-chrome' }[process.platform];
+  const env = process.env;
+  const known = {
+    darwin: ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'],
+    linux: ['/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser'],
+    win32: [env.ProgramFiles, env['ProgramFiles(x86)'], env.LOCALAPPDATA].filter(Boolean).map((base) => path.join(base, 'Google', 'Chrome', 'Application', 'chrome.exe')),
+  }[process.platform] ?? [];
+  const bin = [env.DAMEX_CHROME, ...known].filter(Boolean).find((candidate) => fs.existsSync(candidate));
+  if (!bin) return undefined;
   try {
     const major = execFileSync(bin, ['--version'], { encoding: 'utf8' }).match(/(\d+)\./)[1];
-    const os = process.platform === 'darwin' ? 'Macintosh; Intel Mac OS X 10_15_7' : 'X11; Linux x86_64';
+    const os = { darwin: 'Macintosh; Intel Mac OS X 10_15_7', win32: 'Windows NT 10.0; Win64; x64' }[process.platform] ?? 'X11; Linux x86_64';
     return `Mozilla/5.0 (${os}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${major}.0.0.0 Safari/537.36`;
   } catch { return undefined; }
 }
@@ -366,11 +376,12 @@ function desktopAppOf(product) {
   const a = product.raw.app;
   const file = rel(product.file);
   if (!a || typeof a.path !== 'string' || !a.path) stop(`${file}: a "desktop" product needs "app": { "path": "..." }, the app (like "/Applications/Notes.app") or its source folder (the one with package.json).`);
-  const where = path.resolve(path.dirname(product.file), a.path.replace(/^~(?=\/)/, process.env.HOME));
-  if (!fs.existsSync(where)) stop(`${file}: the app ${where} is not on this Mac.`);
+  const where = path.resolve(path.dirname(product.file), a.path.replace(/^~(?=[\/\\]|$)/, os.homedir()));
+  if (!fs.existsSync(where)) stop(`${file}: the app ${where} is not on this computer.`);
   const args = Array.isArray(a.args) ? a.args.map(String) : [];
   if (/\.app\/?$/.test(where)) {
-    // A packaged Mac app: its program is named in its Info.plist.
+    // A packaged Mac app: its program is named in its Info.plist (read with plutil, which only a Mac has).
+    if (process.platform !== 'darwin') stop(`${file}: ${path.basename(where)} is a packaged Mac app, which cannot run on this computer. Point "app": { "path": "..." } at the app's source folder (the one with package.json) instead, or record the app yourself and import the recording.`);
     const plist = path.join(where, 'Contents', 'Info.plist');
     const name = spawnSync('/usr/bin/plutil', ['-extract', 'CFBundleExecutable', 'raw', plist], { encoding: 'utf8' }).stdout.trim() || path.basename(where, '.app');
     const bin = path.join(where, 'Contents', 'MacOS', name);
@@ -379,7 +390,7 @@ function desktopAppOf(product) {
     return { path: where, bin, args, name: path.basename(where, '.app'), packaged: true };
   }
   if (!fs.existsSync(path.join(where, 'package.json'))) stop(`${file}: ${where} is neither an app (.app) nor an app's source folder (no package.json in it).`);
-  const electron = a.electron ? path.resolve(path.dirname(product.file), a.electron) : path.join(where, 'node_modules', 'electron', 'dist', 'Electron.app', 'Contents', 'MacOS', 'Electron');
+  const electron = a.electron ? path.resolve(path.dirname(product.file), a.electron) : path.join(where, 'node_modules', 'electron', 'dist', ...(process.platform === 'darwin' ? ['Electron.app', 'Contents', 'MacOS', 'Electron'] : [process.platform === 'win32' ? 'electron.exe' : 'electron']));
   if (!fs.existsSync(electron)) stop(`${file}: no Electron to run ${where} with. Install the app's own packages in its folder (npm install), or name an Electron program with "app": { "electron": "..." }.`);
   let name = path.basename(where);
   try { name = JSON.parse(fs.readFileSync(path.join(where, 'package.json'), 'utf8')).productName ?? JSON.parse(fs.readFileSync(path.join(where, 'package.json'), 'utf8')).name ?? name; } catch {}
@@ -389,7 +400,7 @@ function desktopAppOf(product) {
 /** Starts the desktop app through Playwright's Electron support and waits for its first window. */
 async function openElectron(app, setting) {
   let electron;
-  try { electron = (await import('playwright-core'))._electron; } catch { stop('The capture tool is not installed yet. Run: bash setup/install.sh   (or: cd tools/capture && npm ci)'); }
+  try { electron = (await import('playwright-core'))._electron; } catch { stop('The capture tool is not installed yet. Run: node setup/runtime/install.mjs   (or: cd tools/capture && npm ci)'); }
   let handle;
   try {
     handle = await electron.launch({ executablePath: app.bin, args: app.args, cwd: app.packaged ? undefined : app.path, timeout: 45000, locale: setting?.locale, timezoneId: setting?.timeZone, colorScheme: setting?.theme, env: { ...process.env, ELECTRON_ENABLE_LOGGING: '' } });
@@ -2474,7 +2485,7 @@ function publish(jobDir, id, takeDir, info) {
   for (const f of fs.readdirSync(takeDir).filter((f) => /^recording-[\w-]+\.mp4$/.test(f))) {
     try { fs.linkSync(path.join(takeDir, f), path.join(dest, f)); } catch { fs.copyFileSync(path.join(takeDir, f), path.join(dest, f)); }
   }
-  if (fs.existsSync(path.join(takeDir, 'parts'))) fs.cpSync(path.join(takeDir, 'parts'), path.join(dest, 'parts'), { recursive: true });
+  if (fs.existsSync(path.join(takeDir, 'parts'))) copyTree(path.join(takeDir, 'parts'), path.join(dest, 'parts'));
   const listFile = path.join(STUDIO, 'engine/public/captures.json');
   const list = fs.existsSync(listFile) ? JSON.parse(fs.readFileSync(listFile, 'utf8')) : [];
   const name = `${slug}/${id}`;

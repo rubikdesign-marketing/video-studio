@@ -1,4 +1,19 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(node tools/conductor/gate.mjs *)",
+      "Bash(node tools/conductor/dispatch.mjs *)",
+      "Bash(node tools/conductor/models.mjs *)",
+      "Bash(node tools/conductor/route.mjs *)",
+      "Bash(node tools/library/registry.mjs *)",
+      "Bash(node tools/plan/brief.mjs *)",
+      "Bash(node tools/plan/beats.mjs *)",
+      "Bash(node tools/plan/revisions.mjs *)",
+      "Bash(node tools/plan/style.mjs *)",
+      "Bash(node tools/plan/recipe.mjs *)",
+      "Bash(node tools/hooks/hooks.mjs *)"
+    ]
+  },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": { "source": "github", "repo": "anthropics/claude-plugins-official" }
