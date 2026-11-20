@@ -76,9 +76,9 @@ A one-to-two second sound that ends every one of a brand's videos on the logo, t
 
 Performance, warmth, whether the music suits the brand, whether a sound is annoying. None of that can be measured. The voice-read approval and the full-animation approval both say so in plain words.
 
-## From "3 Sound Design Secrets" (a study card kept with the studio's private references), Nov 2026
+## Techniques from a sound-design tutorial, Nov 2026
 
-Supplied by a client as the sound brief for their first episode. Each rule has its measurable form.
+Four techniques from a short tutorial on sound design for video, each written with its measurable form.
 
 - **Layer big moves by frequency.** A small move: one light sound. A big move (chapter, reveal, lesson): two or three
   layers in different bands (body under ~250 Hz, mid 0.5–2 kHz, air above ~4 kHz; `local_pack.py` and the library

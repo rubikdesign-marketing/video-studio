@@ -7,7 +7,7 @@
   },
   {
    "file": "brands/demo/styles/ugc-phone-take/style.json",
-   "sha256": "24a608ec04ed91a272f528cf6068f74d1d09b07f4a43cf3bc73495e41621ba13"
+   "sha256": "e6fb4e65677b6f2cf08db3e27353f5df9948d709d671ba0189f655ea1f883494"
   },
   {
    "file": "engine/src/kit/Captions.tsx",
@@ -891,7 +891,7 @@
   },
   {
    "file": "library/motion/index.json",
-   "sha256": "ae2843596f9025df573e74da81cfb1cceb8c4a997db7e8b8faf4fa6ebde6930f"
+   "sha256": "7495a6511f3a8580ba9d111e17c554347cb6beaccc29fc6bee2d9d02f77cce8e"
   },
   {
    "file": "library/references/index.json",
@@ -20520,7 +20520,7 @@
    "id": "preset:style-demo-ugc-phone-take",
    "kind": "preset",
    "name": "demo/ugc-phone-take (saved style)",
-   "summary": "Saved style: ugc, 4 scenes, from job undefined",
+   "summary": "Saved style: ugc, 4 scenes",
    "tags": [
     "demo",
     "saved-style",

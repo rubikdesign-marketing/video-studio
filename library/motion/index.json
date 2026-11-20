@@ -8178,7 +8178,7 @@
           "tense"
         ],
         "when": "at (the card arrives)",
-        "note": "foley/phone-buzz-table-01 under the arrival; a soft pop (pop group) on the like. Used this way in jobs/2026-11-19-ugc-01."
+        "note": "foley/phone-buzz-table-01 under the arrival; a soft pop (pop group) on the like. Used this way in a UGC film made in this studio."
       },
       "sizes": [
         "9:16",
@@ -8202,7 +8202,7 @@
       "reviewed": true,
       "reviewed_on": "2026-11-19",
       "planned_instant_changes": [],
-      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of the 9:16 and 16:9 frames looked at; 1:1 and 4:5 not looked at. Used in the real ugc-01 hook.",
+      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of the 9:16 and 16:9 frames looked at; 1:1 and 4:5 not looked at. Used in a real UGC film's hook.",
       "added_on": "2026-11-19"
     },
     {
@@ -8259,7 +8259,7 @@
       "reviewed": true,
       "reviewed_on": "2026-11-19",
       "planned_instant_changes": [],
-      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of 9:16 and 16:9 looked at; 1:1 and 4:5 not looked at. RecBadge and TapRipple used in the real ugc-01 demo.",
+      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of 9:16 and 16:9 looked at; 1:1 and 4:5 not looked at. RecBadge and TapRipple used in a real UGC film's demo.",
       "added_on": "2026-11-19"
     },
     {
@@ -8314,7 +8314,7 @@
       "reviewed": true,
       "reviewed_on": "2026-11-19",
       "planned_instant_changes": [],
-      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of 9:16 and 16:9 looked at; 1:1 and 4:5 not looked at. Not used in ugc-01 (the ring already marks the proof beat).",
+      "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of 9:16 and 16:9 looked at; 1:1 and 4:5 not looked at. Not used in the UGC film made with the others (its ring already marks the proof beat).",
       "added_on": "2026-11-19"
     }
   ],
