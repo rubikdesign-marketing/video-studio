@@ -16,7 +16,7 @@
     "jobs",
     "library/own-films/tulvo-*",
     "library/references/_profiles/dokan_*",
-    "library/references/**/*.jpg",
+    "library/references/**/*.jpg", "library/references/rubik", "library/fixtures",
     "library/motion/*.mp4", "library/motion/*.jpg",
     "library/backgrounds/*.mp4", "library/backgrounds/*.jpg",
     "docs", "DESIGN.md", "CAPTURE-PLAN.md", "FOOTAGE-PLAN.md", "LIBRARY-PLAN.md", "NEXT-SESSION.md", "LICENSE-DRAFT.md",
@@ -29,7 +29,7 @@
     "jobs/_sample/job.json", "jobs/_sample/shots.json", "jobs/_sample/audio", "jobs/_sample/review", "jobs/_sample/storyboard/frames.json"
   ],
   "json_drop": {
-    "library/references/index.json": { "brand": "Dokan" }
+    "library/references/index.json": [{ "brand": "Dokan" }, { "brand": "Rubik (brief)" }]
   },
   "replace": {
     ".claude/launch.json": [["\"tulvo-review\"", "\"studio-review\""]],

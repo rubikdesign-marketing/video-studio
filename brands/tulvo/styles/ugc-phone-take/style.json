@@ -1,0 +1,52 @@
+{
+ "_about": "Saved style (registers as style-tulvo-ugc-phone-take). A phone-first, hands-off 'screen share' product slice with a UGC feel: show first, say little, captions carry the line, proof is only what is on screen. Built and proved in jobs/2026-11-19-ugc-01 from library/fixtures/ugc-01/card.json.",
+ "version": 1,
+ "name": "UGC phone take",
+ "kind": "ugc",
+ "type": "ugc",
+ "brand": "tulvo",
+ "from_job": "2026-11-19-ugc-01",
+ "format": { "size": "1080x1920", "aspect": "9:16", "fps": 30, "seconds": { "min": 12, "max": 20, "target": 16 }, "colour": "BT.709 SDR, limited range, yuv420p, tagged bt709" },
+ "structure": [
+  { "id": "hook", "start": 0.0, "end": 2.5, "shows": "a comment card (the question the film answers) drops in at frame 0 under a Replying-to line and takes a like tap; the product screen is pushed in behind it; one caption line", "caption": "one line, at most 7 words", "sound": ["phone-buzz at frame 0 as the comment card drops", "impact-soft as the first caption lands", "riser-short into the cut"] },
+  { "id": "demo", "start": 2.5, "end": 9.0, "shows": "one pointer-led path: a click-through cut at the sidebar item, then the camera follows the pointer to the New button and a glow opens on hover", "caption": "one to two lines, naming the action", "sound": ["whip on the cut", "finger-tap on each tap (finger-tap-like on the heart)", "small-whoosh as the camera follows", "toast-pop as the hover opens"] },
+  { "id": "proof", "start": 9.0, "end": 13.0, "shows": "the board held; a ring on the board's title; names only what is visible: no numbers, no result claims", "caption": "one line, only what is on screen", "sound": ["text-swish as the caption arrives", "success-chime as the ring lands"] },
+  { "id": "cta", "start": 13.0, "end": 16.0, "shows": "a wipe to the light stage; the offer line, then the wordmark", "caption": "none: the offer line is the large type", "sound": ["offer-sting as the offer lands", "logo-sting on the wordmark"] }
+ ],
+ "captions": {
+  "band": { "fromPercentOfHeight": 82, "toPercentOfHeight": 93, "pixels1920": [1574, 1786] },
+  "maxWordsPerLine": 7,
+  "emphasis": "one word or phrase per line in the brand's highlight colour, heavier weight",
+  "style": "dark glass pill, brand headline typeface, words arrive as they are 'spoken'; no voice needed",
+  "safeArea": "nothing that matters within 5% of any edge (54 px sides, 96 px top and bottom)"
+ },
+ "pacing": {
+  "beatsSeconds": [2.5, 6.5, 4.0, 3.0],
+  "cameraMove": "slow push in every hold (zoom 2.4 to 2.9 on a 16:9 still in a 9:16 window); camera follows the pointer, never cuts away from the product",
+  "cutsOnScreen": ["hook to demo: hard cut on the whip", "sidebar click to the next page: instant swap 3 frames after the click", "proof to cta: wipe"],
+  "noTwoSoundsOfAKindWithin": 0.3
+ },
+ "broll": {
+  "rule": "none needed: the product is the b-roll. Use real product captures only; if a person clip is ever added it must be cleared first (none exists today).",
+  "allowed": ["owner-cleared product capture stills or recordings"],
+  "never": ["ViralHooks clips", "library/references/** media", "any footage of a person without a clearance record"]
+ },
+ "cta": { "offerWording": "Try it today", "wordmark": "light stage", "ownerApprovalForWording": "delegated to lead 2026-11-19; no pricing claim" },
+ "sound": {
+  "kit": "library/sounds/kit.json (brand files in brands/tulvo/sounds win where present)",
+  "bed": { "slot": "room-tone", "library": "ambience/room-clean-01", "note": "nobody has listened to it: listen first" },
+  "music": { "slot": "music-bed", "default": "off", "note": "off for a UGC feel; if on, duck under any voice (mix.py --duck-db)" },
+  "voice": "placeholder: captions carry the line; paid TTS or an owner recording is pending",
+  "levelRule": "with no voice, effects are measured against a stand-in level (mix.py --ref-db) and mastered to -14 LUFS, true peak at or below -1 dBTP",
+  "mix": "tools/audio/mix.py then tools/audio/master.sh"
+ },
+ "grade": {
+  "recipeFile": "jobs/<job>/edit/grade.json",
+  "module": "tools/footage/lib/grade.mjs",
+  "recipe": { "exposure": 0, "temperature": 0, "contrast": 0, "saturation": 0, "look": "clean-cool" },
+  "looks": ["soft-daylight", "clean-cool", "warm-film"],
+  "note": "one recipe per clip; graded pictures are written once and read by both the preview and the export; reset returns a clip to neutral"
+ },
+ "adUse": "paid-cleared or original only; ViralHooks clips organic-only",
+ "rights": { "privateStudy": true, "publicUse": null, "note": "Internal draft. The Kestrel Studio stills have no recorded public-use clearance." }
+}

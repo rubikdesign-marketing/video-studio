@@ -616,6 +616,117 @@
    },
    "fetched": "2026-11-18",
    "sha256": "5471e65c89c967ca7f2a833d3a91b94b47c13becc57b2621e35121838c6ce0e2"
+  },
+  {
+   "id": "swish/glass-swipe-01",
+   "file": "swish/glass-swipe-01.mp3",
+   "name": "Finger swipe on glass",
+   "feel": [
+    "short",
+    "fast",
+    "glassy",
+    "subtle"
+   ],
+   "use_for": "A quick flick of a finger across a phone screen.",
+   "seconds": 0.249,
+   "peak_db": -3.0,
+   "loudest_lufs": -16.9,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "tap",
+    "seconds": 0.25,
+    "seed": 41,
+    "tone": "neutral",
+    "weight": "medium",
+    "style": "swipe",
+    "taps": 1,
+    "spacing": 0.11,
+    "pitch": 1.0,
+    "ring": 0.35,
+    "nail": 0.0,
+    "speed": 1.3,
+    "squeak": 0.25
+   },
+   "fetched": "2026-11-19",
+   "sha256": "ad16cc861c1fd096db27fa4cbcf653be2ce4f731338e1e2bb3f7ce68f8e8d99b"
+  },
+  {
+   "id": "swish/glass-swipe-02",
+   "file": "swish/glass-swipe-02.mp3",
+   "name": "Finger swipe on glass, medium",
+   "feel": [
+    "short",
+    "soft",
+    "glassy",
+    "subtle"
+   ],
+   "use_for": "A normal swipe across a phone screen; scrolling a feed or paging a card.",
+   "seconds": 0.296,
+   "peak_db": -3.0,
+   "loudest_lufs": -16.5,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "tap",
+    "seconds": 0.3,
+    "seed": 42,
+    "tone": "neutral",
+    "weight": "medium",
+    "style": "swipe",
+    "taps": 1,
+    "spacing": 0.11,
+    "pitch": 1.0,
+    "ring": 0.35,
+    "nail": 0.0,
+    "speed": 1.0,
+    "squeak": 0.25
+   },
+   "fetched": "2026-11-19",
+   "sha256": "9453be422fae60c560880cf09d20fdd572cbb6a6a45e1256244b0e16b99dd44d"
+  },
+  {
+   "id": "swish/glass-swipe-03",
+   "file": "swish/glass-swipe-03.mp3",
+   "name": "Finger swipe on glass, slow",
+   "feel": [
+    "soft",
+    "slow",
+    "glassy",
+    "subtle"
+   ],
+   "use_for": "A slower drag of a fingertip over glass, with a touch of skin squeak.",
+   "seconds": 0.409,
+   "peak_db": -2.9,
+   "loudest_lufs": -15.3,
+   "channels": 1,
+   "source": "studio",
+   "author": "Video Studio (tools/audio/synth.py)",
+   "licence": "CC0-1.0",
+   "source_url": null,
+   "recipe": {
+    "kind": "tap",
+    "seconds": 0.42,
+    "seed": 43,
+    "tone": "neutral",
+    "weight": "medium",
+    "style": "swipe",
+    "taps": 1,
+    "spacing": 0.11,
+    "pitch": 1.0,
+    "ring": 0.35,
+    "nail": 0.0,
+    "speed": 0.8,
+    "squeak": 0.4
+   },
+   "fetched": "2026-11-19",
+   "sha256": "111dcc6c3ef54ab58ac046ecc0cacc13153571a75c211c8f1520e5dddd8533b3"
   }
  ]
 }

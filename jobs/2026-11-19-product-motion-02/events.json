@@ -1,0 +1,7 @@
+{
+ "_about": "On-screen causes. ring is the product-ring emphasis `at` (film seconds, 30 fps, a whole frame); ringFirstFrame is the first frame where the ring is visible, measured on a silent render (frame difference of the title region against frame 30, first value over 1.0 = frame 46). build.mjs places the chime on that frame.",
+ "fps": 30,
+ "ring": 1.5,
+ "end": 4.1,
+ "ringFirstFrame": 46
+}

@@ -1,0 +1,16 @@
+{
+ "_about": "Phase 2 UGC slice. Beats from library/fixtures/ugc-01/card.json. Scenes are drawn in engine/src/jobs/ugc-01/scenes/ (a 16:9 still in a 9:16 window, a camera that pushes in and follows the pointer); captions are drawn by the scenes in the caption band (82 to 93 percent of the height), not by the shared pill.",
+ "stage": "dark",
+ "planned_instant_changes": [],
+ "planned_holds": [],
+ "scenes": [
+  { "id": "S01", "title": "Hook", "lines": ["01"], "energy": 4, "transition_in": null, "hand_off": null,
+    "shots": [{ "size": "medium", "capture": null, "focal_point": "tabs and first card", "move": "push in 2.4 to 2.9; a comment card drops in at frame 0 and takes a like tap", "sound": "phone-buzz at 0.0, impact-soft as the first caption lands, finger-tap-like on the heart, riser into the cut" }] },
+  { "id": "S02", "title": "Demo", "lines": ["02", "03"], "energy": 3, "transition_in": { "number": 11, "name": "Whip" }, "hand_off": null,
+    "shots": [{ "size": "medium", "capture": null, "focal_point": "sidebar item, then the New button", "move": "pointer path from cursor.json; click-through swap; camera follows the pointer; glow on New", "sound": "whip on the cut, finger-tap on the click, small-whoosh on the camera follow, toast-pop on the hover" }] },
+  { "id": "S03", "title": "Proof", "lines": ["04"], "energy": 3, "transition_in": { "number": 6, "name": "Motion-matched cut" }, "hand_off": null,
+    "shots": [{ "size": "medium", "capture": null, "focal_point": "board title", "move": "camera settles on the title, ring lands on it", "sound": "text-swish as the caption arrives, success-chime as the ring lands" }] },
+  { "id": "S04", "title": "Offer and logo", "lines": ["05"], "energy": 4, "transition_in": { "number": 10, "name": "Light sweep" }, "hand_off": null,
+    "shots": [{ "size": "wide", "capture": null, "focal_point": "centre", "move": "wipe to the light stage, offer line, wordmark", "sound": "offer-sting on the offer, logo-sting on the wordmark" }] }
+ ]
+}

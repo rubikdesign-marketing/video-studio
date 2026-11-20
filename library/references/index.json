@@ -1220,5 +1220,19 @@
    "peak_movement": 19.97,
    "movement_follows_sound": 0.02
   }
+ },
+ {
+  "file": "rubik/sound-design-secrets/video.mp4",
+  "brand": "Rubik (brief)",
+  "type": "tutorial",
+  "title": "3 Sound Design Secrets That Feel Like CHEATING",
+  "shape": "landscape",
+  "width": 1920,
+  "height": 1080,
+  "seconds": 441.7,
+  "source": "supplied by the Rubik owner, 18 Nov 2026 (review note b001-n40)",
+  "study_card": "rubik/sound-design-secrets/study.md",
+  "motion_studied": false,
+  "earlier_notes": null
  }
 ]

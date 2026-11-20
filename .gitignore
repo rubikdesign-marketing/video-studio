@@ -5,7 +5,9 @@ jobs/*/renders/
 jobs/*/footage/
 # Footage editing: working copies, sound, transcripts, the log and sheets are made from footage of real people, so
 # they stay on the Mac like the footage itself.
-jobs/*/edit/
+jobs/*/edit/*
+# The colour recipe is small, holds no footage, and is what rebuilds a film's grade: it is tracked.
+!jobs/*/edit/grade.json
 tools/footage/.venv/
 # earshot's listening models and caches (about 1.1 GB), fetched by setup/install.sh.
 tools/audio/.earshot/
@@ -54,3 +56,6 @@ engine/src/jobs/ph-launch-reel/
 
 # The paid-generation ledger (tools/film/lib/ledger.mjs): task ids and request ids of this Mac's paid calls.
 .generations/
+
+# Sound packs handed to the studio with no known licence: local use only, never synced (tools/audio/local_pack.py)
+library/sounds-local/

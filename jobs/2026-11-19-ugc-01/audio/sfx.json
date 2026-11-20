@@ -1,0 +1,74 @@
+[
+ {
+  "id": "phone-buzz",
+  "library": "foley/phone-buzz-table-01",
+  "at": 0,
+  "gain": 0.6
+ },
+ {
+  "id": "impact-soft",
+  "library": "impact/thud-01",
+  "at": 0.4,
+  "gain": 0.55
+ },
+ {
+  "id": "riser-short",
+  "library": "riser/smooth-swell-01",
+  "at": 1.003,
+  "gain": 0.3
+ },
+ {
+  "id": "finger-tap-like",
+  "library": "click/finger-tap-glass-02",
+  "at": 0.896,
+  "gain": 0.55
+ },
+ {
+  "id": "whip",
+  "library": "swish/whip-01",
+  "at": 2.486,
+  "gain": 0.5
+ },
+ {
+  "id": "finger-tap",
+  "library": "click/finger-tap-glass-01",
+  "at": 4.996,
+  "gain": 0.6
+ },
+ {
+  "id": "small-whoosh",
+  "library": "whoosh/air-soft-01",
+  "at": 5.556,
+  "gain": 0.35
+ },
+ {
+  "id": "toast-pop",
+  "library": "pop/soft-pop-01",
+  "at": 7.9,
+  "gain": 0.5
+ },
+ {
+  "id": "text-swish",
+  "library": "swish/paper-soft-01",
+  "at": 9.277,
+  "gain": 0.4
+ },
+ {
+  "id": "success-chime",
+  "library": "interface/success-glass-01",
+  "at": 10.5,
+  "gain": 0.45
+ },
+ {
+  "id": "offer-sting",
+  "library": "chime/sting-bright-synth-04",
+  "at": 13.201,
+  "gain": 0.55
+ },
+ {
+  "id": "logo-sting",
+  "library": "chime/sting-warm-synth-01",
+  "at": 13.912,
+  "gain": 0.5
+ }
+]

@@ -1,0 +1,155 @@
+{
+ "lines": [
+  {
+   "start": 0.4,
+   "end": 2.2,
+   "words": [
+    {
+     "text": "Here's",
+     "start": 0.4,
+     "end": 0.729
+    },
+    {
+     "text": "my",
+     "start": 0.729,
+     "end": 0.894
+    },
+    {
+     "text": "whole",
+     "start": 0.894,
+     "end": 1.182
+    },
+    {
+     "text": "lead",
+     "start": 1.182,
+     "end": 1.429,
+     "highlight": true
+    },
+    {
+     "text": "pipeline",
+     "start": 1.429,
+     "end": 1.84,
+     "highlight": true
+    }
+   ]
+  },
+  {
+   "start": 2.8,
+   "end": 5.3,
+   "words": [
+    {
+     "text": "One",
+     "start": 2.8,
+     "end": 3.094
+    },
+    {
+     "text": "tap",
+     "start": 3.094,
+     "end": 3.388
+    },
+    {
+     "text": "to",
+     "start": 3.388,
+     "end": 3.624
+    },
+    {
+     "text": "the",
+     "start": 3.624,
+     "end": 3.918
+    },
+    {
+     "text": "launch",
+     "start": 3.918,
+     "end": 4.388,
+     "highlight": true
+    },
+    {
+     "text": "board",
+     "start": 4.388,
+     "end": 4.8,
+     "highlight": true
+    }
+   ]
+  },
+  {
+   "start": 5.8,
+   "end": 8.4,
+   "words": [
+    {
+     "text": "Then",
+     "start": 5.8,
+     "end": 6.137
+    },
+    {
+     "text": "hit",
+     "start": 6.137,
+     "end": 6.418
+    },
+    {
+     "text": "New",
+     "start": 6.418,
+     "end": 6.699,
+     "highlight": true
+    },
+    {
+     "text": "to",
+     "start": 6.699,
+     "end": 6.924
+    },
+    {
+     "text": "start",
+     "start": 6.924,
+     "end": 7.318
+    },
+    {
+     "text": "a",
+     "start": 7.318,
+     "end": 7.486
+    },
+    {
+     "text": "brief",
+     "start": 7.486,
+     "end": 7.88
+    }
+   ]
+  },
+  {
+   "start": 9.3,
+   "end": 12.6,
+   "words": [
+    {
+     "text": "Approvals,",
+     "start": 9.3,
+     "end": 9.96
+    },
+    {
+     "text": "briefs",
+     "start": 9.96,
+     "end": 10.4
+    },
+    {
+     "text": "and",
+     "start": 10.4,
+     "end": 10.675
+    },
+    {
+     "text": "campaigns,",
+     "start": 10.675,
+     "end": 11.335
+    },
+    {
+     "text": "one",
+     "start": 11.335,
+     "end": 11.61,
+     "highlight": true
+    },
+    {
+     "text": "view",
+     "start": 11.61,
+     "end": 11.94,
+     "highlight": true
+    }
+   ]
+  }
+ ]
+}

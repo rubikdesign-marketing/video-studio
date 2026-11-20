@@ -116,3 +116,13 @@ test('the menu SKILL.md has parseable frontmatter with the required fields and a
   assert.equal(fm['argument-hint'], '[job name or a full brief]');
   assert.ok(text.split('\n').length <= 70);
 });
+
+test('the UGC preset ships', () => {
+  // build to a temp file (reg() does); never touches the tracked library/registry.json
+  const r = reg();
+  const it = r.items.find((i) => i.id === 'preset:style-demo-ugc-phone-take');
+  assert.ok(it, 'preset:style-demo-ugc-phone-take is registered');
+  assert.equal(it.availability.customer, true, JSON.stringify(it.availability));
+  const bad = r.items.filter((i) => [i.locator?.file, i.locator?.preview, i.locator?.catalog?.split('#')[0]].some((f) => f && f.startsWith('library/fixtures')));
+  assert.deepEqual(bad.map((i) => i.id), [], 'no item locates under library/fixtures');
+});
