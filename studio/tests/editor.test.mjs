@@ -49,7 +49,7 @@ describe('the editor endpoints', () => {
     root.write('app/assets/app-abc123.js', 'console.log("editor")');
     root.write('app/assets/app-abc123.css', 'body{margin:0}');
     root.write('secret.txt', 'outside the app folder');
-    server = await startServer(root.root, { STUDIO_APP_DIST: root.path('app'), STUDIO_EVENTS_MS: '40' });
+    server = await startServer(root.root, { STUDIO_APP_DIST: root.path('app'), STUDIO_EVENTS_MS: '40', STUDIO_NO_EXPORT_WORKER: '1' });
   });
   after(async () => { await server.stop(); root.remove(); });
 
@@ -215,7 +215,7 @@ describe('the editor endpoints', () => {
 
 describe('the editor before the app has been built', () => {
   let root; let server;
-  before(async () => { root = makeRoot(); server = await startServer(root.root, { STUDIO_APP_DIST: root.path('no-app-here') }); });
+  before(async () => { root = makeRoot(); server = await startServer(root.root, { STUDIO_APP_DIST: root.path('no-app-here'), STUDIO_NO_EXPORT_WORKER: '1' }); });
   after(async () => { await server.stop(); root.remove(); });
 
   it('says so in plain words and points back to the review page', async () => {

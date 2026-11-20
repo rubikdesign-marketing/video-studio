@@ -33,6 +33,9 @@ export interface SendRequest {
 
 export interface SavedEdits { filmModified: number; edits: Edit[] }
 export interface ExportReceipt extends ExportRequest { export: number; job: string; requested_at: string; status: string }
+/** Where an export has got to: asked for, being made, finished (`file` is in the job's out folder) or stopped (`error` says why). */
+export type ExportStatus = 'requested' | 'running' | 'done' | 'failed';
+export interface ExportRecord extends ExportRequest { export: number; status: ExportStatus; file?: string; error?: string }
 
 /**
  * What the server says while a page is listening (`GET /api/events`).
@@ -43,7 +46,8 @@ export type StudioEvent =
   | { type: 'render'; scene: number; of: number }
   | { type: 'rendering'; active: boolean; elapsed: Seconds }
   | { type: 'version'; file: string }
-  | { type: 'batch'; n: number; status: string };
+  | { type: 'batch'; n: number; status: string }
+  | { type: 'export'; n: number; status: ExportStatus; file?: string; error?: string };
 
 export type EventsStatus = 'connecting' | 'live' | 'reconnecting' | 'closed';
 

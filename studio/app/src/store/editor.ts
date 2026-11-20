@@ -1,6 +1,6 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 import { ApiError, isApiError, plainMessage } from '../api';
-import type { Batch, Draft, EventsStatus, ExportReceipt, StudioClient } from '../api';
+import type { Batch, Draft, EventsStatus, ExportReceipt, ExportRecord, StudioClient, StudioEvent } from '../api';
 import type { Film, Seconds, VideoVersion } from '../contracts/film';
 import type { Box, DraftNote, Edit, ExportRequest, NoteKind } from '../contracts/review';
 import type { Command, History, Selection } from '../contracts/store';
@@ -33,6 +33,8 @@ export interface FilmState {
   /** Batches of notes sent so far, oldest first. */
   batches: Batch[];
   rendering: RenderingState;
+  /** Exports asked for, oldest first, kept current by the live events. */
+  exports: ExportRecord[];
   /** The live connection to the studio. */
   live: EventsStatus;
   /** Set when a version arrived while the page was open, until `chooseVideo` is called. */
@@ -66,7 +68,7 @@ export interface NewNote { time: Seconds; text?: string; kind?: NoteKind; topic?
 export type NotePatch = Partial<Omit<DraftNote, 'localId'>>;
 
 export interface StorageLike { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void }
-export type EditorApi = Pick<StudioClient, 'getFilm' | 'getReview' | 'saveDraft' | 'sendBatch' | 'getEdits' | 'saveEdits' | 'requestExport' | 'events' | 'mediaUrl'>;
+export type EditorApi = Pick<StudioClient, 'getFilm' | 'getReview' | 'saveDraft' | 'sendBatch' | 'getEdits' | 'saveEdits' | 'requestExport' | 'getExports' | 'events' | 'mediaUrl'>;
 export interface EditorOptions {
   api: EditorApi;
   /** Where unsaved work is kept between a change and its save, so a reload loses nothing. The browser's localStorage. */
@@ -82,7 +84,7 @@ export interface EditorOptions {
 export const STALE_MESSAGE = 'The film was rendered again while you were working, so your text changes are not saved yet. Reload the film to carry on.';
 
 const idle: RenderingState = { active: false, elapsed: 0, scene: null, of: null };
-const emptyFilm: FilmState = { job: null, status: 'empty', message: null, film: null, filmModified: 0, videos: [], video: null, batches: [], rendering: idle, live: 'closed', newVersion: null };
+const emptyFilm: FilmState = { job: null, status: 'empty', message: null, film: null, filmModified: 0, videos: [], video: null, batches: [], rendering: idle, exports: [], live: 'closed', newVersion: null };
 const clock = (t: Seconds) => `${Math.floor(Math.max(0, t) / 60)}:${String(Math.floor(Math.max(0, t) % 60)).padStart(2, '0')}`;
 let made = 0;
 const defaultId = () => `note-${Date.now().toString(36)}-${(++made).toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -190,7 +192,7 @@ export function createEditor(options: EditorOptions) {
     });
     notesSaver.settle(); editsSaver.settle(); historyStore.getState().clear();
     try {
-      const [f, review, saved] = await Promise.all([api.getFilm(jobName), api.getReview(jobName), api.getEdits(jobName)]);
+      const [f, review, saved, exports] = await Promise.all([api.getFilm(jobName), api.getReview(jobName), api.getEdits(jobName), api.getExports(jobName).catch(() => [] as ExportRecord[])]);
       if (mine !== opened) return;
       const kept = readBackup(jobName);
       const pending = kept?.editsDirty ? { edits: kept.edits, filmModified: kept.filmModified } : saved;
@@ -199,7 +201,7 @@ export function createEditor(options: EditorOptions) {
           ? { notes: kept.notes, goodScenes: kept.goodScenes, previous: kept.previous }
           : { notes: review.draft.notes, goodScenes: review.draft.goodScenes, previous: kept?.previous ?? null });
         edits.setState({ edits: pending.edits, filmModified: pending.edits.length ? pending.filmModified : f.filmModified });
-        film.setState({ status: 'ready', film: f.film, filmModified: f.filmModified, videos: f.videos, video: f.videos[0]?.file ?? null, batches: review.batches });
+        film.setState({ status: 'ready', film: f.film, filmModified: f.filmModified, videos: f.videos, video: f.videos[0]?.file ?? null, batches: review.batches, exports });
       });
       if (kept?.notesDirty) notesSaver.touch();                      // finish the save a reload cut short
       if (edits.getState().filmModified !== f.filmModified) markStale();
@@ -211,6 +213,7 @@ export function createEditor(options: EditorOptions) {
           if (mine !== opened) return;
           if (e.type === 'version') { film.setState({ newVersion: e.file }); void refreshFilm().catch(() => {}); }
           else if (e.type === 'batch') void refreshBatches().catch(() => {});
+          else if (e.type === 'export') onExportEvent(e);
           else if (e.type === 'rendering') film.setState({ rendering: e.active ? { active: true, elapsed: e.elapsed, scene: null, of: null } : idle });
           else film.setState({ rendering: { active: true, elapsed: film.getState().rendering.elapsed, scene: e.scene, of: e.of } });
         },
@@ -374,7 +377,26 @@ export function createEditor(options: EditorOptions) {
     backup();
     return batch;
   }
-  const requestExport = (request: ExportRequest): Promise<ExportReceipt> => api.requestExport(job(), request);
+  /** Keeps `exports` current: a change to a known export is applied at once; an unknown one is read from the studio. */
+  function onExportEvent(e: Extract<StudioEvent, { type: 'export' }>) {
+    const list = film.getState().exports;
+    if (!list.some((x) => x.export === e.n)) { void refreshExports().catch(() => {}); return; }
+    film.setState({ exports: list.map((x) => (x.export === e.n ? withoutStale({ ...x, status: e.status, file: e.file, error: e.error }) : x)) });
+  }
+  const withoutStale = (x: ExportRecord): ExportRecord => { const { file, error, ...rest } = x; return { ...rest, ...(file ? { file } : {}), ...(error ? { error } : {}) }; };
+  async function refreshExports(): Promise<void> {
+    const mine = opened;
+    const list = await api.getExports(job());
+    if (mine === opened) film.setState({ exports: list });
+  }
+  async function requestExport(request: ExportRequest): Promise<ExportReceipt> {
+    const receipt = await api.requestExport(job(), request);
+    const list = film.getState().exports;
+    if (!list.some((x) => x.export === receipt.export)) film.setState({ exports: [...list, { export: receipt.export, ratio: receipt.ratio, height: receipt.height, quality: receipt.quality, status: 'requested' }] });
+    return receipt;
+  }
+  /** The address of a finished export, to download. */
+  const exportUrl = (file: string): string => api.mediaUrl(job(), file);
   /** Saves now what is waiting. Also the "try again" after a failed save. */
   async function flush(): Promise<void> { await Promise.all([notesSaver.flush(), editsSaver.flush()]); }
 
@@ -388,7 +410,7 @@ export function createEditor(options: EditorOptions) {
     select: (s: Selection) => selection.getState().select(s),
     addNote, changeNote, removeNote, setSceneGood, restorePreviousDraft,
     setCueWords, setCueTime, resetCue,
-    send, requestExport, flush,
+    send, requestExport, exportUrl, flush,
   };
 }
 

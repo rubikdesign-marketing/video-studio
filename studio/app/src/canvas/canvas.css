@@ -241,3 +241,20 @@
 .canvas-empty {
   color: var(--text-quiet);
 }
+
+/* Export: three lists, a button and one line of where the last export has got to. */
+.canvas-export {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.canvas-export .ui-field {
+  margin: 0;
+}
+.canvas-export-status {
+  font-size: var(--size-13);
+  max-width: 28ch;
+}
+.canvas-export-failed {
+  color: var(--warn);
+}

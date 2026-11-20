@@ -22,6 +22,7 @@ const pretendApi = (): EditorApi => ({
   requestExport: async () => {
     throw new Error('not used');
   },
+  getExports: async () => [],
   events: () => () => {},
   mediaUrl: (job, file) => `/media/${job}/${file}`,
 });

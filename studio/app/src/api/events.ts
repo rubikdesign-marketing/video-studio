@@ -19,7 +19,7 @@ export interface EventsOptions {
   open?(url: string): EventSourceLike;
 }
 
-const KNOWN = new Set(['render', 'rendering', 'version', 'batch']);
+const KNOWN = new Set(['render', 'rendering', 'version', 'batch', 'export']);
 
 /**
  * Listens to the studio's live events and keeps listening: when the connection drops (the server restarted, the

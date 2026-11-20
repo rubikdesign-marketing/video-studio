@@ -1,6 +1,7 @@
-import { useFilm } from '../store';
+import { editor, useFilm } from '../store';
 import { RATES, usePlayback, type Rate } from '../playback';
 import { Button, Icon, MenuItem, Popover, Segmented, Select } from '../ui';
+import { ExportControl } from './ExportControl';
 import { formatTime } from './format';
 import { isTall } from './geometry';
 import { PLATFORMS, SAFE_ZONES, type Platform } from './safe-zones';
@@ -23,6 +24,7 @@ export interface ToolbarProps {
 /** The one transport, under the film: frame steps, play, the time, speed, repeat, and a note at this moment. */
 export function Toolbar({ barRef, onNote }: ToolbarProps) {
   const film = useFilm((s) => s.film);
+  const exports = useFilm((s) => s.exports);
   const playing = usePlayback((s) => s.playing);
   const time = usePlayback((s) => s.time);
   const rate = usePlayback((s) => s.rate);
@@ -58,6 +60,7 @@ export function Toolbar({ barRef, onNote }: ToolbarProps) {
           Note at <span className="time">{formatTime(time)}</span> <kbd className="canvas-kbd">N</kbd>
         </Button>
       ) : null}
+      <ExportControl exports={exports} onRequest={(request) => editor.requestExport(request).then(() => undefined)} urlFor={(file) => editor.exportUrl(file)} />
     </div>
   );
 }

@@ -9,7 +9,7 @@
 // takes export requests as review/export-NNN.json, and tells the page live when something changed (/api/events).
 // It listens on this computer only (127.0.0.1) and never sends anything anywhere.
 import http from 'node:http';
-import { execFile } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -42,10 +42,12 @@ function filmFor(job) {                      // the timing file the scaffold wro
   }
   return null;
 }
+// The films of a job: not the raw render, not the hidden half-written files, and not exports (those are listed by /api/exports).
+const isFilmFile = (f) => f.endsWith('.mp4') && f !== 'raw.mp4' && !f.startsWith('.') && !f.startsWith('export-');
 function videosFor(job) {
   const out = path.join(JOBS, job, 'out');
   if (!fs.existsSync(out)) return [];
-  return fs.readdirSync(out).filter((f) => f.endsWith('.mp4') && f !== 'raw.mp4')
+  return fs.readdirSync(out).filter(isFilmFile)
     .map((f) => ({ file: f, modified: fs.statSync(path.join(out, f)).mtimeMs }))
     .sort((a, b) => b.modified - a.modified);
 }
@@ -266,17 +268,39 @@ function saveEdits(job, d) {
 }
 
 const EXPORT = { ratio: ['16:9', '9:16', '1:1'], height: [720, 1080, 2160], quality: ['preview', 'master'] };
-/** An export request is a numbered file in the review folder, picked up by Claude like a batch of notes. */
+/** An export request is a numbered file in the review folder. The export worker (tools/film/export-worker.mjs) takes it, renders it and reports back in the same file. */
 function requestExport(job, d) {
   if (!d || !EXPORT.ratio.includes(d.ratio) || !EXPORT.height.includes(d.height) || !EXPORT.quality.includes(d.quality)) {
     return [400, { error: 'An export needs a shape (16:9, 9:16 or 1:1), a height (720, 1080 or 2160) and a quality (preview or master).' }];
   }
   const dir = path.join(JOBS, job, 'review'); fs.mkdirSync(dir, { recursive: true });
-  const taken = fs.readdirSync(dir).map((f) => /^export-(\d+)\.json$/.exec(f)).filter(Boolean).map((m) => Number(m[1]));
+  const taken = fs.readdirSync(dir).map((f) => /^export-(\d+)\.json(?:\.claim-\d+)?$/.exec(f)).filter(Boolean).map((m) => Number(m[1]));   // a request a worker is taking still counts
   const n = Math.max(0, ...taken) + 1;
   const request = { export: n, job, requested_at: new Date().toISOString(), status: 'requested', ratio: d.ratio, height: d.height, quality: d.quality };
   writeJson(path.join(dir, `export-${String(n).padStart(3, '0')}.json`), request);
   return [200, { ok: true, export: request }];
+}
+/** Starts the export worker for a job unless one is already running (its pid is kept in review/.export-worker.pid). It runs on its
+ *  own, finishes every request it can find and exits. Returns true when it started one. STUDIO_NO_EXPORT_WORKER=1 turns it
+ *  off (the tests of the request file itself use that). */
+function startExportWorker(job) {
+  if (process.env.STUDIO_NO_EXPORT_WORKER) return false;
+  const pidFile = path.join(JOBS, job, 'review', '.export-worker.pid');
+  const alive = (pid) => { if (!Number.isInteger(pid) || pid <= 0) return false; try { process.kill(pid, 0); return true; } catch (e) { return e.code === 'EPERM'; } };
+  try { if (alive(Number(fs.readFileSync(pidFile, 'utf8').trim()))) return false; } catch { /* no worker yet */ }
+  try {
+    const child = spawn(process.execPath, [path.join(STUDIO, 'tools', 'film', 'export-worker.mjs'), '--job', job], { detached: true, stdio: 'ignore', windowsHide: true, env: process.env });
+    child.on('error', () => { /* the request stays "requested"; the next export tries again */ });
+    child.unref();
+    if (!child.pid) return false;
+    fs.writeFileSync(pidFile, String(child.pid));
+    return true;
+  } catch { return false; }
+}
+/** The export requests of a job with their status, oldest first. The worker (tools/film/export-worker.mjs) updates them. */
+function exportsFor(job) {
+  const dir = path.join(JOBS, job, 'review');
+  try { return fs.readdirSync(dir).filter((f) => /^export-\d+\.json$/.test(f)).sort().map((f) => readJson(path.join(dir, f))).filter(Boolean); } catch { return []; }
 }
 
 // Live events. While a page is listening, its job folder is looked at once a second (no file watcher: they miss
@@ -300,8 +324,9 @@ function lookAt(job) {
   const sig = (f) => { try { const s = fs.statSync(f); return `${s.mtimeMs}:${s.size}`; } catch { return null; } };
   const list = (dir, keep) => { try { return fs.readdirSync(dir).filter(keep); } catch { return []; } };
   const out = path.join(JOBS, job, 'out'); const review = path.join(JOBS, job, 'review');
-  return { videos: new Map(list(out, (f) => f.endsWith('.mp4') && f !== 'raw.mp4').map((f) => [f, sig(path.join(out, f))])),
-    batches: new Map(list(review, (f) => /^batch-\d+\.json$/.test(f)).map((f) => [f, sig(path.join(review, f))])) };
+  return { videos: new Map(list(out, isFilmFile).map((f) => [f, sig(path.join(out, f))])),
+    batches: new Map(list(review, (f) => /^batch-\d+\.json$/.test(f)).map((f) => [f, sig(path.join(review, f))])),
+    exports: new Map(list(review, (f) => /^export-\d+\.json$/.test(f)).map((f) => [f, sig(path.join(review, f))])) };
 }
 function hubFor(job) {
   if (hubs.has(job)) return hubs.get(job);
@@ -320,6 +345,13 @@ function hubFor(job) {
       const batch = readJson(path.join(JOBS, job, 'review', file));
       if (!batch) continue;                                 // still being written: next time
       hub.known.batches.set(file, s); emit({ type: 'batch', n: batch.batch ?? Number(/\d+/.exec(file)[0]), status: batch.status || 'sent' });
+    }
+    for (const [file, s] of now.exports) {                  // an export request changed: say where it has got to
+      if (!s || hub.known.exports.get(file) === s) continue;
+      const x = readJson(path.join(JOBS, job, 'review', file));
+      if (!x) continue;
+      hub.known.exports.set(file, s);
+      emit({ type: 'export', n: x.export ?? Number(/\d+/.exec(file)[0]), status: x.status || 'requested', ...(x.file ? { file: x.file } : {}), ...(x.error ? { error: x.error } : {}) });
     }
     const r = renderState();
     if (r?.active && (r.job === null || r.job === job)) { hub.rendering = true; emit({ type: 'rendering', active: true, elapsed: Math.max(0, Math.round((Date.now() - r.started) / 1000)) }); }
@@ -370,7 +402,8 @@ http.createServer(async (req, res) => {
       return send(res, 200, readJson(editsFile(job)) || { film_modified: editorFilm(job)?.film_modified ?? 0, edits: [] });
     }
     if (p === '/api/edits' && req.method === 'POST') { const [code, answer] = saveEdits(job, await body(req).catch(() => null)); return send(res, code, answer); }
-    if (p === '/api/export' && req.method === 'POST') { const [code, answer] = requestExport(job, await body(req).catch(() => null)); return send(res, code, answer); }
+    if (p === '/api/export' && req.method === 'POST') { const [code, answer] = requestExport(job, await body(req).catch(() => null)); if (code === 200) startExportWorker(job); return send(res, code, answer); }
+    if (p === '/api/exports' && req.method === 'GET') return send(res, 200, { exports: exportsFor(job) });
     if (p === '/api/events' && req.method === 'GET') return serveEvents(req, res, job);
     if (p === '/api/paper' && req.method === 'GET') {
       const data = paperData(job);

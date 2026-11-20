@@ -2,7 +2,7 @@ import type { Film, VideoVersion } from '../contracts/film';
 import type { DraftNote, Edit, EditList, ExportRequest } from '../contracts/review';
 import { ApiError, errorFromResponse, offlineError } from './errors';
 import { subscribeEvents, type EventsOptions } from './events';
-import type { Batch, Draft, ExportReceipt, FilmResponse, JobSummary, PaperData, PaperJob, PaperPayload, PaperSaved, Review, SavedEdits, SendRequest } from './types';
+import type { Batch, Draft, ExportReceipt, ExportRecord, FilmResponse, JobSummary, PaperData, PaperJob, PaperPayload, PaperSaved, Review, SavedEdits, SendRequest } from './types';
 
 export interface ClientOptions {
   /** Where the studio server is. Empty for the page's own server. */
@@ -88,6 +88,10 @@ export function createClient(options: ClientOptions = {}) {
     /** Asks for an export. Claude picks the request up like a batch of notes. */
     async requestExport(job: string, request: ExportRequest): Promise<ExportReceipt> {
       return (await call<{ export: ExportReceipt }>(forJob('/api/export', job), request)).export;
+    },
+    /** The exports asked for so far, oldest first, with where each has got to. */
+    async getExports(job: string): Promise<ExportRecord[]> {
+      return (await call<{ exports?: ExportRecord[] }>(forJob('/api/exports', job))).exports ?? [];
     },
     /** Every job that has a paper edit (a transcript of raw footage to cut). */
     async listPaperJobs(): Promise<PaperJob[]> {

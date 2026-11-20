@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiError } from '../api';
-import type { Batch, Draft, EventsOptions, StudioEvent } from '../api';
+import type { Batch, Draft, EventsOptions, ExportRecord, StudioEvent } from '../api';
 import type { Film } from '../contracts/film';
 import type { Edit } from '../contracts/review';
 import { sampleFilm } from '../fixtures/sample-film';
@@ -11,7 +11,7 @@ import { createEditor, STALE_MESSAGE, type Editor, type EditorApi, type StorageL
 function fakeStudio(film: Film = sampleFilm) {
   const disk = {
     film, filmModified: 1000, videos: [{ file: 'preview.mp4', modified: 500 }],
-    draft: { notes: [], goodScenes: [] } as Draft, edits: [] as Edit[], editsFilm: 1000, batches: [] as Batch[],
+    draft: { notes: [], goodScenes: [] } as Draft, edits: [] as Edit[], editsFilm: 1000, batches: [] as Batch[], exports: [] as ExportRecord[],
   };
   const calls = { saveDraft: 0, saveEdits: 0 };
   let failing: ApiError | null = null;
@@ -36,6 +36,7 @@ function fakeStudio(film: Film = sampleFilm) {
       return copy(batch);
     },
     requestExport: async (job, request) => ({ ...request, export: 1, job, requested_at: '2026-11-18T10:00:00.000Z', status: 'requested' }),
+    getExports: async () => copy(disk.exports),
     events: (_job, handlers) => { listener = handlers; handlers.onStatus?.('live'); return () => { listener = null; }; },
     mediaUrl: (job, file) => `/media/${job}/${file}`,
   };
@@ -378,5 +379,37 @@ describe('sending and exporting', () => {
     const editor = make(fakeStudio());
     await editor.open('_sample');
     expect(await editor.requestExport({ ratio: '9:16', height: 1080, quality: 'master' })).toMatchObject({ export: 1, ratio: '9:16', status: 'requested' });
+  });
+});
+
+describe('exports', () => {
+  const ask = { ratio: '9:16', height: 1080, quality: 'master' } as const;
+  it('shows an export as requested, then running, then done with its file, and a failure with its message', async () => {
+    const studio = fakeStudio(); const editor = make(studio);
+    await editor.open('_sample');
+    expect(editor.stores.film.getState().exports).toEqual([]);
+    await editor.requestExport(ask);
+    expect(editor.stores.film.getState().exports).toEqual([{ export: 1, ratio: '9:16', height: 1080, quality: 'master', status: 'requested' }]);
+    studio.say({ type: 'export', n: 1, status: 'running' });
+    expect(editor.stores.film.getState().exports[0]?.status).toBe('running');
+    studio.say({ type: 'export', n: 1, status: 'done', file: 'export-001-9x16-1080.mp4' });
+    expect(editor.stores.film.getState().exports[0]).toMatchObject({ status: 'done', file: 'export-001-9x16-1080.mp4' });
+    expect(editor.exportUrl('export-001-9x16-1080.mp4')).toBe('/media/_sample/export-001-9x16-1080.mp4');
+
+    studio.say({ type: 'export', n: 1, status: 'failed', error: 'The render did not finish, so nothing was exported.' });
+    const failed = editor.stores.film.getState().exports[0];
+    expect(failed).toMatchObject({ status: 'failed', error: 'The render did not finish, so nothing was exported.' });
+    expect(failed?.file).toBeUndefined();
+  });
+  it('reads the exports already asked for when a film opens, and an unknown one from the studio', async () => {
+    const studio = fakeStudio();
+    studio.disk.exports = [{ export: 1, ratio: '1:1', height: 720, quality: 'preview', status: 'running' }];
+    const editor = make(studio);
+    await editor.open('_sample');
+    expect(editor.stores.film.getState().exports.map((x) => x.status)).toEqual(['running']);
+    studio.disk.exports = [{ ...studio.disk.exports[0]!, status: 'done', file: 'a.mp4' }, { export: 2, ratio: '16:9', height: 720, quality: 'preview', status: 'requested' }];
+    studio.say({ type: 'export', n: 2, status: 'requested' });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(editor.stores.film.getState().exports.map((x) => x.status)).toEqual(['done', 'requested']);
   });
 });
