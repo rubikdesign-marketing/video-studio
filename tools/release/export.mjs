@@ -18,6 +18,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { applyJsonDrop } from './lib/json-drop.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const RELEASE_DIR = path.join(STUDIO, 'release');
@@ -136,14 +137,8 @@ for (const [file, rules] of Object.entries(manifest.replace_regex ?? {})) {
   }
   fs.writeFileSync(full, text);
 }
-// Entries dropped from JSON lists (a reference film by a company that must not appear).
-for (const [file, where] of Object.entries(manifest.json_drop ?? {})) {
-  const full = path.join(stage, file);
-  const list = JSON.parse(fs.readFileSync(full, 'utf8'));
-  const kept = list.filter((item) => !Object.entries(where).every(([k, v]) => item[k] === v));
-  if (kept.length === list.length) problems.push(`json_drop: nothing matched ${JSON.stringify(where)} in ${file}`);
-  fs.writeFileSync(full, JSON.stringify(kept, null, 1) + '\n');
-}
+// Entries dropped from JSON lists (a reference film by a company that must not appear): see lib/json-drop.mjs.
+problems.push(...applyJsonDrop(stage, manifest.json_drop));
 
 // 4b. Build the review editor (studio/app), after the replacements so the built files carry them, and before the
 // scan so the scan reads them too. Buyers get a working /editor without a build of their own. Needs npm and the

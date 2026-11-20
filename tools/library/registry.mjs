@@ -217,7 +217,8 @@ function bannedIn(text, manifest) {
 function jsonDropped(catalogFile, entry, manifest) {
   const rule = manifest?.jsonDrop?.[catalogFile];
   if (!rule) return false;
-  return Object.entries(rule).every(([k, v]) => String(entry?.[k] ?? '').toLowerCase() === String(v).toLowerCase());
+  // One match object, or an array of them (the exporter's json_drop accepts both): any match drops the entry.
+  return (Array.isArray(rule) ? rule : [rule]).some((where) => Object.entries(where).every(([k, v]) => String(entry?.[k] ?? '').toLowerCase() === String(v).toLowerCase()));
 }
 
 // ---------- the build ----------
