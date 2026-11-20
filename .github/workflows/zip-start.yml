@@ -1,7 +1,8 @@
 name: zip-start
 
 # The buyer's path, end to end: build the release zip once, then on each system unzip it into a hard path, hide the
-# runner's own Node (so the portable-Node download is exercised), run the one start step, and render the sample film.
+# runner's own Node (so the portable-Node download is exercised), run the one start step, render the sample film, and
+# export it from the editor's server (POST /api/export, then GET /api/exports until it is done).
 # Manual runs and pushes to release-zip only (the repo is private; runs are billed). macOS is tested on the owner's Mac.
 on:
   workflow_dispatch:
@@ -41,7 +42,7 @@ jobs:
     needs: build
     name: start (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -99,3 +100,67 @@ jobs:
           [ -x "$studio/.runtime/node/bin/node" ] || { echo "portable Node was not fetched"; exit 1; }
           cd "$studio" && env -i HOME="$HOME" PATH="$studio/.runtime/node/bin:/usr/bin:/bin" TMPDIR="$RUNNER_TEMP" node setup/runtime/sample.mjs
           env -i HOME="$HOME" PATH=/usr/bin:/bin TMPDIR="$RUNNER_TEMP" bash "$studio/setup/start.sh"
+
+      # Exports need a full ffmpeg. When the runner has none, it is added the way the export's failure sentence tells a
+      # buyer to (winget, else Chocolatey, on Windows; apt on Ubuntu). Then the studio server is started from the unzipped
+      # folder and the sample is exported in its own shape, as the editor's Export button does.
+      - name: Export the sample from the studio server (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $studio = Join-Path $env:RUNNER_TEMP 'Vidéo docs\video-engine'
+          Set-Location -LiteralPath $studio
+          $node = Join-Path $studio '.runtime\node\node.exe'
+          $hasFfmpeg = { & $node --input-type=module -e "import { tryBin } from './tools/lib/ff.mjs'; process.exit(tryBin('ffmpeg') ? 0 : 1)"; $LASTEXITCODE -eq 0 }
+          if (-not (& $hasFfmpeg)) {
+            winget install --id Gyan.FFmpeg -e --accept-source-agreements --accept-package-agreements
+            if (-not (& $hasFfmpeg)) { choco install ffmpeg -y --no-progress }
+            if (-not (& $hasFfmpeg)) { throw 'a full ffmpeg was still not found after adding it' }
+          }
+          $ratio = (& $node -e "const f=require('./engine/src/jobs/sample/film.json'); console.log(Math.abs(f.width/f.height-9/16)<0.01?'9:16':f.width===f.height?'1:1':'16:9')").Trim()
+          Write-Host "the sample is $ratio"
+          $log = Join-Path $env:RUNNER_TEMP 'server.log'; $err = Join-Path $env:RUNNER_TEMP 'server.err'
+          $server = Start-Process -FilePath $node -ArgumentList 'studio\server.mjs','4317' -WorkingDirectory $studio -PassThru -RedirectStandardOutput $log -RedirectStandardError $err
+          $base = 'http://127.0.0.1:4317'
+          for ($i = 0; $i -lt 30; $i++) { try { Invoke-RestMethod "$base/api/exports?job=_sample" | Out-Null; break } catch { Start-Sleep -Seconds 1 } }
+          $body = @{ ratio = $ratio; height = 720; quality = 'preview' } | ConvertTo-Json
+          Invoke-RestMethod -Method Post -ContentType 'application/json' -Body $body "$base/api/export?job=_sample" | ConvertTo-Json -Depth 5
+          $end = (Get-Date).AddMinutes(5); $last = $null
+          while ($true) {
+            $last = @((Invoke-RestMethod "$base/api/exports?job=_sample").exports)[-1]
+            if ($last.status -eq 'done' -or $last.status -eq 'failed' -or (Get-Date) -gt $end) { break }
+            Start-Sleep -Seconds 5
+          }
+          $last | ConvertTo-Json -Depth 5
+          Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue
+          if ($last.status -ne 'done') { Get-Content $log, $err -ErrorAction SilentlyContinue; throw "the export did not finish ($($last.status))" }
+          if (-not (Test-Path (Join-Path $studio "jobs\_sample\out\$($last.file)"))) { throw "the export file $($last.file) is missing" }
+
+      - name: Export the sample from the studio server (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          studio="$RUNNER_TEMP/Vidéo docs/video-engine"
+          cd "$studio"
+          export PATH="$studio/.runtime/node/bin:/usr/bin:/bin"
+          has_ffmpeg() { node --input-type=module -e "import { tryBin } from './tools/lib/ff.mjs'; process.exit(tryBin('ffmpeg') ? 0 : 1)"; }
+          if ! has_ffmpeg; then sudo apt-get install -y --no-install-recommends ffmpeg; has_ffmpeg || { echo "a full ffmpeg was still not found after adding it"; exit 1; }; fi
+          ratio=$(node -e "const f=require('./engine/src/jobs/sample/film.json'); console.log(Math.abs(f.width/f.height-9/16)<0.01?'9:16':f.width===f.height?'1:1':'16:9')")
+          echo "the sample is $ratio"
+          env -i HOME="$HOME" PATH="$PATH" TMPDIR="$RUNNER_TEMP" node studio/server.mjs 4317 > "$RUNNER_TEMP/server.log" 2>&1 &
+          server=$!
+          base=http://127.0.0.1:4317
+          for i in $(seq 1 30); do curl -sf "$base/api/exports?job=_sample" > /dev/null && break; sleep 1; done
+          curl -sf -X POST -H 'Content-Type: application/json' -d "{\"ratio\":\"$ratio\",\"height\":720,\"quality\":\"preview\"}" "$base/api/export?job=_sample"; echo
+          last() { curl -sf "$base/api/exports?job=_sample" | node -e "let s='';process.stdin.on('data',(d)=>s+=d).on('end',()=>{const x=JSON.parse(s).exports.at(-1);console.log(process.argv[1]==='json'?JSON.stringify(x,null,1):(x?.[process.argv[1]]??''))})" "$1"; }
+          end=$(( $(date +%s) + 300 ))
+          while :; do
+            status=$(last status || echo unreachable)
+            { [ "$status" = done ] || [ "$status" = failed ] || [ "$(date +%s)" -gt "$end" ]; } && break
+            sleep 5
+          done
+          last json || true
+          file=$(last file || true)
+          kill "$server" 2>/dev/null || true
+          [ "$status" = done ] || { cat "$RUNNER_TEMP/server.log"; echo "the export did not finish ($status)"; exit 1; }
+          [ -n "$file" ] && [ -f "jobs/_sample/out/$file" ] || { echo "the export file $file is missing"; exit 1; }
