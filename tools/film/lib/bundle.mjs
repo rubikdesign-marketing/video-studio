@@ -7,7 +7,7 @@
 // Every `npx remotion render` or `still` with the plain entry point bundles the whole engine again and copies its
 // public folder (14 GB on the owner's Mac). Here the public folder is linked, not copied, and the bundle is kept in
 // engine/out/bundles/<fingerprint>/. The fingerprint covers every file under engine/src (path, size, time changed),
-// the Remotion config, package.json and the lock file, so any code or film.json change makes a fresh bundle. Files in
+// the Remotion config, package.json, the lock file and every brands/*/brand.json, so any code or film.json change makes a fresh bundle. Files in
 // engine/public are read live through the link, so new captures or sounds need no new bundle.
 // Only the two newest bundles are kept.
 import fs from 'node:fs';
@@ -29,9 +29,16 @@ function walk(dir, out = []) {
   return out;
 }
 
+// engine/src/brands/index.ts imports ../../../brands/*/brand.json from outside engine/src, so they count too.
+function brandFiles() {
+  const dir = path.join(STUDIO, 'brands');
+  let names; try { names = fs.readdirSync(dir, { withFileTypes: true }); } catch { return []; }
+  return names.filter((e) => e.isDirectory()).map((e) => path.join(dir, e.name, 'brand.json'));
+}
+
 export function fingerprint() {
   const h = crypto.createHash('sha256');
-  const files = [...walk(path.join(ENGINE, 'src')), ...['remotion.config.ts', 'package.json', 'package-lock.json', 'tsconfig.json'].map((f) => path.join(ENGINE, f))];
+  const files = [...walk(path.join(ENGINE, 'src')), ...['remotion.config.ts', 'package.json', 'package-lock.json', 'tsconfig.json'].map((f) => path.join(ENGINE, f)), ...brandFiles()];
   for (const f of files.sort()) {
     let st; try { st = fs.statSync(f); } catch { continue; }
     h.update(`${path.relative(ENGINE, f)}\0${st.size}\0${Math.round(st.mtimeMs)}\n`);
