@@ -12,7 +12,7 @@ Damex Digital, [legal entity name and address] ("we"), and the person or company
 
 A licence to use the Damex Video Engine version you bought, for as long as you like.
 
-This licence covers each new version we release. <!-- owner/lawyer to approve -->
+This licence covers each new version we release.
 
 ## What you may do
 

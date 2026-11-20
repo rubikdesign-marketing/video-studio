@@ -79,7 +79,7 @@ Every video follows the token plan in the skill map: one step per session, helpe
 ## 6. Updates and help
 
 - **Updates:** New versions appear on your page at damex.digital/video-engine/studio/. Unzip one next to your current folder (for example as `video-engine-new`), open the new folder in the Code tab and say: **"Start the studio and bring my work from Documents/video-engine"**. Claude runs the start step with `--import-from` and your brands, videos, key and product sign-ins come across. Your old folder stays as it was until you delete it.
-- **Something broke?** Tell Claude "fix the studio, not just this video". If Claude says files are missing, say "start the studio" again: it puts back anything a copy or sync dropped. For anything Claude can't fix, contact Damex Digital support through the address in your purchase email.
+- **Something broke?** Tell Claude "fix the studio, not just this video". If Claude says files are missing, say "start the studio" again: it puts back anything a copy or sync dropped. For anything Claude can't fix, contact Damex Digital support at contact@damex.digital.
 
 ## 7. Where things are
 
