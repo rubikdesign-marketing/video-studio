@@ -79,7 +79,7 @@ describe('exports', () => {
     const r = await request({ ratio: '1:1', height: 1080, quality: 'preview' });
     assert.equal(await worker({ STUB_FAIL: '1' }).done, 0);
     const d = status(r.export);
-    assert.equal(d.status, 'failed'); assert.match(d.error, /^The render did not finish, so nothing was exported\./); assert.match(d.error, /Chrome could not start/);
+    assert.equal(d.status, 'failed'); assert.equal(d.error, 'The render did not finish, so nothing was exported.'); assert.ok(!d.error.includes('\n') && d.error.endsWith('.')); assert.match(d.detail, /Chrome could not start/);
     assert.equal(d.file, undefined);
     await until(() => live.events.some((e) => e.type === 'export' && e.status === 'failed' && e.error));
     assert.deepEqual(fs.readdirSync(root.path('jobs/demo/out')).filter((f) => f.includes(`export-${String(r.export).padStart(3, '0')}`)), []);
@@ -151,6 +151,31 @@ describe('the server runs the worker', () => {
       await until(() => status(a.export)?.status === 'done' && status(b.export)?.status === 'done', 15000);
       assert.equal(status(a.export).worker_pid, undefined);
     } finally { fs.writeFileSync(gate, ''); await held.stop(); }
+  });
+
+  it('a pid file naming a live process that is not a worker, with an old mtime, does not stop a new worker', async () => {
+    const stale = makeRoot();
+    const srv = await startServer(stale.root, { EXPORT_RENDERER: STUB });
+    try {
+      const pidFile = stale.write('jobs/demo/review/.export-worker.pid', String(process.pid));   // alive, but not a worker
+      const old = new Date(Date.now() - 10 * 60 * 1000); fs.utimesSync(pidFile, old, old);
+      const r = (await (await srv.post('/api/export?job=demo', { ratio: '16:9', height: 720, quality: 'preview' })).json()).export;
+      await until(() => { try { return JSON.parse(fs.readFileSync(stale.path('jobs/demo/review/export-001.json'), 'utf8')).status === 'done'; } catch { return false; } }, 10000);
+      assert.equal(r.export, 1);
+    } finally { await srv.stop(); stale.remove(); }
+  });
+
+  it('a request already waiting is picked up when the exports are asked for, with no new request', async () => {
+    const waiting = makeRoot();
+    waiting.write('jobs/demo/review/export-001.json', { export: 1, job: 'demo', status: 'requested', ratio: '16:9', height: 720, quality: 'preview' });
+    waiting.write('jobs/demo/review/export-002.json', { export: 2, job: 'demo', status: 'running', worker_pid: 999999, ratio: '1:1', height: 720, quality: 'preview' });
+    const srv = await startServer(waiting.root, { EXPORT_RENDERER: STUB });
+    try {
+      await pause(300);
+      assert.equal(waiting.read('jobs/demo/review/export-001.json').status, 'requested', 'nothing starts on its own');
+      await srv.get('/api/exports?job=demo');
+      await until(() => ['export-001', 'export-002'].every((n) => { try { return JSON.parse(fs.readFileSync(waiting.path(`jobs/demo/review/${n}.json`), 'utf8')).status === 'done'; } catch { return false; } }), 15000);
+    } finally { await srv.stop(); waiting.remove(); }
   });
 
   it('uses render.mjs through process.execPath', async () => {

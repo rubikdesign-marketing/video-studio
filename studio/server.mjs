@@ -283,11 +283,15 @@ function requestExport(job, d) {
 /** Starts the export worker for a job unless one is already running (its pid is kept in review/.export-worker.pid). It runs on its
  *  own, finishes every request it can find and exits. Returns true when it started one. STUDIO_NO_EXPORT_WORKER=1 turns it
  *  off (the tests of the request file itself use that). */
+const pidAlive = (pid) => { if (!Number.isInteger(pid) || pid <= 0) return false; try { process.kill(pid, 0); return true; } catch (e) { return e.code === 'EPERM'; } };
+const WORKER_BEAT_MS = 2 * 60 * 1000;           // the worker touches its pid file every 15 s; an older file is not a worker, whoever has that pid now
 function startExportWorker(job) {
   if (process.env.STUDIO_NO_EXPORT_WORKER) return false;
   const pidFile = path.join(JOBS, job, 'review', '.export-worker.pid');
-  const alive = (pid) => { if (!Number.isInteger(pid) || pid <= 0) return false; try { process.kill(pid, 0); return true; } catch (e) { return e.code === 'EPERM'; } };
-  try { if (alive(Number(fs.readFileSync(pidFile, 'utf8').trim()))) return false; } catch { /* no worker yet */ }
+  try {
+    const fresh = Date.now() - fs.statSync(pidFile).mtimeMs < WORKER_BEAT_MS;
+    if (fresh && pidAlive(Number(fs.readFileSync(pidFile, 'utf8').trim()))) return false;
+  } catch { /* no worker yet */ }
   try {
     const child = spawn(process.execPath, [path.join(STUDIO, 'tools', 'film', 'export-worker.mjs'), '--job', job], { detached: true, stdio: 'ignore', windowsHide: true, env: process.env });
     child.on('error', () => { /* the request stays "requested"; the next export tries again */ });
@@ -403,7 +407,11 @@ http.createServer(async (req, res) => {
     }
     if (p === '/api/edits' && req.method === 'POST') { const [code, answer] = saveEdits(job, await body(req).catch(() => null)); return send(res, code, answer); }
     if (p === '/api/export' && req.method === 'POST') { const [code, answer] = requestExport(job, await body(req).catch(() => null)); if (code === 200) startExportWorker(job); return send(res, code, answer); }
-    if (p === '/api/exports' && req.method === 'GET') return send(res, 200, { exports: exportsFor(job) });
+    if (p === '/api/exports' && req.method === 'GET') {
+      const list = exportsFor(job);            // a request nobody is working on (the studio restarted, a worker died) gets a worker now
+      if (list.some((x) => x.status === 'requested' || (x.status === 'running' && !pidAlive(x.worker_pid)))) startExportWorker(job);
+      return send(res, 200, { exports: list });
+    }
     if (p === '/api/events' && req.method === 'GET') return serveEvents(req, res, job);
     if (p === '/api/paper' && req.method === 'GET') {
       const data = paperData(job);

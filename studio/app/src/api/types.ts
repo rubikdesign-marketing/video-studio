@@ -35,7 +35,7 @@ export interface SavedEdits { filmModified: number; edits: Edit[] }
 export interface ExportReceipt extends ExportRequest { export: number; job: string; requested_at: string; status: string }
 /** Where an export has got to: asked for, being made, finished (`file` is in the job's out folder) or stopped (`error` says why). */
 export type ExportStatus = 'requested' | 'running' | 'done' | 'failed';
-export interface ExportRecord extends ExportRequest { export: number; status: ExportStatus; file?: string; error?: string }
+export interface ExportRecord extends ExportRequest { export: number; status: ExportStatus; file?: string; error?: string; detail?: string }
 
 /**
  * What the server says while a page is listening (`GET /api/events`).

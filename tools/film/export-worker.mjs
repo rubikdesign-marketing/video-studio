@@ -82,7 +82,7 @@ async function render(jobDir, quality) {
   const [cmd, args] = custom ? [custom, [jobDir, quality]] : [process.execPath, [RENDER, jobDir, quality]];
   const r = await run(cmd, args, (c) => { current = c; });
   current = null;
-  if (r.code !== 0) throw new Error(`The render did not finish${r.signal ? ' (it was stopped)' : ''}, so nothing was exported. The last thing it said: ${r.tail.trim().split('\n').pop() || 'nothing'}`.slice(0, 400));
+  if (r.code !== 0) throw Object.assign(new Error(`The render did not finish${r.signal ? ' (it was stopped)' : ''}, so nothing was exported.`), { detail: r.tail.trim().split('\n').pop() });
   const source = path.join(jobDir, 'out', quality === 'master' ? `${name}.mp4` : 'preview.mp4');
   if (!probe(source)) throw new Error(`The render finished but ${path.basename(source)} has no readable picture, so nothing was exported.`);
   return source;
@@ -131,7 +131,7 @@ async function takeOne(job) {
       console.log(`${job} export ${running.export}: wrote out/${made}`);
     } catch (e) {
       const { worker_pid, ...rest } = running;
-      writeAtomic(file, { ...rest, status: 'failed', error: plain(e), finished_at: new Date().toISOString() });
+      writeAtomic(file, { ...rest, status: 'failed', error: plain(e), ...(e?.detail ? { detail: String(e.detail).trim().slice(0, 300) } : {}), finished_at: new Date().toISOString() });
       console.log(`${job} export ${running.export} failed: ${plain(e)}`);
     }
     active = null;
@@ -152,6 +152,8 @@ async function main() {
   const args = process.argv.slice(2);
   const only = args.includes('--job') ? args[args.indexOf('--job') + 1] : null;
   const watch = args.includes('--watch');
+  const beat = () => { for (const job of jobsToLook()) { const f = path.join(JOBS, job, 'review', '.export-worker.pid'); try { if (fs.readFileSync(f, 'utf8').trim() === String(process.pid)) { const t = new Date(); fs.utimesSync(f, t, t); } } catch { /* none */ } } };
+  setInterval(beat, 15000).unref();   // proof of life for the server, also while a render runs
   const jobsToLook = () => only ? [only] : (fs.existsSync(JOBS) ? fs.readdirSync(JOBS) : []);
   const drain = async () => {
     let worked = false;
