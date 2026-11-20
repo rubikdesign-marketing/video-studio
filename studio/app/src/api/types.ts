@@ -35,7 +35,12 @@ export interface SavedEdits { filmModified: number; edits: Edit[] }
 export interface ExportReceipt extends ExportRequest { export: number; job: string; requested_at: string; status: string }
 /** Where an export has got to: asked for, being made, finished (`file` is in the job's out folder) or stopped (`error` says why). */
 export type ExportStatus = 'requested' | 'running' | 'done' | 'failed';
-export interface ExportRecord extends ExportRequest { export: number; status: ExportStatus; file?: string; error?: string; detail?: string }
+/** `detail`: under a failure, what to do or what the program said. `source`: the film it was cut from (`out/preview.mp4` or
+ *  `out/<job>.mp4`), rendered at `source_rendered_at`. `edits_pending`: text changes saved in the editor that are not in that film. */
+export interface ExportRecord extends ExportRequest {
+  export: number; status: ExportStatus; file?: string; error?: string; detail?: string;
+  source?: string; source_rendered_at?: string; edits_pending?: number;
+}
 
 /**
  * What the server says while a page is listening (`GET /api/events`).
@@ -47,7 +52,7 @@ export type StudioEvent =
   | { type: 'rendering'; active: boolean; elapsed: Seconds }
   | { type: 'version'; file: string }
   | { type: 'batch'; n: number; status: string }
-  | { type: 'export'; n: number; status: ExportStatus; file?: string; error?: string };
+  | { type: 'export'; n: number; status: ExportStatus; file?: string; error?: string; detail?: string; edits_pending?: number; source?: string; source_rendered_at?: string };
 
 export type EventsStatus = 'connecting' | 'live' | 'reconnecting' | 'closed';
 

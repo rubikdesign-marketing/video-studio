@@ -381,9 +381,10 @@ export function createEditor(options: EditorOptions) {
   function onExportEvent(e: Extract<StudioEvent, { type: 'export' }>) {
     const list = film.getState().exports;
     if (!list.some((x) => x.export === e.n)) { void refreshExports().catch(() => {}); return; }
-    film.setState({ exports: list.map((x) => (x.export === e.n ? withoutStale({ ...x, status: e.status, file: e.file, error: e.error }) : x)) });
+    film.setState({ exports: list.map((x) => (x.export === e.n ? withoutStale({ ...x, status: e.status, file: e.file, error: e.error, detail: e.detail,
+      ...(e.edits_pending ? { edits_pending: e.edits_pending } : {}), ...(e.source ? { source: e.source, source_rendered_at: e.source_rendered_at } : {}) }) : x)) });
   }
-  const withoutStale = (x: ExportRecord): ExportRecord => { const { file, error, ...rest } = x; return { ...rest, ...(file ? { file } : {}), ...(error ? { error } : {}) }; };
+  const withoutStale = (x: ExportRecord): ExportRecord => { const { file, error, detail, ...rest } = x; return { ...rest, ...(file ? { file } : {}), ...(error ? { error } : {}), ...(detail ? { detail } : {}) }; };
   async function refreshExports(): Promise<void> {
     const mine = opened;
     const list = await api.getExports(job());

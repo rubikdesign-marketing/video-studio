@@ -1,7 +1,7 @@
 import { editor, useFilm } from '../store';
 import { RATES, usePlayback, type Rate } from '../playback';
 import { Button, Icon, MenuItem, Popover, Segmented, Select } from '../ui';
-import { ExportControl } from './ExportControl';
+import { ExportControl, shapeOf } from './ExportControl';
 import { formatTime } from './format';
 import { isTall } from './geometry';
 import { PLATFORMS, SAFE_ZONES, type Platform } from './safe-zones';
@@ -60,7 +60,7 @@ export function Toolbar({ barRef, onNote }: ToolbarProps) {
           Note at <span className="time">{formatTime(time)}</span> <kbd className="canvas-kbd">N</kbd>
         </Button>
       ) : null}
-      <ExportControl exports={exports} onRequest={(request) => editor.requestExport(request).then(() => undefined)} urlFor={(file) => editor.exportUrl(file)} />
+      <ExportControl exports={exports} filmShape={shapeOf(film)} onRequest={(request) => editor.requestExport(request).then(() => undefined)} urlFor={(file) => editor.exportUrl(file)} />
     </div>
   );
 }

@@ -401,6 +401,19 @@ describe('exports', () => {
     expect(failed).toMatchObject({ status: 'failed', error: 'The render did not finish, so nothing was exported.' });
     expect(failed?.file).toBeUndefined();
   });
+  it('keeps what the studio says about an export: the how-to-fix line, the film it was cut from, the text changes not in it', async () => {
+    const studio = fakeStudio(); const editor = make(studio);
+    await editor.open('_sample');
+    await editor.requestExport(ask);
+    studio.say({ type: 'export', n: 1, status: 'running', edits_pending: 3 });
+    expect(editor.stores.film.getState().exports[0]).toMatchObject({ status: 'running', edits_pending: 3 });
+    studio.say({ type: 'export', n: 1, status: 'done', file: 'e.mp4', edits_pending: 3, source: 'out/_sample.mp4', source_rendered_at: '2026-11-20T09:30:00.000Z' });
+    expect(editor.stores.film.getState().exports[0]).toMatchObject({ status: 'done', file: 'e.mp4', edits_pending: 3, source: 'out/_sample.mp4', source_rendered_at: '2026-11-20T09:30:00.000Z' });
+    studio.say({ type: 'export', n: 1, status: 'failed', error: 'Exporting needs a full ffmpeg.', detail: 'To add it: brew install ffmpeg-full' });
+    expect(editor.stores.film.getState().exports[0]).toMatchObject({ status: 'failed', detail: 'To add it: brew install ffmpeg-full' });
+    studio.say({ type: 'export', n: 1, status: 'requested' });
+    expect(editor.stores.film.getState().exports[0]?.detail).toBeUndefined();
+  });
   it('reads the exports already asked for when a film opens, and an unknown one from the studio', async () => {
     const studio = fakeStudio();
     studio.disk.exports = [{ export: 1, ratio: '1:1', height: 720, quality: 'preview', status: 'running' }];

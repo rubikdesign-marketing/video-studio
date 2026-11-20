@@ -3,6 +3,7 @@ import { plainMessage } from '../api';
 import type { ExportRecord } from '../api';
 import type { ExportRequest } from '../contracts/review';
 import { Button, Select } from '../ui';
+import { isTall } from './geometry';
 
 const shapes: { value: ExportRequest['ratio']; label: string }[] = [
   { value: '16:9', label: 'Wide (16:9)' },
@@ -16,6 +17,19 @@ const qualities: { value: ExportRequest['quality']; label: string }[] = [
 ];
 
 const describe = (x: ExportRecord) => `export ${x.export} (${x.ratio}, ${x.height} high)`;
+const when = (iso: string) => new Date(iso).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+/** The editor's text changes are saved beside the film; an export is cut from the film as it was rendered, without them. */
+const pendingLine = (n: number) => (n === 1
+  ? 'Your 1 text change is not in the film yet, so this export does not include it.'
+  : `Your ${n} text changes are not in the film yet, so this export does not include them.`);
+
+/** The shape a film already has: a tall film exports tall by default, a square one square, anything else wide. */
+export function shapeOf(film: { width: number; height: number } | null | undefined): ExportRequest['ratio'] {
+  if (!film || !film.width || !film.height) return '16:9';
+  if (isTall({ w: film.width, h: film.height })) return '9:16';
+  if (film.width === film.height) return '1:1';
+  return '16:9';
+}
 
 export interface ExportControlProps {
   /** Every export asked for, oldest first. The last one is shown. */
@@ -24,11 +38,14 @@ export interface ExportControlProps {
   onRequest(request: ExportRequest): Promise<void>;
   /** The address to download a finished export from. */
   urlFor(file: string): string;
+  /** The film's own shape, the shape chosen until another is picked. */
+  filmShape?: ExportRequest['ratio'];
 }
 
 /** Ask for a file in another shape or size, and see whether it is waiting, being made, ready (a link) or has failed (why). */
-export function ExportControl({ exports, onRequest, urlFor }: ExportControlProps) {
-  const [ratio, setRatio] = useState<ExportRequest['ratio']>('16:9');
+export function ExportControl({ exports, onRequest, urlFor, filmShape = '16:9' }: ExportControlProps) {
+  const [picked, setRatio] = useState<ExportRequest['ratio'] | null>(null);
+  const ratio = picked ?? filmShape;                    // follows the film (it may load after this) until a shape is picked
   const [height, setHeight] = useState('1080');
   const [quality, setQuality] = useState<ExportRequest['quality']>('master');
   const [busy, setBusy] = useState(false);
@@ -50,9 +67,11 @@ export function ExportControl({ exports, onRequest, urlFor }: ExportControlProps
         {refused ? <span className="canvas-export-failed">{refused}</span>
           : last?.status === 'requested' ? `Waiting to make ${describe(last)}.`
           : last?.status === 'running' ? `Making ${describe(last)}.`
-          : last?.status === 'done' && last.file ? <>Ready: <a href={urlFor(last.file)} download>{last.file}</a></>
+          : last?.status === 'done' && last.file ? <>Ready: <a href={urlFor(last.file)} download>{last.file}</a>{last.source_rendered_at ? `, from the film rendered ${when(last.source_rendered_at)}.` : null}</>
           : last?.status === 'failed' ? <span className="canvas-export-failed">{`Could not make ${describe(last)}: ${last.error ?? 'it did not finish.'}`}</span>
           : null}
+        {!refused && last?.status === 'failed' && last.detail ? <span className="canvas-export-detail">{last.detail}</span> : null}
+        {!refused && last && last.status !== 'failed' && last.edits_pending ? <span className="canvas-export-detail">{pendingLine(last.edits_pending)}</span> : null}
       </span>
     </div>
   );

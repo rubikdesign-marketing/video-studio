@@ -258,3 +258,8 @@
 .canvas-export-failed {
   color: var(--warn);
 }
+.canvas-export-detail {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--text-quiet);
+}
