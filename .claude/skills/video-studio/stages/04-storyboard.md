@@ -14,6 +14,7 @@ Ends with the **Storyboard** approval. The storyboard is made of the film's own 
 - `library/backgrounds/index.json` (the backgrounds that already work)
 - `knowledge/craft/11-data-visualisation.md` if any chart or number is on screen
 - `knowledge/craft/00-principles.md`
+- `jobs/<job>/recipe.md` when the job has one: its structure and timings, motion language, transitions and engine moves; and `knowledge/craft/17-motion-graphics.md` sections 3 to 7 (choreography, transitions, pace by kind of film, type in motion, opening and ending). A move the recipe needs that the engine lacks is built as the film's new library move, or approximated and named in the hand-over
 - Product shots: `tools/capture/README.md` and `CAPTURE-PLAN.md` section 7.9 (looks, pointers, camera, staging, animations, transitions); capture scripts are written now and approved with the storyboard
 - Skills to load (see "Skills the studio uses" in `SKILL.md`): `motion-design` for each shot's motion notes; `bang-motion` (`references/techniques.md`) for shot sizes, the camera going to what is speaking, and its transition menu; `impeccable` for the key frames' type, colour and layout; `hallmark` and `impeccable` critique before the storyboard goes to a person
 

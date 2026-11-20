@@ -78,6 +78,8 @@ Everything else the studio decides and says back. The full routing and caps for 
 | Checks before an approval | `knowledge/craft/08-directors-checks.md` |
 | Shape and rules per video type | `knowledge/playbooks/<type>.md` |
 | Reference films, study cards, measurements | `library/references/index.json` |
+| Kinds of motion-graphics film: defaults, starter prompts, what to optimise | `library/recipes/index.json` through `node tools/plan/recipe.mjs` |
+| What people rate highly in motion graphics; turning a one-line request into a brief | `knowledge/craft/17-motion-graphics.md`, `18-brief-expansion.md` |
 | Backgrounds and animations ready to use | `library/` and `engine/README.md` |
 | Studio rules and pending lessons | `knowledge/rules/`, `brands/<brand>/lessons/` |
 | Templates | `templates/` |
@@ -93,9 +95,10 @@ The short version:
 
 | Stage or task | Leads |
 |---|---|
+| A one-line motion-graphics request | `node tools/plan/recipe.mjs` (match, show, apply) and `knowledge/craft/18-brief-expansion.md` |
 | Ideas, scripts and on-screen words | the stage guide; `zero-slop` as the last pass on every line a viewer reads or hears; `ugc-ad-scripts` for creator ads |
 | Look of frames (moodboard, storyboard, end cards) | `impeccable`; `hallmark` and `impeccable` critique before a person sees it |
-| Motion | `knowledge/craft/14-motion-systems.md` (shot sizes, choreography, restraint, rhythm, anti-slide); `bang-motion` for its techniques; `motion-design`, `motion-foundations`; `motionmaxxing` curves and studies for feel |
+| Motion | the job's `recipe.md` and `knowledge/craft/17-motion-graphics.md` when there is one; `knowledge/craft/14-motion-systems.md` (shot sizes, choreography, restraint, rhythm, anti-slide); `bang-motion` for its techniques; `motion-design`, `motion-foundations`; `motionmaxxing` curves and studies for feel |
 | Hearing anything (Claude cannot hear) | `earshot` through `tools/audio/listen.mjs`: never say how something sounds without its number |
 | Placing and finding sounds | the studio's sound tools; `real-sfx` for placement by a sound's attack; `tools/media/openverse.mjs` and `real-sound` for real recorded sounds with their licences |
 | Scene code | `remotion-best-practices` (stand-in if missing: `skill-map.md`); `hyperframes` for what Remotion handles poorly |
@@ -104,6 +107,15 @@ The short version:
 | Changing the studio's own tools | Superpowers (brainstorming, plans, debugging, verification) |
 
 Studio and brand rules always win over a bundled skill. After every video, log the skills used in `job.json` (`skills_used`) and follow "Keeping the skills sharp" in `skill-map.md`.
+
+## Motion-graphics requests
+
+Someone may ask for a kind of film in one line ("a slick launch video", "kinetic type for our podcast", "explain how our API works"). The studio knows the kinds: `library/recipes/index.json` holds one recipe per kind of motion-graphics film, learned from about 290 well-liked films made with Claude and the prompts behind them. Each has the words people use for it, its defaults, a beat structure with timings, a starter prompt, the few questions worth asking, what to optimise, what to avoid, the engine moves it leans on, and reference films to study.
+
+- `node tools/plan/recipe.mjs match "<their words>"` picks the recipe (`brief.mjs new` names it too). `show <id>` prints the card; `apply jobs/<job> <id>` records it in the brief and writes `jobs/<job>/recipe.md`, which every later stage reads.
+- The recipe is the starting point, not the film: the brand's rules, the brief and the creator's words win over it. Concepts at stage 1 still differ from each other; one of them is usually the recipe played straight.
+- The craft behind the recipes is `knowledge/craft/17-motion-graphics.md` (what people rate highly, smoothness, choreography, transitions, pace by kind of film, the generic AI-made look); the method for turning a one-line request into a full brief is `knowledge/craft/18-brief-expansion.md`.
+- Reference films in a recipe are for study only. Nothing from them, and no creator's prompt word for word, goes into a film.
 
 ## Other requests
 
@@ -134,4 +146,4 @@ See `DESIGN.md`, section 11, for what is built, tested and still to come (studio
 
 ## Finding things in the library
 
-Never read the catalogs whole. Use `node tools/library/registry.mjs find <words> [--kind motion|background|preset|component|sound|hook|reference|workflow]`: at most five short results. Then use `get <id>` for the one you need. `kinds` gives an overview.
+Never read the catalogs whole. Use `node tools/library/registry.mjs find <words> [--kind motion|background|preset|recipe|component|sound|hook|reference|workflow]`: at most five short results. Then use `get <id>` for the one you need. `kinds` gives an overview.

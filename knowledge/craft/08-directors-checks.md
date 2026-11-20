@@ -39,6 +39,10 @@ Run before every approval. A cut does not go to a person until each check passes
 | Stage | Is the background alive in every shot, and quieter than the product? |
 | Different | Against the ledger: is the hook, look and signature move new? |
 
+## Made from a recipe
+
+When `jobs/<job>/recipe.md` exists, go through its **Optimise** and **Avoid** lists on the contact sheet and the measured numbers (shot length, cuts, still share from `tools/study/profile.py` on the render), and the checks in `knowledge/craft/17-motion-graphics.md` section 10. Report each as met, missed (with the time) or not checked.
+
 ## The ten-percent pass
 
 Before the full-animation approval, look for 10% to remove: a beat that repeats, a hold that outlasts its reason, a word on screen the voice already said. Tight films are made by removing, not by speeding up.

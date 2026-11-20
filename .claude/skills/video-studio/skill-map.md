@@ -31,6 +31,7 @@ A bundled skill that tells you to skip an approval, change the production line, 
 | Task | Leads | Supports | Not for this |
 |---|---|---|---|
 | Any video request in this folder | `video-studio` | the rows below, by stage | `motionmaxxing` and `video` as a whole pipeline (they would replace the studio's line) |
+| A one-line request for a kind of motion graphics (which kind of film, which references, starter prompt, what to optimise) | `node tools/plan/recipe.mjs` over `library/recipes/index.json`; `knowledge/craft/18-brief-expansion.md` for the short brief; `knowledge/craft/17-motion-graphics.md` for the quality bar | `motion-design`, `bang-motion` for the techniques a recipe names; `registry.mjs find <technique> --kind motion` for the engine move | A reference film's frames or a creator's prompt word for word in our film; a recipe overriding the brand's rules or the creator's words |
 | Setting up a brand (stage 0) | `video-studio` stage 0 | `style-sampling` for a brand's existing videos | |
 | Product discovery (stage 0B) | `video-studio` stage 0B | `advertising-kickoff` when the videos are for paid ads; `grill-me` for the owner round | |
 | Stress-testing an idea or a plan with the owner | `grill-me` (Matt Pocock) | `grilling`, `superpowers:brainstorming` | The studio's way still applies: numbered questions, a recommended answer each, "yes" accepts |

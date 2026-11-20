@@ -14,6 +14,7 @@ The moodboard is where the look is explored and chosen. Its frames are designs. 
 - `brands/<brand>/brand.md` and `brand.json`
 - `library/backgrounds/index.json` and the preview stills beside it
 - The study cards named on the soul sheet
+- `jobs/<job>/recipe.md` when the job has one (its style, energy and avoid list)
 - Skills to load (see "Skills the studio uses" in `SKILL.md`): `impeccable` while choosing type, colour and layout; `style-sampling` when a reference sets the look; `hallmark` and `impeccable` critique before the board goes to a person
 
 ## Build the canvas

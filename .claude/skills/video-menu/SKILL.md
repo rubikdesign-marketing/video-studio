@@ -1,6 +1,6 @@
 ---
 name: video-menu
-description: The front door of the video studio. Use it at the start of a session, or when the user says "video menu", "what can you make", "show me the options", wants to browse presets, components, motion, backgrounds, sounds or hooks, or names a job to resume or pastes a full brief.
+description: The front door of the video studio. Use it at the start of a session, or when the user says "video menu", "what can you make", "show me the options", wants to browse presets, recipes, components, motion, backgrounds, sounds or hooks, names a job to resume, pastes a full brief, or asks in a line for a kind of motion graphics ("I need a launch video", "kinetic type reel for our podcast").
 argument-hint: "[job name or a full brief]"
 ---
 
@@ -23,11 +23,21 @@ A full brief is more than one sentence of description (what, for whom, where it 
 3. Run `node tools/plan/brief.mjs check jobs/<name>`.
 4. No open questions: start stage 1 of the `video-studio` skill at once. Open questions (at most three): ask them with AskUserQuestion, record each answer with `node tools/plan/brief.mjs set jobs/<name> <field> "<value>"` (or `decide` for anything that is not one of its fields), then start.
 
+## 2b. The argument asks for a kind of motion graphics in a line
+
+For example "a slick launch video for our SaaS", "kinetic type reel for our podcast", "explain how our API works".
+1. Run `node tools/plan/recipe.mjs match "<their words>"`. It names the recipe (the kind of film) or says two fit, or none.
+   - Clear: say in one line which kind of film it is and its defaults (length, size, energy, style), so they can correct it.
+   - Two fit: decide from their words if you can and say why; otherwise ask which, recommending the first.
+   - None: ask what kind of film it is, as one question with a recommendation, then match again.
+2. Run `node tools/plan/recipe.mjs show <id>` and read its card. Ask only the card's questions the brief does not answer, at most three, each with its default, in one AskUserQuestion. "Go with the defaults" is always an option.
+3. Then case 2 with their words plus the answers, and after `brief.mjs new`, run `node tools/plan/recipe.mjs apply jobs/<name> <id>`. Every later stage reads `jobs/<name>/recipe.md`.
+
 ## 3. Otherwise: show the menu once
 
 Ask ONE AskUserQuestion with these 4 options:
 - **Start a new video**: ask for the type (promo, demo, tutorial, edit) and a sentence on what it is for, then go to case 2 with that text.
-- **Browse presets and components**: ask one follow-up AskUserQuestion with 4 options: presets; components; motion and backgrounds; sounds and hooks. Then browse as below.
+- **Browse presets and components**: ask one follow-up AskUserQuestion with 4 options: presets and motion-graphics recipes; components; motion and backgrounds; sounds and hooks. Then browse as below.
 - **Resume a job**: list up to 4 recent jobs, newest first, skipping names that start with an underscore: `ls -t jobs/*/job.json | head -8`. Show each as name, brand and next stage from its job.json. The pick goes to case 1.
 - **Set up a brand**: start stage 0 of the `video-studio` skill.
 
@@ -48,8 +58,9 @@ For 2 and 3 browse as below; if the user asks for motion, backgrounds, sounds or
 
 Browse ONLY with the registry tool. Never read `library/registry.json` or a catalog whole.
 - `node tools/library/registry.mjs kinds`: the count per kind, with example ids. Show it first.
-- `node tools/library/registry.mjs find <words> [--kind preset|workflow|motion|background|hook|sound|reference|component] [--tag t] [--customer]`: at most 5 one-line results.
+- `node tools/library/registry.mjs find <words> [--kind preset|recipe|workflow|motion|background|hook|sound|reference|component] [--tag t] [--customer]`: at most 5 one-line results.
+- Recipes (kinds of motion-graphics film): `node tools/plan/recipe.mjs list` groups them by family; `node tools/plan/recipe.mjs show <id>` is one in full, with its starter prompt.
 - `node tools/library/registry.mjs get <id>`: the full entry for the one the user picked.
 
-Kinds for each choice: presets: `preset`, `workflow`; components: `component`; motion and backgrounds: `motion`, `background`; sounds and hooks: `sound`, `hook`.
+Kinds for each choice: presets and recipes: `preset`, `recipe`, `workflow`; components: `component`; motion and backgrounds: `motion`, `background`; sounds and hooks: `sound`, `hook`.
 Ask what the user wants in a few words, run `find`, show the lines, and offer to `get` one or search again. Say what you did not look at.

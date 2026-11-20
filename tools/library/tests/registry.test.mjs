@@ -49,7 +49,7 @@ test('schema, counts and unique sorted ids', () => {
     assert.ok(it.locator.file, it.id);
     assert.equal(typeof it.availability.customer, 'boolean');
   }
-  for (const k of ['preset', 'workflow', 'motion', 'background', 'hook', 'sound', 'reference', 'component']) assert.ok(r.counts[k] > 0, k);
+  for (const k of ['preset', 'workflow', 'recipe', 'motion', 'background', 'hook', 'sound', 'reference', 'component']) assert.ok(r.counts[k] > 0, k);
 });
 
 test('the committed registry passes check', () => {
@@ -77,7 +77,7 @@ test('get returns one item in full; an unknown id fails', () => {
 
 test('kinds gives a count and 3 examples per kind', () => {
   const out = JSON.parse(run(['kinds', '--json']).stdout);
-  assert.equal(out.length, 8);
+  assert.equal(out.length, 9);
   for (const o of out) assert.ok(o.examples.length <= 3 && o.examples.length > 0 && o.count > 0);
 });
 
