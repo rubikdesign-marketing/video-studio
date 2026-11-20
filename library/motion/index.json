@@ -32,7 +32,9 @@
     "caption": "Short-form caption styles a brand may choose for 9:16 (decision 6); the fixed caption design stays the default.",
     "opener": "Hook openers: the first two seconds, made in the engine, a pattern interrupt without anyone else's footage (knowledge/craft/15-hooks.md).",
     "shader": "Shader backgrounds on Paper Shaders, coloured from the brand, frame-accurate (render with --gl=angle).",
-    "ugc": "Creator-style moves for phone and screen-share films: the comment a film answers, the marks of a screen recording, a sticker reaction (engine/src/kit/ugc/)."
+    "ugc": "Creator-style moves for phone and screen-share films: the comment a film answers, the marks of a screen recording, a sticker reaction (engine/src/kit/ugc/).",
+    "ui": "Authored interface components that change state on springs: a morph chain, toggles, sliders, tab indicators (engine/src/kit/moves).",
+    "particle": "Square particles that hold a form and re-form into the next, for data and marks; never decoration (engine/src/kit/moves/ParticleForm.tsx)."
   },
   "moves": [
     {
@@ -8316,6 +8318,296 @@
       "planned_instant_changes": [],
       "checked": "Preview rendered 19 Nov 2026 at half size, 60 fps; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Stills of 9:16 and 16:9 looked at; 1:1 and 4:5 not looked at. Not used in the UGC film made with the others (its ring already marks the proof beat).",
       "added_on": "2026-11-19"
+    },
+    {
+      "name": "shape-morph",
+      "family": "transition",
+      "component": "ShapeMorph",
+      "file": "engine/src/kit/moves/ShapeMorph.tsx",
+      "does": "One filled shape becomes another (square, line, star, polygon, rounded tile, any closed path): every outline is resampled to the same 120 points by arc length, lined up start to start and clockwise, and eased across together, so corners stay sharp.",
+      "use_when": "A match cut on shape, a seed that grows into the next element, a shape that becomes a mark. Keys about a morph (0.35 to 0.5 s) plus a 0.4 s reading hold apart.",
+      "avoid_when": "A dot or circle opening on black (the cheap-kit opener); bouncy shapes in a product film; text, which word-morph handles.",
+      "props": {
+        "keys": "[{at, shape, fill?}]: the first is the shape it arrives as; each later one starts a morph into its shape. A shape is {kind: square | circle | pill | rect (radius px) | polygon (sides) | star (points, inner) | path (d), rect: {x, y, width, height} px}.",
+        "length": "Seconds a morph takes. Optional, default the base length (0.4 s at confident).",
+        "bend": "How far it bows when the boxes are in different places (0 straight). Optional.",
+        "fill": "Stage colour by role: accent (default), ink, second, warm, soft, line, page. A key may set its own.",
+        "out": "Seconds when it shrinks away. Optional."
+      },
+      "also_exports": "shapeAt (the outline at any time, for other moves), outline, pathOf, useSnap",
+      "timing": {
+        "morph_s": 0.4,
+        "overshoot": "under 1.5% (useSnap)"
+      },
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "expected_render_cost": "Light: plain 2D (HTML and inline SVG), no WebGL, no image.",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [],
+      "composition": "move-shape-morph",
+      "preview": "library/motion/shape-morph.mp4",
+      "preview_sha256": "e2fb5ec3a46ab001392d1582287a0a7bef80325884cc54bfe5379b6ecda299e4",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered."
+    },
+    {
+      "name": "morph-chain",
+      "family": "ui",
+      "component": "MorphChain",
+      "file": "engine/src/kit/moves/MorphChain.tsx",
+      "does": "One interface component through many states with no cut: size, corner radius, place and colour each follow summed springs, so a new target never jumps; the old content blurs out in 0.12 s, the box resizes in 0.15 s and the new content is sharp by 0.3 s.",
+      "use_when": "A product idea told by one control changing (search becomes results becomes a sent badge), about one state a second, each change caused by a cursor click; loops when the last state returns to the first.",
+      "avoid_when": "A component small in a still frame (push the camera so each state fills it); long tours repeating one layout; two changes in the same second.",
+      "props": {
+        "states": "[{at, width, height (% of frame height), radius (same units, or \"pill\"), fill (stage role), content, x, y (px middle), click}]. content is laid out at the state's size; its text takes the colour that reads on the fill.",
+        "loop": "Seconds when it returns to the first state, so the last frame matches the first. Optional.",
+        "out": "Seconds when it leaves. Optional."
+      },
+      "timing": {
+        "blur_out_s": 0.12,
+        "resize_s": 0.15,
+        "sharp_by_s": 0.3,
+        "per_state_s": "1 to 1.5"
+      },
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "expected_render_cost": "Light: plain 2D (HTML and inline SVG), no WebGL, no image.",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [],
+      "composition": "move-morph-chain",
+      "preview": "library/motion/morph-chain.mp4",
+      "preview_sha256": "47fe85778aa3092e652433c8b068d096d4827977793291b06a2d23e705b26bf9",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered."
+    },
+    {
+      "name": "carrier",
+      "family": "transition",
+      "component": "Carrier",
+      "file": "engine/src/kit/moves/Carrier.tsx",
+      "does": "One accent object carried through every scene of a film on the film clock, landing in a named anchor of each scene and becoming that thing (a toggle's knob, a chart's highlighted bar, the full stop of the closing line); joins of 0.15 s on an arc, reshaping through shape-morph.",
+      "use_when": "A film held together by one object across hard cuts, ending on the closing line's full stop (measured from its own type with useFullStop).",
+      "avoid_when": "A dot as the carried thing (use a square or the brand's mark); scenes with nothing for it to become; joins slower than about 0.2 s.",
+      "props": {
+        "keys": "[{at, anchor | rect, shape (a shape kind without its rect), fill?, join?}]: where it has landed by at; it leaves a join (0.15 s) earlier.",
+        "anchors": "Named rects (px) that scenes expose, such as toggleKnob(...) or useFullStop(...).stop.",
+        "fill": "Stage colour by role. A key may set its own.",
+        "out": "Seconds when it leaves. Optional."
+      },
+      "also_exports": "useFullStop (the ink box of a line's full stop, measured on a canvas in the brand font)",
+      "timing": {
+        "join_s": 0.15,
+        "hold_s": 0.4
+      },
+      "house_rule": "Dots are out everywhere (craft 04): carry a square, a pill or the brand's mark. A full stop that ends a sentence is punctuation and allowed.",
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "expected_render_cost": "Light: plain 2D (HTML and inline SVG), no WebGL, no image.",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [
+        1.5,
+        3.0,
+        4.4
+      ],
+      "composition": "move-carrier",
+      "preview": "library/motion/carrier.mp4",
+      "preview_sha256": "ab4e7e41588c4265e90bcc76c17836b87b710170f43e0af5395243908cd0d1ae",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered.",
+      "planned_note": "The gallery scene hard-cuts between its four scenes at 1.5, 3.0 and 4.4 s; the carrier is the one thing that does not cut."
+    },
+    {
+      "name": "particle-form",
+      "family": "particle",
+      "component": "ParticleForm",
+      "file": "engine/src/kit/moves/ParticleForm.tsx",
+      "does": "Many small squares hold one form and re-form into the next (a unit grid, tiles on places, a number set in the brand voice, any filled path), each on a seeded, slightly curling path with up to a quarter of the move's delay and no overshoot; a dissolve about 0.7 s, a re-form about 0.9 s.",
+      "use_when": "Data that changes shape without a cut: the same units as a count, as places, as the total, as a chart. Logo or word assembly from a path.",
+      "avoid_when": "Background decoration, a particle sphere or galaxy (the cheap kit), anything round; more than one particle passage in a film.",
+      "props": {
+        "forms": "[{at, form, length?, size?}]: form is text {text, size, voice, x, y} | path {d, rect, evenOdd} | grid {rect, cols, rows} | points {points} | scatter {rect, seed}.",
+        "means": "Required: what the forms show. Empty is refused.",
+        "count": "Particles, 1 to 2400.",
+        "seed": "Seed of the delays and curls. Optional.",
+        "size": "Side of a particle, % of frame height (0.7). A grid fills 80% of its cell; particles sharing a place pack into a square tile.",
+        "fill": "Stage colour by role (accent).",
+        "out": "Seconds when they fade. Optional."
+      },
+      "timing": {
+        "dissolve_s": 0.7,
+        "reform_s": 0.9,
+        "latest_start": "25% of the move"
+      },
+      "house_rule": "Squares only (craft 04 bans dots of every kind); refuses a missing `means` and forms that are all scatter. A grid's squares fill most of their cell so it reads as units, never as a dot grid.",
+      "expected_render_cost": "Medium: one inline SVG with up to 2400 squares; text and path forms are sampled once on a canvas.",
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [],
+      "composition": "move-particle-form",
+      "preview": "library/motion/particle-form.mp4",
+      "preview_sha256": "1c9ad108e6c4007a505c5b48bee7bfc36b1b568b004c654c60d6554540e29fe7",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered."
+    },
+    {
+      "name": "toggle-flip",
+      "family": "ui",
+      "component": "ToggleFlip",
+      "file": "engine/src/kit/moves/Controls.tsx",
+      "does": "An authored toggle that flips at given times: the knob crosses in 0.18 s on a spring with under 1.5% overshoot and the track fills with the accent as it goes; toggleKnob() gives the knob's rect for a flood or a carrier.",
+      "use_when": "A setting switched on in a product film, the cause of a flood or a theme change; clicked by a cursor a tick before each flip.",
+      "avoid_when": "A recorded capture that already shows the toggle (use the capture moves); more than two flips in a row.",
+      "props": {
+        "x / y": "Middle, px.",
+        "size": "Height, % of frame height (7).",
+        "on": "Starts on. Optional.",
+        "flips": "Seconds of each flip.",
+        "at": "When it appears.",
+        "hideKnob": "Leave the knob to a Carrier."
+      },
+      "also_exports": "toggleKnob",
+      "timing": {
+        "flip_s": 0.18
+      },
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "expected_render_cost": "Light: plain 2D (HTML and inline SVG), no WebGL, no image.",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [],
+      "composition": "move-toggle-flip",
+      "preview": "library/motion/toggle-flip.mp4",
+      "preview_sha256": "7a03954b68c87a9a498a0a02a630baed51690081907ca4f0f30504070387286e",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered."
+    },
+    {
+      "name": "slider-drag",
+      "family": "ui",
+      "component": "SliderDrag",
+      "file": "engine/src/kit/moves/Controls.tsx",
+      "does": "An authored slider dragged by the brand pointer to each value; pulled past its end the thumb follows by 30% of the overshoot, and when the hand lets go it springs back to the end; a readout above the thumb always matches it.",
+      "use_when": "A level, budget or volume being set; showing a limit with a little play.",
+      "avoid_when": "Values a viewer must read precisely mid-drag; recorded captures.",
+      "props": {
+        "x / y": "Left end and height, px.",
+        "length": "Track length, % of frame height (60).",
+        "size": "Scales track, thumb and readout (1).",
+        "keys": "[{at, value}]: the hand lands on value (0 to 1, above 1 pulls past the end) at at, after a scene length of travel.",
+        "start": "Starting value.",
+        "at": "When it appears.",
+        "pointer": "Draw the hand (true).",
+        "readout": "Show the percentage (true)."
+      },
+      "timing": {
+        "stretch": 0.3,
+        "let_go_s": 0.1,
+        "spring_back_s": 0.35
+      },
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "expected_render_cost": "Light: plain 2D (HTML and inline SVG), no WebGL, no image.",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [],
+      "composition": "move-slider-drag",
+      "preview": "library/motion/slider-drag.mp4",
+      "preview_sha256": "3689b5276a0f014773a2cb59873157dc226cdeb3bd6a707e5a175b63be38957a",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered."
+    },
+    {
+      "name": "tab-indicator",
+      "family": "ui",
+      "component": "TabIndicator",
+      "file": "engine/src/kit/moves/Controls.tsx",
+      "does": "A row of tabs whose indicator moves with its leading edge on a quick spring (0.16 s) and its trailing edge on a slower one (0.32 s), so it stretches towards the new tab and catches up; labels turn to the colour that reads on it as it covers them.",
+      "use_when": "Switching views (day, week, month) in a product film; a choice between a few options.",
+      "avoid_when": "More than five tabs; long labels (tabs are equal widths).",
+      "props": {
+        "tabs": "Labels.",
+        "keys": "[{at, index}]: the first is where it starts.",
+        "x / y": "Middle, px.",
+        "tabWidth": "% of frame height (22).",
+        "height": "% of frame height (7).",
+        "at": "When it appears."
+      },
+      "timing": {
+        "lead_s": 0.16,
+        "trail_s": 0.32
+      },
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "expected_render_cost": "Light: plain 2D (HTML and inline SVG), no WebGL, no image.",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [],
+      "composition": "move-tab-indicator",
+      "preview": "library/motion/tab-indicator.mp4",
+      "preview_sha256": "2aa3ad73d2c35d5df09753e274e1bf781ac60d7f156fd5c5766c3279f553b9b6",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered."
+    },
+    {
+      "name": "flood",
+      "family": "transition",
+      "component": "Flood",
+      "file": "engine/src/kit/moves/Flood.tsx",
+      "does": "A control floods the frame with the brand's other page: a circle grows from the control over 0.32 s to the farthest corner plus 10%, the next scene starts on the new page 0.15 s after full cover, and optionally the page contracts into a target rect, carrying the next scene inside it.",
+      "use_when": "A toggle or button that changes the theme; the one move a film makes from one design family to the next; the flood becoming the next object.",
+      "avoid_when": "More than once in a film; a flood faster than 0.2 s (it reads as a flash); with nothing that causes it.",
+      "props": {
+        "from": "A point or the control's rect (px), e.g. toggleKnob(...).",
+        "at": "Seconds the flood starts.",
+        "page": "The new page: light or dark.",
+        "children": "The next scene; its clock starts 0.15 s after full cover.",
+        "contract": "{at, to: rect px, radius (% of frame height)}: shrink the page into the target. Optional."
+      },
+      "timing": {
+        "grow_s": 0.32,
+        "next_after_s": 0.15,
+        "past_corner": "10%"
+      },
+      "technique": null,
+      "credit": null,
+      "attribution": "original, written in-house",
+      "licence": "CC0-1.0",
+      "expected_render_cost": "Light: plain 2D (HTML and inline SVG), no WebGL, no image.",
+      "device_fallback": "None needed: renders the same without a GPU.",
+      "reviewed": true,
+      "reviewed_on": "2026-11-20",
+      "added_on": "2026-11-20",
+      "planned_instant_changes": [],
+      "composition": "move-flood",
+      "preview": "library/motion/flood.mp4",
+      "preview_sha256": "480db6352156959190facc9daac54e18fd7c3c67d11f456c0f3f17f718fbb1ef",
+      "checked": "Preview rendered 20 Nov 2026 at half size, 60 fps, light page, confident preset; smoothness.py: 0 unplanned jumps, 0 judder windows; flashes.py passes. Contact sheet looked at. Dark page, calm and hype presets and other frame sizes not rendered."
     }
   ],
   "review": {
@@ -8326,7 +8618,8 @@
   "shared": {
     "about": "Helpers every move can use, exported from engine/src/kit/moves.",
     "MotionBlur": "Wraps anything that moves fast and blurs it along its way, matched to its speed (half-frame shutter). Nothing blurs below reading speed. Give it x and y, the pixels travelled this frame.",
-    "useTravel": "Gives the pixels travelled this frame for any place written as a function of scene time."
+    "useTravel": "Gives the pixels travelled this frame for any place written as a function of scene time.",
+    "shape": "ShapeMorph's outlines (shape.ts): outline() resamples any shape to 120 points from the top centre, clockwise; useSnap() is a Remotion spring with under 1.5% overshoot; summed() springs a value to each new target without jumps."
   },
   "capture": {
     "about": "Entries in the capture families are settings of CaptureClip, not components of their own. Their previews play a stretch of a real capture chosen from its own events (engine/src/library/motion/capture.tsx); the compositions take a \"capture\" prop (\"<job>/<id>\", empty for the newest). Check them with tools/checks/capture_motion.mjs as well as tools/checks/smoothness.py.",

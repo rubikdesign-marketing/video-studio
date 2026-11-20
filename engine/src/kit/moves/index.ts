@@ -37,5 +37,14 @@ export { SharedElement } from './SharedElement';
 export { SlideOffReveal } from './SlideOffReveal';
 export { ZoomThroughSwap } from './ZoomThroughSwap';
 
+// Shapes and interface components that change into one another
+export { Carrier, useFullStop, type CarrierKey, type CarriedShape } from './Carrier';
+export { SliderDrag, TabIndicator, ToggleFlip, toggleKnob, type SliderKey, type TabKey } from './Controls';
+export { Flood } from './Flood';
+export { MorphChain, type ChainState } from './MorphChain';
+export { ParticleForm, type ParticleKey, type ParticleTarget } from './ParticleForm';
+export { ShapeMorph, shapeAt, type ShapeKey } from './ShapeMorph';
+export { outline, pathOf, useSnap, type FillRole, type Shape } from './shape';
+
 // Motion blur matched to speed, for scenes that move things of their own
 export { MotionBlur, useTravel, type Rect, type Side } from './core';

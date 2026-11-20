@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // The master registry: one generated, validated file that lists everything the studio can reach for (presets,
-// workflows, motion, backgrounds, hooks, sounds, references, components), and a bounded way to browse it.
+// workflows, recipes, motion, backgrounds, hooks, sounds, references, components), and a bounded way to browse it.
 //
 //   registry.mjs build [--manifest <path>] [--out <file>]   writes library/registry.json and prints the counts
 //   registry.mjs check [--release <dir>] [--manifest <path>] [--strict]
@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 export const REGISTRY = 'library/registry.json';
 export const SCHEMA = 'damex.registry/1';
-export const KINDS = ['background', 'component', 'hook', 'motion', 'preset', 'reference', 'sound', 'workflow'];
+export const KINDS = ['background', 'component', 'hook', 'motion', 'preset', 'recipe', 'reference', 'sound', 'workflow'];
 const TIERS = ['any', 'gpu', 'heavy'];
 const FIND_MAX = 5;
 const PUBLIC_BRANDS = new Set(['demo', '_template']);
@@ -417,6 +417,22 @@ export function buildRegistry({ manifest = null } = {}) {
     it.license = lic;
     it._src = { catalogFile: fwFile, entry: f };
     add(it);
+  }
+
+  // ----- recipes: kinds of motion-graphics film, from a one-line request (tools/plan/recipe.mjs) -----
+  const recipeFile = 'library/recipes/index.json';
+  if (exists(recipeFile)) {
+    const rc = readJson(recipeFile);
+    for (const r of rc.recipes || []) {
+      const d = r.defaults || {};
+      const it = base('recipe', slug(r.id), r.name, r.summary, [r.family, r.brief_kind, d.energy, d.design_style, ...(d.aspects || []), ...(r.triggers || [])].filter(Boolean), {
+        file: recipeFile,
+        catalog: `${recipeFile}#recipes/${r.id}`,
+      }, { props: { length_s: d.length_s, energy: d.energy, design_style: d.design_style, engine_moves: r.motion?.engine_moves || [] } });
+      it._src = { catalogFile: recipeFile, entry: r };
+      it._tier = 'any';
+      add(it);
+    }
   }
 
   // ----- presets: design styles, capture looks, saved styles -----

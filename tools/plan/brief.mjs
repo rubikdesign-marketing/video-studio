@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // The brief: what the creator asked for, in their words and in decisions, kept in jobs/<job>/brief.json.
 //
-//   brief.mjs new <job_dir> "<the creator's own description>"   starts brief.json from templates/brief.json
+//   brief.mjs new <job_dir> "<the creator's own description>"   starts brief.json from templates/brief.json and names
+//                                         the closest motion-graphics recipe (tools/plan/recipe.mjs)
 //   brief.mjs check <job_dir> [--json]    the pre-flight checklist (brand, product, audience, angle, look, hook, type
 //                                         with references, delivery), then the questions that would change the film
 //                                         (at most three, most consequential first) and the shots that cannot yet
@@ -26,6 +27,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assumptions, FRAMEWORK, plan, preflight, questions, setField, SETTABLE, shotProblems, summary } from './lib/brief.mjs';
 import { loadFrameworks } from './lib/frameworks.mjs';
+import { loadRecipes, matchRecipes } from './lib/recipes.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const [cmd, jobArg, ...rest] = process.argv.slice(2);
@@ -48,6 +50,12 @@ if (cmd === 'new') {
   t.in_their_words = rest.filter((a) => !a.startsWith('--')).join(' ');
   write(t);
   console.log(`Started ${path.relative(STUDIO, file)}. Next: node tools/plan/brief.mjs check ${jobArg}`);
+  try {
+    const m = matchRecipes(t.in_their_words, loadRecipes());
+    const [top, second] = m.ranked;
+    if (m.verdict === 'clear') console.log(`Closest motion-graphics recipe: ${top.name} (${top.id}). See it: node tools/plan/recipe.mjs show ${top.id}; use it: node tools/plan/recipe.mjs apply ${jobArg} ${top.id}`);
+    else if (m.verdict === 'close') console.log(`Two recipes fit about equally: ${top.id} and ${second.id}. Decide from the brief or ask which: node tools/plan/recipe.mjs match "<their words>"`);
+  } catch { /* no recipe catalogue in this copy */ }
   process.exit(0);
 }
 

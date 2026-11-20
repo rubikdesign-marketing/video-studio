@@ -3,7 +3,7 @@
  "sources": [
   {
    "file": ".claude/skills/video-studio/SKILL.md",
-   "sha256": "b73a9aac76e027e1975cea5089b1980c9d5af361116916655244bef49a9e53aa"
+   "sha256": "49b4d4e6336c6ba6c4a9a2f8bed1a86d5827ccb89edd114a2777203a2ebb290d"
   },
   {
    "file": "brands/demo/styles/ugc-phone-take/style.json",
@@ -166,8 +166,16 @@
    "sha256": "ac6bf16ee3df7c467b26248bf346b55ce62060caeed1e4f933d913dfb5f6e830"
   },
   {
+   "file": "engine/src/kit/moves/Carrier.tsx",
+   "sha256": "5bae69d9ca954c24674fc2b74ddded17cc8b0f29b4466da4a72bffa87fd243a6"
+  },
+  {
    "file": "engine/src/kit/moves/ContainerTransform.tsx",
    "sha256": "326106bd7a125d23317ccca7ceca725adbed6e7221b5c61c8433a613ef73b80e"
+  },
+  {
+   "file": "engine/src/kit/moves/Controls.tsx",
+   "sha256": "d119c6426f8ca4c2469d7665378e1e75ab0444a186495a4584e7db1e67e44b6f"
   },
   {
    "file": "engine/src/kit/moves/CountWithBar.tsx",
@@ -180,6 +188,10 @@
   {
    "file": "engine/src/kit/moves/DrawnMark.tsx",
    "sha256": "5b492f929af6face7ae02822a7c0eaaa58fae5afbd530373eb284542e136bc4f"
+  },
+  {
+   "file": "engine/src/kit/moves/Flood.tsx",
+   "sha256": "2d8fbd61fd5557202eadd040bd7380e77da3b803e675bf9303a268697deeb363"
   },
   {
    "file": "engine/src/kit/moves/FocusPull.tsx",
@@ -206,12 +218,20 @@
    "sha256": "c37803190810ff17cf08c291fde76efdc952a64d54639cd573c0a85758e0d316"
   },
   {
+   "file": "engine/src/kit/moves/MorphChain.tsx",
+   "sha256": "12177bb8da662bd9e03d85168cb9c2ab00a7ae5e51e5d470714c561cc18f7324"
+  },
+  {
    "file": "engine/src/kit/moves/NumberRoll.tsx",
    "sha256": "40d5555c640ec8fc741cebc8d1fcbde7c2b25789d9bd09d16579a409671ce549"
   },
   {
    "file": "engine/src/kit/moves/ParallaxCamera.tsx",
    "sha256": "95b4b8ae2536d34e90a2bb07d91ba05379a53dda307a70a5d30e375b6ceee13c"
+  },
+  {
+   "file": "engine/src/kit/moves/ParticleForm.tsx",
+   "sha256": "4411da8d2c44167bb781de730bf9aed66847e67df2fa2fc6cd373dc599866b65"
   },
   {
    "file": "engine/src/kit/moves/PushThrough.tsx",
@@ -228,6 +248,10 @@
   {
    "file": "engine/src/kit/moves/RotatingWord.tsx",
    "sha256": "b0ae5d2102df7a7fe59cdc648ee149abe28ef72ff9720c810e7ee96373118f78"
+  },
+  {
+   "file": "engine/src/kit/moves/ShapeMorph.tsx",
+   "sha256": "7669a79e3f9d7a80995feb70552d7ddcb9340c0a93fbc775bccae18383c88f6a"
   },
   {
    "file": "engine/src/kit/moves/SharedElement.tsx",
@@ -263,7 +287,11 @@
   },
   {
    "file": "engine/src/kit/moves/index.ts",
-   "sha256": "2d76fbac1e848e9a5a2440bae843eb8e85f225d85bdd2e10cb980c03f9e55b90"
+   "sha256": "7d9a541889fc5e21ba1bb518026a5dbbe0e6708dfc1339434083fa1413026e66"
+  },
+  {
+   "file": "engine/src/kit/moves/shape.ts",
+   "sha256": "97d4ff012ab33a6884e52d19f34a9ab8870940b889df34d2f9835a185baf1d4a"
   },
   {
    "file": "engine/src/kit/openers/AtTheLens.tsx",
@@ -739,11 +767,15 @@
   },
   {
    "file": "engine/src/library/motion/demos/index.ts",
-   "sha256": "7be29dbcccacba7b313fcf1ce4b7b8ad5e217a676ce960a628333cfc87679776"
+   "sha256": "83c426b864385383b4f42925a90da405b81ecf18a7602d8d95e61d71e29804eb"
   },
   {
    "file": "engine/src/library/motion/demos/journeys.tsx",
    "sha256": "96f405592d5ac7568ff795dd16dc232170861b3ea4124358162054d7a8a254cb"
+  },
+  {
+   "file": "engine/src/library/motion/demos/morphs.tsx",
+   "sha256": "5f60364a1b5bac0cf8c7c3b47a9049c2430e0ee55b783403eeee0ee060b46076"
   },
   {
    "file": "engine/src/library/motion/demos/type.tsx",
@@ -891,7 +923,11 @@
   },
   {
    "file": "library/motion/index.json",
-   "sha256": "7495a6511f3a8580ba9d111e17c554347cb6beaccc29fc6bee2d9d02f77cce8e"
+   "sha256": "13586c9f4c23acaa340a422ba6cbc24d1ab009a19e98b5ff158db45d8a89a864"
+  },
+  {
+   "file": "library/recipes/index.json",
+   "sha256": "b39fbd2c03f508c5195720e81feda43f6f678eb69e4fb2f6ae33049740fbc766"
   },
   {
    "file": "library/references/index.json",
@@ -968,10 +1004,11 @@
  ],
  "counts": {
   "background": 12,
-  "component": 231,
+  "component": 247,
   "hook": 155,
-  "motion": 246,
+  "motion": 254,
   "preset": 15,
+  "recipe": 32,
   "reference": 39,
   "sound": 293,
   "workflow": 25
@@ -2335,6 +2372,55 @@
    "device_tier": "any"
   },
   {
+   "id": "component:carrier",
+   "kind": "component",
+   "name": "Carrier",
+   "summary": "One accent object carried through every scene of a film on the film clock, landing in a named anchor of each scene and becoming that thing…",
+   "tags": [
+    "carrier",
+    "component",
+    "moves",
+    "transition"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Carrier.tsx",
+    "export": "Carrier"
+   },
+   "props": {
+    "keys": "[{at, anchor | rect, shape (a shape kind without its rect), fill?, join?}]: where it has landed by at; it leaves a join (0.15 s) earlier.",
+    "anchors": "Named rects (px) that scenes expose, such as toggleKnob(...) or useFullStop(...).stop.",
+    "fill": "Stage colour by role. A key may set its own.",
+    "out": "Seconds when it leaves. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:carrier-scene",
+   "kind": "component",
+   "name": "CarrierScene",
+   "summary": "Four scenes with hard cuts between them, and one accent square carried through all of them: it arrives beside a line, becomes the knob of a…",
+   "tags": [
+    "carrier-scene",
+    "component",
+    "demos"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "CarrierScene"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "component:centre",
    "kind": "component",
    "name": "Centre",
@@ -3268,6 +3354,56 @@
     "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
     "by": "word or letter (default word).",
     "order": "start, end, centre, edges or random."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:flood",
+   "kind": "component",
+   "name": "Flood",
+   "summary": "A control floods the frame with the brand's other page: a circle grows from the control over 0.32 s to the farthest corner plus 10%, the ne…",
+   "tags": [
+    "component",
+    "flood",
+    "moves",
+    "transition"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Flood.tsx",
+    "export": "Flood"
+   },
+   "props": {
+    "from": "A point or the control's rect (px), e.g. toggleKnob(...).",
+    "at": "Seconds the flood starts.",
+    "page": "The new page: light or dark.",
+    "children": "The next scene; its clock starts 0.15 s after full cover.",
+    "contract": "{at, to: rect px, radius (% of frame height)}: shrink the page into the target. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:flood-scene",
+   "kind": "component",
+   "name": "FloodScene",
+   "summary": "A toggle is clicked; its knob floods the frame with the other page; the next line arrives; the page contracts into a card.",
+   "tags": [
+    "component",
+    "demos",
+    "flood-scene"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "FloodScene"
    },
    "availability": {
     "source": true,
@@ -4472,6 +4608,54 @@
    "device_tier": "any"
   },
   {
+   "id": "component:morph-chain",
+   "kind": "component",
+   "name": "MorphChain",
+   "summary": "One interface component through many states with no cut: size, corner radius, place and colour each follow summed springs, so a new target…",
+   "tags": [
+    "component",
+    "morph-chain",
+    "moves",
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/MorphChain.tsx",
+    "export": "MorphChain"
+   },
+   "props": {
+    "states": "[{at, width, height (% of frame height), radius (same units, or \"pill\"), fill (stage role), content, x, y (px middle), click}]. content is laid out at the state's size; its text takes the colour that reads on the fill.",
+    "loop": "Seconds when it returns to the first state, so the last frame matches the first. Optional.",
+    "out": "Seconds when it leaves. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:morph-chain-scene",
+   "kind": "component",
+   "name": "MorphChainScene",
+   "summary": "One box through four states, each change caused by a click, and back to the first so the film loops.",
+   "tags": [
+    "component",
+    "demos",
+    "morph-chain-scene"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "MorphChainScene"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "component:motion-blur",
    "kind": "component",
    "name": "MotionBlur",
@@ -5047,6 +5231,58 @@
     "layers": "The outgoing scene as an array of layers, back to front. Or give `background` and the `children` as the foreground.",
     "background": "The back layer, with `children` as the foreground.",
     "to": "\"left\", \"right\", \"up\" or \"down\". Optional; left by default."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:particle-form",
+   "kind": "component",
+   "name": "ParticleForm",
+   "summary": "Many small squares hold one form and re-form into the next (a unit grid, tiles on places, a number set in the brand voice, any filled path)…",
+   "tags": [
+    "component",
+    "moves",
+    "particle",
+    "particle-form"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/ParticleForm.tsx",
+    "export": "ParticleForm"
+   },
+   "props": {
+    "forms": "[{at, form, length?, size?}]: form is text {text, size, voice, x, y} | path {d, rect, evenOdd} | grid {rect, cols, rows} | points {points} | scatter {rect, seed}.",
+    "means": "Required: what the forms show. Empty is refused.",
+    "count": "Particles, 1 to 2400.",
+    "seed": "Seed of the delays and curls. Optional.",
+    "size": "Side of a particle, % of frame height (0.7). A grid fills 80% of its cell; particles sharing a place pack into a square tile.",
+    "fill": "Stage colour by role (accent).",
+    "out": "Seconds when they fade. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:particle-form-scene",
+   "kind": "component",
+   "name": "ParticleFormScene",
+   "summary": "The same 900 orders as units, then as places, then as the total, then as the four weeks of the month.",
+   "tags": [
+    "component",
+    "demos",
+    "particle-form-scene"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "ParticleFormScene"
    },
    "availability": {
     "source": true,
@@ -5918,6 +6154,56 @@
    "device_tier": "gpu"
   },
   {
+   "id": "component:shape-morph",
+   "kind": "component",
+   "name": "ShapeMorph",
+   "summary": "One filled shape becomes another (square, line, star, polygon, rounded tile, any closed path): every outline is resampled to the same 120 p…",
+   "tags": [
+    "component",
+    "moves",
+    "shape-morph",
+    "transition"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/ShapeMorph.tsx",
+    "export": "ShapeMorph"
+   },
+   "props": {
+    "keys": "[{at, shape, fill?}]: the first is the shape it arrives as; each later one starts a morph into its shape. A shape is {kind: square | circle | pill | rect (radius px) | polygon (sides) | star (points, inner) | path (d), rect: {x, y, width, height} px}.",
+    "length": "Seconds a morph takes. Optional, default the base length (0.4 s at confident).",
+    "bend": "How far it bows when the boxes are in different places (0 straight). Optional.",
+    "fill": "Stage colour by role: accent (default), ink, second, warm, soft, line, page. A key may set its own.",
+    "out": "Seconds when it shrinks away. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:shape-morph-scene",
+   "kind": "component",
+   "name": "ShapeMorphScene",
+   "summary": "A square becomes a line, a star, a hexagon and a rounded tile: each morph 0.4 s, each hold about 0.4 s.",
+   "tags": [
+    "component",
+    "demos",
+    "shape-morph-scene"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "ShapeMorphScene"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "component:shared-element",
    "kind": "component",
    "name": "SharedElement",
@@ -6138,6 +6424,59 @@
    "locator": {
     "file": "engine/src/library/motion/demos/camera.tsx",
     "export": "SlideOffRevealScene"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:slider-drag",
+   "kind": "component",
+   "name": "SliderDrag",
+   "summary": "An authored slider dragged by the brand pointer to each value; pulled past its end the thumb follows by 30% of the overshoot, and when the…",
+   "tags": [
+    "component",
+    "moves",
+    "slider-drag",
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Controls.tsx",
+    "export": "SliderDrag"
+   },
+   "props": {
+    "x / y": "Left end and height, px.",
+    "length": "Track length, % of frame height (60).",
+    "size": "Scales track, thumb and readout (1).",
+    "keys": "[{at, value}]: the hand lands on value (0 to 1, above 1 pulls past the end) at at, after a scene length of travel.",
+    "start": "Starting value.",
+    "at": "When it appears.",
+    "pointer": "Draw the hand (true).",
+    "readout": "Show the percentage (true)."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:slider-drag-scene",
+   "kind": "component",
+   "name": "SliderDragScene",
+   "summary": "A slider dragged to the middle, then past its end: the thumb stretches, the hand lets go, the thumb springs back.",
+   "tags": [
+    "component",
+    "demos",
+    "slider-drag-scene"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "SliderDragScene"
    },
    "availability": {
     "source": true,
@@ -6673,6 +7012,57 @@
    "device_tier": "gpu"
   },
   {
+   "id": "component:tab-indicator",
+   "kind": "component",
+   "name": "TabIndicator",
+   "summary": "A row of tabs whose indicator moves with its leading edge on a quick spring (0.16 s) and its trailing edge on a slower one (0.32 s), so it…",
+   "tags": [
+    "component",
+    "moves",
+    "tab-indicator",
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Controls.tsx",
+    "export": "TabIndicator"
+   },
+   "props": {
+    "tabs": "Labels.",
+    "keys": "[{at, index}]: the first is where it starts.",
+    "x / y": "Middle, px.",
+    "tabWidth": "% of frame height (22).",
+    "height": "% of frame height (7).",
+    "at": "When it appears."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:tab-indicator-scene",
+   "kind": "component",
+   "name": "TabIndicatorScene",
+   "summary": "A tab indicator that stretches towards each new tab and then catches up.",
+   "tags": [
+    "component",
+    "demos",
+    "tab-indicator-scene"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "TabIndicatorScene"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "component:tap-ripple",
    "kind": "component",
    "name": "TapRipple",
@@ -6847,6 +7237,57 @@
     "word": "the title word (stars ignored)",
     "size": "type size, per cent of frame height (default 24); shrunk to fit 86% of the width",
     "focus": "which letter the word grows around, counted from 0 (default the middle one)"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:toggle-flip",
+   "kind": "component",
+   "name": "ToggleFlip",
+   "summary": "An authored toggle that flips at given times: the knob crosses in 0.18 s on a spring with under 1.5% overshoot and the track fills with the…",
+   "tags": [
+    "component",
+    "moves",
+    "toggle-flip",
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Controls.tsx",
+    "export": "ToggleFlip"
+   },
+   "props": {
+    "x / y": "Middle, px.",
+    "size": "Height, % of frame height (7).",
+    "on": "Starts on. Optional.",
+    "flips": "Seconds of each flip.",
+    "at": "When it appears.",
+    "hideKnob": "Leave the knob to a Carrier."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "component:toggle-flip-scene",
+   "kind": "component",
+   "name": "ToggleFlipScene",
+   "summary": "A toggle clicked twice: the knob crosses in 0.18 s and the track fills with the accent as it goes.",
+   "tags": [
+    "component",
+    "demos",
+    "toggle-flip-scene"
+   ],
+   "locator": {
+    "file": "engine/src/library/motion/demos/morphs.tsx",
+    "export": "ToggleFlipScene"
    },
    "availability": {
     "source": true,
@@ -13020,6 +13461,34 @@
    "device_tier": "any"
   },
   {
+   "id": "motion:carrier",
+   "kind": "motion",
+   "name": "carrier",
+   "summary": "One accent object carried through every scene of a film on the film clock, landing in a named anchor of each scene and becoming that thing…",
+   "tags": [
+    "transition"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Carrier.tsx",
+    "export": "Carrier",
+    "catalog": "library/motion/index.json#moves/carrier",
+    "preview": "library/motion/carrier.mp4"
+   },
+   "props": {
+    "keys": "[{at, anchor | rect, shape (a shape kind without its rect), fill?, join?}]: where it has landed by at; it leaves a join (0.15 s) earlier.",
+    "anchors": "Named rects (px) that scenes expose, such as toggleKnob(...) or useFullStop(...).stop.",
+    "fill": "Stage colour by role. A key may set its own.",
+    "out": "Seconds when it leaves. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "motion:click-burst",
    "kind": "motion",
    "name": "click-burst",
@@ -13951,6 +14420,35 @@
     "size": "Type size, per cent of frame height; shrunk to fit narrow frames.",
     "by": "word or letter (default word).",
     "order": "start, end, centre, edges or random."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "motion:flood",
+   "kind": "motion",
+   "name": "flood",
+   "summary": "A control floods the frame with the brand's other page: a circle grows from the control over 0.32 s to the farthest corner plus 10%, the ne…",
+   "tags": [
+    "transition"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Flood.tsx",
+    "export": "Flood",
+    "catalog": "library/motion/index.json#moves/flood",
+    "preview": "library/motion/flood.mp4"
+   },
+   "props": {
+    "from": "A point or the control's rect (px), e.g. toggleKnob(...).",
+    "at": "Seconds the flood starts.",
+    "page": "The new page: light or dark.",
+    "children": "The next scene; its clock starts 0.15 s after full cover.",
+    "contract": "{at, to: rect px, radius (% of frame height)}: shrink the page into the target. Optional."
    },
    "availability": {
     "source": true,
@@ -15883,6 +16381,33 @@
    "device_tier": "any"
   },
   {
+   "id": "motion:morph-chain",
+   "kind": "motion",
+   "name": "morph-chain",
+   "summary": "One interface component through many states with no cut: size, corner radius, place and colour each follow summed springs, so a new target…",
+   "tags": [
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/MorphChain.tsx",
+    "export": "MorphChain",
+    "catalog": "library/motion/index.json#moves/morph-chain",
+    "preview": "library/motion/morph-chain.mp4"
+   },
+   "props": {
+    "states": "[{at, width, height (% of frame height), radius (same units, or \"pill\"), fill (stage role), content, x, y (px middle), click}]. content is laid out at the state's size; its text takes the colour that reads on the fill.",
+    "loop": "Seconds when it returns to the first state, so the last frame matches the first. Optional.",
+    "out": "Seconds when it leaves. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "motion:number-roll",
    "kind": "motion",
    "name": "number-roll",
@@ -16544,6 +17069,37 @@
     "layers": "The outgoing scene as an array of layers, back to front. Or give `background` and the `children` as the foreground.",
     "background": "The back layer, with `children` as the foreground.",
     "to": "\"left\", \"right\", \"up\" or \"down\". Optional; left by default."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "motion:particle-form",
+   "kind": "motion",
+   "name": "particle-form",
+   "summary": "Many small squares hold one form and re-form into the next (a unit grid, tiles on places, a number set in the brand voice, any filled path)…",
+   "tags": [
+    "particle"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/ParticleForm.tsx",
+    "export": "ParticleForm",
+    "catalog": "library/motion/index.json#moves/particle-form",
+    "preview": "library/motion/particle-form.mp4"
+   },
+   "props": {
+    "forms": "[{at, form, length?, size?}]: form is text {text, size, voice, x, y} | path {d, rect, evenOdd} | grid {rect, cols, rows} | points {points} | scatter {rect, seed}.",
+    "means": "Required: what the forms show. Empty is refused.",
+    "count": "Particles, 1 to 2400.",
+    "seed": "Seed of the delays and curls. Optional.",
+    "size": "Side of a particle, % of frame height (0.7). A grid fills 80% of its cell; particles sharing a place pack into a square tile.",
+    "fill": "Stage colour by role (accent).",
+    "out": "Seconds when they fade. Optional."
    },
    "availability": {
     "source": true,
@@ -18259,6 +18815,35 @@
    "device_tier": "gpu"
   },
   {
+   "id": "motion:shape-morph",
+   "kind": "motion",
+   "name": "shape-morph",
+   "summary": "One filled shape becomes another (square, line, star, polygon, rounded tile, any closed path): every outline is resampled to the same 120 p…",
+   "tags": [
+    "transition"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/ShapeMorph.tsx",
+    "export": "ShapeMorph",
+    "catalog": "library/motion/index.json#moves/shape-morph",
+    "preview": "library/motion/shape-morph.mp4"
+   },
+   "props": {
+    "keys": "[{at, shape, fill?}]: the first is the shape it arrives as; each later one starts a morph into its shape. A shape is {kind: square | circle | pill | rect (radius px) | polygon (sides) | star (points, inner) | path (d), rect: {x, y, width, height} px}.",
+    "length": "Seconds a morph takes. Optional, default the base length (0.4 s at confident).",
+    "bend": "How far it bows when the boxes are in different places (0 straight). Optional.",
+    "fill": "Stage colour by role: accent (default), ink, second, warm, soft, line, page. A key may set its own.",
+    "out": "Seconds when it shrinks away. Optional."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "motion:shared-element",
    "kind": "motion",
    "name": "shared-element",
@@ -18373,6 +18958,38 @@
     "next": "The title beneath. Give it no entrance of its own.",
     "at": "Seconds when the content starts to leave.",
     "to": "\"left\", \"right\", \"up\" or \"down\". Optional; left by default."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "motion:slider-drag",
+   "kind": "motion",
+   "name": "slider-drag",
+   "summary": "An authored slider dragged by the brand pointer to each value; pulled past its end the thumb follows by 30% of the overshoot, and when the…",
+   "tags": [
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Controls.tsx",
+    "export": "SliderDrag",
+    "catalog": "library/motion/index.json#moves/slider-drag",
+    "preview": "library/motion/slider-drag.mp4"
+   },
+   "props": {
+    "x / y": "Left end and height, px.",
+    "length": "Track length, % of frame height (60).",
+    "size": "Scales track, thumb and readout (1).",
+    "keys": "[{at, value}]: the hand lands on value (0 to 1, above 1 pulls past the end) at at, after a scene length of travel.",
+    "start": "Starting value.",
+    "at": "When it appears.",
+    "pointer": "Draw the hand (true).",
+    "readout": "Show the percentage (true)."
    },
    "availability": {
     "source": true,
@@ -19207,6 +19824,36 @@
    "device_tier": "any"
   },
   {
+   "id": "motion:tab-indicator",
+   "kind": "motion",
+   "name": "tab-indicator",
+   "summary": "A row of tabs whose indicator moves with its leading edge on a quick spring (0.16 s) and its trailing edge on a slower one (0.32 s), so it…",
+   "tags": [
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Controls.tsx",
+    "export": "TabIndicator",
+    "catalog": "library/motion/index.json#moves/tab-indicator",
+    "preview": "library/motion/tab-indicator.mp4"
+   },
+   "props": {
+    "tabs": "Labels.",
+    "keys": "[{at, index}]: the first is where it starts.",
+    "x / y": "Middle, px.",
+    "tabWidth": "% of frame height (22).",
+    "height": "% of frame height (7).",
+    "at": "When it appears."
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
    "id": "motion:text-window",
    "kind": "motion",
    "name": "text-window",
@@ -19515,6 +20162,36 @@
     "word": "the title word (stars ignored)",
     "size": "type size, per cent of frame height (default 24); shrunk to fit 86% of the width",
     "focus": "which letter the word grows around, counted from 0 (default the middle one)"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false,
+    "reason": "preview excluded from the customer release: library/motion/*.mp4"
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "motion:toggle-flip",
+   "kind": "motion",
+   "name": "toggle-flip",
+   "summary": "An authored toggle that flips at given times: the knob crosses in 0.18 s on a spring with under 1.5% overshoot and the track fills with the…",
+   "tags": [
+    "ui"
+   ],
+   "locator": {
+    "file": "engine/src/kit/moves/Controls.tsx",
+    "export": "ToggleFlip",
+    "catalog": "library/motion/index.json#moves/toggle-flip",
+    "preview": "library/motion/toggle-flip.mp4"
+   },
+   "props": {
+    "x / y": "Middle, px.",
+    "size": "Height, % of frame height (7).",
+    "on": "Starts on. Optional.",
+    "flips": "Seconds of each flip.",
+    "at": "When it appears.",
+    "hideKnob": "Leave the knob to a Carrier."
    },
    "availability": {
     "source": true,
@@ -20529,6 +21206,1816 @@
    "locator": {
     "file": "brands/demo/styles/ugc-phone-take/style.json",
     "catalog": "brands/demo/styles/ugc-phone-take/style.json#style"
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:ambient-scene-loop",
+   "kind": "recipe",
+   "name": "Ambient scene loop",
+   "summary": "A 15 to 60 second calm, looping scene with a locked or slowly drifting camera where light, weather or seasons change, for screens, backgrou…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "ambient loop",
+    "animated-short",
+    "background video loop",
+    "calm",
+    "calm looping scene",
+    "cinematic scene",
+    "lo-fi loop",
+    "mood piece",
+    "paper",
+    "relaxing animation",
+    "screen loop for our shop",
+    "seasons changing animation",
+    "story",
+    "website background animation",
+    "window view animation"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/ambient-scene-loop"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "calm",
+    "design_style": "Paper",
+    "engine_moves": [
+     "parallax-camera",
+     "camera",
+     "light-leak",
+     "luma-dissolve",
+     "fade-up",
+     "letter-cascade",
+     "soft-wipe",
+     "shader-god-rays",
+     "shader-grain-gradient"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:argument-film",
+   "kind": "recipe",
+   "name": "Argument film and video essay",
+   "summary": "A type-led film that makes one argument in short chapters, each backed by one number or one image, with planned reading holds; with a voice…",
+   "tags": [
+    "16:9",
+    "argument in motion",
+    "article into a video",
+    "blog post",
+    "blog post into",
+    "confident",
+    "editorial",
+    "editorial animation",
+    "explain our thesis",
+    "investor update",
+    "make the case for",
+    "motion-graphics",
+    "narrated essay",
+    "newsletter into video",
+    "opinion piece animation",
+    "pitch video",
+    "point of view video",
+    "repurpose this post",
+    "the problem with",
+    "thought leadership video",
+    "turn this article into",
+    "type",
+    "video essay",
+    "why this matters video"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/argument-film"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "confident",
+    "design_style": "Editorial",
+    "engine_moves": [
+     "opener-strike-out",
+     "mark-word-strike",
+     "slam",
+     "number-roll",
+     "recentre-build",
+     "blur-in",
+     "human-type",
+     "voice-swap",
+     "dip-to-colour",
+     "fade-up",
+     "soft-wipe",
+     "drawn-mark"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:beat-visualiser",
+   "kind": "recipe",
+   "name": "Beat visualiser",
+   "summary": "A 20 to 60 second film whose picture is driven by an existing track: shapes, objects or code that move with the music's envelope and change…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "9:16",
+    "abstract",
+    "album art animation",
+    "audio reactive video",
+    "beat synced visuals",
+    "hype",
+    "loop for a song",
+    "make the visuals move to the music",
+    "motion-graphics",
+    "music visualiser",
+    "night",
+    "spotify canvas loop",
+    "visualizer for my track",
+    "visuals for a dj set",
+    "vj loop"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/beat-visualiser"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "hype",
+    "design_style": "Night",
+    "engine_moves": [
+     "shader-warp",
+     "shader-swirl",
+     "shader-smoke-ring",
+     "zoom-blur",
+     "exposure-bloom",
+     "camera",
+     "ticker",
+     "one-word-stack",
+     "human-type"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:brand-spot",
+   "kind": "recipe",
+   "name": "Brand spot",
+   "summary": "A 15 to 20 second brand film that says what the brand is for through one list or one line, one colour and one object per item, without sell…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "brand",
+    "brand anthem",
+    "brand awareness video",
+    "brand campaign video",
+    "brand film",
+    "brand spot",
+    "brand video",
+    "campaign film",
+    "cinematic brand film",
+    "colour field",
+    "confident",
+    "mission video",
+    "premium brand film",
+    "promo",
+    "rebrand announcement",
+    "tagline video",
+    "what we stand for"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/brand-spot"
+   },
+   "props": {
+    "length_s": 18,
+    "energy": "confident",
+    "design_style": "Colour field",
+    "engine_moves": [
+     "one-word-stack",
+     "swap-word",
+     "opener-punch-in",
+     "push-wipe",
+     "panel-wipe",
+     "momentum-cut",
+     "slam",
+     "voice-swap",
+     "zoom-through-swap",
+     "container-transform",
+     "drawn-mark"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:concept-explainer",
+   "kind": "recipe",
+   "name": "Concept explainer",
+   "summary": "A 20 to 60 second film that teaches one idea by showing it happen while naming it, built on one conceit where the form mirrors the content.",
+   "tags": [
+    "16:9",
+    "9:16",
+    "animated lesson",
+    "concept animation",
+    "confident",
+    "educational animation",
+    "explain",
+    "explain like i'm five",
+    "explain this concept",
+    "explainer",
+    "explainer video",
+    "maths explainer",
+    "motion-graphics",
+    "paper",
+    "science explainer",
+    "teach this idea",
+    "visualise this idea",
+    "what is"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/concept-explainer"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "confident",
+    "design_style": "Paper",
+    "engine_moves": [
+     "line-draw",
+     "drawn-mark",
+     "mark-word-underline",
+     "match-cut",
+     "retype",
+     "fade-up",
+     "mask-rise-lines",
+     "focus-pull",
+     "stagger",
+     "zoom-through-swap",
+     "iris-wipe",
+     "invert-flash",
+     "shape-morph"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:customer-story",
+   "kind": "recipe",
+   "name": "Customer story and testimonial film",
+   "summary": "A 20 to 30 second film built on one customer's words and one result: the quote at reading speed, the customer's name, role and logo, the nu…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "4:5",
+    "brand",
+    "case study video",
+    "client quote video",
+    "client results video",
+    "confident",
+    "customer story",
+    "customer testimonial",
+    "editorial",
+    "promo",
+    "review video",
+    "success story video",
+    "testimonial video"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/customer-story"
+   },
+   "props": {
+    "length_s": 25,
+    "energy": "confident",
+    "design_style": "Editorial",
+    "engine_moves": [
+     "mask-rise-lines",
+     "highlighter",
+     "number-roll",
+     "count-with-bar",
+     "focus-pull",
+     "push-through",
+     "make-room",
+     "parallax-camera"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:dev-tool-film",
+   "kind": "recipe",
+   "name": "Developer tool film",
+   "summary": "A 15 to 30 second film for an API, CLI, SDK or open-source project: typed input, the shared how-it-works pipeline, one benchmark, then the…",
+   "tags": [
+    "16:9",
+    "api launch video",
+    "blueprint",
+    "cli demo video",
+    "code demo",
+    "confident",
+    "developer tool video",
+    "devtool launch",
+    "github readme video",
+    "launch-reel",
+    "open source project video",
+    "product",
+    "readme hero gif",
+    "release video for our library",
+    "sdk announcement",
+    "show our terminal tool"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/dev-tool-film"
+   },
+   "props": {
+    "length_s": 20,
+    "energy": "confident",
+    "design_style": "Blueprint",
+    "engine_moves": [
+     "stage-terminal",
+     "human-type",
+     "stream-answer",
+     "type-on",
+     "line-draw",
+     "number-roll",
+     "count-with-bar",
+     "mark-word-strike",
+     "panel-wipe",
+     "slide-off-reveal",
+     "scramble-lock"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:feature-walkthrough",
+   "kind": "recipe",
+   "name": "Feature walkthrough",
+   "summary": "A 20 to 40 second film that follows one user flow through the real interface, step by step, so the viewer sees exactly how the product does…",
+   "tags": [
+    "16:9",
+    "app demo",
+    "app tutorial",
+    "calm",
+    "click-through demo",
+    "clicking through",
+    "cursor",
+    "demo of the new feature",
+    "feature demo",
+    "how to use our tool",
+    "onboarding steps",
+    "onboarding video",
+    "paper",
+    "product",
+    "product demo",
+    "product tutorial",
+    "product-demo",
+    "screen demo",
+    "screen recording made nice",
+    "short tutorial of the app",
+    "show how the app works",
+    "show the user flow",
+    "show the workflow in the product",
+    "ui walkthrough",
+    "use case video",
+    "walkthrough video"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/feature-walkthrough"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "calm",
+    "design_style": "Paper",
+    "engine_moves": [
+     "cursor-lead",
+     "camera",
+     "camera-auto-zoom",
+     "join-zoom-through",
+     "product-steps",
+     "product-callout",
+     "human-type",
+     "stream-answer",
+     "shared-element",
+     "stagger",
+     "focus-pull",
+     "rotating-word"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:graphics-package",
+   "kind": "recipe",
+   "name": "Graphics package",
+   "summary": "A set of short, reusable elements (lower thirds, title and chapter cards, end screens and subscribe prompts) that share one in move and one…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "brand",
+    "broadcast package",
+    "chapter titles",
+    "confident",
+    "end screen",
+    "graphics package",
+    "lower third",
+    "lower thirds",
+    "motion-graphics",
+    "name tag animation",
+    "overlay pack",
+    "paper",
+    "subscribe animation",
+    "title card",
+    "youtube end screen"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/graphics-package"
+   },
+   "props": {
+    "length_s": 5,
+    "energy": "confident",
+    "design_style": "Paper",
+    "engine_moves": [
+     "panel-wipe",
+     "soft-wipe",
+     "mask-rise",
+     "block-reveal",
+     "tracking-settle",
+     "make-room",
+     "logo-mask-wipe",
+     "exit-set"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:how-it-works",
+   "kind": "recipe",
+   "name": "How it works",
+   "summary": "A 20 to 45 second film that shows a system, algorithm, machine or service working, driven by one clock so every number on screen is true.",
+   "tags": [
+    "16:9",
+    "1:1",
+    "3d cutaway",
+    "api explainer",
+    "architecture video",
+    "automation workflow video",
+    "blueprint",
+    "calm",
+    "data flow animation",
+    "data pipeline",
+    "explain",
+    "explain how",
+    "explain our api",
+    "explain our pipeline",
+    "explain the algorithm",
+    "explain the hardware",
+    "flows through",
+    "how does it work",
+    "how it works",
+    "how our api works",
+    "integration explainer",
+    "journey of a",
+    "money flow",
+    "motion-graphics",
+    "payment flow",
+    "request lifecycle",
+    "show how",
+    "system diagram animation",
+    "transaction flow",
+    "under the hood"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/how-it-works"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "calm",
+    "design_style": "Blueprint",
+    "engine_moves": [
+     "line-draw",
+     "number-roll",
+     "count-with-bar",
+     "bar-grow",
+     "focus-pull",
+     "stagger",
+     "camera",
+     "parallax-camera",
+     "zoom-through-swap",
+     "mark-word-underline",
+     "retype"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:illustrated-short",
+   "kind": "recipe",
+   "name": "Illustrated short and mascot story",
+   "summary": "A 20 to 60 second drawn or modelled story with a character, a clear want and an ending, often in one fixed set, which can promote a product…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "animated short",
+    "animated story for our brand",
+    "animated-short",
+    "calm",
+    "cartoon video",
+    "character animation",
+    "fable video",
+    "mascot story",
+    "our mascot in action",
+    "paper",
+    "short story animation",
+    "silent short film",
+    "story",
+    "story-driven ad",
+    "storybook animation"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/illustrated-short"
+   },
+   "props": {
+    "length_s": 45,
+    "energy": "calm",
+    "design_style": "Paper",
+    "engine_moves": [
+     "camera",
+     "parallax-camera",
+     "iris-wipe",
+     "luma-dissolve",
+     "ink-bleed",
+     "page-turn",
+     "fade-up",
+     "human-type",
+     "dip-to-colour"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:kinetic-type",
+   "kind": "recipe",
+   "name": "Kinetic typography",
+   "summary": "A 10 to 20 second film made only of words, where each word moves the way it means and cuts land on a musical grid.",
+   "tags": [
+    "16:9",
+    "1:1",
+    "9:16",
+    "animate this sentence",
+    "animated text video",
+    "audiogram",
+    "colour field",
+    "hype",
+    "kinetic type",
+    "kinetic typography",
+    "manifesto in words",
+    "motion typography",
+    "motion-graphics",
+    "podcast clip",
+    "podcast promo",
+    "podcast trailer",
+    "text only video",
+    "trailer",
+    "type",
+    "type-led motion piece",
+    "typographic animation",
+    "waveform video",
+    "words on screen to music"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/kinetic-type"
+   },
+   "props": {
+    "length_s": 15,
+    "energy": "hype",
+    "design_style": "Colour field",
+    "engine_moves": [
+     "slam",
+     "one-word-stack",
+     "opener-fill-frame",
+     "smear-in",
+     "mask-rise-letters",
+     "drop-bounce",
+     "swap-word",
+     "word-morph",
+     "tracking-settle",
+     "weight-wave",
+     "giant-crop",
+     "text-window",
+     "whip-pan",
+     "dip-to-colour"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:logo-reveal",
+   "kind": "recipe",
+   "name": "Logo reveal",
+   "summary": "A 5 to 12 second sting in which the brand's mark is built, revealed or resolved from one idea, then locks up with the name.",
+   "tags": [
+    "16:9",
+    "1:1",
+    "animate my logo",
+    "animated logo",
+    "brand",
+    "brand ident",
+    "calm",
+    "channel intro",
+    "end card animation",
+    "intro for our videos",
+    "logo animation",
+    "logo intro",
+    "logo reveal",
+    "logo sting",
+    "motion-graphics",
+    "night",
+    "outro with our logo"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/logo-reveal"
+   },
+   "props": {
+    "length_s": 10,
+    "energy": "calm",
+    "design_style": "Night",
+    "engine_moves": [
+     "scatter-assemble",
+     "logo-mask-wipe",
+     "iris-wipe",
+     "exposure-bloom",
+     "make-room",
+     "human-type",
+     "tracking-settle",
+     "light-sweep",
+     "mask-rise-letters",
+     "line-draw",
+     "particle-form"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:lyric-video",
+   "kind": "recipe",
+   "name": "Lyric and music video",
+   "summary": "A film timed to a cleared song in which every lyric line gets its own layout and image, held together by one palette and running devices th…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "animated lyrics",
+    "confident",
+    "editorial",
+    "jingle",
+    "karaoke style video",
+    "lyric video",
+    "motion-graphics",
+    "music video",
+    "single release video",
+    "song video",
+    "spotify canvas with lyrics",
+    "sync the words to the vocals",
+    "type",
+    "video for our track",
+    "visuals for my song"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/lyric-video"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "confident",
+    "design_style": "Editorial",
+    "engine_moves": [
+     "caption-pop",
+     "on-path",
+     "tracking-settle",
+     "mask-rise",
+     "slam",
+     "blur-in",
+     "one-word-stack",
+     "fade-up",
+     "exposure-bloom",
+     "momentum-cut",
+     "number-roll"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:map-journey",
+   "kind": "recipe",
+   "name": "Map and route film",
+   "summary": "A 15 to 30 second film on a map: offices or customers across the world, a delivery route or a journey, with each place or leg drawn in true…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "animated map",
+    "calm",
+    "data",
+    "delivery route",
+    "global presence",
+    "journey map",
+    "locations",
+    "map animation",
+    "motion-graphics",
+    "our offices worldwide",
+    "paper",
+    "route animation",
+    "travel route",
+    "where we operate"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/map-journey"
+   },
+   "props": {
+    "length_s": 20,
+    "energy": "calm",
+    "design_style": "Paper",
+    "engine_moves": [
+     "line-draw",
+     "camera",
+     "parallax-camera",
+     "on-path",
+     "number-roll",
+     "focus-pull"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:motion-showreel",
+   "kind": "recipe",
+   "name": "Motion showreel",
+   "summary": "A 15 second reel that shows range for a studio, agency or brand, built on one thesis and one carried object so ten techniques read as one f…",
+   "tags": [
+    "16:9",
+    "agency reel",
+    "brand",
+    "capability reel",
+    "colour field",
+    "credentials reel",
+    "demo reel",
+    "hype",
+    "motion design reel",
+    "motion-graphics",
+    "reel of our work",
+    "show what we can do",
+    "showreel",
+    "sizzle reel",
+    "studio reel"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/motion-showreel"
+   },
+   "props": {
+    "length_s": 15,
+    "energy": "hype",
+    "design_style": "Colour field",
+    "engine_moves": [
+     "match-cut",
+     "iris-wipe",
+     "push-through",
+     "smear-in",
+     "slam",
+     "one-word-stack",
+     "opener-fill-frame",
+     "whip-pan",
+     "word-morph",
+     "tile-reveal",
+     "dip-to-colour",
+     "line-draw",
+     "mask-rise-letters",
+     "carrier",
+     "shape-morph"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:news-recap",
+   "kind": "recipe",
+   "name": "News recap and list",
+   "summary": "A 30 to 60 second round-up of several dated items (top five, this week, new releases), each a consistent card with one key point, from a st…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "app update video",
+    "changelog",
+    "confident",
+    "countdown list video",
+    "editorial",
+    "highlights of the week",
+    "listicle video",
+    "monthly update video",
+    "motion-graphics",
+    "new releases round-up",
+    "news digest",
+    "news round-up",
+    "product updates",
+    "release notes",
+    "social",
+    "this week in",
+    "this week's updates",
+    "top 5 video",
+    "weekly recap",
+    "weekly updates",
+    "what shipped",
+    "what's new in the app",
+    "what's new this month",
+    "what's new this week"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/news-recap"
+   },
+   "props": {
+    "length_s": 45,
+    "energy": "confident",
+    "design_style": "Editorial",
+    "engine_moves": [
+     "split-flap",
+     "number-roll",
+     "stagger",
+     "slide-off-reveal",
+     "push-wipe",
+     "card-flip",
+     "rotating-word",
+     "mask-rise-lines",
+     "one-word-stack",
+     "container-transform"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:occasion-post",
+   "kind": "recipe",
+   "name": "Milestone, occasion and event post",
+   "summary": "A 10 to 30 second post for a moment: a milestone number, an anniversary, a thank-you, a seasonal greeting, an event line-up or recap, or a…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "9:16",
+    "aftermovie",
+    "anniversary video",
+    "brand",
+    "celebration post",
+    "conference announcement",
+    "conference highlights",
+    "conference recap",
+    "confident",
+    "event highlights",
+    "event promo",
+    "event recap",
+    "festival line-up video",
+    "holiday greeting video",
+    "job post video",
+    "meet the team",
+    "milestone announcement",
+    "new year video",
+    "night",
+    "promo",
+    "recap of our conference",
+    "save the date",
+    "summit recap",
+    "thank you video",
+    "users milestone",
+    "we hit",
+    "we reached",
+    "we're hiring",
+    "webinar promo"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/occasion-post"
+   },
+   "props": {
+    "length_s": 15,
+    "energy": "confident",
+    "design_style": "Night",
+    "engine_moves": [
+     "number-roll",
+     "count-with-bar",
+     "line-draw",
+     "ring-sweep",
+     "blur-in",
+     "word-pop",
+     "stagger",
+     "rotating-word",
+     "exposure-bloom",
+     "iris-wipe"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:physics-loop",
+   "kind": "recipe",
+   "name": "Physics and generative loop",
+   "summary": "A 20 to 45 second satisfying loop driven by a rule the viewer can see (every bounce plays a note, every ring must be escaped) with a counte…",
+   "tags": [
+    "1:1",
+    "9:16",
+    "abstract",
+    "bouncing ball video",
+    "confident",
+    "escape",
+    "every bounce plays a note",
+    "generative art loop",
+    "marble machine",
+    "motion-graphics",
+    "night",
+    "oddly satisfying",
+    "particle physics loop",
+    "physics simulation video",
+    "rings",
+    "satisfying video",
+    "simulation that makes music",
+    "viral loop"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/physics-loop"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "confident",
+    "design_style": "Night",
+    "engine_moves": [
+     "number-roll",
+     "ring-sweep",
+     "invert-flash",
+     "exposure-bloom",
+     "slam",
+     "camera",
+     "fade-up",
+     "particle-form"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:portfolio-reel",
+   "kind": "recipe",
+   "name": "Portfolio and personal intro",
+   "summary": "A 15 to 30 second reel that introduces one person through their real work and numbers, with a deliberate change of tempo and a clear way to…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "about me video",
+    "confident",
+    "freelancer intro",
+    "intro reel",
+    "introduce myself",
+    "job application video",
+    "linkedin intro",
+    "motion-graphics",
+    "my résumé video",
+    "my work reel",
+    "night",
+    "personal",
+    "personal brand video",
+    "personal intro",
+    "personal intro video",
+    "personal reel",
+    "portfolio",
+    "portfolio reel",
+    "portfolio video",
+    "resume video"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/portfolio-reel"
+   },
+   "props": {
+    "length_s": 25,
+    "energy": "confident",
+    "design_style": "Night",
+    "engine_moves": [
+     "one-word-stack",
+     "opener-fill-frame",
+     "parallax-camera",
+     "camera",
+     "number-roll",
+     "mark-word-bracket",
+     "human-type",
+     "make-room",
+     "shared-element",
+     "container-transform",
+     "light-sweep"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:price-offer-film",
+   "kind": "recipe",
+   "name": "Price, offer and comparison film",
+   "summary": "A 15 to 25 second film whose spine is a comparison: a price, a speed or a before and after, with a running total or timer the viewer can fo…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "black friday video",
+    "colour field",
+    "compare us with",
+    "comparison video",
+    "competitor comparison",
+    "confident",
+    "cost comparison video",
+    "discount announcement",
+    "limited time offer",
+    "pay once not monthly",
+    "pricing change announcement",
+    "pricing video",
+    "product",
+    "promo",
+    "replace all your tools",
+    "sale promo",
+    "save money with us",
+    "side by side",
+    "us vs them",
+    "versus",
+    "vs competitors",
+    "we're cheaper than",
+    "why switch"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/price-offer-film"
+   },
+   "props": {
+    "length_s": 20,
+    "energy": "confident",
+    "design_style": "Colour field",
+    "engine_moves": [
+     "number-roll",
+     "opener-number-slam",
+     "mark-word-strike",
+     "stagger",
+     "count-with-bar",
+     "bar-grow",
+     "push-through",
+     "payoff-punch",
+     "slam",
+     "panel-wipe",
+     "dip-to-colour"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:product-explainer",
+   "kind": "recipe",
+   "name": "Product explainer with voice-over",
+   "summary": "A 60 to 90 second narrated film that says what a product does: the problem, the product, how it helps, proof and a call to action, with the…",
+   "tags": [
+    "16:9",
+    "9:16",
+    "company explainer",
+    "confident",
+    "explain",
+    "explainer video for our product",
+    "explainer with voice-over",
+    "explainer with voiceover",
+    "narrated product video",
+    "paper",
+    "product explainer",
+    "product-demo",
+    "saas explainer",
+    "what our product does"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/product-explainer"
+   },
+   "props": {
+    "length_s": 75,
+    "energy": "confident",
+    "design_style": "Paper",
+    "engine_moves": [
+     "camera",
+     "cursor-lead",
+     "mask-rise-lines",
+     "highlighter",
+     "push-through",
+     "container-transform",
+     "shared-element",
+     "number-roll",
+     "caption-box",
+     "focus-pull"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:product-launch-film",
+   "kind": "recipe",
+   "name": "Product launch film and app promo",
+   "summary": "A 15 to 30 second launch film that states one promise at a time and proves each one with the real product on screen, joined by one continuo…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "3d product spin",
+    "3d product video",
+    "9:16",
+    "ai launch",
+    "ai product video",
+    "android app video",
+    "announce a feature",
+    "app preview video",
+    "app promo",
+    "app promo for reels",
+    "app reel",
+    "app store video",
+    "app video",
+    "confident",
+    "ecommerce product video",
+    "feature announcement",
+    "feature launch",
+    "feature release video",
+    "go-to-market video",
+    "hero video for the landing page",
+    "introducing our product",
+    "ios app video",
+    "keynote-style launch",
+    "launch film",
+    "launch video",
+    "launch-reel",
+    "mobile app ad",
+    "mobile app promo",
+    "new feature",
+    "new product video",
+    "packshot",
+    "paper",
+    "physical product launch",
+    "play store video",
+    "product",
+    "product launch",
+    "product showcase",
+    "promo for my mobile app",
+    "promo for our app",
+    "promo for our mobile app",
+    "release video for our saas",
+    "show off our new tool",
+    "vertical app promo",
+    "we're launching",
+    "website hero video"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/product-launch-film"
+   },
+   "props": {
+    "length_s": 20,
+    "energy": "confident",
+    "design_style": "Paper",
+    "engine_moves": [
+     "push-through",
+     "shared-element",
+     "container-transform",
+     "iris-wipe",
+     "cursor-lead",
+     "camera",
+     "blur-in",
+     "human-type",
+     "highlighter",
+     "make-room",
+     "line-draw",
+     "number-roll",
+     "stage-phone",
+     "relayout-vertical-phone-frame",
+     "mask-rise-lines",
+     "recentre-build",
+     "word-pop",
+     "stagger",
+     "lift",
+     "product-success",
+     "flood",
+     "toggle-flip",
+     "carrier"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:product-teaser",
+   "kind": "recipe",
+   "name": "Teaser and announcement sting",
+   "summary": "A 10 to 20 second precise tease built on one hero gesture taken from the product, ending on the name and a date or 'coming soon'.",
+   "tags": [
+    "16:9",
+    "1:1",
+    "announcement sting",
+    "apple-style teaser",
+    "calm",
+    "coming soon",
+    "countdown",
+    "dashboard animation",
+    "dashboard reveal",
+    "drop teaser",
+    "glass",
+    "hype teaser",
+    "hype video",
+    "interface reveal",
+    "launch next week",
+    "launch-reel",
+    "launching soon",
+    "pre-launch video",
+    "product",
+    "short reveal before we launch",
+    "sneak peek",
+    "something new is coming",
+    "tease the feature",
+    "teaser",
+    "ui reveal",
+    "waitlist video",
+    "website hero animation"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/product-teaser"
+   },
+   "props": {
+    "length_s": 15,
+    "energy": "calm",
+    "design_style": "Glass",
+    "engine_moves": [
+     "camera",
+     "cursor-lead",
+     "blur-in",
+     "rotating-word",
+     "mask-rise-lines",
+     "focus-pull",
+     "blur-through",
+     "light-sweep",
+     "icon-door",
+     "human-type",
+     "exposure-bloom"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:quote-card",
+   "kind": "recipe",
+   "name": "Quote card",
+   "summary": "An 8 to 12 second calm card that sets one quote line by line at reading speed and lands the speaker's name, role and photo or logo last, fo…",
+   "tags": [
+    "1:1",
+    "4:5",
+    "animated quote",
+    "calm",
+    "editorial",
+    "founder quote",
+    "linkedin post animation",
+    "motion-graphics",
+    "quote animation",
+    "quote card",
+    "quote post",
+    "testimonial quote",
+    "type"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/quote-card"
+   },
+   "props": {
+    "length_s": 10,
+    "energy": "calm",
+    "design_style": "Editorial",
+    "engine_moves": [
+     "mask-rise-lines",
+     "fade-up",
+     "highlighter",
+     "mark-word-underline",
+     "tracking-settle",
+     "parallax-camera",
+     "make-room"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:shape-sequence",
+   "kind": "recipe",
+   "name": "Shape sequence",
+   "summary": "A 15 to 30 second abstract film in one unbroken shot where one object transforms through a sequence of forms under a visible rule, ending a…",
+   "tags": [
+    "16:9",
+    "1:1",
+    "abstract",
+    "abstract animation",
+    "abstract background",
+    "abstract loop for a screen",
+    "art piece in motion",
+    "backdrop loop",
+    "bauhaus style animation",
+    "calm",
+    "editorial",
+    "event screen",
+    "generative shapes",
+    "geometric animation",
+    "led wall",
+    "looping background",
+    "minimal motion study",
+    "motion poster",
+    "motion-graphics",
+    "one shape transforming",
+    "shapes morphing",
+    "stage visuals",
+    "swiss style motion"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/shape-sequence"
+   },
+   "props": {
+    "length_s": 25,
+    "energy": "calm",
+    "design_style": "Editorial",
+    "engine_moves": [
+     "match-cut",
+     "iris-wipe",
+     "retype",
+     "human-type",
+     "line-draw",
+     "camera",
+     "zoom-through-swap",
+     "word-morph",
+     "shape-morph",
+     "carrier"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:social-hook-ad",
+   "kind": "recipe",
+   "name": "Social hook ad",
+   "summary": "A 6 to 15 second vertical or square ad that stops the scroll in the first half-second, proves one claim in under two seconds per beat and e…",
+   "tags": [
+    "15 second ad",
+    "1:1",
+    "4:5",
+    "9:16",
+    "ad creative",
+    "ad for",
+    "colour field",
+    "facebook ad",
+    "hook video",
+    "hype",
+    "instagram ad",
+    "paid social ad",
+    "performance ad",
+    "promo",
+    "reels ad",
+    "scroll-stopping video",
+    "short ad",
+    "social",
+    "stop the scroll",
+    "stops the scroll",
+    "thumb-stopping",
+    "tiktok",
+    "tiktok ad",
+    "youtube shorts ad"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/social-hook-ad"
+   },
+   "props": {
+    "length_s": 15,
+    "energy": "hype",
+    "design_style": "Colour field",
+    "engine_moves": [
+     "opener-question",
+     "opener-number-slam",
+     "opener-strike-out",
+     "opener-punch-in",
+     "opener-whip-in",
+     "opener-notification-drop",
+     "slam",
+     "one-word-stack",
+     "momentum-cut",
+     "whip-pan",
+     "push-through",
+     "payoff-punch",
+     "relayout-vertical-launch"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:stat-story",
+   "kind": "recipe",
+   "name": "Data story",
+   "summary": "A 20 to 45 second film of three to six chapters, each with one large true number counting up beside one small graphic that explains it.",
+   "tags": [
+    "16:9",
+    "9:16",
+    "animated infographic",
+    "annual report video",
+    "board update",
+    "by the numbers",
+    "charts animation",
+    "confident",
+    "data",
+    "data story",
+    "growth numbers",
+    "growth video",
+    "impact report animation",
+    "kpi video",
+    "metrics video",
+    "motion-graphics",
+    "night",
+    "numbers that matter",
+    "our numbers",
+    "research findings video",
+    "results video",
+    "show our numbers",
+    "stats video",
+    "survey results video",
+    "this year in numbers",
+    "visualise our data",
+    "year in review",
+    "year in review stats"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/stat-story"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "confident",
+    "design_style": "Night",
+    "engine_moves": [
+     "number-roll",
+     "count-with-bar",
+     "bar-grow",
+     "line-draw",
+     "ring-sweep",
+     "stagger",
+     "exposure-bloom",
+     "camera",
+     "mask-rise-lines",
+     "payoff-punch",
+     "particle-form"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:step-by-step",
+   "kind": "recipe",
+   "name": "Step-by-step how-to",
+   "summary": "A 20 to 40 second film on one fixed stage where a thing is made or done in clear steps, each step's quantity shown as it happens, with a tr…",
+   "tags": [
+    "1:1",
+    "9:16",
+    "assembly instructions",
+    "calm",
+    "cocktail recipe animation",
+    "diy steps",
+    "explain",
+    "how-to video",
+    "instructions animation",
+    "paper",
+    "process in steps",
+    "recipe video",
+    "setup guide video",
+    "step by step guide",
+    "three steps to",
+    "tutorial",
+    "tutorial in steps"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/step-by-step"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "calm",
+    "design_style": "Paper",
+    "engine_moves": [
+     "line-draw",
+     "count-with-bar",
+     "ring-sweep",
+     "stagger",
+     "human-type",
+     "fade-up",
+     "lift",
+     "drop-bounce",
+     "product-steps"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:talking-head-edit",
+   "kind": "recipe",
+   "name": "Talking-head edit",
+   "summary": "A 20 to 60 second edit of a person speaking to camera, cut on speech beats, with word-by-word captions, cut-outs, image swaps and graphics…",
+   "tags": [
+    "9:16",
+    "add captions to my video",
+    "confident",
+    "creator video edit",
+    "edit my talking head",
+    "editorial",
+    "footage-edit",
+    "graphics over my footage",
+    "interview clip for social",
+    "make my clip punchy",
+    "podcast clip edit",
+    "repurpose this clip",
+    "social",
+    "subtitles and graphics",
+    "ugc edit"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/talking-head-edit"
+   },
+   "props": {
+    "length_s": 30,
+    "energy": "confident",
+    "design_style": "Editorial",
+    "engine_moves": [
+     "caption-pop",
+     "caption-box",
+     "ugc-comment-reply",
+     "ugc-sticker-pop",
+     "highlighter",
+     "voice-swap",
+     "stage-pip",
+     "time-jump",
+     "relayout-vertical-follow",
+     "title-takeover"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:timeline-history",
+   "kind": "recipe",
+   "name": "Timeline and history",
+   "summary": "A 30 to 90 second film that tells change over time through a protagonist or one metaphor, with a running date or counter that survives ever…",
+   "tags": [
+    "16:9",
+    "company history",
+    "confident",
+    "data",
+    "decade in review",
+    "evolution of",
+    "history of",
+    "how we got here",
+    "milestones over time",
+    "motion-graphics",
+    "origin story",
+    "our journey video",
+    "over the years",
+    "paper",
+    "since we started",
+    "timeline video"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/timeline-history"
+   },
+   "props": {
+    "length_s": 45,
+    "energy": "confident",
+    "design_style": "Paper",
+    "engine_moves": [
+     "number-roll",
+     "line-draw",
+     "slam",
+     "one-word-stack",
+     "match-cut",
+     "dip-to-colour",
+     "stagger",
+     "momentum-cut",
+     "type-on"
+    ]
+   },
+   "availability": {
+    "source": true,
+    "customer": true,
+    "preview_customer": false
+   },
+   "device_tier": "any"
+  },
+  {
+   "id": "recipe:ui-morph-loop",
+   "kind": "recipe",
+   "name": "UI morph loop",
+   "summary": "A 10 to 20 second square loop in which one interface element changes shape through many states, moved by a cursor and springs, with no cuts.",
+   "tags": [
+    "1:1",
+    "animate our ui states",
+    "component animation loop",
+    "confident",
+    "dribbble shot",
+    "dynamic island style animation",
+    "interaction design showcase",
+    "looping ui animation",
+    "micro-interaction video",
+    "morphing button",
+    "motion-graphics",
+    "one element morphing",
+    "paper",
+    "product",
+    "ui morph"
+   ],
+   "locator": {
+    "file": "library/recipes/index.json",
+    "catalog": "library/recipes/index.json#recipes/ui-morph-loop"
+   },
+   "props": {
+    "length_s": 14,
+    "energy": "confident",
+    "design_style": "Paper",
+    "engine_moves": [
+     "container-transform",
+     "shared-element",
+     "cursor-lead",
+     "camera",
+     "number-roll",
+     "line-draw",
+     "blur-in",
+     "word-morph",
+     "morph-chain",
+     "toggle-flip",
+     "slider-drag",
+     "tab-indicator"
+    ]
    },
    "availability": {
     "source": true,

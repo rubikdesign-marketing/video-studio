@@ -1,0 +1,72 @@
+[
+ {
+  "id": "kinetic-type-1",
+  "group": "kinetic-type",
+  "count": 34,
+  "with_prompt": 29,
+  "file": ".damex/motion-study/batch-kinetic-type-1.json"
+ },
+ {
+  "id": "kinetic-type-2",
+  "group": "kinetic-type",
+  "count": 27,
+  "with_prompt": 27,
+  "file": ".damex/motion-study/batch-kinetic-type-2.json"
+ },
+ {
+  "id": "product-ui-1",
+  "group": "product-ui",
+  "count": 34,
+  "with_prompt": 11,
+  "file": ".damex/motion-study/batch-product-ui-1.json"
+ },
+ {
+  "id": "product-ui-2",
+  "group": "product-ui",
+  "count": 34,
+  "with_prompt": 26,
+  "file": ".damex/motion-study/batch-product-ui-2.json"
+ },
+ {
+  "id": "product-ui-3",
+  "group": "product-ui",
+  "count": 34,
+  "with_prompt": 34,
+  "file": ".damex/motion-study/batch-product-ui-3.json"
+ },
+ {
+  "id": "product-ui-4",
+  "group": "product-ui",
+  "count": 32,
+  "with_prompt": 32,
+  "file": ".damex/motion-study/batch-product-ui-4.json"
+ },
+ {
+  "id": "data-and-diagrams-1",
+  "group": "data-and-diagrams",
+  "count": 34,
+  "with_prompt": 29,
+  "file": ".damex/motion-study/batch-data-and-diagrams-1.json"
+ },
+ {
+  "id": "data-and-diagrams-2",
+  "group": "data-and-diagrams",
+  "count": 14,
+  "with_prompt": 14,
+  "file": ".damex/motion-study/batch-data-and-diagrams-2.json"
+ },
+ {
+  "id": "illustrative-and-music",
+  "group": "illustrative-and-music",
+  "count": 38,
+  "with_prompt": 22,
+  "file": ".damex/motion-study/batch-illustrative-and-music.json"
+ },
+ {
+  "id": "shapes-particles",
+  "group": "shapes-particles",
+  "count": 11,
+  "with_prompt": 11,
+  "file": ".damex/motion-study/batch-shapes-particles.json"
+ }
+]

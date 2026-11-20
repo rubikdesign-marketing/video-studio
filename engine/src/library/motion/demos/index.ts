@@ -11,6 +11,16 @@ import {
   SlideOffRevealScene,
   ZoomThroughSwapScene,
 } from './camera';
+import {
+  CarrierScene,
+  FloodScene,
+  MorphChainScene,
+  ParticleFormScene,
+  ShapeMorphScene,
+  SliderDragScene,
+  TabIndicatorScene,
+  ToggleFlipScene,
+} from './morphs';
 import { CursorLeadScene, IconDoorScene, MomentumCutScene, ParallaxCameraScene, SharedElementScene } from './journeys';
 import { BarGrowScene, CountWithBarScene, FocusPullScene, LiftScene, LineDrawScene, RingSweepScene, StaggerScene } from './emphasis';
 import { BlurInScene, DrawnMarkScene, NumberRollScene, RotatingWordScene, SwapWordScene, TrackingSettleScene, TypeOnScene } from './type';
@@ -20,7 +30,7 @@ export type Demo = {
   name: string;
   /** The caption, in sentence case. */
   title: string;
-  /** Length of the scene in seconds: 3 to 5. */
+  /** Length of the scene in seconds: 3 to 5, up to about 6 for a move that runs through several states. */
   seconds: number;
   /** The scene. It is told which page the gallery is on, for moves that go from one page to the other. */
   Scene: FC<{ page: StageName }>;
@@ -58,4 +68,14 @@ export const demos: Demo[] = [
   { name: 'shared-element', title: 'Shared element', seconds: 4.5, Scene: SharedElementScene },
   { name: 'cursor-lead', title: 'Cursor lead', seconds: 4.5, Scene: CursorLeadScene },
   { name: 'icon-door', title: 'The icon is a door', seconds: 5, Scene: IconDoorScene },
+  // One thing becomes the next
+  { name: 'shape-morph', title: 'Shape morph', seconds: 4.5, Scene: ShapeMorphScene },
+  { name: 'morph-chain', title: 'Morph chain', seconds: 5.2, Scene: MorphChainScene },
+  { name: 'carrier', title: 'Carried object', seconds: 6, Scene: CarrierScene },
+  { name: 'particle-form', title: 'Particle form', seconds: 6.2, Scene: ParticleFormScene },
+  // Live controls
+  { name: 'toggle-flip', title: 'Toggle flip', seconds: 3.5, Scene: ToggleFlipScene },
+  { name: 'slider-drag', title: 'Slider drag', seconds: 4.2, Scene: SliderDragScene },
+  { name: 'tab-indicator', title: 'Tab indicator', seconds: 4, Scene: TabIndicatorScene },
+  { name: 'flood', title: 'Flood from a control', seconds: 5, Scene: FloodScene },
 ];

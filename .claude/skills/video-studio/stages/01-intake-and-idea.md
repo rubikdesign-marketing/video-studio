@@ -8,6 +8,7 @@ Ends with the **Idea** approval.
 - `knowledge/craft/00-principles.md`
 - `knowledge/craft/01-direction.md` (soul sheet and energy map sections)
 - `brands/<brand>/ledger.json` (the last five videos)
+- For motion graphics: the recipe card (`node tools/plan/recipe.mjs show <id>`) and `knowledge/craft/18-brief-expansion.md`
 
 ## 1. Intake: the brief, in their words
 
@@ -17,6 +18,8 @@ Start with what the creator said, word for word: `node tools/plan/brief.mjs new 
 - It lists only the questions whose answers change what gets made, most consequential first. Ask at most three at a time, each with the recommended answer, in plain words. The usual first ones: the master size; what kind of film (product demo, launch reel, edit of their footage, a person talking, an animated short); and, for every reference, **what they like about it**: the camera, the pacing, the presenter's delivery, the look, the type or the sound. That answer decides what gets copied. A reference liked for its delivery needs a short performance test before anything else is made; one liked for its camera needs a motion test, not a still.
 - For every claim the film makes ("it connects", "it's fast"), ask what the viewer literally sees that proves it, and write it as `must_show[].evidence`.
 - Record each answer once. A field goes in with `node tools/plan/brief.mjs set jobs/<job> <field> "<value>"`, which stops `check` asking it: `kind`, `for`, `viewer_should`, `voice`, `length_cap_seconds` and `size` are checked and normalised, and any other field is set as given (`brand`, `product`, `awareness`, `angle`, `look`, `hook.family`, …). Anything else goes in with `brief.mjs decide`. Run `check` once more at the end, not after every answer. Every later stage reads `brief.mjs show` instead of re-asking.
+
+**Motion graphics.** `brief.mjs new` names the closest recipe when the words point to one (or run `node tools/plan/recipe.mjs match "<their words>"`). Read its card, then `node tools/plan/recipe.mjs apply jobs/<job> <id>`: it records the recipe and fills only the empty kind, length and size from the recipe's defaults (say those back in one line). The card's questions replace the generic ones where they overlap; ask none whose default is fine for this brief. When the brief is one line, expand it into the director brief of `knowledge/craft/18-brief-expansion.md` section 4 and show that, not a list of questions.
 
 Do not ask for facts you can look up in `knowledge/` or the brand folder.
 
@@ -55,7 +58,8 @@ If the product cannot honestly do something the brief assumes, say so now.
 
 Only after the plan is confirmed. All three keep the confirmed audience, angle, proof and length; they differ in idea. Where the plan says `propose` for the look or the hook, the concepts are where those are proposed. Each concept is a filled `templates/soul-sheet.md` laid on the plan's scene outline, plus:
 
-- A recommended length cap, energy preset and design style (one of the six in `knowledge/craft/13-design-styles.md`), with one line of reasoning each.
+- A recommended length cap, energy preset and design style (one of the six in `knowledge/craft/13-design-styles.md`), with one line of reasoning each. With a recipe, start from its defaults and say where a concept departs from them and why.
+- With a recipe: its structure beats with seconds, and which of its reference films each concept learns from (study only).
 - The flow pattern it uses (`knowledge/craft/10-flows.md`).
 - Up to three study cards it learns from, and the one technique taken from each.
 - How its hook, look and signature move differ from the last five videos.

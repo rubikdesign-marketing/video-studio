@@ -65,3 +65,13 @@ engine/src/jobs/ph-launch-reel/
 
 # Sound packs handed to the studio with no known licence: local use only, never synced (tools/audio/local_pack.py)
 library/sounds-local/
+
+# Motion study: scraped third-party prompts, videos and sheets stay local (reference use only)
+.damex/motion-study/raw/
+.damex/motion-study/videos/
+.damex/motion-study/sheets/
+.damex/motion-study/corpus.json
+.damex/motion-study/batch-*.json
+.damex/motion-study/study/
+.damex/motion-study/posters/
+.damex/motion-study/frames/

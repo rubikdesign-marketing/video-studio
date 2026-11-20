@@ -9,6 +9,7 @@ Two approvals: **First animation**, then **Full animation**. Every tool below pr
 - `knowledge/craft/02-motion.md`, then the one craft file each scene needs (type, UI, light, advanced motion)
 - `knowledge/craft/07-sound.md` when you reach sound
 - `knowledge/craft/08-directors-checks.md` before any hand-over
+- `jobs/<job>/recipe.md` when the job has one (its optimise and avoid lists are checked on every cut) and `knowledge/craft/17-motion-graphics.md` sections 2 and 10 (smoothness numbers; checks before showing a cut)
 - Skills to load (see "Skills the studio uses" in `SKILL.md`): `remotion-best-practices` before writing any scene code (its stand-in if missing: "When a named skill or file is missing" in `skill-map.md`); `motion-design`, `motion-foundations` (and `motion-advanced` for complex moves) while animating; `bang-motion`'s techniques (rebuilt with Remotion's own timing) and `knowledge/craft/14-motion-systems.md` while animating; `hyperframes` for a move Remotion handles poorly; `fixing-motion-performance` when the smoothness check flags a scene; `hallmark` and `impeccable` critique on the contact sheet before a cut goes to a person
 
 ## 1. Turn the shot list into a film skeleton
