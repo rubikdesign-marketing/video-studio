@@ -1,0 +1,12 @@
+{
+ "export": 1,
+ "job": "_sample",
+ "requested_at": "2026-11-20T05:47:14.307Z",
+ "status": "done",
+ "ratio": "9:16",
+ "height": 720,
+ "quality": "preview",
+ "started_at": "2026-11-20T05:47:14.346Z",
+ "file": "export-001-9x16-720.mp4",
+ "finished_at": "2026-11-20T05:47:25.391Z"
+}
