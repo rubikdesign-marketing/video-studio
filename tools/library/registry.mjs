@@ -504,7 +504,7 @@ export function buildRegistry({ manifest = null } = {}) {
         if (!exists(sf)) continue;
         if (!PUBLIC_BRANDS.has(b)) { omitted.path++; continue; }
         const st = readJson(sf);
-        const it = base('preset', `style-${slug(b)}-${slug(s)}`, `${b}/${s} (saved style)`, `Saved style: ${st.kind || st.type || 'film'}, ${(st.structure || []).length} scenes, from job ${st.from_job}`, ['saved-style', b, st.kind, st.type], { file: sf, catalog: `${sf}#style` });
+        const it = base('preset', `style-${slug(b)}-${slug(s)}`, `${b}/${s} (saved style)`, `Saved style: ${st.kind || st.type || 'film'}, ${(st.structure || []).length} scenes${st.from_job ? `, from job ${st.from_job}` : ''}`, ['saved-style', b, st.kind, st.type], { file: sf, catalog: `${sf}#style` });
         it._src = { catalogFile: sf, entry: st };
         it._tier = 'any';
         add(it);

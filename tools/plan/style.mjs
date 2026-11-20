@@ -27,9 +27,29 @@ const die = (m) => { console.error(m); process.exit(1); };
 const read = (f) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null);
 const write = (f, d) => { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, JSON.stringify(d, null, 1) + '\n'); };
 const slugOf = (jobDir) => spawnSync(process.execPath, [path.join(STUDIO, 'tools/film/scaffold.mjs'), '--slug', jobDir], { encoding: 'utf8' }).stdout.trim();
-if (!cmd) { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1, 16).map((l) => l.replace(/^\/\/ ?/, '')).join('\n')); process.exit(0); }
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain && !cmd) { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1, 16).map((l) => l.replace(/^\/\/ ?/, '')).join('\n')); process.exit(0); }
 
-if (cmd === 'save') {
+/** What a style needs before `new` can start an episode from it, as plain phrases. Empty when it is complete.
+ *  The list fields that `save` always writes may be missing (they are read as empty), but not of the wrong kind. */
+export function missingFields(style, dir) {
+  const out = [];
+  for (const k of ['size', 'type', 'stage', 'energy_preset']) if (typeof style?.[k] !== 'string' || !style[k]) out.push(`no ${k}`);
+  if (!Array.isArray(style?.structure) || !style.structure.length) out.push('no scenes in its structure');
+  else {
+    const bad = style.structure.filter((s) => !s || typeof s.id !== 'string' || !Array.isArray(s.shots) || !s.shots.length).map((s, i) => s?.id || `scene ${i + 1}`);
+    if (bad.length) out.push(`no shots for ${bad.join(', ')}`);
+  }
+  for (const k of ['references', 'decisions', 'must_not', 'learned', 'scene_files', 'sound']) {
+    if (style?.[k] === undefined) { if (style) style[k] = []; continue; }
+    if (!Array.isArray(style[k])) out.push(`a ${k} that is not a list`);
+  }
+  if (dir && Array.isArray(style?.scene_files)) { const gone = style.scene_files.filter((f) => !fs.existsSync(path.join(dir, 'scenes', f))); if (gone.length) out.push(`scene files that are missing (${gone.join(', ')})`); }
+  if (dir && Array.isArray(style?.sound)) { const gone = style.sound.filter((f) => !fs.existsSync(path.join(dir, 'sound', f))); if (gone.length) out.push(`sound files that are missing (${gone.join(', ')})`); }
+  return out;
+}
+
+if (!isMain) { /* imported for missingFields */ } else if (cmd === 'save') {
   const jobDir = path.resolve(target || die('Which job?'));
   const name = flag('name') || die('Name the style: --name <style>');
   const job = read(path.join(jobDir, 'job.json')) || die('No job.json.');
@@ -64,13 +84,16 @@ if (cmd === 'save') {
   const [brand, name] = ref.split('/');
   const dir = path.join(STUDIO, 'brands', brand, 'styles', name);
   const style = read(path.join(dir, 'style.json')) || die(`No style ${ref}. See: node tools/plan/style.mjs list ${brand}`);
+  // Everything is checked before anything is written, so a style that cannot start an episode leaves no half-made job.
+  const missing = missingFields(style, dir);
+  if (missing.length) die(`The style ${ref} cannot start an episode because it has ${missing.join(', ')}, so nothing was written. Save it again from an approved film: node tools/plan/style.mjs save jobs/<job> --name ${name}`);
   const existing = ['job.json', 'brief.json', 'shots.json'].filter((f) => fs.existsSync(path.join(jobDir, f)));
   if (existing.length) die(`${path.relative(STUDIO, jobDir)} already has ${existing.join(', ')}; nothing was changed. Start the episode in a new folder.`);
   fs.mkdirSync(path.join(jobDir, 'audio'), { recursive: true });
   const template = read(path.join(STUDIO, 'templates', 'job.json'));
   const today = new Date().toISOString().slice(0, 10);
-  write(path.join(jobDir, 'job.json'), { ...template, name: path.basename(jobDir), brand, type: style.type, created: today, maker: '', size: style.size, length_cap_seconds: style.length_cap_seconds, energy_preset: style.energy_preset, voice: style.voice, stage_next: 'storyboard', style: ref,
-    notes: [`Started from the style ${ref} (approved film ${style.from_job}). Idea, moodboard and look are settled by the style; approve the words and the storyboard.`] });
+  write(path.join(jobDir, 'job.json'), { ...template, name: path.basename(jobDir), brand, type: style.type, created: today, maker: '', size: style.size, length_cap_seconds: style.length_cap_seconds, energy_preset: style.energy_preset, voice: style.voice, stage_next: 'storyboard', approval_mode: 'guided', style: ref,
+    notes: [`Started from the style ${ref}${style.from_job ? ` (approved film ${style.from_job})` : ''}. Idea, moodboard and look are settled by the style; approve the words and the storyboard.`] });
   const bt = read(path.join(STUDIO, 'templates', 'brief.json')); delete bt._about;
   write(path.join(jobDir, 'brief.json'), { ...bt, in_their_words: words, kind: style.kind || '', deliver: style.deliver || bt.deliver, length_cap_seconds: style.length_cap_seconds, voice: style.voice || '', references: style.references, decisions: style.decisions, must_not: style.must_not, style: ref });
   write(path.join(jobDir, 'shots.json'), { stage: style.stage, planned_instant_changes: [], planned_holds: [],
@@ -92,7 +115,7 @@ if (cmd === 'save') {
   for (const b of brands) {
     const d = path.join(STUDIO, 'brands', b, 'styles');
     if (!fs.existsSync(d)) continue;
-    for (const s of fs.readdirSync(d)) { const st = read(path.join(d, s, 'style.json')); if (st) { n++; console.log(`${b}/${s}: ${st.size} ${st.kind || st.type}, ${st.structure.length} scenes, from ${st.from_job} (saved ${st.saved})`); } }
+    for (const s of fs.readdirSync(d)) { const st = read(path.join(d, s, 'style.json')); if (st) { n++; console.log(`${b}/${s}: ${st.size || '?'} ${st.kind || st.type || 'film'}, ${(st.structure || []).length} scenes${st.from_job ? `, from ${st.from_job}` : ''}${st.saved ? ` (saved ${st.saved})` : ''}`); } }
   }
   if (!n) console.log('No saved styles yet. Save one from an approved film: node tools/plan/style.mjs save jobs/<job> --name <style>');
 } else die(`Unknown command ${cmd}.`);

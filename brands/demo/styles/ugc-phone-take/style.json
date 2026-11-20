@@ -1,152 +1,89 @@
 {
- "_about": "Saved style (registers as style-demo-ugc-phone-take). A phone-first, hands-off 'screen share' product slice with a UGC feel: show first, say little, captions carry the line, proof is only what is on screen.",
- "version": 1,
- "name": "UGC phone take",
- "kind": "ugc",
- "type": "ugc",
+ "_about": "A saved style that ships with the studio (registers as style-demo-ugc-phone-take). A phone-first, hands-off 'screen share' product slice with a UGC feel: show first, say little, captions carry the line, proof is only what is on screen. Start an episode with: node tools/plan/style.mjs new jobs/<date>-<name> --style demo/ugc-phone-take \"<what this one is about>\". The fields after 'sound' (title, format, captions, pacing, broll, cta, sound_recipe, grade, ad_use, rights) are the preset's own notes: style.mjs does not read them, the lead does.",
+ "name": "ugc-phone-take",
  "brand": "demo",
+ "saved": "2026-11-19",
+ "approved": null,
+ "size": "9:16",
+ "energy_preset": "confident",
+ "voice": "none",
+ "length_cap_seconds": 20,
+ "type": "ugc",
+ "stage": "dark",
+ "kind": "ugc",
+ "deliver": [{ "platform": "Instagram Reels", "size": "9:16", "master": true }],
+ "structure": [
+  { "id": "S01", "title": "Hook", "beat": "hook", "energy": 4, "transition_in": null, "hand_off": null,
+    "shots": [{ "size": "medium", "move": "slow push in (2.4 to 2.9); a comment card with the question the film answers drops in at frame 0 under a Replying-to line and takes a like tap; the product screen is pushed in behind it", "sound": "phone-buzz at frame 0 as the comment card drops, impact-soft as the first caption lands, finger-tap-like on the heart, riser-short into the cut", "focal_point": "the comment card, then the first card on the product screen", "example_text": "How do I start a board?" }] },
+  { "id": "S02", "title": "Demo", "beat": "turn", "energy": 3, "transition_in": { "number": 11, "name": "Whip" }, "hand_off": null,
+    "shots": [{ "size": "medium", "move": "one pointer-led path: a click-through cut at the sidebar item (instant swap 3 frames after the click), then the camera follows the pointer to the New button and a glow opens on hover", "sound": "whip on the cut, finger-tap on each tap, small-whoosh as the camera follows, toast-pop as the hover opens", "focal_point": "the sidebar item, then the New button", "example_text": "Tap *New*, pick a board." }] },
+  { "id": "S03", "title": "Proof", "beat": "proof", "energy": 3, "transition_in": { "number": 6, "name": "Motion-matched cut" }, "hand_off": null,
+    "shots": [{ "size": "medium", "move": "the camera settles on the board's title and holds; a ring lands on it", "sound": "text-swish as the caption arrives, success-chime as the ring lands", "focal_point": "the board's title", "example_text": "Your board, ready to share." }] },
+  { "id": "S04", "title": "Offer and logo", "beat": "offer", "energy": 4, "transition_in": { "number": 10, "name": "Light sweep" }, "hand_off": null,
+    "shots": [{ "size": "wide", "move": "a wipe to the light stage; the offer line as the large type, then the wordmark", "sound": "offer-sting as the offer lands, logo-sting on the wordmark", "focal_point": "centre", "example_text": "Try it today" }] }
+ ],
+ "references": [],
+ "decisions": [
+  { "what": "9:16 master for Reels, TikTok and Shorts; 12 to 20 seconds, about 16", "by": "the preset", "date": "2026-11-19", "applies_to": "all" },
+  { "what": "No voice: captions carry the line, at most seven words a line, in the caption band (82 to 93 percent of the height)", "by": "the preset", "date": "2026-11-19", "applies_to": "all" },
+  { "what": "The product is the b-roll: real product captures only, and the camera never cuts away from the product", "by": "the preset", "date": "2026-11-19", "applies_to": "all" },
+  { "what": "The offer line is \"Try it today\" unless the brand has its own; no pricing claim", "by": "the preset", "date": "2026-11-19", "applies_to": "all" }
+ ],
+ "must_not": ["numbers or result claims the screen does not show", "pricing claims", "footage of a person without a clearance record"],
+ "learned": [],
+ "scene_files": [],
+ "sound": [],
+ "title": "UGC phone take",
  "format": {
   "size": "1080x1920",
   "aspect": "9:16",
   "fps": 30,
-  "seconds": {
-   "min": 12,
-   "max": 20,
-   "target": 16
-  },
+  "seconds": { "min": 12, "max": 20, "target": 16 },
   "colour": "BT.709 SDR, limited range, yuv420p, tagged bt709"
  },
- "structure": [
-  {
-   "id": "hook",
-   "start": 0,
-   "end": 2.5,
-   "shows": "a comment card (the question the film answers) drops in at frame 0 under a Replying-to line and takes a like tap; the product screen is pushed in behind it; one caption line",
-   "caption": "one line, at most 7 words",
-   "sound": [
-    "phone-buzz at frame 0 as the comment card drops",
-    "impact-soft as the first caption lands",
-    "riser-short into the cut"
-   ]
-  },
-  {
-   "id": "demo",
-   "start": 2.5,
-   "end": 9,
-   "shows": "one pointer-led path: a click-through cut at the sidebar item, then the camera follows the pointer to the New button and a glow opens on hover",
-   "caption": "one to two lines, naming the action",
-   "sound": [
-    "whip on the cut",
-    "finger-tap on each tap (finger-tap-like on the heart)",
-    "small-whoosh as the camera follows",
-    "toast-pop as the hover opens"
-   ]
-  },
-  {
-   "id": "proof",
-   "start": 9,
-   "end": 13,
-   "shows": "the board held; a ring on the board's title; names only what is visible: no numbers, no result claims",
-   "caption": "one line, only what is on screen",
-   "sound": [
-    "text-swish as the caption arrives",
-    "success-chime as the ring lands"
-   ]
-  },
-  {
-   "id": "cta",
-   "start": 13,
-   "end": 16,
-   "shows": "a wipe to the light stage; the offer line, then the wordmark",
-   "caption": "none: the offer line is the large type",
-   "sound": [
-    "offer-sting as the offer lands",
-    "logo-sting on the wordmark"
-   ]
-  }
- ],
  "captions": {
-  "band": {
-   "fromPercentOfHeight": 82,
-   "toPercentOfHeight": 93,
-   "pixels1920": [
-    1574,
-    1786
-   ]
-  },
+  "band": { "fromPercentOfHeight": 82, "toPercentOfHeight": 93, "pixels1920": [1574, 1786] },
   "maxWordsPerLine": 7,
   "emphasis": "one word or phrase per line in the brand's highlight colour, heavier weight",
   "style": "dark glass pill, brand headline typeface, words arrive as they are 'spoken'; no voice needed",
-  "safeArea": "nothing that matters within 5% of any edge (54 px sides, 96 px top and bottom)"
+  "safeArea": "nothing that matters within 5% of any edge (54 px sides, 96 px top and bottom)",
+  "perScene": { "S01": "one line, at most 7 words", "S02": "one to two lines, naming the action", "S03": "one line, only what is on screen", "S04": "none: the offer line is the large type" }
  },
  "pacing": {
-  "beatsSeconds": [
-   2.5,
-   6.5,
-   4,
-   3
-  ],
+  "beatsSeconds": [2.5, 6.5, 4.0, 3.0],
   "cameraMove": "slow push in every hold (zoom 2.4 to 2.9 on a 16:9 still in a 9:16 window); camera follows the pointer, never cuts away from the product",
-  "cutsOnScreen": [
-   "hook to demo: hard cut on the whip",
-   "sidebar click to the next page: instant swap 3 frames after the click",
-   "proof to cta: wipe"
-  ],
+  "cutsOnScreen": ["hook to demo: hard cut on the whip", "sidebar click to the next page: instant swap 3 frames after the click", "proof to offer: wipe"],
   "noTwoSoundsOfAKindWithin": 0.3
  },
  "broll": {
-  "rule": "none needed: the product is the b-roll. Use real product captures only; if a person clip is ever added it must be cleared first (none exists today).",
-  "allowed": [
-   "owner-cleared product capture stills or recordings"
-  ],
-  "never": [
-   "ViralHooks clips",
-   "library/references/** media",
-   "any footage of a person without a clearance record"
-  ]
+  "rule": "none needed: the product is the b-roll. Use real product captures only; if a person clip is ever added it must be cleared first.",
+  "allowed": ["product capture stills or recordings the brand owns"],
+  "never": ["clips downloaded from other people's posts", "library/references/** media", "any footage of a person without a clearance record"]
  },
  "cta": {
   "offerWording": "Try it today",
   "wordmark": "light stage",
-  "ownerApprovalForWording": "delegated to lead 2026-11-19; no pricing claim"
+  "note": "no pricing claim; a brand's own offer line replaces it"
  },
- "sound": {
+ "sound_recipe": {
   "kit": "library/sounds/kit.json (a brand's own files in brands/<brand>/sounds win where present)",
-  "bed": {
-   "slot": "room-tone",
-   "library": "ambience/room-clean-01",
-   "note": "nobody has listened to it: listen first"
-  },
-  "music": {
-   "slot": "music-bed",
-   "default": "off",
-   "note": "off for a UGC feel; if on, duck under any voice (mix.py --duck-db)"
-  },
-  "voice": "placeholder: captions carry the line; paid TTS or an owner recording is pending",
+  "bed": { "slot": "room-tone", "library": "ambience/room-clean-01", "note": "listen to it before the film is approved" },
+  "music": { "slot": "music-bed", "default": "off", "note": "off for a UGC feel; if on, duck under any voice (mix.py --duck-db)" },
+  "voice": "none: captions carry the line; add a voice-over or an owner recording if the brand wants one",
   "levelRule": "with no voice, effects are measured against a stand-in level (mix.py --ref-db) and mastered to -14 LUFS, true peak at or below -1 dBTP",
   "mix": "tools/audio/mix.py then tools/audio/master.sh"
  },
  "grade": {
   "recipeFile": "the job's edit/grade.json",
   "module": "tools/footage/lib/grade.mjs",
-  "recipe": {
-   "exposure": 0,
-   "temperature": 0,
-   "contrast": 0,
-   "saturation": 0,
-   "look": "clean-cool"
-  },
-  "looks": [
-   "soft-daylight",
-   "clean-cool",
-   "warm-film"
-  ],
+  "recipe": { "exposure": 0, "temperature": 0, "contrast": 0, "saturation": 0, "look": "clean-cool" },
+  "looks": ["soft-daylight", "clean-cool", "warm-film"],
   "note": "one recipe per clip; graded pictures are written once and read by both the preview and the export; reset returns a clip to neutral"
  },
- "adUse": "paid-cleared or original only; ViralHooks clips organic-only",
+ "ad_use": "fine for paid and organic use when every capture in the film is the brand's own or cleared",
  "rights": {
-  "privateStudy": true,
-  "publicUse": null,
-  "note": "Check the clearance of any stills before public use."
+  "original": true,
+  "publicUse": true,
+  "note": "An original preset made for this studio and free to use in your films. The captures and stills you put in it need their own clearance."
  }
 }
