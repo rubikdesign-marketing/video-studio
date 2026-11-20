@@ -20,6 +20,10 @@ Not tested yet: an Intel Mac, a physical Windows 11 PC, Windows on Arm, ARM Linu
 
 Buyers download from their page at damex.digital/video-engine/studio/, which serves the zip from the R2 bucket `damex-ve-releases`. Which version is current is the bucket's `current.json`; there is no link to share and no welcome email to send. The page shows the version and the SHA-256 it was published with. Version 0.1.0-rc5 was the last one delivered through Google Drive.
 
+## Before each release
+
+- LICENSE wording for 'updates included' approved by the owner/lawyer (`release/overrides/LICENSE.md`; keep review notes out of the file, it ships in the zip and shows on the buyer's page).
+
 ## Ship a new version
 
 Run these from the studio folder on the release branch (`release-zip` today, which grew from `platform-04`).
@@ -85,5 +89,5 @@ Optional tools (transcription models, noise removal, mastering FFmpeg, footage P
 ## Still open
 
 - **Protection:** a buyer can pass the zip on. The licence notice travels inside it. A licence key checked at start is not built.
-- **Refunds:** handled on the website side (the buyer's access), not here.
+- **Refunds:** handled on the website side (the buyer's access), not here: remove access with `node scripts/ve-codes.mjs revoke <email>` in website-v3.
 - **The licence (`release/overrides/LICENSE.md`) is still a draft** for a lawyer to review before sales.
