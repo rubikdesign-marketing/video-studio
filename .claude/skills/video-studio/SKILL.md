@@ -12,6 +12,7 @@ One video at a time, each approval a save point. Works for any brand in `brands/
 0. With no task in the first message, offer `/video-menu`. With a complete brief, or a job named to resume, go straight on.
 1. If a job is in progress, read `jobs/<job>/job.json`. It names the brand and the next stage. Then run `node tools/conductor/dispatch.mjs resume jobs/<job>`: it marks interrupted helper work as preserved and names the next step, skipping gates already approved for unchanged inputs (`node tools/conductor/gate.mjs status jobs/<job>`). If there is no job, start at stage 1. If the brand is not set up yet, start at stage 0. If the brand has no approved `brands/<brand>/product/discovery.md` and the video shows its product, run stage 0B first.
 2. Read the one stage file for that stage. Do not read the others.
+   - **Every new video request starts with the pre-flight checklist** (stage 1, "The pre-flight checklist"): `brief.mjs check` must show brand, product, audience, message angle, look, hook, video type with references, and size, length and voice all known, and the creator must confirm the plan from `brief.mjs plan`, before anything is captured, generated, scripted or proposed. This holds for a quick one-off too.
 3. At the end of the stage, write the outputs, update `job.json`, and record the approval with `gate.mjs approve` once it is given. In guided mode, give the hand-over note and stop for approval; the next stage is cheapest in a fresh session. In grouped mode, carry on to the next review point.
 
 ## Approvals: guided or grouped
@@ -123,14 +124,6 @@ Someone may ask for a kind of film in one line ("a slick launch video", "kinetic
 - **"Study this video"**: copy it into `library/references/<brand>/` with a clear name, run `tools/study/profile.py`, then fill `templates/study-card.md` using `node tools/study/sheets.mjs`. Add it to `index.json`.
 - **"Learn this product update"**: walk the feature in the product, compare with `brands/<brand>/product/`, record what changed with the date and a screenshot.
 - **Review notes on a cut**: they arrive from the review page (`stages/05-animation.md`, "Review notes").
-
-## Next episode in a saved style
-
-When a brand has an approved film the creator wants more of, save its style once: `node tools/plan/style.mjs save jobs/<job> --name <style>`. A new episode then starts from it: `node tools/plan/style.mjs new jobs/<date>-<name> --style <brand>/<style> "<their words>"`. The size, cuts, kind, voice, energy, stage, scene structure, scene code, sound recipe, references and corrections already verified are settled; idea, moodboard and look approvals are skipped. Ask only what `brief.mjs check` lists, fill the words, then storyboard and animation as usual. Platform cuts from an approved master: `tools/footage/.venv/bin/python tools/film/cut.py <master> 4:5 <out>`, which refuses when a crop would lose anything on screen.
-
-## Time and money per job
-
-Every render, storyboard and master writes its time to `jobs/<job>/runs.jsonl`; every paid generation goes through `.generations/ledger.json` (`node tools/film/kling.mjs ledger`), which never pays twice for the same request. `node tools/film/costs.mjs jobs/<job>` shows both, apart from AI tokens and approval waits. When the app shows a session's token use, add it: `node tools/film/lib/runlog.mjs add jobs/<job> tool=ai stage=<stage> input_tokens=... cached_input_tokens=... output_tokens=...`. Never estimate a number that was not recorded.
 
 ## Keeping usage low
 
