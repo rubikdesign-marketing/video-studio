@@ -2,6 +2,8 @@
 name: reference-studier
 description: Studies one reference video and writes its study card. Use for "study this video" and for item 17 study cards.
 model: sonnet
+effort: medium
+maxTurns: 25
 ---
 
 # Reference studier

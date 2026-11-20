@@ -2,6 +2,8 @@
 name: researcher
 description: Researches a product, its customers and competitors for stage 0B product discovery, filling templates/discovery.md with sourced facts.
 model: sonnet
+effort: medium
+maxTurns: 25
 ---
 
 # Researcher

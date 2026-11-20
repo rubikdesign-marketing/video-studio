@@ -133,7 +133,7 @@ async function main() {
   fs.writeFileSync(path.join(STUDIO, '.damex', 'ready.json'), JSON.stringify({ node: process.versions.node, platform: process.platform, arch: process.arch, at: new Date().toISOString(), seconds: secs }, null, 2) + '\n');
   const portable = path.relative(STUDIO, process.execPath).startsWith('.runtime');
   console.log(`\nThe studio is ready (${secs} s).${portable ? ' It uses its own copy of Node, in .runtime/node.' : ''}`);
-  console.log('Open this folder in the Claude desktop app (Code tab), trust it when asked, and say: set up my brand.');
+  console.log('Open this folder in the Claude desktop app (Code tab), trust it when asked, and type /video-menu (or say: set up my brand).');
   console.log('Extra tools (transcription, noise removal, mastering) are added when a video first needs them.');
 }
 

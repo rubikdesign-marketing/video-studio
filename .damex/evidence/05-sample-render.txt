@@ -1,0 +1,5 @@
+node setup/runtime/sample.mjs  (outside the sandbox; engine packages linked read-only from the main checkout)
+exit=0 wall=10s
+Rendered 732 frames; encoded 732/732
+wrote jobs/_sample/out/sample-preview.mp4
+  duration 12.20 s, size 0.59 MB (probed with remotion)

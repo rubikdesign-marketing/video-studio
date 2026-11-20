@@ -1,0 +1,29 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "<maker>",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "stage_next": "script_and_voice",
+  "approval_mode": "guided",
+  "approvals": { "idea": "2026-11-19 (maker: recommended idea treated as approved)", "script_and_voice": null, "moodboard": null, "storyboard": null, "first_animation": null, "full_animation": null },
+  "offer_wording": "Saved replies",
+  "facts": [
+    { "claim": "Saved replies is a new feature of the support inbox, live today", "source": "maker's brief; 'live today' is an assumption to confirm" }
+  ],
+  "chosen_concept": "B: Typed it again",
+  "hooks": [
+    { "formula": "audience-reason-not (pain callout)", "spoken": "You've typed this answer before. Probably today.", "on_screen": "Typed that. Again.", "first_frame": "A reply being typed, then the same words typed again beneath it", "score": "7/8 (my judgement: delay 2, confusion 2, irrelevance 2, disinterest 1)", "picked": true },
+    { "formula": "advice-rejected (contrarian)", "spoken": "Stop writing the same support reply twice. Write it once.", "on_screen": "Write it once.", "first_frame": "A reply with a line struck through, one clean copy left", "score": "6/8 (delay 2, confusion 2, irrelevance 1, disinterest 1)", "picked": false },
+    { "formula": "before-after-on-screen (demonstration)", "spoken": "That's a reply, typed for the fourth time. This is it, saved.", "on_screen": "Fourth time. Now saved.", "first_frame": "The same reply four times, then one saved card", "score": "6/8 (delay 2, confusion 1, irrelevance 1, disinterest 2)", "picked": false }
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": [],
+  "new_library_entry": "a move where repeated typed lines collapse into one saved card",
+  "skills_used": [],
+  "notes": ["Demo brand is a test brand with no product, no discovery.md and no written voice guide; its only voice is Justin (warm, trustworthy, clear). Saved replies has no real UI to capture, so the film is type and drawn motion only."]
+}

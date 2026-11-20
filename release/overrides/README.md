@@ -6,7 +6,7 @@ Made and supported by Damex Digital. See `LICENSE.md` for what your licence allo
 
 ## Start here
 
-Follow `ONBOARDING.md`. Open this folder in the Claude desktop app's Code tab and say **"start the studio"** (or run `bash setup/start.sh` on a Mac or Linux, `powershell -ExecutionPolicy Bypass -File setup\start.ps1` on Windows). It takes about 2 minutes. Then start a new chat in this folder and say **"set up my brand"**, then **"make a video"**.
+Follow `ONBOARDING.md`. Open this folder in the Claude desktop app's Code tab and say **"start the studio"** (or run `bash setup/start.sh` on a Mac or Linux, `powershell -ExecutionPolicy Bypass -File setup\start.ps1` on Windows). It takes about 2 minutes. Then start a new chat in this folder and type **/video-menu**: it starts a video, browses presets and components, resumes a job or sets up your brand.
 
 `setup/dotfiles/` holds the studio's hidden files (`.claude` and others) under visible names, so a copy or sync cannot lose them. The start step puts them back.
 

@@ -1,0 +1,11 @@
+[
+ { "id": "01", "text": "[warm, direct] You just typed that same answer again.", "gap_after": 0.7, "beat": "hook", "energy": 4, "highlight": "same answer" },
+ { "id": "02", "text": "Same questions, every day.", "gap_after": 0.7, "beat": "turn", "energy": 3, "highlight": "every day" },
+ { "id": "03", "text": "Now there are saved replies.", "gap_after": 0.6, "beat": "proof", "energy": 4, "highlight": "saved replies" },
+ { "id": "04", "text": "Write an answer once.", "gap_after": 0.6, "beat": "proof", "energy": 4, "highlight": "once" },
+ { "id": "05", "text": "It's there whenever that question comes back.", "gap_after": 1.3, "beat": "proof", "energy": 3, "highlight": "comes back" },
+ { "id": "06", "text": "Find it, and drop it into your reply.", "gap_after": 0.7, "beat": "proof", "energy": 2, "highlight": "drop it" },
+ { "id": "07", "text": "Make it yours. Send it.", "gap_after": 0.8, "beat": "peak", "energy": 5, "highlight": "Make it yours" },
+ { "id": "08", "text": "Saved replies. New in your support inbox.", "gap_after": 0.7, "beat": "offer", "energy": 4, "highlight": "Saved replies" },
+ { "id": "09", "text": "Write it once, and get on with your day.", "beat": "close", "energy": 4, "highlight": "get on with your day" }
+]

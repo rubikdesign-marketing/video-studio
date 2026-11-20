@@ -1,0 +1,278 @@
+{
+  "version": 1,
+  "_about": "Conductor policy for the lead session. Read by tools/conductor/*.mjs. Change limits here, not in code. See enforcement for what is really enforced and by whom.",
+  "routes": {
+    "idea_and_direction": {
+      "route": "lead",
+      "examples": [
+        "pick the idea and angle",
+        "choose the energy and length cap",
+        "settle the moodboard direction"
+      ]
+    },
+    "script_and_wording": {
+      "route": "lead",
+      "examples": [
+        "write or edit script lines",
+        "on-screen words",
+        "voice read decisions"
+      ]
+    },
+    "storyboard_decisions": {
+      "route": "lead",
+      "examples": [
+        "shot order and pacing",
+        "what each shot shows",
+        "which sound moves"
+      ]
+    },
+    "integration": {
+      "route": "lead",
+      "examples": [
+        "merge worker output into the job",
+        "resolve conflicts between scenes",
+        "update job.json",
+        "hand-over note"
+      ]
+    },
+    "approval_and_asks": {
+      "route": "lead",
+      "examples": [
+        "ask a person to approve a gate",
+        "ask about a brand requirement",
+        "report what was not checked"
+      ]
+    },
+    "measure": {
+      "route": "script",
+      "examples": [
+        "smoothness and frame quality numbers",
+        "voice timing",
+        "audio loudness",
+        "gate hash and status"
+      ]
+    },
+    "render": {
+      "route": "script",
+      "examples": [
+        "preview render",
+        "scene render",
+        "master render",
+        "contact sheet",
+        "platform crop"
+      ]
+    },
+    "mechanical_check": {
+      "route": "script",
+      "examples": [
+        "brief check",
+        "beats and retention report",
+        "costs report"
+      ]
+    },
+    "run_checks": {
+      "route": "haiku",
+      "worker": "checker",
+      "examples": [
+        "run the director's checks and report pass or fail with numbers",
+        "re-run checks after a fix"
+      ]
+    },
+    "lookup": {
+      "route": "haiku",
+      "worker": "checker",
+      "examples": [
+        "find where a fact is recorded",
+        "confirm a file or number exists",
+        "summarise a check log"
+      ]
+    },
+    "scene_code": {
+      "route": "sonnet",
+      "worker": "scene-builder",
+      "examples": [
+        "build or change one scene from its shots.json brief"
+      ]
+    },
+    "capture": {
+      "route": "sonnet",
+      "worker": "capture-runner",
+      "examples": [
+        "write and record a product capture script for one flow"
+      ]
+    },
+    "critique": {
+      "route": "sonnet",
+      "worker": "frame-critic",
+      "examples": [
+        "critique moodboard frames, key frames or a contact sheet"
+      ]
+    },
+    "study": {
+      "route": "sonnet",
+      "worker": "reference-studier",
+      "examples": [
+        "study one reference video into a study card"
+      ]
+    },
+    "research": {
+      "route": "sonnet",
+      "worker": "researcher",
+      "examples": [
+        "fill product discovery sections with sourced facts"
+      ]
+    }
+  },
+  "agents": {
+    "checker": {
+      "model": "haiku"
+    },
+    "scene-builder": {
+      "model": "sonnet"
+    },
+    "capture-runner": {
+      "model": "sonnet"
+    },
+    "frame-critic": {
+      "model": "sonnet"
+    },
+    "reference-studier": {
+      "model": "sonnet"
+    },
+    "researcher": {
+      "model": "sonnet"
+    }
+  },
+  "max_turns": {
+    "checker": 15,
+    "scene-builder": 40,
+    "capture-runner": 30,
+    "frame-critic": 12,
+    "reference-studier": 25,
+    "researcher": 25
+  },
+  "caps": {
+    "max_active_workers": 2,
+    "stage_dispatch_cap": {
+      "default": 3,
+      "animation": 6
+    },
+    "max_retries_per_task": 1
+  },
+  "approval_modes": {
+    "guided": {
+      "about": "The six approvals, one at a time.",
+      "gates": [
+        {
+          "id": "idea",
+          "stage": "intake-and-idea"
+        },
+        {
+          "id": "script_and_voice",
+          "stage": "script-and-voice"
+        },
+        {
+          "id": "moodboard",
+          "stage": "moodboard"
+        },
+        {
+          "id": "storyboard",
+          "stage": "storyboard"
+        },
+        {
+          "id": "first_animation",
+          "stage": "animation"
+        },
+        {
+          "id": "full_animation",
+          "stage": "animation"
+        }
+      ]
+    },
+    "grouped": {
+      "about": "One brief review (idea, script and moodboard decisions together), the storyboard folded into it when it suits, and a final cut review.",
+      "gates": [
+        {
+          "id": "brief_review",
+          "stage": "moodboard",
+          "folds": [
+            "idea",
+            "script_and_voice",
+            "moodboard"
+          ]
+        },
+        {
+          "id": "storyboard",
+          "stage": "storyboard",
+          "optional": true
+        },
+        {
+          "id": "final_cut",
+          "stage": "animation",
+          "folds": [
+            "first_animation",
+            "full_animation"
+          ]
+        }
+      ]
+    }
+  },
+  "paid_gate": "paid_usage",
+  "always_ask": [
+    "an unresolved decision that changes the output",
+    "a brand requirement (logo, colour, font, claim, legal line)",
+    "asset rights (third-party logos, music, footage, reference material)",
+    "external transfer (upload, send, publish, share outside the folder)",
+    "paid usage (any generation or service that costs money)"
+  ],
+  "enforcement": {
+    "max_active_workers": {
+      "level": "tool",
+      "note": "dispatch.mjs claim refuses a third active claim. Claude Code's own subagent limit is 20 (CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS), so this only holds if the lead calls claim before every dispatch."
+    },
+    "stage_dispatch_cap": {
+      "level": "tool",
+      "note": "dispatch.mjs claim refuses past the stage cap."
+    },
+    "max_retries_per_task": {
+      "level": "tool",
+      "note": "dispatch.mjs claim refuses a second retry of the same stage and task."
+    },
+    "write_set_overlap": {
+      "level": "tool",
+      "note": "dispatch.mjs claim refuses overlapping write paths. Declared paths only: it cannot stop a worker writing elsewhere."
+    },
+    "model_allowlist": {
+      "level": "tool",
+      "note": "claim reads availableModels and refuses a blocked model; it never swaps it. Claude Code itself enforces availableModels on its side."
+    },
+    "paid_requires_approval": {
+      "level": "tool",
+      "note": "claim --paid refuses without a valid paid_usage receipt. Direct tool calls that spend money are not intercepted."
+    },
+    "gate_receipts": {
+      "level": "tool",
+      "note": "gate.mjs check reports missing, stale or satisfied. Nothing stops a session ignoring it."
+    },
+    "agent_max_turns": {
+      "level": "client",
+      "note": "Claude Code stops a subagent at the maxTurns field in its agent file (all six set it). The values here mirror those files; if they differ, the file wins."
+    },
+    "agent_model": {
+      "level": "client",
+      "note": "Claude Code applies the model frontmatter field."
+    },
+    "spend_cap": {
+      "level": "instruction",
+      "note": "No spend or token cap exists in interactive sessions. --max-budget-usd and --max-turns are print mode only. Track with usage and /usage."
+    },
+    "token_budget": {
+      "level": "instruction",
+      "note": "No enforced token cap. Tokens are recorded only when supplied with release --tokens."
+    },
+    "always_ask": {
+      "level": "instruction",
+      "note": "Session text only: the lead must ask a person."
+    }
+  }
+}

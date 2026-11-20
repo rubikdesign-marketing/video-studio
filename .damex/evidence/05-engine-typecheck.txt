@@ -1,0 +1,3 @@
+src/jobs/2026-11-18-halden-launch/Film.tsx(4,26): error TS2307: Cannot find module '../../../public/jobs/2026-11-18-halden-launch/captions.json' or its corresponding type declarations.
+src/jobs/2026-11-18-halden-saturday-croissants/Film.tsx(4,26): error TS2307: Cannot find module '../../../public/jobs/2026-11-18-halden-saturday-croissants/captions.json' or its corresponding type declarations.
+src/jobs/sample/Film.tsx(4,26): error TS2307: Cannot find module '../../../public/jobs/sample/captions.json' or its corresponding type declarations.

@@ -50,7 +50,7 @@ To film a web product, say **"sign in to <your product> for capture"** and sign 
 
 ## 3. Make a video
 
-Say **"make a video"** (or "make a feature demo about ..."). Claude walks you through six approvals, one per session:
+Type **/video-menu** to start, browse presets and components, resume a video or set up a brand. Or just say **"make a video"** (or "make a feature demo about ..."); a full brief skips the menu. Claude walks you through six approvals:
 
 | Step | You approve |
 |---|---|
@@ -61,7 +61,7 @@ Say **"make a video"** (or "make a feature demo about ..."). Claude walks you th
 | 5 First animation | One scene at full quality |
 | 6 Full animation | The whole film, then delivery |
 
-- **One step per session.** When a step is approved, start a new chat in the folder and say "continue the video". This keeps it fast and saves tokens.
+- **Guided or grouped.** Guided (the default) is one approval per step; starting a new chat after each one and saying "continue the video" keeps it fast and cheap. Prefer fewer stops? Ask for grouped approvals: one brief review (idea, script, look) and one final cut review. Approvals you gave are remembered, so a restart never asks again for unchanged work.
 - **Review notes:** the review page lets you pause the film, pin a note to a moment, and send it. Claude changes only those scenes and reports that each note landed.
 - **Your next video is faster:** save an approved film's look as a style. The next video starts from it and asks only what is new.
 

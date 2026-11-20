@@ -1,0 +1,33 @@
+{
+ "in_their_words": "A 12 second vertical reel for the demo brand announcing that orders now ship the same day. No voice, library music only, ends on the logo.",
+ "kind": "",
+ "for": "",
+ "viewer_should": "",
+ "deliver": [
+  {
+   "platform": "",
+   "size": "",
+   "master": true
+  }
+ ],
+ "length_cap_seconds": null,
+ "voice": "",
+ "must_show": [],
+ "must_not": [],
+ "materials": [],
+ "references": [],
+ "decisions": [
+  {
+   "what": "Kind is a launch reel, not a product demo. 9:16, 12 s hard cap, no voice, library music only, ends on the logo. Viewer believes orders placed today ship today.",
+   "by": "owner",
+   "date": "2026-11-19",
+   "applies_to": "all"
+  },
+  {
+   "what": "Demo brand has no product capture or discovery, so no screen UI: drawn motion and type only.",
+   "by": "owner",
+   "date": "2026-11-19",
+   "applies_to": "all"
+  }
+ ]
+}

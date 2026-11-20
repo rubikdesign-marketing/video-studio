@@ -1,0 +1,37 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "studio",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "stage_next": "script_and_voice",
+  "approval_mode": "guided",
+  "approvals": {
+    "idea": "2026-11-19 (given in the brief: recommended idea treated as approved)",
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "chosen_concept": "A: Typed again",
+  "design_style": "quiet editorial type, off-white page, one green accent",
+  "offer_wording": "Saved replies, now in your support inbox.",
+  "facts": ["Feature name: saved replies", "Where: the support inbox", "Source: the brief. Nothing else is claimed."],
+  "hooks": [
+    { "formula": "audience-reason-not (callout, adapted)", "spoken": "You've typed this reply before. Probably today.", "on_screen": "Typed this before?", "first_frame": "One reply line already typed, a second one typing under it", "score": "7 of 8 (my judgement)", "picked": true },
+    { "formula": "before-after-on-screen (demonstration)", "spoken": "Last week, this reply was typed again. Now it is saved.", "on_screen": "Typed again. Now saved.", "first_frame": "A reply line, then a hard cut to one calm card", "score": "5 of 8 (my judgement): 4.4 s to the claim, and it needs a real before and after we do not have", "picked": false },
+    { "formula": "advice-rejected (contrarian)", "spoken": "Everyone says answer faster. Answer once instead.", "on_screen": "Answer once", "first_frame": "Answer faster, crossed out", "score": "5 of 8 (my judgement): no proof to follow it", "picked": false }
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": [{ "scene": "S03", "seconds": 1.3, "what": "hold on the single saved card" }],
+  "new_library_entry": "Stack collapses to one card",
+  "usage_by_stage": {},
+  "notes": ["Demo brand has no product and no discovery sheet, so no real UI exists to capture. Scenes are drawn type and shapes only. No screen is invented.", "No audio generated at this stage, by request."],
+  "skills_used": [],
+  "usage": []
+}

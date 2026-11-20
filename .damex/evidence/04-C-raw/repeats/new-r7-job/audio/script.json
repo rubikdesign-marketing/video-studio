@@ -1,0 +1,9 @@
+[
+ { "id": "01", "beat": "hook", "energy": 4, "text": "[warm, clear] You've typed this reply before. Probably today.", "gap_after": 0.7, "highlight": "typed this reply before" },
+ { "id": "02", "beat": "turn", "energy": 3, "text": "[warm] Same question. Same answer.", "gap_after": 0.8, "highlight": "Same answer" },
+ { "id": "03", "beat": "proof", "energy": 2, "text": "[warm] Now you write a reply once, and save it.", "gap_after": 0.7, "highlight": "write a reply once" },
+ { "id": "04", "beat": "proof", "energy": 1, "text": "[warm, easy] Next time someone asks, it's already there.", "gap_after": 1.3, "highlight": "already there" },
+ { "id": "05", "beat": "peak", "energy": 5, "text": "[bright, lifted] Saved replies.", "gap_after": 0.4, "highlight": "Saved replies" },
+ { "id": "06", "beat": "offer", "energy": 4, "text": "[bright] Now in your support inbox.", "gap_after": 0.8 },
+ { "id": "07", "beat": "close", "energy": 4, "text": "[warm, settled] Write it once. Use it every time.", "highlight": "Write it once" }
+]

@@ -1,0 +1,7 @@
+[
+ { "id": "01", "beat": "hook", "energy": 4, "text": "[confident, a little wry] You've typed that same answer a hundred times today.", "gap_after": 0.7, "highlight": "same answer" },
+ { "id": "02", "beat": "turn", "energy": 3, "text": "[warm] Now you only have to write it once.", "gap_after": 0.7, "highlight": "once" },
+ { "id": "03", "beat": "proof", "energy": 3, "text": "[clear] Save a reply, give it a short name, and it's ready the moment a customer asks.", "gap_after": 0.8, "highlight": "short name" },
+ { "id": "04", "beat": "peak", "energy": 5, "text": "[bright, lifted] Type the name, and the whole answer is in the box, ready to send.", "gap_after": 1.0, "highlight": "whole answer" },
+ { "id": "05", "beat": "close", "energy": 3, "text": "[warm, settling] Saved replies are in your support inbox. More time for the hard questions.", "highlight": "Saved replies" }
+]

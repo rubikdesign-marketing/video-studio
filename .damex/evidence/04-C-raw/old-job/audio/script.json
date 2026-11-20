@@ -1,0 +1,8 @@
+[
+ { "id": "01", "scene": 1, "beat": "hook", "energy": 4, "text": "[confident, warm, up-tempo] You've typed this answer before. Probably today.", "gap_after": 0.7, "highlight": "before" },
+ { "id": "02", "scene": 2, "beat": "turn", "energy": 3, "text": "[easy, a little knowing] So why type it again?", "gap_after": 0.7, "highlight": "again" },
+ { "id": "03", "scene": 3, "beat": "proof", "energy": 3, "text": "[clear, steady] Save a reply once, and it's waiting in your inbox the next time a customer asks.", "gap_after": 0.6, "highlight": "waiting in your inbox" },
+ { "id": "04", "scene": 3, "beat": "proof", "energy": 4, "text": "[clear, rising] Same good answer, every time, without the retyping.", "gap_after": 0.8, "highlight": "same good answer" },
+ { "id": "05", "scene": 4, "beat": "peak", "energy": 5, "text": "[bright, announcing] Meet saved replies. New in your support inbox.", "gap_after": 0.7, "highlight": "saved replies" },
+ { "id": "06", "scene": 5, "beat": "close", "energy": 3, "text": "[warm, settling] Write it well once. Send it every time.", "gap_after": 0.0, "highlight": "once" }
+]

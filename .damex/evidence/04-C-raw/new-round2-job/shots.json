@@ -1,0 +1,50 @@
+{
+  "_about": "Scene list for the Saved replies promo. Five scenes, drawn type and shapes only: the brand has no real product UI, so no inbox screen is invented. Scene times come from the voice once it is made.",
+  "stage": "light",
+  "planned_instant_changes": [
+    { "scene": "S04", "what": "match cut from the last typed line into the saved card, on the 'Saved replies' downbeat" }
+  ],
+  "planned_holds": [
+    { "scene": "S03", "seconds": 1.0, "what": "hold on the finished reply before the peak (the gap after line 05)" }
+  ],
+  "scenes": [
+    {
+      "id": "S01", "title": "Typed that", "lines": ["01"], "beat": "hook", "energy": 4,
+      "transition_in": null, "hand_off": null,
+      "shots": [
+        { "text": "Typed that.\nAgain.", "size": "medium", "capture": null, "focal_point": "left third", "move": "a reply types out in a plain white card; the same words type again under it, faster", "sound": "soft key taps" }
+      ]
+    },
+    {
+      "id": "S02", "title": "Same reply", "lines": ["02"], "beat": "turn", "energy": 2,
+      "transition_in": { "number": 9, "name": "Type bridge" }, "hand_off": "the word 'Again' stays while the stacked copies slide up and away",
+      "shots": [
+        { "text": "The fifth time.", "size": "wide", "capture": null, "focal_point": "centre", "move": "the copies stack down the page, each a little fainter; slow drift", "sound": "low tone, no taps" }
+      ]
+    },
+    {
+      "id": "S03", "title": "Write it once", "lines": ["03", "04", "05"], "beat": "proof", "energy": 2,
+      "transition_in": { "number": 13, "name": "Momentum cut" }, "hand_off": null,
+      "shots": [
+        { "text": "Once.", "size": "macro", "capture": null, "focal_point": "centre", "move": "one clean reply types, then a bookmark mark draws itself on its corner", "sound": "one key tap, then a soft click", "line": "03" },
+        { "text": "Ready.", "size": "medium", "capture": null, "focal_point": "right third", "move": "the saved card rises from the foot of the page, ready", "sound": "light rise", "line": "04" },
+        { "text": "Your words.", "size": "wide", "capture": null, "focal_point": "centre", "move": "three words land one by one on the card, then hold", "sound": "three quiet ticks", "line": "05" }
+      ]
+    },
+    {
+      "id": "S04", "title": "Saved replies", "lines": ["06", "07"], "beat": "peak", "energy": 5,
+      "transition_in": { "number": 5, "name": "Match cut" }, "hand_off": "the card's shape is the shape the repeated copies folded into",
+      "shots": [
+        { "text": "Saved *replies*", "size": "macro", "capture": null, "focal_point": "centre", "move": "SIGNATURE: all the earlier copies fold into one amber-edged card and the title settles on it", "sound": "soft click and a short held beat", "line": "06" },
+        { "text": "Every thread.", "size": "medium", "capture": null, "focal_point": "centre", "move": "the card sits still; words fade up beneath it", "sound": "bed continues", "line": "07" }
+      ]
+    },
+    {
+      "id": "S05", "title": "Live today", "lines": ["08"], "beat": "close", "energy": 4,
+      "transition_in": { "number": 4, "name": "Macro push-through" }, "hand_off": "the card's green edge becomes the end card's background",
+      "shots": [
+        { "text": "Today.", "size": "wide", "capture": null, "focal_point": "centre", "move": "the logo lands, then rests; a short silent tail", "sound": "closing chord, then rest" }
+      ]
+    }
+  ]
+}

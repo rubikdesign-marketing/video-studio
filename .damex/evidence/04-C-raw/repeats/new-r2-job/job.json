@@ -1,0 +1,43 @@
+{
+  "name": "2026-11-19-saved-replies",
+  "brand": "demo",
+  "type": "promo",
+  "created": "2026-11-19",
+  "maker": "<maker>",
+  "size": "16:9",
+  "length_cap_seconds": 30,
+  "energy_preset": "confident",
+  "voice": "Justin",
+  "approval_mode": "guided",
+  "stage_next": "script_and_voice",
+  "approvals": {
+    "idea": "2026-11-19 (given in advance by the maker: recommended concept A)",
+    "script_and_voice": null,
+    "moodboard": null,
+    "storyboard": null,
+    "first_animation": null,
+    "full_animation": null
+  },
+  "chosen_concept": "A: The fifth time",
+  "design_style": "to be set at the moodboard (recommended: quiet, light page)",
+  "offer_wording": "Saved replies. Answer faster, and keep it personal.",
+  "facts": [
+    "UNVERIFIED: Demo brand has no product. Saved replies are described only as: write an answer once, save it, pick it from a list, change a line, send. Nothing else is claimed (no shortcuts, no merge fields, no sharing, no dates, no numbers)."
+  ],
+  "hooks": [
+    { "formula": "before-after-on-screen", "spoken": "You've typed this exact answer five times today.", "on_screen": "Same answer. Fifth time.", "first_frame": "A support inbox with five open conversations, each with the same question", "score": "7 of 8 (my judgement)", "picked": true },
+    { "formula": "audience-reason-not", "spoken": "Support teams: the slow part of your day isn't the hard questions.", "on_screen": "The slow part isn't the hard ones", "first_frame": "The words 'Support teams' over a long inbox", "score": "6 of 8 (my judgement)", "picked": false },
+    { "formula": "advice-rejected", "spoken": "Everyone says answer every customer fresh. You'd just be typing the same thing again.", "on_screen": "Answer fresh? Again?", "first_frame": "The advice on screen, crossed out by the same reply typed twice", "score": "6 of 8 (my judgement)", "picked": false }
+  ],
+  "planned_instant_changes": [],
+  "planned_holds": ["scene 3: one proof hold of about 1.0 s after the saved reply is sent"],
+  "new_library_entry": "A repeated item that collapses into one saved item (the stack-to-one move). To be named at storyboard.",
+  "usage_by_stage": {},
+  "notes": [
+    "Demo brand is a test brand with no product and no voice words. Brand voice for the script taken from its one voice (Justin: warm, trustworthy, clear) and the brand's plain look. Say if you have a real voice sheet.",
+    "No audio generated or played. Voice stage (voice.mjs, earshot) waits for script approval.",
+    "Rule gap: studio rules say real captured product UI only. There is no demo product to capture, so scenes 1 to 4 need either a real inbox to film or drawn, clearly stand-in screens that you approve."
+  ],
+  "skills_used": [],
+  "usage": []
+}

@@ -1,0 +1,8 @@
+[
+ { "id": "01", "text": "[confident, warm] You just typed that same answer again.", "beat": "hook", "energy": 4, "gap_after": 0.7, "highlight": "same answer" },
+ { "id": "02", "text": "[steady] Now you can save it.", "beat": "turn", "energy": 2, "gap_after": 0.7, "highlight": "save it" },
+ { "id": "03", "text": "[clear] Write the answer once, and give it a name.", "beat": "proof", "energy": 3, "gap_after": 0.7, "highlight": "give it a name" },
+ { "id": "04", "text": "[quiet, sure] Next time, one click puts it in your reply.", "beat": "proof", "energy": 2, "gap_after": 1.0, "highlight": "one click" },
+ { "id": "05", "text": "[warm, lifting] Every customer gets your best answer.", "beat": "peak", "energy": 5, "gap_after": 0.8, "highlight": "your best answer" },
+ { "id": "06", "text": "[calm, sure] Meet saved replies, new in your support inbox.", "beat": "offer", "energy": 4, "highlight": "saved replies" }
+]

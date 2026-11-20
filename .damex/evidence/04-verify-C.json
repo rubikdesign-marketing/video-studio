@@ -1,0 +1,334 @@
+{
+ "brief": "30 s 16:9 promo, demo brand, saved replies, five scenes, voice-over, idea pre-approved, stop at script approval, no audio",
+ "flags": "-p --model sonnet --permission-mode acceptEdits --max-budget-usd 3 (new: --settings .claude/settings.json)",
+ "old": [
+  {
+   "label": "old1",
+   "turns": 17,
+   "api_s": 108,
+   "usd": 0.468,
+   "out": 9711,
+   "cache_read": 1039238,
+   "cache_write": 66681,
+   "denials": 4,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 9,
+    "Read": 5,
+    "Write": 7
+   },
+   "files_read": 3,
+   "read_kchars": 12,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "job.json",
+    "scenes.md",
+    "soul-sheet.md"
+   ]
+  },
+  {
+   "label": "old2",
+   "turns": 17,
+   "api_s": 78,
+   "usd": 0.419,
+   "out": 7836,
+   "cache_read": 827228,
+   "cache_write": 64436,
+   "denials": 3,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 16,
+    "Read": 4,
+    "Write": 8
+   },
+   "files_read": 2,
+   "read_kchars": 11,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "job.json",
+    "script.md",
+    "soul-sheet.md"
+   ]
+  },
+  {
+   "label": "old3",
+   "turns": 14,
+   "api_s": 74,
+   "usd": 0.404,
+   "out": 7942,
+   "cache_read": 714341,
+   "cache_write": 63332,
+   "denials": 3,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 16,
+    "Write": 6
+   },
+   "files_read": 0,
+   "read_kchars": 0,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "job.json",
+    "script.md"
+   ]
+  }
+ ],
+ "new_before_fixes": [
+  {
+   "label": "pre1",
+   "turns": 41,
+   "api_s": 165,
+   "usd": 0.782,
+   "out": 16937,
+   "cache_read": 2730818,
+   "cache_write": 84955,
+   "denials": 2,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 26,
+    "Read": 2,
+    "Write": 9,
+    "Edit": 16
+   },
+   "files_read": 2,
+   "read_kchars": 9,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "brief.json",
+    "job.json",
+    "receipts.json",
+    "shots.json",
+    "soul-sheets.md"
+   ]
+  },
+  {
+   "label": "pre2",
+   "turns": 26,
+   "api_s": 107,
+   "usd": 0.597,
+   "out": 11756,
+   "cache_read": 1855201,
+   "cache_write": 73450,
+   "denials": 1,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 21,
+    "Read": 2,
+    "Write": 9
+   },
+   "files_read": 2,
+   "read_kchars": 9,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "brief.json",
+    "job.json",
+    "receipts.json",
+    "scenes.md",
+    "soul-sheets.md"
+   ]
+  },
+  {
+   "label": "pre3",
+   "turns": 30,
+   "api_s": 134,
+   "usd": 0.694,
+   "out": 16197,
+   "cache_read": 2019207,
+   "cache_write": 82507,
+   "denials": 1,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 38,
+    "Read": 2,
+    "Write": 10,
+    "Edit": 4
+   },
+   "files_read": 1,
+   "read_kchars": 9,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "brief.json",
+    "job.json",
+    "receipts.json",
+    "scene-list.md",
+    "soul-sheets.md"
+   ]
+  },
+  {
+   "label": "pre4",
+   "turns": 31,
+   "api_s": 134,
+   "usd": 0.705,
+   "out": 15776,
+   "cache_read": 2132700,
+   "cache_write": 83587,
+   "denials": 1,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 25,
+    "Read": 2,
+    "Write": 12
+   },
+   "files_read": 2,
+   "read_kchars": 9,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "brief.json",
+    "job.json",
+    "receipts.json",
+    "shots.json",
+    "soul-sheet.md"
+   ]
+  }
+ ],
+ "new_with_fixes": [
+  {
+   "label": "fix1",
+   "turns": 24,
+   "api_s": 107,
+   "usd": 0.562,
+   "out": 11072,
+   "cache_read": 1624340,
+   "cache_write": 72290,
+   "denials": 0,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 19,
+    "Read": 3,
+    "Write": 6
+   },
+   "files_read": 2,
+   "read_kchars": 13,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "brief.json",
+    "job.json",
+    "receipts.json",
+    "soul-sheets.md"
+   ]
+  },
+  {
+   "label": "fix2",
+   "turns": 37,
+   "api_s": 157,
+   "usd": 0.768,
+   "out": 16006,
+   "cache_read": 2892502,
+   "cache_write": 79646,
+   "denials": 4,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 24,
+    "Read": 5,
+    "Grep": 2,
+    "Write": 10,
+    "Edit": 2
+   },
+   "files_read": 5,
+   "read_kchars": 12,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "brief.json",
+    "job.json",
+    "receipts.json",
+    "script-and-scenes.md",
+    "soul-sheets.md"
+   ]
+  },
+  {
+   "label": "fix3",
+   "turns": 34,
+   "api_s": 140,
+   "usd": 0.709,
+   "out": 14909,
+   "cache_read": 2376946,
+   "cache_write": 80473,
+   "denials": 2,
+   "subtype": "success",
+   "tools": {
+    "Skill": 1,
+    "Bash": 26,
+    "Read": 3,
+    "Write": 8,
+    "Edit": 6
+   },
+   "files_read": 2,
+   "read_kchars": 13,
+   "skills": [
+    "video-studio"
+   ],
+   "job_files": [
+    "audio/script.json",
+    "brief.json",
+    "job.json",
+    "receipts.json",
+    "scenes.md",
+    "soul-sheets.md"
+   ]
+  }
+ ],
+ "beats_problems": {
+  "old": [
+   6,
+   7,
+   5
+  ],
+  "new_with_fixes": [
+   4,
+   3,
+   2
+  ]
+ },
+ "offer_beat": {
+  "old": "missing 3/3",
+  "new_with_fixes": "present 3/3"
+ },
+ "subscription_usage": {
+  "five_hour": [
+   41,
+   45
+  ],
+  "weekly": [
+   7,
+   8
+  ]
+ },
+ "conclusion": "new costs ~58% more; extra is the beats/hooks quality loop the allow list lets run; conductor share is 1-2 gate calls; scripts have half the beat problems",
+ "not_settled": "old copy with an allow list for its own tools"
+}

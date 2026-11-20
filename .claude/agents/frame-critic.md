@@ -2,6 +2,8 @@
 name: frame-critic
 description: Critiques frames (moodboard, storyboard key frames, a contact sheet of a cut) for the look before a person sees them. Use at stages 3, 4 and 5.
 model: sonnet
+effort: medium
+maxTurns: 12
 ---
 
 # Frame critic
