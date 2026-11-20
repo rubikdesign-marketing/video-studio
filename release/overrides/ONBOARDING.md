@@ -14,7 +14,7 @@ You need:
 
 You do not need to install anything else, and no admin password is needed. If your computer has no suitable Node.js, the studio downloads its own copy into its folder.
 
-1. **Download** the zip from the link in your purchase email. Download the file itself. Do not add it to your own Google Drive.
+1. **Download** the zip from your page on damex.digital (the link is in your access email).
 2. **Unzip it into your Documents folder.** On a Mac, double-click the zip. On Windows, right-click it and choose **Extract All**. You get a folder named `video-engine`. Move it into Documents if it is not there already.
 3. **Start it.** Open the Claude desktop app, choose the **Code** tab, open the `video-engine` folder, and paste this:
 
@@ -78,7 +78,7 @@ Every video follows the token plan in the skill map: one step per session, helpe
 
 ## 6. Updates and help
 
-- **Updates:** while your update plan is active, we email you a link to each new version. Unzip it next to your current folder (for example as `video-engine-new`), open the new folder in the Code tab and say: **"Start the studio and bring my work from Documents/video-engine"**. Claude runs the start step with `--import-from` and your brands, videos, key and product sign-ins come across. Your old folder stays as it was until you delete it.
+- **Updates:** New versions appear on your page at damex.digital/video-engine/studio/. Unzip one next to your current folder (for example as `video-engine-new`), open the new folder in the Code tab and say: **"Start the studio and bring my work from Documents/video-engine"**. Claude runs the start step with `--import-from` and your brands, videos, key and product sign-ins come across. Your old folder stays as it was until you delete it.
 - **Something broke?** Tell Claude "fix the studio, not just this video". If Claude says files are missing, say "start the studio" again: it puts back anything a copy or sync dropped. For anything Claude can't fix, contact Damex Digital support through the address in your purchase email.
 
 ## 7. Where things are

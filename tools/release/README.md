@@ -18,39 +18,7 @@ Not tested yet: an Intel Mac, a physical Windows 11 PC, Windows on Arm, ARM Linu
 
 ## Current download
 
-| | |
-|---|---|
-| Version | 0.1.0-rc5 (release `5f8c24e`, source `ceddff7`) |
-| Link for buyers | https://drive.google.com/file/d/1qxptXagmNAv5czDQmfiR_j30SyuFDnab/view?usp=sharing |
-| File | `damex-video-engine-0.1.0-rc5.zip`, 100,485,934 bytes |
-| SHA-256 | `9ee8be50de9bdb765559de176780c8b783575c4b7e5d7b84df607acd1f4fc817` |
-| Checked | 19 Nov 2026: the file the link downloads matches this checksum |
-
-Anyone with the link can download it, so it only goes to buyers, and only in this private repository. Google Drive shows a "can't scan this file for viruses" page first because the file is over 100 MB. That is expected; the welcome email tells buyers to click **Download anyway**.
-
-When a new version replaces it, upload the new zip, check its checksum the same way, update this table, and stop sharing the old file.
-
-### Welcome email (send by hand until checkout emails it)
-
-> Hi {first name},
->
-> Thanks for buying the Damex Video Engine. Here is your copy, one zip file that works on Mac, Windows and Linux.
->
-> Download it here {download link}
->
-> Google Drive will say it can't scan the file for viruses. That only means the file is large (100 MB). Click Download anyway.
->
-> Then it takes three steps.
->
-> 1. Unzip it into your Documents folder. You get a folder named video-engine.
-> 2. Open that folder in the Code tab of the Claude desktop app and say "start the studio". It takes about a minute, and you don't need to install anything first.
-> 3. Start a new chat in the same folder, say yes when Claude asks to trust it, and say "set up my brand".
->
-> The full guide is ONBOARDING.md inside the folder, and your licence is LICENSE.md. Please keep the link inside your business, as the licence asks.
->
-> If anything gets stuck, reply to this email and we'll sort it out with you.
->
-> Damex Digital
+Buyers download from their page at damex.digital/video-engine/studio/, which serves the zip from the R2 bucket `damex-ve-releases`. Which version is current is the bucket's `current.json`; there is no link to share and no welcome email to send. The page shows the version and the SHA-256 it was published with. Version 0.1.0-rc5 was the last one delivered through Google Drive.
 
 ## Ship a new version
 
@@ -84,11 +52,17 @@ Run these from the studio folder on the release branch (`release-zip` today, whi
      gh run list -R rubikdesign-marketing/video-studio-private-archive --workflow zip-start.yml --limit 1
      ```
 
-6. **Upload the zip to Google Drive.** Upload the **one .zip file**, never the unzipped folder: Drive's folder upload drops hidden files. Share it as "Anyone with the link: Viewer" (or only with each buyer's email).
+6. **Publish to damex.digital.** It checks the zip against its `.sha256`, reads the three guides and the start prompt from the release folder, then uploads the zip, `releases/<version>/release.json` and last `current.json`. It stops at the first failure and leaves `current.json` alone.
 
-7. **Send the link.**
-   - New buyers get it in the welcome email after checkout.
-   - Buyers with an active update plan get an email with the new link and this line: *unzip it next to your current folder, open the new folder in Claude and say "start the studio and bring my work from Documents/video-engine".*
+   ```bash
+   node tools/release/publish.mjs --version 0.1.0-rc6
+   ```
+
+   It uses website-v3's wrangler (set `WRANGLER` to use another) and needs that wrangler signed in to Cloudflare. Rehearse first without touching the real bucket: add `--local --persist-to <folder>`.
+
+7. **Check the page.** Sign in as a buyer and open `/api/video-engine/me/`: it must show the new version. Buyers see it on their page at damex.digital/video-engine/studio/. Nothing to email: updates are included.
+
+**Roll back:** `node tools/release/publish.mjs --current <previous version>` points `current.json` at an older version that is still in the bucket (it checks that `releases/<version>/release.json` exists).
 
 Never push to `origin`: `rubikdesign-marketing/video-studio` is public. Releases and CI runs go to `archive` (private).
 
@@ -110,7 +84,6 @@ Optional tools (transcription models, noise removal, mastering FFmpeg, footage P
 
 ## Still open
 
-- **Protection:** anyone with the Drive link can pass the zip on. The licence notice travels inside it. Stronger options (a link per buyer, a licence key checked at start) are not built.
-- **Delivery automation:** the welcome email with the link is sent by hand for now. The GTM plan's Paddle webhook that invited a GitHub username is no longer needed; it would send the link instead.
-- **Refunds:** remove the buyer's access to the Drive file by hand, if it was shared per email.
+- **Protection:** a buyer can pass the zip on. The licence notice travels inside it. A licence key checked at start is not built.
+- **Refunds:** handled on the website side (the buyer's access), not here.
 - **The licence (`release/overrides/LICENSE.md`) is still a draft** for a lawyer to review before sales.

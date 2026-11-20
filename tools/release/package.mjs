@@ -111,4 +111,4 @@ console.log(`Damex Video Engine ${release.version} (source ${String(release.sour
 console.log(`  ${files.length} files; hidden ones carried in setup/dotfiles: ${[...dotted].sort().join(', ')}`);
 console.log(`  ${zipPath}  (${mb} MB)`);
 console.log(`  SHA-256 ${sha}`);
-console.log('\nUpload this one file (not the folder) to Google Drive, and share the link with the buyer.');
+console.log('\nPublish it: node tools/release/publish.mjs --version ' + release.version);

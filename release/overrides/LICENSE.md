@@ -10,7 +10,9 @@ Damex Digital, [legal entity name and address] ("we"), and the person or company
 
 ## What you get
 
-A licence to use the Damex Video Engine version you bought, for as long as you like. While your update plan is active, the licence also covers each new version we release. If you stop the plan, you keep using the last version you received.
+A licence to use the Damex Video Engine version you bought, for as long as you like.
+
+This licence covers each new version we release. <!-- owner/lawyer to approve -->
 
 ## What you may do
 

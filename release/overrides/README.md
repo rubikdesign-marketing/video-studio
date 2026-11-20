@@ -25,7 +25,7 @@ Follow `ONBOARDING.md`. Open this folder in the Claude desktop app's Code tab an
 
 ## Updates
 
-While your update plan is active, we email you a link to each new version. Unzip it next to this folder, open the new folder in Claude and say **"start the studio and bring my work from <this folder>"**. Your brands, videos, key and product sign-ins come across; this folder stays as it is. If you stop the plan, you keep the version you have.
+New versions appear on your page at damex.digital/video-engine/studio/. Unzip one next to this folder, open the new folder in Claude and say **"start the studio and bring my work from <this folder>"**. Your brands, videos, key and product sign-ins come across; this folder stays as it is.
 
 ## Never in this folder
 
