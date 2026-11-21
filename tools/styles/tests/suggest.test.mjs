@@ -105,3 +105,43 @@ test('styles.mjs list, find and suggest', () => {
   assert.equal(r.status, 0);
   assert.ok(r.stdout.includes('because'));
 });
+
+test('styles.mjs suggest says ready now or made on request on each line', () => {
+  const r = cli('suggest', 'clay hero', '--kind', 'animated-short');
+  assert.equal(r.status, 0);
+  const clay = r.stdout.split('\n').find((l) => l.includes('demo-clay-hero'));
+  assert.ok(clay && clay.includes('made on request'));
+  const ready = cli('suggest', 'slow push').stdout.split('\n').find((l) => l.includes('demo-slow-push'));
+  assert.ok(ready && ready.includes('ready now'));
+});
+
+test('styles.mjs: a value flag without a value exits 1 with a plain message', () => {
+  for (const args of [['list', '--energy', '--ready'], ['list', '--tab'], ['suggest', 'x', '--size']]) {
+    const r = spawnSync('node', [CLI, ...args, ...(args.includes('--root') ? [] : ['--root', FIX])], { encoding: 'utf8' });
+    assert.equal(r.status, 1, args.join(' '));
+    assert.match(r.stdout + r.stderr, /needs a value/);
+  }
+  const noRoot = spawnSync('node', [CLI, 'list', '--root'], { encoding: 'utf8' });
+  assert.equal(noRoot.status, 1);
+  assert.match(noRoot.stdout + noRoot.stderr, /--root needs a value/);
+});
+
+test('styles.mjs: an unknown flag exits 1 instead of becoming a search word', () => {
+  const r = cli('find', 'push', '--tabs', 'sound');
+  assert.equal(r.status, 1);
+  assert.match(r.stdout + r.stderr, /Unknown option --tabs/);
+});
+
+test('styles.mjs: energy, kind and size are checked against the allowed values', () => {
+  for (const [cmd, flag, bad, allowed] of [
+    ['list', '--energy', 'loud', 'calm, confident, hype'],
+    ['list', '--kind', 'film', 'product-demo'],
+    ['suggest', '--size', '3:2', '9:16'],
+    ['suggest', '--energy', 'loud', 'calm, confident, hype'],
+  ]) {
+    const r = cmd === 'suggest' ? cli(cmd, 'x', flag, bad) : cli(cmd, flag, bad);
+    assert.equal(r.status, 1, `${cmd} ${flag} ${bad}`);
+    const out = r.stdout + r.stderr;
+    assert.ok(out.includes(bad) && out.includes(allowed), out);
+  }
+});

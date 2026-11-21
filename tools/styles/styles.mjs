@@ -2,9 +2,10 @@
 // Browse the style library from chat.
 // Usage: node tools/styles/styles.mjs list [--tab t] [--family f] [--energy e] [--kind k] [--ready] [--root dir]
 //        node tools/styles/styles.mjs find <words> | show <id> | suggest "<words>" [--energy e] [--kind k] [--size s]
-import { join, dirname, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TABS, loadLibrary, promptText } from './lib/library.mjs';
+import { TABS, ENERGIES, loadLibrary, promptText } from './lib/library.mjs';
+import { KINDS, SIZES } from '../plan/lib/brief.mjs';
 import { rank, suggest } from './lib/suggest.mjs';
 
 const STUDIO = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -12,11 +13,19 @@ const VALUE_FLAGS = new Set(['--root', '--tab', '--family', '--energy', '--kind'
 const argv = process.argv.slice(2);
 const flags = {};
 const rest = [];
+const stop = (msg) => { console.log(msg); process.exit(1); };
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
-  if (VALUE_FLAGS.has(a)) flags[a] = argv[++i];
-  else if (a === '--ready') flags[a] = true;
+  if (VALUE_FLAGS.has(a)) {
+    const v = argv[i + 1];
+    if (v === undefined || v.startsWith('--')) stop(`${a} needs a value.`);
+    flags[a] = v; i++;
+  } else if (a === '--ready') flags[a] = true;
+  else if (a.startsWith('--')) stop(`Unknown option ${a}. Options: ${[...VALUE_FLAGS, '--ready'].join(', ')}`);
   else rest.push(a);
+}
+for (const [flag, allowed] of [['--energy', ENERGIES], ['--kind', KINDS], ['--size', SIZES]]) {
+  if (flags[flag] !== undefined && !allowed.includes(flags[flag])) stop(`${flags[flag]} is not a value for ${flag}. Allowed: ${allowed.join(', ')}`);
 }
 const [command, ...words] = rest;
 const lib = loadLibrary(flags['--root'] ? resolve(flags['--root']) : STUDIO);
@@ -54,7 +63,7 @@ if (command === 'list') {
   const understood = {};
   for (const k of ['energy', 'kind', 'size']) if (flags[`--${k}`]) understood[k] = flags[`--${k}`];
   const out = suggest(all, { text: words.join(' '), understood });
-  for (const s of out) console.log(`${s.id}  ${s.name}  ${s.reason}`);
+  for (const s of out) console.log(`${s.id}  ${s.name}  ${status(lib.byId.get(s.id))}  ${s.reason}`);
 } else {
   console.log('Usage: styles.mjs list|find|show|suggest (see the top of this file)');
   process.exit(command ? 1 : 0);
