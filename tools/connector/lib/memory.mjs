@@ -1,5 +1,5 @@
 // What the studio's memory knows, as short summaries for the brief page (the studio_context tool), and the one guard
-// every connector read goes through. Reads only: brands/, knowledge/, library/references/index.json, studio.json and
+// every connector read goes through. Reads only: brands/, knowledge/, library/references/index.json, library/styles/*.json and director.md, studio.json and
 // jobs/<job>/brief.json, job.json, plan.md. Never .env, .capture/, jobs/*/out/, captures or footage.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -14,7 +14,11 @@ function allowed(parts) {
   const [top] = parts;
   if (top === 'studio.json') return parts.length === 1;
   if (top === 'brands' || top === 'knowledge') return parts.length >= 2;
-  if (top === 'library') return parts.length === 3 && parts[1] === 'references' && parts[2] === 'index.json';
+  if (top === 'library') {
+    if (parts.length === 3 && parts[1] === 'references') return parts[2] === 'index.json';
+    if (parts.length === 3 && parts[1] === 'styles') return parts[2] === 'director.md' || (parts[2].endsWith('.json') && parts[2].length > 5);
+    return false;
+  }
   if (top === 'jobs') return parts.length === 3 && JOB_FILES.has(parts[2]);
   return false;
 }

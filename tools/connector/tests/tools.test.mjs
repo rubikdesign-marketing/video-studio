@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { scratchStudio, completeBrief } from '../../plan/tests/helpers.mjs';
 import { loadJob, saveBrief } from '../../plan/lib/brief-store.mjs';
+import { fileURLToPath } from 'node:url';
 import { studioMemory } from '../lib/memory.mjs';
 import { TOOLS, makeHandlers } from '../lib/tools.mjs';
 
@@ -257,9 +258,9 @@ test('tools: studio_context is the memory summary', () => {
   assert.deepEqual(h.studio_context({}).brands.map((b) => b.name), ['acme']);
 });
 
-test('tools: TOOLS names match the handlers, and only check and context are read only', () => {
+test('tools: TOOLS names match the handlers, and only check, context and suggest are read only', () => {
   assert.deepEqual(TOOLS.map((t) => t.name).sort(), Object.keys(h).sort());
-  assert.deepEqual(TOOLS.filter((t) => t.annotations.readOnlyHint).map((t) => t.name).sort(), ['brief_check', 'studio_context']);
+  assert.deepEqual(TOOLS.filter((t) => t.annotations.readOnlyHint).map((t) => t.name).sort(), ['brief_check', 'studio_context', 'styles_suggest']);
   for (const t of TOOLS) assert.ok(t.description && t.inputSchema?.type === 'object');
 });
 
@@ -303,4 +304,135 @@ test('tools: brief_reopen refuses a confirmed brief, whose video has started', (
   assert.throws(() => hr.brief_reopen({ job: s.job, item: 'delivery' }), /^Error: This brief is confirmed and its video has started\. To change it, say so in a chat in the studio folder\.$/);
   const after = loadJob(jobDir(r, s.job)).brief;
   assert.deepEqual(after, before);
+});
+
+/* ---------- style picks, the director's brief and style suggestions ---------- */
+
+const FIXTURE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../styles/tests/fixtures/lib/library');
+const WORDS = 'A calm vertical demo of the export button for acme';
+/** A scratch studio with the small fixture style library, and one started brief. */
+function styled() {
+  const r = scratchStudio();
+  fs.cpSync(FIXTURE, path.join(r, 'library'), { recursive: true });
+  const hr = makeHandlers(r);
+  const s = hr.brief_start({ words: WORDS });
+  return { r, hr, job: s.job };
+}
+const briefOf = (r, job) => loadJob(jobDir(r, job)).brief;
+const PARTS = { logline: 'A calm look at one export click', first_three_seconds: 'The board fades in and the button glows', beats: [{ at_s: 0, what: 'board' }, { at_s: 3, what: 'click' }], camera: 'A slow push toward the button', motion: 'Soft arrivals, nothing sudden', type: 'One plain line of text', sound: 'A soft tap on the click', ending: 'The file lands and the board rests' };
+
+test('brief_pick records and removes a pick', () => {
+  const { r, hr, job } = styled();
+  const on = hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true });
+  assert.equal(on.picked, true); assert.equal(on.reason, null);
+  assert.deepEqual(briefOf(r, job).style_picks, [{ tab: 'motion', id: 'demo-soft-arrive' }]);
+  assert.deepEqual(on.picks.map((p) => [p.id, p.name, p.stale]), [['demo-soft-arrive', 'Soft arrive', false]]);
+  const off = hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: false });
+  assert.equal(off.picked, false); assert.deepEqual(off.picks, []);
+  assert.deepEqual(briefOf(r, job).style_picks, []);
+});
+
+test('brief_pick refuses a clash with the plain reason and records nothing', () => {
+  const { r, hr, job } = styled();
+  hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true });
+  const x = hr.brief_pick({ job, tab: 'motion', id: 'demo-snappy', on: true });
+  assert.equal(x.picked, false); assert.match(x.reason, /does not go with|one per family/);
+  assert.deepEqual(briefOf(r, job).style_picks, [{ tab: 'motion', id: 'demo-soft-arrive' }]);
+});
+
+test('brief_pick refuses an unknown id: "That style is no longer in the library"', () => {
+  const { r, hr, job } = styled();
+  const x = hr.brief_pick({ job, tab: 'motion', id: 'demo-gone', on: true });
+  assert.equal(x.picked, false); assert.equal(x.reason, 'That style is no longer in the library');
+  assert.ok(!briefOf(r, job).style_picks?.length);
+  const wrongTab = hr.brief_pick({ job, tab: 'filming', id: 'demo-soft-arrive', on: true });
+  assert.equal(wrongTab.reason, 'That style is no longer in the library');
+  assert.throws(() => hr.brief_pick({ job: '../x', tab: 'motion', id: 'demo-soft-arrive', on: true }), /Not a brief/);
+});
+
+test('brief_pick refuses on a confirmed brief', () => {
+  const { r, hr, job } = styled();
+  saveBrief(jobDir(r, job), { ...completeBrief(), in_their_words: WORDS });
+  hr.brief_plan({ job }); hr.brief_confirm({ job });
+  assert.throws(() => hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true }), /This brief is confirmed/);
+  assert.throws(() => hr.brief_direct({ job, parts: PARTS }), /This brief is confirmed/);
+});
+
+test('brief_direct stores valid parts and refuses an engine name with the part named', () => {
+  const { r, hr, job } = styled();
+  hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true });
+  const ok = hr.brief_direct({ job, parts: PARTS, engine: ['BlurIn', 'PopIn'] });
+  assert.equal(ok.kept, true);
+  const db = briefOf(r, job).director_brief;
+  assert.deepEqual(db.parts, PARTS); assert.deepEqual(db.engine, ['BlurIn']); assert.ok(db.energy); assert.ok(db.at);
+  assert.equal(ok.director_brief.logline, PARTS.logline);
+  assert.ok(loadJob(jobDir(r, job)).brief.decisions.some((d) => d.what === "director's brief kept"));
+  const bad = hr.brief_direct({ job, parts: { ...PARTS, camera: 'A DollyIn toward the button' } });
+  assert.equal(bad.kept, false); assert.equal(bad.part, 'camera'); assert.match(bad.reason, /DollyIn/);
+  assert.deepEqual(briefOf(r, job).director_brief.parts, PARTS);
+  assert.equal(hr.brief_direct({ job, parts: { ...PARTS, ending: '' } }).part, 'ending');
+});
+
+test('brief_direct with empty parts clears', () => {
+  const { r, hr, job } = styled();
+  hr.brief_direct({ job, parts: PARTS });
+  assert.ok(briefOf(r, job).director_brief);
+  const c = hr.brief_direct({ job, parts: {} });
+  assert.equal(c.kept, false); assert.equal(c.reason, null);
+  assert.ok(!briefOf(r, job).director_brief); assert.equal(c.director_brief, null);
+  assert.ok(briefOf(r, job).decisions.some((d) => d.what === "director's brief cleared"));
+});
+
+test('styles_suggest is read-only and ranks a past job\'s pick first', () => {
+  const { r, hr, job } = styled();
+  const past = hr.brief_start({ words: 'An older reel for acme about onboarding' });
+  hr.brief_pick({ job: past.job, tab: 'animation', id: 'demo-clay-hero', on: true });
+  const snap = () => JSON.stringify(fs.readdirSync(path.join(r, 'jobs')).map((j) => fs.readFileSync(path.join(r, 'jobs', j, 'brief.json'), 'utf8')));
+  const before = snap();
+  const x = hr.styles_suggest({ job, text: 'something for onboarding' });
+  assert.equal(snap(), before);
+  assert.equal(x.suggestions[0].id, 'demo-clay-hero');
+  assert.match(x.suggestions[0].reason, new RegExp(past.job));
+  assert.deepEqual(x.notes, []);
+  assert.equal(hr.styles_suggest({ text: 'a calm demo' }).suggestions.length > 0, true);
+});
+
+test('styles_suggest with a broken tab file returns the other tabs and a note', () => {
+  const { r, hr } = styled();
+  fs.writeFileSync(path.join(r, 'library', 'styles', 'motion.json'), '{ nope');
+  const x = hr.styles_suggest({ text: 'a calm demo' });
+  assert.ok(x.suggestions.length > 0); assert.ok(x.suggestions.every((s) => s.tab !== 'motion'));
+  assert.ok(x.notes.some((n) => /Motion styles could not be read/.test(n)));
+});
+
+test('styles_suggest refuses a job name that leaves jobs/', () => {
+  const { hr } = styled();
+  for (const job of ['../.env', 'a/b', '/etc', 'nope']) assert.throws(() => hr.styles_suggest({ job, text: 'x' }), /Not a brief/);
+});
+
+test('tool list has ten tools; styles_suggest readOnlyHint true', () => {
+  assert.equal(TOOLS.length, 10);
+  assert.equal(TOOLS.find((t) => t.name === 'styles_suggest').annotations.readOnlyHint, true);
+  for (const n of ['brief_pick', 'brief_direct']) assert.equal(TOOLS.find((t) => t.name === n).annotations.readOnlyHint, false);
+});
+
+test('capabilities.json lists exactly the server\'s tools', () => {
+  const caps = JSON.parse(fs.readFileSync(fileURLToPath(new URL('../../../studio/brief-desk/capabilities.json', import.meta.url)), 'utf8'));
+  assert.deepEqual([...caps.mcp.servers[0].tools].sort(), TOOLS.map((t) => t.name).sort());
+});
+
+test('checkReply carries picks, the director\'s brief, what was understood and library notes', () => {
+  const { hr, job } = styled();
+  hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true });
+  hr.brief_direct({ job, parts: { ...PARTS, logline: 'L'.repeat(300) } });
+  const c = hr.brief_check({ job });
+  assert.equal(c.picks.length, 1); assert.ok(c.director_brief.logline.length <= 120); assert.equal(c.director_brief.camera, PARTS.camera);
+  assert.equal(c.understood.energy, 'calm'); assert.deepEqual(c.library_notes, []);
+});
+
+test('memory: library/styles files are readable, nothing else under library', async () => {
+  const { safePath } = await import('../lib/memory.mjs');
+  const r = scratchStudio();
+  assert.ok(safePath(r, 'library/styles/motion.json')); assert.ok(safePath(r, 'library/styles/director.md'));
+  for (const bad of ['library/styles/previews/x.json', 'library/styles/x.md', 'library/styles/../../.env', 'library/structure/frameworks.json']) assert.throws(() => safePath(r, bad), /Not allowed/);
 });

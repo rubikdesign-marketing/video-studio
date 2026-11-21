@@ -16,7 +16,7 @@ const readMcp = (root) => JSON.parse(fs.readFileSync(path.join(root, '.mcp.json'
 
 /** The server imports tools/plan and reads templates, so a working copy needs them too. */
 function copyConnector(from, to) {
-  for (const rel of ['tools/connector', 'tools/plan', 'templates', 'library/structure']) {
+  for (const rel of ['tools/connector', 'tools/plan', 'tools/styles', 'templates', 'library/structure']) {
     if (fs.existsSync(path.join(from, rel))) fs.cpSync(path.join(from, rel), path.join(to, rel), { recursive: true });
   }
 }
@@ -57,9 +57,9 @@ test('connector: a moved folder is caught by the probe and fixed by registering 
   assert.match(stale.fix, /powershell -ExecutionPolicy Bypass -File setup\\start\.ps1/);
   assert.equal(registerConnector(root, process.execPath), 'updated');
   const p = await probeConnector(root);
-  assert.equal(p.ok, true); assert.equal(p.tools.length, 7);
+  assert.equal(p.ok, true); assert.equal(p.tools.length, 10);
   const fixed = (await buildReport({ root })).checks.find((c) => c.id === 'brief-page');
-  assert.equal(fixed.status, 'pass'); assert.equal(fixed.found, "the brief page's connector starts (7 tools)");
+  assert.equal(fixed.status, 'pass'); assert.equal(fixed.found, "the brief page's connector starts (10 tools)");
 });
 
 test('connector: probe resolves with ok false for a missing entry, bad command, bad output and timeout', async () => {
