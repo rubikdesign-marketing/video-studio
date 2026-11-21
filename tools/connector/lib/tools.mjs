@@ -3,9 +3,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { applyAnswer, assumptions, checkAnswer, checkDirectorBrief, picksOf, preflight, questions, reopen, setPick, understood } from '../../plan/lib/brief.mjs';
+import { applyAnswer, assumptions, checkAnswer, checkDirectorBrief, directorBriefOf, picksOf, preflight, questions, reopen, setPick, understood } from '../../plan/lib/brief.mjs';
 import { suggest } from '../../styles/lib/suggest.mjs';
-import { confirmPlan, customerBrands, decide, jobFolderName, loadJob, saveBrief, startBrief, studioContext, writePlan } from '../../plan/lib/brief-store.mjs';
+import { confirmPlan, customerBrands, decide, directorRules, jobFolderName, loadJob, saveBrief, startBrief, studioContext, writePlan } from '../../plan/lib/brief-store.mjs';
 import { loadLibrary, TABS } from '../../styles/lib/library.mjs';
 import { safePath, studioMemory } from './memory.mjs';
 
@@ -111,8 +111,7 @@ function checkReply(root, job, dir) {
   if (parked) status = 'none';
   else if (brand && !ctx.brands[brand]?.setUp) status = 'needs-setup';
   else if (checks.find((c) => c.id === 'product')?.todo?.includes('no approved product discovery')) status = 'needs-discovery';
-  const kept = brief.director_brief;
-  const parts = kept ? (kept.parts || kept) : null;
+  const parts = directorBriefOf(brief)?.parts ?? null;
   return {
     job, brand_status: status,
     picks: picksOf(brief, ctx.styles),
@@ -135,7 +134,6 @@ function uniqueName(root, words) {
 }
 
 const NOT_IN_LIBRARY = 'That style is no longer in the library';
-const FAMILY_WORDS = (names) => new Set([...(names?.moves || []), ...(names?.registry || []), ...(names?.backgrounds || []), ...(names?.sounds || [])]);
 
 /** The style picks other jobs recorded, as { id, job }. Read through safePath only; a job that cannot be read is left out. */
 function pastPicks(root, except) {
@@ -236,11 +234,13 @@ export function makeHandlers(root) {
       const { ctx } = contextOf(root);
       const want = on !== false;
       let reason = null;
+      let next = null;
       try {
         const entry = ctx.styles.get(id);
         if (want && (!entry || entry.tab !== tab)) throw new Error(NOT_IN_LIBRARY);
-        saveBrief(dir, setPick(brief, entry && entry.tab === tab ? entry : { tab, id }, want, ctx.styles));
+        next = setPick(brief, entry && entry.tab === tab ? entry : { tab, id }, want, ctx.styles);
       } catch (e) { reason = e.message; }
+      if (next) saveBrief(dir, next);
       const now = loadJob(dir).brief;
       return { ...checkReply(root, job, dir), picked: (now.style_picks || []).some((p) => p.tab === tab && p.id === id), reason };
     },
@@ -258,12 +258,13 @@ export function makeHandlers(root) {
         return { ...checkReply(root, job, dir), kept: false, reason: null, part: null };
       }
       const { ctx } = contextOf(root);
-      const energy = brief.energy || assumptions(brief, { jobBrand: jobJson.brand, ...ctx }).find((a) => a.id === 'energy')?.value;
-      const r = checkDirectorBrief(parts, { energy, names: FAMILY_WORDS(ctx.engineNames) });
+      const { energy, names, allowed } = directorRules(brief, jobJson, ctx);
+      const { engine: inParts, ...words } = parts;
+      const r = checkDirectorBrief(parts, { energy, names, allowed });
       if (!r.ok) return { ...checkReply(root, job, dir), kept: false, reason: r.reason, part: r.part };
-      const allowed = new Set(picksOf(brief, ctx.styles).filter((x) => !x.stale).flatMap((x) => ctx.styles.get(x.id).engine || []));
-      const names = (Array.isArray(engine) ? engine : []).filter((n) => typeof n === 'string' && allowed.has(n));
-      saveBrief(dir, { ...brief, director_brief: { parts, engine: names, energy: energy ?? null, at: new Date().toISOString() } });
+      const ok = new Set(allowed);
+      const kept = [...(Array.isArray(engine) ? engine : []), ...(Array.isArray(inParts) ? inParts : [])].filter((n, i, a) => typeof n === 'string' && ok.has(n) && a.indexOf(n) === i);
+      saveBrief(dir, { ...brief, director_brief: { parts: words, engine: kept, energy: energy ?? null, at: new Date().toISOString() } });
       decide(dir, "director's brief kept", { by: 'owner' });
       return { ...checkReply(root, job, dir), kept: true, reason: null, part: null };
     },

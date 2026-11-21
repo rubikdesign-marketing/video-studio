@@ -2,7 +2,7 @@
 // context (brands, references), plan.md and the recorded decisions. Every function that needs the studio takes its root.
 import fs from 'node:fs';
 import path from 'node:path';
-import { assumptions, FRAMEWORK, plan, preflight } from './brief.mjs';
+import { assumptions, FRAMEWORK, picksOf, plan, preflight } from './brief.mjs';
 import { loadFrameworks } from './frameworks.mjs';
 import { engineNames, loadLibrary } from '../../styles/lib/library.mjs';
 
@@ -24,6 +24,16 @@ export function studioContext(root) {
   }
   const lib = loadLibrary(root);
   return { brands, defaultBrand: readJson(path.join(root, 'studio.json'))?.default_brand, references: readJson(path.join(root, 'library', 'references', 'index.json')) || [], styles: lib.byId, styleNotes: lib.notes, engineNames: engineNames(root) };
+}
+
+/** What checkDirectorBrief needs from the studio, the same for the CLI and the connector: the brief's energy (set, or
+ *  assumed from their words), every engine name (so the words never use one) and the engine names the picked styles list. */
+export function directorRules(brief, job, ctx) {
+  const e = ctx.engineNames;
+  const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])]);
+  const allowed = picksOf(brief, ctx.styles).filter((x) => !x.stale).flatMap((x) => ctx.styles.get(x.id).engine || []);
+  const energy = brief.energy || assumptions(brief, { jobBrand: job?.brand, ...ctx }).find((x) => x.id === 'energy')?.value;
+  return { energy, names, allowed };
 }
 
 /** The set-up brands other than the demo brand. */

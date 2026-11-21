@@ -29,7 +29,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assumptions, checkDirectorBrief, picksOf, preflight, questions, setField, setPick, SETTABLE, shotProblems, summary } from './lib/brief.mjs';
-import { decide, loadBrief, loadJob, saveBrief, setDotted, startBrief, studioContext, writePlan } from './lib/brief-store.mjs';
+import { decide, directorRules, loadBrief, loadJob, saveBrief, setDotted, startBrief, studioContext, writePlan } from './lib/brief-store.mjs';
 import { loadRecipes, matchRecipes } from './lib/recipes.mjs';
 
 const STUDIO = process.env.BRIEF_STUDIO_ROOT ? path.resolve(process.env.BRIEF_STUDIO_ROOT) : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'); // the env var points the tests at a scratch studio
@@ -148,13 +148,11 @@ if (cmd === 'decide') {
   let parts;
   try { parts = JSON.parse(fs.readFileSync(path.resolve(partsFile), 'utf8')); } catch { console.log(`${partsFile} cannot be read as JSON.`); process.exit(1); }
   const ctx = context();
-  const energy = brief.energy || assumptions(brief, { jobBrand: job.brand, ...ctx }).find((x) => x.id === 'energy')?.value;
-  const e = ctx.engineNames;
-  const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])]);
-  const allowed = picksOf(brief, ctx.styles).filter((x) => !x.stale).flatMap((x) => ctx.styles.get(x.id).engine || []);
+  const { energy, names, allowed } = directorRules(brief, job, ctx);
   const r = checkDirectorBrief(parts, { energy, names, allowed });
   if (!r.ok) { console.log(r.reason); process.exit(1); }
-  saveBrief(jobDir, { ...brief, director_brief: parts });
+  const { engine, ...words } = parts;
+  saveBrief(jobDir, { ...brief, director_brief: { parts: words, engine: Array.isArray(engine) ? engine : [], energy: energy ?? null, at: new Date().toISOString() } });
   console.log(`Recorded the director's brief: ${parts.logline}`);
 } else if (cmd === 'show') {
   console.log(summary(brief, { revisions, styles: context().styles }).join('\n'));

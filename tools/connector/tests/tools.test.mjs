@@ -436,3 +436,54 @@ test('memory: library/styles files are readable, nothing else under library', as
   assert.ok(safePath(r, 'library/styles/motion.json')); assert.ok(safePath(r, 'library/styles/director.md'));
   for (const bad of ['library/styles/previews/x.json', 'library/styles/x.md', 'library/styles/../../.env', 'library/structure/frameworks.json']) assert.throws(() => safePath(r, bad), /Not allowed/);
 });
+
+/* ---------- review fixes ---------- */
+
+test('director_brief: one canonical shape; a connector-saved brief shows its logline in summary, a legacy one still does', async () => {
+  const { summary, directorBriefOf } = await import('../../plan/lib/brief.mjs');
+  const { r, hr, job } = styled();
+  hr.brief_direct({ job, parts: PARTS });
+  const saved = briefOf(r, job);
+  assert.deepEqual(Object.keys(saved.director_brief).sort(), ['at', 'energy', 'engine', 'parts']);
+  assert.ok(summary(saved, {}).some((l) => l === `Director's brief: ${PARTS.logline}`));
+  const legacy = { ...completeBrief(), director_brief: PARTS };
+  assert.ok(summary(legacy, {}).some((l) => l === `Director's brief: ${PARTS.logline}`));
+  assert.deepEqual(directorBriefOf(legacy).parts, PARTS);
+  assert.equal(directorBriefOf({}), null);
+});
+
+test('CLI direct stores the canonical shape, and gives the same verdict as brief_direct', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const CLI = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../plan/brief.mjs');
+  const { r, hr, job } = styled();
+  hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true });
+  const run = (parts) => { const f = path.join(r, 'parts.json'); fs.writeFileSync(f, JSON.stringify(parts)); return spawnSync(process.execPath, [CLI, 'direct', jobDir(r, job), f], { encoding: 'utf8', env: { ...process.env, BRIEF_STUDIO_ROOT: r } }); };
+  const good = run(PARTS);
+  assert.equal(good.status, 0, good.stdout);
+  const db = briefOf(r, job).director_brief;
+  assert.deepEqual(db.parts, PARTS); assert.ok(db.at); assert.ok(Array.isArray(db.engine));
+  for (const parts of [{ ...PARTS, engine: ['PopIn'] }, { ...PARTS, camera: 'A DollyIn toward it' }, { ...PARTS, engine: ['BlurIn'] }]) {
+    const cli = run(parts);
+    const tool = hr.brief_direct({ job, parts });
+    assert.equal(cli.status === 0, tool.kept, JSON.stringify(parts));
+    if (!tool.kept) assert.equal(cli.stdout.trim(), tool.reason);
+  }
+});
+
+test('brief_pick lets an I/O failure propagate instead of reporting it as a reason', () => {
+  const { r, hr, job } = styled();
+  const f = path.join(jobDir(r, job), 'brief.json');
+  fs.chmodSync(jobDir(r, job), 0o500);
+  try { assert.throws(() => hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true }), /EACCES|EPERM|permission/i); }
+  finally { fs.chmodSync(jobDir(r, job), 0o700); }
+  assert.ok(fs.existsSync(f));
+});
+
+test('a stale pick in brief.json shows stale and can be removed', () => {
+  const { r, hr, job } = styled();
+  saveBrief(jobDir(r, job), { ...briefOf(r, job), style_picks: [{ tab: 'motion', id: 'demo-gone' }] });
+  assert.deepEqual(hr.brief_check({ job }).picks, [{ tab: 'motion', id: 'demo-gone', name: 'demo-gone', stale: true }]);
+  const off = hr.brief_pick({ job, tab: 'motion', id: 'demo-gone', on: false });
+  assert.deepEqual(off.picks, []); assert.equal(off.picked, false); assert.equal(off.reason, null);
+  assert.deepEqual(briefOf(r, job).style_picks, []);
+});

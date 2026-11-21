@@ -118,6 +118,14 @@ export function setPick(brief, entry, on, styles) {
   return { ...brief, style_picks: [...picks, { tab: entry.tab, id: entry.id }] };
 }
 
+/** The director's brief as stored: { parts, engine, energy, at }, or null. A legacy bare-parts object is read as parts. */
+export function directorBriefOf(brief) {
+  const d = brief?.director_brief;
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return null;
+  if (d.parts && typeof d.parts === 'object') return { parts: d.parts, engine: Array.isArray(d.engine) ? d.engine : [], energy: d.energy ?? null, at: d.at ?? null };
+  return { parts: d, engine: Array.isArray(d.engine) ? d.engine : [], energy: null, at: null };
+}
+
 const beatsOk = (b) => Array.isArray(b) && b.length > 0 && b.every((x) => x && typeof x.at_s === 'number' && x.at_s >= 0 && typeof x.what === 'string' && x.what.trim());
 const MIN_GAP = { hype: 0.3, confident: 0.8, calm: 1.2 };
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -588,7 +596,8 @@ export function summary(brief, { revisions = null, styles = null, ctx = {} } = {
   const lib = styles || ctx?.styles;
   const shown = picksOf(brief, lib).filter((x) => !lib || !x.stale);
   if (shown.length) lines.push(`Picked: ${shown.map((x) => `${TAB_NAMES[x.tab] || x.tab} ${x.name}`).join('; ')}.`);
-  if (brief.director_brief?.logline) lines.push(`Director's brief: ${brief.director_brief.logline}`);
+  const director = directorBriefOf(brief);
+  if (director?.parts?.logline) lines.push(`Director's brief: ${director.parts.logline}`);
   if ((brief.must_show || []).length) lines.push(`Must show: ${brief.must_show.map((m) => `${m.what}${m.evidence ? ` (seen as: ${m.evidence})` : ''}`).join('; ')}.`);
   if ((brief.must_not || []).length) lines.push(`Never: ${brief.must_not.join('; ')}.`);
   for (const [i, r] of (brief.references || []).entries()) lines.push(`Reference ${i}: ${r.source}${r.liked_for?.length ? `, liked for its ${r.liked_for.join(' and ')}` : ''}${r.in_their_words ? ` ("${r.in_their_words}")` : ''}${r.not_this ? `; not: ${r.not_this}` : ''}.`);
