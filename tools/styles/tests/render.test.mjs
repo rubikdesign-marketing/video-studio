@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, cpSync, rmSync, readFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, cpSync, rmSync, readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadLibrary } from '../lib/library.mjs';
-import { planRender, previewSize, sceneNames, classify, captureStatus } from '../render-previews.mjs';
+import { planRender, previewSize, sceneNames, classify, captureStatus, remotionCli, main } from '../render-previews.mjs';
+import { SIZES, kebab, isCaptureMove } from '../../../engine/src/library/styles/rules.mjs';
 import { buildSprite, SPRITE_MAX_S } from '../lib/sprite.mjs';
 
 const FIX = join(dirname(fileURLToPath(import.meta.url)), 'fixtures', 'lib');
@@ -158,6 +159,7 @@ const stubRunner = (durations, calls = []) => async (cmd, args) => {
     const key = Object.keys(durations).find((k) => file.includes(k));
     return { code: 0, stdout: String(durations[key] ?? 1) };
   }
+  if (cmd === 'ffmpeg') writeFileSync(args[args.length - 1], 'SPRITE');
   return { code: 0, stdout: '' };
 };
 
@@ -199,5 +201,105 @@ test('sprite map: a short sound keeps its own length and a missing file is left 
     assert.equal(out.map['acme-soft-tap'][1], 1);
     assert.ok(out.notes.some((n) => n.includes('acme-bright-pulse')));
     assert.ok(existsSync(join(root, 'library', 'styles', 'previews', 'sound-sprite.json')));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('capture: the whole value is checked, two safe segments', () => {
+  const root = scratch();
+  try {
+    addJob(root, 'client-test', 'acme');
+    addJob(root, 'demo-test', 'demo');
+    for (const bad of ['demo-test/../client-test/take', 'demo-test/..', 'demo-test/.', 'demo-test/a/b', 'demo-test', 'demo-test/', '/take', 'demo-test/ta ke', 'demo-test\\..\\client-test', './demo-test/take']) {
+      assert.equal(captureStatus(root, bad).ok, false, bad);
+    }
+    assert.equal(captureStatus(root, 'demo-test/take_1.2-b').ok, true);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: a background beside a move with no scene is not a clip of only a backdrop', () => {
+  const root = scratch();
+  try {
+    const lib = loadLibrary(root);
+    lib.byId.get('demo-soft-arrive').engine = ['Paper', 'NoSuchMove'];
+    const plan = planRender(lib, { root, force: true, only: 'demo-soft-arrive' });
+    assert.deepEqual(plan.render, []);
+    assert.equal(plan.attention.length, 1);
+    assert.ok(plan.notes.some((n) => n.includes('NoSuchMove')));
+    // a background alone is the point of the entry and is fine
+    lib.byId.get('demo-soft-arrive').engine = ['Paper'];
+    assert.equal(planRender(lib, { root, force: true, only: 'demo-soft-arrive' }).render.length, 1);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('rules: one shared table of sizes, kebab and the capture-move rule', () => {
+  assert.deepEqual(SIZES['9:16'], { width: 270, height: 480 });
+  assert.deepEqual(previewSize('4:5'), SIZES['4:5']);
+  assert.equal(kebab('BlurIn'), 'blur-in');
+  assert.equal(isCaptureMove('cursor-classic', 'capture-pointer'), true);
+  assert.equal(isCaptureMove('join-cut', 'transition'), true);
+  assert.equal(isCaptureMove('blur-in', 'type'), false);
+});
+
+test('remotion: the CLI is run through node, not a .bin shim', async () => {
+  const cli = remotionCli();
+  assert.ok(cli.endsWith('.js') && existsSync(cli));
+  const root = scratch();
+  try {
+    const calls = [];
+    const run = async (cmd, args) => { calls.push([cmd, ...args]); return { code: 1, stdout: '', stderr: 'boom' }; };
+    await main(['--root', root, '--force', '--only', 'demo-soft-arrive'], { run, log: () => {} });
+    assert.equal(calls[0][0], process.execPath);
+    assert.equal(calls[0][1], cli);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+const clipStub = (remotionCode, ffmpegCode) => async (cmd, args) => {
+  if (cmd === process.execPath) { if (remotionCode === 0) writeFileSync(args[4], 'RAW'); return { code: remotionCode, stdout: '', stderr: 'render failed' }; }
+  if (cmd === 'ffmpeg') { writeFileSync(args[args.length - 1], 'NEWCLIP'); return { code: ffmpegCode, stdout: '', stderr: 'ffmpeg failed' }; }
+  return { code: 0, stdout: '', stderr: '' };
+};
+
+test('render: a failing re-render keeps the existing clip and leaves no temp file', async () => {
+  for (const [remotionCode, ffmpegCode] of [[1, 0], [0, 1]]) {
+    const root = scratch();
+    try {
+      const clip = clipOf(root, 'demo-soft-arrive');
+      writeFileSync(clip, 'GOODCLIP');
+      const code = await main(['--root', root, '--force', '--only', 'demo-soft-arrive'], { run: clipStub(remotionCode, ffmpegCode), log: () => {} });
+      assert.equal(code, 1);
+      assert.equal(readFileSync(clip, 'utf8'), 'GOODCLIP');
+      assert.deepEqual(readdirSync(join(root, 'library', 'styles', 'previews')).filter((f) => f.includes('tmp')), []);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  }
+});
+
+test('render: a good re-render replaces the clip in place', async () => {
+  const root = scratch();
+  try {
+    const clip = clipOf(root, 'demo-soft-arrive');
+    writeFileSync(clip, 'GOODCLIP');
+    const code = await main(['--root', root, '--force', '--only', 'demo-soft-arrive'], { run: clipStub(0, 0), log: () => {} });
+    assert.equal(code, 0);
+    assert.equal(readFileSync(clip, 'utf8'), 'NEWCLIP');
+    assert.deepEqual(readdirSync(join(root, 'library', 'styles', 'previews')).filter((f) => f.includes('tmp')), []);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('sprite: a failing build keeps the old sprite and map together', async () => {
+  const root = scratch();
+  try {
+    const dir = join(root, 'library', 'styles', 'previews');
+    writeFileSync(join(dir, 'sound-sprite.mp3'), 'OLDMP3');
+    writeFileSync(join(dir, 'sound-sprite.json'), '{"old":[0,1]}');
+    const lib = loadLibrary(root);
+    const run = async (cmd, args) => {
+      if (cmd === 'ffprobe') return { code: 0, stdout: '3' };
+      writeFileSync(args[args.length - 1], 'PARTIAL');
+      return { code: 1, stdout: '', stderr: 'bad' };
+    };
+    await assert.rejects(buildSprite(lib.tabs.sound, root, { run }));
+    assert.equal(readFileSync(join(dir, 'sound-sprite.mp3'), 'utf8'), 'OLDMP3');
+    assert.equal(readFileSync(join(dir, 'sound-sprite.json'), 'utf8'), '{"old":[0,1]}');
+    assert.deepEqual(readdirSync(dir).filter((f) => f.includes('tmp')), []);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

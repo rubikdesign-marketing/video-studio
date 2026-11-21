@@ -14,6 +14,7 @@ import motionIndex from '../../../../library/motion/index.json';
 import { demos } from '../motion/demos';
 import type { FormatName, SizedDemo } from '../motion/sized';
 import { sizedFamilies } from '../motion/sized-families';
+import { isCaptureMove, kebab, SIZES } from './rules.mjs';
 
 export const FPS = 30;
 export const FRAMES = 90;
@@ -21,24 +22,16 @@ export const FRAMES = 90;
 export const MAX_MOVES = 3;
 
 type Energy = 'calm' | 'confident' | 'hype';
-type Timing = { beat_s?: number; hold_s?: number };
 /** The part of a library entry the preview reads. `engine` holds motion-library move names (or background names). */
 export type PreviewEntry = {
   id: string;
   filters: { energy: Energy[]; sizes: string[] };
-  timing?: Partial<Record<Energy, Timing>>;
   engine: string[];
 };
 /** `capture` is "<job>/<id>", a demo-brand capture, for entries whose moves play on one. */
 export type StylePreviewProps = { entry: PreviewEntry; capture?: string };
 
-/** Pixels for each size: 480 on the long side. */
-export const SIZES: Record<string, { width: number; height: number }> = {
-  '9:16': { width: 270, height: 480 },
-  '16:9': { width: 480, height: 270 },
-  '1:1': { width: 480, height: 480 },
-  '4:5': { width: 384, height: 480 },
-};
+export { SIZES };
 
 type Scene = FC<{ page: StageName; format: FormatName }>;
 type Known = { Scene: Scene };
@@ -53,14 +46,13 @@ for (const b of (backgroundIndex as { backgrounds: Named[] }).backgrounds) { bac
 type Backdrop = FC<{ energy?: 'rest' | 'alive' | 'peak'; seed?: number }>;
 const backdrops = Backgrounds as unknown as Record<string, Backdrop>;
 
-const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 const sceneOf = (name: string) => scenes.get(name) ?? scenes.get(kebab(name));
 const backgroundOf = (name: string) => { const b = backgrounds.get(name) ?? backgrounds.get(kebab(name)); return b && backdrops[b.component] ? b : undefined; };
 
 /** Moves that play on a real capture: the capture- families, and the join-, stage-, product- and relayout- ones. */
 const captureMoves = new Set<string>();
 for (const m of (motionIndex as { moves: { name: string; family: string }[] }).moves) {
-  if (m.family.startsWith('capture-') || /^(join|stage|product|relayout)-/.test(m.name)) captureMoves.add(m.name);
+  if (isCaptureMove(m.name, m.family)) captureMoves.add(m.name);
 }
 export const needsCapture = (name: string) => captureMoves.has(name) || captureMoves.has(kebab(name));
 
@@ -76,6 +68,8 @@ const CaptureMove: FC<{ name: string; capture?: string }> = ({ name }) => {
 
 const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({ entry, page, capture }) => {
   const format = formatOf(entry);
+  // A name nothing here can play is an error, not a gap: the render fails and the plan reports the entry.
+  for (const n of entry.engine) if (!sceneOf(n) && !needsCapture(n) && !backgroundOf(n)) throw new Error(`${entry.id}: ${n} has no demo scene, background or capture mapping`);
   const moves = entry.engine.filter((n) => sceneOf(n) || needsCapture(n)).slice(0, MAX_MOVES);
   const bg = entry.engine.map(backgroundOf).find(Boolean);
   const Backdrop = bg ? backdrops[bg.component] : null;
@@ -83,6 +77,7 @@ const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({
   return (
     <>
       {Backdrop ? <Backdrop energy={backdropEnergy[energyOf(entry)]} /> : null}
+      {moves.length ? (
       <Series>
         {moves.map((name, i) => {
           const known = sceneOf(name);
@@ -93,6 +88,7 @@ const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({
           );
         })}
       </Series>
+      ) : null}
     </>
   );
 };

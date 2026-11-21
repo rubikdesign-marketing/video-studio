@@ -5,24 +5,24 @@
 //                                         [--capture <job>/<id>]
 // --capture names a demo-brand capture for entries whose moves play on one; any other capture is refused.
 // Only node: modules and in-repo imports. The command runner is injected (see main), so tests can stub it.
-import { readFileSync, existsSync, mkdirSync, statSync, rmSync, writeFileSync, mkdtempSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync, mkdirSync, statSync, rmSync, writeFileSync, mkdtempSync, readdirSync, renameSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { join, dirname, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { TABS, loadLibrary, engineNames } from './lib/library.mjs';
 import { buildSprite, spawnRun } from './lib/sprite.mjs';
+import { SIZES, kebab, isCaptureMove } from '../../engine/src/library/styles/rules.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const STUDIO = resolve(HERE, '..', '..');
-const SIZES = { '9:16': [270, 480], '16:9': [480, 270], '1:1': [480, 480], '4:5': [384, 480] };
 export const MAX_KB = 200;
 export const TARGET_KB = 100;
 
-export const previewSize = (size) => { const [width, height] = SIZES[size] ?? SIZES['9:16']; return { width, height }; };
+export const previewSize = (size) => SIZES[size] ?? SIZES['9:16'];
 export const conventionalClip = (id) => `library/styles/previews/${id}.mp4`;
 
 const tryJson = (file) => { try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return null; } };
-const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 
 const MOTION_DIR = join(STUDIO, 'engine', 'src', 'library', 'motion');
 // These four files hold the moves that play on a real capture; their entries are not standalone scenes.
@@ -49,7 +49,7 @@ function engineKinds(studio = STUDIO) {
   for (const b of tryJson(join(studio, 'library', 'backgrounds', 'index.json'))?.backgrounds ?? []) { backgrounds.add(b.name); if (b.component) backgrounds.add(b.component); }
   const capture = new Set();
   for (const m of tryJson(join(studio, 'library', 'motion', 'index.json'))?.moves ?? []) {
-    if (String(m.family).startsWith('capture-') || /^(join|stage|product|relayout)-/.test(m.name)) capture.add(m.name);
+    if (isCaptureMove(m.name, m.family)) capture.add(m.name);
   }
   return { scenes, backgrounds, capture };
 }
@@ -70,9 +70,10 @@ export function classify(name, kinds = engineKinds()) {
  */
 export function captureStatus(root, capture) {
   if (!capture) return { ok: false, reason: 'no demo capture yet' };
-  const job = String(capture).split('/')[0];
-  if (!job || job.includes('..')) return { ok: false, reason: `no demo capture yet (${capture} is not a capture name)` };
-  const brand = tryJson(join(root, 'jobs', job, 'job.json'))?.brand;
+  const parts = String(capture).split('/');
+  const safe = (p) => /^[A-Za-z0-9._-]+$/.test(p) && p !== '.' && p !== '..';
+  if (parts.length !== 2 || !parts.every(safe)) return { ok: false, reason: `no demo capture yet (${capture} is not a capture name, which is <job>/<id>)` };
+  const brand = tryJson(join(root, 'jobs', parts[0], 'job.json'))?.brand;
   if (brand !== 'demo') return { ok: false, reason: `no demo capture yet (${capture} belongs to ${brand ? `the ${brand} brand` : 'a job with no brand'}; only the demo brand is used for previews)` };
   return { ok: true, reason: '' };
 }
@@ -107,14 +108,25 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
       }
       const playable = items.filter((i) => i.kind);
       for (const i of items.filter((x) => !x.kind)) out.notes.push(`${e.id}: ${i.raw} has no demo scene in the motion library, skipped`);
-      if (!playable.length) { out.attention.push({ id: e.id, reason: 'nothing in its engine list has a demo scene, so it has no clip' }); continue; }
+      // A background alone is a clip of its own; a background beside moves that cannot play would be only a backdrop.
+      const hasMove = playable.some((i) => i.kind !== 'background');
+      const onlyBackground = playable.length > 0 && playable.length === items.length;
+      if (!hasMove && !onlyBackground) { out.attention.push({ id: e.id, reason: 'nothing in its engine list has a demo scene, so it has no clip' }); continue; }
       const { width, height } = previewSize(e.filters?.sizes?.[0]);
       const names = playable.map((i) => i.name);
-      const entry = { id: e.id, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, timing: e.timing, engine: names };
+      const entry = { id: e.id, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names };
       out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: names, capture: onCapture.length ? capture : null, entry });
     }
   }
   return out;
+}
+
+/** The Remotion CLI's own script, run through node so it works the same on macOS, Windows and Linux (no .bin shim). */
+export function remotionCli(studio = STUDIO) {
+  const require = createRequire(join(studio, 'engine', 'package.json'));
+  const pkgFile = require.resolve('@remotion/cli/package.json');
+  const bin = JSON.parse(readFileSync(pkgFile, 'utf8')).bin;
+  return join(dirname(pkgFile), typeof bin === 'string' ? bin : bin.remotion);
 }
 
 /** Re-encodes a render to H.264 without audio, raising the CRF until it is small enough. Returns the final size in bytes. */
@@ -158,7 +170,7 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
   }
 
   const work = mkdtempSync(join(tmpdir(), 'style-previews-'));
-  const bin = join(studio, 'engine', 'node_modules', '.bin', 'remotion');
+  const cli = remotionCli(studio);
   let total = 0;
   let done = 0;
   const failed = [];
@@ -168,17 +180,20 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
       const raw = join(work, `${job.id}.mp4`);
       writeFileSync(props, JSON.stringify(job.capture ? { entry: job.entry, capture: job.capture } : { entry: job.entry }));
       mkdirSync(dirname(job.out), { recursive: true });
+      // Encode beside the clip and move it into place only when it is good, so a failed re-render keeps the old clip.
+      const temp = join(dirname(job.out), `${job.id}.tmp.mp4`);
       try {
-        const r = await run(bin, ['render', 'src/library/styles/entry.tsx', 'style-preview', raw, `--props=${props}`, '--codec=h264', '--muted', '--log=error'], { cwd: join(studio, 'engine') });
+        const r = await run(process.execPath, [cli, 'render', 'src/library/styles/entry.tsx', 'style-preview', raw, `--props=${props}`, '--codec=h264', '--muted', '--log=error'], { cwd: join(studio, 'engine') });
         if (r.code !== 0) throw new Error(`remotion render failed: ${(r.stderr || r.stdout || '').trim().split('\n').pop()}`);
-        const size = await compress(run, raw, job.out);
+        const size = await compress(run, raw, temp);
+        renameSync(temp, job.out);
         total += size;
         done += 1;
         log(`rendered ${job.id}: ${Math.round(size / 1024)} KB`);
       } catch (e) {
         failed.push(job.id);
         log(`failed ${job.id}: ${e.message}`);
-        rmSync(job.out, { force: true });
+        rmSync(temp, { force: true });
       }
     }
   } finally { rmSync(work, { recursive: true, force: true }); }

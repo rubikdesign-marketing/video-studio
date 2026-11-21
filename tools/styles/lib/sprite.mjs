@@ -1,6 +1,6 @@
 // The sound sprite: a short slice of each sound style's file, joined into one mp3 with a map of where each starts.
 // Only node: modules and in-repo imports. The command runner is injected, so tests can stub ffmpeg and ffprobe.
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync, renameSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 
@@ -59,14 +59,24 @@ export async function buildSprite(entries, root, { run = spawnRun } = {}) {
   }
   const outDir = join(root, 'library', 'styles', 'previews');
   mkdirSync(outDir, { recursive: true });
-  if (parts.length) {
-    const args = ['-y', '-v', 'error'];
-    for (const p of parts) args.push('-ss', String(p.from), '-t', String(p.length), '-i', p.file);
-    if (parts.length > 1) args.push('-filter_complex', `${parts.map((_, i) => `[${i}:a]`).join('')}concat=n=${parts.length}:v=0:a=1[out]`, '-map', '[out]');
-    args.push('-c:a', 'libmp3lame', '-b:a', '64k', join(root, SPRITE_FILE));
-    const made = await run('ffmpeg', args);
-    if (made.code !== 0) throw new Error(`ffmpeg could not build the sound sprite: ${(made.stderr || '').trim().split('\n').pop()}`);
+  // Write both files beside the real ones and move them into place together, only when the whole build worked.
+  const tempMp3 = join(outDir, 'sound-sprite.tmp.mp3');
+  const tempMap = join(outDir, 'sound-sprite.tmp.json');
+  try {
+    if (parts.length) {
+      const args = ['-y', '-v', 'error'];
+      for (const p of parts) args.push('-ss', String(p.from), '-t', String(p.length), '-i', p.file);
+      if (parts.length > 1) args.push('-filter_complex', `${parts.map((_, i) => `[${i}:a]`).join('')}concat=n=${parts.length}:v=0:a=1[out]`, '-map', '[out]');
+      args.push('-c:a', 'libmp3lame', '-b:a', '64k', tempMp3);
+      const made = await run('ffmpeg', args);
+      if (made.code !== 0) throw new Error(`ffmpeg could not build the sound sprite: ${(made.stderr || '').trim().split('\n').pop()}`);
+    }
+    writeFileSync(tempMap, JSON.stringify(map, null, 2) + '\n');
+    if (parts.length) renameSync(tempMp3, join(root, SPRITE_FILE));
+    renameSync(tempMap, join(root, SPRITE_MAP));
+  } finally {
+    rmSync(tempMp3, { force: true });
+    rmSync(tempMap, { force: true });
   }
-  writeFileSync(join(root, SPRITE_MAP), JSON.stringify(map, null, 2) + '\n');
   return { file: SPRITE_FILE, map, notes };
 }
