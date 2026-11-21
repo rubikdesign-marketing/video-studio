@@ -5,7 +5,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
-import { assumptions, checkDirectorBrief, DIRECTOR_PARTS, ENERGIES, CHECKLIST_LABELS, LABELS, picksOf, plan, preflight, setPick, summary, understood } from '../lib/brief.mjs';
+import { applyAnswer, assumptions, checkDirectorBrief, questions, reopen, DIRECTOR_PARTS, ENERGIES, CHECKLIST_LABELS, LABELS, picksOf, plan, preflight, setPick, summary, understood } from '../lib/brief.mjs';
+import { confirmPlan, loadJob, saveBrief, writePlan } from '../lib/brief-store.mjs';
 import { completeBrief, scratchStudio } from './helpers.mjs';
 
 const CLI = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../brief.mjs');
@@ -163,4 +164,41 @@ test('CLI pick: a clash exits 1 with the reason', () => {
   assert.match(second.stdout, /You already picked Soft arrive from arrival: one per family/);
   assert.equal(run('pick', jobDir, 'motion', 'soft-arrive', '--off').status, 0);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).style_picks, []);
+});
+
+test('reopen: "Size, length and voice" asks the length again though their words say it', () => {
+  const b = { ...completeBrief(), in_their_words: 'a 20 s vertical demo' };
+  const open = reopen(b, 'delivery');
+  assert.equal(assumptions(open, {}).some((x) => x.id === 'length_cap_seconds'), false);
+  assert.ok(questions(open, {}).some((q) => q.id === 'length'));
+  assert.equal(preflight(open, {}).find((c) => c.id === 'delivery').done, false);
+  // answering it settles it, and clears the reopening
+  const answered = applyAnswer(open, 'length', { words: '25' });
+  assert.equal(answered.length_cap_seconds, 25);
+  assert.equal((answered.ask_again || []).includes('length_cap_seconds'), false);
+});
+
+test('reopen: "Style and look" asks the look again though a pick settles it', () => {
+  const paper = entry({ id: 'p', name: 'Paper world', family: 'world', settles: { look: 'paper' } });
+  const styles = lib(paper);
+  const b = { ...completeBrief(), look: '', style_picks: [pick(paper)] };
+  assert.equal(preflight(b, { ctx: { styles } }).find((c) => c.id === 'look').done, true);
+  const open = reopen(b, 'look');
+  assert.equal(assumptions(open, { styles }).some((x) => x.id === 'look'), false);
+  assert.ok(questions(open, { ctx: { styles } }).some((q) => q.id === 'look'));
+  const answered = applyAnswer(open, 'look', { value: 'night' });
+  assert.equal(answered.look, 'night');
+  assert.equal(answered.ask_again, undefined);
+});
+
+test('confirmPlan: job.json takes the length their words gave', () => {
+  const root = scratchStudio();
+  const jobDir = path.join(root, 'jobs', 'j');
+  fs.mkdirSync(jobDir, { recursive: true });
+  const b = { ...completeBrief(), in_their_words: 'a 20 s demo' };
+  delete b.length_cap_seconds;
+  saveBrief(jobDir, b);
+  assert.ok(writePlan(root, jobDir));
+  assert.equal(confirmPlan(root, jobDir).length_cap_seconds, 20);
+  assert.equal(loadJob(jobDir).job.length_cap_seconds, 20);
 });

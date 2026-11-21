@@ -34,6 +34,14 @@ Space the beats to the chosen energy. The smallest gap between two beats must be
 - confident: 0.8 seconds
 - hype: 0.3 seconds
 
+Keep the film's overall movement inside the target for the chosen energy. Typical motion (how much is moving on screen on average):
+
+- calm: 0.5 to 0.9
+- confident: 1.2 to 1.7
+- hype: 4.4 to 6.5
+
+Still time (frames where nothing moves, so the eye can read): 13 to 15 percent for calm, under 10 percent for confident and hype.
+
 Match the picked styles' own numbers when they give them (one beat every so many seconds, how long a hold lasts). If a picked sound has a `bpm`, put the beats on its pulse: one beat every whole number of its beats, so a cut lands on a hit. Keep every beat inside the length the customer set.
 
 ## Rules

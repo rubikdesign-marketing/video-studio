@@ -100,7 +100,7 @@ test('reopen: clears one checklist item so its question is asked again', () => {
   const d = reopen(done, 'delivery');
   assert.deepEqual(d.deliver, [{ master: true }]);
   assert.equal(d.length_cap_seconds, undefined); assert.equal(d.voice, undefined);
-  assert.deepEqual(d.ask_again, ['size', 'voice']);
+  assert.deepEqual(d.ask_again, ['size', 'voice', 'length_cap_seconds']);
   assert.throws(() => reopen(done, 'colour'), /No checklist item colour/);
 });
 
@@ -115,7 +115,7 @@ test('reopen: an item the words could fill is asked again, not re-assumed; answe
   assert.equal(c.kind, 'tutorial'); assert.equal(c.ask_again, undefined);
   const s = reopen(words, 'delivery');
   assert.ok(questions(s).some((q) => q.id === 'size'));
-  assert.deepEqual(applyAnswer(s, 'size', { value: '1:1' }).ask_again, ['voice']);
+  assert.deepEqual(applyAnswer(s, 'size', { value: '1:1' }).ask_again, ['voice', 'length_cap_seconds']);
 });
 
 test('reopen: look, hook and type from a saved style are changed in chat, not reopened', () => {

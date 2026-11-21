@@ -344,7 +344,7 @@ export function applyAnswer(brief, questionId, answer = {}) {
 }
 
 // The assumption an answer settles, so a reopened item stops being asked again once it is answered.
-const ANSWER_CLEARS = { size: 'size', master: 'size', kind: 'kind', voice: 'voice', brand: 'brand' };
+const ANSWER_CLEARS = { size: 'size', master: 'size', kind: 'kind', voice: 'voice', brand: 'brand', look: 'look', length: 'length_cap_seconds' };
 
 function applyOne(brief, questionId, { value, words } = {}) {
   const s = specOf(brief, questionId);
@@ -396,10 +396,10 @@ const REOPEN = {
   product: { fields: ['product'] },
   audience: { fields: ['for', 'awareness'] },
   angle: { fields: ['angle', 'viewer_should', 'must_show'] },
-  look: { fields: ['look'] },
+  look: { fields: ['look'], again: ['look'] },
   hook: { fields: ['hook'] },
   type: { fields: ['kind', 'references', 'no_reference'], again: ['kind'] },
-  delivery: { fields: ['length_cap_seconds', 'voice'], sizes: true, again: ['size', 'voice'] },
+  delivery: { fields: ['length_cap_seconds', 'voice'], sizes: true, again: ['size', 'voice', 'length_cap_seconds'] },
 };
 
 // A saved style settles these; they are changed in chat, where the style can be looked at.
