@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, cpSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdtempSync, cpSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -41,13 +41,27 @@ test('check: names each fixture defect', () => {
   entry(lib, 'demo-snappy').engine = ['NoSuchMove'];
   assert.ok(run(lib).some((p) => p.includes('demo-snappy') && p.includes('NoSuchMove')));
 
-  // a ready entry with no clip (clips on)
-  assert.ok(run(fresh(), { clips: true }).some((p) => p.includes('demo-snappy') && /no clip/.test(p)));
-  // sound entries do not need a clip, only their sound file
+  // a ready entry with no clip (clips on): stubs exist in the fixture, so a copy without one
+  assert.deepEqual(run(fresh(), { clips: true }), []);
+  const copy = mkdtempSync(join(tmpdir(), 'styles-clip-'));
+  cpSync(FIX, copy, { recursive: true });
+  rmSync(join(copy, 'library', 'styles', 'previews', 'demo-snappy.mp4'));
+  assert.ok(run(fresh(), { clips: true, root: copy }).some((p) => p.includes('demo-snappy') && /clip/.test(p)));
+  lib = fresh();
+  delete entry(lib, 'demo-snappy').preview.clip;
+  assert.ok(run(lib, { clips: true }).some((p) => p.includes('demo-snappy') && /clip/.test(p)));
+  lib = fresh();
+  entry(lib, 'demo-snappy').preview = { sketch: 'clay-squash', params: {} };
+  assert.ok(run(lib, { clips: true }).some((p) => p.includes('demo-snappy') && /clip/.test(p)));
+  // sound entries do not need a clip, only their sound file on disk
   assert.ok(!mentions(run(fresh(), { clips: true }), 'acme-soft-tap'));
   lib = fresh();
   entry(lib, 'acme-soft-tap').preview.sound = 'click/missing-01';
   assert.ok(mentions(run(lib), 'acme-soft-tap'));
+  // listed in the sound index but the file is absent
+  lib = fresh();
+  entry(lib, 'acme-soft-tap').preview.sound = 'click/ghost-01';
+  assert.ok(run(lib).some((p) => p.includes('acme-soft-tap') && p.includes('ghost-01')));
 
   // made on request with no nearest, or a nearest that is not ready
   lib = fresh();
@@ -56,6 +70,27 @@ test('check: names each fixture defect', () => {
   lib = fresh();
   entry(lib, 'demo-clay-hero').nearest = 'demo-clay-hero';
   assert.ok(run(lib).some((p) => p.includes('demo-clay-hero') && /not ready/.test(p)));
+
+  // nearest in another tab
+  lib = fresh();
+  entry(lib, 'demo-clay-hero').nearest = 'acme-soft-tap';
+  assert.ok(run(lib).some((p) => p.includes('demo-clay-hero') && /same tab/.test(p)));
+
+  // filters: kinds, sizes, ready and non-empty lists
+  lib = fresh();
+  entry(lib, 'demo-snappy').filters.kinds = ['product demo'];
+  assert.ok(run(lib).some((p) => p.includes('demo-snappy') && p.includes('product demo')));
+  lib = fresh();
+  entry(lib, 'demo-snappy').filters.sizes = ['3:4'];
+  assert.ok(run(lib).some((p) => p.includes('demo-snappy') && p.includes('3:4')));
+  lib = fresh();
+  entry(lib, 'demo-snappy').filters.ready = 'true';
+  assert.ok(run(lib).some((p) => p.includes('demo-snappy') && p.includes('ready')));
+  for (const f of ['kinds', 'sizes', 'energy']) {
+    lib = fresh();
+    entry(lib, 'demo-held-wide').filters[f] = [];
+    assert.ok(run(lib).some((p) => p.includes('demo-held-wide') && p.includes(f)), f);
+  }
 
   // a missing timing for a listed energy
   lib = fresh();

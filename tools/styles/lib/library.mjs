@@ -1,6 +1,6 @@
 // The style library: loading, reading engine names, the expert prompt text and the checks.
 // Pure reading and checking; nothing here writes. Only node: modules and in-repo imports.
-import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, basename, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { LOOKS, VOICES, KINDS, SIZES } from '../../plan/lib/brief.mjs';
@@ -117,6 +117,12 @@ function corpusTexts(corpus) {
 
 const VISUAL = new Set(['filming', 'motion', 'animation', 'product-ui']);
 const REQUIRED = ['id', 'tab', 'name', 'line', 'family', 'filters', 'prompt', 'engine', 'preview'];
+const SOUND_EXT = ['', '.mp3', '.wav', '.ogg', '.m4a', '.flac'];
+// The sound's file as the real layout has it: library/sounds/<group>/<name>.<ext>, named with or without the extension.
+function soundFileExists(root, name) {
+  if (!root || !name) return false;
+  return SOUND_EXT.some((ext) => { const f = join(root, 'library', 'sounds', name + ext); return extname(name + ext) !== '' && existsSync(f) && statSync(f).isFile(); });
+}
 const inRange = (v, [lo, hi], hiExclusive) => typeof v === 'number' && v >= lo && (hiExclusive ? v < hi : v <= hi);
 
 export function checkLibrary(lib, { names, root, clips = true, corpus = null, banned = [], tab = null, min = 100 } = {}) {
@@ -142,6 +148,14 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
       for (const en of energies) if (!ENERGIES.includes(en)) say(`has an unknown energy ${en}`);
       const isSound = t === 'sound';
       const ready = e.filters?.ready === true;
+      const f = e.filters || {};
+      if (e.filters !== undefined) {
+        if (typeof f.ready !== 'boolean') say('filters.ready must be true or false');
+        for (const [key, allowed] of [['energy', ENERGIES], ['kinds', KINDS], ['sizes', SIZES]]) {
+          if (!Array.isArray(f[key]) || f[key].length === 0) say(`filters.${key} must be a list with at least one value`);
+          else if (key !== 'energy') for (const v of f[key]) if (!allowed.includes(v)) say(`filters.${key} has ${v}, which the brief does not know`);
+        }
+      }
 
       // timing per energy, inside the studio's targets
       for (const en of energies.filter((x) => ENERGIES.includes(x))) {
@@ -168,13 +182,17 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
       if (ready) {
         if (isSound) {
           if (!pv.sound) say('ready sound entry has no preview sound');
-          else if (!(names?.sounds?.has(pv.sound) || (root && existsSync(join(root, 'library', 'sounds', pv.sound))))) say(`preview sound ${pv.sound} does not exist`);
-        } else if (clips && !(root && existsSync(join(stylesDir(root), 'previews', `${id}.mp4`)))) say('ready entry has no clip');
+          else if (!soundFileExists(root, pv.sound)) say(`preview sound ${pv.sound} has no file under library/sounds`);
+        } else if (clips) {
+          if (!pv.clip) say('ready entry has no preview clip set');
+          else if (!(root && existsSync(join(root, pv.clip)))) say(`ready entry has no clip file at ${pv.clip}`);
+        }
       } else {
         if (!e.nearest) say('is made on request but names no nearest ready style');
         else {
           const n = lib.byId.get(e.nearest);
           if (!n) say(`nearest ${e.nearest} does not exist`);
+          else if (n.tab !== t) say(`nearest ${e.nearest} is not in the same tab`);
           else if (n.filters?.ready !== true) say(`nearest ${e.nearest} is not ready`);
         }
       }

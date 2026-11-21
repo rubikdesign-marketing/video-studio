@@ -5,6 +5,11 @@
       "id": "click/soft-tap-01",
       "file": "click/soft-tap-01.mp3",
       "name": "Soft tap 1"
+    },
+    {
+      "id": "click/ghost-01",
+      "file": "click/ghost-01.mp3",
+      "name": "Ghost 1"
     }
   ]
 }
