@@ -179,3 +179,14 @@ test('tools: brief_reopen opens one checklist item again and replies like brief_
   assert.throws(() => hr.brief_reopen({ job: s.job, item: 'colour' }), /No checklist item colour/);
   for (const job of ['../.env', 'a/b', '/etc', 'nope']) assert.throws(() => hr.brief_reopen({ job, item: 'look' }), /Not a brief/);
 });
+
+test('tools: brief_reopen refuses an item that comes from the saved style, with a plain message', () => {
+  const r = scratchStudio();
+  const hr = makeHandlers(r);
+  const s = hr.brief_start({ words: 'A vertical demo of the export button for acme' });
+  const brief = { ...completeBrief(), style: 'acme/launch', in_their_words: 'A vertical demo of the export button for acme' };
+  saveBrief(jobDir(r, s.job), brief);
+  assert.throws(() => hr.brief_reopen({ job: s.job, item: 'look' }), /^Error: That comes from your saved style acme\/launch\. To change it, say so in a chat in the studio folder\.$/);
+  assert.equal(loadJob(jobDir(r, s.job)).brief.look, 'paper');
+  assert.ok(!(loadJob(jobDir(r, s.job)).brief.decisions || []).some((d) => d.what === 'reopened look'));
+});

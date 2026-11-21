@@ -117,3 +117,11 @@ test('reopen: an item the words could fill is asked again, not re-assumed; answe
   assert.ok(questions(s).some((q) => q.id === 'size'));
   assert.deepEqual(applyAnswer(s, 'size', { value: '1:1' }).ask_again, ['voice']);
 });
+
+test('reopen: look, hook and type from a saved style are changed in chat, not reopened', () => {
+  const styled = { ...completeBrief(), style: 'acme/launch' };
+  for (const item of ['look', 'hook', 'type']) {
+    assert.throws(() => reopen(styled, item), { message: 'That comes from your saved style acme/launch. To change it, say so in a chat in the studio folder.' });
+  }
+  assert.equal(reopen(styled, 'audience').for, undefined);
+});

@@ -265,13 +265,18 @@ const REOPEN = {
   delivery: { fields: ['length_cap_seconds', 'voice'], sizes: true, again: ['size', 'voice'] },
 };
 
+// A saved style settles these; they are changed in chat, where the style can be looked at.
+const STYLE_ITEMS = new Set(['look', 'hook', 'type']);
+
 /**
  * Open one checklist item again (an id from preflight), so its questions are asked again. Returns a new brief; the
- * customer's words stay. Throws a plain Error for an unknown item.
+ * customer's words stay. Throws a plain Error for an unknown item, and for look, hook or type on a brief made from a
+ * saved style.
  */
 export function reopen(brief, itemId) {
   const r = Object.hasOwn(REOPEN, itemId) ? REOPEN[itemId] : null;
   if (!r) throw new Error(`No checklist item ${itemId}`);
+  if (!empty(brief.style) && STYLE_ITEMS.has(itemId)) throw new Error(`That comes from your saved style ${brief.style}. To change it, say so in a chat in the studio folder.`);
   const b = { ...brief };
   for (const f of r.fields) delete b[f];
   if (r.sizes && Array.isArray(b.deliver)) {

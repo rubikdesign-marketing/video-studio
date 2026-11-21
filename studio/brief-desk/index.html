@@ -66,6 +66,8 @@
   .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 10px; }
   .idea { text-align: left; background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 12px 14px; line-height: 1.4; }
   .idea:hover { border-color: var(--accent); }
+  .change-item { display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .change-item .idea { width: 100%; }
   .idea .muted { display: block; font-size: var(--step--1); margin-top: 2px; }
   .briefs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
   .briefs li { border-bottom: 1px solid var(--line); }
@@ -306,15 +308,17 @@ async function confirmPlan() {
 }
 
 async function reopenItem(item) {
-  state.busy = `reopen:${item}`; setNote('reopen', null); render();
+  state.busy = `reopen:${item}`; clearReopenNotes(); render();
   try {
     const reply = await write(() => connector.reopen(state.job, item));
     state.plan = null; state.changing = false; state.confirmedOn = null;
     applyCheck(reply);
     window.scrollTo(0, 0);
-  } catch (e) { await failed(e, 'reopen', { isWrite: true }); }
+  } catch (e) { await failed(e, `reopen:${item}`, { isWrite: true }); } // a refusal (a saved style's item) shows by that item
   state.busy = null; render();
 }
+
+const clearReopenNotes = () => { for (const area of Object.keys(state.notes)) if (area.startsWith('reopen:')) delete state.notes[area]; };
 
 function applyCheck(reply, { keepView = false } = {}) {
   state.job = reply.job; state.check = reply;
@@ -661,7 +665,7 @@ function renderPlan() {
     h('section', {},
       h('div', { class: 'row' },
         h('button', { type: 'button', class: 'primary', id: 'confirm', disabled: state.busy === 'confirm' || null, text: busyLabel('confirm', 'Confirm this plan', 'Confirming…'), onclick: confirmPlan }),
-        h('button', { type: 'button', class: 'secondary', id: 'change', 'aria-expanded': String(state.changing), text: 'Change something', onclick: () => { state.changing = !state.changing; setNote('reopen', null); render(); } })),
+        h('button', { type: 'button', class: 'secondary', id: 'change', 'aria-expanded': String(state.changing), text: 'Change something', onclick: () => { state.changing = !state.changing; clearReopenNotes(); render(); } })),
       noteEl('confirm')),
     state.changing ? changeList() : null,
   ];
@@ -672,9 +676,10 @@ function changeList() {
   const items = state.check?.preflight || [];
   return h('section', { 'aria-labelledby': 'change-h' },
     h('h2', { id: 'change-h', text: 'What do you want to change?' }),
-    h('div', { class: 'ideas' }, items.map((p) => h('button', { type: 'button', class: 'idea', id: `reopen-${p.id}`, disabled: state.busy === `reopen:${p.id}` || null, onclick: () => reopenItem(p.id) },
-      state.busy === `reopen:${p.id}` ? 'Opening…' : p.label, p.known ? h('span', { class: 'muted', text: cut(p.known, 90) }) : null))),
-    noteEl('reopen'));
+    h('div', { class: 'ideas' }, items.map((p) => h('div', { class: 'change-item' },
+      h('button', { type: 'button', class: 'idea', id: `reopen-${p.id}`, disabled: state.busy === `reopen:${p.id}` || null, onclick: () => reopenItem(p.id) },
+        state.busy === `reopen:${p.id}` ? 'Opening…' : p.label, p.known ? h('span', { class: 'muted', text: cut(p.known, 90) }) : null),
+      noteEl(`reopen:${p.id}`)))));
 }
 
 function renderHandoff() {
