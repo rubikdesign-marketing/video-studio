@@ -23,13 +23,14 @@ test('memory: last five films and newest lessons per customer brand, demo left o
   put(root, 'brands/acme/lessons/2026-11-09-b.md', '# Second lesson\n');
   put(root, 'brands/acme/lessons/README.md', '# Lessons\n');
   put(root, 'brands/acme/styles/calm/style.json', { size: '9:16', kind: 'ugc', structure: [{}, {}], from_job: 'j1' });
+  put(root, 'brands/demo/styles/ugc-preset/style.json', { size: '9:16', kind: 'ugc', structure: [{}] });
   const m = studioMemory(root);
   assert.deepEqual(m.brands.map((b) => b.name), ['acme']);
   assert.equal(m.brands[0].discovery, true);
   assert.equal(m.brands[0].last_films.length, 5);
   assert.equal(m.brands[0].last_films[0].name, 'f6');
   assert.deepEqual(m.brands[0].lessons, [{ date: '2026-11-09', title: 'Second lesson' }, { date: '2026-11-01', title: 'First lesson' }]);
-  assert.deepEqual(m.styles, [{ ref: 'acme/calm', size: '9:16', kind: 'ugc', scenes: 2, from_job: 'j1' }]);
+  assert.deepEqual(m.styles, [{ ref: 'acme/calm', size: '9:16', kind: 'ugc', scenes: 2, from_job: 'j1' }]); // the demo brand's presets are not "your saved" styles
   assert.equal(m.parked, false);
 });
 
@@ -55,4 +56,16 @@ test('memory: a studio with only the demo brand is parked', () => {
   const root = scratchStudio();
   fs.rmSync(path.join(root, 'brands/acme'), { recursive: true });
   assert.equal(studioMemory(root).parked, true);
+});
+
+test('memory: a jobs/<x> or brands/<x> link that leads outside the studio is refused', () => {
+  const root = scratchStudio();
+  const outside = fs.mkdtempSync(path.join(path.dirname(root), 'outside-'));
+  fs.writeFileSync(path.join(outside, 'brief.json'), JSON.stringify(completeBrief()));
+  fs.writeFileSync(path.join(outside, 'brand.json'), '{}');
+  fs.mkdirSync(path.join(root, 'jobs'), { recursive: true });
+  fs.symlinkSync(outside, path.join(root, 'jobs', 'away'), 'dir');
+  fs.symlinkSync(outside, path.join(root, 'brands', 'away'), 'dir');
+  for (const rel of ['jobs/away/brief.json', 'jobs/away/plan.md', 'brands/away/brand.json', 'brands/away/product/discovery.md']) assert.throws(() => safePath(root, rel), /Not allowed/, rel);
+  assert.ok(!studioMemory(root).briefs.some((b) => b.job === 'away'));
 });

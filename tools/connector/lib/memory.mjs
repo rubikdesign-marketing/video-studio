@@ -30,9 +30,16 @@ export function safePath(root, rel) {
   const abs = path.join(root, ...parts);
   const inside = (base, p) => { const r = path.relative(base, p); return r !== '' && !r.startsWith('..') && !path.isAbsolute(r); };
   if (!inside(path.resolve(root), path.resolve(abs))) throw bad();
-  try { // a link inside the studio must not lead outside it
-    if (fs.existsSync(abs) && !inside(fs.realpathSync(root), fs.realpathSync(abs))) throw bad();
-  } catch (e) { if (e.message.startsWith('Not allowed')) throw e; }
+  // A link inside the studio must not lead outside it: the nearest part of the path that exists (the file, or the
+  // jobs/<x> or brands/<x> folder above it) must really be inside the studio. A link that leads nowhere is refused.
+  let realRoot;
+  try { realRoot = fs.realpathSync(root); } catch { return abs; }
+  const present = (p) => { try { fs.lstatSync(p); return true; } catch { return false; } };
+  let probe = abs;
+  while (!present(probe) && probe !== path.dirname(probe)) probe = path.dirname(probe);
+  let real;
+  try { real = fs.realpathSync(probe); } catch { throw bad(); }
+  if (real !== realRoot && !inside(realRoot, real)) throw bad();
   return abs;
 }
 
@@ -65,9 +72,10 @@ function films(root, brand) {
     .map((f) => ({ name: f.name ?? null, type: f.type ?? null, date: f.date ?? null, hook: f.hook ?? null, look: f.look ?? null }));
 }
 
-function styles(root) {
+// Saved styles of the customer's own brands. The demo brand's shipped presets are not "your saved" styles.
+function styles(root, brands) {
   const out = [];
-  for (const brand of listDir(root, 'brands').filter(visible)) {
+  for (const brand of brands) {
     for (const style of listDir(root, `brands/${brand}/styles`).filter(visible)) {
       const s = readJson(root, `brands/${brand}/styles/${style}/style.json`);
       if (s) out.push({ ref: `${brand}/${style}`, size: s.size ?? null, kind: s.kind ?? s.type ?? null, scenes: (s.structure || []).length, from_job: s.from_job ?? null });
@@ -98,14 +106,14 @@ function briefs(root, ctx) {
     .map((x) => x.item);
 }
 
-/** The studio_context reply: customer brands with their last films and lessons, saved styles, and open briefs. */
+/** The studio_context reply: customer brands with their last films and lessons, their saved styles, and open briefs. */
 export function studioMemory(root) {
   const ctx = studioContext(root);
   const names = customerBrands(ctx);
   return {
     parked: names.length === 0,
     brands: names.map((name) => ({ name, discovery: !!ctx.brands[name].discovery, last_films: films(root, name), lessons: lessons(root, name) })),
-    styles: styles(root),
+    styles: styles(root, names),
     briefs: briefs(root, ctx),
   };
 }
