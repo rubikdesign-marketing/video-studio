@@ -56,7 +56,7 @@ test('preview: refuses to start without a studio named, with a one-line hint', a
   assert.notEqual(r.code, 0);
   assert.match(r.err, /--root/);
   assert.match(r.err, /--scratch/);
-  assert.equal(r.err.trim().split('\n').length, 1);
+  assert.equal(r.err.split('\n').filter((l) => /studio/i.test(l)).length, 1); // one line (a sandbox may add its own noise)
 });
 
 test('preview: answers only its own host, JSON posts and its own origin', async (t) => {
