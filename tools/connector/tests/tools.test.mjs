@@ -161,3 +161,21 @@ test('tools: TOOLS names match the handlers, and only check and context are read
   assert.deepEqual(TOOLS.filter((t) => t.annotations.readOnlyHint).map((t) => t.name).sort(), ['brief_check', 'studio_context']);
   for (const t of TOOLS) assert.ok(t.description && t.inputSchema?.type === 'object');
 });
+
+test('tools: brief_reopen opens one checklist item again and replies like brief_check', () => {
+  const r = scratchStudio();
+  const hr = makeHandlers(r);
+  const s = hr.brief_start({ words: 'A vertical demo of the export button for acme' });
+  saveBrief(jobDir(r, s.job), { ...completeBrief(), in_their_words: 'A vertical demo of the export button for acme' });
+  assert.equal(hr.brief_check({ job: s.job }).ready_for_plan, true);
+  const o = hr.brief_reopen({ job: s.job, item: 'look' });
+  assert.equal(o.ready_for_plan, false);
+  assert.deepEqual(o.questions.map((q) => q.id), ['look']);
+  assert.deepEqual(hr.brief_check({ job: s.job }).questions.map((q) => q.id), ['look']);
+  assert.ok(loadJob(jobDir(r, s.job)).brief.decisions.some((d) => d.what === 'reopened look'));
+  const t = hr.brief_reopen({ job: s.job, item: 'type' });
+  assert.ok(t.questions.some((q) => q.id === 'kind'));
+  assert.ok(!t.assumed.some((a) => a.id === 'kind'));
+  assert.throws(() => hr.brief_reopen({ job: s.job, item: 'colour' }), /No checklist item colour/);
+  for (const job of ['../.env', 'a/b', '/etc', 'nope']) assert.throws(() => hr.brief_reopen({ job, item: 'look' }), /Not a brief/);
+});

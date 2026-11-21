@@ -46,7 +46,9 @@ const empty = (v) => v == null || (typeof v === 'string' && !v.trim()) || (Array
  */
 export function assumptions(brief, ctx = {}) {
   const w = ` ${String(brief.in_their_words || '').toLowerCase()} `;
-  const out = [];
+  const again = new Set(Array.isArray(brief.ask_again) ? brief.ask_again : []); // reopened: ask, do not assume
+  const raw = [];
+  const out = { push: (a) => { if (!again.has(a.id)) raw.push(a); } };
   if (empty(brief.brand)) {
     const named = Object.keys(ctx.brands || {}).find((b) => new RegExp(`\\b${b === 'demo' ? 'demo brand' : b.replace(/[-]/g, '[- ]?')}\\b`).test(w)); // the sample brand is named only as "demo brand"; "a demo of" asks for a product demo
     if (named) out.push({ id: 'brand', value: named, because: named });
@@ -63,7 +65,7 @@ export function assumptions(brief, ctx = {}) {
     if (kind) out.push({ id: 'kind', value: kind, because: w.match(/\b(demo(?!\s+brand)|walkthrough|how it works|kinetic|type reel|launch|announc\w*|my footage|our footage|talking to (the )?camera|testimonial|ugc|presenter|animated short|cartoon|character)\b/)[0] });
   }
   if (!brief.voice && /\b(no voice|no voice-?over|music only|just music|silent)\b/.test(w)) out.push({ id: 'voice', value: 'none', because: 'no voice' });
-  return out;
+  return raw;
 }
 
 export const VOICES = ['voice-over', 'presenter', 'dialogue', 'none'];
@@ -197,7 +199,20 @@ export function checkAnswer(brief, questionId, value) {
  * answer is not valid. For a choice, `value` is the choice (or several for ref-N); for an open question `words` (or value)
  * is the text. `words` also goes to `for` (audience) and `hook.idea` (hook). Uses setField where the chat's `set` does.
  */
-export function applyAnswer(brief, questionId, { value, words } = {}) {
+export function applyAnswer(brief, questionId, answer = {}) {
+  const b = { ...applyOne(brief, questionId, answer) };
+  const cleared = ANSWER_CLEARS[questionId];
+  if (cleared && Array.isArray(b.ask_again)) {
+    const rest = b.ask_again.filter((id) => id !== cleared);
+    if (rest.length) b.ask_again = rest; else delete b.ask_again;
+  }
+  return b;
+}
+
+// The assumption an answer settles, so a reopened item stops being asked again once it is answered.
+const ANSWER_CLEARS = { size: 'size', master: 'size', kind: 'kind', voice: 'voice', brand: 'brand' };
+
+function applyOne(brief, questionId, { value, words } = {}) {
   const s = specOf(brief, questionId);
   if (!s) throw new Error(`No question ${questionId}`);
   const w = String(words ?? '').trim();
@@ -235,6 +250,36 @@ export function applyAnswer(brief, questionId, { value, words } = {}) {
       return b;
     default: b[s.field] = v; return b; // brand, product, angle, look
   }
+}
+
+// For each checklist item: the brief fields reopening it clears, and the assumptions the customer's words could fill
+// again (those are asked instead, through brief.ask_again).
+const REOPEN = {
+  brand: { fields: ['brand'], again: ['brand'] },
+  product: { fields: ['product'] },
+  audience: { fields: ['for', 'awareness'] },
+  angle: { fields: ['angle', 'viewer_should', 'must_show'] },
+  look: { fields: ['look'] },
+  hook: { fields: ['hook'] },
+  type: { fields: ['kind', 'references', 'no_reference'], again: ['kind'] },
+  delivery: { fields: ['length_cap_seconds', 'voice'], sizes: true, again: ['size', 'voice'] },
+};
+
+/**
+ * Open one checklist item again (an id from preflight), so its questions are asked again. Returns a new brief; the
+ * customer's words stay. Throws a plain Error for an unknown item.
+ */
+export function reopen(brief, itemId) {
+  const r = Object.hasOwn(REOPEN, itemId) ? REOPEN[itemId] : null;
+  if (!r) throw new Error(`No checklist item ${itemId}`);
+  const b = { ...brief };
+  for (const f of r.fields) delete b[f];
+  if (r.sizes && Array.isArray(b.deliver)) {
+    // Keep where it runs; only the sizes are asked again.
+    b.deliver = b.deliver.map(({ size, ...rest }) => rest).filter((d) => !empty(d.platform) || d.master);
+  }
+  if (r.again) b.ask_again = [...new Set([...(Array.isArray(brief.ask_again) ? brief.ask_again : []), ...r.again])];
+  return b;
 }
 
 /**

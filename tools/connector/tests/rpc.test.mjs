@@ -49,7 +49,7 @@ test('rpc: initialize, list and call over a real child process', async () => {
     assert.equal(init.result.serverInfo.version, '1.2.3');
     assert.deepEqual(init.result.capabilities, { tools: {} });
     const list = await ask({ jsonrpc: '2.0', id: 2, method: 'tools/list' });
-    assert.equal(list.result.tools.length, 6);
+    assert.equal(list.result.tools.length, 7);
     const ctx = await ask({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'studio_context', arguments: {} } });
     assert.equal(ctx.result.structuredContent.brands[0].name, 'acme');
     assert.equal(JSON.parse(ctx.result.content[0].text).brands[0].name, 'acme');

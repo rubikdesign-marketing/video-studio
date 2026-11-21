@@ -1,9 +1,9 @@
-// The six tools the brief page can call. Plain functions: an input object in, a small JSON-able object out, or a plain
+// The seven tools the brief page can call. Plain functions: an input object in, a small JSON-able object out, or a plain
 // Error. The questions, checklist and validation all come from tools/plan/lib/brief.mjs; nothing is re-created here.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { applyAnswer, assumptions, checkAnswer, preflight, questions } from '../../plan/lib/brief.mjs';
+import { applyAnswer, assumptions, checkAnswer, preflight, questions, reopen } from '../../plan/lib/brief.mjs';
 import { confirmPlan, customerBrands, decide, jobFolderName, loadJob, saveBrief, startBrief, studioContext, writePlan } from '../../plan/lib/brief-store.mjs';
 import { safePath, studioMemory } from './memory.mjs';
 
@@ -116,6 +116,15 @@ export function makeHandlers(root) {
       return { ...checkReply(root, job, dir), recorded, reason: recorded ? null : reason };
     },
 
+    brief_reopen({ job, item } = {}) {
+      const dir = jobDirOf(root, job);
+      const { brief } = loadJob(dir);
+      if (!brief) throw new Error(`Not a brief: ${job}`);
+      saveBrief(dir, reopen(brief, item));
+      decide(dir, `reopened ${item}`, { by: 'owner' });
+      return checkReply(root, job, dir);
+    },
+
     brief_plan({ job } = {}) {
       const dir = jobDirOf(root, job);
       const { ctx, customers } = contextOf(root);
@@ -148,6 +157,7 @@ export const TOOLS = [
   { name: 'brief_check', description: 'The brief\'s checklist, what is assumed, and the next three questions.', inputSchema: { type: 'object', properties: { job: jobProp }, required: ['job'], additionalProperties: false }, annotations: ro },
   { name: 'brief_start', description: 'Start a brief from the creator\'s own words, optionally from a saved style.', inputSchema: { type: 'object', properties: { words: { type: 'string', description: 'The creator\'s words, kept as written.' }, style: { type: 'string', description: 'A saved style, as <brand>/<style>.' } }, required: ['words'], additionalProperties: false }, annotations: rw },
   { name: 'brief_answer', description: 'Record the answer to one question: a choice as value, or the creator\'s own words.', inputSchema: { type: 'object', properties: { job: jobProp, question: { type: 'string', description: 'The question id from brief_check.' }, value: { anyOf: [{ type: 'string' }, { type: 'array', items: { type: 'string' } }], description: 'The chosen card or cards.' }, words: { type: 'string', description: 'The creator\'s own words.' } }, required: ['job', 'question'], additionalProperties: false }, annotations: rw },
+  { name: 'brief_reopen', description: 'Open one checklist item again so its questions are asked again: brand, product, audience, angle, look, hook, type or delivery.', inputSchema: { type: 'object', properties: { job: jobProp, item: { type: 'string', enum: ['brand', 'product', 'audience', 'angle', 'look', 'hook', 'type', 'delivery'], description: 'The checklist item id from brief_check.' } }, required: ['job', 'item'], additionalProperties: false }, annotations: rw },
   { name: 'brief_plan', description: 'Write the plan in brief once the checklist is complete.', inputSchema: { type: 'object', properties: { job: jobProp }, required: ['job'], additionalProperties: false }, annotations: rw },
   { name: 'brief_confirm', description: 'Confirm the plan and start the job at the Idea stage.', inputSchema: { type: 'object', properties: { job: jobProp }, required: ['job'], additionalProperties: false }, annotations: rw },
 ];

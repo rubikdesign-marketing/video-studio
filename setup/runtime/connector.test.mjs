@@ -56,9 +56,9 @@ test('connector: a moved folder is caught by the probe and fixed by registering 
   assert.match(stale.fix, /start step again/);
   assert.equal(registerConnector(root, process.execPath), 'updated');
   const p = await probeConnector(root);
-  assert.equal(p.ok, true); assert.equal(p.tools.length, 6);
+  assert.equal(p.ok, true); assert.equal(p.tools.length, 7);
   const fixed = (await buildReport({ root })).checks.find((c) => c.id === 'brief-page');
-  assert.equal(fixed.status, 'pass'); assert.equal(fixed.found, "the brief page's connector starts (6 tools)");
+  assert.equal(fixed.status, 'pass'); assert.equal(fixed.found, "the brief page's connector starts (7 tools)");
 });
 
 test('connector: probe resolves with ok false for a missing entry, bad command, bad output and timeout', async () => {

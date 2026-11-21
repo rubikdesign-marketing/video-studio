@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { applyAnswer, checkAnswer, HOOK_FAMILIES, questions } from '../lib/brief.mjs';
+import { applyAnswer, assumptions, checkAnswer, HOOK_FAMILIES, preflight, questions, reopen } from '../lib/brief.mjs';
+import { completeBrief } from './helpers.mjs';
 
 const base = () => ({ brand: 'acme', references: [{ source: 'their reel', liked_for: [] }] });
 
@@ -86,4 +87,33 @@ test('answers: the recommended choice is the one the recommendation starts with,
   const other = questions({ brand: 'demo', kind: 'tutorial' }).find((x) => x.id === 'voice');
   assert.deepEqual(other.choices.filter((c) => c.recommended).map((c) => c.value), ['voice-over']);
   assert.equal(questions(base()).find((x) => x.id === 'kind').choices.some((c) => c.recommended), false);
+});
+
+test('reopen: clears one checklist item so its question is asked again', () => {
+  const done = completeBrief();
+  assert.equal(questions(done).length, 0);
+  const b = reopen(done, 'look');
+  assert.notEqual(b, done);
+  assert.equal(done.look, 'paper');
+  assert.deepEqual(questions(b).map((q) => q.id), ['look']);
+  assert.equal(preflight(b).find((p) => p.id === 'look').done, false);
+  const d = reopen(done, 'delivery');
+  assert.deepEqual(d.deliver, [{ master: true }]);
+  assert.equal(d.length_cap_seconds, undefined); assert.equal(d.voice, undefined);
+  assert.deepEqual(d.ask_again, ['size', 'voice']);
+  assert.throws(() => reopen(done, 'colour'), /No checklist item colour/);
+});
+
+test('reopen: an item the words could fill is asked again, not re-assumed; answering clears ask_again', () => {
+  const words = { ...completeBrief(), in_their_words: 'A vertical demo of the export button' };
+  const b = reopen(words, 'type');
+  assert.equal(b.kind, undefined); assert.equal(b.references, undefined); assert.equal(b.no_reference, undefined);
+  assert.deepEqual(b.ask_again, ['kind']);
+  assert.ok(!assumptions(b).some((a) => a.id === 'kind'));
+  assert.ok(questions(b).some((q) => q.id === 'kind'));
+  const c = applyAnswer(b, 'kind', { value: 'tutorial' });
+  assert.equal(c.kind, 'tutorial'); assert.equal(c.ask_again, undefined);
+  const s = reopen(words, 'delivery');
+  assert.ok(questions(s).some((q) => q.id === 'size'));
+  assert.deepEqual(applyAnswer(s, 'size', { value: '1:1' }).ask_again, ['voice']);
 });
