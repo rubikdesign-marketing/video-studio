@@ -6,12 +6,12 @@ import { assumptions, plan, preflight, questions, setField, shotProblems, summar
 import { diff, resolveScope, verify } from '../lib/revisions.mjs';
 
 test('brief: an empty brief asks the size first, then the kind, at most what matters', () => {
-  const q = questions({ brand: 'tulvo', references: [{ source: 'their reel' }] });
+  const q = questions({ brand: 'acme', references: [{ source: 'their reel' }] });
   assert.deepEqual(q.slice(0, 3).map((x) => x.id), ['size', 'kind', 'ref-0']);
   assert.match(q[2].question, /camera, the pacing, the presenter's delivery/);
 });
 
-const complete = () => ({ brand: 'tulvo', product: 'Tulvo, exporting a board', kind: 'product-demo', for: 'agency owners', awareness: 'problem-aware', angle: 'one click replaces the weekly report', viewer_should: 'try it', look: 'paper', hook: { family: 'demonstration' }, voice: 'none', length_cap_seconds: 20, deliver: [{ size: '9:16', master: true }], references: [{ source: 'r', liked_for: ['pacing'] }], must_show: [{ what: 'export', evidence: 'the file lands in Downloads' }] });
+const complete = () => ({ brand: 'acme', product: 'Acme, exporting a board', kind: 'product-demo', for: 'agency owners', awareness: 'problem-aware', angle: 'one click replaces the weekly report', viewer_should: 'try it', look: 'paper', hook: { family: 'demonstration' }, voice: 'none', length_cap_seconds: 20, deliver: [{ size: '9:16', master: true }], references: [{ source: 'r', liked_for: ['pacing'] }], must_show: [{ what: 'export', evidence: 'the file lands in Downloads' }] });
 
 test('brief: a complete brief asks nothing and passes the checklist', () => {
   assert.deepEqual(questions(complete()), []);
@@ -21,7 +21,7 @@ test('brief: a complete brief asks nothing and passes the checklist', () => {
 test('preflight: the eight items, with what is open and why', () => {
   const ids = preflight({}).map((c) => c.id);
   assert.deepEqual(ids, ['brand', 'product', 'audience', 'angle', 'look', 'hook', 'type', 'delivery']);
-  const ctx = { brands: { tulvo: { setUp: true, discovery: false } }, defaultBrand: 'tulvo' };
+  const ctx = { brands: { acme: { setUp: true, discovery: false } }, defaultBrand: 'acme' };
   const c = Object.fromEntries(preflight(complete(), { ctx }).map((x) => [x.id, x]));
   assert.equal(c.brand.done, true);
   assert.equal(c.product.done, false);
@@ -31,17 +31,17 @@ test('preflight: the eight items, with what is open and why', () => {
 });
 
 test('preflight: the brand comes from their words, then job.json, then the studio default', () => {
-  const ctx = { brands: { tulvo: {}, dokan: {} }, defaultBrand: 'tulvo' };
-  assert.equal(assumptions({ in_their_words: 'a dokan reel' }, ctx).find((a) => a.id === 'brand').value, 'dokan');
-  assert.equal(assumptions({ in_their_words: 'a reel' }, { ...ctx, jobBrand: 'dokan' }).find((a) => a.id === 'brand').because, 'job.json');
-  assert.equal(assumptions({ in_their_words: 'a reel' }, ctx).find((a) => a.id === 'brand').value, 'tulvo');
+  const ctx = { brands: { acme: {}, demo: {} }, defaultBrand: 'acme' };
+  assert.equal(assumptions({ in_their_words: 'a demo reel' }, ctx).find((a) => a.id === 'brand').value, 'demo');
+  assert.equal(assumptions({ in_their_words: 'a reel' }, { ...ctx, jobBrand: 'demo' }).find((a) => a.id === 'brand').because, 'job.json');
+  assert.equal(assumptions({ in_their_words: 'a reel' }, ctx).find((a) => a.id === 'brand').value, 'acme');
 });
 
 test('questions: the kind and the reference come with library examples; look and hook can be left to the studio', () => {
   const index = [{ file: 'a/launch.mp4', type: 'launch', title: 'L', study_card: 'x' }, { file: 'b/tut.mp4', type: 'tutorial', title: 'T' }];
-  const q = questions({ brand: 'tulvo' }, { ctx: { references: index } });
+  const q = questions({ brand: 'acme' }, { ctx: { references: index } });
   assert.deepEqual(q.find((x) => x.id === 'kind').examples.map((e) => e.type), ['launch', 'tutorial']);
-  const r = questions({ brand: 'tulvo', kind: 'launch-reel' }, { ctx: { references: index } }).find((x) => x.id === 'reference');
+  const r = questions({ brand: 'acme', kind: 'launch-reel' }, { ctx: { references: index } }).find((x) => x.id === 'reference');
   assert.deepEqual(r.examples.map((e) => e.title), ['L']);
   const left = { ...complete(), look: 'propose', hook: { family: 'propose' } };
   assert.ok(preflight(left).every((c) => c.done));
@@ -51,7 +51,7 @@ test('plan: refuses until the checklist is complete, then lays the beats across 
   assert.equal(plan({}), null);
   const framework = { id: 'f', name: 'F', beats: [{ id: 'hook', name: 'Hook', job: 'open', seconds: [3, 5], required: true }, { id: 'proof', name: 'Proof', job: 'show it', size: [0.4, 0.6], required: true }, { id: 'close', name: 'Close', job: 'end', size: [0.1, 0.2], required: true }] };
   const p = plan(complete(), { framework });
-  assert.match(p.lines[0], /20 s product-demo for tulvo/);
+  assert.match(p.lines[0], /20 s product-demo for acme/);
   assert.equal(p.outline[0].from, 0);
   assert.equal(p.outline.at(-1).to, 20);
   assert.deepEqual(p.outline.find((s) => s.beat === 'proof').shows, ['the file lands in Downloads']);
