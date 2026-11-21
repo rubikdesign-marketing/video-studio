@@ -1,5 +1,5 @@
 <title>Video brief</title>
-<meta name="brief-page-version" content="1">
+<meta name="brief-page-version" content="2">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -103,6 +103,7 @@
   .pick { font-size: 0.75rem; color: var(--accent); min-height: 1.3em; }
   label.field { display: grid; gap: 6px; font-size: var(--step--1); color: var(--second); }
   .plan-lines { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 65ch; }
+  .films { margin: 4px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
   .outline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
   .outline li { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .outline .n { color: var(--accent); font-variant-numeric: tabular-nums; }
@@ -157,6 +158,7 @@ const state = {
   busy: null,             // the action running, so its button shows it
   saved: [], copyText: null, watchingDb: false,
   changing: false,        // the plan's "Change something" list is open
+  engaged: false,         // the customer has clicked once: only then is Claude asked to reword the ideas
 };
 let mcpReady = null;
 
@@ -193,6 +195,13 @@ async function read(call) {
 /** A write: runs once, only from a click, never retried by the page. */
 async function write(call) { return payloadOf(await call()); }
 
+/** The tool's own words from a tool error (its result's text), else the error's message. */
+function toolText(e) {
+  const content = e && e.result && Array.isArray(e.result.content) ? e.result.content : [];
+  const text = content.map((c) => (c && typeof c.text === 'string' ? c.text : '')).filter(Boolean).join(' ').trim();
+  return text || String((e && e.message) || '');
+}
+
 /** What to tell the customer for each error code. `fallback` switches the page to the no-studio mode. */
 function explain(e, { isWrite = false } = {}) {
   switch (codeOf(e)) {
@@ -203,7 +212,7 @@ function explain(e, { isWrite = false } = {}) {
     case 'approval_required':
       return { tone: 'warm', text: 'The Claude app needs your OK for this step. Click again and choose Allow when it asks.' };
     case 'tool_error':
-      return { tone: 'warm', text: String(e.message || 'The studio could not do that.') };
+      return { tone: 'warm', text: toolText(e) || 'The studio could not do that.' };
     case 'server_unavailable':
       return isWrite
         ? { tone: 'warm', text: 'The studio did not answer in time, so this may or may not have gone through. The page has checked again: look at what it shows before you click a second time.' }
@@ -269,8 +278,9 @@ async function answerCard(q) {
   if (!q.choices) {
     if (!words) { setNote(area, { tone: 'warm', text: 'Write your answer in the box first.' }); render(); return; }
     input.words = words;
-  } else if (words && !(d.value || []).length) {
-    // Their own words and no card selected: Claude proposes the card when it can, the connector checks it.
+  } else if (words && (!(d.value || []).length || !d.touched)) {
+    // Their own words, and no card they picked themselves (the recommended one shown is not their pick): Claude
+    // proposes the card when it can, and the connector checks it. Without a proposal the words go alone.
     state.busy = area; render();
     const value = await proposeChoice(q, words);
     if (value != null) input.value = q.many ? [value] : value;
@@ -373,10 +383,11 @@ function buildIdeas(ctx) {
   return ideas.slice(0, 4);
 }
 
-/** With Claude available, reword the idea lines in one call; any problem keeps the plain lines. */
+/** With Claude available, and once the customer has clicked, reword the idea lines in one call; any problem keeps
+ *  the plain lines. */
 async function rewordIdeas() {
   const ideas = state.ideas;
-  if (!state.sample || !ideas || !ideas.length) return;
+  if (!state.engaged || !state.sample || !ideas || !ideas.length) return;
   try {
     const out = await state.sample.json([
       'Reword each idea below as one short, friendly suggestion for a marketer starting a new video.',
@@ -511,6 +522,7 @@ function renderStart() {
       h('h1', { text: 'What video do you want to make?' }),
       noHost ? h('div', { class: 'note', 'data-tone': 'warm' },
         h('p', {}, h('strong', { text: 'This page works in the Claude desktop app with your studio folder open.' })),
+        h('p', { class: 'muted', text: 'In the app, approve "damex-engine" when it asks. If it never asks, or the page still does not connect, run the start step again.' }),
         h('p', { class: 'muted', text: state.db ? 'You can still write your brief here. It is saved with this page, and your next chat in the studio folder picks it up.' : 'You can still write your brief here, then copy it into a new chat in the studio folder.' })) : null,
       box,
       state.style ? h('span', { class: 'chip-on' }, `Using your saved ${String(state.style).split('/')[1].replace(/-/g, ' ')} style`,
@@ -569,7 +581,7 @@ function savedList() {
 function draftOf(q) {
   if (!state.drafts[q.id]) {
     const rec = (q.choices || []).filter((c) => c.recommended).map((c) => c.value);
-    state.drafts[q.id] = { value: q.many ? rec : rec.slice(0, 1), words: '' };
+    state.drafts[q.id] = { value: q.many ? rec : rec.slice(0, 1), words: '', touched: false }; // touched: they picked a card
   }
   return state.drafts[q.id];
 }
@@ -593,7 +605,8 @@ function renderQuestions() {
       h('h2', { id: 'got-h', text: 'What the studio understood' }),
       h('ul', { class: 'understood' }, c.assumed.map((a) => {
         const label = ASSUMED_LABEL[a.id] || stageLabel(a.id);
-        const from = a.because && String(a.because) !== String(a.value) ? ` (you said "${a.because}")` : '';
+        let from = '';
+        if (a.because && String(a.because) !== String(a.value)) from = a.said === false ? ` (${a.because})` : ` (you said "${a.because}")`;
         return h('li', {}, `${label} `, h('b', { text: String(a.value) }), from);
       }))));
   }
@@ -634,6 +647,7 @@ function card(q) {
   const toggle = (value) => {
     if (q.many) d.value = d.value.includes(value) ? d.value.filter((v) => v !== value) : [...d.value, value];
     else d.value = [value];
+    d.touched = true;
     setNote(area, null); render();
   };
   const words = h('textarea', { id: `words-${q.id}`, rows: q.choices ? '2' : '3', oninput: (e) => { d.words = e.target.value; } });
@@ -648,6 +662,9 @@ function card(q) {
     !q.choices && q.recommended ? h('p', { class: 'small' }, h('span', { class: 'tag', text: 'Suggested' }), ` ${q.recommended}`) : null,
     h('label', { class: 'field', for: `words-${q.id}` }, q.choices ? 'Or say it in your own words' : 'Your answer', words),
     isRef ? h('p', { class: 'muted small', text: 'Paste a link or the title of a film from your library. Files are added in chat: say "I have a file to add".' }) : null,
+    q.id === 'reference' && (q.examples || []).length ? h('div', { class: 'small' },
+      h('p', { class: 'muted', text: 'From your library' }),
+      h('ul', { class: 'films' }, q.examples.map((f) => h('li', { text: f.type ? `${f.title} (${f.type})` : String(f.title) })))) : null,
     h('div', { class: 'row' }, h('button', { type: 'button', class: 'secondary', id: `save-${q.id}`, disabled: state.busy === area || null, text: busyLabel(area, 'Save this answer', 'Saving…'), onclick: () => answerCard(q) })),
     noteEl(area));
 }
@@ -692,7 +709,7 @@ function renderHandoff() {
     h('h1', { text: 'Your brief is confirmed' }),
     h('p', { class: 'muted', text: `The job starts at the ${stageLabel(r.stage)} stage.` }),
     h('div', { class: 'next' }, h('span', { class: 'tag', text: 'Next step' }), h('p', { class: 'say', text: r.next }),
-      h('p', { class: 'muted small', text: 'The new chat picks up this brief and goes straight to three concepts.' })),
+      h('p', { class: 'muted small', text: r.stage === 'idea' ? 'The new chat picks up this brief and goes straight to three concepts.' : 'The new chat picks up this brief and carries on from there.' })),
     h('div', { class: 'row' }, h('button', { type: 'button', class: 'secondary', id: 'back-done', text: 'Back to your briefs', onclick: goHome })))];
 }
 
@@ -710,6 +727,7 @@ function renderParked() {
 /* ---------- Start: render first, then light up what this view can use ---------- */
 
 document.getElementById('home').addEventListener('click', goHome);
+document.addEventListener('click', () => { state.engaged = true; rewordIdeas(); }, { capture: true, once: true });
 render();
 
 const claudeApi = window.claude && typeof window.claude.use === 'function' ? window.claude : null;
