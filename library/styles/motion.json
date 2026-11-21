@@ -104,8 +104,8 @@
     "family": "Openers",
     "filters": {
       "energy": [
-        "confident",
-        "hype"
+        "hype",
+        "confident"
       ],
       "kinds": [
         "promo",
@@ -124,14 +124,6 @@
       "avoid": "Calm or premium brands, and lines much wider than the frame, which crowd the rushing rows."
     },
     "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "speeds up then brakes hard",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.5,
-        "still_pct": 7
-      },
       "hype": {
         "beat_s": 0.8,
         "ease": "speeds up then brakes hard",
@@ -139,6 +131,14 @@
         "hold_s": 0.3,
         "motion": 5.8,
         "still_pct": 4
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "speeds up then brakes hard",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
       }
     },
     "engine": [
@@ -151,8 +151,8 @@
   {
     "id": "mo-open-lens-payoff",
     "tab": "motion",
-    "name": "Card past the lens, then the payoff",
-    "line": "A brand card flies past the camera, the line comes into focus behind it and its last word swells.",
+    "name": "Title card past the lens, then the headline",
+    "line": "A plain brand-colour card flies past the camera, the headline sharpens behind it and its last word swells.",
     "family": "Openers",
     "filters": {
       "energy": [
@@ -171,8 +171,8 @@
     },
     "prompt": {
       "what": "Fly a brand-coloured card at the camera until it passes the frame, pulling the hook line into focus behind it over about 0.9 s. Once the line is sharp, swell its payoff word by about 4% in the accent and let it settle in 0.3 s; the card flight stays short so the line reads by about 1 s.",
-      "when": "Fits product hooks where the card can carry the product name or a result.",
-      "avoid": "First frames that must already show the line, since it lands at about 1 s, and products with nothing card-like to show."
+      "when": "Fits headline hooks in designed films, where the card carries only a colour or a short word. Not for opening on a product recording; the Filming tab covers that.",
+      "avoid": "First frames that must already show the line, since it lands at about 1 s, and putting screens or busy pictures on the flying card."
     },
     "timing": {
       "confident": {
@@ -248,8 +248,8 @@
   {
     "id": "mo-open-split-strike",
     "tab": "motion",
-    "name": "Before struck out, after stays",
-    "line": "Before and after slide in side by side, then the old way is struck through.",
+    "name": "Two words face off, the winner marked",
+    "line": "Two short title halves, before and after, slide in to meet, then a marker sweeps behind the winning word.",
     "family": "Openers",
     "filters": {
       "energy": [
@@ -258,7 +258,7 @@
       ],
       "kinds": [
         "promo",
-        "product-demo",
+        "motion-graphics",
         "launch-reel"
       ],
       "sizes": [
@@ -268,9 +268,9 @@
       "ready": true
     },
     "prompt": {
-      "what": "Slide the two halves in to meet at the seam, the before side in a soft fill and the after side in the accent, in about 0.5 s, 0.3 s at hype, with the hook on a plate across the seam. On the next beat draw a straight line through the before side in about 0.3 s, 0.2 s at hype, leaving its words readable.",
-      "when": "Fits comparison hooks where each side can be said in two or three words.",
-      "avoid": "Long phrases on either half, and striking through the after side, which muddles the point."
+      "what": "Slide two coloured title halves in to meet at the seam, the before word in a soft fill and the after word in the accent, in about 0.5 s, 0.3 s at hype, with the hook on a plate across the seam. On the next beat sweep a marker behind the after word in about 0.4 s, 0.25 s at hype; nothing else moves.",
+      "when": "Fits comparison hooks made of words, where each side is one to three words, such as hours against minutes. Not for side-by-side product recordings; the Filming tab covers those.",
+      "avoid": "Long phrases on either half, and marking the before side, which muddles the point."
     },
     "timing": {
       "confident": {
@@ -292,7 +292,7 @@
     },
     "engine": [
       "opener-split-screen",
-      "mark-word-strike"
+      "highlighter"
     ],
     "preview": {
       "clip": "library/styles/previews/mo-open-split-strike.mp4"
@@ -306,8 +306,8 @@
     "family": "Openers",
     "filters": {
       "energy": [
-        "calm",
-        "confident"
+        "confident",
+        "calm"
       ],
       "kinds": [
         "promo",
@@ -326,14 +326,6 @@
       "avoid": "Hooks with no belief to strike, and two long rows that stack too tall in a vertical frame."
     },
     "timing": {
-      "calm": {
-        "beat_s": 3.4,
-        "ease": "slow in and out",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
       "confident": {
         "beat_s": 2.2,
         "ease": "fast in with a soft landing",
@@ -341,6 +333,14 @@
         "hold_s": 0.8,
         "motion": 1.3,
         "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
       }
     },
     "engine": [
@@ -374,7 +374,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Build the question one word at a time, a word every 0.15 to 0.25 s, with a caret after the newest word. Land the last word in the accent with one soft pulse, then hold the finished question for at least 1 s before anything answers it.",
+      "what": "Build the question one word at a time, a word every 0.15 to 0.25 s, with a caret after the newest word. Land the last word in the accent with one soft pulse, then hold the finished question for at least 1 s; the question is the whole hook, and the answer comes later in the film.",
       "when": "Fits question hooks for viewers who already feel the problem, and tutorials that open on what people ask.",
       "avoid": "Statements dressed up as questions, and questions longer than about seven words."
     },
@@ -409,8 +409,8 @@
   {
     "id": "mo-open-spotlight-name",
     "tab": "motion",
-    "name": "Light finds the line",
-    "line": "A pool of light travels onto the hook in a dark frame, then a glint runs through the product name.",
+    "name": "Light finds the headline",
+    "line": "A pool of light travels onto the headline words in a dark frame, then a glint runs through the name.",
     "family": "Openers",
     "filters": {
       "energy": [
@@ -429,8 +429,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Open on a dark frame with a soft pool of light already moving in from the edge onto the line, widening over about 1.2 s, 0.8 s in a confident film, until the frame is lit. Then send one band of light through the letters of the product name in about 0.6 s; the line is readable before the light finishes widening.",
-      "when": "Fits curiosity hooks and premium launches that build to one name.",
+      "what": "Open on a dark frame with a soft pool of light already moving in from the edge onto the headline, widening over about 1.2 s, 0.8 s in a confident film, until the frame is lit. Then send one band of light through the letters of the name in about 0.6 s; the headline is readable before the light finishes widening.",
+      "when": "Fits curiosity hooks built on words, such as a teaser line that ends on a name. Not for lighting up a product recording; the Filming tab covers that.",
       "avoid": "Light, airy brands, a bright shot straight after, and a second glint later in the film."
     },
     "timing": {
@@ -576,18 +576,18 @@
       "ready": true
     },
     "prompt": {
-      "what": "Type the question in and let it wait for about 0.8 s so the viewer answers it in their head, then bring the answer in beneath it with its key word swelling by about 5% and settling in 0.3 s. Question and answer never move on the same beat.",
-      "when": "Fits hooks that pose the problem and answer it inside the first three seconds.",
+      "what": "Type the question in and hold it for about 1 s so the viewer answers it in their head, then bring the answer in beneath it with its key word swelling by about 5% and settling in 0.3 s. Question and answer never move on the same beat.",
+      "when": "Fits short ads that pose the problem and answer it inside the first three seconds; for a question left open, use the question that types itself.",
       "avoid": "Answering before the question has been read, and answers longer than one short line."
     },
     "timing": {
       "confident": {
-        "beat_s": 2.2,
+        "beat_s": 2.4,
         "ease": "firm spring with one small bounce",
         "overshoot": 0.025,
-        "hold_s": 0.8,
+        "hold_s": 1,
         "motion": 1.3,
-        "still_pct": 8
+        "still_pct": 9
       }
     },
     "engine": [
@@ -599,62 +599,10 @@
     }
   },
   {
-    "id": "mo-open-cold-footage",
-    "tab": "motion",
-    "name": "Cold open on real footage",
-    "line": "The film opens mid-action on filmed footage, with the hook line cut in on the first strong frame.",
-    "family": "Openers",
-    "filters": {
-      "energy": [
-        "confident",
-        "hype"
-      ],
-      "kinds": [
-        "footage-edit",
-        "ugc",
-        "promo"
-      ],
-      "sizes": [
-        "9:16",
-        "16:9"
-      ],
-      "ready": false
-    },
-    "prompt": {
-      "what": "Start on the most striking moment of real footage, already in motion, and cut the hook line in on the frame where the action peaks, within 0.4 s of the start. The first cut away lands on a beat of the music, never on a timer.",
-      "when": "Fits brands with filmed footage of the product in use, a customer or an event.",
-      "avoid": "Slow establishing shots before the hook, and a logo before the action."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2.2,
-        "ease": "straight cut on the action",
-        "overshoot": 0,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 7
-      },
-      "hype": {
-        "beat_s": 0.8,
-        "ease": "straight cut on the action",
-        "overshoot": 0,
-        "hold_s": 0.3,
-        "motion": 5.2,
-        "still_pct": 4
-      }
-    },
-    "engine": [],
-    "preview": {
-      "sketch": "collage-layers",
-      "params": {}
-    },
-    "nearest": "mo-open-rush-brake"
-  },
-  {
     "id": "mo-tr-card-opens",
     "tab": "motion",
-    "name": "Card opens into the next scene",
-    "line": "A small card grows until it becomes the next scene, and shrinks back to return.",
+    "name": "Stat card opens into its chapter",
+    "line": "A small graphic card, a number or a title, grows until it becomes the next designed scene.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -663,8 +611,8 @@
       ],
       "kinds": [
         "motion-graphics",
-        "product-demo",
         "promo",
+        "launch-reel",
         "tutorial"
       ],
       "sizes": [
@@ -676,7 +624,7 @@
     },
     "prompt": {
       "what": "Grow a small card until it is the whole frame over about 0.7 s, 0.55 s in a confident film, letting its content appear only in the last third so nothing is ever seen stretched. To come back, run it in reverse a third faster, the frame shrinking into the card it came from.",
-      "when": "Fits going from an overview into one detail and back, such as a stat card opening into its chapter.",
+      "when": "Fits designed explainers and launch films that go from an overview of graphic cards into one chapter and back. Not for product recordings; the Filming tab covers those.",
       "avoid": "Using it twice in a row, and a card on the same colour as the page, where the growth cannot be seen."
     },
     "timing": {
@@ -915,8 +863,8 @@
   {
     "id": "mo-tr-shared-element",
     "tab": "motion",
-    "name": "One element changes layouts",
-    "line": "A row, card or button travels on an arc from one layout into its place in the next.",
+    "name": "One graphic carries into the next layout",
+    "line": "A title, number or shape travels on an arc from one designed layout into its place in the next.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -924,10 +872,10 @@
         "confident"
       ],
       "kinds": [
-        "product-demo",
         "motion-graphics",
-        "tutorial",
-        "launch-reel"
+        "launch-reel",
+        "promo",
+        "tutorial"
       ],
       "sizes": [
         "16:9",
@@ -936,8 +884,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Move one element on a shallow arc from its place in the first layout to its place in the next over about 0.6 s, 0.5 s in a confident film. Its position sets off first and its size lands last, any text inside it changes only at the midpoint, and everything else enters around it after it lands.",
-      "when": "Fits two layouts that share one thing: a row that becomes a card, a button that becomes a header.",
+      "what": "Move one graphic, a title, a number or a coloured tile, on a shallow arc from its place in the first layout to its place in the next over about 0.6 s, 0.5 s in a confident film. Its position sets off first and its size lands last, any words inside it change only at the midpoint, and the rest of the new layout enters around it after it lands.",
+      "when": "Fits two designed layouts that share one thing: a headline that becomes a label, a number that becomes a chart title. Not for product recordings; the Filming tab covers those.",
       "avoid": "Two shared elements moving at once, and stretching text during the move."
     },
     "timing": {
@@ -1020,8 +968,8 @@
   {
     "id": "mo-tr-push-wipe",
     "tab": "motion",
-    "name": "Hard push on the beat",
-    "line": "The next scene shoves the last one off the frame, both moving together, fast and blurred.",
+    "name": "Title cards push each other off",
+    "line": "Each new title card shoves the last one off the frame, both moving together, fast and blurred.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -1041,8 +989,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Push the next scene in from one side so it shoves the last one off, both locked together, in about 0.45 s, 0.3 s at hype, with motion blur at full speed. Keep the push going the same way across the film unless the story turns back.",
-      "when": "Fits a firm change of subject on a beat in confident and hype films.",
+      "what": "Push the next title card in from one side so it shoves the last one off, both locked together, in about 0.45 s, 0.3 s at hype, with motion blur at full speed. The push keeps the same direction across the film unless the story turns back.",
+      "when": "Fits a firm change of subject on a beat between title cards and graphic scenes in confident and hype films. Not for product recordings; the Filming tab covers those.",
       "avoid": "Calm films, and text that must be read in the first 0.3 s after the push."
     },
     "timing": {
@@ -1068,7 +1016,10 @@
     ],
     "preview": {
       "clip": "library/styles/previews/mo-tr-push-wipe.mp4"
-    }
+    },
+    "pairs_with": [
+      "mo-rh-downbeat"
+    ]
   },
   {
     "id": "mo-tr-feather-wipe",
@@ -1334,8 +1285,8 @@
   {
     "id": "mo-tr-blur-to-card",
     "tab": "motion",
-    "name": "Blur from headline to card",
-    "line": "The headline softens and grows as it leaves, and the next card sharpens out of the same blur.",
+    "name": "Headline melts into its card",
+    "line": "The headline softens and grows as it leaves, and the graphic card it introduces sharpens out of the same blur.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -1355,7 +1306,7 @@
     },
     "prompt": {
       "what": "Blur and gently enlarge the headline as it leaves over about 0.5 s, change to the next card at the peak of the blur in a single frame, and let the card sharpen and settle over another 0.5 s. The frame is never empty and nothing has to be read inside the blur.",
-      "when": "Fits a soft change of thought inside one world, such as a headline giving way to the card it describes.",
+      "when": "Fits a designed scene where a headline gives way to the graphic card it describes, such as a claim melting into its number. Not for product recordings; the Filming tab covers those.",
       "avoid": "Text the viewer needs within 0.7 s of the change, and sharp graphic hype passages."
     },
     "timing": {
@@ -1386,8 +1337,8 @@
   {
     "id": "mo-tr-whip-pan",
     "tab": "motion",
-    "name": "Whip pan between graphics",
-    "line": "Both scenes race sideways with strong blur, and the next one slows into place.",
+    "name": "Whip pan between title cards",
+    "line": "Two designed scenes race sideways with strong blur, and the next card slows into place.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -1405,8 +1356,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Send both scenes sideways at whip speed with strong directional blur, swapping at peak speed, and let the incoming scene keep moving the same way and slow into place, the whole whip taking about 0.35 s. The direction is the same on both sides of the swap.",
-      "when": "Fits a quick change of place in a fast film: a number into its chart, one title into the next.",
+      "what": "Send both designed scenes sideways at whip speed with strong directional blur, swapping at peak speed, and let the incoming card keep moving the same way and slow into place, the whole whip taking about 0.35 s. The direction is the same on both sides of the swap.",
+      "when": "Fits a quick change in a fast graphic film: a big number into its chart, one title into the next. Not for product recordings; the Filming tab covers those.",
       "avoid": "Calm films, text that must be read within 0.7 s of the whip, and more than two whips in a film."
     },
     "timing": {
@@ -1472,8 +1423,8 @@
   {
     "id": "mo-tr-match-cut",
     "tab": "motion",
-    "name": "Shape match on the beat",
-    "line": "A shape sits in exactly the same place across a cut, so the eye stays put while the scene changes.",
+    "name": "Shape match between graphic scenes",
+    "line": "A drawn shape sits in exactly the same place across a cut between two designed scenes, so the eye stays put.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -1492,8 +1443,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Ease the outgoing scene so a key shape lands on a set spot on the last frame, cut, and start the incoming scene with its matching shape on that same spot, easing to rest over about 0.4 s, 0.25 s at hype. Both shapes move at the same speed through the cut.",
-      "when": "Fits strong beats where two scenes share a shape: a button into a chart ring, a tile into a page.",
+      "what": "Ease the outgoing graphic so a key shape, a tile, a ring or a bar, lands on a set spot on the last frame, cut, and start the incoming scene with its matching shape on that same spot, easing to rest over about 0.4 s, 0.25 s at hype. Both shapes move at the same speed through the cut.",
+      "when": "Fits strong beats in graphic films where two scenes share a drawn shape: a tile into a page, a ring into a chart. Not for product recordings; the Filming tab covers those.",
       "avoid": "Shapes that differ in size or proportion by more than about a quarter, and calm films."
     },
     "timing": {
@@ -1935,10 +1886,7 @@
     ],
     "preview": {
       "clip": "library/styles/previews/mo-tr-ink-bleed.mp4"
-    },
-    "avoid_with": [
-      "mo-curve-warm-close"
-    ]
+    }
   },
   {
     "id": "mo-tr-shape-morph",
@@ -2047,57 +1995,6 @@
     "avoid_with": [
       "mo-curve-two-act"
     ]
-  },
-  {
-    "id": "mo-tr-smooth-jump",
-    "tab": "motion",
-    "name": "Smooth cut in a talking head",
-    "line": "A stumble is cut out of a filmed speaker and the frames either side are blended, so the face does not jump.",
-    "family": "Transitions",
-    "filters": {
-      "energy": [
-        "calm",
-        "confident"
-      ],
-      "kinds": [
-        "footage-edit",
-        "ugc"
-      ],
-      "sizes": [
-        "9:16",
-        "16:9"
-      ],
-      "ready": false
-    },
-    "prompt": {
-      "what": "Remove a stumble or a pause from a speaker's take and blend the frames either side of the cut over about 0.2 s, so the head does not jump. Use it only where the speaker barely moves, and cut on a breath.",
-      "when": "Fits founder messages, testimonials and talking-head explainers shot on real footage.",
-      "avoid": "Blending across a big head turn, which smears, and hiding more than one cut a sentence."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.8,
-        "ease": "blended over a few frames",
-        "overshoot": 0,
-        "hold_s": 2,
-        "motion": 0.5,
-        "still_pct": 15
-      },
-      "confident": {
-        "beat_s": 2.6,
-        "ease": "blended over a few frames",
-        "overshoot": 0,
-        "hold_s": 1,
-        "motion": 1.2,
-        "still_pct": 9
-      }
-    },
-    "engine": [],
-    "preview": {
-      "sketch": "collage-layers",
-      "params": {}
-    },
-    "nearest": "mo-tr-blur-to-card"
   },
   {
     "id": "mo-tr-paper-tear",
@@ -2256,59 +2153,6 @@
     }
   },
   {
-    "id": "mo-em-lift",
-    "tab": "motion",
-    "name": "The card lifts toward you",
-    "line": "The chosen card rises off the page, growing a touch as its shadow softens.",
-    "family": "Emphasis",
-    "filters": {
-      "energy": [
-        "calm",
-        "confident"
-      ],
-      "kinds": [
-        "product-demo",
-        "promo",
-        "motion-graphics"
-      ],
-      "sizes": [
-        "1:1",
-        "16:9",
-        "4:5"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Raise the chosen card by growing it 2 to 3% over about 0.4 s while its shadow grows, softens and drifts away from the light; on a dark page a soft accent glow spreads under it instead. It stays lifted while it is the subject, then settles back.",
-      "when": "Fits a selected card, row or plan, on a light or a dark page.",
-      "avoid": "Another emphasis on the same beat, and lifting more than one card at once."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.2,
-        "ease": "slow in with a soft landing",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.55,
-        "still_pct": 14
-      },
-      "confident": {
-        "beat_s": 1.8,
-        "ease": "firm spring with one small bounce",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.3,
-        "still_pct": 8
-      }
-    },
-    "engine": [
-      "lift"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-em-lift.mp4"
-    }
-  },
-  {
     "id": "mo-em-highlighter",
     "tab": "motion",
     "name": "Marker behind the phrase",
@@ -2316,8 +2160,8 @@
     "family": "Emphasis",
     "filters": {
       "energy": [
-        "calm",
         "confident",
+        "calm",
         "hype"
       ],
       "kinds": [
@@ -2339,14 +2183,6 @@
       "avoid": "More than one phrase per beat, and dark pages with a very light accent, where the marker disappears."
     },
     "timing": {
-      "calm": {
-        "beat_s": 3.2,
-        "ease": "even sweep",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
       "confident": {
         "beat_s": 1.8,
         "ease": "fast in with a soft landing",
@@ -2354,6 +2190,14 @@
         "hold_s": 0.8,
         "motion": 1.4,
         "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "even sweep",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
       },
       "hype": {
         "beat_s": 0.7,
@@ -2535,8 +2379,8 @@
     "family": "Emphasis",
     "filters": {
       "energy": [
-        "calm",
         "confident",
+        "calm",
         "hype"
       ],
       "kinds": [
@@ -2557,14 +2401,6 @@
       "avoid": "Underlining a phrase the viewer has not finished reading, and two underlines on one screen."
     },
     "timing": {
-      "calm": {
-        "beat_s": 3.2,
-        "ease": "even draw",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
       "confident": {
         "beat_s": 1.8,
         "ease": "fast in with a soft landing",
@@ -2572,6 +2408,14 @@
         "hold_s": 0.7,
         "motion": 1.3,
         "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "even draw",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
       },
       "hype": {
         "beat_s": 0.6,
@@ -3003,8 +2847,8 @@
   {
     "id": "mo-em-pick-winner",
     "tab": "motion",
-    "name": "Pick the winner",
-    "line": "The other options dim, then the winning one lifts toward the viewer.",
+    "name": "Pick the winning option card",
+    "line": "In a row of designed option cards, the others dim and the winner lifts toward the viewer.",
     "family": "Emphasis",
     "filters": {
       "energy": [
@@ -3023,7 +2867,7 @@
     },
     "prompt": {
       "what": "Dim the other options by about 35% over 0.4 s, wait about 0.3 s, then lift the winning card by 3% with its shadow softening over another 0.4 s. Two moves, one after the other, never together.",
-      "when": "Fits pricing plans, comparisons and the moment the film points to the right choice.",
+      "when": "Fits plan cards, comparisons and choices drawn as graphic cards. Not for product recordings; the Filming tab covers those.",
       "avoid": "More than four options, and dimming the winner even for a moment."
     },
     "timing": {
@@ -3052,8 +2896,8 @@
     "family": "Rhythm and pace",
     "filters": {
       "energy": [
-        "calm",
         "confident",
+        "calm",
         "hype"
       ],
       "kinds": [
@@ -3075,14 +2919,6 @@
       "avoid": "Random order, groups of more than about twelve, and a cascade that runs past 0.4 s."
     },
     "timing": {
-      "calm": {
-        "beat_s": 3.2,
-        "ease": "fast in with a long soft landing",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
       "confident": {
         "beat_s": 1.8,
         "ease": "fast in with a soft landing",
@@ -3090,6 +2926,14 @@
         "hold_s": 0.7,
         "motion": 1.4,
         "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "fast in with a long soft landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
       },
       "hype": {
         "beat_s": 0.8,
@@ -3110,8 +2954,8 @@
   {
     "id": "mo-rh-downbeat",
     "tab": "motion",
-    "name": "Cuts on the downbeat",
-    "line": "Every scene change lands on a strong beat of the music, never between beats.",
+    "name": "Graphic cuts on the downbeat",
+    "line": "Every change between title cards and graphic scenes lands on a strong beat of the music.",
     "family": "Rhythm and pace",
     "filters": {
       "energy": [
@@ -3131,7 +2975,7 @@
     },
     "prompt": {
       "what": "Place every scene change on a downbeat: one change every bar in a confident film, about every 2 s at 120 bpm, and one every beat at hype, about every 0.5 s. The sound of each change starts 0.15 to 0.2 s early and peaks on the cut, and a change that misses the grid moves to the nearest beat.",
-      "when": "Fits music-led promos and social cuts with a clear beat.",
+      "when": "Fits music-led graphic promos and social cuts made of title cards. Not for product recordings; the Filming tab covers those.",
       "avoid": "Cutting off the beat, and an even beat with no rests, which turns the film into a metronome."
     },
     "timing": {
@@ -3268,8 +3112,8 @@
     "family": "Rhythm and pace",
     "filters": {
       "energy": [
-        "confident",
-        "hype"
+        "hype",
+        "confident"
       ],
       "kinds": [
         "promo",
@@ -3288,14 +3132,6 @@
       "avoid": "Speeding up past the point where a scene can be read, and starting the build so early that the peak feels late."
     },
     "timing": {
-      "confident": {
-        "beat_s": 1.6,
-        "ease": "speeds up then lands firm",
-        "overshoot": 0.02,
-        "hold_s": 0.6,
-        "motion": 1.6,
-        "still_pct": 6
-      },
       "hype": {
         "beat_s": 0.6,
         "ease": "speeds up then snaps to rest",
@@ -3303,6 +3139,14 @@
         "hold_s": 0.25,
         "motion": 6.2,
         "still_pct": 3
+      },
+      "confident": {
+        "beat_s": 1.6,
+        "ease": "speeds up then lands firm",
+        "overshoot": 0.02,
+        "hold_s": 0.6,
+        "motion": 1.6,
+        "still_pct": 6
       }
     },
     "engine": [
@@ -3345,7 +3189,7 @@
         "beat_s": 2.4,
         "ease": "speeds through then slows to rest",
         "overshoot": 0.01,
-        "hold_s": 1,
+        "hold_s": 1.5,
         "motion": 1.3,
         "still_pct": 9
       }
@@ -3625,8 +3469,8 @@
     "family": "Rhythm and pace",
     "filters": {
       "energy": [
-        "calm",
-        "confident"
+        "confident",
+        "calm"
       ],
       "kinds": [
         "launch-reel",
@@ -3645,14 +3489,6 @@
       "avoid": "Proof that arrives late, and building every beat on the same layout."
     },
     "timing": {
-      "calm": {
-        "beat_s": 3.6,
-        "ease": "slow in with a soft landing",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
       "confident": {
         "beat_s": 2.8,
         "ease": "fast in with a soft landing",
@@ -3660,6 +3496,14 @@
         "hold_s": 0.9,
         "motion": 1.3,
         "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
       }
     },
     "engine": [
@@ -3722,8 +3566,8 @@
     "family": "Rhythm and pace",
     "filters": {
       "energy": [
-        "confident",
-        "hype"
+        "hype",
+        "confident"
       ],
       "kinds": [
         "promo",
@@ -3742,14 +3586,6 @@
       "avoid": "Dropping the pace more than once in a film, and coming back off the beat."
     },
     "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 8
-      },
       "hype": {
         "beat_s": 0.7,
         "ease": "snap in and settle fast",
@@ -3757,6 +3593,14 @@
         "hold_s": 0.3,
         "motion": 5,
         "still_pct": 6
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
       }
     },
     "engine": [
@@ -3873,6 +3717,103 @@
     "nearest": "mo-rh-cascade"
   },
   {
+    "id": "mo-rh-phrases",
+    "tab": "motion",
+    "name": "Big change every four bars",
+    "line": "Small changes on the beat, and one big change of scene only where a musical phrase begins.",
+    "family": "Rhythm and pace",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Group the film into musical phrases of four bars, about 8 s at 120 bpm: inside a phrase only small changes happen on the beat, a word, a mark, a card, and the big change of scene or colour lands only on the first beat of the next phrase. The viewer feels the sections without being told.",
+      "when": "Fits music-led promos and launch films of 20 to 60 s with a clear track.",
+      "avoid": "Big changes in the middle of a phrase, and tracks with no clear bars."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.5,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.045,
+        "hold_s": 0.2,
+        "motion": 5.6,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "tile-reveal",
+      "push-wipe"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/mo-rh-phrases.mp4"
+    }
+  },
+  {
+    "id": "mo-rh-chapter-tint",
+    "tab": "motion",
+    "name": "A new tint for each chapter",
+    "line": "Each short chapter gets its own background tint, changed softly behind words that stay.",
+    "family": "Rhythm and pace",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "motion-graphics",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Give each chapter, one beat long, its own tint of the page colour, changing the tint behind the content with a soft wipe of about 0.5 s while the next words cascade in, so the chapters read as a set without a single cut.",
+      "when": "Fits vertical promos of four or five short chapters, one benefit each.",
+      "avoid": "Tints that leave the brand palette, and more than five tints in one film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "soft wipe with a quick cascade",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "feather-wipe",
+      "stagger"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/mo-rh-chapter-tint.mp4"
+    }
+  },
+  {
     "id": "mo-hold-reading",
     "tab": "motion",
     "name": "Planned reading hold",
@@ -3895,24 +3836,24 @@
       "ready": true
     },
     "prompt": {
-      "what": "Hold a headline still for its word count divided by three, plus 0.4 s, so a four-word line rests about 1.7 s, while the background keeps drifting; then move on without waiting longer. Words the voice is saying at the same moment need no extra hold.",
+      "what": "Hold a headline still for its word count divided by three, plus 0.4 s, so a three-word line rests about 1.4 s, while the background keeps drifting; then move on without waiting longer. Longer lines get longer holds by the same rule, and words the voice is saying at the same moment need no extra hold.",
       "when": "Fits headline cards, offers, prices and dates the viewer must remember.",
       "avoid": "Frozen frames with nothing alive, and holding a line long after it has been read."
     },
     "timing": {
       "calm": {
-        "beat_s": 3.6,
+        "beat_s": 3.4,
         "ease": "slow in and out",
         "overshoot": 0,
-        "hold_s": 1.8,
+        "hold_s": 1.4,
         "motion": 0.5,
         "still_pct": 15
       },
       "confident": {
-        "beat_s": 2.6,
+        "beat_s": 2.4,
         "ease": "fast in with a soft landing",
         "overshoot": 0,
-        "hold_s": 1,
+        "hold_s": 1.4,
         "motion": 1.2,
         "still_pct": 9
       }
@@ -3979,62 +3920,6 @@
     }
   },
   {
-    "id": "mo-hold-alive-background",
-    "tab": "motion",
-    "name": "Background that never stops",
-    "line": "Whenever the words rest, the background keeps a slow drift so the frame never goes dead.",
-    "family": "Holds and stillness",
-    "filters": {
-      "energy": [
-        "calm",
-        "confident"
-      ],
-      "kinds": [
-        "motion-graphics",
-        "tutorial",
-        "promo"
-      ],
-      "sizes": [
-        "16:9",
-        "4:5"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Keep the background drifting through every hold, about 2 to 3% of the frame per shot in a calm film and 3 to 5% in a confident one, at a constant speed that eases into the next move instead of stopping.",
-      "when": "Fits any film with reading holds, and calm films where the foreground rests a lot.",
-      "avoid": "Backgrounds busy enough to compete with the words, and drifts that stop dead."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.6,
-        "ease": "constant slow drift",
-        "overshoot": 0,
-        "hold_s": 1.8,
-        "motion": 0.55,
-        "still_pct": 14
-      },
-      "confident": {
-        "beat_s": 2.2,
-        "ease": "constant drift",
-        "overshoot": 0,
-        "hold_s": 0.9,
-        "motion": 1.25,
-        "still_pct": 9
-      }
-    },
-    "engine": [
-      "blur-through",
-      "waves"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-hold-alive-background.mp4"
-    },
-    "pairs_with": [
-      "mo-ease-soft-landing"
-    ]
-  },
-  {
     "id": "mo-hold-end-card",
     "tab": "motion",
     "name": "End card at rest",
@@ -4060,7 +3945,7 @@
     "prompt": {
       "what": "Bring the closing line in with one move, underline its last words, then let the end card rest completely still for about 1.75 s in a calm film and 1.2 s in a confident one. The logo appears only in the final 2 s, and nothing loops or bounces on it.",
       "when": "Fits the close of any film with a call to action.",
-      "avoid": "Static end cards of 2 to 3 s, a logo shown both mid-film and at the end, and movement on the call to action."
+      "avoid": "End cards held still for longer than 2 s, a logo shown both mid-film and at the end, and movement on the call to action."
     },
     "timing": {
       "calm": {
@@ -4092,7 +3977,7 @@
     "id": "mo-hold-freeze-punch",
     "tab": "motion",
     "name": "Freeze before the punchline",
-    "line": "Everything stops dead for a split second, then the payoff hits.",
+    "line": "Everything goes quiet and holds still for a split second, then the payoff word hits.",
     "family": "Holds and stillness",
     "filters": {
       "energy": [
@@ -4104,13 +3989,13 @@
         "launch-reel"
       ],
       "sizes": [
-        "9:16",
-        "1:1"
+        "1:1",
+        "9:16"
       ],
       "ready": true
     },
     "prompt": {
-      "what": "Stop all motion for about 0.4 s right before the payoff, with the music cut too if you can, then hit the payoff word on a hard spring in 0.25 s. The energy comes from the contrast between that stillness and the hit, not from more speed.",
+      "what": "Let the set-up line land, dim everything but it, then hold all motion for about 0.4 s, with the music cut too if you can; that freeze is the beat's hold. Then hit the payoff word on a hard spring in 0.25 s. The energy comes from the contrast between the stillness and the hit, not from more speed.",
       "when": "Fits the last line of a hype promo, a price drop or a reveal.",
       "avoid": "Freezing more than twice in a film, and a freeze that is not followed by something stronger."
     },
@@ -4125,7 +4010,7 @@
       }
     },
     "engine": [
-      "zoom-blur",
+      "focus-pull",
       "payoff-punch"
     ],
     "preview": {
@@ -4236,7 +4121,7 @@
     "id": "mo-hold-word-bridge",
     "tab": "motion",
     "name": "Words stay as the scene changes",
-    "line": "One word stays put on screen while the picture behind it changes.",
+    "line": "One large word stays perfectly still on screen while the picture behind it changes.",
     "family": "Holds and stillness",
     "filters": {
       "energy": [
@@ -4252,7 +4137,7 @@
         "16:9",
         "9:16"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Keep one large word perfectly still while the scene behind it changes over about 0.8 s, 0.6 s in a confident film, so the word carries the thought across. The word leaves only after the new scene has settled.",
@@ -4277,13 +4162,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "feather-wipe",
-      "weight-wave"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/mo-hold-word-bridge.mp4"
-    }
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "mo-hold-reading"
   },
   {
     "id": "mo-hold-land-then-speak",
@@ -4361,24 +4245,24 @@
       "ready": true
     },
     "prompt": {
-      "what": "On the single most important sentence, hold the picture still apart from a slow drift for the whole sentence, holding about 2 to 3 s in a calm film and 1.5 to 2 s in a confident one, and start moving again 0.3 s after the sentence ends.",
+      "what": "On the single most important sentence, hold the picture still apart from a slow drift for the whole sentence, holding about 2.6 s in a calm film and 1.8 s in a confident one, and start moving again 0.3 s after the sentence ends.",
       "when": "Fits founder messages, the promise line of an explainer and customer stories.",
       "avoid": "Busy motion under the key sentence, and holding still through lines that do not matter."
     },
     "timing": {
       "calm": {
-        "beat_s": 3.8,
+        "beat_s": 4,
         "ease": "slow in and out",
         "overshoot": 0,
-        "hold_s": 2,
+        "hold_s": 2.6,
         "motion": 0.5,
         "still_pct": 15
       },
       "confident": {
-        "beat_s": 2.6,
+        "beat_s": 2.8,
         "ease": "slow in with a soft landing",
         "overshoot": 0,
-        "hold_s": 1,
+        "hold_s": 1.8,
         "motion": 1.2,
         "still_pct": 9
       }
@@ -4392,62 +4276,10 @@
     }
   },
   {
-    "id": "mo-hold-footage-freeze",
-    "tab": "motion",
-    "name": "Freeze frame on real footage",
-    "line": "Filmed footage freezes on its best moment while a label or number lands over it.",
-    "family": "Holds and stillness",
-    "filters": {
-      "energy": [
-        "confident",
-        "hype"
-      ],
-      "kinds": [
-        "footage-edit",
-        "ugc",
-        "promo"
-      ],
-      "sizes": [
-        "9:16",
-        "16:9"
-      ],
-      "ready": false
-    },
-    "prompt": {
-      "what": "Freeze the footage on its peak frame, the jump, the smile, the product in hand, for about 0.6 s in a confident film and 0.4 s at hype, land one short label or number over it, then let the footage run on.",
-      "when": "Fits event films, customer stories and social edits shot on real footage.",
-      "avoid": "Freezing on a blurred frame, and more than three freezes in a film."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2.2,
-        "ease": "hard stop then release",
-        "overshoot": 0,
-        "hold_s": 0.8,
-        "motion": 1.3,
-        "still_pct": 9
-      },
-      "hype": {
-        "beat_s": 0.9,
-        "ease": "hard stop then release",
-        "overshoot": 0,
-        "hold_s": 0.4,
-        "motion": 4.6,
-        "still_pct": 8
-      }
-    },
-    "engine": [],
-    "preview": {
-      "sketch": "collage-layers",
-      "params": {}
-    },
-    "nearest": "mo-hold-freeze-punch"
-  },
-  {
     "id": "mo-curve-one-peak",
     "tab": "motion",
     "name": "Build to one peak",
-    "line": "A hook, a steady build, one big peak, a release, then the call to action.",
+    "line": "A hook, a steady build, one big peak, then a calmer landing on the call to action.",
     "family": "Energy curves",
     "filters": {
       "energy": [
@@ -4466,7 +4298,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Land the hook inside the first 2 s, build through the middle by tightening the gaps and enlarging the moves, and put the single peak at about three quarters of the way through. Then release into the call to action one step calmer than the peak; the peak happens once.",
+      "what": "Land the hook inside the first 2 s, build through the middle by tightening the gaps and enlarging the moves, and put the single peak about three quarters of the way in, around 15 s into a 20 s film. After the peak lengthen the gaps by about a third and halve the overshoot, so the call to action lands one step calmer than the peak.",
       "when": "Fits promos and ads of 15 to 30 s.",
       "avoid": "Two peaks of the same size, and ending on the loudest moment."
     },
@@ -4548,50 +4380,6 @@
     ],
     "preview": {
       "clip": "library/styles/previews/mo-curve-slow-burn.mp4"
-    }
-  },
-  {
-    "id": "mo-curve-spike-settle",
-    "tab": "motion",
-    "name": "Spike, then settle into the demo",
-    "line": "A loud first second to stop the scroll, then a calm, clear demo.",
-    "family": "Energy curves",
-    "filters": {
-      "energy": [
-        "confident"
-      ],
-      "kinds": [
-        "product-demo",
-        "tutorial",
-        "ugc"
-      ],
-      "sizes": [
-        "9:16",
-        "16:9"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Open at full energy, with a whip or a slam that lands the hook by 0.5 s, then drop to a steady demo pace of one change every 2 to 2.5 s for the rest of the film. The drop happens once, on the first cut.",
-      "when": "Fits product demos and tutorials posted to feeds, where the first second decides.",
-      "avoid": "Promising a pace in the hook that the film does not keep, and a second loud moment in the middle of the demo."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2.2,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 7
-      }
-    },
-    "engine": [
-      "opener-whip-in",
-      "relay-scroll"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-curve-spike-settle.mp4"
     }
   },
   {
@@ -4699,112 +4487,6 @@
     ]
   },
   {
-    "id": "mo-curve-step-down",
-    "tab": "motion",
-    "name": "Land one step below the peak",
-    "line": "After the peak the film eases down a notch, so the ending feels sure rather than shouted.",
-    "family": "Energy curves",
-    "filters": {
-      "energy": [
-        "confident",
-        "hype"
-      ],
-      "kinds": [
-        "launch-reel",
-        "promo",
-        "motion-graphics"
-      ],
-      "sizes": [
-        "16:9",
-        "1:1"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "After the peak, lengthen the gaps by about a third and halve the overshoot, so the call to action arrives one step calmer than the peak, then let the brand mark open onto a still end card.",
-      "when": "Fits any film with a peak before its call to action.",
-      "avoid": "Ending on the loudest moment, and a sudden drop to dead still."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2.2,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0.01,
-        "hold_s": 0.9,
-        "motion": 1.3,
-        "still_pct": 8
-      },
-      "hype": {
-        "beat_s": 0.8,
-        "ease": "fast in with a quick settle",
-        "overshoot": 0.025,
-        "hold_s": 0.35,
-        "motion": 4.6,
-        "still_pct": 7
-      }
-    },
-    "engine": [
-      "exposure-bloom",
-      "logo-mask-wipe"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-curve-step-down.mp4"
-    }
-  },
-  {
-    "id": "mo-curve-loop",
-    "tab": "motion",
-    "name": "Loop back to the start",
-    "line": "The last frame hands back to the first, so the clip plays round without a seam.",
-    "family": "Energy curves",
-    "filters": {
-      "energy": [
-        "confident",
-        "hype"
-      ],
-      "kinds": [
-        "ugc",
-        "promo",
-        "motion-graphics"
-      ],
-      "sizes": [
-        "9:16",
-        "1:1"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Carry one accent shape through the film and end with it landing exactly where it sat on the first frame, at the same size and place, morphing into it over 0.35 to 0.5 s, 0.3 s at hype, so the replay starts without a jump. The energy at the end matches the energy at the start.",
-      "when": "Fits short social clips meant to replay, and looping banners.",
-      "avoid": "A round dot as the carried shape, and an ending loud enough that the loop jars."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 7
-      },
-      "hype": {
-        "beat_s": 0.7,
-        "ease": "snap in and settle fast",
-        "overshoot": 0.04,
-        "hold_s": 0.3,
-        "motion": 5.2,
-        "still_pct": 5
-      }
-    },
-    "engine": [
-      "carrier",
-      "shape-morph"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-curve-loop.mp4"
-    }
-  },
-  {
     "id": "mo-curve-two-waves",
     "tab": "motion",
     "name": "Rise, rest, rise higher",
@@ -4827,7 +4509,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Build a first wave to a modest peak about a third of the way in, drop back for one or two quiet beats, then build a second, higher wave to the main peak near the end. The second wave is faster and bigger in every way.",
+      "what": "Build a first wave to a modest peak about a third of the way in, around 10 s into a 30 s film, then drop back for one or two quiet beats. Build a second, higher wave to the main peak around 25 s into the film; the second wave is faster and bigger in every way.",
       "when": "Fits promos of 30 to 60 s and event films with two big moments.",
       "avoid": "Two waves of equal height, and a breath so long the film loses its viewer."
     },
@@ -4906,66 +4588,10 @@
     ]
   },
   {
-    "id": "mo-curve-warm-close",
-    "tab": "motion",
-    "name": "Soft, warm landing",
-    "line": "After the main point, a warm wash of light carries the film gently into its closing frame.",
-    "family": "Energy curves",
-    "filters": {
-      "energy": [
-        "calm",
-        "confident"
-      ],
-      "kinds": [
-        "launch-reel",
-        "footage-edit",
-        "promo"
-      ],
-      "sizes": [
-        "16:9",
-        "1:1"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Once the main point has landed, let a warm wash of light drift across the frame over about 1.4 s, 1 s in a confident film, change to the closing frame at its brightest, and finish with the mark opening as a window onto the end card.",
-      "when": "Fits human, seasonal and thank-you films that should end on a feeling.",
-      "avoid": "Product or data films, and pairing it with another stylised transition."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.6,
-        "ease": "slow in and out",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.55,
-        "still_pct": 14
-      },
-      "confident": {
-        "beat_s": 2.2,
-        "ease": "slow in with a soft landing",
-        "overshoot": 0,
-        "hold_s": 0.8,
-        "motion": 1.25,
-        "still_pct": 9
-      }
-    },
-    "engine": [
-      "light-leak",
-      "logo-mask-wipe"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-curve-warm-close.mp4"
-    },
-    "avoid_with": [
-      "mo-tr-ink-bleed"
-    ]
-  },
-  {
     "id": "mo-curve-result-first",
     "tab": "motion",
     "name": "Result first, then how",
-    "line": "The payoff comes in the first seconds at full energy, then the film calms down to show how.",
+    "line": "The payoff comes in the first seconds at full energy, then the film drops once to a calm pace to show how.",
     "family": "Energy curves",
     "filters": {
       "energy": [
@@ -4975,6 +4601,7 @@
       "kinds": [
         "promo",
         "product-demo",
+        "tutorial",
         "ugc"
       ],
       "sizes": [
@@ -4984,8 +4611,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Show the result at the film's highest energy inside the first 3 s, then step down one level and walk through how it happened at a steady pace, rising once more only for the call to action.",
-      "when": "Fits ads and demos where the outcome itself is the hook.",
+      "what": "Show the result at the film's highest energy inside the first 3 s, then drop once, on the first cut, to a steady pace of one change every 2 to 2.5 s and walk through how it happened, rising again only for the call to action.",
+      "when": "Fits feed ads, demos and tutorials where the outcome itself is the hook.",
       "avoid": "Holding the result back for the end of a feed ad, and a middle so flat the viewer leaves."
     },
     "timing": {
@@ -5012,6 +4639,59 @@
     ],
     "preview": {
       "clip": "library/styles/previews/mo-curve-result-first.mp4"
+    }
+  },
+  {
+    "id": "mo-curve-rehook",
+    "tab": "motion",
+    "name": "A lift at the midpoint",
+    "line": "A long, steady film gets one planned lift of energy halfway through to win back attention.",
+    "family": "Energy curves",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Run the film at an even pace, then at 40 to 60% of its length give it one sharp lift: a panel sweep, a bigger word, a change of colour, lasting one or two beats. Then settle back to the steady pace for the second half.",
+      "when": "Fits explainers and tutorials of 60 to 90 s where attention sags in the middle.",
+      "avoid": "Lifts in short films that do not need one, and a lift with nothing new behind it."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "relay-scroll",
+      "panel-wipe"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/mo-curve-rehook.mp4"
     }
   },
   {
@@ -5068,9 +4748,6 @@
     "preview": {
       "clip": "library/styles/previews/mo-ease-soft-landing.mp4"
     },
-    "pairs_with": [
-      "mo-hold-alive-background"
-    ],
     "avoid_with": [
       "mo-ease-snappy"
     ]
@@ -5156,7 +4833,7 @@
       }
     },
     "engine": [
-      "push-wipe",
+      "spin-whip",
       "payoff-punch"
     ],
     "preview": {
@@ -5171,12 +4848,12 @@
     "id": "mo-ease-playful-pop",
     "tab": "motion",
     "name": "Playful pop",
-    "line": "A springier bounce for a few hero moments, used no more than four times in a film.",
+    "line": "A springier bounce on shapes, icons and characters at a few hero moments, never on words.",
     "family": "Easing and overshoot",
     "filters": {
       "energy": [
-        "confident",
-        "hype"
+        "hype",
+        "confident"
       ],
       "kinds": [
         "animated-short",
@@ -5190,31 +4867,31 @@
       "ready": true
     },
     "prompt": {
-      "what": "Give up to four hero moments a looser spring that overshoots by about 6%, 8% at hype, and settles in two small bounces over about 0.5 s, 0.35 s at hype. Everything else stays on the film's normal ease, so the pops stay special.",
+      "what": "Give up to four hero moments a looser spring on shapes, icons or characters, overshooting by about 6%, 8% at hype, and settling in two small bounces over about 0.5 s, 0.35 s at hype. Everything else, and every word, stays on the film's normal spring of 2%, 5% at hype, so the pops stay special.",
       "when": "Fits playful brands, animated shorts and social films for young audiences.",
-      "avoid": "Popping more than four times in a film, and pops on serious subjects or long text."
+      "avoid": "Popping words or headlines, more than four pops in a film, and pops on serious subjects."
     },
     "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "loose spring with two small bounces",
-        "overshoot": 0.06,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 7
-      },
       "hype": {
         "beat_s": 0.8,
-        "ease": "loose spring with two small bounces",
-        "overshoot": 0.08,
+        "ease": "hard spring with a looser pop on hero moments",
+        "overshoot": 0.05,
         "hold_s": 0.3,
         "motion": 5.4,
         "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "firm spring with a looser pop on hero moments",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
       }
     },
     "engine": [
-      "spin-whip",
-      "letter-wave"
+      "stagger",
+      "shape-morph"
     ],
     "preview": {
       "clip": "library/styles/previews/mo-ease-playful-pop.mp4"
@@ -5226,8 +4903,8 @@
   {
     "id": "mo-ease-even-glide",
     "tab": "motion",
-    "name": "Even glide in depth",
-    "line": "Things that travel speed up and slow down evenly, with near layers moving faster than far ones.",
+    "name": "Even glide",
+    "line": "Things that travel across the frame speed up and slow down evenly, smooth as a camera on a track.",
     "family": "Easing and overshoot",
     "filters": {
       "energy": [
@@ -5246,7 +4923,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Move anything crossing the frame on an even ease, speeding up and slowing down over equal halves, about 0.9 s in a calm film and 0.7 s in a confident one. Near layers travel about one and a half times as far as the main layer, and far layers about a third as far.",
+      "what": "Move anything that crosses the frame on an even ease, speeding up and slowing down over equal halves, about 0.9 s in a calm film and 0.7 s in a confident one, and keep arrivals on their own quicker landing. A glide never stops dead; it eases into whatever comes next.",
       "when": "Fits travel across a scene, carries from one place to the next and anything moving rather than arriving.",
       "avoid": "Using the glide for arrivals, which then feel slow to land, and stopping a glide dead."
     },
@@ -5274,227 +4951,6 @@
     ],
     "preview": {
       "clip": "library/styles/previews/mo-ease-even-glide.mp4"
-    }
-  },
-  {
-    "id": "mo-ease-quick-exit",
-    "tab": "motion",
-    "name": "Quick out, slower in",
-    "line": "Exits are brisk, about two thirds the length of the entry, so the new thing gets the attention.",
-    "family": "Easing and overshoot",
-    "filters": {
-      "energy": [
-        "calm",
-        "confident",
-        "hype"
-      ],
-      "kinds": [
-        "product-demo",
-        "motion-graphics",
-        "promo"
-      ],
-      "sizes": [
-        "16:9",
-        "9:16"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Make every exit about 65% of its entry: a card that arrives in 0.6 s leaves in 0.4 s, speeding up as it goes, and it is 0.35 s in and 0.25 s out at hype. Nothing lingers on its way out.",
-      "when": "Fits films with a lot of content changing, and busy product tours.",
-      "avoid": "Exits slower than entries, and exits that fade instead of moving."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.4,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
-      "confident": {
-        "beat_s": 2,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 7
-      },
-      "hype": {
-        "beat_s": 0.7,
-        "ease": "snap in and speed out",
-        "overshoot": 0.04,
-        "hold_s": 0.3,
-        "motion": 5,
-        "still_pct": 5
-      }
-    },
-    "engine": [
-      "slide-off-reveal",
-      "stagger"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-ease-quick-exit.mp4"
-    }
-  },
-  {
-    "id": "mo-ease-wind-up",
-    "tab": "motion",
-    "name": "Wind-up before the move",
-    "line": "A tiny move the other way just before a big move, so it feels like it has weight.",
-    "family": "Easing and overshoot",
-    "filters": {
-      "energy": [
-        "confident",
-        "hype"
-      ],
-      "kinds": [
-        "promo",
-        "animated-short",
-        "launch-reel"
-      ],
-      "sizes": [
-        "16:9",
-        "1:1"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Before each big move, pull back the other way by 2 to 3% of the distance for about 0.08 s, then go, so the move reads as pushed rather than slid. Only the hero moves get a wind-up.",
-      "when": "Fits hero moves: a card thrown, a word launched, a door opened.",
-      "avoid": "Winding up every small move, and wind-ups big enough to read as a wobble."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "wind up then fast with a soft landing",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 7
-      },
-      "hype": {
-        "beat_s": 0.7,
-        "ease": "wind up then snap",
-        "overshoot": 0.05,
-        "hold_s": 0.3,
-        "motion": 5.4,
-        "still_pct": 4
-      }
-    },
-    "engine": [
-      "lift",
-      "payoff-punch"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-ease-wind-up.mp4"
-    }
-  },
-  {
-    "id": "mo-ease-follow-through",
-    "tab": "motion",
-    "name": "What it carries lands last",
-    "line": "The main object lands first, and its label, shadow or badge lands a moment later.",
-    "family": "Easing and overshoot",
-    "filters": {
-      "energy": [
-        "calm",
-        "confident"
-      ],
-      "kinds": [
-        "product-demo",
-        "motion-graphics",
-        "launch-reel"
-      ],
-      "sizes": [
-        "16:9",
-        "4:5"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Land the main object first and let what it carries, its label, shadow or badge, land 0.04 to 0.08 s behind it on the same ease, so the group feels like it has mass. Nothing lands on exactly the same frame.",
-      "when": "Fits cards with labels, badges and shadows, and any group that should feel physical.",
-      "avoid": "Delays longer than about 0.1 s, which look like lag, and landing everything at once."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.4,
-        "ease": "fast in with a long soft landing",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
-      "confident": {
-        "beat_s": 2,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 8
-      }
-    },
-    "engine": [
-      "shared-element",
-      "mark-word-underline"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-ease-follow-through.mp4"
-    }
-  },
-  {
-    "id": "mo-ease-offset",
-    "tab": "motion",
-    "name": "Place, then size, then colour",
-    "line": "A change lands in stages, place first, size next and colour last, so it never looks mechanical.",
-    "family": "Easing and overshoot",
-    "filters": {
-      "energy": [
-        "calm",
-        "confident"
-      ],
-      "kinds": [
-        "product-demo",
-        "motion-graphics",
-        "tutorial"
-      ],
-      "sizes": [
-        "1:1",
-        "16:9"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Stagger the parts of one change: position finishes first, size about 0.06 s later and colour about 0.1 s after that, all inside about 0.6 s, 0.45 s in a confident film.",
-      "when": "Fits a card changing state, a button becoming a header, a plan being picked.",
-      "avoid": "Starting and ending every part on the same frame, and gaps so wide the change looks broken."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.4,
-        "ease": "fast in with a long soft landing",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 14
-      },
-      "confident": {
-        "beat_s": 1.8,
-        "ease": "fast in with a soft landing",
-        "overshoot": 0.01,
-        "hold_s": 0.7,
-        "motion": 1.4,
-        "still_pct": 8
-      }
-    },
-    "engine": [
-      "container-transform",
-      "colour-front"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-ease-offset.mp4"
     }
   },
   {
@@ -5561,8 +5017,8 @@
     "family": "Easing and overshoot",
     "filters": {
       "energy": [
-        "confident",
-        "hype"
+        "calm",
+        "confident"
       ],
       "kinds": [
         "product-demo",
@@ -5576,11 +5032,19 @@
       "ready": true
     },
     "prompt": {
-      "what": "Bring each move in at speed and stop it dead on its mark, braking only in the last 0.1 s with no overshoot and no settle, the whole move about 0.35 s, 0.25 s at hype, so the film feels precise and engineered.",
+      "what": "Bring each move in at speed and stop it dead on its mark, braking only in the last 0.1 s with no overshoot and no settle, the whole move about 0.5 s in a calm film and 0.35 s in a confident one, so the film feels precise and engineered.",
       "when": "Fits developer tools, data products and technical brands.",
-      "avoid": "Soft brand worlds, and mixing dead stops with bouncy springs in one film."
+      "avoid": "Soft brand worlds, hype films that want bounce, and mixing dead stops with springs in one film."
     },
     "timing": {
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "fast in with a dead stop",
+        "overshoot": 0,
+        "hold_s": 1.4,
+        "motion": 0.6,
+        "still_pct": 14
+      },
       "confident": {
         "beat_s": 1.8,
         "ease": "fast in with a dead stop",
@@ -5588,18 +5052,10 @@
         "hold_s": 0.7,
         "motion": 1.5,
         "still_pct": 7
-      },
-      "hype": {
-        "beat_s": 0.6,
-        "ease": "fast in with a dead stop",
-        "overshoot": 0,
-        "hold_s": 0.25,
-        "motion": 5.2,
-        "still_pct": 4
       }
     },
     "engine": [
-      "momentum-cut",
+      "opener-sudden-stop",
       "mark-word-bracket"
     ],
     "preview": {
@@ -5704,59 +5160,6 @@
     ],
     "preview": {
       "clip": "library/styles/previews/mo-ease-speed-ramp.mp4"
-    }
-  },
-  {
-    "id": "mo-ease-steady-words",
-    "tab": "motion",
-    "name": "Lively shapes, steady words",
-    "line": "Shapes and cards may bounce, but words always arrive without overshoot.",
-    "family": "Easing and overshoot",
-    "filters": {
-      "energy": [
-        "confident",
-        "hype"
-      ],
-      "kinds": [
-        "promo",
-        "motion-graphics",
-        "launch-reel"
-      ],
-      "sizes": [
-        "9:16",
-        "16:9"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Let shapes, cards and icons spring by the film's overshoot, 2% in a confident film or 5% at hype, while every word arrives on a plain ease with none, landing in about 0.4 s, 0.3 s at hype, so reading is never disturbed.",
-      "when": "Fits any film that mixes bouncy graphics with headlines.",
-      "avoid": "Bouncing headlines, and letting letters wobble while they are being read."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "spring on shapes and a soft landing on words",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.4,
-        "still_pct": 7
-      },
-      "hype": {
-        "beat_s": 0.7,
-        "ease": "hard spring on shapes and a quick landing on words",
-        "overshoot": 0.05,
-        "hold_s": 0.3,
-        "motion": 5.2,
-        "still_pct": 5
-      }
-    },
-    "engine": [
-      "mark-word",
-      "stagger"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/mo-ease-steady-words.mp4"
     }
   },
   {
