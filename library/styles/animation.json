@@ -1,0 +1,5522 @@
+[
+  {
+    "id": "an-type-focus-words",
+    "tab": "animation",
+    "name": "Words come into focus",
+    "line": "Each word of the headline arrives soft and sharpens as it settles into place.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "motion-graphics",
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Bring the headline in word by word, each word starting soft and slightly low, reaching its place first and its focus last, over about 0.8 s, 0.5 s in a confident film, with words 60 ms apart, 45 ms at confident. The whole line is readable before the voice finishes saying it.",
+      "when": "Fits calm launches, explainers and premium brands where the headline should arrive gently.",
+      "avoid": "Hooks that must be read in the first half second, fast cuts, and blurring a word again once it is sharp."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.25,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "blur-in"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-focus-words.mp4"
+    }
+  },
+  {
+    "id": "an-type-lens-title",
+    "tab": "animation",
+    "name": "Title pulls focus like a lens",
+    "line": "The whole title starts a little large and soft, then sharpens and shrinks to size in one move, like a camera finding focus.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "motion-graphics",
+        "animated-short",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Start the full title about 8% larger than its final size and out of focus, then pull size and focus together over about 1.2 s, 0.8 s at confident, landing on the slow end of the curve so the last fifth of the move is barely visible. One title, one pull, and nothing else in the frame moves while it sharpens.",
+      "when": "Fits film-like openings and hero statements where the title is the only thing on screen.",
+      "avoid": "Word-by-word use, titles that must be read in the first half second, and pulling focus on body copy."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "fast in with a long soft landing",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "focus-in"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-lens-title.mp4"
+    }
+  },
+  {
+    "id": "an-type-letters-close-up",
+    "tab": "animation",
+    "name": "Letters close up into the name",
+    "line": "The letters of one line start slightly wide apart and glide together into the brand’s own spacing.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Set one line with its letters about 7% wider apart than normal and close them up from rest over about 1.4 s, 0.9 s at confident, slowing all the way in with no snap at the end. Use it on the first or the last line of the film only.",
+      "when": "Fits the product name, the opening line or the closing line of launch films and calm promos.",
+      "avoid": "Lines in the middle of the film, more than one line at a time, and letters that touch as they close."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.5,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "long ease out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "tracking-settle"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-letters-close-up.mp4"
+    }
+  },
+  {
+    "id": "an-type-rotating-ending",
+    "tab": "animation",
+    "name": "One line, rotating endings",
+    "line": "The line holds still while its last word rolls through two to four options, one for each audience.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Keep the start of the line fixed and roll only its last word up through a box that resizes to fit, about 0.4 s per change, 0.25 s at hype, holding each new word long enough to read before the next arrives. The old word leaves through the top as the new one rises; nothing fades or overlaps.",
+      "when": "Fits one promise that is true for several audiences or uses: for teams, for shops, for clinics.",
+      "avoid": "More than four endings, a changing word that is not the last on the line, and endings of very different lengths that make the box jump."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 1,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.35,
+        "motion": 4.8,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "rotating-word"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-rotating-ending.mp4"
+    }
+  },
+  {
+    "id": "an-type-digits-roll",
+    "tab": "animation",
+    "name": "Digits roll to the figure",
+    "line": "A price, count or percentage rolls up wheel by wheel and lands on its true value, last digit last.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics",
+        "product-demo"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Roll each digit up on its own wheel in fixed-width figures, blurred while fast, over about 0.9 s, 0.5 s at hype, the last digit landing last and slowing hardest. The figure then rests on its true value for at least 0.5 s; it is never shown caught half way.",
+      "when": "Fits prices, savings, counts and percentages, and a value that updates from an old number to a new one.",
+      "avoid": "Spinning a full turn, leading zeros, figures that change width as they roll, and comparing two numbers this way when a bar would read faster."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a firm stop",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 1,
+        "ease": "snap in with a firm stop",
+        "overshoot": 0,
+        "hold_s": 0.5,
+        "motion": 4.6,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "number-roll"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-digits-roll.mp4"
+    }
+  },
+  {
+    "id": "an-type-word-swap",
+    "tab": "animation",
+    "name": "Old word out, new word in",
+    "line": "One word of a line rolls out through the top and its replacement rolls up from below, for a before and after.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "product-demo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Hold the line still and roll only its last word: the old word leaves upward as the new one rises from below, over about 0.5 s, 0.7 s in a calm film, the two never printed over each other. One swap per line, with the new word in the accent colour when it is the payoff.",
+      "when": "Fits before and after claims in one line: hours to minutes, manual to automatic.",
+      "avoid": "Two swaps in one line, a swapped word that is not the last on its line, and swaps that change the line’s length by more than a few letters."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "swap-word"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-word-swap.mp4"
+    }
+  },
+  {
+    "id": "an-type-rise-from-slot",
+    "tab": "animation",
+    "name": "Words rise from a hidden slot",
+    "line": "Each word slides up into view from behind an invisible edge, one after another: the classic clean title.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Raise each word about 35% of its height from behind its own edge, 45 ms apart, 30 ms at hype, each word taking about 0.35 s, 0.25 s at hype, and drop the line back behind the edge faster when it leaves. The last word lands with a 2% settle, 4% at hype.",
+      "when": "Fits titles and claims in confident launch films and promos, where the line should feel exact.",
+      "avoid": "Calm films that want a softer arrival, lines over seven words, and letting the words fade as well as rise."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.2,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "mask-rise"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-rise-from-slot.mp4"
+    }
+  },
+  {
+    "id": "an-type-name-from-centre",
+    "tab": "animation",
+    "name": "A name built letter by letter from the centre",
+    "line": "The letters of a short name rise from a slot, starting at the middle and spreading out to both ends.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Raise the letters of one short word from behind an edge, starting with the middle letter and spreading outward 20 ms apart, 30 ms at confident, the whole word built in about 0.3 s, 0.5 s at confident. The finished word lands with a 4% settle, 2% at confident.",
+      "when": "Fits a product name, a one-word offer or a launch word that should feel built, in hype and confident films.",
+      "avoid": "Words over about eight letters, more than one word, and using it for a sentence."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "mask-rise-letters"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-name-from-centre.mp4"
+    }
+  },
+  {
+    "id": "an-type-lines-in-turn",
+    "tab": "animation",
+    "name": "Short lines rise one after another",
+    "line": "A list of two to four short lines, each rising whole a moment after the one above it.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "4:5",
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Raise each line whole from behind its edge, 120 ms after the line above, 160 ms in a calm film, each line taking about 0.4 s, 0.6 s in a calm film. Every line is short enough to read in one glance, and the list stays still once it is built.",
+      "when": "Fits steps, benefits and short lists in explainers, tutorials and launch films.",
+      "avoid": "More than four lines on screen, bullet dots or circled numbers beside the lines, and lines that wrap."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 1,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "mask-rise-lines"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-lines-in-turn.mp4"
+    }
+  },
+  {
+    "id": "an-type-quiet-fade",
+    "tab": "animation",
+    "name": "Words simply fade in and rise",
+    "line": "The quietest arrival: words fade in and rise a short way, one after another, with no show.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo",
+        "footage-edit",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Fade each word in while it rises about 15% of its height, 60 ms apart, 45 ms at confident, each over about 0.6 s, 0.4 s at confident, on the softest landing curve. The line simply arrives and stays; the voice carries the moment.",
+      "when": "Fits explainers, tutorials, customer stories and any line that should just be there.",
+      "avoid": "Hooks that need punch in the first second, and pairing it with a bolder arrival in the same scene."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "fast in with a long soft landing",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "fade-up"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-quiet-fade.mp4"
+    },
+    "pairs_with": [
+      "an-bg-paper-look"
+    ]
+  },
+  {
+    "id": "an-type-letter-cascade",
+    "tab": "animation",
+    "name": "Letters arrive one by one",
+    "line": "The letters of a short title fade in one after another with a slight rise, left to right or from the centre out.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "motion-graphics",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Fade in the letters of a short title one at a time, each rising about 10% of its height, 20 ms apart, 30 ms in a calm film, the whole title built in about 0.5 s, 0.8 s in a calm film. Choose one order for the film, left to right or centre out, and keep it.",
+      "when": "Fits short titles and numbers where the letters themselves are the show.",
+      "avoid": "Sentences, which take too long to read this way, small type, and random order on a serious brand."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "letter-cascade"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-letter-cascade.mp4"
+    }
+  },
+  {
+    "id": "an-type-soft-write-on",
+    "tab": "animation",
+    "name": "Soft-edged write-on",
+    "line": "A feathered edge sweeps across each line from the reading side and writes it on.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "footage-edit",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Sweep a soft-edged reveal across each line from the side the reader starts on, over about 1 s per line, 0.6 s at confident, the second line starting when the first is two thirds written. The edge stays soft the whole way and never turns into a hard wipe.",
+      "when": "Fits premium, quiet statements and two-line headlines in calm launches and brand films.",
+      "avoid": "Moments that need a hard graphic reveal, three or more lines, and reversing the sweep to exit."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "soft-wipe"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-soft-write-on.mp4"
+    }
+  },
+  {
+    "id": "an-type-blur-glint",
+    "tab": "animation",
+    "name": "A blur band reveals the slogan",
+    "line": "A band of blur passes along a single line, leaving it sharp behind and not yet there ahead.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Pass one band of blur along a single line from the reading side over about 0.7 s, 0.35 s at hype, so the letters behind it are sharp and in place and the ones ahead are not yet there. One pass per line; the band never comes back.",
+      "when": "Fits one-line slogans and headlines that want a glint of motion in a confident film.",
+      "avoid": "Two or more lines, long copy, and running a light sweep over the same line as well."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even travel",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "quick even sweep",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 4.6,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "blur-sweep"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-blur-glint.mp4"
+    }
+  },
+  {
+    "id": "an-type-block-wipe",
+    "tab": "animation",
+    "name": "A colour block wipes the title on",
+    "line": "A solid accent block sweeps across each line and, as it slides away, leaves the words behind.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Sweep a solid accent block across each line in about 0.45 s, 0.3 s at hype, uncovering the words as it leaves, the block arriving fast and leaving faster. One block per line, lines 100 ms apart, 60 ms at hype.",
+      "when": "Fits section titles, chapter names and lower-third headlines in confident and hype films.",
+      "avoid": "Calm or quiet films, accent colours that clash with the page, and a block that lingers over the words."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in and faster out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap across",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "block-reveal"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-block-wipe.mp4"
+    }
+  },
+  {
+    "id": "an-type-slam",
+    "tab": "animation",
+    "name": "Big word slams in",
+    "line": "One oversized word drops in from larger than the frame and lands hard with the smallest settle.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Drop one word or a two-word line in from about twice its size, blurred while fast, landing in about 0.2 s, 0.3 s at confident, with a 3% settle, 2% at confident, and no shake. It leaves by punching larger and out in about 0.15 s.",
+      "when": "Fits launch day, a price, a number or one word that should hit, in hype promos and feeds.",
+      "avoid": "Lines over two words, calm or premium films, more than two slams in a row, and any shake on landing."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap down with a short settle",
+        "overshoot": 0.03,
+        "hold_s": 0.3,
+        "motion": 5.6,
+        "still_pct": 4
+      },
+      "confident": {
+        "beat_s": 1.6,
+        "ease": "fast drop with a short settle",
+        "overshoot": 0.02,
+        "hold_s": 0.7,
+        "motion": 1.6,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "slam"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-slam.mp4"
+    },
+    "pairs_with": [
+      "an-bg-colour-field-look"
+    ],
+    "avoid_with": [
+      "an-bg-editorial-look"
+    ]
+  },
+  {
+    "id": "an-type-word-pop",
+    "tab": "animation",
+    "name": "Words pop in with a small spring",
+    "line": "Words pop in one by one from small, each springing slightly past full size and settling about its own centre.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "motion-graphics",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Scale each word up from about 40% about its own centre, 45 ms apart, 30 ms at hype, each over about 0.35 s, 0.25 s at hype, springing 3% past full size, 6% at hype, and settling once. The words leave together, shrinking and fading in about 0.2 s.",
+      "when": "Fits short punchy lines and offers in friendly or confident films.",
+      "avoid": "Sentences over six words, calm films where the spring disappears, and popping every line in the film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "springy settle",
+        "overshoot": 0.03,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "hard spring with one settle",
+        "overshoot": 0.06,
+        "hold_s": 0.3,
+        "motion": 5.2,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "word-pop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-word-pop.mp4"
+    }
+  },
+  {
+    "id": "an-type-drop-bounce",
+    "tab": "animation",
+    "name": "Letters drop and bounce",
+    "line": "Letters fall in from above one after another, bounce once into place and stay.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "animated-short",
+        "ugc",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Drop each letter from above the frame, 30 ms apart, 20 ms at hype, each falling in about 0.4 s, 0.3 s at hype and bouncing once to about 6% of its fall, 8% at hype, before it rests. The letters leave by falling through the bottom in turn.",
+      "when": "Fits one playful line in a friendly brand film, a children’s product or a light animated short.",
+      "avoid": "Serious or premium films, more than one bouncing line per film, and lines over about twelve letters."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "drop with one bounce",
+        "overshoot": 0.06,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "fast drop with one bounce",
+        "overshoot": 0.08,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "drop-bounce"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-drop-bounce.mp4"
+    }
+  },
+  {
+    "id": "an-type-arc-swing",
+    "tab": "animation",
+    "name": "Words swing up into place",
+    "line": "Each word swings up on an arc from the left end of its baseline and lands upright, blurred while fast.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Swing each word up on an arc about the left end of its baseline, 30 ms apart, 45 ms at confident, each landing in about 0.25 s, 0.4 s at confident, with a 4% settle, 2% at confident. The words leave by swinging on up and away.",
+      "when": "Fits energetic headlines of two to six words in hype promos and launch films.",
+      "avoid": "Long lines that crowd the line below, letter-by-letter use, and a second bold arrival in the same scene."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap up with a short settle",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "arc-swing"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-arc-swing.mp4"
+    }
+  },
+  {
+    "id": "an-type-scatter-assemble",
+    "tab": "animation",
+    "name": "Scattered letters fly into line",
+    "line": "Letters start thrown about the frame at angles, then fly into the line in shuffled order and lock in.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "motion-graphics",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Start the letters of one short line scattered over the frame at different places and tilts, then fly them into the line in shuffled order over about 0.4 s, each locking in with a 3% settle. The line is only read once it is locked, so nothing else moves until it has been read.",
+      "when": "Fits a busy, energetic title build in hype films, or a from-chaos-to-order moment.",
+      "avoid": "Long lines, calm films, lines that must be read while they build, and scattering more than once in a film."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "fast converge with a short settle",
+        "overshoot": 0.03,
+        "hold_s": 0.35,
+        "motion": 5.6,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "scatter-assemble"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-scatter-assemble.mp4"
+    }
+  },
+  {
+    "id": "an-type-smear-in",
+    "tab": "animation",
+    "name": "Words smear in from the side",
+    "line": "Words slide in sideways very fast with a strong directional smear and lean that clears as they stop.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Slide each word in from the side in about 0.15 s with a strong smear in the direction of travel and a slight lean, both cleared within 0.08 s of stopping. Two short lines at most, and they leave the way they came.",
+      "when": "Fits hype edits, quick-cut feeds and two-line hooks cut to music.",
+      "avoid": "Calm or premium films, long lines, and changing direction between words."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.5,
+        "ease": "whip in and stop dead",
+        "overshoot": 0,
+        "hold_s": 0.25,
+        "motion": 6,
+        "still_pct": 3
+      }
+    },
+    "engine": [
+      "smear-in"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-smear-in.mp4"
+    }
+  },
+  {
+    "id": "an-type-typed-live",
+    "tab": "animation",
+    "name": "A sentence typed live",
+    "line": "A large line is typed at a human rhythm, with uneven gaps between keys and a caret that blinks while it waits.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "footage-edit",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Type one large sentence at about 12 characters a second, 16 at confident, with uneven gaps between keys, a longer pause after spaces and commas, and a caret that is solid while keys land and blinks while it waits. Keep it to about 24 characters, so the line takes about 2 s, 1.5 s at confident, and finishes inside one beat.",
+      "when": "Fits a manifesto line, a note from the founder, or any headline that should feel written by a person.",
+      "avoid": "Search boxes and prompts, long text nobody needs to watch being typed, and perfectly even keystrokes."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "steady keys with human pauses",
+        "overshoot": 0,
+        "hold_s": 1.4,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "steady keys with human pauses",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "human-type"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-typed-live.mp4"
+    },
+    "pairs_with": [
+      "an-bg-paper-look"
+    ]
+  },
+  {
+    "id": "an-type-self-correcting",
+    "tab": "animation",
+    "name": "The claim deletes and retypes itself",
+    "line": "A phrase is typed, held for a reading pause, deleted back to a point and retyped with the better ending.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "product-demo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Type the first phrase, pause long enough to read it, delete back to the changing part about twice as fast as it was typed and type the replacement, the whole correction taking about 1.4 s, 2 s in a calm film. Only the ending changes; the start of the phrase never moves.",
+      "when": "Fits before and after claims in one line, such as reports in hours becoming reports in minutes.",
+      "avoid": "More than one line, a replacement that shares nothing with the first phrase, and correcting twice in a row."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.6,
+        "ease": "steady keys with a quick delete",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "steady keys with a quick delete",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "retype"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-self-correcting.mp4"
+    }
+  },
+  {
+    "id": "an-type-decode",
+    "tab": "animation",
+    "name": "Letters decode into the word",
+    "line": "Every letter cycles through random characters of its own kind and locks onto the real one, one after another.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Cycle each letter through random characters of the same width and lock it onto its real letter, from the start or from the centre, the whole word locked in about 0.8 s, 0.4 s at hype. A locked letter never changes again.",
+      "when": "Fits titles for security, data and AI products, and a reveal that should feel cracked open.",
+      "avoid": "Long sentences, calm or warm brands, and coloured split edges on the letters."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast cycle with a firm lock",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "fast cycle with a firm lock",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "scramble-lock"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-decode.mp4"
+    }
+  },
+  {
+    "id": "an-type-split-flap",
+    "tab": "animation",
+    "name": "Departure-board letters",
+    "line": "Each letter is a flip tile that flaps through the alphabet until it shows its own letter, tiles starting a beat apart.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Flip each tile through the alphabet, its top half falling over the bottom, until it shows its letter, tiles starting 40 ms apart and the whole word settled in about 1 s. Each tile’s seam fades once it has settled.",
+      "when": "Fits dates, times, status lines and short announcements such as ships Friday.",
+      "avoid": "Long text, lower-case copy (the tiles show capitals), and soft, organic brands."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick flaps that slow to a stop",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "split-flap"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-split-flap.mp4"
+    }
+  },
+  {
+    "id": "an-type-combination-lock",
+    "tab": "animation",
+    "name": "Letters roll like a combination lock",
+    "line": "Every letter spins up through the alphabet like a drum and stops on its own letter, one after another.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Spin each letter up through the alphabet like a drum, blurred while it spins and sharp when it stops, the letters stopping in turn 40 ms apart, 60 ms at confident, the whole word done in about 0.4 s, 0.8 s at confident.",
+      "when": "Fits a name, an offer or a prize word that should feel dialled in, in games, offers and reveals.",
+      "avoid": "Long lines, text that must stay readable throughout, and numbers, which roll better on wheels."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "fast spin with a hard stop",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast spin that slows to a stop",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "drum-roll"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-combination-lock.mp4"
+    }
+  },
+  {
+    "id": "an-type-anagram",
+    "tab": "animation",
+    "name": "Jumbled letters sort into the line",
+    "line": "The letters start shuffled and each travels on its own arc to its place, so the mess becomes the message.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "motion-graphics",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Start the line’s letters in shuffled order, or as another phrase made of the same letters, and send each on its own arc to its place over about 0.9 s, 1.4 s in a calm film, blurred while travelling. All the letters land together on the same soft curve.",
+      "when": "Fits sort-out-the-mess stories, word play, and revealing the real line from a scrambled one.",
+      "avoid": "Long lines, more than one line, and arcs that cross the reader’s eye line twice."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "travel on arcs to a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow arcs to a soft landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "anagram"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-anagram.mp4"
+    }
+  },
+  {
+    "id": "an-type-centred-build",
+    "tab": "animation",
+    "name": "A centred line that grows word by word",
+    "line": "Words join a centred line one at a time, and the line glides sideways to stay centred as each arrives.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Add each word to the line on its cue, about one every 0.25 s, one every 0.4 s in a calm film, while the whole line glides over about 0.2 s, 0.3 s in a calm film, to stay centred. Keep it to five words, so the line is built inside one beat and its last word lands the meaning.",
+      "when": "Fits statements built up to their last word, and lists written as one sentence.",
+      "avoid": "Sentences that already fill the width, text that must be read from the first frame, and more than about six words."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "glide with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow glide",
+        "overshoot": 0,
+        "hold_s": 1.4,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "recentre-build"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-centred-build.mp4"
+    }
+  },
+  {
+    "id": "an-type-key-word-in",
+    "tab": "animation",
+    "name": "The line opens to let the key word in",
+    "line": "A word is put into a line that is already there; its neighbours slide apart as it rises into the gap.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "product-demo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Show the line first, then slide its neighbours apart over about 0.4 s, 0.6 s in a calm film, while the key word rises into the gap in the accent colour, landing just after the gap has opened. One inserted word per line.",
+      "when": "Fits adding the key word to a known line, such as a number or a promise: your team ships twice as fast.",
+      "avoid": "Lines where the new word’s place is not clear, inserting more than one word, and moving the rest of the line up or down."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "make-room"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-key-word-in.mp4"
+    }
+  },
+  {
+    "id": "an-type-running-bands",
+    "tab": "animation",
+    "name": "Running text bands",
+    "line": "Bands of repeating words scroll across the frame in a seamless loop, rows running in opposite directions.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Run one to three bands of a short repeating phrase across the frame at a constant speed, about a quarter of the frame width every second, a sixth at confident, with rows running in opposite directions so the frame feels busy without a cut. The bands never stop or reverse.",
+      "when": "Fits sale days, launch-day banners and a running strip at the top or foot of a promo.",
+      "avoid": "Anything that has to be read once, dots or stars between the repeats, and more than three bands."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "constant speed",
+        "overshoot": 0,
+        "hold_s": 0.25,
+        "motion": 5,
+        "still_pct": 3
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "constant speed",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "ticker"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-running-bands.mp4"
+    }
+  },
+  {
+    "id": "an-type-answer-streams",
+    "tab": "animation",
+    "name": "An answer appears a few words at a time",
+    "line": "An assistant’s reply arrives in chunks of one to three words, each fading in softly, with a small cursor after the last word.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "launch-reel"
+      ],
+      "sizes": [
+        "4:5",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Bring the answer in as chunks of one to three words, each fading in over about 0.15 s, wrapping inside a column with a small block cursor after the last word, at about six words a second, eight at confident. Keep the answer to two short lines so it finishes inside the beat.",
+      "when": "Fits films about products that answer in words: assistants, chat and copilot demos.",
+      "avoid": "Headline type, answers over about twelve words on screen, and a row of dots for thinking."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "soft fades in a steady flow",
+        "overshoot": 0,
+        "hold_s": 1.4,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "soft fades in a steady flow",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stream-answer"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-answer-streams.mp4"
+    }
+  },
+  {
+    "id": "an-type-beat-reel",
+    "tab": "animation",
+    "name": "Kinetic type reel cut to the beat",
+    "line": "A run of bold word arrivals, a new one on every beat of the music, each landing a different way.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Land a new word or two-word card on every beat of the track, about every 0.5 s at 120 beats a minute, alternating a drop-in, a side smear and a pop so no two neighbours arrive the same way. Each arrival takes about 0.12 s and the card holds for the rest of its beat, and the run ends on one held line.",
+      "when": "Fits kinetic type reels, music-led promos and the last burst before a logo.",
+      "avoid": "Runs longer than about four seconds, more than two words at a time, and an even grid that ignores the music."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.5,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.25,
+        "motion": 6.2,
+        "still_pct": 3
+      }
+    },
+    "engine": [
+      "slam",
+      "smear-in",
+      "word-pop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-beat-reel.mp4"
+    },
+    "avoid_with": [
+      "an-bg-editorial-look"
+    ]
+  },
+  {
+    "id": "an-type-lyric-lines",
+    "tab": "animation",
+    "name": "Lyric lines, one per sung phrase",
+    "line": "Each sung or spoken phrase gets its own layout, arriving softly on its first word and clearing before the next.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "footage-edit"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Give every sung phrase its own layout and arrival, a write-on, a focus or a fade, entering on the first syllable over about 0.6 s, 0.4 s at confident, and clearing in about 0.3 s, 0.2 s at confident, before the next phrase begins. Change the layout each phrase but keep one typeface and one colour pair.",
+      "when": "Fits lyric videos, spoken-word films and music-led brand pieces.",
+      "avoid": "Words that arrive after they are sung, more than seven words on screen, and the same layout twice in a row."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "soft-wipe",
+      "blur-in",
+      "fade-up"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-lyric-lines.mp4"
+    }
+  },
+  {
+    "id": "an-type-stem-colour",
+    "tab": "animation",
+    "name": "The colour flips with every new ending",
+    "line": "The start of a line holds while its last word changes on each beat, and the whole background colour flips with it.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "motion-graphics",
+        "ugc",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Hold the first words of the line still and change only the last word on every beat, rolling it in about 0.2 s, 0.35 s at confident, while the full-frame colour flips to the next brand colour on the same frame. Four changes at most, then land on the true ending.",
+      "when": "Fits we-can lines with several verbs, and short ads that show range in a few seconds.",
+      "avoid": "More than four changes, colours outside the brand, and moving the fixed words."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.03,
+        "hold_s": 0.25,
+        "motion": 5.6,
+        "still_pct": 4
+      },
+      "confident": {
+        "beat_s": 1.6,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.7,
+        "motion": 1.5,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "swap-word",
+      "colour-field"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-stem-colour.mp4"
+    }
+  },
+  {
+    "id": "an-type-quote-card",
+    "tab": "animation",
+    "name": "Quote card that builds line by line",
+    "line": "A short customer or press quote fades up line by line on a magazine-style page, then the name settles beneath it.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "footage-edit",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "4:5",
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Fade the quote up line by line, 0.3 s apart, each line over about 0.7 s, then close the speaker’s name up from slightly wide spacing in about 1 s, so the quote is read first and the name lands last.",
+      "when": "Fits customer quotes, reviews and press lines in story films and social cards.",
+      "avoid": "Quotes over about twenty words, quotation marks drawn larger than the words, and stars or dots beside the name."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      }
+    },
+    "engine": [
+      "fade-up",
+      "tracking-settle",
+      "editorial"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-type-quote-card.mp4"
+    }
+  },
+  {
+    "id": "an-type-acts-it-out",
+    "tab": "animation",
+    "name": "Words that do what they say",
+    "line": "Each key word acts out its own meaning: squash is squashed, stretch grows tall, scattered letters snap straight.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Animate each key word as its own meaning, so squash is pressed flat, stretch grows tall and scattered letters snap into a line for straight, over about 0.6 s per word, 0.35 s at hype, then hold it still long enough to read.",
+      "when": "Fits kinetic type reels and playful ads where a handful of verbs carry the message.",
+      "avoid": "Doing it to every word, words whose meaning cannot be shown, and losing readability in the act."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "springy settle",
+        "overshoot": 0.04,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "hard spring with one settle",
+        "overshoot": 0.06,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "clay-squash",
+      "params": {}
+    },
+    "nearest": "an-type-word-pop"
+  },
+  {
+    "id": "an-type-hand-lettered",
+    "tab": "animation",
+    "name": "Hand-lettered title",
+    "line": "A title drawn stroke by stroke with a brush, in the order a letterer would draw it.",
+    "family": "Kinetic type",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Draw a hand-lettered title stroke by stroke in the order a letterer would, each stroke taking about 0.2 s and the whole word about 1.5 s, 1 s at confident, with the brush tapering at the end of every stroke.",
+      "when": "Fits handmade brands, food and craft products, and warm titles in story films.",
+      "avoid": "Long words, typefaces pretending to be handwriting, and drawing body copy."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady strokes",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "steady strokes",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-type-soft-write-on"
+  },
+  {
+    "id": "an-flat-squares-reshape",
+    "tab": "animation",
+    "name": "Squares regroup into each new shape",
+    "line": "Many small squares hold one shape, then travel on curling paths and re-form into the next, so the data changes without a cut.",
+    "family": "Flat shapes and graphics",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "launch-reel",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Let a field of small squares hold one form, such as a grid of units, then dissolve over about 0.7 s and re-form into the next, a map, a total or a chart, over about 0.9 s, 1.2 s in a calm film, each square on its own slightly curling path with no overshoot.",
+      "when": "Fits data stories where the same units become a count, places and a total, and a logo or word assembled from its own pieces.",
+      "avoid": "Round specks or dots, using it as background decoration, spheres and galaxies, and more than one passage of it in a film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.8,
+        "ease": "travel with a soft landing",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "slow travel with a soft landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "particle-form"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-flat-squares-reshape.mp4"
+    }
+  },
+  {
+    "id": "an-flat-name-bar",
+    "tab": "animation",
+    "name": "Name and role bar slides in",
+    "line": "A flat accent bar wipes in at the lower left, then the speaker’s name and role rise onto it.",
+    "family": "Flat shapes and graphics",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "footage-edit",
+        "ugc",
+        "promo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Wipe a flat accent bar in from the left edge in about 0.35 s, 0.5 s in a calm film, then raise the name and the role line onto it, the role 120 ms behind the name. It leaves in reverse, faster, before the speaker’s next point.",
+      "when": "Fits interviews, founder clips and any film where a person needs a name on screen.",
+      "avoid": "Bars over the speaker’s face or the captions, more than two lines, and leaving it up longer than about four seconds."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "block-reveal",
+      "mask-rise-lines"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-flat-name-bar.mp4"
+    }
+  },
+  {
+    "id": "an-flat-chapter-cards",
+    "tab": "animation",
+    "name": "Numbered chapter cards",
+    "line": "A big chapter number rolls up, then a colour block wipes the chapter title on beside it.",
+    "family": "Flat shapes and graphics",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo",
+        "motion-graphics",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Roll the chapter number up to its figure in about 0.5 s, 0.7 s in a calm film, then sweep an accent block across the title beside it in about 0.4 s, 0.6 s in a calm film, uncovering the words. Use the same layout for every chapter so viewers learn it.",
+      "when": "Fits tutorials, longer explainers and multi-part launch films with three to six chapters.",
+      "avoid": "More than six chapters, numbers in circles or followed by a dot, and a different layout for each chapter."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "fast in with a firm stop",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in with a firm stop",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "number-roll",
+      "block-reveal"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-flat-chapter-cards.mp4"
+    }
+  },
+  {
+    "id": "an-flat-offer-ticket",
+    "tab": "animation",
+    "name": "Offer word slams, then the price rolls",
+    "line": "The offer word drops in hard, then the new price rolls up beneath it on a dark page.",
+    "family": "Flat shapes and graphics",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Drop the offer word in from oversize in about 0.2 s, 0.3 s at confident, then roll the price up digit by digit in about 0.4 s, 0.7 s at confident, landing on the true figure and resting there. If the old price is shown, it is already on screen before the word drops.",
+      "when": "Fits sales, launch offers and limited-time deals.",
+      "avoid": "Fake countdowns, more than one new price on screen, and shaking the frame on landing."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 1,
+        "ease": "snap down then a rolling landing",
+        "overshoot": 0.03,
+        "hold_s": 0.35,
+        "motion": 5.4,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast drop then a rolling landing",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "slam",
+      "number-roll",
+      "night"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-flat-offer-ticket.mp4"
+    },
+    "pairs_with": [
+      "an-bg-night-look"
+    ]
+  },
+  {
+    "id": "an-flat-shapes-build",
+    "tab": "animation",
+    "name": "Flat shapes build the picture",
+    "line": "Squares, triangles and pills slide in and lock together to build an icon or a small scene.",
+    "family": "Flat shapes and graphics",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Build each picture from five to eight flat brand-colour shapes that slide in from the edges and lock into place one after another, 80 ms apart, 120 ms in a calm film, each over about 0.4 s, 0.6 s in a calm film, with a 2% settle at confident. Shapes have no outlines and one short shadow direction.",
+      "when": "Fits explainers, brand films and short ads that want a flat graphic look built from the brand’s own colours.",
+      "avoid": "Circles in rows or grids, generic geometric tile patterns, and more than three colours plus the accent."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "an-flat-squares-reshape"
+  },
+  {
+    "id": "an-flat-shapes-flow",
+    "tab": "animation",
+    "name": "Shapes flow into each other",
+    "line": "One flat shape melts smoothly into the next, an icon becoming a product becoming a word, with rounded in-betweens.",
+    "family": "Flat shapes and graphics",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Turn one flat shape into the next through rounded in-betweens over about 1 s, 0.6 s at confident, keeping the area roughly the same so it feels like one material, and let the new shape settle before anything else moves. Three to five changes in a film, each one meaningful.",
+      "when": "Fits brand films and explainers where one idea turns into the next, and fluid, friendly brands.",
+      "avoid": "Soft colour shapes drifting as a background, changes with no meaning, and wobbling that never settles."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "liquid-morph",
+      "params": {}
+    },
+    "nearest": "an-flat-squares-reshape"
+  },
+  {
+    "id": "an-flat-icon-rows",
+    "tab": "animation",
+    "name": "Rows of little icons count it out",
+    "line": "A number is shown as rows of small person or product icons that fill in, so the viewer sees how many.",
+    "family": "Flat shapes and graphics",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Show a figure as rows of identical flat icons, one icon per unit or per thousand, filling in row by row 20 ms apart over about 1 s, 1.4 s in a calm film, with the share that matters turning the accent colour as the count lands.",
+      "when": "Fits stat stories, survey results and one-in-four claims.",
+      "avoid": "Round icons that read as dots, more than about a hundred icons on screen, and invented figures."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "steady fill",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady fill",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "an-flat-squares-reshape"
+  },
+  {
+    "id": "an-ill-drawn-ring",
+    "tab": "animation",
+    "name": "A hand-drawn ring round the key word",
+    "line": "A slightly uneven ring or underline is drawn round one word in the accent colour, as if by a pen, on a magazine-style page.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "footage-edit",
+        "promo",
+        "tutorial",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Draw one ring or underline round the key word in the accent colour, a little square and a little uneven, its end passing just beyond its start, over about 0.7 s, 0.45 s at confident, starting as the word is spoken. One mark on screen at a time.",
+      "when": "Fits editorial films, customer stories and explainers that want a human, annotated feel.",
+      "avoid": "Perfect circles, two marks at once, and another emphasis on the same beat."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady pen stroke",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick pen stroke",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.25,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "drawn-mark",
+      "editorial"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-ill-drawn-ring.mp4"
+    },
+    "pairs_with": [
+      "an-bg-editorial-look"
+    ]
+  },
+  {
+    "id": "an-ill-stamp-curve",
+    "tab": "animation",
+    "name": "Words drawn along a curve like a stamp",
+    "line": "A short phrase draws itself along a gentle curve, like a seal or a maker’s stamp.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "animated-short",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Set a short phrase along a gentle arc and draw it on along the path over about 1.2 s, 0.8 s at confident, the letters following the curve rather than standing straight. Pair it with one small brand mark at the centre of the curve.",
+      "when": "Fits handmade, local and heritage brands: made by hand in Porto, since 1998.",
+      "avoid": "Long sentences, dots between the words on the curve, and headlines that must be read fast."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady draw along the path",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "steady draw along the path",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "on-path",
+      "paper"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-ill-stamp-curve.mp4"
+    }
+  },
+  {
+    "id": "an-ill-outline-ink",
+    "tab": "animation",
+    "name": "Letters drawn in outline, then inked",
+    "line": "Bold letters appear as outlines first, then fill with ink from the bottom up, one after another.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "launch-reel",
+        "animated-short"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Draw each letter as an outline in ink, then fill it from the bottom up, letters 40 ms apart, 25 ms at hype, each fill taking about 0.4 s, 0.25 s at hype. Use it on a short heavy headline or a number.",
+      "when": "Fits bold short headlines and figures that should feel drawn, then finished.",
+      "avoid": "Thin typefaces where the outline vanishes, long lines, small sizes, and tight letter spacing where outlines overlap."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "steady fill from the bottom",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "quick fill from the bottom",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 4.8,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "outline-fill"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-ill-outline-ink.mp4"
+    }
+  },
+  {
+    "id": "an-ill-pen-line-story",
+    "tab": "animation",
+    "name": "One pen line draws the story",
+    "line": "A single continuous line draws each picture in turn, and the end of one drawing becomes the start of the next.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "motion-graphics",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Draw every picture with one continuous line in the ink colour, travelling at a steady pace with a slight wobble, each drawing taking about 1.5 s, 1 s at confident, and let the line’s end carry on into the next drawing without lifting.",
+      "when": "Fits explainers and brand stories that want a simple, human look with one idea flowing into the next.",
+      "avoid": "Busy drawings with many lines, filled colour everywhere, and lifting the pen between scenes."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady pen pace",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "steady pen pace",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-drawn-ring"
+  },
+  {
+    "id": "an-ill-living-lines",
+    "tab": "animation",
+    "name": "Drawings that wobble gently while they wait",
+    "line": "Hand-drawn outlines are redrawn a few times a second with tiny differences, so even still drawings feel alive.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "motion-graphics",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Redraw every outline 8 times a second with small random differences in the line, about 1% of the drawing’s size, so held drawings stay alive. Actions on top of it are timed as usual, about 0.6 s, 0.4 s at confident, for each one.",
+      "when": "Fits handmade, children’s and editorial brands, and any drawn film with long holds.",
+      "avoid": "Wobble on type that must be read, wobble so strong it looks like shaking, and wobbling product screens."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-drawn-ring"
+  },
+  {
+    "id": "an-ill-paper-cutout",
+    "tab": "animation",
+    "name": "Paper cut-out scenes",
+    "line": "Flat paper shapes with a soft shadow slide, fold and stack to tell the story, like a handmade set.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "motion-graphics",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Build each scene from flat cut-paper shapes with a soft contact shadow and slightly uneven edges, sliding and folding into place over about 0.8 s, 0.5 s at confident, with a tiny lift before each piece lands.",
+      "when": "Fits warm brand stories, children’s products, and food and craft brands.",
+      "avoid": "Perfect vector edges, shadows in more than one direction, and stock paper textures."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow lift and soft landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick lift with a small settle",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "an-ill-stamp-curve"
+  },
+  {
+    "id": "an-ill-storybook",
+    "tab": "animation",
+    "name": "Storybook spreads that turn",
+    "line": "Each scene is an illustrated page of a book, with one short line beside the picture and the page turning to the next.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Lay each scene out as a book spread, the picture on one side and one short line on the other, keep small details in the picture moving for the whole spread, and turn the page in about 1.1 s to the next.",
+      "when": "Fits brand fables, origin stories and children’s products told in five or six spreads.",
+      "avoid": "Long text on the page, still pictures with nothing moving, and more than one style of page turn."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow turn",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "an-ill-stamp-curve"
+  },
+  {
+    "id": "an-ill-watercolour",
+    "tab": "animation",
+    "name": "Watercolour washes bloom in",
+    "line": "Colour spreads into each drawing like wet paint on paper, soft-edged and a little uneven.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Bloom each colour area out from its centre like wet paint, the edges soft and slightly darker where the wash pools, over about 1.2 s, 0.8 s at confident, with the line work drawn first and the colour following it.",
+      "when": "Fits gentle brand stories, and wellness, travel and food brands.",
+      "avoid": "Washes that spread across type, neon colours, and stock paint textures."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow spread",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "slow spread",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "liquid-morph",
+      "params": {}
+    },
+    "nearest": "an-bg-paper-look"
+  },
+  {
+    "id": "an-ill-sketch-to-finished",
+    "tab": "animation",
+    "name": "Pencil sketch becomes the finished picture",
+    "line": "A rough pencil sketch of the product or scene draws itself, then colour and detail fill in to the finished look.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Draw a loose pencil sketch in about 1.2 s, 0.8 s at confident, then wipe the finished colour version in over it in about 0.6 s, 0.4 s at confident, along the same lines so the two match exactly.",
+      "when": "Fits design, architecture and product stories about how something was made.",
+      "avoid": "A sketch that does not match the final picture, and repeating the trick more than twice."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "steady draw then a soft wipe",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "quick draw then a soft wipe",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-outline-ink"
+  },
+  {
+    "id": "an-ill-map-route",
+    "tab": "animation",
+    "name": "Illustrated map with a travelling route",
+    "line": "A drawn map holds still while a route line travels across it, stopping at each place as a small label rises.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Hold a flat illustrated map and draw the route across it at a steady pace, pausing briefly at each stop while its label rises in, each leg taking about 1 s, 0.6 s at confident, with the view drifting to keep the head of the line in frame.",
+      "when": "Fits journeys, delivery stories, expansion news and travel brands.",
+      "avoid": "Map imagery you have no rights to, more than six stops, and dotted route lines."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady travel",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "steady travel",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-drawn-ring"
+  },
+  {
+    "id": "an-ill-day-to-night",
+    "tab": "animation",
+    "name": "One scene, day turns to night",
+    "line": "A fixed illustrated scene stays put while its light moves from morning to night, telling time without a cut.",
+    "family": "Illustration",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Keep one illustrated set fixed and move its colour and light from morning through dusk to night across the film, each change of hour taking about 1.5 s, 1 s at confident, with windows and lamps coming on as the light falls.",
+      "when": "Fits a-day-with-our-product stories, illustrated shorts and ambient brand loops.",
+      "avoid": "Cutting to a new set for each hour, colours outside the brand, and a sun drawn as a plain disc."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow colour ramp",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even colour ramp",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "an-bg-horizon"
+  },
+  {
+    "id": "an-3d-words-stand-up",
+    "tab": "animation",
+    "name": "Words stand up from flat",
+    "line": "Words tip up from lying flat, hinged on their bottom edge in perspective, like cards standing up.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "launch-reel",
+        "promo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Tip each word up from lying flat about its bottom edge in perspective, 45 ms apart, 30 ms at hype, each standing up in about 0.4 s, 0.25 s at hype, with a 2% settle, 4% at hype. The words fold back down to leave.",
+      "when": "Fits step lines such as plan it, build it, ship it, and crisp product films.",
+      "avoid": "Very long lines, letter-by-letter use on long words, and tipping in more than one direction in a scene."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap up and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "flip-up"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-3d-words-stand-up.mp4"
+    }
+  },
+  {
+    "id": "an-3d-title-from-behind",
+    "tab": "animation",
+    "name": "Title flies in from behind the viewer",
+    "line": "The title starts huge, soft and see-through as if just past the camera, and shrinks into place over a floor that runs to the horizon.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Start the title about three times its size, soft and half transparent as if just behind the viewer, and shrink it to its place as it sharpens over about 0.6 s, 0.35 s at hype, above a quiet floor of lines running to one vanishing point. It leaves by flying on into the distance.",
+      "when": "Fits a big claim or the title of a launch film, in one or two lines.",
+      "avoid": "Long lines, films with no other sense of depth, and flying more than one title per scene this way."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a long soft landing",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "rush in and settle fast",
+        "overshoot": 0.03,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "from-lens",
+      "perspective-lines"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-3d-title-from-behind.mp4"
+    }
+  },
+  {
+    "id": "an-3d-giant-word-behind",
+    "tab": "animation",
+    "name": "A giant cropped word behind the headline",
+    "line": "One word so large the frame crops it drifts slowly behind, then the readable headline rises in front of it.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Set one word so large the frame crops it, at low strength, and let it drift upward by about 10% of the frame across the scene, then raise the readable headline in front of it word by word, each word in about 0.35 s, 0.5 s in a calm film. Two planes moving at two speeds.",
+      "when": "Fits section openers and statements where one word is the whole idea.",
+      "avoid": "Backdrop words over about ten letters, a backdrop as strong as the headline, and a third layer of type."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift behind a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "giant-crop",
+      "mask-rise"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-3d-giant-word-behind.mp4"
+    }
+  },
+  {
+    "id": "an-3d-layered-planes",
+    "tab": "animation",
+    "name": "Graphics on three depth planes",
+    "line": "Type, cards and shapes sit on frosted panes at three depths and slide at different speeds as the view drifts.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "product-demo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place the graphics on three planes, the far one soft and moving about a third as far as the middle one, the near one about one and a half times as far, and drift the view one way through the scene while the lines rise on the middle plane, each over about 0.6 s, 0.4 s at confident.",
+      "when": "Fits AI, integration and feature launch films that want layered depth without 3D models.",
+      "avoid": "More than three planes, drifting back and forth in one shot, and a sharp far plane that flattens the frame."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "parallax-camera",
+      "mask-rise-lines",
+      "glass"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-3d-layered-planes.mp4"
+    },
+    "pairs_with": [
+      "an-bg-glass-look"
+    ]
+  },
+  {
+    "id": "an-3d-card-tilt",
+    "tab": "animation",
+    "name": "Cards tilt in depth and settle",
+    "line": "Flat cards swing in with a tilt in perspective and settle face-on, catching a soft light as they turn.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Swing each card in from about 25 degrees of tilt and settle it face-on over about 0.6 s, 0.9 s in a calm film, with a 2% settle at confident, and pass a soft band of light across its face as it turns.",
+      "when": "Fits feature lists, pricing tiers and testimonials shown as cards.",
+      "avoid": "Tilts past about 30 degrees that make text unreadable, spinning cards, and more than three cards moving at once."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "an-3d-layered-planes"
+  },
+  {
+    "id": "an-3d-solid-letters",
+    "tab": "animation",
+    "name": "Thick 3D letters that turn",
+    "line": "A short word made of solid, deep letters turns slowly in the light, showing its sides and edges.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Build one short word as solid letters with real depth and bevelled edges, and turn it about 30 degrees over about 0.9 s, 1.4 s in a calm film, under one key light so the sides read darker than the face, finishing face-on.",
+      "when": "Fits launch titles, event names and logo moments in big announcement films.",
+      "avoid": "Chrome or gold the brand does not use, spinning a full turn, and long words."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "an-3d-title-from-behind"
+  },
+  {
+    "id": "an-3d-isometric-world",
+    "tab": "animation",
+    "name": "A small isometric world builds itself",
+    "line": "A tidy miniature world seen from an angle builds itself piece by piece: buildings, desks, roads and people.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Build a small world at one fixed isometric angle, pieces rising from the ground plane 60 ms apart, 40 ms at confident, each in about 0.5 s, 0.35 s at confident, with a 2% settle at confident, then keep small details moving while the view drifts across.",
+      "when": "Fits how-it-works films, logistics, cities, offices and any system shown as a place.",
+      "avoid": "Changing the angle, more than about twenty pieces, and generic tile patterns."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow rise and soft landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick rise with a small settle",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "an-3d-layered-planes"
+  },
+  {
+    "id": "an-3d-pop-up",
+    "tab": "animation",
+    "name": "Pop-up book scenes",
+    "line": "Scenes fold up out of a flat page like a pop-up book, standing in layers as the page opens.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Open each scene from a flat page, folding its layers up to standing over about 0.9 s, 0.6 s at confident, nearer layers rising just after farther ones, and fold it flat again to change scene.",
+      "when": "Fits storytelling brands, children’s products, events and seasonal campaigns.",
+      "avoid": "Layers that do not fold from a visible crease, more than four layers, and pop-ups with tiny text."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow fold up",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick fold up with a small settle",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "an-3d-words-stand-up"
+  },
+  {
+    "id": "an-3d-glass-objects",
+    "tab": "animation",
+    "name": "Glass objects catching light",
+    "line": "Simple 3D shapes made of frosted glass turn slowly, bending the brand colours behind them.",
+    "family": "3D panels and depth",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Turn two or three simple frosted-glass forms slowly, about 20 degrees over about 1.6 s, 1 s at confident, so the brand colours behind them bend through their edges, with one thin bright line on each top edge.",
+      "when": "Fits AI, finance and premium product launches that want depth and light.",
+      "avoid": "Rainbow edges, glass on glass, and glowing text."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "an-bg-glass-look"
+  },
+  {
+    "id": "an-char-mascot-host",
+    "tab": "animation",
+    "name": "Your mascot hosts the film",
+    "line": "The brand’s mascot appears in each scene to point at, react to and present what matters.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "animated-short",
+        "ugc",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Bring the mascot in once per scene to point at or react to the one thing that matters, each action taking about 0.5 s, 0.8 s in a calm film, with a small wind-up before big moves and a held pose while the product does the talking.",
+      "when": "Fits brands that already have a mascot, friendly promos and social series.",
+      "avoid": "The mascot covering the product, a new pose on every frame, and copying a famous character."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "springy settle",
+        "overshoot": 0.04,
+        "hold_s": 0.9,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "soft arc with a gentle landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.8,
+        "still_pct": 13
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "character-bounce",
+      "params": {}
+    },
+    "nearest": "an-mix-reaction-stickers"
+  },
+  {
+    "id": "an-char-squash-hop",
+    "tab": "animation",
+    "name": "A round character hops with squash and stretch",
+    "line": "A simple character squashes before each hop, stretches as it flies and squashes again as it lands.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Squash the character by about 15% before each hop, stretch it by about 15% on the way up and down, and squash it again for about 0.1 s on landing, each hop taking about 0.3 s, 0.45 s at confident, on a clear arc. Its volume stays the same throughout.",
+      "when": "Fits playful brands, children’s products, and any film where one small character carries the energy.",
+      "avoid": "Squashing type or product screens, stretching that changes the character’s volume, and bounces that never settle."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "bounce on an arc",
+        "overshoot": 0.1,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "bounce on an arc",
+        "overshoot": 0.08,
+        "hold_s": 0.8,
+        "motion": 1.6,
+        "still_pct": 7
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "character-bounce",
+      "params": {}
+    },
+    "nearest": "an-type-drop-bounce"
+  },
+  {
+    "id": "an-char-flat-people",
+    "tab": "animation",
+    "name": "Flat illustrated people at work",
+    "line": "A small cast of simply drawn people, flat colours and no fine detail, show the job the product helps with.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "animated-short",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Draw two or three people from flat brand-colour shapes with simple faces, and give each one clear action per scene, reaching for a parcel or turning to a teammate, each action taking about 0.6 s, 0.9 s in a calm film, with the rest of the body moving a moment after the hand that leads.",
+      "when": "Fits explainers and service films that need people in them but have no footage.",
+      "avoid": "Oversized limbs and tiny heads borrowed from a common template, more than three people in a scene, and people who only stand and wave."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a small settle",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.8,
+        "still_pct": 13
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "character-bounce",
+      "params": {}
+    },
+    "nearest": "an-flat-squares-reshape"
+  },
+  {
+    "id": "an-char-drawn-hands",
+    "tab": "animation",
+    "name": "Drawn hands that do the job",
+    "line": "Only hands appear, simply drawn, pointing, tapping, sliding and holding up the product as the story needs.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "tutorial",
+        "animated-short"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Bring a drawn hand in from the edge of the frame for each action, a point, a tap, a swipe or a thumbs-up, travelling on a gentle arc and arriving in about 0.4 s, 0.6 s in a calm film, then leave before the next scene so the hand never lingers.",
+      "when": "Fits explainers and how-to films that need a human touch without a whole character.",
+      "avoid": "Two hands doing different things at once, hands covering the thing they point at, and stiff hands that slide without turning."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "arc in with a small settle",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow arc in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.7,
+        "still_pct": 13
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-drawn-ring"
+  },
+  {
+    "id": "an-char-objects-alive",
+    "tab": "animation",
+    "name": "Everyday objects come alive",
+    "line": "Things from the product’s own world, a mug, a parcel, a calendar, move like characters with weight and intent.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "ugc",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Animate one or two objects from the product’s world as characters, giving them weight with a squash of about 10% on every landing and a short wind-up before each move, each action taking about 0.5 s, 0.35 s at hype, while everything else stays an object.",
+      "when": "Fits playful ads where the product’s world tells the story, with no human cast.",
+      "avoid": "Faces on everything, objects that float with no weight, and more than two living objects in one scene."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "springy settle",
+        "overshoot": 0.05,
+        "hold_s": 0.9,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "hard spring with one settle",
+        "overshoot": 0.08,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "clay-squash",
+      "params": {}
+    },
+    "nearest": "an-type-drop-bounce"
+  },
+  {
+    "id": "an-char-clay",
+    "tab": "animation",
+    "name": "Soft clay characters",
+    "line": "Characters and props look made of soft clay, pressed and springy, with the marks of handmade work.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Model characters and props as soft clay with matte surfaces and slightly uneven edges, moving at 12 poses a second for a handmade feel, each action about 0.4 s, 0.6 s in a calm film, with a squash of about 10% on every press.",
+      "when": "Fits warm, playful brands, and food, children’s and craft products.",
+      "avoid": "Shiny plastic surfaces, perfectly smooth motion that loses the handmade feel, and clay letters for long lines."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "pressed and springy",
+        "overshoot": 0.05,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "soft press and release",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.8,
+        "still_pct": 13
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "clay-squash",
+      "params": {}
+    },
+    "nearest": "an-type-drop-bounce"
+  },
+  {
+    "id": "an-char-stop-motion",
+    "tab": "animation",
+    "name": "Stop-motion characters",
+    "line": "Characters jump between poses at a low frame rate, like puppets moved by hand between frames.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "ugc"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Move characters at 12 poses a second, or 8 for a rougher feel, with slight differences in position each frame, so every action of about 0.4 s, 0.6 s in a calm film, shows its steps.",
+      "when": "Fits handmade brands, playful social films and seasonal campaigns.",
+      "avoid": "Mixing smooth and stepped motion in one scene, product screens in stop motion, and flicker from uneven light."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "stepped poses",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "stepped poses",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.7,
+        "still_pct": 13
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "stop-motion",
+      "params": {}
+    },
+    "nearest": "an-type-drop-bounce"
+  },
+  {
+    "id": "an-char-silent-short",
+    "tab": "animation",
+    "name": "Silent short in one set",
+    "line": "A small story with one character in one fixed set, told without words, while the world changes around them.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Tell a 20 to 60 second story with one character, what they want and what stands in the way, in one fixed set where light, weather and objects change around them, with no shot held longer than about six seconds without something meaningful moving and the brand only at the very end.",
+      "when": "Fits brand fables, mascot stories and festive films where feeling matters more than features.",
+      "avoid": "Dialogue-heavy scripts, slow pushes on still pictures passed off as animation, and named third-party characters."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.9,
+        "still_pct": 13
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "springy settle",
+        "overshoot": 0.04,
+        "hold_s": 0.9,
+        "motion": 1.6,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "character-bounce",
+      "params": {}
+    },
+    "nearest": "an-bg-paper-look",
+    "settles": {
+      "kind": "animated-short"
+    }
+  },
+  {
+    "id": "an-char-walk-through",
+    "tab": "animation",
+    "name": "A character walks, the world scrolls past",
+    "line": "The character walks in place while the scenery scrolls behind in layers, carrying the story from place to place.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Keep the character near the centre on a steady walk of about 1 s per two steps, 0.7 s at confident, and scroll the scenery behind in two or three layers at different speeds, the far layer slowest, so the journey moves without cuts.",
+      "when": "Fits journeys, day-in-the-life stories and timelines told as a walk.",
+      "avoid": "Feet that slide on the ground, scenery layers moving at one speed, and walks longer than about eight seconds without an event."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady cycle",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.8,
+        "still_pct": 13
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "steady cycle",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "character-bounce",
+      "params": {}
+    },
+    "nearest": "an-3d-layered-planes"
+  },
+  {
+    "id": "an-char-talking-mascot",
+    "tab": "animation",
+    "name": "A mascot that speaks the voice-over",
+    "line": "The mascot delivers the lines itself, with mouth shapes matched to the voice and gestures on the key words.",
+    "family": "Characters",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "animated-short",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Match the mascot’s mouth to the voice with a small set of mouth shapes changing on each sound, put one gesture on the key word of each line, landing about 0.1 s before the word, and keep the body breathing between lines.",
+      "when": "Fits brands with a mascot that has a voice, explainer series and social films told in the first person.",
+      "avoid": "Mouths that flap on a loop, a gesture on every word, and voices that imitate a famous character."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "springy settle",
+        "overshoot": 0.03,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "soft in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.8,
+        "still_pct": 13
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "character-bounce",
+      "params": {}
+    },
+    "nearest": "an-mix-reaction-stickers"
+  },
+  {
+    "id": "an-mix-comment-card",
+    "tab": "animation",
+    "name": "Answer a comment on screen",
+    "line": "A viewer’s comment card drops in at the top as the question, then shrinks away as the creator answers.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Drop an original comment card in at the top under a replying-to line in about 0.35 s, 0.25 s at hype, give it one like tap, then shrink it up towards the top as the answer starts, so the question stays visible but small.",
+      "when": "Fits creator-style films that answer a common question, such as how do you keep every lead in one place.",
+      "avoid": "Quoting a real person’s comment, films with no creator voice, and brands that should not imitate a social app."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "ugc-comment-reply"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-mix-comment-card.mp4"
+    }
+  },
+  {
+    "id": "an-mix-reaction-stickers",
+    "tab": "animation",
+    "name": "Reaction stickers pop on",
+    "line": "A small heart, star or tick sticker with a white outline pops onto the frame, wobbles and goes.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "ugc",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Pop one sticker onto the frame from about 30% of its size with a 6% overshoot, 3% at confident, in about 0.25 s, 0.4 s at confident, let it wobble twice and send it off in about 0.2 s. Place it on the result it reacts to, at most four in a film.",
+      "when": "Fits reaction beats in creator films: a tick on a result, a heart on something liked.",
+      "avoid": "Serious or formal films, a sticker on the same beat as another mark, and more than four in a film."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "pop with a wobble",
+        "overshoot": 0.06,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "pop with a wobble",
+        "overshoot": 0.03,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "ugc-sticker-pop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-mix-reaction-stickers.mp4"
+    }
+  },
+  {
+    "id": "an-mix-reply-film",
+    "tab": "animation",
+    "name": "Creator reply film, start to finish",
+    "line": "A full creator-style reply: the comment card as the hook, boxed captions for the answer and one sticker on the result.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Open on the comment card for the first second, carry the spoken answer in large captions with a box moving to each word as it is said, and put one sticker on the result at the end, the card arriving in about 0.35 s, 0.25 s at hype, and the sticker in about 0.3 s, 0.2 s at hype.",
+      "when": "Fits answer-a-question films for social feeds where the whole look should read as a creator’s own post.",
+      "avoid": "A second hook card later in the film, captions over the product, and stickers on every line."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.03,
+        "hold_s": 0.9,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "pop with a quick settle",
+        "overshoot": 0.05,
+        "hold_s": 0.3,
+        "motion": 5.2,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "ugc-comment-reply",
+      "caption-box",
+      "ugc-sticker-pop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-mix-reply-film.mp4"
+    }
+  },
+  {
+    "id": "an-mix-caption-box",
+    "tab": "animation",
+    "name": "Captions with a box that jumps word to word",
+    "line": "Big spoken captions where a highlight box slides from word to word as each one is said.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "ugc",
+        "footage-edit",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "4:5",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Set the spoken phrase in large type, about five words at a time, with an accent box sliding to each word as it is spoken in about 0.12 s, and words not yet spoken sitting faint until they are said.",
+      "when": "Fits vertical talking-head and voice-over films where the brand has chosen this caption style.",
+      "avoid": "Long phrases, wide films that already carry the standard caption, and boxes that cover product screens."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "quick slide to each word",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap to each word",
+        "overshoot": 0,
+        "hold_s": 0.25,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "caption-box"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-mix-caption-box.mp4"
+    }
+  },
+  {
+    "id": "an-mix-caption-pop",
+    "tab": "animation",
+    "name": "The spoken word swells in the caption",
+    "line": "Big captions where the word being said grows slightly and turns the accent colour as it starts.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Set the phrase in large type and swell each word by about 8% with a small pop as it is spoken, over about 0.1 s, turning it the accent colour for as long as it is said, then let it return to the line’s colour.",
+      "when": "Fits fast, energetic vertical films with quick speech and a creator voice.",
+      "avoid": "Calm or formal films, long words that crowd the line, and mixing it with another caption style."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.5,
+        "ease": "pop with a quick settle",
+        "overshoot": 0.05,
+        "hold_s": 0.25,
+        "motion": 5.6,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "caption-pop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-mix-caption-pop.mp4"
+    }
+  },
+  {
+    "id": "an-mix-photo-in-letters",
+    "tab": "animation",
+    "name": "A photo seen through giant letters",
+    "line": "Huge type is cut out of a brand-colour page so a photo or product shot shows only through the letters, as a title in its own right.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "footage-edit",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Cut one short word out of a brand-colour page so the photo behind shows only through the letters, and drift the photo slowly inside them while the word is read. Only at the end of the title does the word grow until the photo fills the frame, over about 0.8 s, 1.2 s in a calm film.",
+      "when": "Fits opening titles over a hero photo or product shot, and titles over real footage.",
+      "avoid": "Thin typefaces, words over about six letters, and dull or low-contrast photos behind."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "slow drift then a fast open",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "text-window"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-mix-photo-in-letters.mp4"
+    }
+  },
+  {
+    "id": "an-mix-words-in-footage",
+    "tab": "animation",
+    "name": "Bold words set into real footage",
+    "line": "Kinetic words sit inside filmed footage, tucked behind people or objects so they feel part of the scene.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "footage-edit",
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Track the footage and set short bold words into it, one or two at a time, each arriving in about 0.3 s, 0.2 s at hype, and let a person or object pass in front of the words so they sit inside the shot rather than on top of it.",
+      "when": "Fits filmed brand spots, event recaps and creator films that need punchy words.",
+      "avoid": "Words over faces, words that slide around with camera shake, and more than seven words on screen."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "an-mix-photo-in-letters"
+  },
+  {
+    "id": "an-mix-photo-collage",
+    "tab": "animation",
+    "name": "Cut-out photo collage",
+    "line": "Photos cut out with a white edge are stacked in layers with type, drifting at different speeds like a moving scrapbook.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "footage-edit",
+        "motion-graphics",
+        "ugc"
+      ],
+      "sizes": [
+        "4:5",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Cut people and objects out of photos with a thin white edge and a soft shadow, stack them in three layers with type, and drift each layer at its own speed, new pieces landing in about 0.4 s, 0.6 s in a calm film, with a slight tilt.",
+      "when": "Fits fashion, events, community and culture brands with real photos to use.",
+      "avoid": "Stock photos, more than three layers, and torn-paper textures borrowed from templates."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "an-3d-layered-planes"
+  },
+  {
+    "id": "an-mix-doodles-on-footage",
+    "tab": "animation",
+    "name": "Doodles drawn over real footage",
+    "line": "Hand-drawn arrows, rings and short notes draw themselves on top of filmed footage to point things out.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "footage-edit",
+        "ugc",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Draw simple marks over the footage, an arrow, a ring or a short handwritten word, each drawing on in about 0.4 s, 0.6 s in a calm film, and track whatever they point at so they stay attached as the camera moves.",
+      "when": "Fits creator films, tutorials shot on a phone and behind-the-scenes edits.",
+      "avoid": "More than two doodles at once, marks that slide off what they point at, and doodles over faces."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick pen stroke",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady pen stroke",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-drawn-ring"
+  },
+  {
+    "id": "an-mix-photo-depth",
+    "tab": "animation",
+    "name": "Still photos given depth",
+    "line": "A still photo is split into foreground, subject and background, and the layers slide apart so the picture feels three-dimensional.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "footage-edit",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Separate a still photo into three layers and push slowly into it at a constant rate for the whole shot, the near layer moving about one and a half times as far as the subject and the far layer about a third as far, with no edges showing where the layers were cut.",
+      "when": "Fits founder stories, history films and brands with strong photography but no footage.",
+      "avoid": "Pushing so far that cut edges show, more than one push per photo, and wobbling layers."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "constant slow push",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "constant push",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "an-3d-layered-planes"
+  },
+  {
+    "id": "an-mix-stop-motion-table",
+    "tab": "animation",
+    "name": "Stop-motion objects on a table",
+    "line": "Real objects shot from above move across a table in small jumps, arranging themselves into the message.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "footage-edit"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Shoot real objects from above and move them in small steps at 12 poses a second, so they slide, gather and spell out the message, each move taking about 0.6 s, 0.4 s at hype, with a slight change of position between frames for a handmade feel.",
+      "when": "Fits launches of physical goods, and food, stationery and craft brands.",
+      "avoid": "Smooth computer motion mixed in, uneven light between frames, and objects that have nothing to do with the product."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "stepped poses",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "stepped poses",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 4.6,
+        "still_pct": 6
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "stop-motion",
+      "params": {}
+    },
+    "nearest": "an-type-drop-bounce"
+  },
+  {
+    "id": "an-mix-traced-footage",
+    "tab": "animation",
+    "name": "Footage traced into drawn lines",
+    "line": "Filmed movement is traced frame by frame into simple drawn lines, keeping the real motion with a drawn look.",
+    "family": "Mixed media",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "footage-edit",
+        "animated-short",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Trace the main subject of the footage frame by frame at 12 drawings a second in one ink colour, keeping the real timing of the movement, and drop the background to a flat brand colour so only the drawn subject moves.",
+      "when": "Fits music-led brand films, sport and dance, and turning a real moment into something illustrated.",
+      "avoid": "Tracing every detail, line colours that change between frames, and the faces of real people who have not agreed."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "real timing from the footage",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "real timing from the footage",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.7,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-drawn-ring"
+  },
+  {
+    "id": "an-bg-paper-look",
+    "tab": "animation",
+    "name": "Paper: a calm light page",
+    "line": "A light page with one soft light from the upper left and fine grain, so the product is the whole show.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Stage everything on the brand’s light page with one soft light from the upper left, a faint cool bounce from the opposite corner and fine grain, the light drifting so slowly it is only noticed when it stops. Shadows are long and soft, the accent is kept for the one highlight, and things arrive in about 0.5 s, 0.7 s in a calm film.",
+      "when": "Fits product demos, tutorials and calm launches where clarity matters most.",
+      "avoid": "Glows, coloured light, busy textures, and turning the page dark half way through."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.25,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.5,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "paper"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-paper-look.mp4"
+    },
+    "settles": {
+      "look": "paper"
+    },
+    "pairs_with": [
+      "an-type-quiet-fade",
+      "an-type-typed-live"
+    ]
+  },
+  {
+    "id": "an-bg-night-look",
+    "tab": "animation",
+    "name": "Night: brand light on a dark page",
+    "line": "A dark page with slow pools of the brand’s colours, like light in a dark room, for offers and big news.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Stage the film on the brand’s dark page with slow pools of the soft colour and the accent drifting like light in a dark room, under fine grain. The product is lit like a screen in the dark, and on the big moment the pools swell by about a fifth over about 0.4 s, 0.8 s at confident.",
+      "when": "Fits sales, launch days and big announcements.",
+      "avoid": "Neon on black, glowing text, and pools so bright they compete with the product."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "constant drift with one swell",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 4.8,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "night"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-night-look.mp4"
+    },
+    "settles": {
+      "look": "night"
+    },
+    "pairs_with": [
+      "an-flat-offer-ticket"
+    ]
+  },
+  {
+    "id": "an-bg-glass-look",
+    "tab": "animation",
+    "name": "Glass: frosted panes in layers",
+    "line": "Translucent panes sit at different depths around the edges, with a slow band of light passing through them.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Stand four frosted panes at different depths around the edges of the frame, each with a thin bright line on its top edge, and pass one slow band of light through them about every 5 s. Content sits in the clear middle, and when the view moves the panes slide at different speeds, over about 0.8 s, 1.2 s in a calm film.",
+      "when": "Fits feature launches, AI features and integrations.",
+      "avoid": "Glass on glass, rainbow edges, and panes over the text being read."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "glass"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-glass-look.mp4"
+    },
+    "settles": {
+      "look": "glass"
+    },
+    "pairs_with": [
+      "an-3d-layered-planes"
+    ]
+  },
+  {
+    "id": "an-bg-colour-field-look",
+    "tab": "animation",
+    "name": "Colour field: one bold brand colour",
+    "line": "The accent colour fills the frame edge to edge, with deeper and lighter tones of it moving slowly, for short bold ads.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Fill the frame with the accent colour, its deeper and lighter tones drifting across it about once every 6 s, and set very few words at their largest size in the page colour. Switch to the contrasting page only once, on a planned downbeat, and keep shadows short and crisp.",
+      "when": "Fits hooks, short ads, offers and end cards.",
+      "avoid": "Long copy, gradients between unrelated colours, and switching colour on every cut."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "constant drift under hard cuts",
+        "overshoot": 0,
+        "hold_s": 0.25,
+        "motion": 5.2,
+        "still_pct": 4
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "colour-field"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-colour-field-look.mp4"
+    },
+    "settles": {
+      "look": "colour-field"
+    },
+    "pairs_with": [
+      "an-type-slam"
+    ]
+  },
+  {
+    "id": "an-bg-editorial-look",
+    "tab": "animation",
+    "name": "Editorial: a magazine page",
+    "line": "A white page with generous margins, thin rules and short column marks, and one slow band of light crossing it.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "footage-edit",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "4:5",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Lay the film out like a well-designed magazine: generous margins marked by thin rules and short column marks, one picture or screen per beat presented like a photograph with a caption line under it, and one slow band of light crossing the page. Things arrive over about 0.8 s, 0.5 s at confident.",
+      "when": "Fits customer stories, edits of filmed footage and thought-leadership films.",
+      "avoid": "Busy layouts with several pictures at once, dot leaders or bullet dots, and loud transitions."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "editorial"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-editorial-look.mp4"
+    },
+    "settles": {
+      "look": "editorial"
+    },
+    "pairs_with": [
+      "an-ill-drawn-ring"
+    ],
+    "avoid_with": [
+      "an-type-slam",
+      "an-type-beat-reel"
+    ]
+  },
+  {
+    "id": "an-bg-blueprint-look",
+    "tab": "animation",
+    "name": "Blueprint: construction lines",
+    "line": "Thin solid construction lines and compass arcs, with one accent path drawing itself round the frame, for how things connect.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "motion-graphics",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Draw thin solid construction lines and two compass arcs in the line colour, and let one accent path draw itself around the edge of the frame at a steady pace. Pieces sit on the plan like components and join with lines that draw themselves in about 0.6 s, 0.9 s in a calm film.",
+      "when": "Fits automation, integrations and how-it-works films.",
+      "avoid": "Dotted or dashed grid lines, a dense grid behind small type, and more than one accent path."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "steady draw",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "steady slow draw",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "blueprint"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-blueprint-look.mp4"
+    },
+    "settles": {
+      "look": "blueprint"
+    }
+  },
+  {
+    "id": "an-bg-ribbons",
+    "tab": "animation",
+    "name": "Ribbons of light at the top and foot",
+    "line": "Slow, soft ribbons of the brand’s colours flow across the top and bottom of the frame, leaving the middle clear.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Flow soft ribbons of the accent and second colours across the top and the foot of the frame, slow enough that the middle third stays clear for type and product. On the reveal the ribbons brighten by about a quarter over about 0.6 s, 1 s in a calm film, then settle back.",
+      "when": "Fits feature launches, AI features and big announcements on a dark page.",
+      "avoid": "Ribbons crossing the type, rainbow colours, and speeding them up to fill time."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "aurora"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-ribbons.mp4"
+    }
+  },
+  {
+    "id": "an-bg-horizon",
+    "tab": "animation",
+    "name": "Planet-rim light at the bottom",
+    "line": "A wide arc of light rises from the bottom edge like the rim of a planet, with a glow gliding along it.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Raise a wide arc of light from below the bottom edge to full height over about 1 s, 0.5 s at hype, then let its glow glide slowly along the rim for the rest of the scene, with the title and offer sitting in the dark above it.",
+      "when": "Fits endings, offers and big announcements, especially on the dark page.",
+      "avoid": "Raising it more than once in a film, type crossing the rim, and a bright rim behind small text."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "slow rise then a constant glide",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.9,
+        "ease": "fast rise then a constant glide",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 4.6,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "horizon"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-horizon.mp4"
+    }
+  },
+  {
+    "id": "an-bg-flowing-lines",
+    "tab": "animation",
+    "name": "Flowing lines at the foot",
+    "line": "Five thin lines in the brand’s colours flow across the bottom of the frame: quiet movement under everything else.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "launch-reel",
+        "promo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Run five thin flowing lines in the accent and second colours across the foot of the frame at a slow, constant speed, each line crossing the frame about once every 8 s and never rising above the bottom fifth, so something is always moving during holds.",
+      "when": "Fits explainers, demos and calm launches that need life in their holds without a busy backdrop.",
+      "avoid": "Lines that rise into the type, more than five lines, and dashed lines."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.25,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.5,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "waves"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-flowing-lines.mp4"
+    }
+  },
+  {
+    "id": "an-bg-pool-of-light",
+    "tab": "animation",
+    "name": "One soft pool of light",
+    "line": "The page falls into shade around one soft light that rests a little above the middle or follows the subject.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Light the dark page with one soft pool resting a little above the middle, its edges falling into shade, and move the pool to follow the subject when the subject moves, easing over about 0.6 s, 1 s in a calm film, so the eye is always led to one place.",
+      "when": "Fits single-product reveals, premium launches and quiet hero moments.",
+      "avoid": "Several pools at once, hard-edged theatre spots, and moving the light when nothing else has moved."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.5,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "spotlight"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-pool-of-light.mp4"
+    }
+  },
+  {
+    "id": "an-bg-floor-to-horizon",
+    "tab": "animation",
+    "name": "A floor running to the horizon",
+    "line": "Solid lines run to one vanishing point, with cross lines coming slowly towards the viewer and haze at the horizon.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Lay a quiet floor of solid lines running to one vanishing point, with cross lines travelling slowly towards the viewer and a haze of light at the horizon, so the frame always feels like forward motion. On the big beat the cross lines speed up for about 0.5 s, 0.3 s at hype, then return to their drift.",
+      "when": "Fits launch films, and technology and speed stories that want a sense of going somewhere.",
+      "avoid": "Neon grid floors, dotted lines, and a vanishing point that moves during the shot."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant travel",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "constant travel with one surge",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "perspective-lines"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-floor-to-horizon.mp4"
+    }
+  },
+  {
+    "id": "an-bg-soft-shapes",
+    "tab": "animation",
+    "name": "Soft rounded shapes at the corners",
+    "line": "A circle, a rounded square and a long pill in the brand’s soft colours drift out of focus at the corners.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "animated-short",
+        "product-demo"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place a circle, a rounded square and a long pill in the soft fill, the accent and a tone between them, out of focus at the corners, each drifting no more than about 3% of the frame every second and never crossing the middle third, so friendly content has a warm, gentle stage.",
+      "when": "Fits friendly product films, social posts and light brand stories.",
+      "avoid": "Shapes passing behind type, sharp focus that competes with the content, and soft colour clouds filling the whole frame."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.25,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.5,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "soft-shapes"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-soft-shapes.mp4"
+    }
+  },
+  {
+    "id": "an-bg-light-beams",
+    "tab": "animation",
+    "name": "Beams of light for the big reveal",
+    "line": "Soft beams of brand light fall from just above the top edge and turn slowly, with a gentle bloom.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "hype",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Let soft beams of the brand’s light fall from just above the top edge and turn slowly behind the title, blooming a little brighter as the title lands, over about 0.4 s, 0.8 s at confident, then return to their slow turn.",
+      "when": "Fits reveals, launch titles and the one big moment of a film; strongest on the dark page.",
+      "avoid": "Calm explainers, long holds behind body text, and beams on a light page, where they read as haze."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "constant turn with one bloom",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 4.8,
+        "still_pct": 5
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant slow turn",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "shader-god-rays"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-light-beams.mp4"
+    }
+  },
+  {
+    "id": "an-bg-silk-folds",
+    "tab": "animation",
+    "name": "Bands of colour folding like silk",
+    "line": "Broad bands of the brand’s colours fold slowly through one another like silk, calmer in the middle than at the edges.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Fold broad bands of the page, soft and accent colours slowly through one another like silk, keeping the middle at under half the contrast of the edges so type and product sit on a calm centre, with one fold passing about every 4 s.",
+      "when": "Fits product films and section openers that want more movement than a plain page but nothing busy.",
+      "avoid": "Small type or dense cards on top, speeding the folds up, and colours outside the brand."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant slow fold",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow fold",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "shader-warp"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-silk-folds.mp4"
+    }
+  },
+  {
+    "id": "an-bg-smoke-ring",
+    "tab": "animation",
+    "name": "A smoke ring round one word",
+    "line": "A slow ring of accent-coloured smoke circles the middle of the frame, framing one word, number or logo in its clear centre.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Circle a slow ring of accent smoke round the middle of the frame and set one centred word, number or logo in its clear centre, no wider than about a third of the frame, the ring tightening slightly as the word lands, over about 0.6 s, 0.35 s at hype.",
+      "when": "Fits a single figure, a one-word claim or a logo moment.",
+      "avoid": "Long lines or two-line headlines that cross the ring, off-centre layouts, and keeping it for more than one beat."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "constant swirl",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "constant swirl with one tighten",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 4.8,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "shader-smoke-ring"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-smoke-ring.mp4"
+    }
+  },
+  {
+    "id": "an-bg-light-threads",
+    "tab": "animation",
+    "name": "Drifting threads of light",
+    "line": "Fine glowing threads in two brand colours drift slowly like a living network, fading towards the middle.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "product-demo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Drift fine threads of the accent and second colours slowly across the dark page, keeping the middle at about a third of their strength so type stays clear, and let the threads brighten for about 0.5 s, 0.8 s in a calm film, when the product makes its point.",
+      "when": "Fits data, AI and how-it-works films where one quiet texture suggests connection.",
+      "avoid": "Using it as the automatic look for anything AI, small type over bright threads, and adding nodes, dots or a glowing brain."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "shader-neuro-noise"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-light-threads.mp4"
+    }
+  },
+  {
+    "id": "an-bg-stirred-colour",
+    "tab": "animation",
+    "name": "Colours stirred round the centre",
+    "line": "Broad soft bands of the brand’s colours turn slowly round the middle, like paint being stirred, pulling the eye inward.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Turn broad soft bands of the soft and accent colours slowly round the middle of the frame like stirred paint, with the title at the centre, and speed the turn up for about 0.4 s, 0.25 s at hype, as the title lands, then let it slow again.",
+      "when": "Fits launch and title cards that want a gentle pull towards the centre.",
+      "avoid": "Long holds, where the turning starts to read as a whirlpool, off-centre content, and calm explainers."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "constant turn with one push",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "constant turn with one push",
+        "overshoot": 0,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "shader-swirl"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-stirred-colour.mp4"
+    }
+  },
+  {
+    "id": "an-bg-contour-map",
+    "tab": "animation",
+    "name": "A drifting contour map",
+    "line": "Broad fields in faint contour steps drift slowly like a map: a calm graphic texture for planning and data films.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "motion-graphics",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Drift broad fields in faint contour steps, from the page through the soft colour to a tint of the accent, by about 2% of the frame every second, slowly enough that the texture reads as a map rather than as motion, with content sitting on top at full contrast.",
+      "when": "Fits planning, logistics, data and see-everything films.",
+      "avoid": "Charts or maps that have contours of their own, strong contrast behind small type, and fast drift."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "shader-simplex-noise"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/an-bg-contour-map.mp4"
+    }
+  },
+  {
+    "id": "an-bg-riso-print",
+    "tab": "animation",
+    "name": "Two-ink print look",
+    "line": "Flat shapes and type printed in two or three overlapping inks, slightly out of line with each other, on a soft paper grain.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "4:5",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Print everything in two or three flat inks that overlap where shapes cross, each ink shifted by about half a percent of the frame and textured like paper, and keep the motion simple, slides and wipes over about 0.6 s, 0.9 s in a calm film.",
+      "when": "Fits independent, editorial and culture brands, posters and event promos.",
+      "avoid": "Halftone dot patterns, colour fringes that look like an error, and more than three inks."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "an-bg-paper-look"
+  },
+  {
+    "id": "an-bg-painted-backdrop",
+    "tab": "animation",
+    "name": "Hand-painted backdrop",
+    "line": "A painted backdrop with visible brush strokes drifts slowly behind the content, like a stage set.",
+    "family": "Backgrounds and texture",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "animated-short",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Paint the backdrop in broad strokes of the brand’s colours with visible brush texture, drift it slowly sideways at a constant rate behind the content, and change scene by passing a new painted panel across in about 1 s, 0.7 s at confident.",
+      "when": "Fits story films, food and travel brands, and warm seasonal campaigns.",
+      "avoid": "Stock paint textures, strokes behind small type, and colours outside the brand."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "constant slow drift",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "constant drift",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "liquid-morph",
+      "params": {}
+    },
+    "nearest": "an-bg-silk-folds"
+  }
+]
