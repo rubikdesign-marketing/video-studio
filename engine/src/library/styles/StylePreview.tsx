@@ -1,34 +1,36 @@
-// One short silent loop for a style in the library: the entry's own moves, one after another, on its background,
-// set in the demo brand's sample line. 30 fps, 90 frames. The frame size comes from the entry's first size.
-// Moves that need a scene around them (camera, transitions, product components) are not played here; the plan in
-// tools/styles/render-previews.mjs skips them (renderable.json is the list both read).
-import type { CSSProperties, FC } from 'react';
-import { Composition } from 'remotion';
-import { BrandProvider, useBrand } from '../../kit/brand';
+// One short silent loop for a style in the library: the entry's own moves, one after another, each played by its
+// own demo scene from the motion library (src/library/motion: demos/ and the sized families), at the entry's size,
+// on the entry's background. 30 fps, 90 frames. Nothing here is registered twice: the scenes are only imported.
+// Capture-family moves need a real capture and are not played by this file yet (see CaptureMove below).
+import type { FC } from 'react';
+import { Composition, Series } from 'remotion';
+import { BrandProvider } from '../../kit/brand';
 import * as Backgrounds from '../../kit/backgrounds';
 import { MotionProvider, type PresetName } from '../../kit/motion';
-import * as Moves from '../../kit/moves';
-import * as Type from '../../kit/type';
-import { Stage } from '../../kit/ui';
 import type { StageName } from '../../kit/tokens';
-import motionIndex from '../../../../library/motion/index.json';
+import { Stage } from '../../kit/ui';
 import backgroundIndex from '../../../../library/backgrounds/index.json';
-import renderable from './renderable.json';
+import motionIndex from '../../../../library/motion/index.json';
+import { demos } from '../motion/demos';
+import type { FormatName, SizedDemo } from '../motion/sized';
+import { sizedFamilies } from '../motion/sized-families';
 
 export const FPS = 30;
 export const FRAMES = 90;
-const SECONDS = FRAMES / FPS;
+/** At most this many moves are played in one clip; each gets an equal share of the frames. */
+export const MAX_MOVES = 3;
 
 type Energy = 'calm' | 'confident' | 'hype';
 type Timing = { beat_s?: number; hold_s?: number };
-/** The part of a library entry the preview reads. */
+/** The part of a library entry the preview reads. `engine` holds motion-library move names (or background names). */
 export type PreviewEntry = {
   id: string;
   filters: { energy: Energy[]; sizes: string[] };
   timing?: Partial<Record<Energy, Timing>>;
   engine: string[];
 };
-export type StylePreviewProps = { entry: PreviewEntry };
+/** `capture` is "<job>/<id>", a demo-brand capture, for entries whose moves play on one. */
+export type StylePreviewProps = { entry: PreviewEntry; capture?: string };
 
 /** Pixels for each size: 480 on the long side. */
 export const SIZES: Record<string, { width: number; height: number }> = {
@@ -38,86 +40,78 @@ export const SIZES: Record<string, { width: number; height: number }> = {
   '4:5': { width: 384, height: 480 },
 };
 
-type LineMove = FC<{ lines: string[]; at: number; out?: number }>;
-type TextMove = FC<{ text: string; at: number; out?: number }>;
-const lineMoves: Record<string, LineMove> = {
-  BlurIn: Moves.BlurIn as unknown as LineMove,
-  MaskRise: Type.MaskRise, FadeUp: Type.FadeUp, LetterCascade: Type.LetterCascade, SoftWipe: Type.SoftWipe,
-  BlurSweep: Type.BlurSweep, FocusIn: Type.FocusIn, OutlineFill: Type.OutlineFill, BlockReveal: Type.BlockReveal,
-  Slam: Type.Slam, WordPop: Type.WordPop, DropBounce: Type.DropBounce, FlipUp: Type.FlipUp, ArcSwing: Type.ArcSwing,
-  ScatterAssemble: Type.ScatterAssemble, FromLens: Type.FromLens, SmearIn: Type.SmearIn, HumanType: Type.HumanType,
-  ScrambleLock: Type.ScrambleLock, SplitFlap: Type.SplitFlap, DrumRoll: Type.DrumRoll,
-} as unknown as Record<string, LineMove>;
-const textMoves: Record<string, TextMove> = {
-  TrackingSettle: Moves.TrackingSettle as unknown as TextMove,
-  TypeOn: Moves.TypeOn as unknown as TextMove,
-};
+type Scene = FC<{ page: StageName; format: FormatName }>;
+type Known = { Scene: Scene };
+/** Every move with a standalone demo scene: the gallery scenes, then the sized families (text, transitions, openers, shaders, ugc). */
+const scenes = new Map<string, Known>();
+for (const d of demos) scenes.set(d.name, { Scene: d.Scene as Scene });
+for (const family of sizedFamilies) for (const d of family.demos as SizedDemo[]) scenes.set(d.name, { Scene: d.Scene });
+
+type Named = { name: string; component: string; best_page?: string };
+const backgrounds = new Map<string, Named>();
+for (const b of (backgroundIndex as { backgrounds: Named[] }).backgrounds) { backgrounds.set(b.name, b); backgrounds.set(b.component, b); }
 type Backdrop = FC<{ energy?: 'rest' | 'alive' | 'peak'; seed?: number }>;
 const backdrops = Backgrounds as unknown as Record<string, Backdrop>;
 
-// The list the plan reads must match what this file can play.
-for (const name of renderable.moves) if (!lineMoves[name] && !textMoves[name]) throw new Error(`renderable.json lists ${name}, which StylePreview cannot play`);
-for (const name of renderable.backgrounds) if (!backdrops[name]) throw new Error(`renderable.json lists background ${name}, which StylePreview cannot play`);
+const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+const sceneOf = (name: string) => scenes.get(name) ?? scenes.get(kebab(name));
+const backgroundOf = (name: string) => { const b = backgrounds.get(name) ?? backgrounds.get(kebab(name)); return b && backdrops[b.component] ? b : undefined; };
 
-type Named = { name: string; component: string; pages?: string[]; best_page?: string };
-const componentOf = new Map<string, string>();
-for (const m of (motionIndex as { moves: Named[] }).moves) { componentOf.set(m.name, m.component); componentOf.set(m.component, m.component); }
-const backgroundOf = new Map<string, Named>();
-for (const b of (backgroundIndex as { backgrounds: Named[] }).backgrounds) { backgroundOf.set(b.name, b); backgroundOf.set(b.component, b); }
+/** Moves that play on a real capture: the capture- families, and the join-, stage-, product- and relayout- ones. */
+const captureMoves = new Set<string>();
+for (const m of (motionIndex as { moves: { name: string; family: string }[] }).moves) {
+  if (m.family.startsWith('capture-') || /^(join|stage|product|relayout)-/.test(m.name)) captureMoves.add(m.name);
+}
+export const needsCapture = (name: string) => captureMoves.has(name) || captureMoves.has(kebab(name));
 
 /** The energy the preview is timed from: confident, or the entry's only (first) energy. */
 export const energyOf = (entry: PreviewEntry): Energy => (entry.filters.energy.includes('confident') ? 'confident' : entry.filters.energy[0] ?? 'confident');
 const backdropEnergy = { calm: 'rest', confident: 'alive', hype: 'peak' } as const;
+const formatOf = (entry: PreviewEntry): FormatName => (entry.filters.sizes[0] in SIZES ? entry.filters.sizes[0] : '9:16') as FormatName;
 
-const Scene: FC<{ entry: PreviewEntry }> = ({ entry }) => {
-  const brand = useBrand();
-  const energy = energyOf(entry);
-  const names = entry.engine.map((n) => componentOf.get(n) ?? n);
-  const playable = names.filter((n) => lineMoves[n] || textMoves[n]).slice(0, 3);
-  const bg = entry.engine.map((n) => backgroundOf.get(n)).find((b) => b && backdrops[b.component]);
-  // A style with only a background still shows the sample line, so the clip is not an empty page.
-  const moves = playable.length ? playable : ['FadeUp'];
-  const sample = brand.name;
-  const [first, ...others] = sample.split(' ');
-  const rest = others.join(' ') || 'brand';
-  const beat = Math.min(entry.timing?.[energy]?.beat_s ?? 0.4, 0.5);
-  const slot = SECONDS / moves.length;
-  const fill: CSSProperties = { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' };
+/** Moves that play on a real capture. Built in the follow-up task, with a demo-brand capture to play them on. */
+const CaptureMove: FC<{ name: string; capture?: string }> = ({ name }) => {
+  throw new Error(`${name} plays on a capture, and capture previews are not built yet`);
+};
+
+const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({ entry, page, capture }) => {
+  const format = formatOf(entry);
+  const moves = entry.engine.filter((n) => sceneOf(n) || needsCapture(n)).slice(0, MAX_MOVES);
+  const bg = entry.engine.map(backgroundOf).find(Boolean);
   const Backdrop = bg ? backdrops[bg.component] : null;
+  const slot = Math.floor(FRAMES / Math.max(1, moves.length));
   return (
     <>
-      {Backdrop ? <Backdrop energy={backdropEnergy[energy]} /> : null}
-      {moves.map((name, i) => {
-        const at = i * slot + Math.min(beat, 0.25);
-        const out = Math.min((i + 1) * slot - 0.1, SECONDS - 0.15);
-        const Lines = lineMoves[name];
-        const Text = textMoves[name];
-        return (
-          <div key={`${name}-${i}`} style={fill}>
-            {Lines ? <Lines lines={name === 'BlurIn' ? [first, `*${rest}*`] : [`${first} *${rest}*`]} at={at} out={out} /> : <Text text={sample} at={at} out={out} />}
-          </div>
-        );
-      })}
+      {Backdrop ? <Backdrop energy={backdropEnergy[energyOf(entry)]} /> : null}
+      <Series>
+        {moves.map((name, i) => {
+          const known = sceneOf(name);
+          return (
+            <Series.Sequence key={`${name}-${i}`} durationInFrames={i === moves.length - 1 ? FRAMES - slot * i : slot}>
+              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} />}
+            </Series.Sequence>
+          );
+        })}
+      </Series>
     </>
   );
 };
 
-export const StylePreview: FC<StylePreviewProps> = ({ entry }) => {
-  const energy = energyOf(entry);
-  const bg = entry.engine.map((n) => backgroundOf.get(n)).find((b) => b && backdrops[b.component]);
+export const StylePreview: FC<StylePreviewProps> = ({ entry, capture }) => {
+  const bg = entry.engine.map(backgroundOf).find(Boolean);
   const page = (bg?.best_page ?? 'light') as StageName;
   return (
     <BrandProvider brand="demo">
-      <MotionProvider preset={energy as PresetName}>
+      <MotionProvider preset={energyOf(entry) as PresetName}>
         <Stage name={page}>
-          <Scene entry={entry} />
+          <Moves entry={entry} page={page} capture={capture} />
         </Stage>
       </MotionProvider>
     </BrandProvider>
   );
 };
 
-const sample: PreviewEntry = { id: 'sample', filters: { energy: ['confident'], sizes: ['9:16'] }, timing: { confident: { beat_s: 0.4 } }, engine: ['blur-in', 'paper'] };
+const sample: PreviewEntry = { id: 'sample', filters: { energy: ['confident'], sizes: ['9:16'] }, engine: ['blur-in', 'paper'] };
 
 export const StylePreviewComposition: FC = () => (
   <Composition

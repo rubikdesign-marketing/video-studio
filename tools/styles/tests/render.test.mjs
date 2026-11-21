@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, cpSync, rmSync, readFileSync, existsSync } from 'node:fs';
+import { mkdtempSync, cpSync, rmSync, readFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadLibrary } from '../lib/library.mjs';
-import { planRender, previewSize } from '../render-previews.mjs';
+import { planRender, previewSize, sceneNames, classify, captureStatus } from '../render-previews.mjs';
 import { buildSprite, SPRITE_MAX_S } from '../lib/sprite.mjs';
 
 const FIX = join(dirname(fileURLToPath(import.meta.url)), 'fixtures', 'lib');
@@ -27,8 +27,7 @@ test('render plan: skips entries that have a clip, made-on-request entries and s
     rmSync(clipOf(root, 'demo-slow-push'));
     rmSync(clipOf(root, 'demo-kinetic-type'));
     const plan = planFor(root);
-    // demo-slow-push uses DollyIn (a camera move, cannot render alone); demo-kinetic-type uses WordRise (a registry component)
-    // so only entries with a renderable move are in the plan. demo-paper-world has its clip.
+    // demo-slow-push and demo-kinetic-type name items with no demo scene, so they are not in the plan.
     const planned = ids(plan.render);
     assert.ok(!planned.includes('demo-clay-hero'), 'made on request');
     assert.ok(!planned.includes('acme-soft-tap'), 'sound');
@@ -50,7 +49,7 @@ test('render plan: a renderable entry without a clip is planned at its size; unr
     assert.equal(job.width, 270);
     assert.equal(job.height, 480);
     assert.equal(job.out, clipOf(root, 'demo-soft-arrive'));
-    assert.deepEqual(job.moves, ['BlurIn']);
+    assert.deepEqual(job.moves, ['blur-in']);
     // demo-slow-push: DollyIn cannot render alone, so it is skipped with a note and needs attention
     assert.ok(plan.notes.some((n) => n.includes('demo-slow-push') && n.includes('DollyIn')));
     assert.ok(ids(plan.attention).includes('demo-slow-push'));
@@ -81,6 +80,74 @@ test('render plan: --only picks one id and --tab one tab; a clip path off the co
     lib.byId.get('demo-soft-arrive').preview.clip = 'library/styles/previews/other.mp4';
     const plan = planRender(lib, { root, force: true });
     assert.ok(plan.attention.some((a) => a.id === 'demo-soft-arrive' && /previews\/demo-soft-arrive\.mp4/.test(a.reason)));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+const addJob = (root, job, brand) => {
+  mkdirSync(join(root, 'jobs', job), { recursive: true });
+  writeFileSync(join(root, 'jobs', job, 'job.json'), JSON.stringify({ name: job, brand }));
+};
+const onCapture = (root) => {
+  const lib = loadLibrary(root);
+  const e = lib.byId.get('demo-soft-arrive');
+  e.engine = ['cursor-classic'];
+  return { lib, e };
+};
+
+test('scenes: the plan reads the motion library, not a hand-kept list', () => {
+  const scenes = sceneNames();
+  for (const n of ['blur-in', 'push-through', 'camera', 'mask-rise']) assert.ok(scenes.has(n), n);
+  // moves that play on a real capture have no standalone scene
+  for (const n of ['cursor-classic', 'stage-card', 'join-cut', 'relayout-vertical-follow']) assert.ok(!scenes.has(n), n);
+  assert.equal(classify('push-through').kind, 'scene');
+  assert.equal(classify('BlurIn').kind, 'scene');
+  assert.equal(classify('Paper').kind, 'background');
+  assert.equal(classify('cursor-classic').kind, 'capture');
+  assert.equal(classify('join-cut').kind, 'capture');
+  assert.equal(classify('NoSuchMove').kind, null);
+});
+
+test('capture: only a job whose brand is demo is accepted', () => {
+  const root = scratch();
+  try {
+    addJob(root, 'client-test', 'acme');
+    addJob(root, 'demo-test', 'demo');
+    assert.equal(captureStatus(root, null).ok, false);
+    assert.equal(captureStatus(root, '').ok, false);
+    assert.equal(captureStatus(root, 'missing-job/take-1').ok, false);
+    const refused = captureStatus(root, 'client-test/take-1');
+    assert.equal(refused.ok, false);
+    assert.match(refused.reason, /no demo capture yet/);
+    assert.match(refused.reason, /acme/);
+    assert.equal(captureStatus(root, 'demo-test/take-1').ok, true);
+    assert.equal(captureStatus(root, '../demo-test/take-1').ok, false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: capture-family entries need a demo capture and are otherwise not rendered', () => {
+  const root = scratch();
+  try {
+    addJob(root, 'client-test', 'acme');
+    addJob(root, 'demo-test', 'demo');
+    // no --capture
+    let { lib } = onCapture(root);
+    let plan = planRender(lib, { root, force: true, only: 'demo-soft-arrive' });
+    assert.deepEqual(plan.render, []);
+    assert.deepEqual(plan.attention, [{ id: 'demo-soft-arrive', reason: 'no demo capture yet' }]);
+    // a capture of a non-demo job is refused
+    ({ lib } = onCapture(root));
+    plan = planRender(lib, { root, force: true, only: 'demo-soft-arrive', capture: 'client-test/take-1' });
+    assert.deepEqual(plan.render, []);
+    assert.match(plan.attention[0].reason, /no demo capture yet/);
+    // a demo capture is passed on as the capture prop
+    ({ lib } = onCapture(root));
+    plan = planRender(lib, { root, force: true, only: 'demo-soft-arrive', capture: 'demo-test/take-1' });
+    assert.deepEqual(plan.attention, []);
+    assert.equal(plan.render.length, 1);
+    assert.equal(plan.render[0].capture, 'demo-test/take-1');
+    // an entry with no capture move never carries one
+    plan = planRender(loadLibrary(root), { root, force: true, only: 'demo-paper-world', capture: 'demo-test/take-1' });
+    assert.equal(plan.render[0].capture, null);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
