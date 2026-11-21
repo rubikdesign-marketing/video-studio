@@ -241,7 +241,10 @@ function applyOne(brief, questionId, { value, words } = {}) {
       deliver.find((d) => d.size === v).master = true;
       b.deliver = deliver; return b;
     }
-    case 'audience': b.awareness = v; return w ? setField(b, 'for', w) : b;
+    case 'audience':
+      // A card alone leaves "who" open, and the question would come straight back: ask for the words instead.
+      if (!w && empty(brief.for)) throw new Error('Say who it is for in a few words.');
+      b.awareness = v; return w ? setField(b, 'for', w) : b;
     case 'hook': b.hook = { ...brief.hook, family: v, ...(w && { idea: w }) }; return b;
     case 'proof': b.must_show = [...(brief.must_show || []), { what: v, evidence: '' }]; return b;
     case 'reference':

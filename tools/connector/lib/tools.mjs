@@ -14,13 +14,66 @@ const CONFIRMED = 'This brief is confirmed and its video has started. To change 
 const CONTINUE = 'Start a new chat in the studio folder and say "continue the video".';
 const cut = (v, n = 120) => (typeof v === 'string' && v.length > n ? `${v.slice(0, n - 1)}…` : v);
 const given = (v) => (Array.isArray(v) ? v.some((x) => String(x).trim()) : v != null && String(v).trim() !== '');
+const confirmed = (brief) => (brief?.decisions || []).some((d) => d?.what === 'plan confirmed');
 
-/** The studio's context, with the demo brand and any unknown brand never used as the default. */
+/** The studio's context, with the demo brand and any unknown brand never used as the default. A studio with one
+ *  customer brand and no usable default uses that brand (onlyBrand), so it is not asked every time. */
 function contextOf(root) {
   const ctx = studioContext(root);
   const customers = customerBrands(ctx);
   if (ctx.defaultBrand === 'demo' || !customers.includes(ctx.defaultBrand)) delete ctx.defaultBrand;
-  return { ctx, customers };
+  const onlyBrand = !ctx.defaultBrand && customers.length === 1;
+  if (onlyBrand) ctx.defaultBrand = customers[0];
+  return { ctx, customers, onlyBrand };
+}
+
+/* ---------- The page's wording: the same questions, without engine paths or file names ---------- */
+
+// Questions whose chat wording does not fit the page: the brand list there names demo, and files are added in chat.
+const PAGE_QUESTION = {
+  brand: 'Which brand is this for? A new brand is set up in chat: say "set up my brand" in a chat in the studio folder.',
+  reference: 'Is there a film you want this one to feel like? Paste a link, or pick one from our library; then say what you like about it.',
+};
+// Reasons behind an assumption that are not the customer's own words.
+const BECAUSE = { 'job.json': 'already set for this job', 'the studio default': "your studio's default brand" };
+const POINTER = /\b(in|from) brands\/([^/\s]+)\/product\/discovery\.md, section (\d+)/;
+
+/** The first filled-in line of one numbered section of a brand's product discovery, as plain text, or null. */
+function discoveryLine(root, brand, n) {
+  let text;
+  try { text = fs.readFileSync(safePath(root, `brands/${brand}/product/discovery.md`), 'utf8'); } catch { return null; }
+  const lines = text.split(/\r?\n/);
+  const at = lines.findIndex((l) => new RegExp(`^##\\s+${n}[.)\\s]`).test(l));
+  if (at < 0) return null;
+  for (const raw of lines.slice(at + 1)) {
+    if (/^##\s/.test(raw)) break; // the next section
+    let t = raw.trim();
+    if (!t || t.startsWith('#') || /^[|\s:-]+$/.test(t) || /^[-*]\s+\*\*[^*]+\*\*\s*$/.test(t)) continue; // headings, table rules, empty template items
+    if (t.startsWith('|')) {
+      const cells = t.split('|').map((c) => c.trim()).filter(Boolean);
+      if (cells.length < 2) continue; // a table row not filled in
+      t = `${cells[0]}: ${cells.slice(1).join(', ')}`;
+    }
+    t = t.replace(/^[-*>]\s+/, '').replace(/\*\*|`/g, '').replace(/\s+/g, ' ').trim();
+    if (t) return cut(t, 120);
+  }
+  return null;
+}
+
+/** A recommended answer that points into a brand's discovery file becomes that section's first line. */
+function plainRecommended(root, text) {
+  if (typeof text !== 'string') return text;
+  const m = POINTER.exec(text);
+  if (!m) return text;
+  return discoveryLine(root, m[2], m[3]) ?? text.replace(POINTER, `${m[1]} your product discovery`);
+}
+
+/** A library film as text only: its title (a plain one made from the file name when it has none) and its type. */
+function filmText(e) {
+  const rel = String(e.file || '').replace(/^library\/references\//, '');
+  const title = e.title && e.title !== rel ? String(e.title) : rel.split('/').pop().replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ').trim();
+  const type = String(e.type || '').replace(/[-_]+/g, ' ').trim();
+  return { title: cut(title, 120), type: type ? type[0].toUpperCase() + type.slice(1) : null };
 }
 
 /** The job folder for a name from the page. The name is checked before any path is built. */
@@ -33,17 +86,23 @@ function jobDirOf(root, job) {
 }
 
 function checkReply(root, job, dir) {
-  const { ctx, customers } = contextOf(root);
+  const { ctx, customers, onlyBrand } = contextOf(root);
   const { brief, job: jobJson } = loadJob(dir);
   if (!brief) throw new Error(`Not a brief: ${job}`);
   const opts = { job: jobJson, ctx };
   const assumed = assumptions(brief, { jobBrand: jobJson.brand, ...ctx });
   const checks = preflight(brief, opts);
   const all = questions(brief, opts).map((q) => ({
-    id: q.id, question: q.question, why: q.why, recommended: q.recommended, field: q.field,
+    id: q.id, question: PAGE_QUESTION[q.id] ?? q.question, why: q.why, recommended: plainRecommended(root, q.recommended), field: q.field,
     choices: q.id === 'brand' ? customers.map((value) => ({ value, label: value, recommended: false })) : q.choices,
     many: q.many,
+    ...(Array.isArray(q.examples) && { examples: q.examples.map(filmText) }),
   }));
+  const because = (a) => {
+    if (a.id === 'brand' && a.because === 'the studio default' && onlyBrand) return { because: 'your only brand', said: false };
+    if (Object.hasOwn(BECAUSE, a.because)) return { because: BECAUSE[a.because], said: false };
+    return { because: cut(String(a.because ?? '')), said: true };
+  };
   const brand = brief.brand || assumed.find((a) => a.id === 'brand')?.value;
   const parked = customers.length === 0;
   let status = 'ready';
@@ -52,7 +111,7 @@ function checkReply(root, job, dir) {
   else if (checks.find((c) => c.id === 'product')?.todo?.includes('no approved product discovery')) status = 'needs-discovery';
   return {
     job, brand_status: status,
-    assumed: assumed.map((a) => ({ id: a.id, value: a.value, because: cut(String(a.because ?? '')) })),
+    assumed: assumed.map((a) => ({ id: a.id, value: a.value, ...because(a) })),
     preflight: checks.map((c) => ({ id: c.id, label: c.label, done: c.done, known: cut(c.known), todo: c.todo })),
     questions: all.slice(0, 3), more: Math.max(0, all.length - 3),
     ready_for_plan: !parked && status === 'ready' && checks.every((c) => c.done),
@@ -96,6 +155,7 @@ export function makeHandlers(root) {
       const hasWords = typeof words === 'string' && words.trim() !== '';
       if (!hasValue && !hasWords) throw new Error('Give a value or words for the answer.');
       const { brief } = loadJob(dir);
+      if (confirmed(brief)) throw new Error(CONFIRMED);
       const { customers } = contextOf(root);
       let recorded = false;
       let reason = null;
@@ -122,7 +182,7 @@ export function makeHandlers(root) {
       const { brief } = loadJob(dir);
       if (!brief) throw new Error(`Not a brief: ${job}`);
       // A confirmed brief already has its job.json at the Idea stage, which confirming again leaves as it is.
-      if ((brief.decisions || []).some((d) => d?.what === 'plan confirmed')) throw new Error(CONFIRMED);
+      if (confirmed(brief)) throw new Error(CONFIRMED);
       saveBrief(dir, reopen(brief, item));
       decide(dir, `reopened ${item}`, { by: 'owner' });
       return checkReply(root, job, dir);
@@ -132,7 +192,8 @@ export function makeHandlers(root) {
       const dir = jobDirOf(root, job);
       const { ctx, customers } = contextOf(root);
       if (customers.length === 0) throw new Error(`Not yet: set up your brand first. ${BRAND_FIRST}`);
-      const out = writePlan(root, dir, { ctx });
+      // A confirmed brief's plan is shown as it is now, and plan.md (the plan that was confirmed) stays as it was.
+      const out = writePlan(root, dir, { ctx, dryRun: confirmed(loadJob(dir).brief) });
       if (!out) {
         const { brief, job: jobJson } = loadJob(dir);
         const open = preflight(brief, { job: jobJson, ctx }).filter((c) => !c.done).map((c) => `${c.label}: ${c.todo}`);

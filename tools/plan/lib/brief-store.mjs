@@ -101,13 +101,19 @@ export function decide(jobDir, what, { by = 'owner', applies = 'all' } = {}) {
 
 const TYPE_OF = { 'product-demo': 'demo', tutorial: 'tutorial', 'footage-edit': 'edit', ugc: 'edit', 'animated-short': 'edit' };
 
-/** Records "plan confirmed" (once) and makes job.json at the Idea stage when there is none. Safe to call again. */
+/** Records "plan confirmed" (once) and makes job.json at the Idea stage when there is none. Refuses when plan.md is
+ *  not the plan of the brief as it is now. Safe to call again. */
 export function confirmPlan(root, jobDir, { ctx = studioContext(root) } = {}) {
   const { brief, job } = loadJob(jobDir);
   const name = path.basename(jobDir);
   if (!brief) throw new Error(`${name}: there is no brief yet`);
   if (!fs.existsSync(path.join(jobDir, 'plan.md'))) throw new Error(`${name}: there is no plan yet; write the plan first`);
-  if (!planFor(root, brief, job, ctx)) throw new Error(`${name}: the plan is not complete; the checklist still has open items`);
+  const out = planFor(root, brief, job, ctx);
+  if (!out) throw new Error(`${name}: the plan is not complete; the checklist still has open items`);
+  // The customer confirms the plan they were shown: a brief changed since then needs the plan shown again. A confirmed
+  // plan gains a "plan confirmed" line, so confirming it again skips this check.
+  const confirmed = (brief.decisions || []).some((d) => d?.what === 'plan confirmed');
+  if (!confirmed && fs.readFileSync(path.join(jobDir, 'plan.md'), 'utf8') !== renderPlan(out)) throw new Error('The plan changed since it was shown; show it again.');
   const file = path.join(jobDir, 'job.json');
   const exists = fs.existsSync(file);
   let made = job;

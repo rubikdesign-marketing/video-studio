@@ -97,3 +97,14 @@ test('cli: a bad job.json with no brief still says no brief yet', () => {
   const r = spawnSync(process.execPath, [CLI, 'check', jobDir], { encoding: 'utf8' });
   assert.equal(r.status, 1); assert.match(r.stdout, /No brief yet/);
 });
+
+test('store: confirmPlan refuses a plan that changed since it was shown, and a confirmed plan can be confirmed again', () => {
+  const { root, jobDir } = fresh();
+  startBrief(root, jobDir, 'a demo'); saveBrief(jobDir, completeBrief()); writePlan(root, jobDir);
+  saveBrief(jobDir, { ...completeBrief(), length_cap_seconds: 30 });
+  assert.throws(() => confirmPlan(root, jobDir), /^Error: The plan changed since it was shown; show it again\.$/);
+  assert.ok(!fs.existsSync(path.join(jobDir, 'job.json')));
+  writePlan(root, jobDir);
+  assert.equal(confirmPlan(root, jobDir).length_cap_seconds, 30);
+  assert.equal(confirmPlan(root, jobDir).length_cap_seconds, 30);
+});

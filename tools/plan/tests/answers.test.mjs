@@ -125,3 +125,9 @@ test('reopen: look, hook and type from a saved style are changed in chat, not re
   }
   assert.equal(reopen(styled, 'audience').for, undefined);
 });
+
+test('answers: an audience card with no words, and no one named yet, asks who it is for', () => {
+  assert.throws(() => applyAnswer({}, 'audience', { value: 'cold' }), /^Error: Say who it is for in a few words\.$/);
+  assert.equal(applyAnswer({ for: 'agency owners' }, 'audience', { value: 'cold' }).awareness, 'cold');
+  assert.equal(applyAnswer({}, 'audience', { value: 'cold', words: 'agency owners' }).for, 'agency owners');
+});
