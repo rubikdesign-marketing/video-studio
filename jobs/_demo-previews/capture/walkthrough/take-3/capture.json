@@ -1,7 +1,7 @@
 {
-  "captured": "2026-11-22T00:16:16+06:00",
+  "captured": "2026-11-22T03:59:47+06:00",
   "brand": "demo",
-  "take": 2,
+  "take": 3,
   "from": null,
   "address": "http://127.0.0.1:4317",
   "script": "jobs/_demo-previews/capture/walkthrough.json",
@@ -23,7 +23,7 @@
     "frozen": true,
     "demo_time": "2026-11-20 10:30",
     "time_zone": "UTC",
-    "page_time_at_start": 1795170600798,
+    "page_time_at_start": 1795170600718,
     "note": "The product's clock was set to the demo time before the first page opened and ran on from there. Times the product takes from its own server are not changed. Brand note: The greeting and the date on the Overview come from the page's own clock, so the demo time sets them."
   },
   "clean_screen": {
@@ -44,25 +44,25 @@
     },
     "fps": 60,
     "crf": 12,
-    "started_epoch": 1795284978.9519
+    "started_epoch": 1795298388.8421
   },
-  "seconds": 22.92,
+  "seconds": 23.861,
   "pictures_from_chrome": {
-    "count": 453,
-    "received": 1398,
+    "count": 506,
+    "received": 1475,
     "format": "jpeg",
-    "longest_gap_seconds": 1.625,
-    "full_sharpness": 453,
+    "longest_gap_seconds": 2.717,
+    "full_sharpness": 506,
     "out_of_order": 1,
     "note": "count: pictures kept (each one different from the one before); received: all Chrome sent, including repeats while the page might be changing. full_sharpness: pictures Chrome sent at double sharpness (the rest were scaled up). out_of_order: pictures that arrived after one drawn later than them; they are put back in the order they were drawn."
   },
   "marks": {
-    "customer-added": 11.491,
-    "reports": 18.734
+    "customer-added": 12.556,
+    "reports": 19.69
   },
   "mark_details": {
     "customer-added": {
-      "t": 11.491,
+      "t": 12.556,
       "url": "http://127.0.0.1:4317/",
       "tracked": {
         "new-customer": [
@@ -97,15 +97,15 @@
         ],
         "toast": [
           1588.6,
-          970.5,
-          291.8,
-          68.7
+          970.6,
+          291.7,
+          68.6
         ]
       },
       "privacy_flags": 0
     },
     "reports": {
-      "t": 18.734,
+      "t": 19.69,
       "url": "http://127.0.0.1:4317/reports",
       "tracked": {
         "new-customer": [
@@ -142,8 +142,8 @@
         "css": "#stat-active",
         "name": "active-customers"
       },
-      "start": 0.501,
-      "end": 0.527
+      "start": 0.502,
+      "end": 0.515
     },
     {
       "n": 3,
@@ -152,8 +152,8 @@
         "css": "#stat-new",
         "name": "new-this-month"
       },
-      "start": 0.53,
-      "end": 0.538
+      "start": 0.524,
+      "end": 0.528
     },
     {
       "n": 4,
@@ -162,8 +162,8 @@
         "css": "#new-customer",
         "name": "new-customer"
       },
-      "start": 0.548,
-      "end": 0.551
+      "start": 0.53,
+      "end": 0.533
     },
     {
       "n": 5,
@@ -172,8 +172,8 @@
         "css": "#recent-customers",
         "name": "recent-customers"
       },
-      "start": 0.554,
-      "end": 0.558
+      "start": 0.54,
+      "end": 0.542
     },
     {
       "n": 6,
@@ -182,16 +182,16 @@
         "css": "#filter",
         "name": "filter"
       },
-      "start": 0.576,
-      "end": 0.579
+      "start": 0.551,
+      "end": 0.553
     },
     {
       "n": 7,
       "step": {
-        "wait": 0.4
+        "wait": 1.6
       },
-      "start": 0.584,
-      "end": 0.985
+      "start": 0.556,
+      "end": 2.156
     },
     {
       "n": 8,
@@ -204,8 +204,8 @@
         "w": 166.8,
         "h": 40
       },
-      "start": 0.996,
-      "end": 1.885,
+      "start": 2.169,
+      "end": 3.061,
       "settled": 1.19
     },
     {
@@ -213,8 +213,8 @@
       "step": {
         "wait for": "Company name"
       },
-      "start": 3.332,
-      "end": 3.334
+      "start": 4.51,
+      "end": 4.511
     },
     {
       "n": 10,
@@ -228,8 +228,8 @@
         "w": 487,
         "h": 47.5
       },
-      "start": 3.342,
-      "end": 4.157,
+      "start": 4.517,
+      "end": 5.318,
       "settled": 0.05
     },
     {
@@ -244,9 +244,9 @@
         "w": 487,
         "h": 47.5
       },
-      "start": 4.467,
-      "end": 5.112,
-      "settled": 0.26
+      "start": 5.623,
+      "end": 6.258,
+      "settled": 0.27
     },
     {
       "n": 12,
@@ -260,8 +260,8 @@
         "w": 40.2,
         "h": 18
       },
-      "start": 5.632,
-      "end": 6.28,
+      "start": 6.781,
+      "end": 7.412,
       "settled": 0.05
     },
     {
@@ -279,8 +279,8 @@
         "w": 487,
         "h": 28
       },
-      "start": 6.594,
-      "end": 8.199,
+      "start": 7.722,
+      "end": 9.32,
       "settled": 0
     },
     {
@@ -294,9 +294,9 @@
         "w": 48,
         "h": 28
       },
-      "start": 8.462,
-      "end": 9.081,
-      "settled": 0.33
+      "start": 9.573,
+      "end": 10.172,
+      "settled": 0.31
     },
     {
       "n": 15,
@@ -309,17 +309,17 @@
         "w": 143.7,
         "h": 42
       },
-      "start": 9.66,
-      "end": 10.482,
-      "settled": 0.16
+      "start": 10.737,
+      "end": 11.559,
+      "settled": 0.15
     },
     {
       "n": 16,
       "step": {
         "wait for": "Customer added"
       },
-      "start": 10.9,
-      "end": 11.312
+      "start": 11.968,
+      "end": 12.383
     },
     {
       "n": 17,
@@ -328,16 +328,16 @@
         "css": "#toast",
         "name": "toast"
       },
-      "start": 11.323,
-      "end": 11.327
+      "start": 12.387,
+      "end": 12.392
     },
     {
       "n": 18,
       "step": {
         "mark": "customer-added"
       },
-      "start": 11.334,
-      "end": 11.618
+      "start": 12.396,
+      "end": 12.67
     },
     {
       "n": 19,
@@ -346,8 +346,8 @@
         "in": "#customer-rows",
         "seconds": 1.2
       },
-      "start": 11.625,
-      "end": 13.446,
+      "start": 12.675,
+      "end": 14.479,
       "settled": 0
     },
     {
@@ -362,8 +362,8 @@
         "w": 180,
         "h": 17
       },
-      "start": 13.711,
-      "end": 15.042,
+      "start": 14.736,
+      "end": 16.051,
       "settled": 0
     },
     {
@@ -371,51 +371,51 @@
       "step": {
         "wait": 0.6
       },
-      "start": 15.315,
-      "end": 15.915
+      "start": 16.312,
+      "end": 16.913
     },
     {
       "n": 22,
       "step": {
         "press": "Meta+K"
       },
-      "start": 15.922,
-      "end": 15.925,
-      "settled": 0.27
+      "start": 16.917,
+      "end": 16.924,
+      "settled": 0.26
     },
     {
       "n": 23,
       "step": {
         "type": "rep"
       },
-      "start": 16.451,
-      "end": 16.732,
-      "settled": 0
+      "start": 17.44,
+      "end": 17.709,
+      "settled": 0.01
     },
     {
       "n": 24,
       "step": {
         "press": "Enter"
       },
-      "start": 16.995,
-      "end": 17.01,
-      "settled": 1.31
+      "start": 17.974,
+      "end": 17.978,
+      "settled": 1.3
     },
     {
       "n": 25,
       "step": {
         "wait for": "Customers added each week"
       },
-      "start": 18.577,
-      "end": 18.578
+      "start": 19.534,
+      "end": 19.535
     },
     {
       "n": 26,
       "step": {
         "mark": "reports"
       },
-      "start": 18.582,
-      "end": 18.823
+      "start": 19.538,
+      "end": 19.775
     },
     {
       "n": 27,
@@ -428,9 +428,9 @@
         "w": 99.3,
         "h": 36
       },
-      "start": 18.83,
-      "end": 19.905,
-      "settled": 0.06
+      "start": 19.78,
+      "end": 20.844,
+      "settled": 0.05
     },
     {
       "n": 28,
@@ -443,8 +443,8 @@
         "w": 227,
         "h": 38
       },
-      "start": 20.215,
-      "end": 21.048,
+      "start": 21.149,
+      "end": 21.984,
       "settled": 0
     },
     {
@@ -452,8 +452,8 @@
       "step": {
         "wait": 0.8
       },
-      "start": 21.304,
-      "end": 22.104
+      "start": 22.246,
+      "end": 23.048
     }
   ],
   "tabs": [

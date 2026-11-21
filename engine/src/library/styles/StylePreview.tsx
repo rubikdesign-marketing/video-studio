@@ -7,7 +7,7 @@
 // sceneStart), and a pointer named beside a capture move sets that move's pointer instead of taking a slot.
 import type { FC } from 'react';
 import { Composition, Sequence, Series, useVideoConfig } from 'remotion';
-import { useCapture } from '../../capture/load';
+import { useCapture, type LoadedCapture } from '../../capture/load';
 import { PointerOverride } from '../../kit/CaptureClip';
 import type { CursorStyle } from '../../kit/capture/looks';
 import { BrandProvider } from '../../kit/brand';
@@ -18,7 +18,7 @@ import { Stage } from '../../kit/ui';
 import backgroundIndex from '../../../../library/backgrounds/index.json';
 import motionIndex from '../../../../library/motion/index.json';
 import { captureScenes } from '../motion/capture';
-import type { CaptureScene } from '../motion/capture-scenes';
+import type { CaptureScene, SceneTiming } from '../motion/capture-scenes';
 import { demos } from '../motion/demos';
 import { joinScenes } from '../motion/joins';
 import { MoveCaptions } from '../motion/parts';
@@ -96,6 +96,14 @@ export const sceneFrame = (scene: Pick<CaptureScene, 'size' | 'fit'>, width: num
   return [Math.round(width * scale), Math.round(height * scale)];
 };
 
+/** Each scene's timing on a capture, worked out once per render tab (the plan behind it covers the whole clip). */
+const timings = new Map<string, SceneTiming | undefined>();
+const timingOf = (scene: CaptureScene, loaded: LoadedCapture, preset: PresetName, w: number, h: number) => {
+  const key = `${scene.name}|${loaded.name}|${preset}|${w}x${h}`;
+  if (!timings.has(key)) timings.set(key, scene.timing?.(loaded, scene.props, preset, { width: w, height: h }));
+  return timings.get(key);
+};
+
 /**
  * A capture move: its gallery scene, drawn at a frame of its own size (scaled down to the clip) with the move's name
  * left off, on the named capture, from just before its defining moment, with the entry's pointer if it names one. A
@@ -113,8 +121,9 @@ const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energy:
   const [w, h] = sceneFrame(scene, width, height);
   // The style's first listed energy always wins, as for every other preview.
   const preset = energy as PresetName;
-  // The scene's own moment (its first click, its mark on the product, its join), as the scene works it out.
-  const timing = scene.timing?.(loaded, scene.props, preset, { width: w, height: h });
+  // The scene's own moment (its first click, its mark on the product, its join), as the scene works it out: once
+  // per scene, capture, energy and frame, not every frame (it plans the whole clip).
+  const timing = timingOf(scene, loaded, preset, w, h);
   const start = sceneStart({ cue: timing?.cue, seconds: timing?.seconds ?? undefined, slot: frames, fps });
   return (
     <Sequence from={-start} width={w} height={h} durationInFrames={frames + start} style={{ transform: `scale(${width / w})`, transformOrigin: '0 0' }}>

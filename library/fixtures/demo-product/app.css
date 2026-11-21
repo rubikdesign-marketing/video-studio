@@ -90,9 +90,10 @@ kbd { font-family: var(--font); font-size: 12px; padding: 2px 7px; border: 1px s
 .logo-tile { font-style: normal; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: white; font-size: 12px; font-weight: 700; }
 .pill { justify-self: start; padding: 4px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; background: var(--soft); color: var(--accent); }
 .pill.warm { background: color-mix(in srgb, var(--warm) 18%, white); color: color-mix(in srgb, var(--warm) 80%, black); }
-.status { display: flex; align-items: center; gap: 8px; color: var(--second); }
-.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-.status.paused::before { background: var(--warm); }
+/* Status as a small text pill (no dots: house rule), outlined so it never reads as the plan pill beside it. */
+.status { justify-self: start; padding: 3px 10px; border: 1px solid color-mix(in srgb, var(--accent) 35%, white); border-radius: 999px; font-size: 12.5px; font-weight: 600; color: var(--accent); background: white; }
+.status.trial { border-color: var(--line); color: var(--second); }
+.status.paused { border-color: color-mix(in srgb, var(--warm) 45%, white); color: color-mix(in srgb, var(--warm) 80%, black); }
 .toolbar { display: flex; gap: 10px; }
 .wide-list { flex: 1; }
 

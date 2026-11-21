@@ -66,26 +66,36 @@ export function engineNames(root) {
   const soundsDir = join(root, 'library', 'sounds');
   const byGroup = new Map();
   const add = (group, name) => { sounds.add(name); if (!byGroup.has(name)) byGroup.set(name, new Set()); byGroup.get(name).add(group); };
-  const catalogue = (group, file) => {
-    for (const s of tryJson(file)?.sounds || []) {
-      const g = String(s.id || s.file || '').split('/')[0] || group;
-      if (s.id) { add(g, s.id); add(g, basename(s.id)); }
-      if (s.file) { add(g, s.file); add(g, basename(s.file, extname(s.file))); }
+  const notes = [];
+  // A catalogue's sounds; a stings file that is there but cannot be read gives a note (the other sounds still load).
+  const catalogue = (group, file, { strict = false } = {}) => {
+    if (!existsSync(file)) return;
+    const list = tryJson(file)?.sounds;
+    if (!Array.isArray(list)) {
+      if (strict) notes.push(`${file.slice(root.length + 1)} could not be read as a list of sounds, so its stings are not known`);
+      return;
+    }
+    for (const s of list) {
+      if (!s || typeof s !== 'object') continue;
+      const named = String(s.id || s.file || '');
+      const g = named.includes('/') ? named.split('/')[0] : group;
+      if (typeof s.id === 'string' && s.id) { add(g, s.id); add(g, basename(s.id)); }
+      if (typeof s.file === 'string' && s.file) { add(g, s.file); add(g, basename(s.file, extname(s.file))); }
     }
   };
   if (existsSync(soundsDir)) {
-    catalogue('', join(soundsDir, 'synth-stings.json'));
+    catalogue('', join(soundsDir, 'synth-stings.json'), { strict: true });
     for (const group of readdirSync(soundsDir, { withFileTypes: true })) {
       if (!group.isDirectory()) continue;
       catalogue(group.name, join(soundsDir, group.name, 'index.json'));
-      catalogue(group.name, join(soundsDir, group.name, 'synth-stings.json'));
+      catalogue(group.name, join(soundsDir, group.name, 'synth-stings.json'), { strict: true });
       for (const f of readdirSync(join(soundsDir, group.name))) {
         if (f !== 'index.json') { add(group.name, `${group.name}/${f}`); add(group.name, basename(f, extname(f))); }
       }
     }
   }
   const glitch = new Set([...byGroup].filter(([, groups]) => groups.size === 1 && groups.has('glitch')).map(([n]) => n));
-  return { moves, registry, backgrounds, sounds, glitch };
+  return { moves, registry, backgrounds, sounds, glitch, notes };
 }
 
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);

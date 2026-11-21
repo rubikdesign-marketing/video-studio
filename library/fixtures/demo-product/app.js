@@ -30,7 +30,7 @@
       <span class="name"><i class="logo-tile" style="background:${COLOURS[i % COLOURS.length]}">${initials(name)}</i>${name}</span>
       <span class="pill${plan === 'Business' ? ' warm' : ''}">${plan}</span>
       <span>${seats}</span>
-      <span class="status${status === 'Paused' ? ' paused' : ''}">${status}</span>
+      <span class="status${status === 'Paused' ? ' paused' : status === 'Trial' ? ' trial' : ''}">${status}</span>
     </div>`;
   const drawRows = () => {
     const q = $('filter').value.trim().toLowerCase();

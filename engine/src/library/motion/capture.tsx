@@ -234,15 +234,16 @@ const ACTIONS = new Set(['click', 'type', 'press', 'drag']);
 
 /**
  * The scene's defining moment on the clip's clock: its first hand-set camera move's cue; else its first freeze,
- * rewind or jump; else the first click, typing, key or drag in its stretch (the stretches start about 1.3 s before
- * it). And the clip's length, from the same plan the clip draws from.
+ * rewind or jump; else the first click, typing, key or drag inside its stretch (the stretches start about 1.3 s
+ * before it). And the clip's length, from the same plan the clip draws from.
  */
 const timingOf = (entry: Entry, loaded: LoadedCapture, preset: PresetName): SceneTiming => {
   const clip = clipOf(entry, loaded);
   const plan = planOfClip(clip, withThings(clip.cursor, clip.tracks, clip.things), preset);
   const from = clip.from ?? 0;
+  const to = clip.to ?? loaded.cursor.seconds;
   const time = clip.time;
-  const rec = time?.freezes?.[0]?.at ?? time?.rewinds?.[0]?.at ?? time?.jumps?.[0]?.from ?? loaded.cursor.events.find((e) => ACTIONS.has(e.type) && e.t >= from - 1e-6)?.t;
+  const rec = time?.freezes?.[0]?.at ?? time?.rewinds?.[0]?.at ?? time?.jumps?.[0]?.from ?? loaded.cursor.events.find((e) => ACTIONS.has(e.type) && e.t >= from - 1e-6 && e.t <= to + 1e-6)?.t;
   const cue = clip.moves?.length ? clip.moves[0].at : rec === undefined ? null : plan.map.filmAt(rec);
   return { cue, seconds: plan.map.duration };
 };

@@ -17,7 +17,9 @@ let banned = [];
 try { banned = JSON.parse(readFileSync(join(root, 'release', 'manifest.json'), 'utf8')).banned || []; } catch { /* no manifest: no banned words */ }
 
 const lib = loadLibrary(root);
-const { problems } = checkLibrary(lib, { names: engineNames(root), root, clips: !args.includes('--skip-clips'), corpus, banned, tab, min });
+const names = engineNames(root);
+for (const n of names.notes) console.log(`Note: ${n}`);
+const { problems } = checkLibrary(lib, { names, root, clips: !args.includes('--skip-clips'), corpus, banned, tab, min });
 const all = [...lib.notes.filter((n) => !tab || n.includes(`The ${tab === 'product-ui' ? 'Product UI' : tab[0].toUpperCase() + tab.slice(1)} `)), ...problems];
 if (all.length) { for (const p of all) console.log(p); process.exit(1); }
 const count = (tab ? [tab] : TABS).reduce((n, t) => n + lib.tabs[t].length, 0);

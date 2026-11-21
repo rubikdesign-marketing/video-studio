@@ -1,5 +1,5 @@
 {
-  "_about": "The demo product, walked through so every capture move kind finds its stretch: a click that opens something after a short wait (transitions, speed ramps), tracked cards, a button, a list and a field (product animations), typing, a drag, a menu, a toggle, a toast, a scroll, a shortcut and a second page.",
+  "_about": "The demo product, walked through so every capture move kind finds its stretch: a click that opens something after a short wait (transitions, speed ramps), tracked cards, a button, a list and a field (product animations), typing, a drag, a menu, a toggle, a toast, a scroll, a shortcut and a second page. The first click comes after a 1.6 s rest, so a product animation (about 1.3 s into its stretch) lands on the dashboard before the drawer opens.",
   "clock": "2026-11-20 10:30",
   "start": { "x": 1180, "y": 640 },
   "steps": [
@@ -9,7 +9,7 @@
     { "track": "New customer button", "css": "#new-customer", "name": "new-customer" },
     { "track": "Recent customers list", "css": "#recent-customers", "name": "recent-customers" },
     { "track": "Filter field", "css": "#filter", "name": "filter" },
-    { "wait": 0.4 },
+    { "wait": 1.6 },
     { "click": "New customer" },
     { "wait for": "Company name" },
     { "paste": "Acme Studio", "into": "Company name" },

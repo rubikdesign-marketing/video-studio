@@ -209,3 +209,24 @@ test('check: a sound inside library/sounds/glitch is refused in engine and previ
     assert.ok(run(lib).some((p) => p.includes('acme-soft-tap') && p.includes(n) && /house rules/.test(p)), `preview ${n}`);
   }
 });
+
+test('engine names: a malformed synth-stings.json gives a note, never a crash; null entries are skipped', () => {
+  const root = mkdtempSync(join(tmpdir(), 'styles-stings-'));
+  try {
+    cpSync(FIX, root, { recursive: true });
+    const file = join(root, 'library', 'sounds', 'chime', 'synth-stings.json');
+    for (const bad of ['{ not json', JSON.stringify({ group: 'chime', sounds: { id: 'chime/x' } }), JSON.stringify(null)]) {
+      writeFileSync(file, bad);
+      const n = engineNames(root);
+      assert.ok(n.notes.some((x) => x.includes('synth-stings.json')), bad);
+      assert.ok(n.sounds.has('click/soft-tap-01'), 'the other sounds still load');
+    }
+    writeFileSync(file, JSON.stringify({ group: 'chime', sounds: [null, { id: 'chime/sting-demo-synth-01' }, 7] }));
+    const n = engineNames(root);
+    assert.deepEqual(n.notes, []);
+    assert.ok(n.sounds.has('chime/sting-demo-synth-01'));
+    // an id with no group in it belongs to the folder it is catalogued in, so a glitch one is still refused
+    writeFileSync(join(root, 'library', 'sounds', 'glitch', 'synth-stings.json'), JSON.stringify({ sounds: [{ id: 'buzz-solo' }] }));
+    assert.ok(engineNames(root).glitch.has('buzz-solo'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
