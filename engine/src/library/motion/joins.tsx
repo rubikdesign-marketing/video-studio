@@ -151,6 +151,13 @@ export const joinScenes: CaptureScene[] = shows.map(({ name, Show }) => ({
   preset: presetOf(name),
   size: [FRAME.width, FRAME.height],
   fit: 'fill',
+  // The defining moment is the join itself (t0, on the clicked control), from the same plan the scene draws.
+  timing: (loaded, props, preset, frame) => {
+    const shots = shotsOf(name, loaded, null, props as Props);
+    if (!shots) return { cue: null, seconds: null };
+    const plan = planJoin(shots.a, shots.b, shots.options, preset, { ...frame, fps: FPS });
+    return { cue: plan.t0, seconds: plan.total };
+  },
 }));
 
 /** The transitions gallery, for MotionCompositions. */

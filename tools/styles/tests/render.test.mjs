@@ -5,8 +5,8 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadLibrary } from '../lib/library.mjs';
-import { planRender, previewSize, sceneNames, classify, captureStatus, defaultCapture, DEMO_JOB, remotionCli, main } from '../render-previews.mjs';
-import { SIZES, kebab, isCaptureMove, CAPTURE_STANDS_IN } from '../../../engine/src/library/styles/rules.mjs';
+import { planRender, previewSize, sceneNames, classify, captureStatus, defaultCapture, defaultPhoneCapture, isPhoneCapture, DEMO_JOB, remotionCli, main } from '../render-previews.mjs';
+import { SIZES, kebab, isCaptureMove, CAPTURE_STANDS_IN, MAX_MOVES, isPhoneMove, previewSlots, sceneStart, LEAD_S } from '../../../engine/src/library/styles/rules.mjs';
 import { buildSprite, SPRITE_MAX_S } from '../lib/sprite.mjs';
 
 const FIX = join(dirname(fileURLToPath(import.meta.url)), 'fixtures', 'lib');
@@ -458,5 +458,140 @@ test('render: shader entries are rendered with --gl=angle, others without', asyn
     await main(['--root', root, '--force', '--only', 'demo-paper-world'], { run, log: () => {} });
     const args = Object.values(seen)[0];
     assert.ok(args && !args.includes('--gl=angle'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+// ---------------------------------------------------------------- the phone take, the moment and pointer settings (Task 5c)
+
+/** A published capture as the capture tool leaves it in engine/public: its cursor.json carries the page size. */
+const publish = (root, capture, page) => {
+  const [job, id] = capture.split('/');
+  const dir = join(root, 'engine', 'public', 'jobs', job, 'capture', id);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'cursor.json'), JSON.stringify({ page, seconds: 10, events: [] }));
+};
+const phoneRow = { capture: 'demo-previews/phone', job: 'jobs/_demo-previews', id: 'phone', take: 1, brand: 'demo' };
+/** Two demo takes listed, the phone one newest, each published with its page size. */
+const twoTakes = (root, { phone = true } = {}) => {
+  addJob(root, '_demo-previews', 'demo');
+  listCaptures(root, phone ? [phoneRow, demoRow] : [demoRow]);
+  publish(root, demoRow.capture, { width: 1920, height: 1080 });
+  if (phone) publish(root, phoneRow.capture, { width: 390, height: 844 });
+};
+const familyOf = (n) => (n.startsWith('cursor-') ? 'capture-pointer' : /^(relayout|product|stage|join)-/.test(n) ? 'capture-product' : 'text');
+
+test('rules: phone moves are the ones made for a take recorded at phone size', () => {
+  assert.equal(isPhoneMove('relayout-phone-take', ''), true);
+  assert.equal(isPhoneMove('relayout-phone-take-framed', ''), true);
+  assert.equal(isPhoneMove('some-move', 'A take recorded at phone size placed full frame.'), true);
+  // a wide take shown in a phone frame is not a phone move
+  assert.equal(isPhoneMove('stage-phone', 'A generic phone slab showing a tall crop of a wide take.'), false);
+  assert.equal(isPhoneMove('relayout-vertical-phone-frame', 'A wide take followed inside a generic phone frame.'), false);
+});
+
+test('rules: a pointer beside a capture move is a setting, not a slot', () => {
+  const mobile = previewSlots(['relayout-phone-take', 'cursor-hidden', 'product-ring'], { familyOf, phone: true });
+  assert.deepEqual(mobile, { moves: ['relayout-phone-take', 'product-ring'], pointer: 'hidden' });
+  assert.deepEqual(previewSlots(['cursor-presenter', 'product-steps'], { familyOf, phone: false }), { moves: ['product-steps'], pointer: 'presenter' });
+  // a pointer alone still plays its own scene
+  assert.deepEqual(previewSlots(['cursor-classic'], { familyOf, phone: false }), { moves: ['cursor-classic'], pointer: null });
+  // beside only standalone scenes, a pointer is a scene too
+  assert.deepEqual(previewSlots(['cursor-classic', 'blur-in'], { familyOf, phone: false }), { moves: ['cursor-classic', 'blur-in'], pointer: null });
+  // on the phone take with no pointer named, the pointer is hidden (its own default, touch, is a dot)
+  assert.deepEqual(previewSlots(['relayout-phone-take'], { familyOf, phone: true }), { moves: ['relayout-phone-take'], pointer: 'hidden' });
+  // a desktop capture move with no pointer named keeps its own
+  assert.deepEqual(previewSlots(['product-ring'], { familyOf, phone: false }), { moves: ['product-ring'], pointer: null });
+  // never more than MAX_MOVES slots
+  assert.equal(previewSlots(['blur-in', 'blur-in', 'blur-in', 'blur-in'], { familyOf, phone: false }).moves.length, MAX_MOVES);
+});
+
+test('rules: each scene starts just before its defining moment, clamped to its length', () => {
+  const fps = 30;
+  assert.equal(LEAD_S, 0.3);
+  // a product mark 1.3 s into its scene, in a 1.5 s slot: start at 1.0 s
+  assert.equal(sceneStart({ cue: 1.3, seconds: 6, slot: 45, fps }), 30);
+  // no cue: from the start
+  assert.equal(sceneStart({ cue: null, seconds: 6, slot: 45, fps }), 0);
+  assert.equal(sceneStart({ cue: undefined, slot: 45, fps }), 0);
+  // a cue in the first 0.3 s: from the start, never before it
+  assert.equal(sceneStart({ cue: 0.1, seconds: 6, slot: 45, fps }), 0);
+  // a cue near the end: the slot still ends with the scene
+  assert.equal(sceneStart({ cue: 5.9, seconds: 6, slot: 45, fps }), 135);
+  // a scene shorter than its slot plays from the start
+  assert.equal(sceneStart({ cue: 1, seconds: 1, slot: 45, fps }), 0);
+  // an unknown length only clamps at the start
+  assert.equal(sceneStart({ cue: 2.3, slot: 30, fps }), 60);
+});
+
+test('phone capture: a demo take whose page is taller than wide; the desktop default skips it', () => {
+  const root = scratch();
+  try {
+    twoTakes(root);
+    assert.equal(isPhoneCapture(root, 'demo-previews/phone'), true);
+    assert.equal(isPhoneCapture(root, 'demo-previews/walkthrough'), false);
+    assert.equal(isPhoneCapture(root, 'demo-previews/missing'), false);
+    assert.equal(defaultPhoneCapture(root), 'demo-previews/phone');
+    assert.equal(defaultCapture(root), 'demo-previews/walkthrough', 'the newest desktop take, not the newer phone take');
+    // a phone take of a job that is not demo is never used
+    addJob(root, '_demo-previews', 'acme');
+    assert.equal(defaultPhoneCapture(root), null);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+const mobileEntry = (lib, engine = ['relayout-phone-take', 'cursor-hidden', 'product-ring']) => { lib.byId.get('demo-soft-arrive').engine = engine; return lib; };
+
+test('render plan: a phone-move entry plays on the phone take, a desktop entry on the desktop take', () => {
+  const root = scratch();
+  try {
+    twoTakes(root);
+    const opts = { root, force: true, capture: 'demo-previews/walkthrough', phoneCapture: 'demo-previews/phone' };
+    const phone = planRender(mobileEntry(loadLibrary(root)), { ...opts, only: 'demo-soft-arrive' }).render[0];
+    assert.equal(phone.capture, 'demo-previews/phone');
+    assert.deepEqual(phone.moves, ['relayout-phone-take', 'product-ring'], 'the pointer takes no slot');
+    assert.equal(phone.pointer, 'hidden');
+    assert.equal(phone.entry.pointer, 'hidden');
+    const desk = planRender(mobileEntry(loadLibrary(root), ['product-ring', 'cursor-classic']), { ...opts, only: 'demo-soft-arrive' }).render[0];
+    assert.equal(desk.capture, 'demo-previews/walkthrough');
+    assert.deepEqual(desk.moves, ['product-ring']);
+    assert.equal(desk.pointer, 'classic');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: with no phone take, only phone entries need attention', async () => {
+  const root = scratch();
+  try {
+    twoTakes(root, { phone: false });
+    const lib = mobileEntry(loadLibrary(root));
+    lib.byId.get('demo-snappy').engine = ['product-ring'];
+    const plan = planRender(lib, { root, force: true, capture: 'demo-previews/walkthrough', phoneCapture: null });
+    assert.deepEqual(plan.attention.filter((a) => a.id === 'demo-soft-arrive'), [{ id: 'demo-soft-arrive', reason: 'no demo phone capture yet' }]);
+    assert.ok(!ids(plan.attention).includes('demo-snappy'));
+    assert.ok(ids(plan.render).includes('demo-snappy'));
+    // a desktop take named as the phone take is refused
+    const wrong = planRender(mobileEntry(loadLibrary(root)), { root, force: true, only: 'demo-soft-arrive', capture: 'demo-previews/walkthrough', phoneCapture: 'demo-previews/walkthrough' });
+    assert.match(wrong.attention[0].reason, /^no demo phone capture yet/);
+    // and through main, by default
+    const file = join(root, 'library', 'styles', 'motion.json');
+    writeFileSync(file, JSON.stringify(loadLibrary(root).tabs.motion.map((e) => (e.id === 'demo-soft-arrive' ? { ...e, engine: ['relayout-phone-take', 'cursor-hidden'] } : e))));
+    const lines = [];
+    await main(['--root', root, '--dry-run', '--force', '--only', 'demo-soft-arrive'], { log: (l) => lines.push(l) });
+    assert.ok(lines.includes('needs attention: demo-soft-arrive: no demo phone capture yet'), lines.join('\n'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render: main finds the phone take by default and hands it and the pointer to the composition', async () => {
+  const root = scratch();
+  try {
+    twoTakes(root);
+    const file = join(root, 'library', 'styles', 'motion.json');
+    writeFileSync(file, JSON.stringify(loadLibrary(root).tabs.motion.map((e) => (e.id === 'demo-soft-arrive' ? { ...e, engine: ['relayout-phone-take', 'cursor-hidden', 'product-ring'] } : e))));
+    let props = null;
+    const run = async (cmd, args) => {
+      if (cmd === process.execPath) { props = JSON.parse(readFileSync(args.find((a) => a.startsWith('--props=')).slice(8), 'utf8')); return { code: 1, stdout: '', stderr: 'stop here' }; }
+      return { code: 0, stdout: '', stderr: '' };
+    };
+    await main(['--root', root, '--force', '--only', 'demo-soft-arrive'], { run, log: () => {} });
+    assert.equal(props.capture, 'demo-previews/phone');
+    assert.equal(props.entry.pointer, 'hidden');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

@@ -168,3 +168,68 @@ form footer { margin-top: auto; display: flex; justify-content: flex-end; gap: 1
 .toast > svg { width: 30px; height: 30px; padding: 6px; border-radius: 50%; background: var(--accent); color: white; stroke-width: 2.4; }
 .toast div { display: flex; flex-direction: column; gap: 2px; }
 .toast span { font-size: 13.5px; opacity: .75; }
+
+/* Phone size (the phone take, 390 x 844): one column, a bottom tab bar, stacked cards and a full-screen drawer.
+   Nothing above this line changes, so the desktop take looks as it did. */
+@media (max-width: 600px) {
+  body { font-size: 14px; }
+  .app { display: block; height: 100vh; }
+  .main { height: 100vh; }
+
+  /* The sidebar becomes the bottom tab bar: four tabs with their icons, nothing else. */
+  .sidebar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 3; flex-direction: row; gap: 0; padding: 8px 10px 22px; border-right: 0; border-top: 1px solid var(--line); background: white; }
+  .wordmark, .workspace, .sidebar-card { display: none; }
+  nav { flex-direction: row; justify-content: space-around; gap: 0; width: 100%; }
+  nav a { flex: 1; flex-direction: column; gap: 4px; padding: 7px 4px; font-size: 11.5px; border-radius: var(--control-radius); }
+  nav a svg { width: 22px; height: 22px; }
+  nav a.active { background: transparent; color: var(--accent); }
+
+  .topbar { gap: 10px; padding: 14px 18px 12px; }
+  .topbar h1 { font-size: 22px; }
+  .search { display: none; }
+  .primary { padding: 9px 13px; font-size: 14px; }
+  .topbar .primary svg { width: 16px; height: 16px; }
+  .avatar { width: 34px; height: 34px; font-size: 12.5px; }
+
+  .page { padding: 16px 18px 112px; gap: 16px; overflow-y: auto; scrollbar-width: none; }
+  .page::-webkit-scrollbar { display: none; }
+  .greeting h2 { font-size: 24px; }
+  .greeting p { font-size: 13.5px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { padding: 14px 15px; gap: 5px; }
+  .stat span { font-size: 12.5px; }
+  .stat strong { font-size: 26px; }
+  .stat em { font-size: 11.5px; }
+  .row, .reports-row { display: flex; flex-direction: column; gap: 16px; flex: none; }
+  .panel { padding: 16px; flex: none; }
+  .panel > header { margin-bottom: 12px; }
+  .panel h3 { font-size: 16px; }
+  .chart-panel { height: 220px; }
+  .chart-panel.big { height: 260px; }
+  .axis { font-size: 10.5px; white-space: nowrap; }
+  .axis span:nth-child(odd) { display: none; }
+
+  /* The customer list: name and plan only, and the filter on its own line. */
+  .list-panel > header { flex-wrap: wrap; gap: 10px; }
+  .filter { width: 100%; padding: 9px 12px; }
+  .table-head, .table-row { grid-template-columns: 1fr auto; }
+  .table-head span:nth-child(n+3), .table-row span:nth-child(n+3) { display: none; }
+  .table-body { flex: none; max-height: 360px; }
+  .table-row { padding: 11px 6px; font-size: 14px; }
+  .table-head { padding: 0 6px 8px; }
+
+  /* The drawer fills the screen and slides up. */
+  .scrim { z-index: 4; }
+  .drawer { z-index: 4; left: 0; width: auto; border-left: 0; padding: 20px 18px 28px; gap: 20px; animation: slide-up .32s cubic-bezier(.2,.8,.2,1); }
+  @keyframes slide-up { from { transform: translateY(40px); opacity: 0; } }
+  .drawer h2 { font-size: 22px; }
+  form { gap: 20px; }
+  form footer button { flex: 1; justify-content: center; }
+
+  .commands { z-index: 5; padding: 70px 12px 0; }
+  .commands-box { width: 100%; }
+  .toast { z-index: 4; left: 16px; right: 16px; bottom: 96px; padding: 13px 16px 13px 13px; }
+  .toast > svg { width: 26px; height: 26px; }
+  .loading { inset: 64px 0 0 0; }
+  .settings { max-width: none; }
+}

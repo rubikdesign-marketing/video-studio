@@ -2,6 +2,7 @@
 // one (the style library's preview clips, src/library/styles/StylePreview.tsx). Each of capture.tsx, product.tsx,
 // joins.tsx and relayout.tsx lists its own; nothing here registers a composition.
 import type { FC } from 'react';
+import type { LoadedCapture } from '../../capture/load';
 import type { PresetName } from '../../kit/motion';
 import type { StageName } from '../../kit/tokens';
 
@@ -21,4 +22,12 @@ export type CaptureScene = {
    * given the new shape outright (it lays itself out for 9:16, 1:1 and 4:5).
    */
   fit: 'contain' | 'fill';
+  /**
+   * When the scene's defining moment comes (a click, a mark on the product, a join), in seconds on its own clock,
+   * and how long it runs, for this take at this energy in a frame of this size: the values the scene itself works
+   * out to draw and time it. `cue` is null when the scene has no one moment; `seconds` null when unknown.
+   */
+  timing?: (loaded: LoadedCapture, props: Record<string, unknown>, preset: PresetName, frame: { width: number; height: number }) => SceneTiming;
 };
+
+export type SceneTiming = { cue: number | null; seconds: number | null };

@@ -2,9 +2,11 @@
 // Renders each ready picture style's preview clip (silent, at most 3 s, 480 px on the long side) with the engine,
 // and builds the sound sprite. Usage:
 //   node tools/styles/render-previews.mjs [--tab <id>] [--only <id>] [--force] [--dry-run] [--sprite] [--root <dir>]
-//                                         [--capture <job>/<id>]
+//                                         [--capture <job>/<id>] [--phone-capture <job>/<id>]
 // --capture names a demo-brand capture for entries whose moves play on one; any other capture is refused. Without it,
-// the demo job's newest capture is used (jobs/_demo-previews, the demo product; engine/public/captures.json lists it).
+// the demo job's newest desktop take is used (jobs/_demo-previews, the demo product; engine/public/captures.json lists
+// it). Entries with a phone move (relayout-phone-take ...) play on a phone-size take instead: --phone-capture, or the
+// demo job's newest take whose page is taller than wide.
 // Only node: modules and in-repo imports. The command runner is injected (see main), so tests can stub it.
 import { readFileSync, existsSync, mkdirSync, statSync, rmSync, writeFileSync, mkdtempSync, readdirSync, renameSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -13,7 +15,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { TABS, loadLibrary, engineNames } from './lib/library.mjs';
 import { buildSprite, spawnRun } from './lib/sprite.mjs';
-import { SIZES, kebab, isCaptureMove } from '../../engine/src/library/styles/rules.mjs';
+import { SIZES, kebab, isCaptureMove, isPhoneMove, previewSlots } from '../../engine/src/library/styles/rules.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const STUDIO = resolve(HERE, '..', '..');
@@ -50,12 +52,16 @@ function engineKinds(studio = STUDIO) {
   for (const b of tryJson(join(studio, 'library', 'backgrounds', 'index.json'))?.backgrounds ?? []) { backgrounds.add(b.name); if (b.component) backgrounds.add(b.component); }
   const capture = new Set();
   const gpu = new Set();
+  const phone = new Set();
+  const families = new Map();
   for (const m of tryJson(join(studio, 'library', 'motion', 'index.json'))?.moves ?? []) {
+    families.set(m.name, m.family);
+    if (isPhoneMove(m.name, m.does)) phone.add(m.name);
     // As tools/library/registry.mjs decides: the shader family, or a move whose text says it needs WebGL.
     if (m.family === 'shader' || /webgl|--gl=angle/i.test(m.does || '')) gpu.add(m.name);
     if (isCaptureMove(m.name, m.family)) capture.add(m.name);
   }
-  return { scenes, backgrounds, capture, gpu };
+  return { scenes, backgrounds, capture, gpu, phone, families };
 }
 
 /** Which kind of engine item a name is: 'scene', 'background', 'capture', or null. Names may be kebab or component names. */
@@ -105,24 +111,52 @@ export function captureStatus(root, capture) {
   return { ok: true, reason: '' };
 }
 
-/** The demo job's newest capture the engine lists, when its job is still a demo job; else null. */
-export function defaultCapture(root) {
-  const row = listedCaptures(root).find((c) => c?.job === `jobs/${DEMO_JOB}` && typeof c.capture === 'string');
+/**
+ * Is this published capture a phone-size take? Its cursor.json in engine/public says the page is taller than wide
+ * (as the engine's isPhoneTake decides, kit/capture/relayout.ts). False when it is not published.
+ */
+export function isPhoneCapture(root, capture) {
+  const parts = String(capture ?? '').split('/');
+  if (parts.length !== 2 || !parts.every((p) => /^[A-Za-z0-9._-]+$/.test(p) && p !== '.' && p !== '..')) return false;
+  const page = tryJson(join(root, 'engine', 'public', 'jobs', parts[0], 'capture', parts[1], 'cursor.json'))?.page;
+  return Boolean(page && page.height > page.width * 1.2);
+}
+
+/** The demo job's newest listed capture of one shape (phone-size or not), when its job is still a demo job; else null. */
+const newestDemo = (root, phone) => {
+  const row = listedCaptures(root).find((c) => c?.job === `jobs/${DEMO_JOB}` && typeof c.capture === 'string' && isPhoneCapture(root, c.capture) === phone);
   return row && captureStatus(root, row.capture).ok ? row.capture : null;
+};
+/** The demo job's newest desktop (not phone-size) take. */
+export const defaultCapture = (root) => newestDemo(root, false);
+/** The demo job's newest phone-size take. */
+export const defaultPhoneCapture = (root) => newestDemo(root, true);
+
+/** captureStatus for the phone take: a demo capture, and one recorded at phone size. */
+export function phoneCaptureStatus(root, capture) {
+  if (!capture) return { ok: false, reason: 'no demo phone capture yet' };
+  const cap = captureStatus(root, capture);
+  if (!cap.ok) return { ok: false, reason: cap.reason.replace(/^no demo capture yet/, 'no demo phone capture yet') };
+  if (!isPhoneCapture(root, capture)) return { ok: false, reason: `no demo phone capture yet (${capture} is not a phone-size take)` };
+  return cap;
 }
 
 /**
  * What to render. Returns `{ render, skipped, attention, notes }`:
- * - `render`: jobs `{ id, tab, width, height, out, clip, moves, capture, entry }` for ready picture entries that have no clip yet
- *   (or all of them with `force`) and at least one engine item the preview can play.
+ * - `render`: jobs `{ id, tab, width, height, out, clip, moves, pointer, capture, entry }` for ready picture entries that have
+ *   no clip yet (or all of them with `force`) and at least one engine item the preview can play. `moves` are the ones
+ *   that take a slot (a pointer beside a capture move is a setting: `pointer`); `capture` is the take they play on,
+ *   the phone take for an entry with a phone move.
  * - `skipped`: `{ id, reason }` for entries left out on purpose (made on request, sound, clip already there).
  * - `attention`: `{ id, reason }` for entries a person should look at (nothing playable, no demo capture, clip path off the convention).
  * - `notes`: one printed line for each engine item that cannot be played, or needs a capture.
  */
-export function planRender(lib, { root, tab = null, only = null, force = false, capture = null, kinds = engineKinds() } = {}) {
+export function planRender(lib, { root, tab = null, only = null, force = false, capture = null, phoneCapture = null, kinds = engineKinds() } = {}) {
   const sounds = engineNames(root).sounds;
   const out = { render: [], skipped: [], attention: [], notes: [] };
   const cap = captureStatus(root, capture);
+  const phoneCap = phoneCaptureStatus(root, phoneCapture);
+  const familyOf = (n) => kinds.families?.get(n) ?? '';
   for (const t of TABS) {
     if (tab && t !== tab) continue;
     for (const e of lib.tabs[t] ?? []) {
@@ -134,9 +168,11 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
       if (!force && existsSync(join(root, clip))) { out.skipped.push({ id: e.id, reason: 'has a clip' }); continue; }
       const items = (e.engine ?? []).filter((n) => !sounds.has(n)).map((n) => ({ raw: n, ...classify(n, kinds) }));
       const onCapture = items.filter((i) => i.kind === 'capture');
-      if (onCapture.length && !cap.ok) {
-        out.notes.push(`${e.id}: ${onCapture.map((i) => i.raw).join(', ')} play on a capture`);
-        out.attention.push({ id: e.id, reason: cap.reason });
+      const phone = items.some((i) => kinds.phone?.has(i.name));
+      const status = phone ? phoneCap : cap;
+      if (onCapture.length && !status.ok) {
+        out.notes.push(`${e.id}: ${onCapture.map((i) => i.raw).join(', ')} play on a ${phone ? 'phone-size ' : ''}capture`);
+        out.attention.push({ id: e.id, reason: status.reason });
         continue;
       }
       const playable = items.filter((i) => i.kind);
@@ -149,8 +185,11 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
       const names = playable.map((i) => i.name);
       const gpu = items.some((i) => kinds.gpu.has(i.name));
       const energy = e.filters.energy?.[0] ?? 'confident';
-      const entry = { id: e.id, energy, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names };
-      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: names, energy, gpu, capture: onCapture.length ? capture : null, entry });
+      const slots = previewSlots(playable.filter((i) => i.kind !== 'background').map((i) => i.name), { familyOf, phone: phone && onCapture.length > 0 });
+      const pointer = onCapture.length ? slots.pointer : null;
+      const entry = { id: e.id, energy, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names, ...(pointer ? { pointer } : {}) };
+      const take = onCapture.length ? (phone ? phoneCapture : capture) : null;
+      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: slots.moves, pointer, energy, gpu, capture: take, entry });
     }
   }
   return out;
@@ -196,11 +235,13 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
   }
 
   const capture = opt('--capture') ?? defaultCapture(root);
-  const plan = planRender(lib, { root, tab, only: opt('--only') ?? null, force: flag('--force'), capture });
+  const phoneCapture = opt('--phone-capture') ?? defaultPhoneCapture(root);
+  const plan = planRender(lib, { root, tab, only: opt('--only') ?? null, force: flag('--force'), capture, phoneCapture });
   for (const n of plan.notes) log(n);
-  if (plan.render.some((j) => j.capture)) log(`Capture moves play on ${capture} (demo brand)`);
+  if (plan.render.some((j) => j.capture && j.capture === capture)) log(`Capture moves play on ${capture} (demo brand)`);
+  if (plan.render.some((j) => j.capture && j.capture === phoneCapture)) log(`Phone moves play on ${phoneCapture} (demo brand, phone size)`);
   if (flag('--dry-run')) {
-    for (const j of plan.render) log(`render ${j.id} ${j.width}x${j.height} -> ${j.clip} (${j.moves.join(', ')})`);
+    for (const j of plan.render) log(`render ${j.id} ${j.width}x${j.height} -> ${j.clip} (${j.moves.join(', ')}${j.pointer ? `; pointer ${j.pointer}` : ''})`);
     for (const a of plan.attention) log(`needs attention: ${a.id}: ${a.reason}`);
     log(`Plan: ${plan.render.length} to render, ${plan.skipped.length} skipped, ${plan.attention.length} need attention`);
     return 0;

@@ -9,7 +9,7 @@
 //
 // The picture shows the recording frame the time map asks for (a frozen frame of the video each film frame), so
 // any speed, freeze or rewind is exact to the frame. Works for any brand: colours, type and radius are the brand's.
-import { type CSSProperties, type FC, type ReactNode } from 'react';
+import { createContext, useContext, type CSSProperties, type FC, type ReactNode } from 'react';
 import { Freeze, OffthreadVideo, staticFile, useVideoConfig } from 'remotion';
 import { useBrand } from './brand';
 import type { CameraMove } from './capture/camera';
@@ -115,7 +115,16 @@ export const captureSeconds = (props: Pick<CaptureClipProps, 'cursor' | 'tracks'
 
 const HOLD_CAPS = 0.9;
 
-export const CaptureClip: FC<CaptureClipProps> = (props) => {
+/**
+ * A pointer style set from outside the clip, over its own and its look's: a style preview (src/library/styles) names
+ * a pointer beside a capture move, so every clip and join pointer inside draws that one. Null (the default) changes
+ * nothing.
+ */
+export const PointerOverride = createContext<CursorStyle | null>(null);
+
+export const CaptureClip: FC<CaptureClipProps> = (given) => {
+  const forced = useContext(PointerOverride);
+  const props: CaptureClipProps = forced && given.pointer !== false ? { ...given, cursorStyle: forced } : given;
   const { src, cursor, width, style, window = true } = props;
   const tracks = withThings(cursor, props.tracks, props.things);
   const m = useMotion();

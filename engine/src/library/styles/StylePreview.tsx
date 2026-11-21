@@ -2,10 +2,14 @@
 // own demo scene from the motion library (src/library/motion: demos/ and the sized families), at the entry's size,
 // on the entry's background. 30 fps, 90 frames. Nothing here is registered twice: the scenes are only imported.
 // Capture-family moves play their own gallery scene (capture.tsx, product.tsx, joins.tsx, relayout.tsx) on the
-// demo-brand capture named in the "capture" prop (tools/styles/render-previews.mjs only passes a demo one).
+// demo-brand capture named in the "capture" prop (tools/styles/render-previews.mjs only passes a demo one: the phone
+// take for an entry with a phone move). Each capture scene starts just before its defining moment (rules.mjs,
+// sceneStart), and a pointer named beside a capture move sets that move's pointer instead of taking a slot.
 import type { FC } from 'react';
 import { Composition, Sequence, Series, useVideoConfig } from 'remotion';
 import { useCapture } from '../../capture/load';
+import { PointerOverride } from '../../kit/CaptureClip';
+import type { CursorStyle } from '../../kit/capture/looks';
 import { BrandProvider } from '../../kit/brand';
 import * as Backgrounds from '../../kit/backgrounds';
 import { MotionProvider, type PresetName } from '../../kit/motion';
@@ -22,12 +26,12 @@ import { productScenes } from '../motion/product';
 import { relayoutScenes } from '../motion/relayout';
 import type { FormatName, SizedDemo } from '../motion/sized';
 import { sizedFamilies } from '../motion/sized-families';
-import { CAPTURE_STANDS_IN, isCaptureMove, kebab, SIZES } from './rules.mjs';
+import { CAPTURE_STANDS_IN, isCaptureMove, isPhoneMove, kebab, MAX_MOVES, previewSlots, sceneStart, SIZES } from './rules.mjs';
 
 export const FPS = 30;
 export const FRAMES = 90;
-/** At most this many moves are played in one clip; each gets an equal share of the frames. */
-export const MAX_MOVES = 3;
+/** At most this many moves are played in one clip; each gets an equal share of the frames (rules.mjs). */
+export { MAX_MOVES };
 
 type Energy = 'calm' | 'confident' | 'hype';
 /** The part of a library entry the preview reads. `engine` holds motion-library move names (or background names). */
@@ -37,6 +41,8 @@ export type PreviewEntry = {
   energy?: Energy;
   filters: { energy: Energy[]; sizes: string[] };
   engine: string[];
+  /** The pointer the capture moves are drawn with ("hidden", "classic" ...), as the plan resolved it (rules.mjs, previewSlots). */
+  pointer?: string;
 };
 /** `capture` is "<job>/<id>", a demo-brand capture, for entries whose moves play on one. */
 export type StylePreviewProps = { entry: PreviewEntry; capture?: string };
@@ -61,10 +67,16 @@ const backgroundOf = (name: string) => { const b = backgrounds.get(name) ?? back
 
 /** Moves that play on a real capture: the capture- families, and the join-, stage-, product- and relayout- ones. */
 const captureMoves = new Set<string>();
-for (const m of (motionIndex as { moves: { name: string; family: string }[] }).moves) {
+const families = new Map<string, string>();
+const phoneMoves = new Set<string>();
+for (const m of (motionIndex as { moves: { name: string; family: string; does?: string }[] }).moves) {
+  families.set(m.name, m.family);
   if (isCaptureMove(m.name, m.family)) captureMoves.add(m.name);
+  if (isPhoneMove(m.name, m.does)) phoneMoves.add(m.name);
 }
 export const needsCapture = (name: string) => captureMoves.has(name) || captureMoves.has(kebab(name));
+const familyOf = (name: string) => families.get(name) ?? families.get(kebab(name)) ?? '';
+const isPhone = (name: string) => phoneMoves.has(name) || phoneMoves.has(kebab(name));
 
 /** The energy the preview plays at: the first one the entry lists. */
 export const energyOf = (entry: PreviewEntry): Energy => entry.energy ?? entry.filters.energy[0] ?? 'confident';
@@ -86,24 +98,30 @@ export const sceneFrame = (scene: Pick<CaptureScene, 'size' | 'fit'>, width: num
 
 /**
  * A capture move: its gallery scene, drawn at a frame of its own size (scaled down to the clip) with the move's name
- * left off, on the named capture. A missing capture or scene fails the render, so the plan reports the entry.
+ * left off, on the named capture, from just before its defining moment, with the entry's pointer if it names one. A
+ * missing capture or scene fails the render, so the plan reports the entry.
  */
-const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energy: Energy; frames: number }> = ({ name, capture, page, energy, frames }) => {
+const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energy: Energy; frames: number; pointer: string | null }> = ({ name, capture, page, energy, frames, pointer }) => {
   const scene = captureSceneOf(name);
   if (!scene) throw new Error(`${name} plays on a capture, and no capture scene in the motion library plays it`);
   // An empty name would mean "the newest capture", which may be anyone's: only a named demo capture is played.
   if (!capture) throw new Error(`${name} plays on a capture: name a demo-brand capture in the "capture" prop`);
   const loaded = useCapture(capture);
-  const { width, height } = useVideoConfig();
+  const { width, height, fps } = useVideoConfig();
   if (loaded === null) throw new Error(`${name}: the capture ${capture} is not in engine/public (record it, or run: node tools/capture/capture.mjs relist)`);
   if (!loaded) return null;
   const [w, h] = sceneFrame(scene, width, height);
   // The style's first listed energy always wins, as for every other preview.
   const preset = energy as PresetName;
+  // The scene's own moment (its first click, its mark on the product, its join), as the scene works it out.
+  const timing = scene.timing?.(loaded, scene.props, preset, { width: w, height: h });
+  const start = sceneStart({ cue: timing?.cue, seconds: timing?.seconds ?? undefined, slot: frames, fps });
   return (
-    <Sequence width={w} height={h} durationInFrames={frames} style={{ transform: `scale(${width / w})`, transformOrigin: '0 0' }}>
+    <Sequence from={-start} width={w} height={h} durationInFrames={frames + start} style={{ transform: `scale(${width / w})`, transformOrigin: '0 0' }}>
       <MoveCaptions.Provider value={false}>
-        <scene.Show {...scene.props} brand="demo" preset={preset} page={page} capture={loaded.name} />
+        <PointerOverride.Provider value={(pointer as CursorStyle | null) ?? null}>
+          <scene.Show {...scene.props} brand="demo" preset={preset} page={page} capture={loaded.name} />
+        </PointerOverride.Provider>
       </MoveCaptions.Provider>
     </Sequence>
   );
@@ -113,7 +131,11 @@ const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({
   const format = formatOf(entry);
   // A name nothing here can play is an error, not a gap: the render fails and the plan reports the entry.
   for (const n of entry.engine) if (!sceneOf(n) && !needsCapture(n) && !backgroundOf(n)) throw new Error(`${entry.id}: ${n} has no demo scene, background or capture mapping`);
-  const moves = entry.engine.filter((n) => sceneOf(n) || needsCapture(n)).slice(0, MAX_MOVES);
+  const playable = entry.engine.filter((n) => sceneOf(n) || needsCapture(n));
+  // A pointer beside a capture move is that move's setting, not a slot (rules.mjs, the same rule as the plan).
+  const slots = previewSlots(playable, { familyOf, phone: playable.some(isPhone) });
+  const moves = slots.moves;
+  const pointer = entry.pointer ?? slots.pointer;
   const bg = entry.engine.map(backgroundOf).find(Boolean);
   const Backdrop = bg ? backdrops[bg.component] : null;
   const slot = Math.floor(FRAMES / Math.max(1, moves.length));
@@ -127,7 +149,7 @@ const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({
           const frames = i === moves.length - 1 ? FRAMES - slot * i : slot;
           return (
             <Series.Sequence key={`${name}-${i}`} durationInFrames={frames}>
-              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} page={page} energy={energyOf(entry)} frames={frames} />}
+              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} page={page} energy={energyOf(entry)} frames={frames} pointer={pointer} />}
             </Series.Sequence>
           );
         })}

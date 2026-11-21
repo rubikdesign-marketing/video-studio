@@ -14,12 +14,13 @@ import { typingTarget } from '../../kit/capture/camera';
 import { clicksOf, rectAt, thingAt, union, type CaptureCursor, type CaptureTracks, type Rect } from '../../kit/capture/data';
 import { withThings, type Emphasis } from '../../kit/capture/glue';
 import type { StagingName } from '../../kit/capture/looks';
+import { planOfClip } from '../../kit/capture/clipplan';
 import { planPointer } from '../../kit/capture/pointer';
 import { CaptureShot, type CaptureShotProps, type CaptureSource } from '../../kit/capture/staging';
 import { MotionProvider, presetNames, type PresetName } from '../../kit/motion';
 import { alpha, stageNames } from '../../kit/tokens';
 import { Label, Stage, useStage, useVh } from '../../kit/ui';
-import type { CaptureScene } from './capture-scenes';
+import type { CaptureScene, SceneTiming } from './capture-scenes';
 import { MoveCaption, useMoveCaptions } from './parts';
 
 const thingSchema = z.object({
@@ -327,6 +328,22 @@ const BackedCaption: FC<{ children: string }> = ({ children }) => {
   );
 };
 
+/**
+ * The scene's defining moment: its first animation's cue on the clip's clock (CUE, about 1.3 s in, or later when its
+ * thing shows up later), or for a toast pop the moment the toast appears. A staging has none. And the clip's length.
+ */
+const timingOf = (entry: Entry, loaded: LoadedCapture, props: Props, preset: PresetName): SceneTiming => {
+  const shot = shotOf(entry, loaded, null, props);
+  const seconds = clipFrames(shot, preset) / FPS;
+  const first = shot.emphasis?.[0];
+  if (!first) return { cue: null, seconds };
+  if (first.at >= 0) return { cue: first.at, seconds };
+  const appears = typeof first.target === 'string' ? contextOf(loaded, props).appears(first.target) : null;
+  if (appears === null) return { cue: null, seconds };
+  const plan = planOfClip(shot, withThings(shot.cursor, shot.tracks, shot.things), preset);
+  return { cue: plan.map.filmAt(appears), seconds };
+};
+
 const shows = productEntries.map((entry) => ({ entry, Show: showFor(entry), metadata: metadataFor(entry) }));
 
 /** The same scenes as records, for previews outside Remotion Studio. */
@@ -337,6 +354,7 @@ export const productScenes: CaptureScene[] = shows.map(({ entry, Show }) => ({
   preset: entry.preset ?? 'confident',
   size: [1920, 1080],
   fit: 'fill',
+  timing: (loaded, props, preset) => timingOf(entry, loaded, props as Props, preset),
 }));
 
 const defaults = (entry: Entry): Props => ({ brand: defaultBrand, preset: entry.preset ?? 'confident', page: 'light', capture: '', second: '', things: {}, roles: {}, address: '' });

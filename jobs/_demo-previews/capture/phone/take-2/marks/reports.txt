@@ -1,0 +1,10 @@
+Reports  New customer
+AW
+Weekly  Monthly
+Customers added each week
+Sep 8  Sep 22  Oct 6  Oct 20  Nov 3  Nov 17
+Top plans
+Team  112 customers
+Starter  86 customers
+Business  50 customers
+Overview  Customers  Reports  Settings

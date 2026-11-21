@@ -5,7 +5,7 @@
 //
 // Put it inside the film's Stage, as a CaptureShot: the page never moves. Shot A's clock starts with the join's;
 // shot B's clock starts at the plan's `bStart`. The whole join runs `joinSeconds(...)`.
-import type { CSSProperties, FC, ReactNode } from 'react';
+import { useContext, type CSSProperties, type FC, type ReactNode } from 'react';
 import { AbsoluteFill, Freeze, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { useBrand } from '../brand';
 import { lerp, presets, useMotion, type PresetName } from '../motion';
@@ -13,6 +13,7 @@ import { MotionBlur } from '../moves/core';
 import { alpha } from '../tokens';
 import { useStage, useVh } from '../ui';
 import type { Rect } from './data';
+import { PointerOverride } from '../CaptureClip';
 import { DrawnPointer } from './draw';
 import { planJoin, type JoinFrame, type JoinOptions, type JoinSource, type Layer, type Piece } from './joins';
 import { CaptureShot, type CaptureShotProps } from './staging';
@@ -95,7 +96,8 @@ export const CaptureJoin: FC<CaptureJoinProps> = (props) => {
   const bStartFrame = Math.round(plan.bStart * fps);
   const perspective = vh(240);
   const look = plan.planA.look;
-  const pointerLook = { style: look.cursor, size: look.cursorSize, name: a.cursorName ?? 'Sam' };
+  const forced = useContext(PointerOverride);
+  const pointerLook = { style: forced ?? look.cursor, size: look.cursorSize, name: a.cursorName ?? 'Sam' };
   const lift = (amount: number) => `0 0 0 1px ${alpha(stage.ink, 0.08)}, 0 ${vh(lerp(1, 2.6, amount))}px ${vh(lerp(3, 5.5, amount))}px ${alpha(stage.shade, lerp(0.25, 0.22, amount))}`;
 
   const wrap = (l: Layer, node: ReactNode, key: string) => {

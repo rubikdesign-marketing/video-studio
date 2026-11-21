@@ -22,7 +22,7 @@ import { CaptureJoin } from '../../kit/capture/transitions';
 import { MotionProvider, presetNames, type PresetName } from '../../kit/motion';
 import { stageNames } from '../../kit/tokens';
 import { Label, Stage } from '../../kit/ui';
-import type { CaptureScene } from './capture-scenes';
+import type { CaptureScene, SceneTiming } from './capture-scenes';
 import { MoveCaption } from './parts';
 
 const thingSchema = z.object({
@@ -167,6 +167,25 @@ const showFor = (entry: Entry) => {
   return Show;
 };
 
+/**
+ * The scene's defining moment: a join's own moment (t0), the emphasis on the clicked thing (from the pointer's
+ * arrival), or for a plain re-layout the first click or tap the camera follows. And the length, as the gallery's
+ * metadata works it out.
+ */
+const timingOf = (entry: Entry, loaded: LoadedCapture, props: Props, preset: PresetName): SceneTiming => {
+  const [width, height] = SIZES[entry.size];
+  if (entry.join) {
+    const shots = shotsOf(entry, loaded, props);
+    if (!shots) return { cue: null, seconds: null };
+    const plan = planJoin(shots.a, shots.b, shots.options, preset, { width, height, fps: FPS });
+    return { cue: plan.t0, seconds: plan.total };
+  }
+  const source = sourceOf(entry, loaded, props);
+  const plan = planCapture(source.cursor, withThings(source.cursor, source.tracks, source.things), { from: source.from, to: source.to, look: source.look, time: clipTime(source), energy: preset });
+  const click = plan.pointer.clicks.find((c) => c.t >= plan.from && c.t <= plan.to);
+  return { cue: source.emphasis?.[0]?.at ?? (click ? plan.map.filmAt(click.t) : null), seconds: plan.map.duration };
+};
+
 const shows = relayoutEntries.map((entry) => ({ entry, Show: showFor(entry), metadata: metadataFor(entry) }));
 
 /** The same scenes as records ("relayout-<name>"), for previews outside Remotion Studio. Each keeps its own film size. */
@@ -177,6 +196,7 @@ export const relayoutScenes: CaptureScene[] = shows.map(({ entry, Show }) => ({
   preset: entry.preset,
   size: SIZES[entry.size],
   fit: 'contain',
+  timing: (loaded, props, preset) => timingOf(entry, loaded, props as Props, preset),
 }));
 
 /** The re-layout gallery, for MotionCompositions. */

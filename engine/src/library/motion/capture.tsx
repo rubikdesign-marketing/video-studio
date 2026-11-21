@@ -9,12 +9,14 @@ import { clipFrames, FPS } from '../../capture/CapturePreview';
 import { loadCapture, useCapture, type LoadedCapture } from '../../capture/load';
 import { BrandProvider, brandNames, defaultBrand } from '../../kit/brand';
 import { CaptureClip, type CaptureClipProps } from '../../kit/CaptureClip';
+import { planOfClip } from '../../kit/capture/clipplan';
+import { withThings } from '../../kit/capture/glue';
 import { CaptureShot } from '../../kit/capture/staging';
 import type { CaptureCursor, CaptureEvent } from '../../kit/capture/data';
 import { MotionProvider, presetNames, type PresetName } from '../../kit/motion';
 import { stageNames } from '../../kit/tokens';
 import { Label, Stage } from '../../kit/ui';
-import type { CaptureScene } from './capture-scenes';
+import type { CaptureScene, SceneTiming } from './capture-scenes';
 import { MoveCaption } from './parts';
 
 export const captureMotionSchema = z.object({
@@ -227,6 +229,24 @@ const showFor = (entry: Entry) => {
   return Show;
 };
 
+/** The kinds of event a stretch is found around: its first one in the stretch is the moment the scene shows. */
+const ACTIONS = new Set(['click', 'type', 'press', 'drag']);
+
+/**
+ * The scene's defining moment on the clip's clock: its first hand-set camera move's cue; else its first freeze,
+ * rewind or jump; else the first click, typing, key or drag in its stretch (the stretches start about 1.3 s before
+ * it). And the clip's length, from the same plan the clip draws from.
+ */
+const timingOf = (entry: Entry, loaded: LoadedCapture, preset: PresetName): SceneTiming => {
+  const clip = clipOf(entry, loaded);
+  const plan = planOfClip(clip, withThings(clip.cursor, clip.tracks, clip.things), preset);
+  const from = clip.from ?? 0;
+  const time = clip.time;
+  const rec = time?.freezes?.[0]?.at ?? time?.rewinds?.[0]?.at ?? time?.jumps?.[0]?.from ?? loaded.cursor.events.find((e) => ACTIONS.has(e.type) && e.t >= from - 1e-6)?.t;
+  const cue = clip.moves?.length ? clip.moves[0].at : rec === undefined ? null : plan.map.filmAt(rec);
+  return { cue, seconds: plan.map.duration };
+};
+
 const shows = captureEntries.map((entry) => ({ entry, Show: showFor(entry), metadata: metadataFor(entry) }));
 
 /** The same scenes as records, for previews outside Remotion Studio. A look is staged (CaptureShot); the rest draw a fixed-size card. */
@@ -237,6 +257,7 @@ export const captureScenes: CaptureScene[] = shows.map(({ entry, Show }) => ({
   preset: entry.preset ?? 'confident',
   size: [1920, 1080],
   fit: entry.name.startsWith('look-') ? 'fill' : 'contain',
+  timing: (loaded, _props, preset) => timingOf(entry, loaded, preset),
 }));
 
 /** The capture gallery, for MotionCompositions. */

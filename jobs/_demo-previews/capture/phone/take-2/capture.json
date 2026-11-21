@@ -1,0 +1,448 @@
+{
+  "captured": "2026-11-22T03:52:13+06:00",
+  "brand": "demo",
+  "take": 2,
+  "from": null,
+  "address": "http://127.0.0.1:4317",
+  "script": "jobs/_demo-previews/capture/phone.json",
+  "kind": "phone web",
+  "source": {
+    "type": "web page",
+    "address": "http://127.0.0.1:4317"
+  },
+  "chrome": "Chrome/157.0.8103.80",
+  "browser_kind": "studio",
+  "browser": "the studio's own Chrome window",
+  "setting": {
+    "language": "en-US",
+    "time_zone": "UTC",
+    "theme": "light",
+    "reduced_motion": false
+  },
+  "clock": {
+    "frozen": true,
+    "demo_time": "2026-11-20 10:30",
+    "time_zone": "UTC",
+    "page_time_at_start": 1795170600709,
+    "note": "The product's clock was set to the demo time before the first page opened and ran on from there. Times the product takes from its own server are not changed. Brand note: The greeting and the date on the Overview come from the page's own clock, so the demo time sets them."
+  },
+  "clean_screen": {
+    "studio_defaults": true,
+    "hidden": {},
+    "dismissed": [],
+    "masked": []
+  },
+  "frame": {
+    "page": {
+      "width": 390,
+      "height": 844
+    },
+    "scale": 2,
+    "recording": {
+      "width": 780,
+      "height": 1688
+    },
+    "fps": 60,
+    "crf": 12,
+    "started_epoch": 1795297935.6603
+  },
+  "input": {
+    "kind": "touch",
+    "note": "Phone size with touch on: touch events, no hover, a phone browser's identity. Clicks are taps (cursor.json events with input \"touch\"), scrolls are logged as swipes with the finger's path."
+  },
+  "seconds": 22.96,
+  "pictures_from_chrome": {
+    "count": 520,
+    "received": 1353,
+    "format": "jpeg",
+    "longest_gap_seconds": 2.9,
+    "full_sharpness": 520,
+    "out_of_order": 0,
+    "note": "count: pictures kept (each one different from the one before); received: all Chrome sent, including repeats while the page might be changing. full_sharpness: pictures Chrome sent at double sharpness (the rest were scaled up). out_of_order: pictures that arrived after one drawn later than them; they are put back in the order they were drawn."
+  },
+  "marks": {
+    "customer-added": 12.48,
+    "reports": 19.858
+  },
+  "mark_details": {
+    "customer-added": {
+      "t": 12.48,
+      "url": "http://127.0.0.1:4317/",
+      "tracked": {
+        "new-customer": [
+          179.8,
+          14,
+          148.2,
+          35
+        ],
+        "active-customers": [
+          18,
+          162.5,
+          171,
+          100.5
+        ],
+        "new-this-month": [
+          201,
+          162.5,
+          171,
+          100.5
+        ],
+        "recent-customers": [
+          18,
+          627.5,
+          354,
+          497
+        ],
+        "filter": [
+          72,
+          684,
+          270,
+          17
+        ],
+        "toast": [
+          15.6,
+          685.5,
+          358.8,
+          61.6
+        ]
+      },
+      "privacy_flags": 0
+    },
+    "reports": {
+      "t": 19.858,
+      "url": "http://127.0.0.1:4317/reports",
+      "tracked": {
+        "new-customer": [
+          179.8,
+          14,
+          148.2,
+          35
+        ],
+        "active-customers": null,
+        "new-this-month": null,
+        "recent-customers": null,
+        "filter": null,
+        "toast": null
+      },
+      "privacy_flags": 0
+    }
+  },
+  "privacy_flags": [],
+  "warnings": [],
+  "steps": [
+    {
+      "n": 1,
+      "step": {
+        "open": "/"
+      },
+      "start": 0,
+      "end": 0,
+      "note": "opened before the recording started"
+    },
+    {
+      "n": 2,
+      "step": {
+        "track": "Active customers card",
+        "css": "#stat-active",
+        "name": "active-customers"
+      },
+      "start": 0.501,
+      "end": 0.514
+    },
+    {
+      "n": 3,
+      "step": {
+        "track": "New this month card",
+        "css": "#stat-new",
+        "name": "new-this-month"
+      },
+      "start": 0.518,
+      "end": 0.521
+    },
+    {
+      "n": 4,
+      "step": {
+        "track": "New customer button",
+        "css": "#new-customer",
+        "name": "new-customer"
+      },
+      "start": 0.523,
+      "end": 0.525
+    },
+    {
+      "n": 5,
+      "step": {
+        "track": "Recent customers list",
+        "css": "#recent-customers",
+        "name": "recent-customers"
+      },
+      "start": 0.529,
+      "end": 0.531
+    },
+    {
+      "n": 6,
+      "step": {
+        "track": "Filter field",
+        "css": "#filter",
+        "name": "filter"
+      },
+      "start": 0.535,
+      "end": 0.538
+    },
+    {
+      "n": 7,
+      "step": {
+        "wait": 1.6
+      },
+      "start": 0.541,
+      "end": 2.142
+    },
+    {
+      "n": 8,
+      "step": {
+        "click": "New customer"
+      },
+      "target": {
+        "x": 179.8,
+        "y": 14,
+        "w": 148.2,
+        "h": 35
+      },
+      "start": 2.153,
+      "end": 2.905,
+      "settled": 1.13
+    },
+    {
+      "n": 9,
+      "step": {
+        "wait for": "Company name"
+      },
+      "start": 4.288,
+      "end": 4.29
+    },
+    {
+      "n": 10,
+      "step": {
+        "paste": "Acme Studio",
+        "into": "Company name"
+      },
+      "target": {
+        "x": 18,
+        "y": 104,
+        "w": 354,
+        "h": 47.5
+      },
+      "start": 4.294,
+      "end": 5.046,
+      "settled": 0.05
+    },
+    {
+      "n": 11,
+      "step": {
+        "click": "Plan",
+        "in": "New customer"
+      },
+      "target": {
+        "x": 18,
+        "y": 197.5,
+        "w": 354,
+        "h": 47.5
+      },
+      "start": 5.352,
+      "end": 5.937,
+      "settled": 0.21
+    },
+    {
+      "n": 12,
+      "step": {
+        "click": "Team",
+        "in": "Plan"
+      },
+      "target": {
+        "x": 37,
+        "y": 308,
+        "w": 37.6,
+        "h": 17
+      },
+      "start": 6.397,
+      "end": 7.005,
+      "settled": 0.05
+    },
+    {
+      "n": 13,
+      "step": {
+        "drag": "Seats",
+        "by": [
+          110,
+          0
+        ]
+      },
+      "target": {
+        "x": 18,
+        "y": 291,
+        "w": 354,
+        "h": 28
+      },
+      "start": 7.313,
+      "end": 9.335,
+      "settled": 0
+    },
+    {
+      "n": 14,
+      "step": {
+        "toggle": "Send a welcome note"
+      },
+      "target": {
+        "x": 324,
+        "y": 342.8,
+        "w": 48,
+        "h": 28
+      },
+      "start": 9.593,
+      "end": 10.178,
+      "settled": 0.31
+    },
+    {
+      "n": 15,
+      "step": {
+        "click": "Save customer"
+      },
+      "target": {
+        "x": 207,
+        "y": 775,
+        "w": 165,
+        "h": 41
+      },
+      "start": 10.743,
+      "end": 11.438,
+      "settled": 0.21
+    },
+    {
+      "n": 16,
+      "step": {
+        "wait for": "Customer added"
+      },
+      "start": 11.903,
+      "end": 12.316
+    },
+    {
+      "n": 17,
+      "step": {
+        "track": "Customer added toast",
+        "css": "#toast",
+        "name": "toast"
+      },
+      "start": 12.32,
+      "end": 12.322
+    },
+    {
+      "n": 18,
+      "step": {
+        "mark": "customer-added"
+      },
+      "start": 12.327,
+      "end": 12.521
+    },
+    {
+      "n": 19,
+      "step": {
+        "wait": 0.6
+      },
+      "start": 12.525,
+      "end": 13.127
+    },
+    {
+      "n": 20,
+      "step": {
+        "scroll": 420,
+        "in": "#page-overview",
+        "seconds": 1.2
+      },
+      "start": 13.131,
+      "end": 14.945,
+      "settled": 0
+    },
+    {
+      "n": 21,
+      "step": {
+        "type": "Acme",
+        "into": "Filter customers"
+      },
+      "target": {
+        "x": 72,
+        "y": 291.5,
+        "w": 270,
+        "h": 17
+      },
+      "start": 15.2,
+      "end": 16.341,
+      "settled": 0
+    },
+    {
+      "n": 22,
+      "step": {
+        "wait": 0.8
+      },
+      "start": 16.598,
+      "end": 17.399
+    },
+    {
+      "n": 23,
+      "step": {
+        "click": "Reports"
+      },
+      "target": {
+        "x": 195,
+        "y": 768,
+        "w": 92.5,
+        "h": 54
+      },
+      "start": 17.408,
+      "end": 18.153,
+      "settled": 1.29
+    },
+    {
+      "n": 24,
+      "step": {
+        "wait for": "Customers added each week"
+      },
+      "start": 19.698,
+      "end": 19.699
+    },
+    {
+      "n": 25,
+      "step": {
+        "mark": "reports"
+      },
+      "start": 19.705,
+      "end": 19.89
+    },
+    {
+      "n": 26,
+      "step": {
+        "click": "Monthly"
+      },
+      "target": {
+        "x": 117.1,
+        "y": 83,
+        "w": 95.6,
+        "h": 35
+      },
+      "start": 19.893,
+      "end": 20.686,
+      "settled": 0.21
+    },
+    {
+      "n": 27,
+      "step": {
+        "wait": 1
+      },
+      "start": 21.147,
+      "end": 22.148
+    }
+  ],
+  "tabs": [
+    "http://127.0.0.1:4317/reports"
+  ],
+  "ended_on": "http://127.0.0.1:4317/reports"
+}
