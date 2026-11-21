@@ -62,3 +62,38 @@ test('cli: new then check still works', () => {
   assert.equal(r.status, 1);
   assert.match(r.stdout, /Pre-flight: /);
 });
+
+test('store: confirmPlan takes an assumed brand, and a second call changes nothing', () => {
+  const { root, jobDir } = fresh();
+  startBrief(root, jobDir, 'an acme demo');
+  const b = completeBrief(); delete b.brand; b.in_their_words = 'an acme demo';
+  saveBrief(jobDir, b);
+  assert.ok(writePlan(root, jobDir));
+  assert.equal(confirmPlan(root, jobDir).brand, 'acme');
+  confirmPlan(root, jobDir);
+  assert.equal(loadJob(jobDir).brief.decisions.filter((d) => d.what === 'plan confirmed').length, 1);
+  assert.equal(loadJob(jobDir).job.brand, 'acme');
+});
+
+test('store: a caller context decides the brand and completeness', () => {
+  const { root, jobDir } = fresh();
+  startBrief(root, jobDir, 'a demo');
+  const b = completeBrief(); delete b.brand; saveBrief(jobDir, b);
+  const ctx = { ...studioContext(root), defaultBrand: undefined };
+  assert.equal(writePlan(root, jobDir, { ctx }), null);
+});
+
+test('store: confirmPlan on an existing job.json notes once', () => {
+  const { root, jobDir } = fresh();
+  startBrief(root, jobDir, 'a demo'); saveBrief(jobDir, completeBrief()); writePlan(root, jobDir);
+  fs.writeFileSync(path.join(jobDir, 'job.json'), JSON.stringify({ name: 'old' }));
+  confirmPlan(root, jobDir); confirmPlan(root, jobDir);
+  assert.equal(loadJob(jobDir).job.notes.length, 1);
+});
+
+test('cli: a bad job.json with no brief still says no brief yet', () => {
+  const { jobDir } = fresh();
+  fs.mkdirSync(jobDir, { recursive: true }); fs.writeFileSync(path.join(jobDir, 'job.json'), '{ nope');
+  const r = spawnSync(process.execPath, [CLI, 'check', jobDir], { encoding: 'utf8' });
+  assert.equal(r.status, 1); assert.match(r.stdout, /No brief yet/);
+});

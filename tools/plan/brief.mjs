@@ -26,7 +26,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assumptions, preflight, questions, setField, SETTABLE, shotProblems, summary } from './lib/brief.mjs';
-import { decide, loadJob, saveBrief, setDotted, startBrief, studioContext, writePlan } from './lib/brief-store.mjs';
+import { decide, loadBrief, loadJob, saveBrief, setDotted, startBrief, studioContext, writePlan } from './lib/brief-store.mjs';
 import { loadRecipes, matchRecipes } from './lib/recipes.mjs';
 
 const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -55,8 +55,9 @@ if (cmd === 'new') {
   process.exit(0);
 }
 
-const { brief, job } = loadJob(jobDir);
+const brief = loadBrief(jobDir);
 if (!brief) { console.log(`No brief yet. Start one: node tools/plan/brief.mjs new ${jobArg} "<the creator's description>"`); process.exit(1); }
+const { job } = loadJob(jobDir);
 const shots = read(path.join(jobDir, 'shots.json'));
 const revisions = read(path.join(jobDir, 'revisions.json'));
 

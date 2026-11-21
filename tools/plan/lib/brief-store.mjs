@@ -27,9 +27,12 @@ export function studioContext(root) {
 export const customerBrands = (ctx) => Object.entries(ctx.brands || {}).filter(([name, b]) => b.setUp && name !== 'demo').map(([name]) => name);
 
 /** brief (null when missing) and job ({} when missing) of one job folder. */
+export function loadBrief(jobDir) {
+  try { return readJson(path.join(jobDir, 'brief.json')); } catch { throw new Error(`${path.basename(jobDir)}: brief.json cannot be read`); }
+}
+
 export function loadJob(jobDir) {
-  let brief;
-  try { brief = readJson(path.join(jobDir, 'brief.json')); } catch { throw new Error(`${path.basename(jobDir)}: brief.json cannot be read`); }
+  const brief = loadBrief(jobDir);
   let job;
   try { job = readJson(path.join(jobDir, 'job.json')) || {}; } catch { throw new Error(`${path.basename(jobDir)}: job.json cannot be read`); }
   return { brief, job };
@@ -60,8 +63,7 @@ export function setDotted(obj, dotted, value) {
   o[keys.at(-1)] = value;
 }
 
-function planFor(root, brief, job) {
-  const ctx = studioContext(root);
+function planFor(root, brief, job, ctx) {
   const kind = brief.kind || assumptions(brief, ctx).find((x) => x.id === 'kind')?.value;
   const fid = brief.framework || FRAMEWORK[kind] || 'studio-promo';
   const framework = loadFrameworks().frameworks.find((f) => f.id === fid) || null; // the studio's own frameworks file, not root's
@@ -81,9 +83,9 @@ export function renderPlan(out) {
 }
 
 /** The plan in brief, written to plan.md (not with { dryRun: true }); null when the checklist is not complete. */
-export function writePlan(root, jobDir, { dryRun = false } = {}) {
+export function writePlan(root, jobDir, { dryRun = false, ctx = studioContext(root) } = {}) {
   const { brief, job } = loadJob(jobDir);
-  const out = planFor(root, brief || {}, job);
+  const out = planFor(root, brief || {}, job, ctx);
   if (!out) return null;
   const md = renderPlan(out);
   if (!dryRun) fs.writeFileSync(path.join(jobDir, 'plan.md'), md);
@@ -99,23 +101,26 @@ export function decide(jobDir, what, { by = 'owner', applies = 'all' } = {}) {
 
 const TYPE_OF = { 'product-demo': 'demo', tutorial: 'tutorial', 'footage-edit': 'edit', ugc: 'edit', 'animated-short': 'edit' };
 
-/** Records "plan confirmed" and makes job.json at the Idea stage when there is none. */
-export function confirmPlan(root, jobDir) {
+/** Records "plan confirmed" (once) and makes job.json at the Idea stage when there is none. Safe to call again. */
+export function confirmPlan(root, jobDir, { ctx = studioContext(root) } = {}) {
   const { brief, job } = loadJob(jobDir);
-  if (!brief) throw new Error(`${path.basename(jobDir)}: there is no brief yet`);
-  if (!fs.existsSync(path.join(jobDir, 'plan.md'))) throw new Error(`${path.basename(jobDir)}: there is no plan yet; write the plan first`);
-  if (!planFor(root, brief, job)) throw new Error(`${path.basename(jobDir)}: the plan is not complete; the checklist still has open items`);
-  decide(jobDir, 'plan confirmed');
+  const name = path.basename(jobDir);
+  if (!brief) throw new Error(`${name}: there is no brief yet`);
+  if (!fs.existsSync(path.join(jobDir, 'plan.md'))) throw new Error(`${name}: there is no plan yet; write the plan first`);
+  if (!planFor(root, brief, job, ctx)) throw new Error(`${name}: the plan is not complete; the checklist still has open items`);
   const file = path.join(jobDir, 'job.json');
-  if (fs.existsSync(file)) {
-    job.notes = [...(job.notes || []), `Plan confirmed ${today()}; job.json left as it was.`];
-    writeJson(file, job);
-    return job;
+  const exists = fs.existsSync(file);
+  let made = job;
+  if (exists) {
+    if (!(job.notes || []).some((n) => String(n).startsWith('Plan confirmed'))) made = { ...job, notes: [...(job.notes || []), `Plan confirmed ${today()}; job.json left as it was.`] };
+  } else {
+    const t = readJson(path.join(root, 'templates', 'job.json'));
+    const kind = brief.kind || assumptions(brief, ctx).find((x) => x.id === 'kind')?.value;
+    const brand = brief.brand || assumptions(brief, { jobBrand: job.brand, ...ctx }).find((x) => x.id === 'brand')?.value;
+    const master = (brief.deliver || []).find((d) => d.master) || (brief.deliver || []).find((d) => d.size);
+    made = { ...t, name, brand, type: TYPE_OF[kind] || 'promo', size: master?.size || t.size, length_cap_seconds: brief.length_cap_seconds ?? null, created: today(), stage_next: 'idea', approval_mode: 'guided' };
   }
-  const t = readJson(path.join(root, 'templates', 'job.json'));
-  const kind = brief.kind || assumptions(brief, studioContext(root)).find((x) => x.id === 'kind')?.value;
-  const master = (brief.deliver || []).find((d) => d.master) || (brief.deliver || []).find((d) => d.size);
-  const made = { ...t, name: path.basename(jobDir), brand: brief.brand, type: TYPE_OF[kind] || 'promo', size: master?.size || t.size, length_cap_seconds: brief.length_cap_seconds ?? null, created: today(), stage_next: 'idea', approval_mode: 'guided' };
-  writeJson(file, made);
+  if (made !== job || !exists) writeJson(file, made);
+  if (!(brief.decisions || []).some((d) => d.what === 'plan confirmed')) decide(jobDir, 'plan confirmed');
   return made;
 }
