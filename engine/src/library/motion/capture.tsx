@@ -36,6 +36,8 @@ type Setting = Omit<CaptureClipProps, 'src' | 'cursor' | 'tracks' | 'width'>;
 
 /** A stretch of the capture that shows the item, found from its events, and the clip settings. */
 type Entry = { name: string; title: string; preset?: PresetName; make: (cursor: CaptureCursor) => Setting };
+/** For scenes that put a pointer, click, camera or time setting on a staging of their own (compose.tsx). */
+export type CaptureEntry = Entry;
 
 // ---------------------------------------------------------------- stretches of a capture
 
@@ -230,7 +232,7 @@ const showFor = (entry: Entry) => {
 };
 
 /** The kinds of event a stretch is found around: its first one in the stretch is the moment the scene shows. */
-const ACTIONS = new Set(['click', 'type', 'press', 'drag']);
+export const ACTIONS = new Set(['click', 'type', 'press', 'drag']);
 
 /**
  * The scene's defining moment on the clip's clock: its first hand-set camera move's cue; else its first freeze,

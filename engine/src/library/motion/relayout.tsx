@@ -47,6 +47,8 @@ export const relayoutMotionSchema = z.object({
 });
 type Props = z.infer<typeof relayoutMotionSchema>;
 
+/** A re-layout gallery entry (compose.tsx reads them to put marks on one). */
+export type RelayoutEntry = Entry;
 type Entry = {
   name: string;
   title: string;

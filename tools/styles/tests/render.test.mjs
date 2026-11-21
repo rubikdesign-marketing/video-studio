@@ -478,7 +478,7 @@ const twoTakes = (root, { phone = true } = {}) => {
   publish(root, demoRow.capture, { width: 1920, height: 1080 });
   if (phone) publish(root, phoneRow.capture, { width: 390, height: 844 });
 };
-const familyOf = (n) => (n.startsWith('cursor-') ? 'capture-pointer' : /^(relayout|product|stage|join)-/.test(n) ? 'capture-product' : 'text');
+const familyOf = (n) => (n.startsWith('cursor-') ? 'capture-pointer' : n.startsWith('relayout-') ? 'capture-relayout' : n.startsWith('stage-') ? 'capture-staging' : /^(product|join)-/.test(n) ? 'capture-product' : 'text');
 
 test('rules: phone moves are the ones made for a take recorded at phone size', () => {
   assert.equal(isPhoneMove('relayout-phone-take', ''), true);
@@ -490,17 +490,18 @@ test('rules: phone moves are the ones made for a take recorded at phone size', (
 });
 
 test('rules: a pointer beside a capture move is a setting, not a slot', () => {
+  // (Task 5d) the phone re-layout and its mark are one composed slot
   const mobile = previewSlots(['relayout-phone-take', 'cursor-hidden', 'product-ring'], { familyOf, phone: true });
-  assert.deepEqual(mobile, { moves: ['relayout-phone-take', 'product-ring'], pointer: 'hidden' });
-  assert.deepEqual(previewSlots(['cursor-presenter', 'product-steps'], { familyOf, phone: false }), { moves: ['product-steps'], pointer: 'presenter' });
+  assert.deepEqual(mobile, { moves: ['relayout-phone-take+product-ring'], pointer: 'hidden', refused: null });
+  assert.deepEqual(previewSlots(['cursor-presenter', 'product-steps'], { familyOf, phone: false }), { moves: ['product-steps'], pointer: 'presenter', refused: null });
   // a pointer alone still plays its own scene
-  assert.deepEqual(previewSlots(['cursor-classic'], { familyOf, phone: false }), { moves: ['cursor-classic'], pointer: null });
+  assert.deepEqual(previewSlots(['cursor-classic'], { familyOf, phone: false }), { moves: ['cursor-classic'], pointer: null, refused: null });
   // beside only standalone scenes, a pointer is a scene too
-  assert.deepEqual(previewSlots(['cursor-classic', 'blur-in'], { familyOf, phone: false }), { moves: ['cursor-classic', 'blur-in'], pointer: null });
+  assert.deepEqual(previewSlots(['cursor-classic', 'blur-in'], { familyOf, phone: false }), { moves: ['cursor-classic', 'blur-in'], pointer: null, refused: null });
   // on the phone take with no pointer named, the pointer is hidden (its own default, touch, is a dot)
-  assert.deepEqual(previewSlots(['relayout-phone-take'], { familyOf, phone: true }), { moves: ['relayout-phone-take'], pointer: 'hidden' });
+  assert.deepEqual(previewSlots(['relayout-phone-take'], { familyOf, phone: true }), { moves: ['relayout-phone-take'], pointer: 'hidden', refused: null });
   // a desktop capture move with no pointer named keeps its own
-  assert.deepEqual(previewSlots(['product-ring'], { familyOf, phone: false }), { moves: ['product-ring'], pointer: null });
+  assert.deepEqual(previewSlots(['product-ring'], { familyOf, phone: false }), { moves: ['product-ring'], pointer: null, refused: null });
   // never more than MAX_MOVES slots
   assert.equal(previewSlots(['blur-in', 'blur-in', 'blur-in', 'blur-in'], { familyOf, phone: false }).moves.length, MAX_MOVES);
 });
@@ -547,7 +548,7 @@ test('render plan: a phone-move entry plays on the phone take, a desktop entry o
     const opts = { root, force: true, capture: 'demo-previews/walkthrough', phoneCapture: 'demo-previews/phone' };
     const phone = planRender(mobileEntry(loadLibrary(root)), { ...opts, only: 'demo-soft-arrive' }).render[0];
     assert.equal(phone.capture, 'demo-previews/phone');
-    assert.deepEqual(phone.moves, ['relayout-phone-take', 'product-ring'], 'the pointer takes no slot');
+    assert.deepEqual(phone.moves, ['relayout-phone-take+product-ring'], 'the pointer takes no slot; the re-layout and its mark are one scene');
     assert.equal(phone.pointer, 'hidden');
     assert.equal(phone.entry.pointer, 'hidden');
     const desk = planRender(mobileEntry(loadLibrary(root), ['product-ring', 'cursor-classic']), { ...opts, only: 'demo-soft-arrive' }).render[0];
@@ -593,5 +594,67 @@ test('render: main finds the phone take by default and hands it and the pointer 
     await main(['--root', root, '--force', '--only', 'demo-soft-arrive'], { run, log: () => {} });
     assert.equal(props.capture, 'demo-previews/phone');
     assert.equal(props.entry.pointer, 'hidden');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+// ---------------------------------------------------------------- composed slots and measured starts (Task 5d)
+
+const timingFile = (root, scenes) => {
+  mkdirSync(join(root, 'library', 'motion'), { recursive: true });
+  writeFileSync(join(root, 'library', 'motion', 'scene-timing.json'), JSON.stringify({ fps: 30, size: [480, 270], scenes }));
+};
+const deskPlan = (root, engine, o = {}) => {
+  addJob(root, '_demo-previews', 'demo');
+  listCaptures(root, [demoRow]);
+  const lib = loadLibrary(root);
+  lib.byId.get('demo-soft-arrive').engine = engine;
+  return planRender(lib, { root, force: true, only: 'demo-soft-arrive', capture: 'demo-previews/walkthrough', ...o });
+};
+
+test('render plan: a staging named beside its mark plays as one composed slot', () => {
+  const root = scratch();
+  try {
+    const plan = deskPlan(root, ['stage-split', 'product-ring']);
+    assert.deepEqual(plan.render[0].moves, ['stage-split+product-ring']);
+    assert.deepEqual(plan.render[0].entry.engine, ['stage-split', 'product-ring'], 'the composition reads the same names and composes them the same way');
+    assert.deepEqual(plan.attention, []);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: a pairing that cannot share one take is reported, not rendered', async () => {
+  const root = scratch();
+  try {
+    const plan = deskPlan(root, ['stage-wall', 'product-isolate']);
+    assert.deepEqual(ids(plan.render), []);
+    assert.equal(plan.attention.length, 1);
+    assert.match(plan.attention[0].reason, /^staging and mark cannot compose: stage-wall/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: a scene with no measured timing is noted as starting at the safe offset', () => {
+  const root = scratch();
+  try {
+    timingFile(root, {});
+    const plan = deskPlan(root, ['blur-in']);
+    assert.equal(plan.render.length, 1);
+    assert.ok(plan.notes.some((n) => n.includes('demo-soft-arrive') && n.includes('blur-in') && /safe offset/.test(n)), plan.notes.join('\n'));
+    assert.deepEqual(plan.render[0].starts, [{ name: 'blur-in', start: 18, safe: true }]);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: each slot\'s start comes from the measured timing; a slot no window keeps clear needs attention', () => {
+  const root = scratch();
+  try {
+    timingFile(root, {
+      'blur-in': { seconds: 4, built: 0.9, cue: null, empty: [[0, 0.6]], extent: 0.6 },
+      'bar-grow': { seconds: 2, built: 0.5, cue: null, empty: [[0, 0.3], [0.9, 1.0], [1.4, 2]], extent: 0.6 },
+    });
+    const ok = deskPlan(root, ['blur-in']);
+    assert.deepEqual(ok.render[0].starts, [{ name: 'blur-in', start: 18, safe: false }]);
+    assert.deepEqual(ok.attention, []);
+    const bad = deskPlan(root, ['blur-in', 'bar-grow']);
+    assert.equal(bad.render.length, 1, 'it still renders; a person looks at it');
+    assert.equal(bad.attention.length, 1);
+    assert.match(bad.attention[0].reason, /bar-grow.*empty frame/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

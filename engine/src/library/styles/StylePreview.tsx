@@ -4,9 +4,14 @@
 // Capture-family moves play their own gallery scene (capture.tsx, product.tsx, joins.tsx, relayout.tsx) on the
 // demo-brand capture named in the "capture" prop (tools/styles/render-previews.mjs only passes a demo one: the phone
 // take for an entry with a phone move). Each capture scene starts just before its defining moment (rules.mjs,
-// sceneStart), and a pointer named beside a capture move sets that move's pointer instead of taking a slot.
+// sceneStart), and a pointer named beside a capture move sets that move's pointer instead of taking a slot. A staging,
+// re-layout or camera move named beside marks plays as one scene, the marks on the staged take (motion/compose.tsx).
+// Every other scene starts on a frame with its content on screen, from its measured timing (rules.mjs, slotStart;
+// library/motion/scene-timing.json), and a scene made only for 16:9 plays in a frame fitted to its content.
 import type { FC } from 'react';
 import { Composition, Sequence, Series, useVideoConfig } from 'remotion';
+import { composedScene } from '../motion/compose';
+import sceneTiming from '../../../../library/motion/scene-timing.json';
 import { useCapture, type LoadedCapture } from '../../capture/load';
 import { PointerOverride } from '../../kit/CaptureClip';
 import type { CursorStyle } from '../../kit/capture/looks';
@@ -26,10 +31,10 @@ import { productScenes } from '../motion/product';
 import { relayoutScenes } from '../motion/relayout';
 import type { FormatName, SizedDemo } from '../motion/sized';
 import { sizedFamilies } from '../motion/sized-families';
-import { CAPTURE_STANDS_IN, isCaptureMove, isPhoneMove, kebab, MAX_MOVES, previewSlots, sceneStart, SIZES } from './rules.mjs';
+import { CAPTURE_STANDS_IN, COMPOSE_JOIN, fitFrame, isCaptureMove, isPhoneMove, kebab, LEAD_S, MAX_MOVES, PREVIEW_FPS, PREVIEW_FRAMES, previewSlots, sceneStart, SIZES, slotFrames, slotStart, timingFor } from './rules.mjs';
 
-export const FPS = 30;
-export const FRAMES = 90;
+export const FPS = PREVIEW_FPS;
+export const FRAMES = PREVIEW_FRAMES;
 /** At most this many moves are played in one clip; each gets an equal share of the frames (rules.mjs). */
 export { MAX_MOVES };
 
@@ -50,11 +55,12 @@ export type StylePreviewProps = { entry: PreviewEntry; capture?: string };
 export { SIZES };
 
 type Scene = FC<{ page: StageName; format: FormatName }>;
-type Known = { Scene: Scene };
+/** `sized`: the scene lays itself out for every size (sized.tsx); the gallery scenes (demos/) are made for 16:9. */
+type Known = { name: string; Scene: Scene; seconds: number; sized: boolean };
 /** Every move with a standalone demo scene: the gallery scenes, then the sized families (text, transitions, openers, shaders, ugc). */
 const scenes = new Map<string, Known>();
-for (const d of demos) scenes.set(d.name, { Scene: d.Scene as Scene });
-for (const family of sizedFamilies) for (const d of family.demos as SizedDemo[]) scenes.set(d.name, { Scene: d.Scene });
+for (const d of demos) scenes.set(d.name, { name: d.name, Scene: d.Scene as Scene, seconds: d.seconds, sized: false });
+for (const family of sizedFamilies) for (const d of family.demos as SizedDemo[]) scenes.set(d.name, { name: d.name, Scene: d.Scene, seconds: d.seconds, sized: true });
 
 type Named = { name: string; component: string; best_page?: string };
 const backgrounds = new Map<string, Named>();
@@ -74,7 +80,8 @@ for (const m of (motionIndex as { moves: { name: string; family: string; does?: 
   if (isCaptureMove(m.name, m.family)) captureMoves.add(m.name);
   if (isPhoneMove(m.name, m.does)) phoneMoves.add(m.name);
 }
-export const needsCapture = (name: string) => captureMoves.has(name) || captureMoves.has(kebab(name));
+const isComposed = (name: string) => name.includes(COMPOSE_JOIN);
+export const needsCapture = (name: string) => isComposed(name) || captureMoves.has(name) || captureMoves.has(kebab(name));
 const familyOf = (name: string) => families.get(name) ?? families.get(kebab(name)) ?? '';
 const isPhone = (name: string) => phoneMoves.has(name) || phoneMoves.has(kebab(name));
 
@@ -88,7 +95,8 @@ const captureShows = new Map<string, CaptureScene>();
 for (const scene of [...captureScenes, ...productScenes, ...joinScenes, ...relayoutScenes]) captureShows.set(scene.name, scene);
 /** Capture moves with no gallery scene of their own play the scene named in CAPTURE_STANDS_IN (rules.mjs). */
 const STANDS_IN = CAPTURE_STANDS_IN;
-export const captureSceneOf = (name: string) => captureShows.get(STANDS_IN[name] ?? name) ?? captureShows.get(STANDS_IN[kebab(name)] ?? kebab(name));
+export const captureSceneOf = (name: string) =>
+  isComposed(name) ? composedScene(name) : captureShows.get(STANDS_IN[name] ?? name) ?? captureShows.get(STANDS_IN[kebab(name)] ?? kebab(name));
 
 /** A frame of the preview's shape for a scene: its long side 1920, or (contain) at least the scene's own frame. */
 export const sceneFrame = (scene: Pick<CaptureScene, 'size' | 'fit'>, width: number, height: number): [number, number] => {
@@ -136,29 +144,54 @@ const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energy:
   );
 };
 
+type Measured = Parameters<typeof timingFor>[0];
+const measured = (sceneTiming as { scenes?: Measured }).scenes;
+
+/**
+ * A standalone scene in its slot: from the frame its measured timing picks (its content on screen, never an empty
+ * frame when one can be avoided; rules.mjs, slotStart), in its own size's layout, or, made only for 16:9, in a frame
+ * of the clip's width just wide enough for its content (rules.mjs, fitFrame).
+ */
+const SceneMove: FC<{ known: Known; page: StageName; format: FormatName; energy: Energy; frames: number; first: boolean }> = ({ known, page, format, energy, frames, first }) => {
+  const { width, height } = useVideoConfig();
+  const timing = timingFor(measured, known.name, energy);
+  const { start } = slotStart({ timing, slot: frames, fps: FPS, grace: first ? Math.round(LEAD_S * FPS) : 0 });
+  const frame = known.sized ? { width, height, top: 0 } : fitFrame({ width, height }, timing?.extent);
+  return (
+    <Sequence from={-start} durationInFrames={frames + start} width={frame.width} height={frame.height} style={{ top: frame.top, height: frame.height, width: frame.width }}>
+      <known.Scene page={page} format={format} />
+    </Sequence>
+  );
+};
+
 const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({ entry, page, capture }) => {
   const format = formatOf(entry);
   // A name nothing here can play is an error, not a gap: the render fails and the plan reports the entry.
   for (const n of entry.engine) if (!sceneOf(n) && !needsCapture(n) && !backgroundOf(n)) throw new Error(`${entry.id}: ${n} has no demo scene, background or capture mapping`);
   const playable = entry.engine.filter((n) => sceneOf(n) || needsCapture(n));
-  // A pointer beside a capture move is that move's setting, not a slot (rules.mjs, the same rule as the plan).
+  // A pointer beside a capture move is that move's setting, not a slot; a picture beside marks is one slot (rules.mjs,
+  // the same rule as the plan).
   const slots = previewSlots(playable, { familyOf, phone: playable.some(isPhone) });
+  if (slots.refused) throw new Error(`${entry.id}: ${slots.refused}`);
   const moves = slots.moves;
   const pointer = entry.pointer ?? slots.pointer;
   const bg = entry.engine.map(backgroundOf).find(Boolean);
   const Backdrop = bg ? backdrops[bg.component] : null;
-  const slot = Math.floor(FRAMES / Math.max(1, moves.length));
   return (
     <>
       {Backdrop ? <Backdrop energy={backdropEnergy[energyOf(entry)]} /> : null}
       {moves.length ? (
       <Series>
         {moves.map((name, i) => {
-          const known = sceneOf(name);
-          const frames = i === moves.length - 1 ? FRAMES - slot * i : slot;
+          const known = isComposed(name) ? undefined : sceneOf(name);
+          const frames = slotFrames(moves.length, i);
           return (
             <Series.Sequence key={`${name}-${i}`} durationInFrames={frames}>
-              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} page={page} energy={energyOf(entry)} frames={frames} pointer={pointer} />}
+              {known ? (
+                <SceneMove known={known} page={page} format={format} energy={energyOf(entry)} frames={frames} first={i === 0} />
+              ) : (
+                <CaptureMove name={name} capture={capture} page={page} energy={energyOf(entry)} frames={frames} pointer={pointer} />
+              )}
             </Series.Sequence>
           );
         })}
@@ -194,5 +227,50 @@ export const StylePreviewComposition: FC = () => (
     durationInFrames={FRAMES}
     defaultProps={{ entry: sample } satisfies StylePreviewProps}
     calculateMetadata={({ props }) => ({ ...(SIZES[props.entry.filters.sizes[0]] ?? SIZES['9:16']), fps: FPS, durationInFrames: FRAMES })}
+  />
+);
+
+/** One row of the measuring reel: a standalone scene and the seconds it plays. */
+export type ReelItem = { name: string; seconds: number };
+export type SceneReelProps = { items: ReelItem[]; lead: number; energy: Energy };
+
+/**
+ * Every standalone scene back to back at 16:9 on the light page, after `lead` seconds of empty page, for
+ * tools/styles/scene-timing.mjs to measure when each is built, empty or changing, and how wide it draws.
+ */
+export const SceneReel: FC<SceneReelProps> = ({ items, lead, energy }) => {
+  const { fps } = useVideoConfig();
+  return (
+    <BrandProvider brand="demo">
+      <MotionProvider preset={energy as PresetName}>
+        <Stage name="light">
+          <Series>
+            <Series.Sequence durationInFrames={Math.max(1, Math.round(lead * fps))}>{null}</Series.Sequence>
+            {items.map((item) => {
+              const known = sceneOf(item.name);
+              if (!known) throw new Error(`${item.name} has no standalone scene`);
+              return (
+                <Series.Sequence key={item.name} durationInFrames={Math.round(item.seconds * fps)}>
+                  <known.Scene page="light" format="16:9" />
+                </Series.Sequence>
+              );
+            })}
+          </Series>
+        </Stage>
+      </MotionProvider>
+    </BrandProvider>
+  );
+};
+
+export const SceneReelComposition: FC = () => (
+  <Composition
+    id="style-scene-reel"
+    component={SceneReel}
+    width={480}
+    height={270}
+    fps={FPS}
+    durationInFrames={1}
+    defaultProps={{ items: [], lead: 1, energy: 'confident' } satisfies SceneReelProps}
+    calculateMetadata={({ props }) => ({ durationInFrames: Math.max(1, Math.round(props.lead * FPS) + props.items.reduce((n, i) => n + Math.round(i.seconds * FPS), 0)) })}
   />
 );

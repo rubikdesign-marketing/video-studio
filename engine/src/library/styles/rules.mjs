@@ -24,6 +24,15 @@ export const CAPTURE_STANDS_IN = { 'capture-sounds': 'click-ring' };
 /** At most this many moves are played in one clip; each gets an equal share of the frames. */
 export const MAX_MOVES = 3;
 
+/** A preview clip: 30 frames a second, 90 frames (3 s). */
+export const PREVIEW_FPS = 30;
+export const PREVIEW_FRAMES = 90;
+/** The frames slot `i` of `count` plays: an equal share, the last slot taking what is left. */
+export const slotFrames = (count, i) => {
+  const each = Math.floor(PREVIEW_FRAMES / Math.max(1, count));
+  return i === count - 1 ? PREVIEW_FRAMES - each * i : each;
+};
+
 /** A pointer move (cursor-classic ... cursor-hidden): the capture-pointer family. Its style is the name after cursor-. */
 export const isPointerMove = (name, family) => family === 'capture-pointer' && /^cursor-/.test(name);
 export const pointerStyleOf = (name) => String(name).replace(/^cursor-/, '');
@@ -34,21 +43,74 @@ export const pointerStyleOf = (name) => String(name).replace(/^cursor-/, '');
  */
 export const isPhoneMove = (name, does = '') => /^relayout-phone-take/.test(name) || /phone-size take|recorded at phone size/i.test(does);
 
+/** Families whose move sets the picture a take is shown in (one at most), and the camera on it (one at most). */
+export const PICTURE_FAMILIES = new Set(['capture-staging', 'capture-relayout']);
+export const CAMERA_FAMILIES = new Set(['capture-camera']);
+/** Families whose move marks something on the take: an animation on the product, a click or typing effect, the clicks' sounds. */
+export const MARK_FAMILIES = new Set(['capture-product', 'capture-effect', 'capture-sound']);
+/**
+ * Moves with a twin glued to the take, played as that twin when a capture picture is beside them: the light sweep
+ * crossing a surface is product-sweep crossing the thing (library/motion/index.json: "the light sweep, glued").
+ */
+export const COMPOSE_AS = { 'light-sweep': 'product-sweep' };
+/** Pictures no mark can go on, and why. */
+export const NO_MARKS = {
+  'stage-wall': 'a wall of still frames has no live take for the mark to sit on',
+  'relayout-vertical-join': 'it splits the take at a join, so the mark has no one take to sit on',
+};
+/** A composed slot's name: its members joined by this, the picture first, then the camera, then the marks. */
+export const COMPOSE_JOIN = '+';
+export const composedMembers = (name) => String(name).split(COMPOSE_JOIN);
+const REFUSED = 'staging and mark cannot compose';
+
+/**
+ * One scene for a staging, re-layout, phone or camera move named beside capture marks: the picture on the take, with
+ * the marks on that same take. Returns `{ composed, members, refused }`: `composed` the slot's name (members joined
+ * by COMPOSE_JOIN) or null; `members` the entry's names it stands for; `refused` the reason when the pairing cannot
+ * share one take ("staging and mark cannot compose: ..."), or null.
+ */
+export function composeMoves(names, familyOf) {
+  const as = (n) => CAPTURE_STANDS_IN[n] ?? n;
+  const pictures = names.filter((n) => PICTURE_FAMILIES.has(familyOf(n)));
+  const cameras = names.filter((n) => CAMERA_FAMILIES.has(familyOf(n)));
+  const base = pictures.length + cameras.length > 0;
+  const isMark = (n) => MARK_FAMILIES.has(familyOf(n)) || (base && n in COMPOSE_AS);
+  const marks = names.filter(isMark);
+  if (!base || !marks.length) return { composed: null, members: [], refused: null };
+  const members = names.filter((n) => pictures.includes(n) || cameras.includes(n) || marks.includes(n));
+  const refuse = (why) => ({ composed: null, members, refused: `${REFUSED}: ${why}` });
+  if (pictures.length > 1) return refuse(`${pictures.join(' and ')} are two pictures, and a take is shown in one`);
+  if (cameras.length > 1) return refuse(`${cameras.join(' and ')} are two camera moves on one take`);
+  const picture = pictures[0];
+  if (picture && NO_MARKS[picture]) return refuse(`${picture}: ${NO_MARKS[picture]}`);
+  if (picture && cameras.length && familyOf(picture) === 'capture-relayout') return refuse(`${picture} moves its own camera, so ${cameras[0]} has no camera to set`);
+  const parts = [picture, cameras[0], ...marks.map((n) => as(COMPOSE_AS[n] ?? n))].filter(Boolean);
+  return { composed: [...new Set(parts)].join(COMPOSE_JOIN), members, refused: null };
+}
+
 /**
  * Which moves take a slot in the clip, and the pointer its capture moves are drawn with. A pointer named beside
  * another capture move sets that move's pointer and takes no slot; a pointer with no capture move beside it plays its
  * own scene. On the phone take the pointer is hidden unless one is named: the take's own default is the touch dot.
- * `familyOf(name)` gives a move's family (library/motion/index.json). Returns `{ moves, pointer }`, pointer a style
- * name ("hidden", "classic" ...) or null for the move's own.
+ * A picture (staging, re-layout) or camera move named beside marks plays as one composed slot where the first of them
+ * stood (composeMoves). `familyOf(name)` gives a move's family (library/motion/index.json). Returns
+ * `{ moves, pointer, refused }`: pointer a style name ("hidden", "classic" ...) or null for the move's own; refused
+ * the reason a pairing cannot compose (the plan reports the entry instead of rendering it), or null.
  */
 export function previewSlots(names, { familyOf, phone = false }) {
   const pointerOf = (n) => isPointerMove(n, familyOf(n));
   const others = names.filter((n) => !pointerOf(n));
   const setting = others.some((n) => isCaptureMove(n, familyOf(n)));
   const named = setting ? names.find(pointerOf) : undefined;
-  const moves = (setting ? others : names).slice(0, MAX_MOVES);
+  let list = setting ? others : names;
+  const { composed, members, refused } = composeMoves(list, familyOf);
+  if (composed) {
+    const at = list.findIndex((n) => members.includes(n));
+    list = list.filter((n, i) => i === at || !members.includes(n)).map((n, i) => (i === at ? composed : n));
+  }
+  const moves = list.slice(0, MAX_MOVES);
   const pointer = named ? pointerStyleOf(named) : phone ? 'hidden' : null;
-  return { moves, pointer };
+  return { moves, pointer, refused };
 }
 
 /** Seconds of lead before a scene's defining moment (a click, a mark, a join) when its slot starts. */
@@ -64,4 +126,85 @@ export function sceneStart({ cue, seconds, slot, fps }) {
   const want = Math.round((cue - LEAD_S) * fps);
   const last = typeof seconds === 'number' && Number.isFinite(seconds) ? Math.floor(seconds * fps) - slot : Infinity;
   return Math.max(0, Math.min(want, last));
+}
+
+/**
+ * A scene's measured timing for an energy from scene-timing.json's `scenes`: a row per energy (calm, confident, hype;
+ * the entrances run at the energy's pace), or one row for all. Null when the scene was not measured.
+ */
+export function timingFor(scenes, name, energy) {
+  const row = scenes?.[name];
+  if (!row) return null;
+  if (typeof row.seconds === 'number') return row;
+  return row[energy] ?? row.confident ?? null;
+}
+
+/** Seconds into a scene a slot starts when nothing measured says better (library/motion/scene-timing.json has no row). */
+export const SAFE_OFFSET_S = 0.6;
+/** A slot that holds a scene's cue (a transition's change) keeps at least this long after it. */
+export const CUE_AFTER_S = 1;
+/**
+ * A scene whose content takes longer than this to arrive (from its first frame with content to its built moment) is
+ * one whose build is the move (typing, a cascade, bars growing, a ring sweeping): its slot starts as the content
+ * arrives (in the clip's first slot, up to LEAD_S before, in the empty lead the clip may open on), not when it is done.
+ */
+export const LONG_BUILD_S = 0.5;
+
+/**
+ * The frame of its own scene a slot starts on, from the scene's measured timing (library/motion/scene-timing.json:
+ * `{ seconds, built, cue, empty: [[from, to] ...] }`, seconds on the scene's clock). It starts at the built moment
+ * (its content on screen) less LEAD_S, or as its content arrives for a long build (LONG_BUILD_S); for a scene with a cue, late enough to show CUE_AFTER_S after it but never
+ * after the cue less LEAD_S; never past the scene's end. A window that would hold an empty frame moves to the nearest
+ * one that holds none (the first `grace` frames of the window do not count: the clip's own first 0.3 s). Returns
+ * `{ start, empty, safe }`: `empty` the empty frames left when no window avoids them all, `safe` when there was no
+ * timing and SAFE_OFFSET_S was used.
+ */
+export function slotStart({ timing, slot, fps, grace = 0 }) {
+  if (!timing) return { start: Math.round(SAFE_OFFSET_S * fps), empty: 0, safe: true };
+  const frames = Math.max(1, Math.floor(timing.seconds * fps));
+  const spans = (timing.empty ?? []).map(([a, b]) => [a * fps, b * fps]);
+  const blank = (f) => spans.some(([a, b]) => f >= a - 1e-6 && f < b - 1e-6);
+  const lastBlank = blank(frames - 1);
+  const emptyIn = (s) => {
+    let n = 0;
+    for (let f = s + grace; f < s + slot; f++) if (f >= frames ? lastBlank : blank(f)) n++;
+    return n;
+  };
+  const latest = Math.max(0, frames - slot);
+  const opening = spans.find(([a]) => a <= 1e-6);
+  const content = opening ? opening[1] / fps : 0;
+  let want = timing.built - content > LONG_BUILD_S + 1e-6 ? Math.round((content - (grace ? LEAD_S : 0)) * fps) : Math.round((timing.built - LEAD_S) * fps);
+  if (typeof timing.cue === 'number') want = Math.max(want, Math.min(Math.round((timing.cue - LEAD_S) * fps), Math.round((timing.cue + CUE_AFTER_S) * fps) - slot));
+  want = Math.max(0, Math.min(latest, want));
+  if (emptyIn(want) === 0) return { start: want, empty: 0, safe: false };
+  let best = { start: want, empty: emptyIn(want) };
+  for (let d = 1; d <= latest; d++) {
+    for (const s of [want + d, want - d]) {
+      if (s < 0 || s > latest) continue;
+      const n = emptyIn(s);
+      if (n === 0) return { start: s, empty: 0, safe: false };
+      if (n < best.empty) best = { start: s, empty: n };
+    }
+  }
+  return { ...best, safe: false };
+}
+
+/** Room kept on each side of a fitted scene, as a share of the clip's width. */
+export const FIT_MARGIN = 0.06;
+const WIDE = 16 / 9;
+
+/**
+ * The frame a scene made for 16:9 (and not laid out for other sizes) plays in, inside a clip of another shape: as
+ * tall as the clip when its content fits the clip's width with FIT_MARGIN each side, else just wide enough for it
+ * (never wider than 16:9), full clip width and centred. `extent` is the content's width as a share of the frame's
+ * height, measured at 16:9 (scene-timing.json); null means unknown, and the scene gets the whole 16:9 frame.
+ * Returns `{ width, height, top }` in clip pixels.
+ */
+export function fitFrame(clip, extent) {
+  const aspect = clip.width / clip.height;
+  if (aspect >= WIDE - 1e-6) return { width: clip.width, height: clip.height, top: 0 };
+  const need = typeof extent === 'number' && Number.isFinite(extent) ? extent / (1 - 2 * FIT_MARGIN) : WIDE;
+  const fitted = Math.min(WIDE, Math.max(aspect, need));
+  const height = fitted <= aspect + 1e-9 ? clip.height : Math.round(clip.width / fitted);
+  return { width: clip.width, height, top: Math.round((clip.height - height) / 2) };
 }

@@ -15,7 +15,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { TABS, loadLibrary, engineNames } from './lib/library.mjs';
 import { buildSprite, spawnRun } from './lib/sprite.mjs';
-import { SIZES, kebab, isCaptureMove, isPhoneMove, previewSlots } from '../../engine/src/library/styles/rules.mjs';
+import { SIZES, kebab, isCaptureMove, isPhoneMove, previewSlots, slotStart, slotFrames, timingFor, PREVIEW_FPS, LEAD_S, SAFE_OFFSET_S } from '../../engine/src/library/styles/rules.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const STUDIO = resolve(HERE, '..', '..');
@@ -141,14 +141,21 @@ export function phoneCaptureStatus(root, capture) {
   return cap;
 }
 
+/** The motion library's measured scene timing (library/motion/scene-timing.json, tools/styles/scene-timing.mjs). */
+export const sceneTimingFile = (root) => join(root, 'library', 'motion', 'scene-timing.json');
+const sceneTimings = (root) => tryJson(sceneTimingFile(root))?.scenes ?? {};
+
 /**
  * What to render. Returns `{ render, skipped, attention, notes }`:
- * - `render`: jobs `{ id, tab, width, height, out, clip, moves, pointer, capture, entry }` for ready picture entries that have
- *   no clip yet (or all of them with `force`) and at least one engine item the preview can play. `moves` are the ones
- *   that take a slot (a pointer beside a capture move is a setting: `pointer`); `capture` is the take they play on,
- *   the phone take for an entry with a phone move.
+ * - `render`: jobs `{ id, tab, width, height, out, clip, moves, starts, pointer, capture, entry }` for ready picture entries
+ *   that have no clip yet (or all of them with `force`) and at least one engine item the preview can play. `moves` are
+ *   the ones that take a slot (a pointer beside a capture move is a setting: `pointer`; a staging, re-layout or camera
+ *   move named beside marks is one composed slot, "stage-split+product-ring"); `starts` the frame each standalone
+ *   scene's slot starts on (from its measured timing; capture scenes start on their take's own moment); `capture` is
+ *   the take they play on, the phone take for an entry with a phone move.
  * - `skipped`: `{ id, reason }` for entries left out on purpose (made on request, sound, clip already there).
- * - `attention`: `{ id, reason }` for entries a person should look at (nothing playable, no demo capture, clip path off the convention).
+ * - `attention`: `{ id, reason }` for entries a person should look at (nothing playable, no demo capture, clip path off
+ *   the convention, a staging and mark that cannot compose, a slot no start keeps clear of empty frames).
  * - `notes`: one printed line for each engine item that cannot be played, or needs a capture.
  */
 export function planRender(lib, { root, tab = null, only = null, force = false, capture = null, phoneCapture = null, kinds = engineKinds() } = {}) {
@@ -157,6 +164,7 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
   const cap = captureStatus(root, capture);
   const phoneCap = phoneCaptureStatus(root, phoneCapture);
   const familyOf = (n) => kinds.families?.get(n) ?? '';
+  const timings = sceneTimings(root);
   for (const t of TABS) {
     if (tab && t !== tab) continue;
     for (const e of lib.tabs[t] ?? []) {
@@ -186,10 +194,20 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
       const gpu = items.some((i) => kinds.gpu.has(i.name));
       const energy = e.filters.energy?.[0] ?? 'confident';
       const slots = previewSlots(playable.filter((i) => i.kind !== 'background').map((i) => i.name), { familyOf, phone: phone && onCapture.length > 0 });
+      if (slots.refused) { out.attention.push({ id: e.id, reason: slots.refused }); continue; }
       const pointer = onCapture.length ? slots.pointer : null;
+      // Each standalone scene starts on a frame with its content on screen (rules.mjs, slotStart), the same as the composition.
+      const starts = [];
+      slots.moves.forEach((name, i) => {
+        if (!kinds.scenes.has(name)) return;
+        const r = slotStart({ timing: timingFor(timings, name, energy), slot: slotFrames(slots.moves.length, i), fps: PREVIEW_FPS, grace: i === 0 ? Math.round(LEAD_S * PREVIEW_FPS) : 0 });
+        starts.push({ name, start: r.start, safe: r.safe });
+        if (r.safe) out.notes.push(`${e.id}: ${name} has no measured timing, so its slot starts at the safe offset (${SAFE_OFFSET_S} s)`);
+        if (r.empty) out.attention.push({ id: e.id, reason: `${name} has an empty frame in every window of its slot (${r.empty} frames at best)` });
+      });
       const entry = { id: e.id, energy, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names, ...(pointer ? { pointer } : {}) };
       const take = onCapture.length ? (phone ? phoneCapture : capture) : null;
-      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: slots.moves, pointer, energy, gpu, capture: take, entry });
+      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: slots.moves, starts, pointer, energy, gpu, capture: take, entry });
     }
   }
   return out;

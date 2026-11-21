@@ -1,0 +1,5628 @@
+{
+ "about": "Measured by tools/styles/scene-timing.mjs: each standalone scene of the motion library, rendered once per energy at 480x270 and scanned like the preview clips.",
+ "fps": 30,
+ "size": [
+  480,
+  270
+ ],
+ "scenes": {
+  "anagram": {
+   "confident": {
+    "seconds": 5.2,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.867,
+      5.2
+     ]
+    ],
+    "extent": 0.533
+   },
+   "calm": {
+    "seconds": 5.2,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.933,
+      5.2
+     ]
+    ],
+    "extent": 0.533
+   },
+   "hype": {
+    "seconds": 5.2,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.833,
+      5.2
+     ]
+    ],
+    "extent": 0.533
+   }
+  },
+  "arc-swing": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.5,
+      4.5
+     ]
+    ],
+    "extent": 0.563
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.667,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.533,
+      4.5
+     ]
+    ],
+    "extent": 0.563
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.5,
+      4.5
+     ]
+    ],
+    "extent": 0.563
+   }
+  },
+  "bar-grow": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 1,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ]
+    ],
+    "extent": 0.681
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 1.1,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ]
+    ],
+    "extent": 0.681
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 0.933,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ]
+    ],
+    "extent": 0.681
+   }
+  },
+  "blinds": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.433,
+    "cue": 2.733,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2.367,
+    "cue": 2.667,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "block-reveal": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.9,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      4.067,
+      4.5
+     ]
+    ],
+    "extent": 0.533
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.033,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.6
+     ],
+     [
+      4.133,
+      4.5
+     ]
+    ],
+    "extent": 0.533
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      4.033,
+      4.5
+     ]
+    ],
+    "extent": 0.533
+   }
+  },
+  "blur-in": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      3.567,
+      4
+     ]
+    ],
+    "extent": 0.444
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      3.633,
+      4
+     ]
+    ],
+    "extent": 0.444
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.533,
+      4
+     ]
+    ],
+    "extent": 0.444
+   }
+  },
+  "blur-sweep": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.6
+     ],
+     [
+      3.433,
+      4
+     ]
+    ],
+    "extent": 0.8
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.867,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.633
+     ],
+     [
+      3.5,
+      4
+     ]
+    ],
+    "extent": 0.8
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      3.4,
+      4
+     ]
+    ],
+    "extent": 0.8
+   }
+  },
+  "blur-through": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.333,
+    "cue": 1.9,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.833,
+      1.967
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.867,
+      2
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.333,
+    "cue": 1.867,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.833,
+      1.9
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "camera": {
+   "confident": {
+    "seconds": 4,
+    "built": 1.5,
+    "cue": 1.8,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 1.667,
+    "cue": 1.967,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 1.533,
+    "cue": 1.833,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "caption-box": {
+   "confident": {
+    "seconds": 5,
+    "built": 1.267,
+    "cue": null,
+    "empty": [],
+    "extent": 0.889
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 1.067,
+    "cue": null,
+    "empty": [],
+    "extent": 0.889
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 1.033,
+    "cue": null,
+    "empty": [],
+    "extent": 0.889
+   }
+  },
+  "caption-pop": {
+   "confident": {
+    "seconds": 5,
+    "built": 1.233,
+    "cue": null,
+    "empty": [],
+    "extent": 0.889
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 1.233,
+    "cue": null,
+    "empty": [],
+    "extent": 0.889
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 1.233,
+    "cue": null,
+    "empty": [],
+    "extent": 0.889
+   }
+  },
+  "card-flip": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0.233,
+    "cue": 1.9,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      2,
+      2.033
+     ]
+    ],
+    "extent": 1.304
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0.267,
+    "cue": 1.967,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      2.1,
+      2.133
+     ]
+    ],
+    "extent": 1.481
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0.233,
+    "cue": 1.867,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.933,
+      2
+     ]
+    ],
+    "extent": 1.304
+   }
+  },
+  "carrier": {
+   "confident": {
+    "seconds": 6,
+    "built": 0.167,
+    "cue": 4.467,
+    "empty": [
+     [
+      0,
+      0.133
+     ],
+     [
+      1.5,
+      1.633
+     ],
+     [
+      3,
+      3.067
+     ],
+     [
+      4.433,
+      4.467
+     ]
+    ],
+    "extent": 1.333
+   },
+   "calm": {
+    "seconds": 6,
+    "built": 0.167,
+    "cue": 4.4,
+    "empty": [
+     [
+      0,
+      0.133
+     ],
+     [
+      1.5,
+      1.667
+     ],
+     [
+      3,
+      3.067
+     ],
+     [
+      4.4,
+      4.467
+     ]
+    ],
+    "extent": 1.333
+   },
+   "hype": {
+    "seconds": 6,
+    "built": 0.167,
+    "cue": 4.467,
+    "empty": [
+     [
+      0,
+      0.133
+     ],
+     [
+      1.5,
+      1.633
+     ],
+     [
+      3,
+      3.1
+     ]
+    ],
+    "extent": 1.333
+   }
+  },
+  "clock-wipe": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.633,
+    "cue": 2.567,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.633,
+    "cue": 2.667,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.167,
+    "cue": 2.5,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "colour-front": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   }
+  },
+  "container-transform": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.167,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2.267,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2,
+    "cue": 2.333,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "count-with-bar": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 0.967,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ]
+    ],
+    "extent": 0.741
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 1.067,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ]
+    ],
+    "extent": 0.741
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 0.9,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ]
+    ],
+    "extent": 0.741
+   }
+  },
+  "cube-turn": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.267,
+    "cue": 1.767,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.3,
+    "cue": 1.8,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.233,
+    "cue": 1.7,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "cursor-lead": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1.9,
+    "cue": 2.2,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.422
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.8,
+    "cue": 2.167,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.422
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 1.967,
+    "cue": 2.267,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.422
+   }
+  },
+  "dip-to-colour": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.6,
+    "cue": 2.533,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.6,
+    "cue": 2.633,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.567,
+    "cue": 2.5,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "door-split": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.367,
+    "cue": 2.867,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2.367,
+    "cue": 3.033,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.4,
+    "cue": 2.767,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "drawn-mark": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ]
+    ],
+    "extent": 0.593
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ]
+    ],
+    "extent": 0.593
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ]
+    ],
+    "extent": 0.593
+   }
+  },
+  "drop-bounce": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.6
+     ],
+     [
+      4.133,
+      4.5
+     ]
+    ],
+    "extent": 0.711
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.667
+     ],
+     [
+      4.333,
+      4.5
+     ]
+    ],
+    "extent": 0.711
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.867,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      4,
+      4.5
+     ]
+    ],
+    "extent": 0.711
+   }
+  },
+  "drum-roll": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.267,
+      4.5
+     ]
+    ],
+    "extent": 0.77
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.467,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.333,
+      4.5
+     ]
+    ],
+    "extent": 0.77
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.233,
+      4.5
+     ]
+    ],
+    "extent": 0.77
+   }
+  },
+  "exit-set": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      3.333,
+      4
+     ]
+    ],
+    "extent": 0.77
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      3.367,
+      4
+     ]
+    ],
+    "extent": 0.77
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      3.3,
+      4
+     ]
+    ],
+    "extent": 0.77
+   }
+  },
+  "exposure-bloom": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 2.167,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.767,
+      1.967
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 2.3,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.833,
+      2.067
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 2.133,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.733,
+      1.9
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "fade-up": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.667,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.667,
+      4
+     ]
+    ],
+    "extent": 0.504
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.733,
+      4
+     ]
+    ],
+    "extent": 0.504
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.633,
+      4
+     ]
+    ],
+    "extent": 0.504
+   }
+  },
+  "feather-wipe": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.667,
+    "cue": 2.433,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.667,
+    "cue": 2.5,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.333,
+    "cue": 2.633,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "film-burn": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1.8,
+    "cue": 2.1,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.867,
+    "cue": 2.167,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 1.767,
+    "cue": 2.067,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "flip-up": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.667,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.733,
+      4.5
+     ]
+    ],
+    "extent": 0.296
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      3.767,
+      4.5
+     ]
+    ],
+    "extent": 0.296
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.7,
+      4.5
+     ]
+    ],
+    "extent": 0.296
+   }
+  },
+  "flood": {
+   "confident": {
+    "seconds": 5,
+    "built": 1.8,
+    "cue": 3.633,
+    "empty": [
+     [
+      0,
+      0.167
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 1.9,
+    "cue": 3.667,
+    "empty": [
+     [
+      0,
+      0.167
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 1.767,
+    "cue": 3.6,
+    "empty": [
+     [
+      0,
+      0.167
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "focus-in": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.6,
+      4
+     ]
+    ],
+    "extent": 0.593
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.867,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      3.633,
+      4
+     ]
+    ],
+    "extent": 0.593
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.567,
+      4
+     ]
+    ],
+    "extent": 0.593
+   }
+  },
+  "focus-pull": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   }
+  },
+  "from-lens": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      0.467,
+      0.5
+     ],
+     [
+      3.7,
+      4.5
+     ]
+    ],
+    "extent": 0.948
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.8,
+      4.5
+     ]
+    ],
+    "extent": 1.096
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.367
+     ],
+     [
+      0.433,
+      0.467
+     ],
+     [
+      3.667,
+      4.5
+     ]
+    ],
+    "extent": 0.889
+   }
+  },
+  "giant-crop": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      4.667,
+      5
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.3,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      4.8,
+      5
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      4.6,
+      5
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "glitch-cut": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 1.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 1.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 1.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "glitch-in": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.867,
+      4
+     ]
+    ],
+    "extent": 0.474
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.933,
+      4
+     ]
+    ],
+    "extent": 0.474
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.833,
+      4
+     ]
+    ],
+    "extent": 0.474
+   }
+  },
+  "gradient-ink": {
+   "confident": {
+    "seconds": 4.8,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.533,
+      4.8
+     ]
+    ],
+    "extent": 0.77
+   },
+   "calm": {
+    "seconds": 4.8,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.567,
+      4.8
+     ]
+    ],
+    "extent": 0.77
+   },
+   "hype": {
+    "seconds": 4.8,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.533,
+      4.8
+     ]
+    ],
+    "extent": 0.77
+   }
+  },
+  "highlighter": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.741
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.741
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.741
+   }
+  },
+  "human-type": {
+   "confident": {
+    "seconds": 5.5,
+    "built": 1.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.533
+     ],
+     [
+      4.867,
+      5.5
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 5.5,
+    "built": 1.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      4.933,
+      5.5
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 5.5,
+    "built": 2.167,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.533
+     ],
+     [
+      4.833,
+      5.5
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "icon-door": {
+   "confident": {
+    "seconds": 5,
+    "built": 1.433,
+    "cue": 3.5,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 1.533,
+    "cue": 3.6,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 1.1,
+    "cue": 1.4,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "ink-bleed": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1.8,
+    "cue": 2.1,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.867,
+    "cue": 2.167,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 1.767,
+    "cue": 2.533,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "invert-flash": {
+   "confident": {
+    "seconds": 3.6,
+    "built": 0.367,
+    "cue": 1.667,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 3.6,
+    "built": 0.367,
+    "cue": 1.733,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 3.6,
+    "built": 0.367,
+    "cue": 1.633,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "iris-wipe": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.4,
+    "cue": 2.7,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2.433,
+    "cue": 2.733,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "letter-cascade": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.467,
+      4
+     ]
+    ],
+    "extent": 0.8
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.533,
+      4
+     ]
+    ],
+    "extent": 0.8
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.433,
+      4
+     ]
+    ],
+    "extent": 0.8
+   }
+  },
+  "letter-wave": {
+   "confident": {
+    "seconds": 4.4,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.4
+     ]
+    ],
+    "extent": 0.622
+   },
+   "calm": {
+    "seconds": 4.4,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.4
+     ]
+    ],
+    "extent": 0.622
+   },
+   "hype": {
+    "seconds": 4.4,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.4
+     ]
+    ],
+    "extent": 0.622
+   }
+  },
+  "lift": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.3,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   }
+  },
+  "light-leak": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.333,
+    "cue": 2.667,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": 1.933,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "light-sweep": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.978
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.978
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 0.233,
+    "cue": 1.133,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.978
+   }
+  },
+  "line-draw": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 1.133,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.8
+     ]
+    ],
+    "extent": 1.007
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 1.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.833
+     ]
+    ],
+    "extent": 1.007
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 1.1,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.767
+     ]
+    ],
+    "extent": 1.007
+   }
+  },
+  "logo-mask-wipe": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": 1.567,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": 2.533,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.233,
+    "cue": 1.567,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "luma-dissolve": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.919
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.919
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.919
+   }
+  },
+  "make-room": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.867,
+      4.5
+     ]
+    ],
+    "extent": 1.067
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.933,
+      4.5
+     ]
+    ],
+    "extent": 1.067
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 1.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.833,
+      4.5
+     ]
+    ],
+    "extent": 1.067
+   }
+  },
+  "mark-word": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.711
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.711
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.711
+   }
+  },
+  "mark-word-bracket": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   }
+  },
+  "mark-word-strike": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.741
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.741
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.741
+   }
+  },
+  "mark-word-underline": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.859
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.859
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.859
+   }
+  },
+  "mask-rise": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.433,
+      4
+     ]
+    ],
+    "extent": 0.474
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.667,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.467,
+      4
+     ]
+    ],
+    "extent": 0.474
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.6,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.4,
+      4
+     ]
+    ],
+    "extent": 0.474
+   }
+  },
+  "mask-rise-letters": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      3.433,
+      4
+     ]
+    ],
+    "extent": 0.593
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.6,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      3.467,
+      4
+     ]
+    ],
+    "extent": 0.593
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.4,
+      4
+     ]
+    ],
+    "extent": 0.593
+   }
+  },
+  "mask-rise-lines": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.867,
+      4.5
+     ]
+    ],
+    "extent": 0.563
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.9,
+      4.5
+     ]
+    ],
+    "extent": 0.563
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.833,
+      4.5
+     ]
+    ],
+    "extent": 0.563
+   }
+  },
+  "match-cut": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.367,
+    "cue": 1.833,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.77
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.367,
+    "cue": 1.9,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.741
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.367,
+    "cue": 1.8,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.77
+   }
+  },
+  "momentum-cut": {
+   "confident": {
+    "seconds": 4,
+    "built": 1.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.244
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 1.867,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.244
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 1.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.274
+   }
+  },
+  "morph-chain": {
+   "confident": {
+    "seconds": 5.2,
+    "built": 0.433,
+    "cue": 1.433,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      1.5,
+      1.567
+     ]
+    ],
+    "extent": 1.452
+   },
+   "calm": {
+    "seconds": 5.2,
+    "built": 0.6,
+    "cue": 1.467,
+    "empty": [
+     [
+      0,
+      0.367
+     ],
+     [
+      1.533,
+      1.6
+     ]
+    ],
+    "extent": 1.452
+   },
+   "hype": {
+    "seconds": 5.2,
+    "built": 0.533,
+    "cue": 1.433,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      1.467,
+      1.533
+     ]
+    ],
+    "extent": 1.452
+   }
+  },
+  "number-roll": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.667
+     ]
+    ],
+    "extent": 0.504
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.7
+     ]
+    ],
+    "extent": 0.504
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.667
+     ]
+    ],
+    "extent": 0.504
+   }
+  },
+  "on-path": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.733
+     ]
+    ],
+    "extent": 0.948
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.833
+     ]
+    ],
+    "extent": 0.948
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.9,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.667
+     ]
+    ],
+    "extent": 0.948
+   }
+  },
+  "one-word-stack": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      2.867,
+      4
+     ]
+    ],
+    "extent": 0.326
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      2.9,
+      4
+     ]
+    ],
+    "extent": 0.326
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      2.8,
+      4
+     ]
+    ],
+    "extent": 0.326
+   }
+  },
+  "opener-at-the-lens": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 1,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 1.233,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.867,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-fill-frame": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.433,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0.533,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.367,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-glitch-cut": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-notification-drop": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.363
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.363
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.363
+   }
+  },
+  "opener-number-slam": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 1.033,
+    "cue": null,
+    "empty": [],
+    "extent": 1.63
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 1.3,
+    "cue": null,
+    "empty": [],
+    "extent": 1.57
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.867,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-punch-in": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.367,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0.467,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.333,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-question": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.867,
+    "cue": null,
+    "empty": [],
+    "extent": 1.096
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 1.1,
+    "cue": null,
+    "empty": [],
+    "extent": 1.096
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.733,
+    "cue": null,
+    "empty": [],
+    "extent": 1.067
+   }
+  },
+  "opener-split-screen": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.133,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0.133,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.133,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-spotlight": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.267,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0.367,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.233,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-strike-out": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.467,
+    "cue": null,
+    "empty": [],
+    "extent": 1.185
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0.533,
+    "cue": null,
+    "empty": [],
+    "extent": 1.185
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.433,
+    "cue": null,
+    "empty": [],
+    "extent": 1.185
+   }
+  },
+  "opener-sudden-stop": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.333,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0.4,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.3,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "opener-whip-in": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.233,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 0.267,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.2,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "outline-fill": {
+   "confident": {
+    "seconds": 4.8,
+    "built": 0.867,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.233,
+      4.8
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 4.8,
+    "built": 1.033,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.3,
+      4.8
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4.8,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.2,
+      4.8
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "page-turn": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0.233,
+    "cue": 1.867,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0.233,
+    "cue": 1.967,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0.233,
+    "cue": 1.833,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "panel-wipe": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.633,
+    "cue": 2.4,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.667,
+    "cue": 2.467,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.633,
+    "cue": 2.4,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "parallax-camera": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.433,
+    "cue": 1.367,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.541
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.433,
+    "cue": 1.433,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.541
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.433,
+    "cue": 1.333,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.541
+   }
+  },
+  "parallax-push": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0.533,
+    "cue": 2,
+    "empty": [
+     [
+      2.033,
+      2.1
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0.533,
+    "cue": 2.067,
+    "empty": [
+     [
+      2.067,
+      2.167
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0.533,
+    "cue": 1.967,
+    "empty": [
+     [
+      2,
+      2.067
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "particle-form": {
+   "confident": {
+    "seconds": 6.2,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.244
+   },
+   "calm": {
+    "seconds": 6.2,
+    "built": 0.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.244
+   },
+   "hype": {
+    "seconds": 6.2,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.244
+   }
+  },
+  "payoff-punch": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.622
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.622
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.622
+   }
+  },
+  "pixel-decode": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.867,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.867,
+      4
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.967,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.933,
+      4
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.833,
+      4
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "pixelate-through": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.233,
+    "cue": 1.867,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.948
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.233,
+    "cue": 1.933,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.948
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.233,
+    "cue": 1.8,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.948
+   }
+  },
+  "push-through": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": 2.267,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": 2.4,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.133,
+    "cue": 2.433,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "push-wipe": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.6,
+    "cue": 2.333,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.6,
+    "cue": 2.367,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.567,
+    "cue": 2.333,
+    "empty": [
+     [
+      0,
+      0.267
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "recentre-build": {
+   "confident": {
+    "seconds": 5,
+    "built": 1.9,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.967,
+      5
+     ]
+    ],
+    "extent": 0.77
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 1.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      4.033,
+      5
+     ]
+    ],
+    "extent": 0.77
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 1.667,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.4
+     ],
+     [
+      3.933,
+      5
+     ]
+    ],
+    "extent": 0.77
+   }
+  },
+  "relay-scroll": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.333,
+    "cue": 2.267,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      2.367,
+      2.4
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.333,
+    "cue": 2.367,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      2.467,
+      2.5
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.333,
+    "cue": 2.233,
+    "empty": [
+     [
+      0,
+      0.333
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "retype": {
+   "confident": {
+    "seconds": 6,
+    "built": 1.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      5.567,
+      6
+     ]
+    ],
+    "extent": 0.77
+   },
+   "calm": {
+    "seconds": 6,
+    "built": 2.033,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      5.633,
+      6
+     ]
+    ],
+    "extent": 0.77
+   },
+   "hype": {
+    "seconds": 6,
+    "built": 1.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.5
+     ],
+     [
+      5.533,
+      6
+     ]
+    ],
+    "extent": 0.77
+   }
+  },
+  "ring-sweep": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 0.9,
+    "cue": null,
+    "empty": [],
+    "extent": 0.444
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 0.967,
+    "cue": null,
+    "empty": [],
+    "extent": 0.444
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 0.833,
+    "cue": null,
+    "empty": [],
+    "extent": 0.444
+   }
+  },
+  "ripple": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.067,
+    "cue": 2.367,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2.167,
+    "cue": 2.467,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 1.967,
+    "cue": 2.267,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "rotating-word": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.467,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.467,
+      5
+     ]
+    ],
+    "extent": 0.859
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.5,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.533,
+      5
+     ]
+    ],
+    "extent": 0.859
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.467,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.433,
+      5
+     ]
+    ],
+    "extent": 0.859
+   }
+  },
+  "scatter-assemble": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.067,
+      4.5
+     ]
+    ],
+    "extent": 1.363
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.933,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.167,
+      4.5
+     ]
+    ],
+    "extent": 1.363
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.967,
+      4.5
+     ]
+    ],
+    "extent": 1.363
+   }
+  },
+  "scramble-lock": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.467,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.267,
+      4.5
+     ]
+    ],
+    "extent": 0.504
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.5,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.333,
+      4.5
+     ]
+    ],
+    "extent": 0.504
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.467,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.233,
+      4.5
+     ]
+    ],
+    "extent": 0.504
+   }
+  },
+  "shader-god-rays": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.633
+     ],
+     [
+      4.367,
+      5
+     ]
+    ],
+    "extent": 0.889
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.633
+     ],
+     [
+      4.433,
+      5
+     ]
+    ],
+    "extent": 0.889
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.633
+     ],
+     [
+      4.333,
+      5
+     ]
+    ],
+    "extent": 0.889
+   }
+  },
+  "shader-grain-gradient": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "shader-mesh-gradient": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.833,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "shader-neuro-noise": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.7,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "shader-simplex-noise": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "shader-smoke-ring": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.667,
+    "cue": null,
+    "empty": [],
+    "extent": 0.681
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.667,
+    "cue": null,
+    "empty": [],
+    "extent": 0.681
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.667,
+    "cue": null,
+    "empty": [],
+    "extent": 0.681
+   }
+  },
+  "shader-swirl": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "shader-warp": {
+   "confident": {
+    "seconds": 5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.633
+     ],
+     [
+      4.367,
+      5
+     ]
+    ],
+    "extent": 0.741
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.633
+     ],
+     [
+      4.433,
+      5
+     ]
+    ],
+    "extent": 0.741
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.633
+     ],
+     [
+      4.333,
+      5
+     ]
+    ],
+    "extent": 0.741
+   }
+  },
+  "shape-morph": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1.2,
+    "cue": 1.933,
+    "empty": [
+     [
+      0,
+      0.367
+     ]
+    ],
+    "extent": 0.711
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.167,
+    "cue": 1.933,
+    "empty": [
+     [
+      0,
+      0.4
+     ]
+    ],
+    "extent": 0.711
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 1.2,
+    "cue": 1.933,
+    "empty": [
+     [
+      0,
+      0.367
+     ]
+    ],
+    "extent": 0.711
+   }
+  },
+  "shared-element": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 1.9,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.633,
+      1.733
+     ]
+    ],
+    "extent": 1.63
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 1.967,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.667,
+      1.8
+     ]
+    ],
+    "extent": 1.63
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 1.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.633,
+      1.7
+     ]
+    ],
+    "extent": 1.63
+   }
+  },
+  "shimmer": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.433,
+      4.6
+     ]
+    ],
+    "extent": 0.593
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.467,
+      4.6
+     ]
+    ],
+    "extent": 0.593
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.433,
+      4.6
+     ]
+    ],
+    "extent": 0.593
+   }
+  },
+  "slam": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      2.9,
+      3.5
+     ]
+    ],
+    "extent": 0.83
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 0.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      2.967,
+      3.5
+     ]
+    ],
+    "extent": 1.126
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      0.467,
+      0.5
+     ],
+     [
+      2.9,
+      3.5
+     ]
+    ],
+    "extent": 0.859
+   }
+  },
+  "slide-off-reveal": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2.3,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2.167,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "slider-drag": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 2.167,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 2.067,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 2.233,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "smear-in": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.767,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.533
+     ],
+     [
+      3.367,
+      4
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.533
+     ],
+     [
+      3.433,
+      4
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.533
+     ],
+     [
+      3.367,
+      4
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "soft-wipe": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.6
+     ],
+     [
+      3.833,
+      4.5
+     ]
+    ],
+    "extent": 0.474
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.933,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.667
+     ],
+     [
+      3.9,
+      4.5
+     ]
+    ],
+    "extent": 0.474
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      3.8,
+      4.5
+     ]
+    ],
+    "extent": 0.474
+   }
+  },
+  "spin-whip": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 2,
+    "cue": null,
+    "empty": [
+     [
+      1.733,
+      1.9
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 2.067,
+    "cue": null,
+    "empty": [
+     [
+      1.767,
+      1.933
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 1.967,
+    "cue": null,
+    "empty": [
+     [
+      1.7,
+      1.867
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "split-flap": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.267,
+      4.5
+     ]
+    ],
+    "extent": 1.185
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.467,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.333,
+      4.5
+     ]
+    ],
+    "extent": 1.185
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      4.233,
+      4.5
+     ]
+    ],
+    "extent": 1.185
+   }
+  },
+  "stagger": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      3.733,
+      4.2
+     ]
+    ],
+    "extent": 1.333
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0.733,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.6
+     ],
+     [
+      3.767,
+      4.2
+     ]
+    ],
+    "extent": 1.333
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      3.7,
+      4.2
+     ]
+    ],
+    "extent": 1.333
+   }
+  },
+  "stream-answer": {
+   "confident": {
+    "seconds": 6,
+    "built": 2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      5.667,
+      6
+     ]
+    ],
+    "extent": 1.126
+   },
+   "calm": {
+    "seconds": 6,
+    "built": 2.033,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      5.733,
+      6
+     ]
+    ],
+    "extent": 1.126
+   },
+   "hype": {
+    "seconds": 6,
+    "built": 2.033,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.567
+     ],
+     [
+      5.633,
+      6
+     ]
+    ],
+    "extent": 1.126
+   }
+  },
+  "swap-word": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.6,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.667,
+      4
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.633,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.733,
+      4
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.633,
+      4
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "tab-indicator": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.2,
+    "cue": 2.967,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.244
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.2,
+    "cue": 1.067,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.244
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.167,
+    "cue": 1.033,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.244
+   }
+  },
+  "text-window": {
+   "confident": {
+    "seconds": 5,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 5,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 5,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778
+   }
+  },
+  "ticker": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      3.967,
+      4.5
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      4.033,
+      4.5
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.267,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      3.933,
+      4.5
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "tile-reveal": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 1.933,
+    "cue": 2.267,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 1.967,
+    "cue": 2.3,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 1.833,
+    "cue": 2.133,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "title-takeover": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2.067,
+    "cue": 2.367,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2.233,
+    "cue": 2.533,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.778
+   }
+  },
+  "toggle-flip": {
+   "confident": {
+    "seconds": 3.5,
+    "built": 1.233,
+    "cue": 2.533,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.244
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 1.233,
+    "cue": 2.533,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.244
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 1.233,
+    "cue": 2.533,
+    "empty": [
+     [
+      0,
+      0.133
+     ]
+    ],
+    "extent": 1.244
+   }
+  },
+  "tracking-settle": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.567,
+      4
+     ]
+    ],
+    "extent": 0.919
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.633,
+      4
+     ]
+    ],
+    "extent": 0.919
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.533,
+      4
+     ]
+    ],
+    "extent": 0.919
+   }
+  },
+  "type-on": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.067
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.067
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.067
+   }
+  },
+  "ugc-comment-reply": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0.167,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.067
+     ]
+    ],
+    "extent": 0.83
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0.2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.067
+     ]
+    ],
+    "extent": 0.83
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0.133,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.067
+     ]
+    ],
+    "extent": 0.859
+   }
+  },
+  "ugc-screen-rec-tell": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 0.474
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 0.474
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0,
+    "cue": null,
+    "empty": [],
+    "extent": 0.474
+   }
+  },
+  "ugc-sticker-pop": {
+   "confident": {
+    "seconds": 4.2,
+    "built": 0.833,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.067
+     ]
+    ],
+    "extent": 0.622
+   },
+   "calm": {
+    "seconds": 4.2,
+    "built": 0.867,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.1
+     ]
+    ],
+    "extent": 0.622
+   },
+   "hype": {
+    "seconds": 4.2,
+    "built": 0.8,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.067
+     ]
+    ],
+    "extent": 0.622
+   }
+  },
+  "voice-swap": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.333,
+      4.6
+     ]
+    ],
+    "extent": 0.652
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.367,
+      4.6
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.333,
+      4.6
+     ]
+    ],
+    "extent": 0.652
+   }
+  },
+  "weight-wave": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.563
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.433,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.563
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.563
+   }
+  },
+  "weight-wave-ripple": {
+   "confident": {
+    "seconds": 4.6,
+    "built": 0.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   },
+   "calm": {
+    "seconds": 4.6,
+    "built": 0.4,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.267,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   },
+   "hype": {
+    "seconds": 4.6,
+    "built": 0.367,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.233,
+      4.6
+     ]
+    ],
+    "extent": 0.83
+   }
+  },
+  "whip-pan": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 2,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.7,
+      1.833
+     ]
+    ],
+    "extent": 1.452
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 2.067,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.733,
+      1.867
+     ]
+    ],
+    "extent": 1.393
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 1.933,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ],
+     [
+      1.667,
+      1.8
+     ]
+    ],
+    "extent": 1.422
+   }
+  },
+  "word-morph": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.967,
+      4.5
+     ]
+    ],
+    "extent": 0.8
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      4.033,
+      4.5
+     ]
+    ],
+    "extent": 0.8
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.333,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.933,
+      4.5
+     ]
+    ],
+    "extent": 0.8
+   }
+  },
+  "word-pop": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.567,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.133,
+      4
+     ]
+    ],
+    "extent": 0.296
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 0.6,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.467
+     ],
+     [
+      3.167,
+      4
+     ]
+    ],
+    "extent": 0.296
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.533,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.433
+     ],
+     [
+      3.133,
+      4
+     ]
+    ],
+    "extent": 0.296
+   }
+  },
+  "zoom-blur": {
+   "confident": {
+    "seconds": 4,
+    "built": 0.433,
+    "cue": 1.8,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.681
+   },
+   "calm": {
+    "seconds": 4,
+    "built": 1.7,
+    "cue": null,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.652
+   },
+   "hype": {
+    "seconds": 4,
+    "built": 0.333,
+    "cue": 1.767,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.681
+   }
+  },
+  "zoom-through-swap": {
+   "confident": {
+    "seconds": 4.5,
+    "built": 0.333,
+    "cue": 2.133,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   },
+   "calm": {
+    "seconds": 4.5,
+    "built": 0.367,
+    "cue": 2.167,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   },
+   "hype": {
+    "seconds": 4.5,
+    "built": 0.3,
+    "cue": 2.067,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 1.126
+   }
+  }
+ }
+}

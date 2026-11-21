@@ -2,6 +2,12 @@
 // checkout where src/index.ts will not (it also loads every job and every capture).
 //   npx remotion render src/library/styles/entry.tsx style-preview out.mp4 --props=entry.json
 import { registerRoot } from 'remotion';
-import { StylePreviewComposition } from './StylePreview';
+import { SceneReelComposition, StylePreviewComposition } from './StylePreview';
 
-registerRoot(StylePreviewComposition);
+// "style-scene-reel" is for tools/styles/scene-timing.mjs: every standalone scene once, to measure their timing.
+registerRoot(() => (
+  <>
+    <StylePreviewComposition />
+    <SceneReelComposition />
+  </>
+));

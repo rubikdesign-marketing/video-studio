@@ -59,6 +59,10 @@ type Ctx = {
 
 type Made = { source?: Partial<CaptureSource>; shot?: Partial<CaptureShotProps>; emphasis?: Emphasis[] };
 type Entry = { name: string; title: string; preset?: PresetName; staging?: StagingName; two?: boolean; make: (ctx: Ctx) => Made };
+/** For scenes that put these animations on a staging, re-layout or camera move of their own (compose.tsx). */
+export type ProductEntry = Entry;
+export type ProductMade = Made;
+export type ProductContext = Ctx;
 
 // ---------------------------------------------------------------- finding the things
 
@@ -97,6 +101,9 @@ const contextOf = (loaded: LoadedCapture, props: Props): Ctx => {
   return { cursor, tracks, role, appears };
 };
 
+/** The things on this take by role, as the gallery scenes find them (no things or roles given). */
+export const productContext = (loaded: LoadedCapture): Ctx => contextOf(loaded, { things: {}, roles: {} } as unknown as Props);
+
 /** A stretch of about six seconds that starts just before a thing appears, so it is on screen from the first second. */
 const around = (ctx: Ctx, name: string | null, length = 6) => {
   const t = name ? ctx.appears(name) ?? 0 : 0;
@@ -104,7 +111,8 @@ const around = (ctx: Ctx, name: string | null, length = 6) => {
   return { from, to: Math.min(ctx.cursor.seconds, from + length) };
 };
 
-const CUE = 1.3;
+/** Where an animation's moment lands on its clip's clock when its thing is on screen from the start. */
+export const CUE = 1.3;
 const OUT = 4.2;
 
 /**
