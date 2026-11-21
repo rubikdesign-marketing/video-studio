@@ -13,6 +13,7 @@
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { registerConnector } from './connector.mjs';
 import { isMain, STUDIO, nodeOk } from './resolve.mjs';
 
 export const DOTFILES_DIR = path.join('setup', 'dotfiles');
@@ -101,6 +102,13 @@ async function main() {
   if (!fs.existsSync(path.join(STUDIO, '.claude', 'skills', 'video-studio', 'SKILL.md'))) {
     console.error('The studio skill (.claude/skills/video-studio) is missing and could not be put back. Download the studio again.');
     process.exit(1);
+  }
+
+  try {
+    const state = registerConnector(STUDIO, process.execPath);
+    console.log(`Brief page connector: ${state === 'unchanged' ? 'already set' : state}`);
+  } catch {
+    console.log('The brief page connector could not be set up. Running the start step again will retry. Carrying on.');
   }
 
   if (args.importFrom) {

@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { probeConnector } from './connector.mjs';
 import { capture } from './run.mjs';
 import {
   isMain, NODE_FLOOR, STUDIO, compositorPackage, currentOs, fixFor, nodeOk, npmInvocation, redact,
@@ -128,6 +129,11 @@ export async function buildReport({ root = STUDIO, env = process.env, platform =
   cap('deep-filter', fs.existsSync(df) ? 'ready' : 'missing', fs.existsSync(df) ? df : 'not downloaded', 'node setup/runtime/install.mjs --with deep-filter');
   const demucs = which('demucs', { env, platform }) || [path.join(os.homedir(), '.local', 'bin', 'demucs')].find((p) => fs.existsSync(p));
   cap('demucs', demucs ? 'ready' : 'missing', demucs || 'not installed (optional)', 'node setup/runtime/install.mjs --with demucs');
+
+  const brief = await probeConnector(root);
+  brief.ok
+    ? cap('brief-page', 'ready', `the brief page's connector starts (${brief.tools.length} tools)`)
+    : cap('brief-page', 'missing', brief.error, 'run the start step again: bash setup/start.sh (Windows: setup\\start.ps1)');
 
   const scriptBin = platform === 'darwin' ? (fs.existsSync('/usr/bin/script') ? '/usr/bin/script' : null) : platform === 'linux' ? which('script', { env, platform }) : null;
   scriptBin
