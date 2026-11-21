@@ -1,0 +1,13 @@
+{
+  "_about": "What the style-preview composition can play on its own: text moves that need only a line of type and a cue, and the backgrounds. Component names. tools/styles/render-previews.mjs reads this list to plan; StylePreview.tsx checks it against its own table. A move not listed here (camera, transitions, product components) needs a scene around it and is skipped with a note.",
+  "moves": [
+    "BlurIn", "TrackingSettle", "TypeOn",
+    "MaskRise", "FadeUp", "LetterCascade", "SoftWipe", "BlurSweep", "FocusIn", "OutlineFill", "BlockReveal",
+    "Slam", "WordPop", "DropBounce", "FlipUp", "ArcSwing", "ScatterAssemble", "FromLens", "SmearIn",
+    "HumanType", "ScrambleLock", "SplitFlap", "DrumRoll"
+  ],
+  "backgrounds": [
+    "Paper", "Night", "Glass", "ColourField", "Editorial", "Blueprint",
+    "Aurora", "Horizon", "Waves", "Spotlight", "PerspectiveLines", "SoftShapes"
+  ]
+}
