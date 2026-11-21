@@ -1,0 +1,146 @@
+[
+  {
+    "id": "demo-soft-arrive",
+    "tab": "motion",
+    "name": "Soft arrive",
+    "line": "Soft arrive, in one plain sentence for the demo brand.",
+    "family": "arrival",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A soft arrive style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 0.8,
+        "ease": "out-cubic",
+        "overshoot": 0,
+        "hold_s": 0.6,
+        "motion": 0.7,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "BlurIn"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/demo-soft-arrive.mp4"
+    },
+    "settles": {
+      "look": "paper"
+    },
+    "pairs_with": [
+      "demo-slow-push"
+    ]
+  },
+  {
+    "id": "demo-snappy",
+    "tab": "motion",
+    "name": "Snappy overshoot",
+    "line": "Snappy overshoot, in one plain sentence for the demo brand.",
+    "family": "arrival",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A snappy overshoot style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 0.5,
+        "ease": "out-quart",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 1.4,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.25,
+        "ease": "out-back",
+        "overshoot": 0.1,
+        "hold_s": 0.1,
+        "motion": 5.2,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "PopIn"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/demo-snappy.mp4"
+    },
+    "avoid_with": [
+      "demo-soft-arrive"
+    ]
+  },
+  {
+    "id": "demo-quick-cut",
+    "tab": "motion",
+    "name": "Quick cut",
+    "line": "Quick cut, in one plain sentence for the demo brand.",
+    "family": "transition",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A quick cut style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.25,
+        "ease": "out-back",
+        "overshoot": 0.1,
+        "hold_s": 0.1,
+        "motion": 5.2,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "CutOn"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/demo-quick-cut.mp4"
+    }
+  }
+]

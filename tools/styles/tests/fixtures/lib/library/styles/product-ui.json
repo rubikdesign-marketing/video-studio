@@ -1,0 +1,95 @@
+[
+  {
+    "id": "demo-click-trace",
+    "tab": "product-ui",
+    "name": "Click trace",
+    "line": "Click trace, in one plain sentence for the demo brand.",
+    "family": "pointer",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A click trace style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 0.5,
+        "ease": "out-quart",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "CursorTrace"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/demo-click-trace.mp4"
+    }
+  },
+  {
+    "id": "demo-screen-frame",
+    "tab": "product-ui",
+    "name": "Screen frame",
+    "line": "Screen frame, in one plain sentence for the demo brand.",
+    "family": "staging",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A screen frame style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 0.8,
+        "ease": "out-cubic",
+        "overshoot": 0,
+        "hold_s": 0.6,
+        "motion": 0.7,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 0.5,
+        "ease": "out-quart",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "PhoneFrame"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/demo-screen-frame.mp4"
+    }
+  }
+]

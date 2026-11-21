@@ -1,0 +1,24 @@
+{
+  "moves": [
+    {
+      "name": "DollyIn",
+      "family": "type"
+    },
+    {
+      "name": "HoldWide",
+      "family": "type"
+    },
+    {
+      "name": "BlurIn",
+      "family": "type"
+    },
+    {
+      "name": "PopIn",
+      "family": "type"
+    },
+    {
+      "name": "CutOn",
+      "family": "type"
+    }
+  ]
+}

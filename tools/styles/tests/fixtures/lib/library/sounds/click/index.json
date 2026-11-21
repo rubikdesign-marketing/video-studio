@@ -1,0 +1,10 @@
+{
+  "group": "click",
+  "sounds": [
+    {
+      "id": "click/soft-tap-01",
+      "file": "click/soft-tap-01.mp3",
+      "name": "Soft tap 1"
+    }
+  ]
+}

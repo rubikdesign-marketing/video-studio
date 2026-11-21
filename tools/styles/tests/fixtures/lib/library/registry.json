@@ -1,0 +1,20 @@
+{
+  "schema": "demo",
+  "items": [
+    {
+      "id": "component:WordRise",
+      "kind": "component",
+      "name": "WordRise"
+    },
+    {
+      "id": "component:CursorTrace",
+      "kind": "component",
+      "name": "CursorTrace"
+    },
+    {
+      "id": "component:PhoneFrame",
+      "kind": "component",
+      "name": "PhoneFrame"
+    }
+  ]
+}

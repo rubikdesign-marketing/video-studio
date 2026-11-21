@@ -1,0 +1,126 @@
+[
+  {
+    "id": "demo-kinetic-type",
+    "tab": "animation",
+    "name": "Kinetic type",
+    "line": "Kinetic type, in one plain sentence for the demo brand.",
+    "family": "type",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A kinetic type style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 0.5,
+        "ease": "out-quart",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "WordRise"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/demo-kinetic-type.mp4"
+    }
+  },
+  {
+    "id": "demo-paper-world",
+    "tab": "animation",
+    "name": "Paper world",
+    "line": "Paper world, in one plain sentence for the demo brand.",
+    "family": "illustration",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A paper world style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 0.8,
+        "ease": "out-cubic",
+        "overshoot": 0,
+        "hold_s": 0.6,
+        "motion": 0.7,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "Paper"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/demo-paper-world.mp4"
+    }
+  },
+  {
+    "id": "demo-clay-hero",
+    "tab": "animation",
+    "name": "Clay hero",
+    "line": "Clay hero, in one plain sentence for the demo brand.",
+    "family": "character",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "animated-short"
+      ],
+      "sizes": [
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "A clay hero style for the demo brand with one job per beat.",
+      "when": "It fits a short film that shows one idea at a time.",
+      "avoid": "Anything that crowds the frame or hides the first readable line."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 0.5,
+        "ease": "out-quart",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "clay-squash",
+      "params": {}
+    },
+    "nearest": "demo-kinetic-type"
+  }
+]

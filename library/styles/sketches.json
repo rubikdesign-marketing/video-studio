@@ -1,0 +1,10 @@
+[
+  { "id": "character-bounce", "name": "Character bounce", "what": "A simple round character squashes, stretches and hops, to show a character-led style." },
+  { "id": "paper-cutout", "name": "Paper cut-out", "what": "Flat paper shapes slide and fold over each other with a soft shadow." },
+  { "id": "card-tilt-3d", "name": "3D card tilt", "what": "A flat card tilts in depth and settles, to show panels with perspective." },
+  { "id": "hand-drawn-line", "name": "Hand-drawn line", "what": "A line draws itself across the frame as if by a pen, with a slight wobble." },
+  { "id": "liquid-morph", "name": "Liquid morph", "what": "One shape flows into another with smooth, rounded in-betweens." },
+  { "id": "stop-motion", "name": "Stop motion", "what": "Objects jump between poses at a low frame rate, like handmade animation." },
+  { "id": "clay-squash", "name": "Clay squash", "what": "A soft block is pressed, squashed and springs back, to show a tactile feel." },
+  { "id": "collage-layers", "name": "Collage layers", "what": "Cut-out pieces stack in layers and drift at different speeds." }
+]
