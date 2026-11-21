@@ -1,10 +1,14 @@
 // Serves the brief page for a look in a local browser, with a stand-in for the Claude app's window.claude.use():
-//   node tools/connector/preview.mjs [--root <studio>] [--port 4417]   (root: --root, else DAMEX_STUDIO_ROOT, else this studio)
-// use('mcp') posts to /call, which runs the real connector handlers for --root; use('sample') is null; use('db') keeps
-// documents in memory. Open with ?nohost=1 to see the page as it is outside the app (every call: server_not_connected).
-// Binds 127.0.0.1 only. node: modules only.
+//   node tools/connector/preview.mjs --root <studio> [--port 4417]   a studio folder (or set DAMEX_STUDIO_ROOT)
+//   node tools/connector/preview.mjs --scratch [--port 4417]         a throwaway studio in the temp folder
+// It never picks a studio by itself: the handlers write briefs, so the studio is named or it is a scratch one.
+// use('mcp') posts to /call, which runs the real connector handlers for that studio; use('sample') is null; use('db')
+// keeps documents in memory. Open with ?nohost=1 to see the page as it is outside the app (every call:
+// server_not_connected). Binds 127.0.0.1 only, and answers only its own Host (127.0.0.1 or localhost with its port),
+// JSON posts to /call, and no foreign Origin. --port 0 picks a free port. node: modules only.
 import fs from 'node:fs';
 import http from 'node:http';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { makeHandlers } from './lib/tools.mjs';
@@ -16,7 +20,31 @@ function argOf(name, fallback) {
   const i = process.argv.indexOf(name);
   return i > -1 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
 }
-const root = path.resolve(argOf('--root', process.env.DAMEX_STUDIO_ROOT || path.resolve(here, '..', '..')));
+const STUDIO = path.resolve(here, '..', '..');
+
+/** A throwaway studio: the brief and job templates, the frameworks, and one brand (acme) with an approved discovery. */
+function scratchStudio() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'brief-preview-'));
+  for (const rel of ['templates/brief.json', 'templates/job.json', 'library/structure/frameworks.json']) {
+    fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    fs.copyFileSync(path.join(STUDIO, rel), path.join(dir, rel));
+  }
+  fs.mkdirSync(path.join(dir, 'brands', 'acme', 'product'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'brands', 'acme', 'brand.json'), JSON.stringify({ name: 'acme' }));
+  fs.writeFileSync(path.join(dir, 'brands', 'acme', 'product', 'discovery.md'), '# Product discovery: acme\n\nApproved by: Owner\n');
+  return dir;
+}
+
+let root;
+if (process.argv.includes('--scratch')) root = scratchStudio();
+else {
+  const named = argOf('--root', process.env.DAMEX_STUDIO_ROOT || '');
+  if (!named) {
+    process.stderr.write('Say which studio to show: --root <studio folder>, --scratch for a throwaway one, or set DAMEX_STUDIO_ROOT.\n');
+    process.exit(2);
+  }
+  root = path.resolve(named);
+}
 const port = Number(argOf('--port', '4417'));
 const handlers = makeHandlers(root);
 
@@ -100,12 +128,18 @@ function send(res, status, type, body) {
 }
 
 const server = http.createServer(async (req, res) => {
+  // Only this machine's own page: a page elsewhere (or a renamed host pointing here) must not run the handlers.
+  const own = server.address().port;
+  const hosts = [`127.0.0.1:${own}`, `localhost:${own}`];
+  if (!hosts.includes(String(req.headers.host || '').toLowerCase())) { send(res, 421, 'text/plain; charset=utf-8', 'Not this host'); return; }
+  if (req.headers.origin && !hosts.map((h) => `http://${h}`).includes(String(req.headers.origin).toLowerCase())) { send(res, 403, 'text/plain; charset=utf-8', 'Not this page'); return; }
   const url = new URL(req.url, 'http://127.0.0.1');
   if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
     try { send(res, 200, 'text/html; charset=utf-8', pageWithStub()); } catch (e) { send(res, 500, 'text/plain; charset=utf-8', e.message); }
     return;
   }
   if (req.method === 'POST' && url.pathname === '/call') {
+    if (String(req.headers['content-type'] || '').split(';')[0].trim().toLowerCase() !== 'application/json') { send(res, 415, 'text/plain; charset=utf-8', 'Send JSON'); return; }
     let reply;
     try {
       const { tool, input } = JSON.parse(await readBody(req));
@@ -123,5 +157,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(port, '127.0.0.1', () => {
-  process.stdout.write(`Brief page preview: http://127.0.0.1:${port}/ (studio: ${root})\n`);
+  process.stdout.write(`Brief page preview: http://127.0.0.1:${server.address().port}/ (studio: ${root})\n`);
 });

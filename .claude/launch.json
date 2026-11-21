@@ -10,7 +10,7 @@
     {
       "name": "brief-desk-preview",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["tools/connector/preview.mjs", "--port", "4417"],
+      "runtimeArgs": ["tools/connector/preview.mjs", "--scratch", "--port", "4417"],
       "port": 4417
     }
   ]
