@@ -16,6 +16,9 @@
 //   brief.mjs show <job_dir>              the short version for a stage session: brief, decisions, open revision notes
 //   brief.mjs set <job_dir> <field> "<value>"   answers one question from check, so it is not asked again
 //                                         fields: kind, for, viewer_should, voice, length_cap_seconds, size
+//   brief.mjs pick <job_dir> <tab> <id> [--off]   picks (or with --off removes) one style from the library; a pick that
+//                                         clashes with another is refused with the reason
+//   brief.mjs direct <job_dir> <parts.json>   records the director's brief (the eight parts and engine) after checking it
 //   brief.mjs decide <job_dir> "<what was decided>" [--applies S03,S04] [--by owner]
 //                                         records any other answer once, for every later stage
 //
@@ -25,11 +28,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { assumptions, preflight, questions, setField, SETTABLE, shotProblems, summary } from './lib/brief.mjs';
+import { assumptions, checkDirectorBrief, picksOf, preflight, questions, setField, setPick, SETTABLE, shotProblems, summary } from './lib/brief.mjs';
 import { decide, loadBrief, loadJob, saveBrief, setDotted, startBrief, studioContext, writePlan } from './lib/brief-store.mjs';
 import { loadRecipes, matchRecipes } from './lib/recipes.mjs';
 
-const STUDIO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const STUDIO = process.env.BRIEF_STUDIO_ROOT ? path.resolve(process.env.BRIEF_STUDIO_ROOT) : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'); // the env var points the tests at a scratch studio
 const [cmd, jobArg, ...rest] = process.argv.slice(2);
 const flag = (name) => { const i = rest.indexOf(`--${name}`); return i >= 0 ? rest[i + 1] : undefined; };
 if (!cmd || !jobArg) {
@@ -127,6 +130,32 @@ if (cmd === 'decide') {
   if (rest.includes('--json')) { { const { md, ...data } = out; console.log(JSON.stringify(data, null, 1)); } process.exit(0); }
   console.log(out.md);
   console.log(`Written to ${path.relative(STUDIO, path.join(jobDir, 'plan.md'))}. Show it to the creator; on their yes, record it: node tools/plan/brief.mjs decide ${jobArg} "plan confirmed"`);
+} else if (cmd === 'pick') {
+  const [tab, id] = rest.filter((a) => !a.startsWith('--'));
+  if (!tab || !id) { console.log('Usage: brief.mjs pick <job_dir> <tab> <id> [--off]'); process.exit(2); }
+  const { styles } = context();
+  const entry = styles.get(id);
+  const off = rest.includes('--off');
+  if (!off && (!entry || entry.tab !== tab)) { console.log(`There is no style ${id} in ${tab}.`); process.exit(1); }
+  try {
+    const next = setPick(brief, entry && entry.tab === tab ? entry : { tab, id }, !off, styles);
+    saveBrief(jobDir, next);
+    console.log(`${off ? 'Removed' : 'Picked'} ${entry?.name || id}. Picks now: ${picksOf(next, styles).map((x) => x.name).join('; ') || 'none'}.`);
+  } catch (e) { console.log(e.message); process.exit(1); }
+} else if (cmd === 'direct') {
+  const [partsFile] = rest.filter((a) => !a.startsWith('--'));
+  if (!partsFile) { console.log('Usage: brief.mjs direct <job_dir> <parts.json>'); process.exit(2); }
+  let parts;
+  try { parts = JSON.parse(fs.readFileSync(path.resolve(partsFile), 'utf8')); } catch { console.log(`${partsFile} cannot be read as JSON.`); process.exit(1); }
+  const ctx = context();
+  const energy = brief.energy || assumptions(brief, { jobBrand: job.brand, ...ctx }).find((x) => x.id === 'energy')?.value;
+  const e = ctx.engineNames;
+  const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])]);
+  const allowed = picksOf(brief, ctx.styles).filter((x) => !x.stale).flatMap((x) => ctx.styles.get(x.id).engine || []);
+  const r = checkDirectorBrief(parts, { energy, names, allowed });
+  if (!r.ok) { console.log(r.reason); process.exit(1); }
+  saveBrief(jobDir, { ...brief, director_brief: parts });
+  console.log(`Recorded the director's brief: ${parts.logline}`);
 } else if (cmd === 'show') {
-  console.log(summary(brief, { revisions }).join('\n'));
+  console.log(summary(brief, { revisions, styles: context().styles }).join('\n'));
 } else { console.log(`Unknown command ${cmd}.`); process.exit(2); }

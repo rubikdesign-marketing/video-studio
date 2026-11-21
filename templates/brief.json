@@ -18,6 +18,7 @@
   "look: paper | night | glass | colour-field | editorial | blueprint (knowledge/craft/13-design-styles.md), or 'propose' to bring it with the concepts.",
   "hook: { family, idea }. family from knowledge/craft/15-hooks.md section 4, or 'propose' for three openings from three families.",
   "no_reference: true when the creator has no reference and wants the studio to choose. framework: a beat framework id to override the kind's default.",
+  "style_picks: [{ tab, id }], at most three per tab, from library/styles (brief.mjs pick). director_brief: the eight parts of the film and the engine names it uses (brief.mjs direct).",
   "node tools/plan/brief.mjs plan jobs/<job> prints the plan in brief and its scene outline, and writes jobs/<job>/plan.md."
  ],
  "in_their_words": "",
@@ -38,5 +39,7 @@
  "must_not": [],
  "materials": [],
  "references": [],
- "decisions": []
+ "decisions": [],
+ "style_picks": [],
+ "director_brief": null
 }

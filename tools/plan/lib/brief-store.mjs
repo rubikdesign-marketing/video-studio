@@ -4,13 +4,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { assumptions, FRAMEWORK, plan, preflight } from './brief.mjs';
 import { loadFrameworks } from './frameworks.mjs';
+import { engineNames, loadLibrary } from '../../styles/lib/library.mjs';
 
 const today = () => new Date().toISOString().slice(0, 10);
 const readJson = (f) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null);
 const writeJson = (f, data) => { fs.writeFileSync(`${f}.tmp`, JSON.stringify(data, null, 1) + '\n'); fs.renameSync(`${f}.tmp`, f); };
 
 /** What the studio can look up instead of asking: the brands set up, whether each has an approved product discovery,
- *  the default brand, and the reference library. */
+ *  the default brand, the reference library, the style library (styles: id to entry; styleNotes: what could not be read)
+ *  and the engine's names (engineNames). */
 export function studioContext(root) {
   const dir = path.join(root, 'brands');
   const brands = {};
@@ -20,7 +22,8 @@ export function studioContext(root) {
     const approved = fs.existsSync(disc) && /Approved by:\s*(?!<)\S/.test(fs.readFileSync(disc, 'utf8'));
     brands[name] = { setUp: fs.existsSync(path.join(dir, name, 'brand.json')), discovery: approved };
   }
-  return { brands, defaultBrand: readJson(path.join(root, 'studio.json'))?.default_brand, references: readJson(path.join(root, 'library', 'references', 'index.json')) || [] };
+  const lib = loadLibrary(root);
+  return { brands, defaultBrand: readJson(path.join(root, 'studio.json'))?.default_brand, references: readJson(path.join(root, 'library', 'references', 'index.json')) || [], styles: lib.byId, styleNotes: lib.notes, engineNames: engineNames(root) };
 }
 
 /** The set-up brands other than the demo brand. */
@@ -124,7 +127,7 @@ export function confirmPlan(root, jobDir, { ctx = studioContext(root) } = {}) {
     const kind = brief.kind || assumptions(brief, ctx).find((x) => x.id === 'kind')?.value;
     const brand = brief.brand || assumptions(brief, { jobBrand: job.brand, ...ctx }).find((x) => x.id === 'brand')?.value;
     const master = (brief.deliver || []).find((d) => d.master) || (brief.deliver || []).find((d) => d.size);
-    made = { ...t, name, brand, type: TYPE_OF[kind] || 'promo', size: master?.size || t.size, length_cap_seconds: brief.length_cap_seconds ?? null, created: today(), stage_next: 'idea', approval_mode: 'guided' };
+    made = { ...t, name, brand, type: TYPE_OF[kind] || 'promo', size: master?.size || t.size, length_cap_seconds: brief.length_cap_seconds ?? assumptions(brief, { jobBrand: job.brand, ...ctx }).find((x) => x.id === 'length_cap_seconds')?.value ?? null, created: today(), stage_next: 'idea', approval_mode: 'guided' };
   }
   if (made !== job || !exists) writeJson(file, made);
   if (!(brief.decisions || []).some((d) => d.what === 'plan confirmed')) decide(jobDir, 'plan confirmed');

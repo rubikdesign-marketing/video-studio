@@ -40,31 +40,163 @@ export const PATHS = {
 const ACTION = /\b(click|clicks|tap|taps|drag|drags|drop|drops|typing into|types into|pick|picks|grab|grabs|press|presses|swipe|swipes|scroll|scrolls|copy|copies|paste|pastes|opens|connect|connects|sends|pour|pours|lift|lifts|place|places|hands?)\b/i;
 const empty = (v) => v == null || (typeof v === 'string' && !v.trim()) || (Array.isArray(v) && !v.length);
 
+const SIZE_WORDS = /\b(vertical|portrait|9:16|reels?|tiktok|shorts|stor(y|ies)|square|1:1|landscape|horizontal|16:9|youtube)\b/;
+// "the demo brand" names the sample brand, not a product demo.
+const KIND_WORDS = /\b(demo(?!\s+brand)|walkthrough|how it works|kinetic|type reel|launch|announc\w*|my footage|our footage|talking to (the )?camera|testimonial|ugc|presenter|animated short|cartoon|character)\b/;
+const VOICE_WORDS = /\b(no voice|no voice-?over|music only|just music|silent)\b/;
+
+// Size, kind and voice as the creator's words say them, each with the words it came from. w is lowercase.
+function readWords(w) {
+  const out = {};
+  const size = SIZE_WORDS.exec(w);
+  if (size) out.size = { value: /\b(vertical|portrait|9:16|reel|reels|tiktok|shorts|story|stories)\b/.test(w) ? '9:16' : /\b(square|1:1)\b/.test(w) ? '1:1' : '16:9', because: size[0] };
+  const kind = KIND_WORDS.exec(w);
+  if (kind) {
+    const k = /\b(demo(?!\s+brand)|walkthrough|how it works)\b/.test(w) ? 'product-demo' : /\b(kinetic|type reel|launch|announc\w*)\b/.test(w) ? 'launch-reel' : /\b(my footage|our footage|clips? (i|we) shot|edit (my|our))\b/.test(w) ? 'footage-edit' : /\b(talking to (the )?camera|testimonial|ugc|presenter)\b/.test(w) ? 'ugc' : /\b(animated short|cartoon|character)\b/.test(w) ? 'animated-short' : null;
+    if (k) out.kind = { value: k, because: kind[0] };
+  }
+  const voice = VOICE_WORDS.exec(w);
+  if (voice) out.voice = { value: 'none', because: 'no voice' };
+  return out;
+}
+
+export const ENERGIES = ['calm', 'confident', 'hype'];
+export const DIRECTOR_PARTS = ['logline', 'first_three_seconds', 'beats', 'camera', 'motion', 'type', 'sound', 'ending'];
+export const CHECKLIST_LABELS = ['Brand', 'Product', 'Audience', 'Message angle', 'Style and look', 'Hook', 'Video type and references', 'Size, length and voice'];
+// The tab labels, the same five as tools/styles/lib/library.mjs (this file imports nothing).
+const TAB_NAMES = { filming: 'Filming', motion: 'Motion', animation: 'Animation', 'product-ui': 'Product UI', sound: 'Sound' };
+const MAX_PICKS_PER_TAB = 3;
+
+/** What the creator's words say, plainly: { size?, kind?, voice?, length?, energy?, audience? }. Only clear words count. */
+export function understood(text) {
+  const t = String(text || '').toLowerCase().trim();
+  const read = readWords(` ${t} `);
+  const out = {};
+  for (const f of ['size', 'kind', 'voice']) if (read[f]) out[f] = read[f].value;
+  const len = /\b(\d{1,3})\s?(s|sec|secs|seconds)\b/.exec(t);
+  if (len && Number(len[1]) >= 5 && Number(len[1]) <= 180) out.length = Number(len[1]);
+  if (/\b(calm|gentle|soft|quiet)\b/.test(t)) out.energy = 'calm';
+  else if (/\b(punchy|hype|energetic|fast|bold)\b/.test(t)) out.energy = 'hype';
+  else if (/\b(confident|clear|steady)\b/.test(t)) out.energy = 'confident';
+  const aud = /\bfor ([a-z][a-z -]{2,40}?)(?=[,.]|$| who| that| to)/.exec(t);
+  if (aud) out.audience = aud[1].trim();
+  return out;
+}
+
+const pickEntry = (styles, p) => (styles && typeof styles.get === 'function' ? styles.get(p.id) : null) || null;
+
+/** The picks as the page shows them; stale is true when the style is no longer in the library. */
+export function picksOf(brief, styles) {
+  return (Array.isArray(brief?.style_picks) ? brief.style_picks : []).map((p) => {
+    const e = pickEntry(styles, p);
+    return { tab: p.tab, id: p.id, name: e?.name || p.id, stale: !e };
+  });
+}
+
+const energiesOf = (e) => (Array.isArray(e?.filters?.energy) ? e.filters.energy : []);
+
+/** Add (on) or remove (off) one pick; returns a new brief. Throws a plain Error saying why a pick is refused. */
+export function setPick(brief, entry, on, styles) {
+  const picks = Array.isArray(brief?.style_picks) ? brief.style_picks : [];
+  const same = (p) => p.tab === entry.tab && p.id === entry.id;
+  if (!on) return { ...brief, style_picks: picks.filter((p) => !same(p)) };
+  if (picks.some(same)) return { ...brief, style_picks: picks };
+  const held = picks.map((p) => ({ p, e: pickEntry(styles, p) })).filter((x) => x.e);
+  const inTab = picks.filter((p) => p.tab === entry.tab);
+  const kin = held.find((x) => x.p.tab === entry.tab && x.e.family === entry.family);
+  if (kin) throw new Error(`You already picked ${kin.e.name} from ${entry.family}: one per family`);
+  if (inTab.length >= MAX_PICKS_PER_TAB) throw new Error(`Three ${TAB_NAMES[entry.tab] || entry.tab} picks already: remove one first`);
+  for (const { e } of held) {
+    if ((entry.avoid_with || []).includes(e.id) || (e.avoid_with || []).includes(entry.id)) throw new Error(`${entry.name} does not go with ${e.name}`);
+  }
+  const mine = energiesOf(entry);
+  const theirs = held.map((x) => energiesOf(x.e)).filter((l) => l.length);
+  if (mine.length && theirs.length) {
+    const common = ENERGIES.filter((en) => theirs.every((l) => l.includes(en)));
+    if (!common.some((en) => mine.includes(en))) throw new Error(`${entry.name} is for ${mine.join(' or ')} films and your picks are ${common.length ? common.join(' or ') : theirs.flat().filter((v, i, a) => a.indexOf(v) === i).join(' or ')}`);
+  }
+  return { ...brief, style_picks: [...picks, { tab: entry.tab, id: entry.id }] };
+}
+
+const beatsOk = (b) => Array.isArray(b) && b.length > 0 && b.every((x) => x && typeof x.at_s === 'number' && x.at_s >= 0 && typeof x.what === 'string' && x.what.trim());
+const MIN_GAP = { hype: 0.3, confident: 0.8, calm: 1.2 };
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** Is this director's brief usable? All eight parts, no engine names in the words, beats spaced to the energy.
+ *  allowed (optional): the engine names the picks list; parts.engine may use only those. */
+export function checkDirectorBrief(parts, { energy, names, allowed } = {}) {
+  const p = parts && typeof parts === 'object' ? parts : {};
+  const bad = (part, reason) => ({ ok: false, reason, part });
+  for (const part of DIRECTOR_PARTS) {
+    const label = LABELS[part];
+    if (part === 'beats') {
+      if (!Array.isArray(p.beats) || !p.beats.length) return bad(part, `${label} are missing: give a list of { at_s, what }`);
+      if (!beatsOk(p.beats)) return bad(part, `${label} must each have a time in seconds (at_s) and what happens (what)`);
+    } else {
+      const v = p[part];
+      if (v === undefined || v === null || (typeof v === 'string' && !v.trim())) return bad(part, `${label} is missing`);
+      if (typeof v !== 'string' || v.length > 600) return bad(part, `${label} needs 1 to 600 characters of plain words`);
+    }
+  }
+  const list = [...(names || [])].map(String).filter(Boolean);
+  for (const part of DIRECTOR_PARTS) {
+    const text = part === 'beats' ? p.beats.map((b) => b.what).join('\n') : p[part];
+    for (const n of list) {
+      if (new RegExp(`(^|[^a-z0-9-])${escapeRe(n)}($|[^a-z0-9-])`, 'i').test(text)) return bad(part, `${LABELS[part]} uses the engine name "${n}": say what it looks like instead`);
+    }
+  }
+  const gap = MIN_GAP[energy];
+  if (gap) {
+    const at = p.beats.map((b) => b.at_s).sort((a, b) => a - b);
+    for (let i = 1; i < at.length; i++) {
+      if (at[i] - at[i - 1] < gap - 1e-9) return bad('beats', `${LABELS.beats} are too tight for a ${energy} film: keep them at least ${gap} s apart`);
+    }
+  }
+  if (allowed && Array.isArray(p.engine)) {
+    const ok = new Set(allowed);
+    const off = p.engine.find((n) => !ok.has(n));
+    if (off !== undefined) return bad('engine', `${off} is not in the engine lists of the picked styles`);
+  }
+  return { ok: true, reason: null, part: null };
+}
+
 /**
  * What the creator's own words already settle, so it is not asked again: stated back as an assumption they can correct.
- * Only clear words count ("vertical", "square", "a demo of"); anything vaguer is asked.
+ * Only clear words count ("vertical", "square", "a demo of"); anything vaguer is asked. Picks then settle what is still
+ * empty. Precedence: typed, then the saved style, then a pick.
  */
 export function assumptions(brief, ctx = {}) {
   const w = ` ${String(brief.in_their_words || '').toLowerCase()} `;
   const again = new Set(Array.isArray(brief.ask_again) ? brief.ask_again : []); // reopened: ask, do not assume
   const raw = [];
   const out = { push: (a) => { if (!again.has(a.id)) raw.push(a); } };
+  const read = readWords(w);
+  const heard = understood(brief.in_their_words);
   if (empty(brief.brand)) {
     const named = Object.keys(ctx.brands || {}).find((b) => new RegExp(`\\b${b === 'demo' ? 'demo brand' : b.replace(/[-]/g, '[- ]?')}\\b`).test(w)); // the sample brand is named only as "demo brand"; "a demo of" asks for a product demo
     if (named) out.push({ id: 'brand', value: named, because: named });
     else if (ctx.jobBrand) out.push({ id: 'brand', value: ctx.jobBrand, because: 'job.json' });
     else if (ctx.defaultBrand) out.push({ id: 'brand', value: ctx.defaultBrand, because: 'the studio default' });
   }
-  if (!(brief.deliver || []).some((d) => d.size)) {
-    const size = /\b(vertical|portrait|9:16|reel|reels|tiktok|shorts|story|stories)\b/.test(w) ? '9:16' : /\b(square|1:1)\b/.test(w) ? '1:1' : /\b(landscape|horizontal|16:9|youtube)\b/.test(w) ? '16:9' : null;
-    if (size) out.push({ id: 'size', value: size, because: w.match(/\b(vertical|portrait|9:16|reels?|tiktok|shorts|stor(y|ies)|square|1:1|landscape|horizontal|16:9|youtube)\b/)[0] });
+  if (!(brief.deliver || []).some((d) => d.size) && read.size) out.push({ id: 'size', ...read.size });
+  if (!brief.kind && read.kind) out.push({ id: 'kind', ...read.kind });
+  if (!brief.voice && read.voice) out.push({ id: 'voice', ...read.voice });
+  if (!Number(brief.length_cap_seconds) && heard.length) out.push({ id: 'length_cap_seconds', value: heard.length, because: `${heard.length} s` });
+  if (empty(brief.energy) && heard.energy) out.push({ id: 'energy', value: heard.energy, because: heard.energy });
+  // What a pick settles, where the field is still empty and the words did not already say it.
+  const have = {
+    look: !empty(brief.look) || !empty(brief.style),
+    voice: !empty(brief.voice),
+    kind: !empty(brief.kind),
+    size: (brief.deliver || []).some((d) => d.size),
+  };
+  for (const p of picksOf(brief, ctx.styles).filter((x) => !x.stale)) {
+    for (const [field, value] of Object.entries(pickEntry(ctx.styles, p).settles || {})) {
+      if (!Object.hasOwn(have, field) || have[field] || raw.some((a) => a.id === field)) continue;
+      out.push({ id: field, value, because: `picked ${p.name}` });
+      have[field] = true;
+    }
   }
-  if (!brief.kind) {
-    // "the demo brand" names the sample brand, not a product demo.
-    const kind = /\b(demo(?!\s+brand)|walkthrough|how it works)\b/.test(w) ? 'product-demo' : /\b(kinetic|type reel|launch|announc\w*)\b/.test(w) ? 'launch-reel' : /\b(my footage|our footage|clips? (i|we) shot|edit (my|our))\b/.test(w) ? 'footage-edit' : /\b(talking to (the )?camera|testimonial|ugc|presenter)\b/.test(w) ? 'ugc' : /\b(animated short|cartoon|character)\b/.test(w) ? 'animated-short' : null;
-    if (kind) out.push({ id: 'kind', value: kind, because: w.match(/\b(demo(?!\s+brand)|walkthrough|how it works|kinetic|type reel|launch|announc\w*|my footage|our footage|talking to (the )?camera|testimonial|ugc|presenter|animated short|cartoon|character)\b/)[0] });
-  }
-  if (!brief.voice && /\b(no voice|no voice-?over|music only|just music|silent)\b/.test(w)) out.push({ id: 'voice', value: 'none', because: 'no voice' });
   return raw;
 }
 
@@ -77,13 +209,14 @@ export const HOOK_FAMILIES = ['question', 'contrarian', 'outcome', 'problem', 'c
 export const LABELS = {
   '9:16': 'Vertical 9:16', '1:1': 'Square 1:1', '4:5': 'Portrait 4:5', '16:9': 'Landscape 16:9',
   'product-demo': 'Product demo', 'launch-reel': 'Launch reel', 'motion-graphics': 'Motion graphics', 'footage-edit': 'Edit of your footage', ugc: 'Person talking to camera', 'animated-short': 'Animated short', promo: 'Promo', tutorial: 'Tutorial',
+  logline: 'Logline', first_three_seconds: 'First three seconds', beats: 'Timed beats', motion: 'Motion', ending: 'Ending',
   camera: 'Camera', pacing: 'Pacing', edit: 'Editing', delivery: "Presenter's delivery", performance: 'Performance', look: 'Look', type: 'Type', sound: 'Sound', structure: 'Structure', story: 'Story', character: 'Character',
   cold: 'Not aware of the problem', 'problem-aware': 'Aware of the problem', 'solution-aware': 'Comparing solutions', 'product-aware': 'Already knows the product',
   paper: 'Paper', night: 'Night', glass: 'Glass', 'colour-field': 'Colour field', editorial: 'Editorial', blueprint: 'Blueprint', propose: 'Let the studio propose',
   'voice-over': 'Voice-over', presenter: 'Person on camera', dialogue: 'Two people talking', none: 'Nobody, music and type',
   question: 'Question', contrarian: 'Contrarian take', outcome: 'Outcome first', problem: 'Problem', 'curiosity-gap': 'Curiosity gap', proof: 'Proof', 'how-to': 'How to', list: 'List', 'mistake-warning': 'Mistake warning', callout: 'Callout', comparison: 'Comparison', offer: 'Offer', demonstration: 'Demonstration', 'pattern-interrupt': 'Pattern interrupt',
 };
-export const SETTABLE = ['kind', 'for', 'viewer_should', 'voice', 'length_cap_seconds', 'size'];
+export const SETTABLE = ['kind', 'for', 'viewer_should', 'voice', 'length_cap_seconds', 'size', 'energy'];
 
 /**
  * Fill one field of the brief from an answer, so `check` stops asking that question. Returns a new brief.
@@ -96,6 +229,7 @@ export function setField(brief, field, value) {
   const b = { ...brief };
   if (field === 'kind' && !KINDS.includes(v)) throw new Error(`kind must be one of ${KINDS.join(', ')}`);
   if (field === 'voice' && !VOICES.includes(v)) throw new Error(`voice must be one of ${VOICES.join(', ')}`);
+  if (field === 'energy' && !ENERGIES.includes(v)) throw new Error(`energy must be one of ${ENERGIES.join(', ')}`);
   if (field === 'length_cap_seconds') {
     const n = Number(v.replace(/\s*(s|sec|secs|seconds)$/i, ''));
     if (!(n > 0)) throw new Error('length_cap_seconds must be a number of seconds, e.g. 30');
@@ -141,8 +275,8 @@ export function questions(brief, { job = {}, ctx = {} } = {}) {
   (brief.must_show || []).forEach((m, i) => {
     if (empty(m.evidence)) ask(`show-${i}`, `When the film says "${m.what}", what exactly should the viewer see on screen?`, 'A claim the viewer cannot see is the most common reason a finished cut came back.', null, 7);
   });
-  if (!Number(brief.length_cap_seconds)) ask('length', 'How long at most?', 'The cap sets how many beats fit and how long each product shot can hold.', job.length_cap_seconds ? `${job.length_cap_seconds} s (from job.json)` : null, 9);
-  if (empty(brief.look) && !saved) ask('look', 'Which look: one of our six styles (paper, night, glass, colour field, editorial, blueprint), the look of your reference, or shall we propose it with the three concepts?', 'The look sets the palette, light and type treatment of every frame.', 'propose: we bring it with the concepts, different from the last five films', 10);
+  if (!Number(brief.length_cap_seconds) && !settled.has('length_cap_seconds')) ask('length', 'How long at most?', 'The cap sets how many beats fit and how long each product shot can hold.', job.length_cap_seconds ? `${job.length_cap_seconds} s (from job.json)` : null, 9);
+  if (empty(brief.look) && !saved && !settled.has('look')) ask('look', 'Which look: one of our six styles (paper, night, glass, colour field, editorial, blueprint), the look of your reference, or shall we propose it with the three concepts?', 'The look sets the palette, light and type treatment of every frame.', 'propose: we bring it with the concepts, different from the last five films', 10);
   if (empty(brief.hook?.family) && empty(brief.hook?.idea) && !saved) ask('hook', 'Do you have an opening in mind (the first thing the viewer sees and hears)? If not, we bring three, each from a different hook family.', 'The first three seconds decide whether anyone sees the rest; the family follows from the audience.', 'propose: three openings from three families', 11);
   return q.sort((a, b) => a.rank - b.rank).map((x) => {
     const s = specOf(brief, x.id);
@@ -319,26 +453,29 @@ export function preflight(brief, { job = {}, ctx = {} } = {}) {
   const deliver = (brief.deliver || []).filter((d) => !empty(d.size));
   const size = deliver.find((d) => d.master)?.size || deliver[0]?.size || got('size');
   const voice = brief.voice || got('voice');
+  const look = brief.look || got('look');
+  const length = Number(brief.length_cap_seconds) || got('length_cap_seconds');
   const refsOk = saved || brief.no_reference || ((brief.references || []).length && brief.references.every((r) => !empty(r.liked_for)));
   const proofOk = (brief.must_show || []).every((m) => !empty(m.evidence)) && (!needsProduct || (brief.must_show || []).length);
   const item = (id, label, done, known, todo) => ({ id, label, done: !!done, known: done ? known : null, todo: done ? null : todo });
+  const [L_BRAND, L_PRODUCT, L_AUDIENCE, L_ANGLE, L_LOOK, L_HOOK, L_TYPE, L_DELIVERY] = CHECKLIST_LABELS;
   return [
-    item('brand', 'Brand', brand && (!ctx.brands || b?.setUp), brand,
+    item('brand', L_BRAND, brand && (!ctx.brands || b?.setUp), brand,
       !brand ? 'ask which brand' : `${brand} is not set up: run stage 0 (brand setup) first`),
-    item('product', 'Product', !needsProduct || (!empty(brief.product) && (!ctx.brands || b?.discovery)), needsProduct ? brief.product : 'none shown (this kind shows no product UI)',
+    item('product', L_PRODUCT, !needsProduct || (!empty(brief.product) && (!ctx.brands || b?.discovery)), needsProduct ? brief.product : 'none shown (this kind shows no product UI)',
       empty(brief.product) ? 'ask which product and which feature or moment' : `${brand} has no approved product discovery: run stage 0B first`),
-    item('audience', 'Audience', !empty(brief.for) && AWARENESS.includes(brief.awareness), `${brief.for} (${brief.awareness})`,
+    item('audience', L_AUDIENCE, !empty(brief.for) && AWARENESS.includes(brief.awareness), `${brief.for} (${brief.awareness})`,
       'ask who it is for and how aware they are (cold, problem-aware, solution-aware, product-aware)'),
-    item('angle', 'Message angle', !empty(brief.angle) && !empty(brief.viewer_should) && proofOk, `${brief.angle}; after one watch they ${brief.viewer_should}; proved by ${(brief.must_show || []).map((m) => m.evidence).join('; ') || 'the story itself'}`,
+    item('angle', L_ANGLE, !empty(brief.angle) && !empty(brief.viewer_should) && proofOk, `${brief.angle}; after one watch they ${brief.viewer_should}; proved by ${(brief.must_show || []).map((m) => m.evidence).join('; ') || 'the story itself'}`,
       `ask ${[empty(brief.angle) && 'the one angle', empty(brief.viewer_should) && 'what the viewer should do or believe', !proofOk && 'what on screen proves it'].filter(Boolean).join(', ')}`),
-    item('look', 'Style and look', saved || !empty(brief.look), saved ? `the saved style ${brief.style}` : brief.look === 'propose' ? 'we propose it with the concepts' : brief.look,
+    item('look', L_LOOK, saved || !empty(look), saved ? `the saved style ${brief.style}` : look === 'propose' ? 'we propose it with the concepts' : look,
       'ask for one of the six looks, the look of a reference, or "propose"'),
-    item('hook', 'Hook', saved || !empty(brief.hook?.family) || !empty(brief.hook?.idea), saved ? `the saved style's opening` : brief.hook?.family === 'propose' ? 'we bring three, from three families' : [brief.hook?.family, brief.hook?.idea].filter(Boolean).join(': '),
+    item('hook', L_HOOK, saved || !empty(brief.hook?.family) || !empty(brief.hook?.idea), saved ? `the saved style's opening` : brief.hook?.family === 'propose' ? 'we bring three, from three families' : [brief.hook?.family, brief.hook?.idea].filter(Boolean).join(': '),
       'ask for an opening they have in mind, or "propose"'),
-    item('type', 'Video type and references', kind && refsOk, `${kind}; ${brief.no_reference ? 'no reference (we choose, and say why)' : saved ? 'references from the saved style' : (brief.references || []).map((r) => `${r.source} for its ${r.liked_for.join(' and ')}`).join('; ')}`,
+    item('type', L_TYPE, kind && refsOk, `${kind}; ${brief.no_reference ? 'no reference (we choose, and say why)' : saved ? 'references from the saved style' : (brief.references || []).map((r) => `${r.source} for its ${r.liked_for.join(' and ')}`).join('; ')}`,
       !kind ? 'ask what kind of film, with examples from the library' : 'ask for a reference and what they like about it, or "none, you choose"'),
-    item('delivery', 'Size, length and voice', size && Number(brief.length_cap_seconds) && voice, `${size} master, at most ${brief.length_cap_seconds} s, voice: ${voice}`,
-      `ask ${[!size && 'the master size', !Number(brief.length_cap_seconds) && 'the length cap', !voice && 'who speaks'].filter(Boolean).join(', ')}${size ? ` (size ${size} known)` : ''}`),
+    item('delivery', L_DELIVERY, size && length && voice, `${size} master, at most ${length} s, voice: ${voice}`,
+      `ask ${[!size && 'the master size', !length && 'the length cap', !voice && 'who speaks'].filter(Boolean).join(', ')}${size ? ` (size ${size} known)` : ''}`),
   ];
 }
 
@@ -354,7 +491,8 @@ export function plan(brief, { job = {}, ctx = {}, framework = null } = {}) {
   const assumed = assumptions(brief, { jobBrand: job.brand, ...ctx });
   const kind = brief.kind || assumed.find((a) => a.id === 'kind')?.value;
   const brand = brief.brand || assumed.find((a) => a.id === 'brand')?.value;
-  const cap = Number(brief.length_cap_seconds);
+  const cap = Number(brief.length_cap_seconds) || assumed.find((a) => a.id === 'length_cap_seconds')?.value;
+  const look = brief.look || assumed.find((a) => a.id === 'look')?.value;
   const lines = [];
   const others = (brief.deliver || []).filter((d) => d.size && !d.master).map((d) => d.size);
   lines.push(`Film: a ${cap} s ${kind} for ${brand}${brief.product ? `, about ${brief.product}` : ''}. ${by.delivery}${others.length ? `; cut to ${others.join(', ')}` : ''}.`);
@@ -362,6 +500,8 @@ export function plan(brief, { job = {}, ctx = {}, framework = null } = {}) {
   lines.push(`Angle: ${by.angle}.`);
   lines.push(`Look: ${by.look}. Hook: ${by.hook}.`);
   lines.push(`Type and references: ${by.type}. Nothing from a reference is placed in the film.`);
+  const picks = picksOf(brief, ctx.styles).filter((x) => !x.stale);
+  if (picks.length) lines.push(`Picked styles, as strong preferences: ${picks.map((x) => `${TAB_NAMES[x.tab] || x.tab} ${x.name}`).join('; ')}.`);
   if ((brief.must_not || []).length) lines.push(`Never: ${brief.must_not.join('; ')}.`);
   for (const d of (brief.decisions || []).filter((x) => !x.applies_to || x.applies_to === 'all')) lines.push(`Decided: ${d.what}.`);
   const outline = framework ? sceneOutline(framework, cap, brief.must_show || []) : [];
@@ -371,14 +511,24 @@ export function plan(brief, { job = {}, ctx = {}, framework = null } = {}) {
     `playbook knowledge/playbooks/${playbook}.md`,
     `hooks: knowledge/craft/15-hooks.md and tools/hooks/hooks.mjs find --awareness ${brief.awareness}${brand ? ` --brand ${brand}` : ''}`,
     `structure: knowledge/craft/16-structure-and-retention.md and tools/plan/beats.mjs`,
-    `look: knowledge/craft/13-design-styles.md${LOOKS.includes(brief.look) && brief.look !== 'propose' ? ` (${brief.look})` : ''}`,
+    `look: knowledge/craft/13-design-styles.md${LOOKS.includes(look) && look !== 'propose' ? ` (${look})` : ''}`,
     `brand: brands/${brand}/ (brand.json, rules.md, the last five films in ledger.json)`,
     needsProductUse(kind) ? `product: brands/${brand}/product/ (discovery.md, saved flows, capture.json)` : null,
     study.length ? `references to study (the brand's own first): ${study.join(', ')}` : null,
     'library: library/backgrounds, library/motion, library/ui-effects, library/sounds (one new move goes back into library/)',
     `skills (per skill-map.md): video-studio leads; zero-slop on every line; impeccable for frames; remotion-best-practices for scene code${kind === 'ugc' ? '; ugc-ad-scripts for the script' : ''}`,
   ].filter(Boolean);
-  return { lines, outline, framework: framework ? { id: framework.id, name: framework.name } : null, uses };
+  const skills = ['video-studio', 'zero-slop', 'impeccable', 'remotion-best-practices', ...(kind === 'ugc' ? ['ugc-ad-scripts'] : [])];
+  // The names the picks list, sorted into groups with the studio's engine names when the context has them.
+  const engine = { ui: [], motion: [], sound: [], skills };
+  const known = ctx.engineNames;
+  for (const p of picks) {
+    for (const n of pickEntry(ctx.styles, p).engine || []) {
+      const group = known?.registry?.has(n) ? 'ui' : known?.sounds?.has(n) ? 'sound' : 'motion';
+      if (!engine[group].includes(n)) engine[group].push(n);
+    }
+  }
+  return { lines, outline, framework: framework ? { id: framework.id, name: framework.name } : null, uses, engine };
 }
 
 const needsProductUse = (kind) => !NO_PRODUCT.has(kind);
@@ -429,12 +579,16 @@ export function shotProblems(brief, shots) {
 }
 
 /** The short version a stage session reads: what was asked, what was decided, what is still open. */
-export function summary(brief, { revisions = null } = {}) {
+export function summary(brief, { revisions = null, styles = null, ctx = {} } = {}) {
   const lines = [];
   if (brief.in_their_words) lines.push(`In their words: "${brief.in_their_words}"`);
   lines.push(`Kind: ${brief.kind || '?'}. For: ${brief.for || '?'}. After one watch they should: ${brief.viewer_should || '?'}.`);
   const d = (brief.deliver || []).filter((x) => x.size);
   lines.push(`Deliver: ${d.length ? d.map((x) => `${x.size}${x.platform ? ` ${x.platform}` : ''}${x.master ? ' (master)' : ''}`).join(', ') : '?'}. Cap: ${brief.length_cap_seconds ? `${brief.length_cap_seconds} s` : '?'}. Voice: ${brief.voice || '?'}.`);
+  const lib = styles || ctx?.styles;
+  const shown = picksOf(brief, lib).filter((x) => !lib || !x.stale);
+  if (shown.length) lines.push(`Picked: ${shown.map((x) => `${TAB_NAMES[x.tab] || x.tab} ${x.name}`).join('; ')}.`);
+  if (brief.director_brief?.logline) lines.push(`Director's brief: ${brief.director_brief.logline}`);
   if ((brief.must_show || []).length) lines.push(`Must show: ${brief.must_show.map((m) => `${m.what}${m.evidence ? ` (seen as: ${m.evidence})` : ''}`).join('; ')}.`);
   if ((brief.must_not || []).length) lines.push(`Never: ${brief.must_not.join('; ')}.`);
   for (const [i, r] of (brief.references || []).entries()) lines.push(`Reference ${i}: ${r.source}${r.liked_for?.length ? `, liked for its ${r.liked_for.join(' and ')}` : ''}${r.in_their_words ? ` ("${r.in_their_words}")` : ''}${r.not_this ? `; not: ${r.not_this}` : ''}.`);
