@@ -42,7 +42,7 @@
   h2 { font-size: var(--step-1); }
   h3 { font-size: var(--step-0); line-height: 1.4; }
   p { margin: 0; max-width: 65ch; }
-  .eyebrow { font-size: var(--step--1); color: var(--second); letter-spacing: 0.06em; text-transform: uppercase; }
+  .eyebrow { font-size: var(--step--1); color: var(--second); }
   .muted { color: var(--second); }
   .small { font-size: var(--step--1); }
   textarea, input[type="text"] { width: 100%; box-sizing: border-box; font: inherit; color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; resize: vertical; }
@@ -74,7 +74,7 @@
   .brief-row .words { min-width: 0; overflow-wrap: anywhere; }
   .brief-row .meta { grid-column: 1; font-size: var(--step--1); color: var(--second); }
   .brief-row .open { grid-row: 1 / span 2; grid-column: 2; font-size: var(--step--1); color: var(--second); }
-  .tag { display: inline-block; font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .tag { display: inline-block; font-size: var(--step--1); font-weight: 500; color: var(--accent); }
   .tag.warm { color: var(--warm); }
   .quote { border-left: 2px solid var(--line); padding-left: 14px; color: var(--second); overflow-wrap: anywhere; }
   .understood { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
@@ -97,7 +97,7 @@
   .choice { display: grid; gap: 2px; text-align: left; background: var(--page); color: var(--ink); border: 1px solid var(--line); padding: 10px 12px; line-height: 1.3; }
   .choice:hover { border-color: var(--second); }
   .choice[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
-  .pick { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); min-height: 1em; }
+  .pick { font-size: 0.75rem; color: var(--accent); min-height: 1.3em; }
   label.field { display: grid; gap: 6px; font-size: var(--step--1); color: var(--second); }
   .plan-lines { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 65ch; }
   .outline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
@@ -148,10 +148,11 @@ const state = {
   words: '', style: null, // the start box and a saved style picked from an idea
   briefWords: '', confirmedOn: null,
   job: null, check: null, plan: null, done: null, parkedNext: null,
-  drafts: {},             // question id -> { value, picked, words }
+  drafts: {},             // question id -> { value, words }
   notes: {},              // area -> { tone, text }
   busy: null,             // the action running, so its button shows it
   saved: [], copyText: null, watchingDb: false,
+  changing: false,        // the plan's "Change something" list is open
 };
 let mcpReady = null;
 
@@ -174,6 +175,7 @@ const connector = {
   answer: (input) => state.mcp.callTool(HOST, 'brief_answer', input),
   plan: (job) => state.mcp.callTool(HOST, 'brief_plan', { job }),
   confirm: (job) => state.mcp.callTool(HOST, 'brief_confirm', { job }),
+  reopen: (job, item) => state.mcp.callTool(HOST, 'brief_reopen', { job, item }),
 };
 
 /** A read: retried once after a short random delay when the studio did not answer. */
@@ -263,8 +265,8 @@ async function answerCard(q) {
   if (!q.choices) {
     if (!words) { setNote(area, { tone: 'warm', text: 'Write your answer in the box first.' }); render(); return; }
     input.words = words;
-  } else if (words && !d.picked) {
-    // Their own words and no card picked by them: Claude proposes the card when it can, the connector checks it.
+  } else if (words && !(d.value || []).length) {
+    // Their own words and no card selected: Claude proposes the card when it can, the connector checks it.
     state.busy = area; render();
     const value = await proposeChoice(q, words);
     if (value != null) input.value = q.many ? [value] : value;
@@ -288,7 +290,7 @@ async function answerCard(q) {
 
 async function showPlan() {
   state.busy = 'plan'; setNote('plan', null); render();
-  try { state.plan = await write(() => connector.plan(state.job)); state.view = 'plan'; window.scrollTo(0, 0); }
+  try { state.plan = await write(() => connector.plan(state.job)); state.view = 'plan'; state.changing = false; window.scrollTo(0, 0); }
   catch (e) { await failed(e, 'plan', { isWrite: true }); }
   state.busy = null; render();
 }
@@ -303,6 +305,17 @@ async function confirmPlan() {
   state.busy = null; render();
 }
 
+async function reopenItem(item) {
+  state.busy = `reopen:${item}`; setNote('reopen', null); render();
+  try {
+    const reply = await write(() => connector.reopen(state.job, item));
+    state.plan = null; state.changing = false; state.confirmedOn = null;
+    applyCheck(reply);
+    window.scrollTo(0, 0);
+  } catch (e) { await failed(e, 'reopen', { isWrite: true }); }
+  state.busy = null; render();
+}
+
 function applyCheck(reply, { keepView = false } = {}) {
   state.job = reply.job; state.check = reply;
   const ids = new Set((reply.questions || []).map((q) => q.id));
@@ -312,7 +325,7 @@ function applyCheck(reply, { keepView = false } = {}) {
 }
 
 async function goHome() {
-  state.view = 'start'; state.job = null; state.check = null; state.plan = null; state.done = null; state.parkedNext = null;
+  state.view = 'start'; state.job = null; state.check = null; state.plan = null; state.done = null; state.parkedNext = null; state.changing = false;
   state.notes = {}; render(); window.scrollTo(0, 0);
   if (state.host === 'ready') await loadContext();
 }
@@ -467,7 +480,7 @@ function render() {
 
   const view = document.getElementById('view');
   const build = { start: renderStart, questions: renderQuestions, plan: renderPlan, handoff: renderHandoff, parked: renderParked }[state.view];
-  view.replaceChildren(...build());
+  view.replaceChildren(...build().filter(Boolean));
 
   if (focusId) {
     const el = document.getElementById(focusId);
@@ -550,7 +563,7 @@ function savedList() {
 function draftOf(q) {
   if (!state.drafts[q.id]) {
     const rec = (q.choices || []).filter((c) => c.recommended).map((c) => c.value);
-    state.drafts[q.id] = { value: q.many ? rec : rec.slice(0, 1), picked: false, words: '' };
+    state.drafts[q.id] = { value: q.many ? rec : rec.slice(0, 1), words: '' };
   }
   return state.drafts[q.id];
 }
@@ -593,8 +606,7 @@ function renderQuestions() {
   if (c.ready_for_plan) {
     out.push(h('section', {},
       h('div', { class: 'row' }, h('button', { type: 'button', class: 'primary', id: 'show-plan', disabled: state.busy === 'plan' || null, text: busyLabel('plan', 'Show the plan', 'Writing the plan…'), onclick: showPlan })),
-      noteEl('plan'),
-      state.plan ? h('p', { class: 'muted small', text: 'To change an answer that is already saved, start a new chat in the studio folder and say what to change.' }) : null));
+      noteEl('plan')));
   } else if (state.notes.plan) out.push(noteEl('plan'));
   return out;
 }
@@ -616,7 +628,7 @@ function card(q) {
   const toggle = (value) => {
     if (q.many) d.value = d.value.includes(value) ? d.value.filter((v) => v !== value) : [...d.value, value];
     else d.value = [value];
-    d.picked = true; setNote(area, null); render();
+    setNote(area, null); render();
   };
   const words = h('textarea', { id: `words-${q.id}`, rows: q.choices ? '2' : '3', oninput: (e) => { d.words = e.target.value; } });
   words.value = d.words;
@@ -649,9 +661,20 @@ function renderPlan() {
     h('section', {},
       h('div', { class: 'row' },
         h('button', { type: 'button', class: 'primary', id: 'confirm', disabled: state.busy === 'confirm' || null, text: busyLabel('confirm', 'Confirm this plan', 'Confirming…'), onclick: confirmPlan }),
-        h('button', { type: 'button', class: 'secondary', id: 'change', text: 'Change something', onclick: () => { state.view = 'questions'; render(); window.scrollTo(0, 0); } })),
+        h('button', { type: 'button', class: 'secondary', id: 'change', 'aria-expanded': String(state.changing), text: 'Change something', onclick: () => { state.changing = !state.changing; setNote('reopen', null); render(); } })),
       noteEl('confirm')),
+    state.changing ? changeList() : null,
   ];
+}
+
+/** The eight checklist items; clicking one opens it again and shows its question. */
+function changeList() {
+  const items = state.check?.preflight || [];
+  return h('section', { 'aria-labelledby': 'change-h' },
+    h('h2', { id: 'change-h', text: 'What do you want to change?' }),
+    h('div', { class: 'ideas' }, items.map((p) => h('button', { type: 'button', class: 'idea', id: `reopen-${p.id}`, disabled: state.busy === `reopen:${p.id}` || null, onclick: () => reopenItem(p.id) },
+      state.busy === `reopen:${p.id}` ? 'Opening…' : p.label, p.known ? h('span', { class: 'muted', text: cut(p.known, 90) }) : null))),
+    noteEl('reopen'));
 }
 
 function renderHandoff() {
