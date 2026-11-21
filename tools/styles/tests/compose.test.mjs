@@ -86,7 +86,7 @@ const t = (o) => ({ seconds: 4, built: 0.9, cue: null, empty: [[0, 0.6]], ...o }
 
 test('slot start: from the built moment less the lead', () => {
   assert.equal(LEAD_S, 0.3);
-  assert.deepEqual(slotStart({ timing: t(), slot: 45, fps: FPS }), { start: 18, empty: 0, safe: false });
+  assert.deepEqual(slotStart({ timing: t(), slot: 45, fps: FPS }), { start: 18, empty: 0, safe: false, freeze: null, problem: null });
 });
 
 test('slot start: a scene with a cue (a transition) starts late enough to show the move, never after its lead', () => {
@@ -102,17 +102,16 @@ test('slot start: a scene with a cue (a transition) starts late enough to show t
 test('slot start: a window that would hold an empty frame moves to the nearest one that does not', () => {
   // a transition's slot from 1.7 s (to show its cue) would run into a blank at 3.0 s, so it starts a little earlier...
   const early = slotStart({ timing: t({ seconds: 4.5, cue: 2.2, empty: [[0, 0.6], [3, 3.1]] }), slot: 45, fps: FPS });
-  assert.deepEqual(early, { start: 45, empty: 0, safe: false });
+  assert.deepEqual(early, { start: 45, empty: 0, safe: false, freeze: null, problem: null });
   // ...or later, past the gap, when nothing earlier fits
   const late = slotStart({ timing: t({ empty: [[0, 0.6], [1.5, 1.8]] }), slot: 30, fps: FPS });
   assert.equal(late.start, 54);
   assert.equal(late.empty, 0);
 });
 
-test('slot start: when every window holds an empty frame, the one with fewest, and it says how many', () => {
-  const r = slotStart({ timing: t({ seconds: 2, empty: [[0, 0.3], [0.9, 1.0], [1.6, 2]] , built: 0.4 }), slot: 45, fps: FPS });
-  assert.ok(r.empty > 0);
-  assert.ok(r.start >= 0 && r.start <= 60 - 45);
+test('slot start: when every window holds an empty frame, the slot starts after the last one and holds the scene\'s end', () => {
+  const r = slotStart({ timing: t({ seconds: 2, empty: [[0, 0.3], [0.9, 1.0], [1.4, 2]] , built: 0.4 }), slot: 45, fps: FPS });
+  assert.deepEqual(r, { start: 30, empty: 0, safe: false, freeze: 42, problem: null });
 });
 
 test('slot start: the clip\'s own first 0.3 s may be empty (grace), later slots may not', () => {
@@ -122,12 +121,13 @@ test('slot start: the clip\'s own first 0.3 s may be empty (grace), later slots 
 });
 
 test('slot start: never past the scene\'s end; a scene shorter than its slot plays from the start', () => {
-  assert.equal(slotStart({ timing: t({ built: 3.9, empty: [[0, 3.6]] }), slot: 45, fps: FPS }).start, 120 - 45);
+  // content only from 3.6 s: it starts there and holds the last frame rather than run into its blank lead
+  assert.deepEqual(slotStart({ timing: t({ built: 3.9, empty: [[0, 3.6]] }), slot: 45, fps: FPS }), { start: 108, empty: 0, safe: false, freeze: 120, problem: null });
   assert.equal(slotStart({ timing: t({ seconds: 1, built: 0.5, empty: [] }), slot: 45, fps: FPS }).start, 0);
 });
 
 test('slot start: a scene with no measured timing starts at the safe offset, and says so', () => {
-  assert.deepEqual(slotStart({ timing: null, slot: 45, fps: FPS }), { start: Math.round(SAFE_OFFSET_S * FPS), empty: 0, safe: true });
+  assert.deepEqual(slotStart({ timing: null, slot: 45, fps: FPS }), { start: Math.round(SAFE_OFFSET_S * FPS), empty: 0, safe: true, freeze: null, problem: null });
 });
 
 // ---------------------------------------------------------------- fitting a 16:9 scene into another frame
@@ -169,4 +169,90 @@ test('slot start: a long build is the scene\'s move, so the slot starts as its c
   assert.equal(slotStart({ timing: typing, slot: 45, fps: FPS, grace: 9 }).start, 0);
   // a short entrance (0.233 s) is trimmed to the built moment less the lead
   assert.equal(slotStart({ timing: { seconds: 4, built: 0.733, cue: null, empty: [[0, 0.5]] }, slot: 45, fps: FPS }).start, 15);
+});
+
+// ---------------------------------------------------------------- review fixes: pass-throughs, the cue kept, short scenes held
+
+// Rows as library/motion/scene-timing.json has them (confident unless named), for the entries the review named.
+const ROW = {
+  'blur-through': { seconds: 4, built: 0.333, cue: 1.9, empty: [[0, 0.233], [1.833, 1.967]] },
+  'morph-chain': { seconds: 5.2, built: 0.433, cue: 1.433, empty: [[0, 0.333], [1.5, 1.567]] },
+  'parallax-push': { seconds: 4.2, built: 0.533, cue: 2, empty: [[2.033, 2.1]] },
+  carrier: { seconds: 6, built: 0.167, cue: 4.467, empty: [[0, 0.133], [1.5, 1.633], [3, 3.067], [4.433, 4.467]] },
+  'slam (hype)': { seconds: 3.5, built: 0.533, cue: null, empty: [[0, 0.433], [0.467, 0.5], [2.9, 3.5]] },
+  'word-pop': { seconds: 4, built: 0.567, cue: null, empty: [[0, 0.467], [3.133, 4]] },
+  'line-draw (calm)': { seconds: 3.5, built: 1.267, cue: null, empty: [[0, 0.833]] },
+};
+const inside = (r, cue, slot) => r.start <= Math.round(cue * FPS) && Math.round(cue * FPS) < r.start + slot;
+
+test('pass-through: a transition\'s own short blank is no empty frame, so the slot keeps its change (mo-rh-decelerate, blur-through)', () => {
+  const r = slotStart({ timing: ROW['blur-through'], slot: 45, fps: FPS, transition: true });
+  assert.deepEqual(r, { start: 42, empty: 0, safe: false, freeze: null, problem: null });
+  assert.ok(inside(r, 1.9, 45));
+});
+
+test('pass-through: a short blank within 0.2 s of the cue, in any family (pui-layout-search-becomes-answer, morph-chain)', () => {
+  const r = slotStart({ timing: ROW['morph-chain'], slot: 45, fps: FPS, transition: false });
+  assert.equal(r.start, 28);
+  assert.equal(r.problem, null);
+  assert.ok(inside(r, 1.433, 45));
+});
+
+test('pass-through: film-parallax-push-join (parallax-push) and film-carried-object (carrier) keep their change', () => {
+  const push = slotStart({ timing: ROW['parallax-push'], slot: 45, fps: FPS, transition: true });
+  assert.equal(push.start, 45);
+  assert.ok(inside(push, 2, 45));
+  const carrier = slotStart({ timing: ROW.carrier, slot: 45, fps: FPS, transition: true });
+  assert.equal(carrier.start, 119);
+  assert.equal(carrier.problem, null);
+  assert.ok(inside(carrier, 4.467, 45));
+});
+
+test('pass-through: only short (6 frames or fewer), with content both sides, near the cue or in a transition', () => {
+  // 7 frames at the cue is a real blank: no window holding the cue is clear, so a clear one without it is used and reported
+  const long = { seconds: 4, built: 0.5, cue: 2, empty: [[0, 0.3], [1.9, 2.133]] };
+  const r = slotStart({ timing: long, slot: 30, fps: FPS, transition: true });
+  assert.equal(r.problem, 'change');
+  assert.equal(r.empty, 0);
+  assert.ok(!inside(r, 2, 30));
+  // a short blank far from any cue in a scene that is not a transition is a real blank
+  const far = { seconds: 4, built: 0.5, cue: null, empty: [[0, 0.3], [1.5, 1.6]] };
+  // (every 90-frame window from the start holds frames 45 to 47, so the slot starts after them and holds the last frame)
+  assert.deepEqual(slotStart({ timing: far, slot: 90, fps: FPS }), { start: 48, empty: 0, safe: false, freeze: 120, problem: null });
+  // the same blank in a transition is a pass-through: the slot plays from its built moment, nothing held
+  assert.deepEqual(slotStart({ timing: far, slot: 90, fps: FPS, transition: true }), { start: 9, empty: 0, safe: false, freeze: null, problem: null });
+});
+
+test('cue: a change that cannot sit in any clear window is reported, never slid past silently', () => {
+  const blocked = { seconds: 4, built: 0.5, cue: 2, empty: [[0, 0.3], [1.9, 2.2]] };
+  const r = slotStart({ timing: blocked, slot: 30, fps: FPS });
+  assert.equal(r.problem, 'change');
+  assert.equal(r.empty, 0);
+});
+
+test('hold: a scene that leaves before its slot ends holds its last content frame (an-type-slam, an-type-word-pop)', () => {
+  const slam = slotStart({ timing: ROW['slam (hype)'], slot: 90, fps: FPS, grace: 9 });
+  assert.deepEqual(slam, { start: 7, empty: 0, safe: false, freeze: 87, problem: null });
+  const pop = slotStart({ timing: ROW['word-pop'], slot: 90, fps: FPS, grace: 9 });
+  assert.deepEqual(pop, { start: 8, empty: 0, safe: false, freeze: 94, problem: null });
+});
+
+test('hold: a scene shorter than its slot holds its last frame instead of starting early in its blank lead (pui-data-trend-line, line-draw)', () => {
+  const r = slotStart({ timing: ROW['line-draw (calm)'], slot: 90, fps: FPS, grace: 9 });
+  assert.deepEqual(r, { start: 29, empty: 0, safe: false, freeze: 105, problem: null });
+});
+
+test('hold: only when nothing can fill the slot is it reported, for its real cause', () => {
+  const nothing = { seconds: 2, built: 0, cue: null, empty: [[0, 2]] };
+  assert.equal(slotStart({ timing: nothing, slot: 45, fps: FPS }).problem, 'content');
+  // real blanks inside every window: the slot starts after the last and holds, it is not reported
+  const gaps = { seconds: 3.5, built: 0.5, cue: null, empty: [[0, 0.3], [1, 1.3], [2, 2.3]] };
+  assert.deepEqual(slotStart({ timing: gaps, slot: 45, fps: FPS }), { start: 69, empty: 0, safe: false, freeze: 105, problem: null });
+});
+
+test('timing: a row measured at another length than the scene now has is no timing', () => {
+  const row = { seconds: 4, built: 0.9, cue: null, empty: [] };
+  assert.equal(timingFor({ a: { confident: row } }, 'a', 'confident', 4), row);
+  assert.equal(timingFor({ a: { confident: row } }, 'a', 'confident', 4.5), null);
+  assert.equal(timingFor({ a: row }, 'a', 'calm', 3), null);
 });

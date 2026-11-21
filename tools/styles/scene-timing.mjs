@@ -14,7 +14,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { spawnRun } from './lib/sprite.mjs';
 import { remotionCli, sceneTimingFile } from './render-previews.mjs';
-import { sceneList, reelOffsets, parseMetadata, analyzeScene, boxesFromColumns, CUE_FAMILIES } from './lib/scene-timing.mjs';
+import { sceneList, reelOffsets, parseMetadata, analyzeScene, boxesFromColumns, mergeTimings, CUE_FAMILIES } from './lib/scene-timing.mjs';
 
 const STUDIO = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FPS = 30;
@@ -76,12 +76,14 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
       if (r.code !== 0) throw new Error(`remotion render failed: ${(r.stderr || r.stdout || '').trim().split('\n').pop()}`);
       }
       const frames = await scan(run, video, work);
+      const measured = {};
       for (const row of reelOffsets(list, FPS, LEAD)) {
         const cut = (a) => a.slice(row.from, row.from + row.frames);
         const scene = list.find((s) => s.name === row.name);
-        const timing = analyzeScene({ edges: cut(frames.edges), page: cut(frames.page), motion: cut(frames.motion), boxes: cut(frames.boxes), fps: FPS, seconds: scene.seconds, size: SIZE, cue: CUE_FAMILIES.has(families.get(row.name)) });
-        table.scenes[row.name] = { ...(table.scenes[row.name]?.seconds === undefined ? table.scenes[row.name] : {}), [energy]: timing };
+        measured[row.name] = analyzeScene({ edges: cut(frames.edges), page: cut(frames.page), motion: cut(frames.motion), boxes: cut(frames.boxes), fps: FPS, seconds: scene.seconds, size: SIZE, cue: CUE_FAMILIES.has(families.get(row.name)) });
       }
+      // Rows for scenes no longer in the library go; the other energies' rows stay.
+      table.scenes = mergeTimings(table.scenes, list, energy, measured);
     }
     const sorted = Object.fromEntries(Object.keys(table.scenes).sort().map((k) => [k, table.scenes[k]]));
     const temp = `${file}.tmp`;

@@ -2,8 +2,8 @@
 // (capture.tsx), with product animations (product.tsx) and click, hover and typing effects (capture.tsx) on the same
 // take, at their own moments. Nothing new is drawn: the scene is the same CaptureShot the gallery scenes use, given
 // the picture's settings and the marks' settings together. Used by the style library's previews
-// (src/library/styles/StylePreview.tsx) for an entry that names such a pairing ("stage-laptop+typing-caret-glow",
-// rules.mjs composeMoves); nothing here registers a composition.
+// (src/library/styles/StylePreview.tsx) for an entry that names such a pairing: it passes the pairing's members
+// (rules.mjs composeMoves names the slot "stage-laptop+typing-caret-glow"); nothing here registers a composition.
 //
 // Who sets what: the mark sets the moment (the stretch of the take, and when it lands), the picture sets where the
 // screen sits. A staging keeps the mark's own framing (the camera settles on the marked thing inside the staging); a
@@ -23,7 +23,6 @@ import { ACTIONS, captureEntries, type CaptureEntry } from './capture';
 import type { CaptureScene, SceneTiming } from './capture-scenes';
 import { CUE, productContext, productEntries, type ProductEntry } from './product';
 import { relayoutEntries, type RelayoutEntry } from './relayout';
-import { COMPOSE_JOIN } from '../styles/rules.mjs';
 
 type Picture = { kind: 'stage'; entry: ProductEntry } | { kind: 'relayout'; entry: RelayoutEntry };
 type Mark = { kind: 'product'; entry: ProductEntry } | { kind: 'effect'; entry: CaptureEntry };
@@ -31,10 +30,11 @@ type Parts = { name: string; picture?: Picture; camera?: CaptureEntry; marks: Ma
 
 const EFFECTS = /^(click|hover|typing)-/;
 
-/** The members of a composed name, found in the gallery lists; an Error names the first one that is not a picture, camera or mark. */
-const partsOf = (name: string): Parts => {
+/** The members, found in the gallery lists; an Error names the first one that is not a picture, camera or mark. */
+const partsOf = (members: string[]): Parts => {
+  const name = members.join(' + ');
   const parts: Parts = { name, marks: [] };
-  for (const m of name.split(COMPOSE_JOIN)) {
+  for (const m of members) {
     const product = productEntries.find((e) => e.name === m);
     const relayout = relayoutEntries.find((e) => `relayout-${e.name}` === m);
     const capture = captureEntries.find((e) => e.name === m);
@@ -158,13 +158,14 @@ const showFor = (parts: Parts): CaptureScene['Show'] => {
 const made = new Map<string, CaptureScene>();
 
 /**
- * The scene for a composed name ("stage-split+product-ring", rules.mjs composeMoves), made once. Throws when a member
- * is not a picture, camera or mark of the motion library, or the pairing cannot share one take.
+ * The scene for a picture and its marks, by their move names (["stage-split", "product-ring"]), made once. Throws
+ * when a member is not a picture, camera or mark of the motion library, or the pairing cannot share one take.
  */
-export const composedScene = (name: string): CaptureScene => {
+export const composedScene = (members: string[]): CaptureScene => {
+  const name = members.join(' + ');
   const known = made.get(name);
   if (known) return known;
-  const parts = partsOf(name);
+  const parts = partsOf(members);
   const size: readonly [number, number] = parts.picture?.kind === 'relayout' ? SIZES[parts.picture.entry.size] : [1920, 1080];
   const scene: CaptureScene = {
     name,
@@ -180,4 +181,4 @@ export const composedScene = (name: string): CaptureScene => {
 };
 
 /** For checks: the shot a composed name gives on a take (the same one the scene draws). */
-export const composedShot = (name: string, loaded: LoadedCapture): Built => build(partsOf(name), loaded);
+export const composedShot = (members: string[], loaded: LoadedCapture): Built => build(partsOf(members), loaded);

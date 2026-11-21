@@ -130,13 +130,16 @@ export function sceneStart({ cue, seconds, slot, fps }) {
 
 /**
  * A scene's measured timing for an energy from scene-timing.json's `scenes`: a row per energy (calm, confident, hype;
- * the entrances run at the energy's pace), or one row for all. Null when the scene was not measured.
+ * the entrances run at the energy's pace), or one row for all. Null when the scene was not measured, or (given the
+ * scene's length in `seconds`) when the row was measured at another length: a stale row is no timing.
  */
-export function timingFor(scenes, name, energy) {
+export function timingFor(scenes, name, energy, seconds) {
   const row = scenes?.[name];
   if (!row) return null;
-  if (typeof row.seconds === 'number') return row;
-  return row[energy] ?? row.confident ?? null;
+  const pick = typeof row.seconds === 'number' ? row : row[energy] ?? row.confident ?? null;
+  if (!pick) return null;
+  if (typeof seconds === 'number' && Math.abs(pick.seconds - seconds) > 1e-6) return null;
+  return pick;
 }
 
 /** Seconds into a scene a slot starts when nothing measured says better (library/motion/scene-timing.json has no row). */
@@ -150,43 +153,87 @@ export const CUE_AFTER_S = 1;
  */
 export const LONG_BUILD_S = 0.5;
 
+/** A blank of at most this many frames, with content on both sides, is a designed pass-through when it falls in a transition or near the cue. */
+export const PASS_THROUGH_FRAMES = 6;
+/** ...near the cue meaning within this many seconds of it. */
+export const PASS_THROUGH_NEAR_S = 0.2;
+
 /**
  * The frame of its own scene a slot starts on, from the scene's measured timing (library/motion/scene-timing.json:
- * `{ seconds, built, cue, empty: [[from, to] ...] }`, seconds on the scene's clock). It starts at the built moment
- * (its content on screen) less LEAD_S, or as its content arrives for a long build (LONG_BUILD_S); for a scene with a cue, late enough to show CUE_AFTER_S after it but never
- * after the cue less LEAD_S; never past the scene's end. A window that would hold an empty frame moves to the nearest
- * one that holds none (the first `grace` frames of the window do not count: the clip's own first 0.3 s). Returns
- * `{ start, empty, safe }`: `empty` the empty frames left when no window avoids them all, `safe` when there was no
- * timing and SAFE_OFFSET_S was used.
+ * `{ seconds, built, cue, empty: [[from, to] ...] }`, seconds on the scene's clock).
+ * - It starts at the built moment (its content on screen) less LEAD_S, or as its content arrives for a long build
+ *   (LONG_BUILD_S); for a scene with a cue, late enough to show CUE_AFTER_S after it but never after the cue less
+ *   LEAD_S; never past the scene's end.
+ * - A designed pass-through is no empty frame: a blank of PASS_THROUGH_FRAMES or fewer with content on both sides,
+ *   in a transition-family scene (`transition`) or within PASS_THROUGH_NEAR_S of the cue.
+ * - A window that would hold an empty frame moves to the nearest one that holds none (the first `grace` frames of
+ *   the window do not count: the clip's own first 0.3 s); a scene with a cue keeps the cue inside its window.
+ * - When no window is clear, the slot holds the scene's last content frame from `freeze` (the start of the blank it
+ *   leaves on, or its end) to the slot's end: a still, not an empty frame.
+ * Returns `{ start, empty, safe, freeze, problem }`: `freeze` the scene frame the hold starts on, or null; `problem`
+ * null, "change" (no clear window keeps the cue: a clear one without it is used), "empty" (every window holds an empty
+ * frame; `empty` says how many at best) or "content" (the scene has nothing to show); `safe` when there was no timing
+ * and SAFE_OFFSET_S was used.
  */
-export function slotStart({ timing, slot, fps, grace = 0 }) {
-  if (!timing) return { start: Math.round(SAFE_OFFSET_S * fps), empty: 0, safe: true };
+export function slotStart({ timing, slot, fps, grace = 0, transition = false }) {
+  const done = (start, more = {}) => ({ start, empty: 0, safe: false, freeze: null, problem: null, ...more });
+  if (!timing) return done(Math.round(SAFE_OFFSET_S * fps), { safe: true });
   const frames = Math.max(1, Math.floor(timing.seconds * fps));
-  const spans = (timing.empty ?? []).map(([a, b]) => [a * fps, b * fps]);
-  const blank = (f) => spans.some(([a, b]) => f >= a - 1e-6 && f < b - 1e-6);
+  const spans = (timing.empty ?? []).map(([a, b]) => [Math.round(a * fps), Math.round(b * fps)]);
+  const cue = typeof timing.cue === 'number' ? Math.round(timing.cue * fps) : null;
+  const near = Math.round(PASS_THROUGH_NEAR_S * fps);
+  const passes = ([a, b]) => b - a <= PASS_THROUGH_FRAMES && a > 0 && b < frames && (transition || (cue !== null && a < cue + near && b > cue - near));
+  const real = spans.filter((sp) => !passes(sp));
+  const blank = (f) => real.some(([a, b]) => f >= a && f < b);
   const lastBlank = blank(frames - 1);
-  const emptyIn = (s) => {
+  // The hold starts where the scene leaves for good (a blank running to its end), or at its end.
+  const tail = spans.find(([, b]) => b >= frames);
+  const holdFrom = tail ? tail[0] : frames;
+  let hasContent = false;
+  for (let f = 0; f < holdFrom && !hasContent; f++) if (!blank(f)) hasContent = true;
+  if (!hasContent) return done(0, { problem: 'content' });
+  const emptyIn = (s, hold) => {
     let n = 0;
-    for (let f = s + grace; f < s + slot; f++) if (f >= frames ? lastBlank : blank(f)) n++;
+    for (let f = s + grace; f < s + slot; f++) {
+      if (hold && f >= holdFrom) break;
+      if (f >= frames ? lastBlank : blank(f)) n++;
+    }
     return n;
   };
-  const latest = Math.max(0, frames - slot);
-  const opening = spans.find(([a]) => a <= 1e-6);
+  const opening = spans.find(([a]) => a === 0);
   const content = opening ? opening[1] / fps : 0;
   let want = timing.built - content > LONG_BUILD_S + 1e-6 ? Math.round((content - (grace ? LEAD_S : 0)) * fps) : Math.round((timing.built - LEAD_S) * fps);
-  if (typeof timing.cue === 'number') want = Math.max(want, Math.min(Math.round((timing.cue - LEAD_S) * fps), Math.round((timing.cue + CUE_AFTER_S) * fps) - slot));
-  want = Math.max(0, Math.min(latest, want));
-  if (emptyIn(want) === 0) return { start: want, empty: 0, safe: false };
-  let best = { start: want, empty: emptyIn(want) };
-  for (let d = 1; d <= latest; d++) {
-    for (const s of [want + d, want - d]) {
-      if (s < 0 || s > latest) continue;
-      const n = emptyIn(s);
-      if (n === 0) return { start: s, empty: 0, safe: false };
-      if (n < best.empty) best = { start: s, empty: n };
+  if (cue !== null) want = Math.max(want, Math.min(cue - Math.round(LEAD_S * fps), cue + Math.round(CUE_AFTER_S * fps) - slot));
+  const holds = (s, hold) => (hold && s + slot > holdFrom ? holdFrom : null);
+  /** The clear window nearest `want` (later first on a tie), or the one with fewest empty frames. */
+  const search = (hold, keepCue) => {
+    const latest = hold ? Math.max(0, holdFrom - 1) : Math.max(0, frames - slot);
+    const from = Math.max(0, Math.min(latest, want));
+    let best = null;
+    for (let d = 0; d <= latest; d++) {
+      for (const s of d ? [from + d, from - d] : [from]) {
+        if (s < 0 || s > latest) continue;
+        if (keepCue && !(s <= cue && cue < s + slot)) continue;
+        const n = emptyIn(s, hold);
+        if (n === 0) return { start: s, empty: 0, hold };
+        if (!best || n < best.empty) best = { start: s, empty: n, hold };
+      }
+    }
+    return best;
+  };
+  const keep = cue !== null && cue < frames;
+  for (const hold of [false, true]) {
+    const r = search(hold, keep);
+    if (r && r.empty === 0) return done(r.start, { freeze: holds(r.start, hold) });
+  }
+  if (keep) {
+    for (const hold of [false, true]) {
+      const r = search(hold, false);
+      if (r && r.empty === 0) return done(r.start, { freeze: holds(r.start, hold), problem: 'change' });
     }
   }
-  return { ...best, safe: false };
+  const fewest = [search(false, false), search(true, false)].filter(Boolean).sort((x, y) => x.empty - y.empty)[0];
+  return done(fewest.start, { empty: fewest.empty, freeze: holds(fewest.start, fewest.hold), problem: 'empty' });
 }
 
 /** Room kept on each side of a fitted scene, as a share of the clip's width. */

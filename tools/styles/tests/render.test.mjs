@@ -604,6 +604,7 @@ const timingFile = (root, scenes) => {
   writeFileSync(join(root, 'library', 'motion', 'scene-timing.json'), JSON.stringify({ fps: 30, size: [480, 270], scenes }));
 };
 const deskPlan = (root, engine, o = {}) => {
+  o = { studio: root, ...o };
   addJob(root, '_demo-previews', 'demo');
   listCaptures(root, [demoRow]);
   const lib = loadLibrary(root);
@@ -638,23 +639,57 @@ test('render plan: a scene with no measured timing is noted as starting at the s
     const plan = deskPlan(root, ['blur-in']);
     assert.equal(plan.render.length, 1);
     assert.ok(plan.notes.some((n) => n.includes('demo-soft-arrive') && n.includes('blur-in') && /safe offset/.test(n)), plan.notes.join('\n'));
-    assert.deepEqual(plan.render[0].starts, [{ name: 'blur-in', start: 18, safe: true }]);
+    assert.deepEqual(plan.render[0].starts, [{ name: 'blur-in', start: 18, safe: true, freeze: null }]);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('render plan: each slot\'s start comes from the measured timing; a slot no window keeps clear needs attention', () => {
+test('render plan: each slot\'s start comes from the measured timing; a scene with blanks in every window holds its end', () => {
   const root = scratch();
   try {
     timingFile(root, {
       'blur-in': { seconds: 4, built: 0.9, cue: null, empty: [[0, 0.6]], extent: 0.6 },
-      'bar-grow': { seconds: 2, built: 0.5, cue: null, empty: [[0, 0.3], [0.9, 1.0], [1.4, 2]], extent: 0.6 },
+      'bar-grow': { seconds: 3.5, built: 0.5, cue: null, empty: [[0, 0.3], [1, 1.3], [2, 2.3]], extent: 0.6 },
     });
     const ok = deskPlan(root, ['blur-in']);
-    assert.deepEqual(ok.render[0].starts, [{ name: 'blur-in', start: 18, safe: false }]);
+    assert.deepEqual(ok.render[0].starts, [{ name: 'blur-in', start: 18, safe: false, freeze: null }]);
     assert.deepEqual(ok.attention, []);
-    const bad = deskPlan(root, ['blur-in', 'bar-grow']);
-    assert.equal(bad.render.length, 1, 'it still renders; a person looks at it');
-    assert.equal(bad.attention.length, 1);
-    assert.match(bad.attention[0].reason, /bar-grow.*empty frame/);
+    const held = deskPlan(root, ['blur-in', 'bar-grow']);
+    assert.deepEqual(held.render[0].starts[1], { name: 'bar-grow', start: 69, safe: false, freeze: 105 });
+    assert.deepEqual(held.attention, []);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: timing comes from the studio\'s own table (the one the composition bundles), not the --root copy', () => {
+  const root = scratch();
+  const studio = mkdtempSync(join(tmpdir(), 'studio-'));
+  try {
+    timingFile(root, { 'blur-in': { seconds: 4, built: 3, cue: null, empty: [[0, 2.7]] } });
+    timingFile(studio, { 'blur-in': { seconds: 4, built: 0.9, cue: null, empty: [[0, 0.6]] } });
+    assert.deepEqual(deskPlan(root, ['blur-in'], { studio }).render[0].starts, [{ name: 'blur-in', start: 18, safe: false, freeze: null }]);
+  } finally { rmSync(root, { recursive: true, force: true }); rmSync(studio, { recursive: true, force: true }); }
+});
+
+test('render plan: a stale row (another length) is unmeasured: safe offset and a note', () => {
+  const root = scratch();
+  try {
+    timingFile(root, { 'blur-in': { seconds: 3, built: 0.9, cue: null, empty: [[0, 0.6]] } });
+    const plan = deskPlan(root, ['blur-in']);
+    assert.equal(plan.render[0].starts[0].safe, true);
+    assert.ok(plan.notes.some((n) => n.includes('blur-in') && /safe offset/.test(n)));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: a change that cannot fit its slot, and a scene with nothing to show, are reported for what they are', () => {
+  const root = scratch();
+  try {
+    timingFile(root, {
+      'blur-in': { seconds: 4, built: 0.9, cue: null, empty: [[0, 0.6]] },
+      'feather-wipe': { seconds: 4.5, built: 0.5, cue: 2, empty: [[0, 0.3], [1.9, 2.2]] },
+      'bar-grow': { seconds: 3.5, built: 0, cue: null, empty: [[0, 3.5]] },
+    });
+    const change = deskPlan(root, ['blur-in', 'feather-wipe']);
+    assert.deepEqual(change.attention.map((a) => a.reason), ['feather-wipe cannot show its change in its slot']);
+    const content = deskPlan(root, ['blur-in', 'bar-grow']);
+    assert.deepEqual(content.attention.map((a) => a.reason), ['bar-grow has not enough content for its slot']);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

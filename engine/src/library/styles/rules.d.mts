@@ -21,10 +21,12 @@ export function previewSlots(names: string[], options: { familyOf: (name: string
 export const LEAD_S: number;
 export function sceneStart(options: { cue?: number | null; seconds?: number; slot: number; fps: number }): number;
 export type MeasuredTiming = { seconds: number; built: number; cue: number | null; empty: [number, number][]; extent?: number | null };
-export function timingFor(scenes: Record<string, unknown> | undefined, name: string, energy: string): MeasuredTiming | null;
+export function timingFor(scenes: Record<string, unknown> | undefined, name: string, energy: string, seconds?: number): MeasuredTiming | null;
 export const SAFE_OFFSET_S: number;
 export const CUE_AFTER_S: number;
 export const LONG_BUILD_S: number;
-export function slotStart(options: { timing: MeasuredTiming | null | undefined; slot: number; fps: number; grace?: number }): { start: number; empty: number; safe: boolean };
+export const PASS_THROUGH_FRAMES: number;
+export const PASS_THROUGH_NEAR_S: number;
+export function slotStart(options: { timing: MeasuredTiming | null | undefined; slot: number; fps: number; grace?: number; transition?: boolean }): { start: number; empty: number; safe: boolean; freeze: number | null; problem: null | 'change' | 'empty' | 'content' };
 export const FIT_MARGIN: number;
 export function fitFrame(clip: { width: number; height: number }, extent: number | null | undefined): { width: number; height: number; top: number };

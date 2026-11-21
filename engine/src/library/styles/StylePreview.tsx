@@ -8,8 +8,9 @@
 // re-layout or camera move named beside marks plays as one scene, the marks on the staged take (motion/compose.tsx).
 // Every other scene starts on a frame with its content on screen, from its measured timing (rules.mjs, slotStart;
 // library/motion/scene-timing.json), and a scene made only for 16:9 plays in a frame fitted to its content.
+import type React from 'react';
 import type { FC } from 'react';
-import { Composition, Sequence, Series, useVideoConfig } from 'remotion';
+import { Composition, Freeze, Sequence, Series, useCurrentFrame, useVideoConfig } from 'remotion';
 import { composedScene } from '../motion/compose';
 import sceneTiming from '../../../../library/motion/scene-timing.json';
 import { useCapture, type LoadedCapture } from '../../capture/load';
@@ -31,7 +32,7 @@ import { productScenes } from '../motion/product';
 import { relayoutScenes } from '../motion/relayout';
 import type { FormatName, SizedDemo } from '../motion/sized';
 import { sizedFamilies } from '../motion/sized-families';
-import { CAPTURE_STANDS_IN, COMPOSE_JOIN, fitFrame, isCaptureMove, isPhoneMove, kebab, LEAD_S, MAX_MOVES, PREVIEW_FPS, PREVIEW_FRAMES, previewSlots, sceneStart, SIZES, slotFrames, slotStart, timingFor } from './rules.mjs';
+import { CAPTURE_STANDS_IN, COMPOSE_JOIN, composedMembers, fitFrame, isCaptureMove, isPhoneMove, kebab, LEAD_S, MAX_MOVES, PREVIEW_FPS, PREVIEW_FRAMES, previewSlots, sceneStart, SIZES, slotFrames, slotStart, timingFor } from './rules.mjs';
 
 export const FPS = PREVIEW_FPS;
 export const FRAMES = PREVIEW_FRAMES;
@@ -96,7 +97,7 @@ for (const scene of [...captureScenes, ...productScenes, ...joinScenes, ...relay
 /** Capture moves with no gallery scene of their own play the scene named in CAPTURE_STANDS_IN (rules.mjs). */
 const STANDS_IN = CAPTURE_STANDS_IN;
 export const captureSceneOf = (name: string) =>
-  isComposed(name) ? composedScene(name) : captureShows.get(STANDS_IN[name] ?? name) ?? captureShows.get(STANDS_IN[kebab(name)] ?? kebab(name));
+  isComposed(name) ? composedScene(composedMembers(name)) : captureShows.get(STANDS_IN[name] ?? name) ?? captureShows.get(STANDS_IN[kebab(name)] ?? kebab(name));
 
 /** A frame of the preview's shape for a scene: its long side 1920, or (contain) at least the scene's own frame. */
 export const sceneFrame = (scene: Pick<CaptureScene, 'size' | 'fit'>, width: number, height: number): [number, number] => {
@@ -147,19 +148,32 @@ const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energy:
 type Measured = Parameters<typeof timingFor>[0];
 const measured = (sceneTiming as { scenes?: Measured }).scenes;
 
+/** Plays its children, held on frame `from - 1` from frame `from` on (a scene that has left: its last content frame). */
+const Hold: FC<{ from: number | null; children: React.ReactNode }> = ({ from, children }) => {
+  const frame = useCurrentFrame();
+  return (
+    <Freeze frame={Math.max(0, (from ?? 1) - 1)} active={from !== null && frame >= from}>
+      {children}
+    </Freeze>
+  );
+};
+
 /**
  * A standalone scene in its slot: from the frame its measured timing picks (its content on screen, never an empty
- * frame when one can be avoided; rules.mjs, slotStart), in its own size's layout, or, made only for 16:9, in a frame
- * of the clip's width just wide enough for its content (rules.mjs, fitFrame).
+ * frame when one can be avoided, its change kept; rules.mjs, slotStart), held on its last content frame when it would
+ * leave before the slot ends, in its own size's layout, or, made only for 16:9, in a frame of the clip's width just
+ * wide enough for its content (rules.mjs, fitFrame).
  */
 const SceneMove: FC<{ known: Known; page: StageName; format: FormatName; energy: Energy; frames: number; first: boolean }> = ({ known, page, format, energy, frames, first }) => {
   const { width, height } = useVideoConfig();
-  const timing = timingFor(measured, known.name, energy);
-  const { start } = slotStart({ timing, slot: frames, fps: FPS, grace: first ? Math.round(LEAD_S * FPS) : 0 });
+  const timing = timingFor(measured, known.name, energy, known.seconds);
+  const { start, freeze } = slotStart({ timing, slot: frames, fps: FPS, grace: first ? Math.round(LEAD_S * FPS) : 0, transition: familyOf(known.name) === 'transition' });
   const frame = known.sized ? { width, height, top: 0 } : fitFrame({ width, height }, timing?.extent);
   return (
     <Sequence from={-start} durationInFrames={frames + start} width={frame.width} height={frame.height} style={{ top: frame.top, height: frame.height, width: frame.width }}>
-      <known.Scene page={page} format={format} />
+      <Hold from={freeze}>
+        <known.Scene page={page} format={format} />
+      </Hold>
     </Sequence>
   );
 };

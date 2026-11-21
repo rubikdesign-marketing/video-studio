@@ -92,7 +92,8 @@ const round = (x) => +x.toFixed(3);
 /**
  * One scene's timing from its frames: `edges` (edge per frame), `page` (difference from the empty page), `motion`
  * (difference from the frame before), `boxes` (`{ x1, x2 }` of what has edges, or null), at `fps`, in a frame of
- * `size` [width, height]. `cue` says whether the scene's family has one change to land on. Returns
+ * `size` [width, height]. `cue` says whether the scene's family has one change to land on: the biggest change from
+ * 0.3 s after its content arrives. Returns
  * `{ seconds, built, cue, empty, extent }`: built and cue in seconds, empty as [from, to] spans in seconds, extent the
  * content's width about the middle as a share of the frame height (null when nothing has edges).
  */
@@ -107,7 +108,8 @@ export function analyzeScene({ edges, page, motion, boxes, fps, seconds, size, c
   let cueAt = null;
   if (cue) {
     let best = CUE_MIN;
-    for (let f = built + Math.round(0.3 * fps); f < n - Math.round(0.3 * fps); f++) if ((motion[f] ?? 0) > best) { best = motion[f]; cueAt = f; }
+    // From 0.3 s after the content arrives: a whip or a dissolve can come before the built moment (the after-state may be the denser one).
+    for (let f = Math.max(0, content) + Math.round(0.3 * fps); f < n - Math.round(0.3 * fps); f++) if ((motion[f] ?? 0) > best) { best = motion[f]; cueAt = f; }
   }
   const spans = [];
   for (let f = 0; f < n; f++) {
@@ -121,4 +123,17 @@ export function analyzeScene({ edges, page, motion, boxes, fps, seconds, size, c
   let half = -1;
   boxes.forEach((b, i) => { if (b && !empty[i]) half = Math.max(half, Math.abs(b.x1 - mid), Math.abs(b.x2 + 1 - mid)); });
   return { seconds, built: round(built / fps), cue: cueAt === null ? null : round(cueAt / fps), empty: spans, extent: half < 0 ? null : round((2 * half) / size[1]) };
+}
+
+/**
+ * The table's rows after measuring `list` at `energy`: a row for every scene in the list and no other (rows for
+ * scenes no longer in the library are dropped), this energy's measurements in, the other energies' rows kept.
+ */
+export function mergeTimings(old, list, energy, measured) {
+  const out = {};
+  for (const { name } of list) {
+    const prev = old?.[name] && typeof old[name].seconds !== 'number' ? old[name] : {};
+    out[name] = { ...prev, ...(measured[name] ? { [energy]: measured[name] } : {}) };
+  }
+  return out;
 }

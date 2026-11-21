@@ -1,7 +1,10 @@
 // Task 5d: the motion library's standalone scenes expose no timing as data, so it is measured from one render of each.
 import test from 'node:test';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
-import { parseMetadata, analyzeScene, sceneList, reelOffsets, boxesFromColumns, EMPTY_EDGE, BUILT_SHARE } from '../lib/scene-timing.mjs';
+import { parseMetadata, analyzeScene, sceneList, reelOffsets, boxesFromColumns, mergeTimings, EMPTY_EDGE, BUILT_SHARE } from '../lib/scene-timing.mjs';
 
 test('metadata: ffmpeg metadata=print lines become one value per frame, in frame order', () => {
   const text = [
@@ -71,4 +74,31 @@ test('boxes: the columns with edges in each small grey edge frame, in full-frame
   const w = 4, h = 2;
   const buf = Buffer.from([0, 90, 0, 0, 0, 0, 80, 0, /* frame 1 */ 0, 10, 0, 0, 0, 0, 0, 0]);
   assert.deepEqual(boxesFromColumns(buf, { width: w, height: h, scale: 120, threshold: 40 }), [{ x1: 120, x2: 359 }, null]);
+});
+
+test('stale guard: the committed table has a row for every scene and no other, each measured at the scene\'s length', () => {
+  const studio = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+  const table = JSON.parse(readFileSync(join(studio, 'library', 'motion', 'scene-timing.json'), 'utf8')).scenes;
+  const list = sceneList();
+  assert.deepEqual(Object.keys(table).sort(), list.map((s) => s.name).sort());
+  const stale = [];
+  for (const s of list) for (const [energy, row] of Object.entries(table[s.name])) if (row.seconds !== s.seconds) stale.push(`${s.name} ${energy}: ${row.seconds} s measured, ${s.seconds} s in the code`);
+  assert.deepEqual(stale, []);
+});
+
+test('measuring: rows for scenes no longer in the library are dropped, other energies kept', () => {
+  const old = { gone: { confident: { seconds: 1 } }, kept: { calm: { seconds: 2 }, confident: { seconds: 2 } } };
+  const merged = mergeTimings(old, [{ name: 'kept', seconds: 2 }, { name: 'new', seconds: 3 }], 'confident', { kept: { seconds: 2, built: 1 }, new: { seconds: 3, built: 1 } });
+  assert.deepEqual(Object.keys(merged).sort(), ['kept', 'new']);
+  assert.deepEqual(merged.kept.calm, { seconds: 2 });
+  assert.deepEqual(merged.kept.confident, { seconds: 2, built: 1 });
+});
+
+test('analysis: a change before the built moment (the after-state is the denser one, a whip) is still the cue', () => {
+  // content from 0.2 s at edge 2; the whip at 1.1 s; the after-state (edge 6) is built at 1.2 s
+  const e = Array.from({ length: 20 }, (_, i) => (i < 2 ? 0 : i < 12 ? 2 : 6));
+  const m = e.map((_, i) => (i === 11 ? 9 : i === 3 ? 3 : 1));
+  const r = analyzeScene({ edges: e, page: e.map((x) => (x ? 20 : 1)), motion: m, boxes: e.map(() => null), fps: 10, seconds: 2, size: [480, 270], cue: true });
+  assert.equal(r.built, 1.2);
+  assert.equal(r.cue, 1.1);
 });

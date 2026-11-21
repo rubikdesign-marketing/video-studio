@@ -15,6 +15,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { TABS, loadLibrary, engineNames } from './lib/library.mjs';
 import { buildSprite, spawnRun } from './lib/sprite.mjs';
+import { sceneList } from './lib/scene-timing.mjs';
 import { SIZES, kebab, isCaptureMove, isPhoneMove, previewSlots, slotStart, slotFrames, timingFor, PREVIEW_FPS, LEAD_S, SAFE_OFFSET_S } from '../../engine/src/library/styles/rules.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -48,6 +49,8 @@ export function sceneNames(motionDir = MOTION_DIR) {
 /** What the engine itself knows: scene moves, background names, and which moves need a capture (from the studio's indexes). */
 function engineKinds(studio = STUDIO) {
   const scenes = sceneNames(join(studio, 'engine', 'src', 'library', 'motion'));
+  // Each standalone scene's length, so a timing row measured at another length counts as no timing.
+  const seconds = new Map(sceneList(join(studio, 'engine', 'src', 'library', 'motion')).map((s) => [s.name, s.seconds]));
   const backgrounds = new Set();
   for (const b of tryJson(join(studio, 'library', 'backgrounds', 'index.json'))?.backgrounds ?? []) { backgrounds.add(b.name); if (b.component) backgrounds.add(b.component); }
   const capture = new Set();
@@ -61,7 +64,7 @@ function engineKinds(studio = STUDIO) {
     if (m.family === 'shader' || /webgl|--gl=angle/i.test(m.does || '')) gpu.add(m.name);
     if (isCaptureMove(m.name, m.family)) capture.add(m.name);
   }
-  return { scenes, backgrounds, capture, gpu, phone, families };
+  return { scenes, backgrounds, capture, gpu, phone, families, seconds };
 }
 
 /** Which kind of engine item a name is: 'scene', 'background', 'capture', or null. Names may be kebab or component names. */
@@ -141,7 +144,10 @@ export function phoneCaptureStatus(root, capture) {
   return cap;
 }
 
-/** The motion library's measured scene timing (library/motion/scene-timing.json, tools/styles/scene-timing.mjs). */
+/**
+ * The motion library's measured scene timing (library/motion/scene-timing.json, tools/styles/scene-timing.mjs). The
+ * plan reads the studio's own copy, the one the composition bundles, whatever --root says.
+ */
 export const sceneTimingFile = (root) => join(root, 'library', 'motion', 'scene-timing.json');
 const sceneTimings = (root) => tryJson(sceneTimingFile(root))?.scenes ?? {};
 
@@ -158,13 +164,13 @@ const sceneTimings = (root) => tryJson(sceneTimingFile(root))?.scenes ?? {};
  *   the convention, a staging and mark that cannot compose, a slot no start keeps clear of empty frames).
  * - `notes`: one printed line for each engine item that cannot be played, or needs a capture.
  */
-export function planRender(lib, { root, tab = null, only = null, force = false, capture = null, phoneCapture = null, kinds = engineKinds() } = {}) {
+export function planRender(lib, { root, studio = STUDIO, tab = null, only = null, force = false, capture = null, phoneCapture = null, kinds = engineKinds() } = {}) {
   const sounds = engineNames(root).sounds;
   const out = { render: [], skipped: [], attention: [], notes: [] };
   const cap = captureStatus(root, capture);
   const phoneCap = phoneCaptureStatus(root, phoneCapture);
   const familyOf = (n) => kinds.families?.get(n) ?? '';
-  const timings = sceneTimings(root);
+  const timings = sceneTimings(studio);
   for (const t of TABS) {
     if (tab && t !== tab) continue;
     for (const e of lib.tabs[t] ?? []) {
@@ -200,10 +206,13 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
       const starts = [];
       slots.moves.forEach((name, i) => {
         if (!kinds.scenes.has(name)) return;
-        const r = slotStart({ timing: timingFor(timings, name, energy), slot: slotFrames(slots.moves.length, i), fps: PREVIEW_FPS, grace: i === 0 ? Math.round(LEAD_S * PREVIEW_FPS) : 0 });
-        starts.push({ name, start: r.start, safe: r.safe });
-        if (r.safe) out.notes.push(`${e.id}: ${name} has no measured timing, so its slot starts at the safe offset (${SAFE_OFFSET_S} s)`);
-        if (r.empty) out.attention.push({ id: e.id, reason: `${name} has an empty frame in every window of its slot (${r.empty} frames at best)` });
+        const timing = timingFor(timings, name, energy, kinds.seconds?.get(name));
+        const r = slotStart({ timing, slot: slotFrames(slots.moves.length, i), fps: PREVIEW_FPS, grace: i === 0 ? Math.round(LEAD_S * PREVIEW_FPS) : 0, transition: familyOf(name) === 'transition' });
+        starts.push({ name, start: r.start, safe: r.safe, freeze: r.freeze });
+        if (r.safe) out.notes.push(`${e.id}: ${name} has no measured timing for its current length, so its slot starts at the safe offset (${SAFE_OFFSET_S} s)`);
+        if (r.problem === 'change') out.attention.push({ id: e.id, reason: `${name} cannot show its change in its slot` });
+        if (r.problem === 'content') out.attention.push({ id: e.id, reason: `${name} has not enough content for its slot` });
+        if (r.problem === 'empty') out.attention.push({ id: e.id, reason: `${name} has an empty frame in every window of its slot (${r.empty} frames at best)` });
       });
       const entry = { id: e.id, energy, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names, ...(pointer ? { pointer } : {}) };
       const take = onCapture.length ? (phone ? phoneCapture : capture) : null;
@@ -254,7 +263,7 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
 
   const capture = opt('--capture') ?? defaultCapture(root);
   const phoneCapture = opt('--phone-capture') ?? defaultPhoneCapture(root);
-  const plan = planRender(lib, { root, tab, only: opt('--only') ?? null, force: flag('--force'), capture, phoneCapture });
+  const plan = planRender(lib, { root, studio, tab, only: opt('--only') ?? null, force: flag('--force'), capture, phoneCapture });
   for (const n of plan.notes) log(n);
   if (plan.render.some((j) => j.capture && j.capture === capture)) log(`Capture moves play on ${capture} (demo brand)`);
   if (plan.render.some((j) => j.capture && j.capture === phoneCapture)) log(`Phone moves play on ${phoneCapture} (demo brand, phone size)`);

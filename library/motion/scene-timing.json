@@ -148,7 +148,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 2.433,
-    "cue": 2.733,
+    "cue": 2.533,
     "empty": [
      [
       0,
@@ -160,7 +160,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 2.367,
-    "cue": 2.667,
+    "cue": 2.6,
     "empty": [
      [
       0,
@@ -172,7 +172,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 2.4,
-    "cue": null,
+    "cue": 2.467,
     "empty": [
      [
       0,
@@ -386,7 +386,7 @@
    "confident": {
     "seconds": 4,
     "built": 1.5,
-    "cue": 1.8,
+    "cue": 1.7,
     "empty": [
      [
       0,
@@ -398,7 +398,7 @@
    "calm": {
     "seconds": 4,
     "built": 1.667,
-    "cue": 1.967,
+    "cue": 1.767,
     "empty": [
      [
       0,
@@ -410,7 +410,7 @@
    "hype": {
     "seconds": 4,
     "built": 1.533,
-    "cue": 1.833,
+    "cue": 1.567,
     "empty": [
      [
       0,
@@ -678,21 +678,21 @@
    "confident": {
     "seconds": 4.5,
     "built": 2.167,
-    "cue": null,
+    "cue": 1.767,
     "empty": [],
     "extent": 1.778
    },
    "calm": {
     "seconds": 4.5,
     "built": 2.267,
-    "cue": null,
+    "cue": 1.833,
     "empty": [],
     "extent": 1.778
    },
    "hype": {
     "seconds": 4.5,
     "built": 2,
-    "cue": 2.333,
+    "cue": 1.733,
     "empty": [],
     "extent": 1.778
    }
@@ -777,7 +777,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 1.9,
-    "cue": 2.2,
+    "cue": 1.9,
     "empty": [
      [
       0,
@@ -789,7 +789,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 1.8,
-    "cue": 2.167,
+    "cue": 1.767,
     "empty": [
      [
       0,
@@ -801,7 +801,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 1.967,
-    "cue": 2.267,
+    "cue": 1.967,
     "empty": [
      [
       0,
@@ -1079,7 +1079,7 @@
    "confident": {
     "seconds": 4.2,
     "built": 2.167,
-    "cue": null,
+    "cue": 2,
     "empty": [
      [
       0,
@@ -1111,7 +1111,7 @@
    "hype": {
     "seconds": 4.2,
     "built": 2.133,
-    "cue": null,
+    "cue": 1.967,
     "empty": [
      [
       0,
@@ -1203,7 +1203,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 2.333,
-    "cue": 2.633,
+    "cue": 2.4,
     "empty": [
      [
       0,
@@ -1217,7 +1217,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 1.8,
-    "cue": 2.1,
+    "cue": 1.9,
     "empty": [
      [
       0,
@@ -1229,7 +1229,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 1.867,
-    "cue": 2.167,
+    "cue": 2,
     "empty": [
      [
       0,
@@ -1241,7 +1241,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 1.767,
-    "cue": 2.067,
+    "cue": 1.867,
     "empty": [
      [
       0,
@@ -1305,7 +1305,7 @@
    "confident": {
     "seconds": 5,
     "built": 1.8,
-    "cue": 3.633,
+    "cue": 1.433,
     "empty": [
      [
       0,
@@ -1317,7 +1317,7 @@
    "calm": {
     "seconds": 5,
     "built": 1.9,
-    "cue": 3.667,
+    "cue": 1.433,
     "empty": [
      [
       0,
@@ -1329,7 +1329,7 @@
    "hype": {
     "seconds": 5,
     "built": 1.767,
-    "cue": 3.6,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -1539,7 +1539,7 @@
    "confident": {
     "seconds": 3.5,
     "built": 1.567,
-    "cue": null,
+    "cue": 1.6,
     "empty": [
      [
       0,
@@ -1551,7 +1551,7 @@
    "calm": {
     "seconds": 3.5,
     "built": 1.567,
-    "cue": null,
+    "cue": 1.633,
     "empty": [
      [
       0,
@@ -1563,7 +1563,7 @@
    "hype": {
     "seconds": 3.5,
     "built": 1.567,
-    "cue": null,
+    "cue": 1.6,
     "empty": [
      [
       0,
@@ -1777,7 +1777,7 @@
    "confident": {
     "seconds": 5,
     "built": 1.433,
-    "cue": 3.5,
+    "cue": 1.467,
     "empty": [
      [
       0,
@@ -1789,7 +1789,7 @@
    "calm": {
     "seconds": 5,
     "built": 1.533,
-    "cue": 3.6,
+    "cue": 1.533,
     "empty": [
      [
       0,
@@ -1815,7 +1815,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 1.8,
-    "cue": 2.1,
+    "cue": 1.833,
     "empty": [
      [
       0,
@@ -1827,7 +1827,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 1.867,
-    "cue": 2.167,
+    "cue": 1.933,
     "empty": [
      [
       0,
@@ -1839,7 +1839,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 1.767,
-    "cue": 2.533,
+    "cue": 1.8,
     "empty": [
      [
       0,
@@ -1891,7 +1891,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 2.4,
-    "cue": 2.7,
+    "cue": 2.5,
     "empty": [
      [
       0,
@@ -1903,7 +1903,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 2.433,
-    "cue": 2.733,
+    "cue": 2.567,
     "empty": [
      [
       0,
@@ -1915,7 +1915,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 2.367,
-    "cue": null,
+    "cue": 2.433,
     "empty": [
      [
       0,
@@ -2067,7 +2067,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 2.333,
-    "cue": 2.667,
+    "cue": 1.833,
     "empty": [
      [
       0,
@@ -2091,7 +2091,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 2.233,
-    "cue": null,
+    "cue": 1.8,
     "empty": [
      [
       0,
@@ -2695,7 +2695,7 @@
    "confident": {
     "seconds": 4,
     "built": 1.8,
-    "cue": null,
+    "cue": 1.8,
     "empty": [
      [
       0,
@@ -2707,7 +2707,7 @@
    "calm": {
     "seconds": 4,
     "built": 1.867,
-    "cue": null,
+    "cue": 1.867,
     "empty": [
      [
       0,
@@ -2719,7 +2719,7 @@
    "hype": {
     "seconds": 4,
     "built": 1.767,
-    "cue": null,
+    "cue": 1.767,
     "empty": [
      [
       0,
@@ -3587,7 +3587,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 2.133,
-    "cue": 2.433,
+    "cue": 2.167,
     "empty": [
      [
       0,
@@ -3808,7 +3808,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 2.067,
-    "cue": 2.367,
+    "cue": 2.1,
     "empty": [
      [
       0,
@@ -3820,7 +3820,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 2.167,
-    "cue": 2.467,
+    "cue": 2.233,
     "empty": [
      [
       0,
@@ -3832,7 +3832,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 1.967,
-    "cue": 2.267,
+    "cue": 2.033,
     "empty": [
      [
       0,
@@ -4234,7 +4234,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 1.2,
-    "cue": 1.933,
+    "cue": 1.133,
     "empty": [
      [
       0,
@@ -4246,7 +4246,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 1.167,
-    "cue": 1.933,
+    "cue": 1.133,
     "empty": [
      [
       0,
@@ -4258,7 +4258,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 1.2,
-    "cue": 1.933,
+    "cue": 1.133,
     "empty": [
      [
       0,
@@ -4272,7 +4272,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 1.9,
-    "cue": null,
+    "cue": 1.767,
     "empty": [
      [
       0,
@@ -4288,7 +4288,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 1.967,
-    "cue": null,
+    "cue": 1.867,
     "empty": [
      [
       0,
@@ -4304,7 +4304,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 1.833,
-    "cue": null,
+    "cue": 1.733,
     "empty": [
      [
       0,
@@ -4426,7 +4426,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 2.2,
-    "cue": null,
+    "cue": 2.2,
     "empty": [
      [
       0,
@@ -4438,7 +4438,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 2.3,
-    "cue": null,
+    "cue": 2.267,
     "empty": [
      [
       0,
@@ -4450,7 +4450,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 2.167,
-    "cue": null,
+    "cue": 2.167,
     "empty": [
      [
       0,
@@ -4602,7 +4602,7 @@
    "confident": {
     "seconds": 3.8,
     "built": 2,
-    "cue": null,
+    "cue": 1.7,
     "empty": [
      [
       1.733,
@@ -4614,7 +4614,7 @@
    "calm": {
     "seconds": 3.8,
     "built": 2.067,
-    "cue": null,
+    "cue": 1.733,
     "empty": [
      [
       1.767,
@@ -4626,7 +4626,7 @@
    "hype": {
     "seconds": 3.8,
     "built": 1.967,
-    "cue": null,
+    "cue": 1.667,
     "empty": [
      [
       1.7,
@@ -4951,7 +4951,7 @@
    "confident": {
     "seconds": 4.2,
     "built": 1.933,
-    "cue": 2.267,
+    "cue": 2.167,
     "empty": [
      [
       0,
@@ -4963,7 +4963,7 @@
    "calm": {
     "seconds": 4.2,
     "built": 1.967,
-    "cue": 2.3,
+    "cue": 2.233,
     "empty": [
      [
       0,
@@ -4975,7 +4975,7 @@
    "hype": {
     "seconds": 4.2,
     "built": 1.833,
-    "cue": 2.133,
+    "cue": 2.033,
     "empty": [
      [
       0,
@@ -4989,7 +4989,7 @@
    "confident": {
     "seconds": 4.5,
     "built": 2.067,
-    "cue": 2.367,
+    "cue": 1.933,
     "empty": [
      [
       0,
@@ -5001,7 +5001,7 @@
    "calm": {
     "seconds": 4.5,
     "built": 2.233,
-    "cue": 2.533,
+    "cue": 2.067,
     "empty": [
      [
       0,
@@ -5013,7 +5013,7 @@
    "hype": {
     "seconds": 4.5,
     "built": 2,
-    "cue": null,
+    "cue": 1.867,
     "empty": [
      [
       0,
@@ -5402,7 +5402,7 @@
    "confident": {
     "seconds": 3.8,
     "built": 2,
-    "cue": null,
+    "cue": 1.7,
     "empty": [
      [
       0,
@@ -5418,7 +5418,7 @@
    "calm": {
     "seconds": 3.8,
     "built": 2.067,
-    "cue": null,
+    "cue": 1.767,
     "empty": [
      [
       0,
@@ -5434,7 +5434,7 @@
    "hype": {
     "seconds": 3.8,
     "built": 1.933,
-    "cue": null,
+    "cue": 1.667,
     "empty": [
      [
       0,
@@ -5564,7 +5564,7 @@
    "calm": {
     "seconds": 4,
     "built": 1.7,
-    "cue": null,
+    "cue": 1.867,
     "empty": [
      [
       0,
