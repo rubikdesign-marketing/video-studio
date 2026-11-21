@@ -1,0 +1,6 @@
+{
+  "group": "glitch",
+  "sounds": [
+    { "id": "glitch/chirp-01", "file": "glitch/chirp-01.mp3", "name": "Chirp 1" }
+  ]
+}

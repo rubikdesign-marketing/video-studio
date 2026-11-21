@@ -1,0 +1,7 @@
+{
+  "group": "chime",
+  "about": "Fixture: a logo sting made by the studio, catalogued apart from chime/index.json.",
+  "sounds": [
+    { "id": "chime/sting-demo-synth-01", "file": "chime/sting-demo-synth-01.mp3", "name": "Demo logo sting", "source": "studio" }
+  ]
+}

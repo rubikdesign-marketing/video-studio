@@ -60,21 +60,32 @@ export function engineNames(root) {
   }
   const bg = tryJson(join(root, 'library', 'backgrounds', 'index.json'));
   for (const b of bg?.backgrounds || []) if (b?.name) backgrounds.add(b.name);
+  // Sounds: each group's index.json, the studio-made logo stings (synth-stings.json, catalogued apart from the group's
+  // index, in the group folder or at the top of library/sounds), and as a fallback any file in a group folder.
+  // Names that come only from library/sounds/glitch are kept apart too: the check refuses them (house rule).
   const soundsDir = join(root, 'library', 'sounds');
+  const byGroup = new Map();
+  const add = (group, name) => { sounds.add(name); if (!byGroup.has(name)) byGroup.set(name, new Set()); byGroup.get(name).add(group); };
+  const catalogue = (group, file) => {
+    for (const s of tryJson(file)?.sounds || []) {
+      const g = String(s.id || s.file || '').split('/')[0] || group;
+      if (s.id) { add(g, s.id); add(g, basename(s.id)); }
+      if (s.file) { add(g, s.file); add(g, basename(s.file, extname(s.file))); }
+    }
+  };
   if (existsSync(soundsDir)) {
+    catalogue('', join(soundsDir, 'synth-stings.json'));
     for (const group of readdirSync(soundsDir, { withFileTypes: true })) {
       if (!group.isDirectory()) continue;
-      const idx = tryJson(join(soundsDir, group.name, 'index.json'));
-      for (const s of idx?.sounds || []) {
-        if (s.id) { sounds.add(s.id); sounds.add(basename(s.id)); }
-        if (s.file) { sounds.add(s.file); sounds.add(basename(s.file, extname(s.file))); }
-      }
+      catalogue(group.name, join(soundsDir, group.name, 'index.json'));
+      catalogue(group.name, join(soundsDir, group.name, 'synth-stings.json'));
       for (const f of readdirSync(join(soundsDir, group.name))) {
-        if (f !== 'index.json') { sounds.add(`${group.name}/${f}`); sounds.add(basename(f, extname(f))); }
+        if (f !== 'index.json') { add(group.name, `${group.name}/${f}`); add(group.name, basename(f, extname(f))); }
       }
     }
   }
-  return { moves, registry, backgrounds, sounds };
+  const glitch = new Set([...byGroup].filter(([, groups]) => groups.size === 1 && groups.has('glitch')).map(([n]) => n));
+  return { moves, registry, backgrounds, sounds, glitch };
 }
 
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -131,6 +142,7 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
   const allNames = new Set([...(names?.moves || []), ...(names?.registry || []), ...(names?.backgrounds || []), ...(names?.sounds || [])]);
   const bannedRes = banned.map((b) => new RegExp(b, 'i'));
   const corpusRuns = corpus ? new Set(corpusTexts(corpus).flatMap((t) => [...runs(t)])) : null;
+  const isGlitchSound = (n) => /^glitch\//i.test(n) || Boolean(names?.glitch?.has(n));
   const seen = new Map();
   for (const t of TABS) for (const e of lib.tabs[t] || []) seen.set(e.id, (seen.get(e.id) || 0) + 1);
   const known = new Set(seen.keys());
@@ -174,6 +186,7 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
       // engine names
       for (const n of e.engine || []) {
         if (/glitch|rgb-split/i.test(n)) say(`uses ${n}, which breaks the house rules`);
+        else if (names?.glitch?.has(n)) say(`uses ${n}, a sound from library/sounds/glitch, which breaks the house rules`);
         if (ready && !allNames.has(n)) say(`ready entry uses ${n}, which the engine does not have`);
       }
 
@@ -182,6 +195,7 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
       if (ready) {
         if (isSound) {
           if (!pv.sound) say('ready sound entry has no preview sound');
+          else if (isGlitchSound(pv.sound)) say(`preview sound ${pv.sound} is from library/sounds/glitch, which breaks the house rules`);
           else if (!soundFileExists(root, pv.sound)) say(`preview sound ${pv.sound} has no file under library/sounds`);
         } else if (clips) {
           if (!pv.clip) say('ready entry has no preview clip set');
@@ -196,6 +210,7 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
           else if (n.filters?.ready !== true) say(`nearest ${e.nearest} is not ready`);
         }
       }
+      if (!(ready && isSound) && pv.sound && isGlitchSound(pv.sound)) say(`preview sound ${pv.sound} is from library/sounds/glitch, which breaks the house rules`);
       if (pv.sketch !== undefined && !SKETCHES.includes(pv.sketch)) say(`sketch ${pv.sketch} is not in sketches.json`);
 
       // settles

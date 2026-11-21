@@ -3880,7 +3880,7 @@
       }
     },
     "engine": [
-      "chime/sting-warm-synth-01.mp3"
+      "chime/sting-warm-synth-01"
     ],
     "preview": {
       "sound": "chime/sting-warm-synth-01",
@@ -3931,7 +3931,7 @@
       }
     },
     "engine": [
-      "chime/sting-open-synth-02.mp3"
+      "chime/sting-open-synth-02"
     ],
     "preview": {
       "sound": "chime/sting-open-synth-02",
@@ -3982,7 +3982,7 @@
       }
     },
     "engine": [
-      "chime/sting-deep-synth-03.mp3"
+      "chime/sting-deep-synth-03"
     ],
     "preview": {
       "sound": "chime/sting-deep-synth-03",
@@ -4026,7 +4026,7 @@
       }
     },
     "engine": [
-      "chime/sting-bright-synth-04.mp3"
+      "chime/sting-bright-synth-04"
     ],
     "preview": {
       "sound": "chime/sting-bright-synth-04",
@@ -4077,7 +4077,7 @@
       }
     },
     "engine": [
-      "chime/sting-short-synth-05.mp3"
+      "chime/sting-short-synth-05"
     ],
     "preview": {
       "sound": "chime/sting-short-synth-05",

@@ -2619,7 +2619,7 @@
     "id": "film-thumb-view",
     "tab": "filming",
     "name": "Thumb's-eye view",
-    "line": "Taps and swipes from a finger on a phone-size recording, as if the viewer holds the phone.",
+    "line": "Taps and swipes read from the screen alone on a phone-size recording, as if the viewer holds the phone.",
     "family": "Point of view",
     "filters": {
       "energy": [
@@ -2636,9 +2636,9 @@
       "ready": true
     },
     "prompt": {
-      "what": "Replace the pointer with a soft touch mark that presses, drags and lifts like a thumb, each tap taking about 0.2 s with a small ring, on a phone-size recording that fills the frame; the camera follows only up and down so the phone feels held.",
+      "what": "Hide the pointer entirely, so each tap and swipe reads from what the screen does, about 0.2 s after the thumb would land, on a phone-size recording that fills the frame; the camera follows only up and down so the phone feels held.",
       "when": "Fits mobile app demos and app store previews.",
-      "avoid": "A desktop pointer on a phone screen, and taps faster than a real thumb could manage."
+      "avoid": "A desktop pointer or a dot of any kind on the phone screen, and taps faster than a real thumb could manage."
     },
     "timing": {
       "confident": {
@@ -2651,7 +2651,7 @@
       }
     },
     "engine": [
-      "cursor-touch",
+      "cursor-hidden",
       "relayout-phone-take"
     ],
     "preview": {

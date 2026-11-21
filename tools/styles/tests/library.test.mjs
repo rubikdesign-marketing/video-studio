@@ -186,3 +186,26 @@ test('promptText: includes one line per energy with its numbers, and the avoid l
   const s = promptText(entry(lib, 'acme-soft-tap')).split('\n');
   assert.match(s[1], /^Calm: 80 bpm.*-6 dB.*14%/);
 });
+
+test('engine names: the studio-made logo stings (synth-stings.json) resolve by id', () => {
+  // The fixture's chime group has no index.json: the sting is catalogued only in chime/synth-stings.json.
+  assert.ok(names.sounds.has('chime/sting-demo-synth-01'), 'the sting id');
+  const lib = fresh();
+  entry(lib, 'acme-soft-tap').engine = ['chime/sting-demo-synth-01'];
+  assert.deepEqual(run(lib), []);
+});
+
+test('check: a sound inside library/sounds/glitch is refused in engine and preview names (house rule)', () => {
+  // the folder-file fallback still knows them, so the refusal is the house rule, not an unknown name
+  assert.ok(names.sounds.has('glitch/chirp-01.mp3') && names.sounds.has('chirp-01'));
+  for (const n of ['glitch/chirp-01', 'glitch/chirp-01.mp3', 'chirp-01']) {
+    const lib = fresh();
+    entry(lib, 'acme-soft-tap').engine = [n];
+    assert.ok(run(lib).some((p) => p.includes('acme-soft-tap') && p.includes(n) && /house rules/.test(p)), n);
+  }
+  for (const n of ['glitch/chirp-01', 'chirp-01']) {
+    const lib = fresh();
+    entry(lib, 'acme-soft-tap').preview.sound = n;
+    assert.ok(run(lib).some((p) => p.includes('acme-soft-tap') && p.includes(n) && /house rules/.test(p)), `preview ${n}`);
+  }
+});
