@@ -15,6 +15,7 @@ import { CaptureJoin } from '../../kit/capture/transitions';
 import { MotionProvider, presetNames, type PresetName } from '../../kit/motion';
 import { stageNames } from '../../kit/tokens';
 import { Label, Stage } from '../../kit/ui';
+import type { CaptureScene } from './capture-scenes';
 import { MoveCaption } from './parts';
 
 export const joinMotionSchema = z.object({
@@ -141,6 +142,16 @@ const showFor = (name: TransitionName) => {
 };
 
 const shows = transitionNames.map((name) => ({ name, Show: showFor(name), metadata: metadataFor(name) }));
+
+/** The same scenes as records ("join-<name>"), for previews outside Remotion Studio. */
+export const joinScenes: CaptureScene[] = shows.map(({ name, Show }) => ({
+  name: `join-${name}`,
+  Show: Show as CaptureScene['Show'],
+  props: { second: '', options: '' },
+  preset: presetOf(name),
+  size: [FRAME.width, FRAME.height],
+  fit: 'fill',
+}));
 
 /** The transitions gallery, for MotionCompositions. */
 export const JoinMotionCompositions: FC = () => (

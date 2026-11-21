@@ -1,0 +1,463 @@
+{
+  "captured": "2026-11-22T00:16:16+06:00",
+  "brand": "demo",
+  "take": 2,
+  "from": null,
+  "address": "http://127.0.0.1:4317",
+  "script": "jobs/_demo-previews/capture/walkthrough.json",
+  "kind": "web app",
+  "source": {
+    "type": "web page",
+    "address": "http://127.0.0.1:4317"
+  },
+  "chrome": "Chrome/157.0.8103.80",
+  "browser_kind": "studio",
+  "browser": "the studio's own Chrome window",
+  "setting": {
+    "language": "en-US",
+    "time_zone": "UTC",
+    "theme": "light",
+    "reduced_motion": false
+  },
+  "clock": {
+    "frozen": true,
+    "demo_time": "2026-11-20 10:30",
+    "time_zone": "UTC",
+    "page_time_at_start": 1795170600798,
+    "note": "The product's clock was set to the demo time before the first page opened and ran on from there. Times the product takes from its own server are not changed. Brand note: The greeting and the date on the Overview come from the page's own clock, so the demo time sets them."
+  },
+  "clean_screen": {
+    "studio_defaults": true,
+    "hidden": {},
+    "dismissed": [],
+    "masked": []
+  },
+  "frame": {
+    "page": {
+      "width": 1920,
+      "height": 1080
+    },
+    "scale": 2,
+    "recording": {
+      "width": 3840,
+      "height": 2160
+    },
+    "fps": 60,
+    "crf": 12,
+    "started_epoch": 1795284978.9519
+  },
+  "seconds": 22.92,
+  "pictures_from_chrome": {
+    "count": 453,
+    "received": 1398,
+    "format": "jpeg",
+    "longest_gap_seconds": 1.625,
+    "full_sharpness": 453,
+    "out_of_order": 1,
+    "note": "count: pictures kept (each one different from the one before); received: all Chrome sent, including repeats while the page might be changing. full_sharpness: pictures Chrome sent at double sharpness (the rest were scaled up). out_of_order: pictures that arrived after one drawn later than them; they are put back in the order they were drawn."
+  },
+  "marks": {
+    "customer-added": 11.491,
+    "reports": 18.734
+  },
+  "mark_details": {
+    "customer-added": {
+      "t": 11.491,
+      "url": "http://127.0.0.1:4317/",
+      "tracked": {
+        "new-customer": [
+          1657.2,
+          23.3,
+          166.8,
+          40
+        ],
+        "active-customers": [
+          304,
+          206,
+          379,
+          138
+        ],
+        "new-this-month": [
+          703,
+          206,
+          379,
+          138
+        ],
+        "recent-customers": [
+          1217.9,
+          368,
+          662.1,
+          680
+        ],
+        "filter": [
+          1662,
+          399,
+          180,
+          17
+        ],
+        "toast": [
+          1588.6,
+          970.5,
+          291.8,
+          68.7
+        ]
+      },
+      "privacy_flags": 0
+    },
+    "reports": {
+      "t": 18.734,
+      "url": "http://127.0.0.1:4317/reports",
+      "tracked": {
+        "new-customer": [
+          1657.2,
+          23.3,
+          166.8,
+          40
+        ],
+        "active-customers": null,
+        "new-this-month": null,
+        "recent-customers": null,
+        "filter": null,
+        "toast": null
+      },
+      "privacy_flags": 0
+    }
+  },
+  "privacy_flags": [],
+  "warnings": [],
+  "steps": [
+    {
+      "n": 1,
+      "step": {
+        "open": "/"
+      },
+      "start": 0,
+      "end": 0,
+      "note": "opened before the recording started"
+    },
+    {
+      "n": 2,
+      "step": {
+        "track": "Active customers card",
+        "css": "#stat-active",
+        "name": "active-customers"
+      },
+      "start": 0.501,
+      "end": 0.527
+    },
+    {
+      "n": 3,
+      "step": {
+        "track": "New this month card",
+        "css": "#stat-new",
+        "name": "new-this-month"
+      },
+      "start": 0.53,
+      "end": 0.538
+    },
+    {
+      "n": 4,
+      "step": {
+        "track": "New customer button",
+        "css": "#new-customer",
+        "name": "new-customer"
+      },
+      "start": 0.548,
+      "end": 0.551
+    },
+    {
+      "n": 5,
+      "step": {
+        "track": "Recent customers list",
+        "css": "#recent-customers",
+        "name": "recent-customers"
+      },
+      "start": 0.554,
+      "end": 0.558
+    },
+    {
+      "n": 6,
+      "step": {
+        "track": "Filter field",
+        "css": "#filter",
+        "name": "filter"
+      },
+      "start": 0.576,
+      "end": 0.579
+    },
+    {
+      "n": 7,
+      "step": {
+        "wait": 0.4
+      },
+      "start": 0.584,
+      "end": 0.985
+    },
+    {
+      "n": 8,
+      "step": {
+        "click": "New customer"
+      },
+      "target": {
+        "x": 1657.2,
+        "y": 23.3,
+        "w": 166.8,
+        "h": 40
+      },
+      "start": 0.996,
+      "end": 1.885,
+      "settled": 1.19
+    },
+    {
+      "n": 9,
+      "step": {
+        "wait for": "Company name"
+      },
+      "start": 3.332,
+      "end": 3.334
+    },
+    {
+      "n": 10,
+      "step": {
+        "paste": "Acme Studio",
+        "into": "Company name"
+      },
+      "target": {
+        "x": 1397,
+        "y": 120,
+        "w": 487,
+        "h": 47.5
+      },
+      "start": 3.342,
+      "end": 4.157,
+      "settled": 0.05
+    },
+    {
+      "n": 11,
+      "step": {
+        "click": "Plan",
+        "in": "New customer"
+      },
+      "target": {
+        "x": 1397,
+        "y": 217.5,
+        "w": 487,
+        "h": 47.5
+      },
+      "start": 4.467,
+      "end": 5.112,
+      "settled": 0.26
+    },
+    {
+      "n": 12,
+      "step": {
+        "click": "Team",
+        "in": "Plan"
+      },
+      "target": {
+        "x": 1416,
+        "y": 329,
+        "w": 40.2,
+        "h": 18
+      },
+      "start": 5.632,
+      "end": 6.28,
+      "settled": 0.05
+    },
+    {
+      "n": 13,
+      "step": {
+        "drag": "Seats",
+        "by": [
+          150,
+          0
+        ]
+      },
+      "target": {
+        "x": 1397,
+        "y": 315,
+        "w": 487,
+        "h": 28
+      },
+      "start": 6.594,
+      "end": 8.199,
+      "settled": 0
+    },
+    {
+      "n": 14,
+      "step": {
+        "toggle": "Send a welcome note"
+      },
+      "target": {
+        "x": 1836,
+        "y": 371.3,
+        "w": 48,
+        "h": 28
+      },
+      "start": 8.462,
+      "end": 9.081,
+      "settled": 0.33
+    },
+    {
+      "n": 15,
+      "step": {
+        "click": "Save customer"
+      },
+      "target": {
+        "x": 1740.3,
+        "y": 1008,
+        "w": 143.7,
+        "h": 42
+      },
+      "start": 9.66,
+      "end": 10.482,
+      "settled": 0.16
+    },
+    {
+      "n": 16,
+      "step": {
+        "wait for": "Customer added"
+      },
+      "start": 10.9,
+      "end": 11.312
+    },
+    {
+      "n": 17,
+      "step": {
+        "track": "Customer added toast",
+        "css": "#toast",
+        "name": "toast"
+      },
+      "start": 11.323,
+      "end": 11.327
+    },
+    {
+      "n": 18,
+      "step": {
+        "mark": "customer-added"
+      },
+      "start": 11.334,
+      "end": 11.618
+    },
+    {
+      "n": 19,
+      "step": {
+        "scroll": 260,
+        "in": "#customer-rows",
+        "seconds": 1.2
+      },
+      "start": 11.625,
+      "end": 13.446,
+      "settled": 0
+    },
+    {
+      "n": 20,
+      "step": {
+        "type": "Acme",
+        "into": "Filter customers"
+      },
+      "target": {
+        "x": 1662,
+        "y": 399,
+        "w": 180,
+        "h": 17
+      },
+      "start": 13.711,
+      "end": 15.042,
+      "settled": 0
+    },
+    {
+      "n": 21,
+      "step": {
+        "wait": 0.6
+      },
+      "start": 15.315,
+      "end": 15.915
+    },
+    {
+      "n": 22,
+      "step": {
+        "press": "Meta+K"
+      },
+      "start": 15.922,
+      "end": 15.925,
+      "settled": 0.27
+    },
+    {
+      "n": 23,
+      "step": {
+        "type": "rep"
+      },
+      "start": 16.451,
+      "end": 16.732,
+      "settled": 0
+    },
+    {
+      "n": 24,
+      "step": {
+        "press": "Enter"
+      },
+      "start": 16.995,
+      "end": 17.01,
+      "settled": 1.31
+    },
+    {
+      "n": 25,
+      "step": {
+        "wait for": "Customers added each week"
+      },
+      "start": 18.577,
+      "end": 18.578
+    },
+    {
+      "n": 26,
+      "step": {
+        "mark": "reports"
+      },
+      "start": 18.582,
+      "end": 18.823
+    },
+    {
+      "n": 27,
+      "step": {
+        "click": "Monthly"
+      },
+      "target": {
+        "x": 406.5,
+        "y": 124.5,
+        "w": 99.3,
+        "h": 36
+      },
+      "start": 18.83,
+      "end": 19.905,
+      "settled": 0.06
+    },
+    {
+      "n": 28,
+      "step": {
+        "hover": "Customers"
+      },
+      "target": {
+        "x": 18,
+        "y": 208,
+        "w": 227,
+        "h": 38
+      },
+      "start": 20.215,
+      "end": 21.048,
+      "settled": 0
+    },
+    {
+      "n": 29,
+      "step": {
+        "wait": 0.8
+      },
+      "start": 21.304,
+      "end": 22.104
+    }
+  ],
+  "tabs": [
+    "http://127.0.0.1:4317/reports"
+  ],
+  "ended_on": "http://127.0.0.1:4317/reports"
+}

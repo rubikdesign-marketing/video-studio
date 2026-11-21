@@ -5,8 +5,8 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadLibrary } from '../lib/library.mjs';
-import { planRender, previewSize, sceneNames, classify, captureStatus, remotionCli, main } from '../render-previews.mjs';
-import { SIZES, kebab, isCaptureMove } from '../../../engine/src/library/styles/rules.mjs';
+import { planRender, previewSize, sceneNames, classify, captureStatus, defaultCapture, DEMO_JOB, remotionCli, main } from '../render-previews.mjs';
+import { SIZES, kebab, isCaptureMove, CAPTURE_STANDS_IN } from '../../../engine/src/library/styles/rules.mjs';
 import { buildSprite, SPRITE_MAX_S } from '../lib/sprite.mjs';
 
 const FIX = join(dirname(fileURLToPath(import.meta.url)), 'fixtures', 'lib');
@@ -302,4 +302,127 @@ test('sprite: a failing build keeps the old sprite and map together', async () =
     assert.equal(readFileSync(join(dir, 'sound-sprite.json'), 'utf8'), '{"old":[0,1]}');
     assert.deepEqual(readdirSync(dir).filter((f) => f.includes('tmp')), []);
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+// ---------------------------------------------------------------- the demo capture (Task 5b)
+
+/** engine/public/captures.json as the capture tool writes it: newest first, the job folder and the brand. */
+const listCaptures = (root, rows) => {
+  mkdirSync(join(root, 'engine', 'public'), { recursive: true });
+  writeFileSync(join(root, 'engine', 'public', 'captures.json'), JSON.stringify(rows));
+};
+const demoRow = { capture: 'demo-previews/walkthrough', job: 'jobs/_demo-previews', id: 'walkthrough', take: 1, brand: 'demo' };
+const clientRow = { capture: 'client-test/boards', job: 'jobs/_client-test', id: 'boards', take: 3, brand: 'acme' };
+
+test('capture: a capture is named by its job folder as the capture tool writes it (no leading underscore)', () => {
+  const root = scratch();
+  try {
+    addJob(root, '_demo-previews', 'demo');
+    addJob(root, '_client-test', 'acme');
+    assert.equal(DEMO_JOB, '_demo-previews');
+    assert.equal(captureStatus(root, 'demo-previews/walkthrough').ok, true);
+    const refused = captureStatus(root, 'client-test/boards');
+    assert.equal(refused.ok, false);
+    assert.match(refused.reason, /acme/);
+    // two job folders that name the same capture, one of them not demo: refused, never guessed
+    addJob(root, 'client-test', 'demo');
+    assert.equal(captureStatus(root, 'client-test/boards').ok, false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('capture: one the engine lists under another brand is refused, whatever its job folder says', () => {
+  const root = scratch();
+  try {
+    addJob(root, '_demo-previews', 'demo');
+    listCaptures(root, [{ ...demoRow, brand: 'acme' }]);
+    const refused = captureStatus(root, 'demo-previews/walkthrough');
+    assert.equal(refused.ok, false);
+    assert.match(refused.reason, /acme/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('default capture: the demo job\'s newest listed capture, never another job\'s', () => {
+  const root = scratch();
+  try {
+    assert.equal(defaultCapture(root), null, 'nothing listed');
+    addJob(root, '_demo-previews', 'demo');
+    addJob(root, '_client-test', 'acme');
+    listCaptures(root, [clientRow]);
+    assert.equal(defaultCapture(root), null, 'only a client capture is listed');
+    listCaptures(root, [clientRow, demoRow, { ...demoRow, capture: 'demo-previews/older', id: 'older' }]);
+    assert.equal(defaultCapture(root), 'demo-previews/walkthrough');
+    // the demo job's folder must still say demo
+    addJob(root, '_demo-previews', 'acme');
+    assert.equal(defaultCapture(root), null);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+const captureEntryOnDisk = (root) => {
+  const file = join(root, 'library', 'styles', 'product-ui.json');
+  const rows = JSON.parse(readFileSync(file, 'utf8'));
+  rows.find((e) => e.id === 'demo-click-trace').engine = ['cursor-classic'];
+  writeFileSync(file, JSON.stringify(rows, null, 2));
+};
+
+test('render plan: with a demo capture listed, capture entries are planned on it without --capture', async () => {
+  const root = scratch();
+  try {
+    captureEntryOnDisk(root);
+    addJob(root, '_demo-previews', 'demo');
+    listCaptures(root, [clientRow, demoRow]);
+    const lines = [];
+    const code = await main(['--root', root, '--dry-run', '--force', '--only', 'demo-click-trace'], { log: (l) => lines.push(l) });
+    assert.equal(code, 0);
+    assert.ok(lines.some((l) => /^render demo-click-trace .*cursor-classic/.test(l)), lines.join('\n'));
+    assert.ok(lines.some((l) => l.includes('demo-previews/walkthrough')), 'says which capture it plays on');
+    assert.ok(!lines.some((l) => l.includes('needs attention: demo-click-trace')));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render plan: without a demo capture, capture entries still need attention', async () => {
+  const root = scratch();
+  try {
+    captureEntryOnDisk(root);
+    listCaptures(root, [clientRow]);
+    addJob(root, '_client-test', 'acme');
+    const lines = [];
+    await main(['--root', root, '--dry-run', '--force', '--only', 'demo-click-trace'], { log: (l) => lines.push(l) });
+    assert.ok(lines.some((l) => l === 'needs attention: demo-click-trace: no demo capture yet'), lines.join('\n'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('render: the capture prop reaches the composition', async () => {
+  const root = scratch();
+  try {
+    captureEntryOnDisk(root);
+    addJob(root, '_demo-previews', 'demo');
+    listCaptures(root, [demoRow]);
+    let props = null;
+    const run = async (cmd, args) => {
+      if (cmd === process.execPath) { props = JSON.parse(readFileSync(args.find((a) => a.startsWith('--props=')).slice(8), 'utf8')); return { code: 1, stdout: '', stderr: 'stop here' }; }
+      return { code: 0, stdout: '', stderr: '' };
+    };
+    await main(['--root', root, '--force', '--only', 'demo-click-trace'], { run, log: () => {} });
+    assert.equal(props.capture, 'demo-previews/walkthrough');
+    assert.deepEqual(props.entry.engine, ['cursor-classic']);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('capture scenes: every capture move in the motion library has a gallery scene to play in a preview', () => {
+  const studio = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+  const motion = join(studio, 'engine', 'src', 'library', 'motion');
+  const read = (f) => readFileSync(join(motion, f), 'utf8');
+  const names = new Set();
+  // capture.tsx and product.tsx: entries named in place; relayout.tsx: "relayout-" + its entries; joins.tsx: "join-" + every transition.
+  for (const f of ['capture.tsx', 'product.tsx']) for (const m of read(f).matchAll(/name: '([a-z0-9-]+)',\s*title:/g)) names.add(m[1]);
+  for (const m of read('product.tsx').matchAll(/stage\('([a-z0-9-]+)'/g)) names.add(`stage-${m[1]}`);
+  for (const m of read('capture.tsx').matchAll(/pointerEntry\('([a-z0-9-]+)'/g)) names.add(`cursor-${m[1]}`);
+  for (const m of read('relayout.tsx').matchAll(/\{ name: '([a-z0-9-]+)', title:/g)) names.add(`relayout-${m[1]}`);
+  const looks = readFileSync(join(studio, 'engine', 'src', 'kit', 'capture', 'looks.ts'), 'utf8');
+  const list = looks.slice(looks.indexOf('export const transitionNames'), looks.indexOf(']', looks.indexOf('export const transitionNames')));
+  for (const m of list.matchAll(/'([a-z0-9-]+)'/g)) names.add(`join-${m[1]}`);
+  const index = JSON.parse(readFileSync(join(studio, 'library', 'motion', 'index.json'), 'utf8')).moves.filter((m) => isCaptureMove(m.name, m.family));
+  assert.ok(index.length >= 100, `${index.length} capture moves`);
+  const missing = index.map((m) => m.name).filter((n) => !names.has(CAPTURE_STANDS_IN[n] ?? n));
+  assert.deepEqual(missing, []);
 });

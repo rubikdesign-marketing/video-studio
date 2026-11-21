@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo</title>
+  <link rel="stylesheet" href="/brand.css">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <!-- The demo brand's made-up product, for capture previews only. Every name in it is invented. -->
+  <div class="app">
+    <aside class="sidebar">
+      <a class="wordmark" href="/" data-go="overview" aria-label="Demo home"><img src="/logo/wordmark.svg" alt="demo"></a>
+      <div class="workspace">
+        <img src="/logo/mark.svg" alt="">
+        <div><strong>Acme workspace</strong><span>Team plan</span></div>
+      </div>
+      <nav aria-label="Main">
+        <a href="/" data-go="overview" id="nav-overview" class="active"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Overview</a>
+        <a href="/customers" data-go="customers" id="nav-customers"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.3-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.8a3.4 3.4 0 010 6.4M18.5 14.8c1.6.9 2.6 2.6 3 5.2"/></svg>Customers</a>
+        <a href="/reports" data-go="reports" id="nav-reports"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Reports</a>
+        <a href="/settings" data-go="settings" id="nav-settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>Settings</a>
+      </nav>
+      <div class="sidebar-card">
+        <strong>Weekly summary</strong>
+        <p>Your next summary goes out on Monday morning.</p>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <h1 id="page-title">Overview</h1>
+        <button class="search" id="open-commands" type="button"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Search or jump to</span><kbd>⌘K</kbd></button>
+        <button class="primary" id="new-customer" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New customer</button>
+        <div class="avatar" aria-label="Acme workspace">AW</div>
+      </header>
+
+      <section class="page" id="page-overview" data-page="overview">
+        <div class="greeting">
+          <h2 id="greeting">Good morning</h2>
+          <p id="today">Here is how your customers are doing.</p>
+        </div>
+        <div class="stats">
+          <article class="stat" id="stat-active"><span>Active customers</span><strong id="active-count">248</strong><em class="up">12 more than last month</em></article>
+          <article class="stat" id="stat-new"><span>New this month</span><strong>32</strong><em class="up">Best month this year</em></article>
+          <article class="stat" id="stat-revenue"><span>Monthly revenue</span><strong>$18,420</strong><em class="up">Up 8% on October</em></article>
+          <article class="stat" id="stat-requests"><span>Open requests</span><strong>7</strong><em>2 waiting on you</em></article>
+        </div>
+        <div class="row">
+          <article class="panel chart-panel" id="revenue-chart">
+            <header><h3>Revenue, last 12 weeks</h3><span class="chip">Weekly</span></header>
+            <svg class="chart" id="chart" viewBox="0 0 640 240" preserveAspectRatio="none"></svg>
+            <footer class="axis" id="chart-axis"></footer>
+          </article>
+          <article class="panel list-panel" id="recent-customers" aria-label="Recent customers">
+            <header><h3>Recent customers</h3><label class="filter"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg><input id="filter" type="text" placeholder="Filter customers" aria-label="Filter customers" spellcheck="false"></label></header>
+            <div class="table-head"><span>Customer</span><span>Plan</span><span>Seats</span><span>Status</span></div>
+            <div class="table-body" id="customer-rows" role="list" aria-label="Customers"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="page-customers" data-page="customers" hidden>
+        <div class="toolbar"><span class="chip strong">All customers</span><span class="chip">Trial</span><span class="chip">Paused</span></div>
+        <article class="panel wide-list">
+          <div class="table-head"><span>Customer</span><span>Plan</span><span>Seats</span><span>Status</span></div>
+          <div class="table-body tall" id="all-rows"></div>
+        </article>
+      </section>
+
+      <section class="page" id="page-reports" data-page="reports" hidden>
+        <div class="tabs" role="tablist" aria-label="Report range">
+          <button role="tab" aria-selected="true" id="tab-weekly" type="button">Weekly</button>
+          <button role="tab" aria-selected="false" id="tab-monthly" type="button">Monthly</button>
+        </div>
+        <div class="row reports-row">
+          <article class="panel chart-panel big" id="report-chart-panel">
+            <header><h3 id="report-title">Customers added each week</h3></header>
+            <svg class="chart" id="report-chart" viewBox="0 0 640 260" preserveAspectRatio="none"></svg>
+            <footer class="axis" id="report-axis"></footer>
+          </article>
+          <article class="panel">
+            <header><h3>Top plans</h3></header>
+            <ul class="plans" id="plan-list"></ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="page-settings" data-page="settings" hidden>
+        <article class="panel settings">
+          <header><h3>Workspace</h3></header>
+          <label class="setting"><span><strong>Weekly summary</strong><em>A short note every Monday</em></span><button class="toggle on" role="switch" aria-checked="true" aria-label="Weekly summary" type="button"></button></label>
+          <label class="setting"><span><strong>New customer alerts</strong><em>Tell the team when someone joins</em></span><button class="toggle" role="switch" aria-checked="false" aria-label="New customer alerts" type="button"></button></label>
+        </article>
+      </section>
+
+      <div class="loading" id="page-loading" hidden aria-busy="true"><div class="spinner"></div><span>Loading</span></div>
+    </div>
+  </div>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-label="New customer" hidden>
+    <header><h2>New customer</h2><button class="icon" id="close-drawer" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <div class="drawer-loading" id="drawer-loading" aria-busy="true"><div class="spinner"></div><span>Getting the form ready</span></div>
+    <form id="customer-form" hidden autocomplete="off">
+      <label class="field" id="field-name"><span>Company name</span><input id="company" name="company" type="text" placeholder="For example Acme Studio" spellcheck="false"></label>
+      <div class="field" id="field-plan">
+        <span id="plan-label">Plan</span>
+        <button type="button" class="select" id="plan" aria-haspopup="listbox" aria-labelledby="plan-label plan" aria-expanded="false"><span id="plan-value">Starter</span><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></button>
+        <ul class="menu" id="plan-menu" role="listbox" aria-label="Plan" hidden>
+          <li role="option" aria-selected="true" data-plan="Starter"><strong>Starter</strong><em>Up to 5 seats</em></li>
+          <li role="option" aria-selected="false" data-plan="Team"><strong>Team</strong><em>Up to 50 seats</em></li>
+          <li role="option" aria-selected="false" data-plan="Business"><strong>Business</strong><em>Any number of seats</em></li>
+        </ul>
+      </div>
+      <label class="field" id="field-seats"><span>Seats <b id="seats-value">5</b></span><input id="seats" name="seats" type="range" min="1" max="50" value="5" aria-label="Seats"></label>
+      <div class="setting" id="field-welcome"><span><strong>Send a welcome note</strong><em>A short hello from your team</em></span><button class="toggle" id="welcome" role="switch" aria-checked="false" aria-label="Send a welcome note" type="button"></button></div>
+      <footer><button type="button" class="ghost" id="cancel">Cancel</button><button type="submit" class="primary" id="save">Save customer</button></footer>
+    </form>
+  </aside>
+
+  <div class="commands" id="commands" role="dialog" aria-label="Commands" hidden>
+    <div class="commands-box">
+      <label class="commands-input"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="command-input" type="text" placeholder="Type a command" aria-label="Type a command" spellcheck="false"></label>
+      <ul id="command-list" role="listbox" aria-label="Command results"></ul>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><strong>Customer added</strong><span id="toast-detail">Welcome aboard</span></div></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

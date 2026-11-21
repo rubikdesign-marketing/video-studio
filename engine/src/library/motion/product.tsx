@@ -19,7 +19,8 @@ import { CaptureShot, type CaptureShotProps, type CaptureSource } from '../../ki
 import { MotionProvider, presetNames, type PresetName } from '../../kit/motion';
 import { alpha, stageNames } from '../../kit/tokens';
 import { Label, Stage, useStage, useVh } from '../../kit/ui';
-import { MoveCaption } from './parts';
+import type { CaptureScene } from './capture-scenes';
+import { MoveCaption, useMoveCaptions } from './parts';
 
 const thingSchema = z.object({
   rect: z.tuple([z.number(), z.number(), z.number(), z.number()]),
@@ -318,6 +319,7 @@ const BackedCaption: FC<{ children: string }> = ({ children }) => {
   const brand = useBrand();
   const stage = useStage();
   const vh = useVh();
+  if (!useMoveCaptions()) return null;
   return (
     <div style={{ position: 'absolute', left: vh(4.6), bottom: vh(4.6), padding: `${vh(0.8)}px ${vh(1.4)}px`, borderRadius: vh(brand.shape.pill), background: alpha(stage.page, 0.94), boxShadow: `0 ${vh(0.4)}px ${vh(1.6)}px ${alpha(stage.shade, 0.2)}` }}>
       <Label size={2.6}>{children}</Label>
@@ -326,6 +328,16 @@ const BackedCaption: FC<{ children: string }> = ({ children }) => {
 };
 
 const shows = productEntries.map((entry) => ({ entry, Show: showFor(entry), metadata: metadataFor(entry) }));
+
+/** The same scenes as records, for previews outside Remotion Studio. */
+export const productScenes: CaptureScene[] = shows.map(({ entry, Show }) => ({
+  name: entry.name,
+  Show: Show as CaptureScene['Show'],
+  props: { second: '', things: {}, roles: {}, address: '' },
+  preset: entry.preset ?? 'confident',
+  size: [1920, 1080],
+  fit: 'fill',
+}));
 
 const defaults = (entry: Entry): Props => ({ brand: defaultBrand, preset: entry.preset ?? 'confident', page: 'light', capture: '', second: '', things: {}, roles: {}, address: '' });
 

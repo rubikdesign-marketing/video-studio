@@ -1,0 +1,13 @@
+{
+  "name": "_demo-previews",
+  "brand": "demo",
+  "type": "library previews",
+  "created": "2026-11-22",
+  "maker": "studio",
+  "size": "16:9",
+  "stage_next": "none",
+  "notes": [
+    "Not a real video. The demo brand's made-up product (library/fixtures/demo-product), filmed so the style library's capture-family previews play on demo content only: node tools/styles/render-previews.mjs uses this job's newest capture by default.",
+    "Record again: serve the product (node library/fixtures/demo-product/serve.mjs), then node tools/capture/capture.mjs run jobs/_demo-previews walkthrough --browser studio."
+  ]
+}

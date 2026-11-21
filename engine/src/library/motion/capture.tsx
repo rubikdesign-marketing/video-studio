@@ -14,6 +14,7 @@ import type { CaptureCursor, CaptureEvent } from '../../kit/capture/data';
 import { MotionProvider, presetNames, type PresetName } from '../../kit/motion';
 import { stageNames } from '../../kit/tokens';
 import { Label, Stage } from '../../kit/ui';
+import type { CaptureScene } from './capture-scenes';
 import { MoveCaption } from './parts';
 
 export const captureMotionSchema = z.object({
@@ -227,6 +228,16 @@ const showFor = (entry: Entry) => {
 };
 
 const shows = captureEntries.map((entry) => ({ entry, Show: showFor(entry), metadata: metadataFor(entry) }));
+
+/** The same scenes as records, for previews outside Remotion Studio. A look is staged (CaptureShot); the rest draw a fixed-size card. */
+export const captureScenes: CaptureScene[] = shows.map(({ entry, Show }) => ({
+  name: entry.name,
+  Show: Show as CaptureScene['Show'],
+  props: { second: '' },
+  preset: entry.preset ?? 'confident',
+  size: [1920, 1080],
+  fit: entry.name.startsWith('look-') ? 'fill' : 'contain',
+}));
 
 /** The capture gallery, for MotionCompositions. */
 export const CaptureMotionCompositions: FC = () => (

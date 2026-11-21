@@ -1,0 +1,21 @@
+{
+  "_about": "Where the demo brand's made-up product lives and how to film it, for the capture tool (tools/capture/README.md). The product is library/fixtures/demo-product, served on this Mac only: node library/fixtures/demo-product/serve.mjs (port 4317). It exists so the style library's capture-family previews never need a client's product. Keys that start with _ are notes for people.",
+  "address": "http://127.0.0.1:4317",
+  "kind": "web app",
+  "demo_account": "Acme workspace (made up; the demo product has no accounts)",
+  "signs_in": "Nobody: the demo product has no sign-in.",
+  "browser": "studio",
+  "_browser": "The studio's own window: no sign-in is needed, and nothing of anyone's own Chrome is involved.",
+  "safe_to_show": [
+    "Acme workspace", "Acme Studio", "Acme Bakery", "Demo Garden", "Acme Freight", "Demo Books", "Acme Cycles",
+    "Demo Coffee Bar", "Acme Print Shop", "Demo Studio", "Acme Tiles", "Demo Pantry", "Acme Repairs", "Demo Florist",
+    "Acme Outdoor", "Demo Gym", "Acme Lighting", "Demo Kitchen"
+  ],
+  "never_show": [
+    { "what": "Billing pages (the demo product has none)", "paths": ["/billing"] },
+    { "what": "Real e-mail addresses", "pattern": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", "allow": ["@example.com"] }
+  ],
+  "clean_screen": { "studio_defaults": true, "hide": [], "dismiss": [], "keep": [] },
+  "setting": { "language": "en", "region": "US", "time_zone": "UTC", "theme": "light", "reduced_motion": false },
+  "clock": { "demo_time": "2026-11-20 10:30", "note": "The greeting and the date on the Overview come from the page's own clock, so the demo time sets them." }
+}

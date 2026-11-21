@@ -22,6 +22,7 @@ import { CaptureJoin } from '../../kit/capture/transitions';
 import { MotionProvider, presetNames, type PresetName } from '../../kit/motion';
 import { stageNames } from '../../kit/tokens';
 import { Label, Stage } from '../../kit/ui';
+import type { CaptureScene } from './capture-scenes';
 import { MoveCaption } from './parts';
 
 const thingSchema = z.object({
@@ -167,6 +168,16 @@ const showFor = (entry: Entry) => {
 };
 
 const shows = relayoutEntries.map((entry) => ({ entry, Show: showFor(entry), metadata: metadataFor(entry) }));
+
+/** The same scenes as records ("relayout-<name>"), for previews outside Remotion Studio. Each keeps its own film size. */
+export const relayoutScenes: CaptureScene[] = shows.map(({ entry, Show }) => ({
+  name: `relayout-${entry.name}`,
+  Show: Show as CaptureScene['Show'],
+  props: { things: {}, options: '', safeAreas: entry.safeAreas ?? 'none' },
+  preset: entry.preset,
+  size: SIZES[entry.size],
+  fit: 'contain',
+}));
 
 /** The re-layout gallery, for MotionCompositions. */
 export const RelayoutMotionCompositions: FC = () => (

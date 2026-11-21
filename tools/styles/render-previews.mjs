@@ -3,7 +3,8 @@
 // and builds the sound sprite. Usage:
 //   node tools/styles/render-previews.mjs [--tab <id>] [--only <id>] [--force] [--dry-run] [--sprite] [--root <dir>]
 //                                         [--capture <job>/<id>]
-// --capture names a demo-brand capture for entries whose moves play on one; any other capture is refused.
+// --capture names a demo-brand capture for entries whose moves play on one; any other capture is refused. Without it,
+// the demo job's newest capture is used (jobs/_demo-previews, the demo product; engine/public/captures.json lists it).
 // Only node: modules and in-repo imports. The command runner is injected (see main), so tests can stub it.
 import { readFileSync, existsSync, mkdirSync, statSync, rmSync, writeFileSync, mkdtempSync, readdirSync, renameSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -64,18 +65,47 @@ export function classify(name, kinds = engineKinds()) {
   return { kind: null, name };
 }
 
+/** The demo brand's job whose capture the previews play on (the demo product, library/fixtures/demo-product). */
+export const DEMO_JOB = '_demo-previews';
+
+/** The capture tool names a capture after its job folder like this: "_demo-previews" gives "demo-previews". */
+export const captureSlug = (folder) => String(folder).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/** The engine's list of published captures (engine/public/captures.json), newest first; empty when there is none. */
+const listedCaptures = (root) => { const list = tryJson(join(root, 'engine', 'public', 'captures.json')); return Array.isArray(list) ? list : []; };
+
+/** The job folders a capture's first part can mean: the folder itself, or any whose slug it is. */
+function jobsNamed(root, part) {
+  let folders = [];
+  try { folders = readdirSync(join(root, 'jobs'), { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name); } catch {}
+  return folders.filter((f) => f === part || captureSlug(f) === part);
+}
+
 /**
  * Can this capture be used for a preview? Only a capture of a job whose brand is `demo`. A client's capture is never used.
- * Returns `{ ok, reason }`.
+ * The name is "<job>/<id>" as the capture tool publishes it (the job folder's slug). Every job folder that name could
+ * mean must be a demo job, and the engine's own list must not file it under another brand. Returns `{ ok, reason }`.
  */
 export function captureStatus(root, capture) {
   if (!capture) return { ok: false, reason: 'no demo capture yet' };
   const parts = String(capture).split('/');
   const safe = (p) => /^[A-Za-z0-9._-]+$/.test(p) && p !== '.' && p !== '..';
   if (parts.length !== 2 || !parts.every(safe)) return { ok: false, reason: `no demo capture yet (${capture} is not a capture name, which is <job>/<id>)` };
-  const brand = tryJson(join(root, 'jobs', parts[0], 'job.json'))?.brand;
-  if (brand !== 'demo') return { ok: false, reason: `no demo capture yet (${capture} belongs to ${brand ? `the ${brand} brand` : 'a job with no brand'}; only the demo brand is used for previews)` };
+  const jobs = jobsNamed(root, parts[0]);
+  const brands = jobs.map((j) => tryJson(join(root, 'jobs', j, 'job.json'))?.brand);
+  if (!jobs.length || brands.some((b) => b !== 'demo')) {
+    const brand = brands.find((b) => b && b !== 'demo');
+    return { ok: false, reason: `no demo capture yet (${capture} belongs to ${brand ? `the ${brand} brand` : 'a job with no brand'}; only the demo brand is used for previews)` };
+  }
+  const listed = listedCaptures(root).find((c) => c?.capture === capture);
+  if (listed?.brand && listed.brand !== 'demo') return { ok: false, reason: `no demo capture yet (the engine lists ${capture} under the ${listed.brand} brand; only the demo brand is used for previews)` };
   return { ok: true, reason: '' };
+}
+
+/** The demo job's newest capture the engine lists, when its job is still a demo job; else null. */
+export function defaultCapture(root) {
+  const row = listedCaptures(root).find((c) => c?.job === `jobs/${DEMO_JOB}` && typeof c.capture === 'string');
+  return row && captureStatus(root, row.capture).ok ? row.capture : null;
 }
 
 /**
@@ -160,8 +190,10 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
     return 0;
   }
 
-  const plan = planRender(lib, { root, tab, only: opt('--only') ?? null, force: flag('--force'), capture: opt('--capture') ?? null });
+  const capture = opt('--capture') ?? defaultCapture(root);
+  const plan = planRender(lib, { root, tab, only: opt('--only') ?? null, force: flag('--force'), capture });
   for (const n of plan.notes) log(n);
+  if (plan.render.some((j) => j.capture)) log(`Capture moves play on ${capture} (demo brand)`);
   if (flag('--dry-run')) {
     for (const j of plan.render) log(`render ${j.id} ${j.width}x${j.height} -> ${j.clip} (${j.moves.join(', ')})`);
     for (const a of plan.attention) log(`needs attention: ${a.id}: ${a.reason}`);

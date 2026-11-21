@@ -1,0 +1,27 @@
+Overview
+Search or jump to  New customer  AW  ⌘K
+Acme workspace
+Team plan  Good morning
+Friday, November 20, and here is how your customers are doing.
+Overview
+Customers
+Active customers  New this month  Monthly revenue  Open requests
+249  32  $18,420  7
+Reports
+Settings  12 more than last month  Best month this year  Up 8% on October  2 waiting on you
+Revenue, last 12 weeks  Weekly  Recent customers
+Customer  Plan  Seats  Status
+Acme Studio  45  Active  AS  Team
+Acme Bakery  18  Active  AB  Team
+Demo Garden  4  Active  DG  Starter
+Acme Freight  64  Active  AF  Business
+Demo Books  3  Trial  DB  Starter
+Acme Cycles  22  Active  AC  Team
+Demo Coffee Bar  5  Paused  DC  Starter
+Acme Print Shop  12  Active  AP  Team
+Demo Studio  40  Active  DS  Business
+Weekly summary
+Customer added
+Acme Tiles  2  Trial  Your next summary goes out on Monday morning.  AT  Starter
+Acme Studio is on the Team plan  Sep 1  Sep 8  Sep 15  Sep 22  Sep 29  Oct 6  Oct 13  Oct 20  Oct 27  Nov 3  Nov 10  Nov 17
+Demo Pantry  15  Active  DP  Team

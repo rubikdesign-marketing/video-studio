@@ -1,9 +1,11 @@
 // One short silent loop for a style in the library: the entry's own moves, one after another, each played by its
 // own demo scene from the motion library (src/library/motion: demos/ and the sized families), at the entry's size,
 // on the entry's background. 30 fps, 90 frames. Nothing here is registered twice: the scenes are only imported.
-// Capture-family moves need a real capture and are not played by this file yet (see CaptureMove below).
+// Capture-family moves play their own gallery scene (capture.tsx, product.tsx, joins.tsx, relayout.tsx) on the
+// demo-brand capture named in the "capture" prop (tools/styles/render-previews.mjs only passes a demo one).
 import type { FC } from 'react';
-import { Composition, Series } from 'remotion';
+import { Composition, Sequence, Series, useVideoConfig } from 'remotion';
+import { useCapture } from '../../capture/load';
 import { BrandProvider } from '../../kit/brand';
 import * as Backgrounds from '../../kit/backgrounds';
 import { MotionProvider, type PresetName } from '../../kit/motion';
@@ -11,10 +13,16 @@ import type { StageName } from '../../kit/tokens';
 import { Stage } from '../../kit/ui';
 import backgroundIndex from '../../../../library/backgrounds/index.json';
 import motionIndex from '../../../../library/motion/index.json';
+import { captureScenes } from '../motion/capture';
+import type { CaptureScene } from '../motion/capture-scenes';
 import { demos } from '../motion/demos';
+import { joinScenes } from '../motion/joins';
+import { MoveCaptions } from '../motion/parts';
+import { productScenes } from '../motion/product';
+import { relayoutScenes } from '../motion/relayout';
 import type { FormatName, SizedDemo } from '../motion/sized';
 import { sizedFamilies } from '../motion/sized-families';
-import { isCaptureMove, kebab, SIZES } from './rules.mjs';
+import { CAPTURE_STANDS_IN, isCaptureMove, kebab, SIZES } from './rules.mjs';
 
 export const FPS = 30;
 export const FRAMES = 90;
@@ -61,9 +69,42 @@ export const energyOf = (entry: PreviewEntry): Energy => (entry.filters.energy.i
 const backdropEnergy = { calm: 'rest', confident: 'alive', hype: 'peak' } as const;
 const formatOf = (entry: PreviewEntry): FormatName => (entry.filters.sizes[0] in SIZES ? entry.filters.sizes[0] : '9:16') as FormatName;
 
-/** Moves that play on a real capture. Built in the follow-up task, with a demo-brand capture to play them on. */
-const CaptureMove: FC<{ name: string; capture?: string }> = ({ name }) => {
-  throw new Error(`${name} plays on a capture, and capture previews are not built yet`);
+/** Every capture-based gallery scene by move name. */
+const captureShows = new Map<string, CaptureScene>();
+for (const scene of [...captureScenes, ...productScenes, ...joinScenes, ...relayoutScenes]) captureShows.set(scene.name, scene);
+/** Capture moves with no gallery scene of their own play the scene named in CAPTURE_STANDS_IN (rules.mjs). */
+const STANDS_IN = CAPTURE_STANDS_IN;
+export const captureSceneOf = (name: string) => captureShows.get(STANDS_IN[name] ?? name) ?? captureShows.get(STANDS_IN[kebab(name)] ?? kebab(name));
+
+/** A frame of the preview's shape for a scene: its long side 1920, or (contain) at least the scene's own frame. */
+export const sceneFrame = (scene: Pick<CaptureScene, 'size' | 'fit'>, width: number, height: number): [number, number] => {
+  const scale = scene.fit === 'contain' ? Math.max(scene.size[0] / width, scene.size[1] / height) : 1920 / Math.max(width, height);
+  return [Math.round(width * scale), Math.round(height * scale)];
+};
+
+/**
+ * A capture move: its gallery scene, drawn at a frame of its own size (scaled down to the clip) with the move's name
+ * left off, on the named capture. A missing capture or scene fails the render, so the plan reports the entry.
+ */
+const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energies: Energy[]; frames: number }> = ({ name, capture, page, energies, frames }) => {
+  const scene = captureSceneOf(name);
+  if (!scene) throw new Error(`${name} plays on a capture, and no capture scene in the motion library plays it`);
+  // An empty name would mean "the newest capture", which may be anyone's: only a named demo capture is played.
+  if (!capture) throw new Error(`${name} plays on a capture: name a demo-brand capture in the "capture" prop`);
+  const loaded = useCapture(capture);
+  const { width, height } = useVideoConfig();
+  if (loaded === null) throw new Error(`${name}: the capture ${capture} is not in engine/public (record it, or run: node tools/capture/capture.mjs relist)`);
+  if (!loaded) return null;
+  const [w, h] = sceneFrame(scene, width, height);
+  // The gallery's own energy when the style allows it (a whip is a hype move), else the style's.
+  const preset = (energies.includes(scene.preset as Energy) ? scene.preset : energies.includes('confident') ? 'confident' : energies[0] ?? 'confident') as PresetName;
+  return (
+    <Sequence width={w} height={h} durationInFrames={frames} style={{ transform: `scale(${width / w})`, transformOrigin: '0 0' }}>
+      <MoveCaptions.Provider value={false}>
+        <scene.Show {...scene.props} brand="demo" preset={preset} page={page} capture={loaded.name} />
+      </MoveCaptions.Provider>
+    </Sequence>
+  );
 };
 
 const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({ entry, page, capture }) => {
@@ -81,9 +122,10 @@ const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({
       <Series>
         {moves.map((name, i) => {
           const known = sceneOf(name);
+          const frames = i === moves.length - 1 ? FRAMES - slot * i : slot;
           return (
-            <Series.Sequence key={`${name}-${i}`} durationInFrames={i === moves.length - 1 ? FRAMES - slot * i : slot}>
-              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} />}
+            <Series.Sequence key={`${name}-${i}`} durationInFrames={frames}>
+              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} page={page} energies={entry.filters.energy} frames={frames} />}
             </Series.Sequence>
           );
         })}

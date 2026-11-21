@@ -1,6 +1,6 @@
 // Small pieces the gallery scenes are set up with: a line of type, a card, a tile and the caption that names the
 // move. They are plain on purpose, so the move is the only thing that moves. Sizes are percentages of frame height.
-import type { CSSProperties, FC, ReactNode } from 'react';
+import { createContext, useContext, type CSSProperties, type FC, type ReactNode } from 'react';
 import { AbsoluteFill } from 'remotion';
 import { useBrand } from '../../kit/brand';
 import { useCue, voiceStyle } from '../../kit/moves/core';
@@ -103,9 +103,14 @@ export const Tile: FC<{ label: string; value: string; at?: number; out?: number;
   </Card>
 );
 
+/** Whether scenes show the name of their move. Off where a scene is played for something else (a style's preview clip). */
+export const MoveCaptions = createContext(true);
+export const useMoveCaptions = () => useContext(MoveCaptions);
+
 /** The name of the move, bottom left, in sentence case. */
 export const MoveCaption: FC<{ children: string }> = ({ children }) => {
   const vh = useVh();
+  if (!useMoveCaptions()) return null;
   return (
     <Label size={2.6} style={{ position: 'absolute', left: vh(6), bottom: vh(6) }}>
       {children}

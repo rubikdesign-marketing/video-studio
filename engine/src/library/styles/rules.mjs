@@ -14,3 +14,9 @@ export const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase
 
 /** A move plays on a real capture when its family starts with capture-, or its name starts with join-, stage-, product- or relayout-. */
 export const isCaptureMove = (name, family) => String(family).startsWith('capture-') || /^(join|stage|product|relayout)-/.test(name);
+
+/**
+ * Capture moves with no gallery scene of their own, and the scene a preview plays for them. The capture sounds play
+ * on the clicks; a preview clip is silent, so it shows the clicks they land on.
+ */
+export const CAPTURE_STANDS_IN = { 'capture-sounds': 'click-ring' };
