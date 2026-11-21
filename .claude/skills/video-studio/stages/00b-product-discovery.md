@@ -58,6 +58,10 @@ Fill section 9: five ideas, each tied to a segment, a flow, a stage of the buyer
 
 Give a one-page summary: who it is for, the three key messages, the top three flows, the demo environment, the five ideas, and what is still open. Say what was verified in the product and what was taken on trust. Stop for the **Discovery** approval.
 
+## Briefs that were waiting
+
+Jobs whose `brief.json` has a `parked` field were waiting for a brand. Now that this brand and its product are set up, give each the new brand with `node tools/plan/brief.mjs set jobs/<job> brand <brand>` and clear the `parked` field with `node tools/plan/brief.mjs set jobs/<job> parked null`. Then tell the person their brief is ready on the page, and that they can say "continue the video".
+
 ## Keeping it fresh
 
 - At the start of every video, read the changelog since the discovery date and walk the flow the video uses. Record changes in `brands/<brand>/product/` with the date.

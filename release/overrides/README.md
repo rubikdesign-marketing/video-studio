@@ -10,6 +10,8 @@ Follow `ONBOARDING.md`. Open this folder in the Claude desktop app's Code tab an
 
 `setup/dotfiles/` holds the studio's hidden files (`.claude` and others) under visible names, so a copy or sync cannot lose them. The start step puts them back.
 
+Making a video starts on your brief page: after setup, your first chat opens it. Write the video you want there, then start a new chat and say **"continue the video"**.
+
 ## What is where
 
 | Folder | What |

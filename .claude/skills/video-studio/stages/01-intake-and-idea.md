@@ -12,6 +12,8 @@ Ends with the **Idea** approval.
 
 ## 1. Intake: the brief, in their words
 
+When `node tools/plan/brief.mjs show jobs/<job>` lists the decision "plan confirmed" (the brief page does this), skip this section and the pre-flight questions below and go straight to section 3, the three concepts. Say in one line that the plan is already confirmed.
+
 Start with what the creator said, word for word: `node tools/plan/brief.mjs new jobs/<date>-<name> "<their words>"`. Add any references or footage they gave to `brief.json` (`references`, `materials`), each with what they said about it. Then run `node tools/plan/brief.mjs check jobs/<job>`.
 
 - It states back what their words already settle ("vertical" is 9:16): say it in one line so they can correct it; do not ask it.

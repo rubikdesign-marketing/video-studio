@@ -10,6 +10,7 @@ This folder makes videos for any brand set up in `brands/`: promos, feature demo
 - This session leads. It makes the creative decisions and does the integration. Bounded work goes to the helpers in `.claude/agents/`, following `.claude/skills/video-studio/conductor.md`: at most two helpers at a time, and the model the person chose stays the lead.
 - Approvals: guided (one per stage, the default) or grouped (a brief review and a final cut review), as the person prefers. Record each one with `node tools/conductor/gate.mjs approve`; approvals already given for unchanged inputs are not asked again after a restart.
 - Run the studio's own tools (`node tools/...`) as one plain command each, with the job path written out. No `J=...` variables, `&&` chains or pipes, so they run without a permission prompt.
+- **"Open my brief page"** opens the brief page, a page where the person writes the video they want. The first chat after setup publishes it. If the app asks to approve the "damex-engine" connector, the person should say yes, because the brief page uses it.
 - A new team starts at stage 0, "set up a brand".
 - Optional tools (transcription, noise removal, mastering, footage) are not installed up front. When a step needs one, `node setup/runtime/install.mjs --with <capability>` prints the commands for this computer; `node setup/runtime/doctor.mjs` says what is ready.
 - Keys live in `.env` (never synced). Renders live in `jobs/*/out/` (never synced).

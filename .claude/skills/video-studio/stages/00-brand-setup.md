@@ -52,6 +52,10 @@ If the brand has a product, the next step is stage 0B, product discovery (`stage
 2. The first real video is the proving run. Its review notes are logged, and the lessons drafted from them go to `brands/<name>/lessons/` for the brand's owner to approve.
 3. Approved lessons become that brand's rules. A lesson that would help every brand is proposed for `knowledge/rules/` instead.
 
+## Briefs that were waiting for the brand
+
+Jobs whose `brief.json` has a `parked` field were waiting for a brand. Now that this one is set up, give each the new brand with `node tools/plan/brief.mjs set jobs/<job> brand <brand>` and clear the `parked` field with `node tools/plan/brief.mjs set jobs/<job> parked null`. Then tell the person their brief is ready on the page, and that they can say "continue the video".
+
 ## What a brand cannot change
 
 The production line, the checks, and the rule that only real product UI is shown. Everything about look, sound and wording is the brand's to set.

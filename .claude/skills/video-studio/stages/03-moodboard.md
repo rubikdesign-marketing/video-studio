@@ -17,6 +17,14 @@ The moodboard is where the look is explored and chosen. Its frames are designs. 
 - `jobs/<job>/recipe.md` when the job has one (its style, energy and avoid list)
 - Skills to load (see "Skills the studio uses" in `SKILL.md`): `impeccable` while choosing type, colour and layout; `style-sampling` when a reference sets the look; `hallmark` and `impeccable` critique before the board goes to a person
 
+## Figma or the design canvas
+
+Before building, check whether Figma is connected with a harmless read: call `whoami` on the Figma connector.
+- **Connected:** build the moodboard in Figma instead of the design canvas, with the same contents. One frame per artboard, each with the same notes. Record the file as `figma_file` in `job.json`.
+- **Not connected:** use the design canvas below, as always.
+
+The brand's rule still wins: a brand whose designers want Figma uses Figma whether or not this check would have chosen it (see the last section).
+
 ## Build the canvas
 
 1. Start a new design canvas with the Artifact tool (the Design type), titled "<video name> moodboard". Follow that type's own instructions for how its files are written.
@@ -54,4 +62,4 @@ After approval, record the chosen style family, background, palette roles and ty
 
 ## If a brand's designers want to edit by hand
 
-Use Figma instead of the design canvas for that brand, with the same contents, and note the choice in the brand's `rules.md`.
+Use Figma instead of the design canvas for that brand, with the same contents, and note the choice in the brand's `rules.md`. Hand edits made in Figma are carried back into the scene files and the job's look notes, so the engine stays the source.

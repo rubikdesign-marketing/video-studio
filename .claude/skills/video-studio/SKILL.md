@@ -9,6 +9,13 @@ One video at a time, each approval a save point. Works for any brand in `brands/
 
 ## Start of every session
 
+First, the brief page. It is quiet housekeeping: never block a video on it, and never explain it away. It needs the connector, so skip it, without a word, when no tools named `mcp__damex-engine__*` are available in this chat.
+- **No `brief_page` in `studio.json`:** publish `studio/brief-desk/index.html` with the Artifact tool. Pass `capabilities` from `studio/brief-desk/capabilities.json` as it stands, the title "Video brief" and the icon `video`. Store the link as `brief_page` in `studio.json`. Tell the person in one line that it is their brief page, where they can write the video they want. Offer once to pin it to their sidebar, and pin it only on a yes.
+- **`brief_page` is there and the page file has changed since it was published (an update):** publish again to the same `url`, so the link stays.
+- **"Open my brief page":** open `brief_page`. If the link is gone, publish the page again and store the new link.
+- **"Make a video" or "continue the video":** read the page's `briefs` collection with ArtifactData, using the link in `brief_page` (no link, skip it). For each one with `status: 'waiting'`, run `node tools/plan/brief.mjs new jobs/<date>-<name> "<its words>"`, then set its `status` to `'taken'` and its `job` to the job name. Say in one line what you picked up.
+- **"Continue the video" with no job named:** take the job whose `brief.mjs show` has the newest "plan confirmed" decision, name it, and offer the other jobs. Do not ask which one first.
+
 0. With no task in the first message, offer `/video-menu`. With a complete brief, or a job named to resume, go straight on.
 1. If a job is in progress, read `jobs/<job>/job.json`. It names the brand and the next stage. Then run `node tools/conductor/dispatch.mjs resume jobs/<job>`: it marks interrupted helper work as preserved and names the next step, skipping gates already approved for unchanged inputs (`node tools/conductor/gate.mjs status jobs/<job>`). If there is no job, start at stage 1. If the brand is not set up yet, start at stage 0. If the brand has no approved `brands/<brand>/product/discovery.md` and the video shows its product, run stage 0B first.
 2. Read the one stage file for that stage. Do not read the others.

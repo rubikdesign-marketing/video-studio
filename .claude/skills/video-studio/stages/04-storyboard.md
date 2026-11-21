@@ -40,7 +40,15 @@ For each shot, build how it looks **at rest**, in its scene file: the background
 
 Before rendering, give every shot in `shots.json` a `point` (one sentence: what it proves) and an `eye` (the one thing to look at), and run `node tools/plan/brief.mjs check jobs/<job>`. It lists shots with no point or eye, actions with no proof moment, claims in the brief that no shot shows (`proves`), and reference qualities no shot borrows (`borrow`). A shot that shows an action (a click, a drag, a hand picking something up, a paste) names the moment that proves it, `"proof": { "what": "the row lands in Notion", "at": 2.1 }` (seconds from the scene's start, or "70%" of the shot), and the storyboard draws that frame beside the resting one. For a hand and a product, that is the moment of contact; for a presenter, the board shows a still but approval needs a few seconds of speech with sound. A revision of a few scenes: `storyboard.mjs jobs/<job> --only S03,S05` redraws only those and keeps the rest.
 
-## 5. Lay them out on a design canvas
+## 5. Figma or the design canvas
+
+Before laying the frames out, check whether Figma is connected with a harmless read: call `whoami` on the Figma connector.
+- **Connected:** lay the storyboard out in Figma. One frame per shot, with the same notes as below, and read Figma comments as feedback. Record the file as `figma_file` in `job.json`.
+- **Not connected:** use the design canvas, as below.
+
+The brand's rule still wins: a brand whose designers want Figma uses Figma whether or not this check would have chosen it. Hand edits made in Figma are carried back into the scene files, so the engine stays the source.
+
+### Lay them out on a design canvas
 
 1. Start a new design canvas with the Artifact tool (the Design type), titled "<video name> storyboard". Follow that type's own instructions for how its files are written.
 2. Upload the rendered frames to the canvas.
