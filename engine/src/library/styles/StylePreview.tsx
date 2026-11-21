@@ -33,6 +33,8 @@ type Energy = 'calm' | 'confident' | 'hype';
 /** The part of a library entry the preview reads. `engine` holds motion-library move names (or background names). */
 export type PreviewEntry = {
   id: string;
+  /** The energy the preview plays at: filters.energy[0]. */
+  energy?: Energy;
   filters: { energy: Energy[]; sizes: string[] };
   engine: string[];
 };
@@ -64,8 +66,8 @@ for (const m of (motionIndex as { moves: { name: string; family: string }[] }).m
 }
 export const needsCapture = (name: string) => captureMoves.has(name) || captureMoves.has(kebab(name));
 
-/** The energy the preview is timed from: confident, or the entry's only (first) energy. */
-export const energyOf = (entry: PreviewEntry): Energy => (entry.filters.energy.includes('confident') ? 'confident' : entry.filters.energy[0] ?? 'confident');
+/** The energy the preview plays at: the first one the entry lists. */
+export const energyOf = (entry: PreviewEntry): Energy => entry.energy ?? entry.filters.energy[0] ?? 'confident';
 const backdropEnergy = { calm: 'rest', confident: 'alive', hype: 'peak' } as const;
 const formatOf = (entry: PreviewEntry): FormatName => (entry.filters.sizes[0] in SIZES ? entry.filters.sizes[0] : '9:16') as FormatName;
 
@@ -97,7 +99,7 @@ const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energie
   if (!loaded) return null;
   const [w, h] = sceneFrame(scene, width, height);
   // The gallery's own energy when the style allows it (a whip is a hype move), else the style's.
-  const preset = (energies.includes(scene.preset as Energy) ? scene.preset : energies.includes('confident') ? 'confident' : energies[0] ?? 'confident') as PresetName;
+  const preset = (energies.includes(scene.preset as Energy) ? scene.preset : energies[0] ?? 'confident') as PresetName;
   return (
     <Sequence width={w} height={h} durationInFrames={frames} style={{ transform: `scale(${width / w})`, transformOrigin: '0 0' }}>
       <MoveCaptions.Provider value={false}>

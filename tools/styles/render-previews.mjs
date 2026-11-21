@@ -144,8 +144,9 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
       if (!hasMove && !onlyBackground) { out.attention.push({ id: e.id, reason: 'nothing in its engine list has a demo scene, so it has no clip' }); continue; }
       const { width, height } = previewSize(e.filters?.sizes?.[0]);
       const names = playable.map((i) => i.name);
-      const entry = { id: e.id, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names };
-      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: names, capture: onCapture.length ? capture : null, entry });
+      const energy = e.filters.energy?.[0] ?? 'confident';
+      const entry = { id: e.id, energy, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names };
+      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: names, energy, capture: onCapture.length ? capture : null, entry });
     }
   }
   return out;

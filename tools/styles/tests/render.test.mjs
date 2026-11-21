@@ -426,3 +426,17 @@ test('capture scenes: every capture move in the motion library has a gallery sce
   const missing = index.map((m) => m.name).filter((n) => !names.has(CAPTURE_STANDS_IN[n] ?? n));
   assert.deepEqual(missing, []);
 });
+
+test('render plan: previews play at the first listed energy', () => {
+  const root = scratch();
+  try {
+    const lib = loadLibrary(root);
+    const e = lib.byId.get('demo-soft-arrive');
+    e.filters.energy = ['calm', 'confident'];
+    const job = planRender(lib, { root, force: true, only: 'demo-soft-arrive' }).render[0];
+    assert.equal(job.energy, 'calm');
+    assert.equal(job.entry.energy, 'calm');
+    e.filters.energy = ['hype', 'calm'];
+    assert.equal(planRender(lib, { root, force: true, only: 'demo-soft-arrive' }).render[0].entry.energy, 'hype');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
