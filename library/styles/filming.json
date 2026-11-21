@@ -1,0 +1,5692 @@
+[
+  {
+    "id": "film-wide-then-working-shot",
+    "tab": "filming",
+    "name": "Wide, then the working shot",
+    "line": "Open on the whole screen, then move in to the one panel that matters.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Each scene opens on the whole screen for one reading beat so the viewer knows where they are, then the camera eases in until the panel in use fills 55 to 70% of the frame width and stays there through the action. Wides take about 15% of the film and the working shot about half.",
+      "when": "Fits demos and tutorials where people must see where a feature lives before they watch it work.",
+      "avoid": "Two wides back to back, zooms past twice the size, and any camera move while a line is being read."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.5,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-card",
+      "camera-auto-zoom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-wide-then-working-shot.mp4"
+    },
+    "pairs_with": [
+      "film-pointer-leads"
+    ]
+  },
+  {
+    "id": "film-close-up-proof",
+    "tab": "filming",
+    "name": "Close-up proof",
+    "line": "The camera closes in on the one number or button that proves the point.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "At the proof moment the camera pushes in over 0.7 s to between 1.8 and 2.2 times while the rest of the screen dims by about 40%, and the number or button is at least 4% of frame height when it lands. One close-up per promise, then back to the working shot on the next cause.",
+      "when": "Fits a promise that rests on one figure, one result or one click the viewer has to believe.",
+      "avoid": "Pushing in, out and in again within 1.5 s, and never land a close-up on something too small to read."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.9,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.2,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "camera-push-in",
+      "product-focus"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-close-up-proof.mp4"
+    }
+  },
+  {
+    "id": "film-shot-ladder",
+    "tab": "filming",
+    "name": "Wide, medium, close",
+    "line": "Three shot sizes in a row, each one step closer, so the story narrows to the detail.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Each step of the story moves one size closer: the full browser as the wide, one panel at about 1.5 times as the medium, then one field under a loupe at about 2.5 times as the proof. Change size only when the meaning changes, and keep the eye on the same spot across each change.",
+      "when": "Fits a feature best understood from where it lives down to the one value it changes.",
+      "avoid": "Changing size on a timer, and moving the subject more than a quarter of the frame between one size and the next."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-browser",
+      "camera-auto-zoom",
+      "product-magnifier"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-shot-ladder.mp4"
+    }
+  },
+  {
+    "id": "film-giant-crop-word",
+    "tab": "filming",
+    "name": "Oversized word crop",
+    "line": "The key word is so big the frame crops it, which makes one line feel loud.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Frame the one word that carries the line so tightly that its letters run off two edges, then pull back over about 0.6 s until the whole word reads. The crop is the shot: nothing else moves against it, and the word holds still for a full reading beat once whole.",
+      "when": "Fits hooks and launch lines where one word should land before the sentence finishes.",
+      "avoid": "Crops where the word cannot be guessed from what is visible, and more than two in one film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 1,
+        "motion": 1.4,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.4,
+        "motion": 5.6,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "giant-crop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-giant-crop-word.mp4"
+    }
+  },
+  {
+    "id": "film-centred-symmetry",
+    "tab": "filming",
+    "name": "Dead-centre framing",
+    "line": "Everything sits on the middle of the frame, calm and deliberate.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Hold the subject on the exact centre line and rebuild the layout around it as each new part arrives, so the centre never moves and the frame stays balanced. A slow drift of 2 to 3% per shot keeps the held frame alive between arrivals.",
+      "when": "Fits brand lines, quotes and premium launches that want a still, assured composition.",
+      "avoid": "Off-centre extras that pull the eye, and never let the drift stop dead between arrivals."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.55,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "recentre-build",
+      "camera"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-centred-symmetry.mp4"
+    }
+  },
+  {
+    "id": "film-make-room",
+    "tab": "filming",
+    "name": "Make room for the words",
+    "line": "The picture slides aside to leave space for a line, then takes the frame back.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "When a line needs reading, the product shifts left or right by about a third of the frame over 0.5 s and the words fill the space it left; once the line is read, the product returns to centre. The picture never shrinks below two thirds of the frame height.",
+      "when": "Fits films that alternate a claim and its proof without cutting away from the product.",
+      "avoid": "Sliding the picture while the words are still arriving, and never lay text over the product itself."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.65,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "make-room"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-make-room.mp4"
+    }
+  },
+  {
+    "id": "film-vertical-follow",
+    "tab": "filming",
+    "name": "Vertical follow crop",
+    "line": "A tall frame that tracks the action inside a wide recording, made for Reels, TikTok and Shorts.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "ugc",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The 9:16 frame is the screen: it rides the action at the sharpest the recording allows, pulls back while the pointer rests, and lands each follow with a spring that settles once. The action stays inside the middle band every app leaves free of buttons and captions.",
+      "when": "Fits sound-off vertical cuts made from an approved landscape demo.",
+      "avoid": "Not when the whole screen must be seen at once, and never cut it before the landscape master is approved."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "firm spring with one small bounce",
+        "overshoot": 0.02,
+        "hold_s": 0.7,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "relayout-vertical-follow"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-vertical-follow.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    },
+    "pairs_with": [
+      "film-tall-action-crop"
+    ]
+  },
+  {
+    "id": "film-vertical-card",
+    "tab": "filming",
+    "name": "Vertical product card",
+    "line": "A tall cut that keeps the product as a card on your brand's stage.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "tutorial"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The screen stays a card with a soft shadow on the brand's stage, reaching from just under the apps' top bars down to the caption slot, and the camera follows the action inside it with eased moves of about 0.8 s. The card never runs edge to edge.",
+      "when": "Fits vertical demos that should still look like a product, not a screen recording.",
+      "avoid": "Not when the product must fill the phone; a full-bleed follow does that job."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.5,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "relayout-vertical-card"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-vertical-card.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-square-feed",
+    "tab": "filming",
+    "name": "Square feed follow",
+    "line": "A square cut for LinkedIn, Instagram and Facebook feeds, the camera tracking the action.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A 1:1 card with the camera following each action, closing in until the working part fills about 60% of the width and easing back out between steps over 0.7 s. Words sit above or below the card, never across it.",
+      "when": "Fits feed posts watched with the sound off for a few seconds at a time.",
+      "avoid": "Shrinking a whole landscape screen into the square; follow the action instead."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.4,
+        "motion": 0.7,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "relayout-square"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-square-feed.mp4"
+    },
+    "settles": {
+      "size": "1:1"
+    }
+  },
+  {
+    "id": "film-portrait-feed",
+    "tab": "filming",
+    "name": "Portrait feed follow",
+    "line": "A 4:5 cut that takes up more of the feed than a square.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A 4:5 card that follows the action with one move per step, about 0.7 s each, holding after every landing so the change can be read. The extra height carries a headline above the card for the whole film.",
+      "when": "Fits Instagram and Facebook feed posts that want more room than a square gives.",
+      "avoid": "Crowding the headline against the card; leave at least 5% of the frame between them."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.9,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.015,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 4.9,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "relayout-portrait"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-portrait-feed.mp4"
+    },
+    "settles": {
+      "size": "4:5"
+    }
+  },
+  {
+    "id": "film-tall-action-crop",
+    "tab": "filming",
+    "name": "Tall crop of the action",
+    "line": "A tall card cut from the busy part of a wide recording, for fast vertical feeds.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Crop a tall slice around wherever the action is, so only the thing changing is in shot, and move the crop with the pointer in short snaps of about 0.25 s that settle within five frames. A new action every 0.6 to 0.9 s keeps the thumb from scrolling on.",
+      "when": "Fits sound-off vertical ads and teasers that have to grab in the first second.",
+      "avoid": "Text that runs off the sides of the crop, and slow reading holds."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.3,
+        "motion": 5.8,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "stage-phone-crop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-tall-action-crop.mp4"
+    }
+  },
+  {
+    "id": "film-full-bleed-screen",
+    "tab": "filming",
+    "name": "Full-bleed screen",
+    "line": "The product fills the whole frame with no window, for honest, readable walkthroughs.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Show the screen edge to edge with no frame around it, and let the camera drift toward the pointer about 0.15 s behind it, covering only 30% of the distance. Text stays at least 2.6% of frame height so every step can be read.",
+      "when": "Fits tutorials and long walkthroughs where reading matters more than polish.",
+      "avoid": "Not for promos, where a full-bleed screen looks like a raw recording."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.55,
+        "still_pct": 15
+      }
+    },
+    "engine": [
+      "stage-frameless",
+      "camera-follow"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-full-bleed-screen.mp4"
+    }
+  },
+  {
+    "id": "film-words-as-window",
+    "tab": "filming",
+    "name": "Picture inside the words",
+    "line": "A bold word becomes a window, and the next scene is seen through its letters.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Set one heavy word large across the frame with the next scene playing inside its letters, let it read, then push in over about 0.8 s until the letters open past the edges and the scene fills the frame.",
+      "when": "Fits title moments and chapter openers in launch films.",
+      "avoid": "Thin type, which shows too little picture, and more than one per film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.35,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.9,
+        "ease": "speeds up then snaps to rest",
+        "overshoot": 0.03,
+        "hold_s": 0.4,
+        "motion": 4.8,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "text-window"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-words-as-window.mp4"
+    }
+  },
+  {
+    "id": "film-split-frame",
+    "tab": "filming",
+    "name": "Split frame",
+    "line": "Two halves of the frame show two sides at once, then one side wins.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Divide the frame down the middle, the old way on one side and the new way on the other, moving in opposite directions, then let the winning side push across and take the whole frame over 0.6 s. Each half carries one idea, never two.",
+      "when": "Fits before-and-after hooks, comparisons and problem-then-answer openings.",
+      "avoid": "Identical motion on both sides, which hides the contrast, and more than two panes at small sizes."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.3,
+        "motion": 5.5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "opener-split-screen"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-split-frame.mp4"
+    }
+  },
+  {
+    "id": "film-vertical-tutorial-frame",
+    "tab": "filming",
+    "name": "Vertical tutorial frame",
+    "line": "A tall cut that keeps the browser window and step numbers for how-to videos.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Keep the clean browser window with its address and a numbered badge on each step, re-laid for 9:16, and move the camera only on a click, with a steady eased push of about 0.9 s and no following. Hold 1.5 to 2 s after every step.",
+      "when": "Fits vertical how-tos where viewers need to know it is a web app and which step they are on.",
+      "avoid": "Not for short hype clips, where the window bar takes room they need."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      }
+    },
+    "engine": [
+      "relayout-vertical-browser"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-vertical-tutorial-frame.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-gentle-medium",
+    "tab": "filming",
+    "name": "Gentle medium shots",
+    "line": "Unhurried shots that never go closer than one panel, for calm explainers.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Stay in medium shots: zooms stop at 1.6 times, take about 1.2 s and land with no overshoot, the pointer travels on slow arcs, and every result holds at least 1.5 s. Shots join with soft dissolves or a card that grows, never a hard cut.",
+      "when": "Fits explainers and calm product stories for careful buyers.",
+      "avoid": "Not for launches and social cuts, where it feels slow."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "look-calm-explainer"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-gentle-medium.mp4"
+    }
+  },
+  {
+    "id": "film-two-camera-interview",
+    "tab": "filming",
+    "name": "Two-camera interview cut",
+    "line": "A filmed speaker, cut between a wide and a close camera on their key points.",
+    "family": "Shot size and framing",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "footage-edit",
+        "ugc"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Film the speaker on a wide camera and a close one at the same time, stay on the wide for context, and cut to the close camera only on the sentence that carries the point, staying there for that whole sentence. Every cut lands on a pause or a breath, never mid-word.",
+      "when": "Fits founder stories, customer interviews and talking-head explainers shot on real footage.",
+      "avoid": "Cutting on a timer, and jump cuts between two shots of the same size."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 4,
+        "ease": "straight cut on a pause",
+        "overshoot": 0,
+        "hold_s": 2,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.5,
+        "ease": "straight cut on a pause",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "film-wide-then-working-shot",
+    "settles": {
+      "voice": "presenter"
+    }
+  },
+  {
+    "id": "film-slow-push",
+    "tab": "filming",
+    "name": "Slow push to the proof",
+    "line": "The camera moves in slowly on the thing that matters, as if leaning closer.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "One slow push per shot, from the working view to about 1.4 times over 1.2 to 1.6 s, eased in and out with no overshoot and started by a cause such as a click or a spoken word. The push finishes before the number or word it was heading for appears.",
+      "when": "Fits calm films that want weight on a proof moment without cutting.",
+      "avoid": "Pushes smaller than about 1.1 times, which read as a wobble, and never push in and back out in one shot."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "camera-push-in"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-slow-push.mp4"
+    }
+  },
+  {
+    "id": "film-click-push",
+    "tab": "filming",
+    "name": "Push on the click",
+    "line": "Each click sends the camera in, and it lands as the press lands.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Start the push 0.3 to 0.5 s before the pointer arrives, reach about 1.6 times over 0.7 s, and land as the button dips to 95% and a soft pulse spreads from it. The pointer rests 0.2 s after the press before the next move begins.",
+      "when": "Fits demos where every step is a click and the viewer should feel each one land.",
+      "avoid": "More than three pushes in a scene, and never push when nothing is pressed."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.7,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "camera-push-in",
+      "click-pulse"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-click-push.mp4"
+    },
+    "pairs_with": [
+      "film-pointer-leads"
+    ]
+  },
+  {
+    "id": "film-pull-out-reveal",
+    "tab": "filming",
+    "name": "Pull out to reveal",
+    "line": "Start close on the result, then pull back to show where it lives.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Open tight on the finished result, a number, a card or a sent message, hold it until it reads, then pull back over about 1.2 s to the whole screen, eased in and out. The wider picture should answer the question the close-up raised.",
+      "when": "Fits openings that lead with the outcome and then show the product behind it.",
+      "avoid": "Moving while text is being read, and pulling back to a wide with no clear subject."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "camera-pull-out"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-pull-out-reveal.mp4"
+    }
+  },
+  {
+    "id": "film-snap-zoom-beat",
+    "tab": "filming",
+    "name": "Snap zoom on the beat",
+    "line": "Fast zooms that hit with the music, for loud vertical cuts.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "On each strong beat the camera jumps from the wide to about 2 times in 0.15 to 0.2 s, overshoots by 4 to 5% and settles within five frames, then holds until the next beat. Every snap lands on a real change on screen.",
+      "when": "Fits hype edits, sale ads and launch teasers cut to a clear beat.",
+      "avoid": "Not in calm or confident films, and never snap on a beat where nothing changes."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.25,
+        "motion": 6,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "camera-snap-zoom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-snap-zoom-beat.mp4"
+    },
+    "pairs_with": [
+      "film-tall-action-crop"
+    ]
+  },
+  {
+    "id": "film-pan-across",
+    "tab": "filming",
+    "name": "Slow pan across",
+    "line": "The camera slides sideways from one thing to the next at the same distance.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Hold one zoom level and slide across the screen from the first subject to the second over 1.4 to 2 s, eased in and out, so a row reads as one story. Come fully to rest on the second subject before anything changes there.",
+      "when": "Fits a long row of cards, a timeline, or two related places on one screen.",
+      "avoid": "Not in short or fast films; a pan needs at least 1.4 s to read."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.4,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "camera-pan-across"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-pan-across.mp4"
+    }
+  },
+  {
+    "id": "film-crane-rise",
+    "tab": "filming",
+    "name": "Crane up to the whole page",
+    "line": "Start on one detail and rise up to show the full product.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Begin tight on one control, then rise and lean back slightly in depth over 1.6 to 2 s until the whole page sits in frame, eased in and out with no overshoot. It is a hero move: once per film, ideally at the turn of the story.",
+      "when": "Fits the moment a film widens from one feature to the whole product.",
+      "avoid": "Not in shots too short to give it 1.6 s, and never ask anyone to read during the rise."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "camera-crane-reveal"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-crane-rise.mp4"
+    }
+  },
+  {
+    "id": "film-living-hold",
+    "tab": "filming",
+    "name": "Living hold",
+    "line": "A held shot that keeps breathing with a slow drift, so it never looks frozen.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "product-demo",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Through every hold the camera drifts in at a constant 2 to 3% per shot, never stopping dead, and eases straight into the next move when a cause arrives. The drift is the only motion during the hold.",
+      "when": "Fits reading holds, end cards and long product moments in calm films.",
+      "avoid": "Drifting across small text, or changing direction within a shot."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.5,
+        "ease": "steady drift with no ease",
+        "overshoot": 0,
+        "hold_s": 2,
+        "motion": 0.5,
+        "still_pct": 15
+      }
+    },
+    "engine": [
+      "camera"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-living-hold.mp4"
+    }
+  },
+  {
+    "id": "film-pointer-follow",
+    "tab": "filming",
+    "name": "Follow the pointer",
+    "line": "While zoomed in, the camera trails the pointer so travel feels natural.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Once zoomed in, the camera drifts toward the pointer about 0.15 s behind it and covers only 30% of the way, so the pointer leads and the frame follows. The thing being worked on never leaves the shot.",
+      "when": "Fits demos with travel inside one zoomed area, such as filling in a form.",
+      "avoid": "Not in tutorials, where a steady frame is easier to follow."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.7,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "camera-follow"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-pointer-follow.mp4"
+    }
+  },
+  {
+    "id": "film-zoom-to-action",
+    "tab": "filming",
+    "name": "Zoom to each action",
+    "line": "The camera eases in on each thing before it happens, then eases back out.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Before each action the camera eases in on its target with room around it, holds through the action and its result, then eases out, never past 2 times and never during a reading hold. Actions close together share one shot rather than zooming twice.",
+      "when": "Fits most product demos; it is the studio's default demo camera.",
+      "avoid": "Not for documentary films, or for recordings where the whole screen must stay in view."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "camera-auto-zoom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-zoom-to-action.mp4"
+    }
+  },
+  {
+    "id": "film-tilted-wide",
+    "tab": "filming",
+    "name": "Tilted wide that straightens",
+    "line": "The screen starts turned in depth and straightens as the camera moves in.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Open on a wide with the screen turned up to 10 degrees, then move in a little over about 1.4 s while it straightens to face the viewer, landing flat before any text is read. Use it on wides and openings only.",
+      "when": "Fits establishing shots and the first frame of a launch film.",
+      "avoid": "Leaving the screen turned while it has to be read."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "camera-dolly-tilt"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-tilted-wide.mp4"
+    }
+  },
+  {
+    "id": "film-orbit-hero",
+    "tab": "filming",
+    "name": "Small orbit around the screen",
+    "line": "The camera swings a few degrees around the floating screen for a hero shot.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Travel around the floating screen from one side to the other, no more than 10 degrees in all, over 1.6 to 2 s, with light crossing its surface once. Wides only, and only where nothing must be read.",
+      "when": "Fits launch hero shots and the big reveal of the product.",
+      "avoid": "Not on any screen being read, and never turn further than 10 degrees."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.35,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 1,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.03,
+        "hold_s": 0.4,
+        "motion": 4.6,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "camera-orbit"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-orbit-hero.mp4"
+    }
+  },
+  {
+    "id": "film-whip-pan",
+    "tab": "filming",
+    "name": "Whip pan",
+    "line": "A fast blurred swing that carries the viewer into the next scene.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The camera swings sideways in about 0.2 s with motion blur, and the next scene arrives already moving the same way, settling within five frames. The direction stays the same across the join.",
+      "when": "Fits fast promos and launch sizzles, between beats on the music.",
+      "avoid": "Reversing direction between two whips, and more than three whips in a film."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "speeds up then snaps to rest",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 6.2,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "whip-pan"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-whip-pan.mp4"
+    },
+    "pairs_with": [
+      "film-momentum-cut"
+    ]
+  },
+  {
+    "id": "film-zoom-through",
+    "tab": "filming",
+    "name": "Zoom through to the next scene",
+    "line": "The camera dives into one thing and comes out in the next scene.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Push into the element that links two scenes, speeding up over 0.6 to 0.8 s until it fills the frame, then reveal the next scene from inside it as the push slows to rest. The element must belong to both scenes.",
+      "when": "Fits films that join scenes through an object instead of a cut.",
+      "avoid": "Diving into fine detail, which smears on the way in."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "speeds up and lands soft",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "speeds up and lands soft",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "zoom-through-swap"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-zoom-through.mp4"
+    }
+  },
+  {
+    "id": "film-push-into-colour",
+    "tab": "filming",
+    "name": "Push into a colour",
+    "line": "The camera pushes into a button until its colour becomes the next scene.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Pick one solid control and push into it, speeding up over 0.55 to 0.9 s until its colour floods the frame, then build the next scene on that colour. Once per film, at the turn of the story.",
+      "when": "Fits the turn in a launch film, from problem to answer or from one chapter to the next.",
+      "avoid": "Pushing into anything with fine text or a busy pattern, and never repeat it."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "speeds up then snaps to rest",
+        "overshoot": 0.01,
+        "hold_s": 0.9,
+        "motion": 1.55,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "push-through"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-push-into-colour.mp4"
+    }
+  },
+  {
+    "id": "film-snap-close-ups-feed",
+    "tab": "filming",
+    "name": "Beat-cut close-ups for feeds",
+    "line": "Square close-ups that snap in on each click, made for busy feeds.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "ugc"
+      ],
+      "sizes": [
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Each click is a beat: snap to about 1.8 times in 0.2 s, let a short line burst mark the press, settle within five frames, and move on within 0.6 to 0.8 s. Show the wide only once, at the start, so the viewer knows the screen.",
+      "when": "Fits square sale posts and fast feature teasers for social feeds.",
+      "avoid": "Not for anything that needs slow reading, and never burst on a click that changes nothing."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.25,
+        "motion": 5.8,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "camera-snap-zoom",
+      "click-burst"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-snap-close-ups-feed.mp4"
+    }
+  },
+  {
+    "id": "film-speed-through-wait",
+    "tab": "filming",
+    "name": "Speed through the wait",
+    "line": "Real waiting time plays fast, so the film never stalls.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Any real wait over 0.6 s, or long typing, eases into a faster speed over 0.25 s and back out again, with a small sped-up label, while the camera holds on the thing being waited for. The result itself plays at full speed.",
+      "when": "Fits honest demos with loading, exports or AI answers that take real time.",
+      "avoid": "Speeding up a wait that is the point of the story; show it or cut it."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.5,
+        "motion": 0.7,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "time-speed-ramp",
+      "camera-auto-zoom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-speed-through-wait.mp4"
+    }
+  },
+  {
+    "id": "film-freeze-on-result",
+    "tab": "filming",
+    "name": "Freeze on the result",
+    "line": "The moment of success pauses while the camera moves in, then plays on.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "At the result the picture holds still while the camera pushes in about 5% over 1 to 1.4 s, then eases back as the recording plays on. Once or twice per film, only on a result worth believing.",
+      "when": "Fits proof moments: a report finished, a payment cleared, a task done.",
+      "avoid": "Freezing more than twice in a film, and never freeze on a loading state."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "time-freeze"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-freeze-on-result.mp4"
+    }
+  },
+  {
+    "id": "film-rewind-replay",
+    "tab": "filming",
+    "name": "Rewind and replay",
+    "line": "The recording runs back for a moment so a key step can be seen again.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "After the key step, run the recording backwards for about 0.8 s, easing into and out of the reverse, then play it again at full speed with the camera one step closer. Use it once, on the step people would miss.",
+      "when": "Fits undo stories and watch-that-again moments in short social demos.",
+      "avoid": "Rewinding more than once in a film, and never rewind across a cut."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "time-rewind"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-rewind-replay.mp4"
+    }
+  },
+  {
+    "id": "film-momentum-cut",
+    "tab": "filming",
+    "name": "Cut on the move",
+    "line": "A hard cut hidden inside fast movement, so scenes flow at speed.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Cut at the fastest point of a move, so the outgoing scene leaves at speed and the incoming one arrives with the same speed and direction, settling in about five frames. The eye follows the motion and never sees the join.",
+      "when": "Fits fast montages and sizzle edits on the beat.",
+      "avoid": "Cutting during a slow move, where the join shows."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "speeds up then snaps to rest",
+        "overshoot": 0.04,
+        "hold_s": 0.25,
+        "motion": 6.4,
+        "still_pct": 3
+      }
+    },
+    "engine": [
+      "momentum-cut"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-momentum-cut.mp4"
+    }
+  },
+  {
+    "id": "film-top-down-descent",
+    "tab": "filming",
+    "name": "Top-down descent",
+    "line": "The camera drops from high above a physical product down to its detail.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Start high above the product looking straight down, descend over 2 to 2.5 s while tilting from overhead to a three-quarter view, and finish on the one detail the line is about. One continuous move, no cut.",
+      "when": "Fits physical products, packaging and hardware launches.",
+      "avoid": "Not for screen products, where there is no real object to fly over."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.5,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "film-crane-rise"
+  },
+  {
+    "id": "film-turntable-packshot",
+    "tab": "filming",
+    "name": "Turntable packshot",
+    "line": "A physical product turns slowly on a clean stage, lit like a store photo.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Turn the object through a half or full circle over 4 to 6 s at a steady speed, with one soft key light and a single highlight crossing it, and stop on its best angle for the name. The camera stays still; only the object turns.",
+      "when": "Fits hardware, packaging and online shop product films.",
+      "avoid": "Speeding up the turn partway, and busy backgrounds behind the object."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 4,
+        "ease": "steady drift with no ease",
+        "overshoot": 0,
+        "hold_s": 2,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.5,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "film-orbit-hero"
+  },
+  {
+    "id": "film-handheld-footage",
+    "tab": "filming",
+    "name": "Handheld footage feel",
+    "line": "Filmed footage with the small sway of a camera held by hand.",
+    "family": "Camera move",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "footage-edit",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Keep a slow, natural sway of no more than 1 to 2% of the frame, at well under one cycle per second, so the shot feels present without shaking, and cut on movement inside the shot.",
+      "when": "Fits footage edits, customer stories and creator-style ads.",
+      "avoid": "Fast shakes, which stutter on screen, and never add sway to a screen recording."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "steady drift with no ease",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "steady drift with no ease",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 9
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "film-living-hold"
+  },
+  {
+    "id": "film-rack-focus",
+    "tab": "filming",
+    "name": "Rack focus, cause to result",
+    "line": "Sharpness moves from what you did to what it changed, on one screen.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Keep one area sharp while the rest softens and dims by 30 to 40%, then move the sharp area to the second thing over 0.4 to 0.5 s, so the eye travels from the cause to its result. Only one area is ever sharp at a time.",
+      "when": "Fits a click in one place that changes something elsewhere on the same screen.",
+      "avoid": "Pairing it with a torch-light pointer on the same beat; one emphasis at a time."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "camera-rack-focus"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-rack-focus.mp4"
+    },
+    "avoid_with": [
+      "film-spotlight-pointer"
+    ]
+  },
+  {
+    "id": "film-focus-on-one-card",
+    "tab": "filming",
+    "name": "Focus on one card",
+    "line": "Everything except the card that matters goes soft and dim.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "When one card or line is speaking, soften everything around it slightly and dim it by 30 to 50% over about 0.4 s, hold for the reading time, then release over 0.3 s. The chosen card itself never moves or scales during the pull.",
+      "when": "Fits lists, feature grids and dashboards where one item carries the line.",
+      "avoid": "Leaving two things sharp at once, and heavy blur that reads as an effect."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "focus-pull"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-focus-on-one-card.mp4"
+    }
+  },
+  {
+    "id": "film-three-layer-depth",
+    "tab": "filming",
+    "name": "Three-layer depth",
+    "line": "Background, product and foreground slide at different speeds, so the frame feels like a real space.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "motion-graphics",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place a soft far layer, the product and one near detail; as the camera moves, the far layer travels about 35% as far as the product and the near layer about 150%, over 1.2 to 2 s, eased in and out. The near layer never crosses what is being read.",
+      "when": "Fits arriving at a product screen or travelling across a workspace.",
+      "avoid": "Moving all layers the same amount, which looks flat, and layers with nothing in them."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "parallax-camera"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-three-layer-depth.mp4"
+    },
+    "pairs_with": [
+      "film-parallax-push-join"
+    ]
+  },
+  {
+    "id": "film-parallax-push-join",
+    "tab": "filming",
+    "name": "Layered push to the next scene",
+    "line": "Layers slide past at different speeds as the camera pushes into the next scene.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Push forward through the scene with near layers sliding past the edges faster than far ones, and let the next scene rise out of the depth, all in 0.7 to 0.9 s. The push speeds up through the middle and slows as the new scene lands.",
+      "when": "Fits scene changes in launch films that should feel like travel rather than a cut.",
+      "avoid": "Not on flat scenes with no layers to separate, where it becomes a plain zoom."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "speeds up and lands soft",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.55,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.9,
+        "ease": "speeds up and lands soft",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.2,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "parallax-push"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-parallax-push-join.mp4"
+    }
+  },
+  {
+    "id": "film-isolate-panel",
+    "tab": "filming",
+    "name": "Isolate the panel",
+    "line": "One panel stays bright while the rest of the screen falls back.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Dim the whole screen except one real panel by about 40% over 0.4 s, keep the panel at its true place and size, and hold until its point is made before bringing the screen back over 0.3 s.",
+      "when": "Fits busy dashboards where one panel carries the feature.",
+      "avoid": "Isolating more than one panel per beat, and never move the panel while it is isolated."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "product-isolate"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-isolate-panel.mp4"
+    }
+  },
+  {
+    "id": "film-sharpen-into-view",
+    "tab": "filming",
+    "name": "Sharpen into view",
+    "line": "A soft, blurred screen comes into focus as the story starts.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "launch-reel",
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Begin with the product softly out of focus behind the first line, then bring it to full sharpness over 0.8 to 1 s as the line clears, without moving the screen itself.",
+      "when": "Fits openings and teasers that hint at the product before showing it.",
+      "avoid": "Leaving anything readable blurred for more than about a second."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.5,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "product-blur-reveal"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-sharpen-into-view.mp4"
+    }
+  },
+  {
+    "id": "film-lift-toward-viewer",
+    "tab": "filming",
+    "name": "Lift toward the viewer",
+    "line": "The chosen card rises off the screen toward the viewer.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "1:1",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The chosen card lifts off the surface by 2 to 3% in scale with a deeper shadow over about 0.35 s and settles with a 1 to 2% overshoot, while the screen behind it stays still.",
+      "when": "Fits picking one plan, one item or one result out of many.",
+      "avoid": "Lifting several cards at once, and never lift text that is being read."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "firm spring with one small bounce",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.3,
+        "motion": 4.8,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "product-lift"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-lift-toward-viewer.mp4"
+    }
+  },
+  {
+    "id": "film-loupe-detail",
+    "tab": "filming",
+    "name": "Loupe on the detail",
+    "line": "A magnifying glass enlarges one small detail without leaving the screen.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Bring a round loupe over the small detail, enlarge it about 2.5 times inside the loupe over 0.4 s, hold while it is read, then take it away. The rest of the screen keeps its size, so the viewer keeps their place.",
+      "when": "Fits small settings, fine print and tiny status changes in tutorials.",
+      "avoid": "Covering the pointer with the loupe, and never show more than one loupe at a time."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "product-magnifier"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-loupe-detail.mp4"
+    }
+  },
+  {
+    "id": "film-floating-screen",
+    "tab": "filming",
+    "name": "Floating screen in depth",
+    "line": "The product floats at an angle in space, drifting slowly over a soft shadow.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Float the screen turned up to 12 degrees over a soft depth shadow, drifting about 2 degrees across the shot at a constant slow speed, and straighten it before anything is read. Wides and openers only.",
+      "when": "Fits launch hero shots, openers and the closing wide.",
+      "avoid": "Tilting any screen that must be read, and floating every shot; it is for wides and openers, two or three times a film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "steady drift with no ease",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.25,
+        "still_pct": 9
+      },
+      "hype": {
+        "beat_s": 1,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.4,
+        "motion": 4.5,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-float",
+      "camera-float"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-floating-screen.mp4"
+    },
+    "pairs_with": [
+      "film-orbit-hero"
+    ]
+  },
+  {
+    "id": "film-isometric-establish",
+    "tab": "filming",
+    "name": "Isometric establishing shot",
+    "line": "The screen lies back in an angled 3D view to set the scene.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "motion-graphics",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Lay the screen back in an isometric view with a solid edge for the first wide beat, hold it for one reading beat, then bring it flat before any reading begins. One angled shot per film.",
+      "when": "Fits establishing beats and montage frames that show the product as an object.",
+      "avoid": "Any shot that must be read, and a second angled wide straight after the first."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.55,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "stage-isometric"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-isometric-establish.mp4"
+    }
+  },
+  {
+    "id": "film-stacked-windows",
+    "tab": "filming",
+    "name": "Stacked windows",
+    "line": "The live screen sits in front of two more behind it, showing there is more.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place the live screen in front with two stills of later steps behind it, offset up and to the right, so the depth says there is more to come; bring each back window forward over 0.5 s as its step arrives.",
+      "when": "Fits several boards, projects or steps that belong together.",
+      "avoid": "Busy screens, where three layers of interface turn into noise."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.015,
+        "hold_s": 0.9,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-stacked"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-stacked-windows.mp4"
+    }
+  },
+  {
+    "id": "film-words-into-focus",
+    "tab": "filming",
+    "name": "Words come into focus",
+    "line": "A line starts soft and sharpens, like a lens finding it.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Each line starts out of focus and slightly larger, then sharpens and settles to size over 0.6 to 0.8 s, lines 0.15 s apart, and holds at least 1.5 s once sharp.",
+      "when": "Fits calm hooks, quotes and brand lines.",
+      "avoid": "Sharpening long paragraphs, and never leave a line soft long enough to strain the eye."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.2,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "focus-in"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-words-into-focus.mp4"
+    }
+  },
+  {
+    "id": "film-depth-push-join",
+    "tab": "filming",
+    "name": "Depth push between screens",
+    "line": "One screen falls back into depth as the next one comes forward.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The outgoing screen recedes and dims as the incoming one moves forward from behind it, both over 0.6 to 0.7 s, so the change feels like stepping deeper into the product. The new screen lands flat and sharp.",
+      "when": "Fits joins between two steps or two features in launch-style demos.",
+      "avoid": "Using it for every join; mix it with one other kind of join."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "join-depth-push"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-depth-push-join.mp4"
+    }
+  },
+  {
+    "id": "film-dolly-zoom",
+    "tab": "filming",
+    "name": "Dolly zoom",
+    "line": "The subject keeps its size while the space behind it stretches, for a dramatic reveal.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Keep the subject the same size in frame while the background stretches away or rushes in over 1 to 1.5 s, so the space seems to change around it. Once per film, at the reveal.",
+      "when": "Fits a dramatic turn in a launch, or a moment of surprise.",
+      "avoid": "Not on screens with text, and never use it as an everyday join."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.3,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 1,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.4,
+        "motion": 4.6,
+        "still_pct": 7
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "film-parallax-push-join"
+  },
+  {
+    "id": "film-two-planes-sharp",
+    "tab": "filming",
+    "name": "Two planes sharp at once",
+    "line": "A near object and a far one are both sharp, with soft space between them.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Keep one near element and one far element both in focus with the band between them softly blurred, so cause and result read in one frame without the eye refocusing, and hold long enough to read both.",
+      "when": "Fits a product and its result seen together, such as a phone and the screen it controls.",
+      "avoid": "A visible seam between the two sharp areas, and a busy middle band that pulls the eye away from both."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 2,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "film-rack-focus"
+  },
+  {
+    "id": "film-miniature-view",
+    "tab": "filming",
+    "name": "Miniature view",
+    "line": "The top and bottom of the frame blur so a scene looks like a tiny model.",
+    "family": "Depth and focus",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "animated-short",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Blur bands across the top and bottom of an angled wide, keep a narrow sharp strip across the middle and lift the colour slightly, so the scene reads as a model seen from above; move the sharp strip only with the subject.",
+      "when": "Fits workflow maps, office or city scenes and playful explainers.",
+      "avoid": "Not on readable interface, which the blur would hide."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "film-isometric-establish"
+  },
+  {
+    "id": "film-pointer-leads",
+    "tab": "filming",
+    "name": "The pointer leads, the camera follows",
+    "line": "A large pointer travels first and the camera arrives with the click.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The pointer sets off on a curved path, the camera starts 0.2 to 0.3 s later, covers about 70% of the distance while closing in, and lands exactly as the click lands. The next move waits until the result shows.",
+      "when": "Fits tutorials and demos where the next thing always happens where the pointer goes.",
+      "avoid": "The camera leading or matching the pointer exactly, or using it when nothing is clicked."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "cursor-lead"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-pointer-leads.mp4"
+    },
+    "pairs_with": [
+      "film-click-push"
+    ]
+  },
+  {
+    "id": "film-presenter-pointer",
+    "tab": "filming",
+    "name": "Guided by a presenter",
+    "line": "A presenter-style pointer walks the viewer through, the camera closing in on each step.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Use a larger presenter pointer that moves on slow arcs and pauses about 0.3 s on each thing before using it, and let the camera ease in on each step it points at. The pointer is the viewer's guide, so it never jumps.",
+      "when": "Fits onboarding, training and sales walkthroughs.",
+      "avoid": "Fast pointer travel, and never close in on something the pointer has not reached."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "cursor-presenter",
+      "camera-auto-zoom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-presenter-pointer.mp4"
+    }
+  },
+  {
+    "id": "film-spotlight-pointer",
+    "tab": "filming",
+    "name": "Torch-light pointer",
+    "line": "A soft pool of light follows the pointer while everything else falls dark.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Dim the screen by about 50% and let a soft circle of light travel with the pointer, so the viewer sees only where the hand is; open the light to the whole screen over 0.5 s when the result appears.",
+      "when": "Fits dense screens where people get lost and one path matters.",
+      "avoid": "Not alongside a focus move or a zoom on the same beat."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "cursor-spotlight"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-spotlight-pointer.mp4"
+    },
+    "avoid_with": [
+      "film-rack-focus"
+    ]
+  },
+  {
+    "id": "film-thumb-view",
+    "tab": "filming",
+    "name": "Thumb's-eye view",
+    "line": "Taps and swipes from a finger, as if the viewer is holding the phone.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Replace the pointer with a soft touch mark that presses, drags and lifts like a thumb, each tap taking about 0.2 s with a small ring, and keep the camera steady so the phone feels held.",
+      "when": "Fits mobile app demos and app store previews.",
+      "avoid": "A desktop pointer on a phone screen, and never tap faster than a real thumb could."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.7,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "cursor-touch"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-thumb-view.mp4"
+    },
+    "pairs_with": [
+      "film-phone-take"
+    ]
+  },
+  {
+    "id": "film-phone-take",
+    "tab": "filming",
+    "name": "Phone in hand, full frame",
+    "line": "A screen recorded at phone size fills the vertical frame.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "ugc",
+        "tutorial"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place the phone-size recording full frame in 9:16 with the touch mark, and let the camera follow only up and down, never cropping the sides of the app. Hold after each tap's result before the next tap.",
+      "when": "Fits mobile web or app flows recorded at phone size.",
+      "avoid": "Desktop recordings squeezed into the tall frame, and crops that cut off the sides of the app."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "relayout-phone-take"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-phone-take.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-phone-in-view",
+    "tab": "filming",
+    "name": "The phone in view",
+    "line": "The phone recording sits inside a plain phone shape, so the device is part of the shot.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Show the phone-size recording inside a plain phone frame, as tall as the frame allows above the caption slot, and keep the phone still while its screen changes in place every 1.5 to 2 s.",
+      "when": "Fits app promos where the phone itself is part of the story.",
+      "avoid": "Not when the screen must be read closely, and never copy a real maker's phone shape."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.9,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.015,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "relayout-phone-take-framed"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-phone-in-view.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-fly-on-the-wall",
+    "tab": "filming",
+    "name": "Fly on the wall",
+    "line": "No pointer at all: the camera simply watches the product work.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Hide the pointer and let the product appear to work on its own while the camera pans slowly from cause to result over 1.6 to 2 s. Each result holds 1.5 s so it reads.",
+      "when": "Fits automation, AI and background features where nobody clicks.",
+      "avoid": "Not for flows that only make sense with a person's actions."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "cursor-hidden",
+      "camera-pan-across"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-fly-on-the-wall.mp4"
+    }
+  },
+  {
+    "id": "film-named-teammate",
+    "tab": "filming",
+    "name": "Someone else is here",
+    "line": "A named pointer shows a teammate working in the same place.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Give the pointer a small name tag in the accent colour so the viewer sees a second person at work, and keep it at a human pace with a 0.3 s pause before each action.",
+      "when": "Fits collaboration, comments and shared workspaces.",
+      "avoid": "Real people's names without permission; use a plain first name or a role."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "cursor-named"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-named-teammate.mp4"
+    }
+  },
+  {
+    "id": "film-two-people-moment",
+    "tab": "filming",
+    "name": "Two people, one moment",
+    "line": "Two recordings side by side show two people working together in time.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Run two recordings side by side on one clock with named pointers, lined up so one person's action and the other's reaction land on the same frame, and close in on each side's action with a gentle follow.",
+      "when": "Fits real-time collaboration, chat and handovers between teammates.",
+      "avoid": "A single user's flow, and two recordings whose key moments do not land on the same frame."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "look-two-people"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-two-people-moment.mp4"
+    }
+  },
+  {
+    "id": "film-honest-screen",
+    "tab": "filming",
+    "name": "Honest screen",
+    "line": "The real pointer path and an almost still camera, for proof people can trust.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "footage-edit"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Keep the recorded pointer exactly as it moved, add no click effects, move the camera no more than a 2% push across a shot, and join shots with straight cuts. Real waits are labelled when sped up.",
+      "when": "Fits proof films, honest walkthroughs and technical buyers.",
+      "avoid": "Polished launches, and added click effects that undo the honest feel."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "steady drift with no ease",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "look-documentary"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-honest-screen.mp4"
+    },
+    "avoid_with": [
+      "film-cinematic-launch-lens"
+    ]
+  },
+  {
+    "id": "film-straight-at-lens",
+    "tab": "filming",
+    "name": "Straight at the lens",
+    "line": "Something rushes toward the viewer and fills the frame in the opening second.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "In the first 0.5 s a word or object flies straight at the viewer, growing until it nearly fills the frame, then stops dead with a 4 to 6% settle and holds 0.4 s. The first readable frame lands by 0.6 s.",
+      "when": "Fits scroll-stopping hooks for vertical ads.",
+      "avoid": "Not after the first beat; it is an opening, not a rhythm."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.4,
+        "motion": 6,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "opener-at-the-lens"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-straight-at-lens.mp4"
+    }
+  },
+  {
+    "id": "film-from-behind-camera",
+    "tab": "filming",
+    "name": "From behind the camera",
+    "line": "Words fly in from behind the viewer and land in front of them.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Each line starts huge and soft as if passing the viewer's shoulder, then shrinks to its place and sharpens over 0.5 s with a 1 to 2% settle, so the viewer feels they are standing behind the camera.",
+      "when": "Fits title cards and chapter lines that should feel immersive.",
+      "avoid": "Not for long lines, which cannot be read on the way in."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.02,
+        "hold_s": 0.9,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "from-lens"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-from-behind-camera.mp4"
+    }
+  },
+  {
+    "id": "film-picture-in-picture",
+    "tab": "filming",
+    "name": "Second view in the corner",
+    "line": "A small window in the corner shows the same moment from another side.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Keep the main recording full size and place a second one, another user or another device, in a corner window about a quarter of the width, both on one clock so the same moment shows in both.",
+      "when": "Fits a message sent and received, or a change on the web showing up on a phone.",
+      "avoid": "Placing the small window over the action, and showing a different moment in it, which splits attention."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-pip"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-picture-in-picture.mp4"
+    }
+  },
+  {
+    "id": "film-raw-vertical",
+    "tab": "filming",
+    "name": "Raw vertical, real path",
+    "line": "A tall, honest cut that keeps the real pointer path and skips the polish.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "ugc",
+        "footage-edit",
+        "product-demo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Full-bleed 9:16 with the recorded pointer path untouched; hold one scale while it still reads, otherwise follow without springs, never faster than about 0.8 s per move.",
+      "when": "Fits creator-style and honest vertical cuts.",
+      "avoid": "Polished promos, and springy follows that make a raw cut feel staged."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "relayout-vertical-documentary"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-raw-vertical.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-over-the-shoulder",
+    "tab": "filming",
+    "name": "Over the shoulder",
+    "line": "We see the screen past a person's shoulder, so it feels like real use.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "footage-edit",
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Frame the screen past the soft edge of a person's shoulder and head in the near third of the frame, then push past them into the screen over 1.2 s so the product takes over. The person never covers the action.",
+      "when": "Fits customer stories and real-world use.",
+      "avoid": "Staged-looking people and stock poses, and a shoulder that hides the screen when it matters."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.8,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "film-pointer-leads"
+  },
+  {
+    "id": "film-first-person-footage",
+    "tab": "filming",
+    "name": "First-person footage",
+    "line": "Filmed through the user's own eyes, holding the phone or walking up to the product.",
+    "family": "Point of view",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "footage-edit",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Film from eye height as if the viewer is the user: hands enter from the bottom of the frame, the phone or product sits in the lower two thirds, and each action is one continuous move of 1 to 2 s with no cut in the middle.",
+      "when": "Fits creator-style app ads and real-world product moments.",
+      "avoid": "Fast shaking, and hands that cover the screen at the moment that matters."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "steady drift with no ease",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.9,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.03,
+        "hold_s": 0.3,
+        "motion": 4.8,
+        "still_pct": 6
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "film-thumb-view"
+  },
+  {
+    "id": "film-flat-card",
+    "tab": "filming",
+    "name": "Flat card on the stage",
+    "line": "The screen sits on your brand's stage as a clean card with a soft shadow.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Present the screen as a rounded card with a thin border and a soft shadow, filling about 80% of the frame width on a plain stage, and swap to the browser window now and then across a film so it never feels the same.",
+      "when": "Fits most product beats; it is the safest way to show a screen.",
+      "avoid": "Shrinking the card so far that product words fall under 4% of frame height."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-card"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-flat-card.mp4"
+    },
+    "pairs_with": [
+      "film-browser-frame"
+    ]
+  },
+  {
+    "id": "film-browser-frame",
+    "tab": "filming",
+    "name": "Clean browser window",
+    "line": "A plain browser frame tells the viewer it is a web app.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "tutorial",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Wrap the screen in a light browser frame with simple back, forward and reload marks and the real address, with no window buttons or other companies' marks, and keep every camera move inside the window.",
+      "when": "Fits tutorials and demos of web apps.",
+      "avoid": "Not in hype social cuts, where the bar takes room."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "stage-browser"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-browser-frame.mp4"
+    },
+    "pairs_with": [
+      "film-flat-card"
+    ]
+  },
+  {
+    "id": "film-dark-browser",
+    "tab": "filming",
+    "name": "Dark browser window",
+    "line": "The browser frame in your dark stage colours, for dark products.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Use the browser frame in the brand's dark stage colours so a dark product sits naturally, with the frame one or two shades lighter than the stage so the window edge still reads.",
+      "when": "Fits dark products and night-style films.",
+      "avoid": "A dark frame around a light product on a light stage, where the bar steals the eye."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-browser-dark"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-dark-browser.mp4"
+    }
+  },
+  {
+    "id": "film-on-a-laptop",
+    "tab": "filming",
+    "name": "On a laptop",
+    "line": "The screen appears once on a plain laptop to say it is desktop software.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Show the screen once on a plain laptop with no logo, at about 70% of the frame width, for the establishing beat, then move into the screen for the working shots.",
+      "when": "Fits office and desktop tools that benefit from a sense of place.",
+      "avoid": "The device in every shot; once per film is enough."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-laptop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-on-a-laptop.mp4"
+    }
+  },
+  {
+    "id": "film-desk-monitor",
+    "tab": "filming",
+    "name": "On a desk monitor",
+    "line": "A plain monitor on a stand, so dashboards feel at home.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place the screen on a plain monitor with a simple stand for the opening wide, hold 1.5 s, then work inside the screen for the rest of the scene.",
+      "when": "Fits dashboards, analytics and desktop software.",
+      "avoid": "Mobile stories, and staying on the monitor once the working shots begin."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "stage-monitor"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-desk-monitor.mp4"
+    }
+  },
+  {
+    "id": "film-tablet-stage",
+    "tab": "filming",
+    "name": "On a tablet",
+    "line": "The product on a plain landscape tablet, for apps people use on one.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "4:5",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Show the product on a plain landscape tablet at about 75% of the frame width, with taps rather than a pointer, and change the screen in place every 1.5 to 2 s.",
+      "when": "Fits tablet apps, point of sale, kiosks and field tools.",
+      "avoid": "Not for desktop-only products, where it suggests a tablet app that does not exist."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.9,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-tablet"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-tablet-stage.mp4"
+    }
+  },
+  {
+    "id": "film-desktop-on-phone",
+    "tab": "filming",
+    "name": "Desktop recording on a phone",
+    "line": "A tall slice of a wide recording inside a plain phone, for works-on-your-phone moments.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Show a tall crop of a wide recording inside a plain phone, following the action, when there is no phone-size recording; keep text inside the crop at least 4% of frame height.",
+      "when": "Fits a works-on-your-phone-too beat inside a desktop demo.",
+      "avoid": "Not when the product has a real mobile layout; record that instead."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-phone"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-desktop-on-phone.mp4"
+    }
+  },
+  {
+    "id": "film-side-by-side",
+    "tab": "filming",
+    "name": "Side by side",
+    "line": "Two recordings next to each other, lined up so their key moments match.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place two recordings side by side on one clock, lined up so their shared moments land on the same frame; each side gets half the width and a plain label.",
+      "when": "Fits two people, two plans, light and dark, or the old way and the new way.",
+      "avoid": "Recordings whose actions do not line up, and labels long enough to compete with the screens."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-split"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-side-by-side.mp4"
+    }
+  },
+  {
+    "id": "film-three-across",
+    "tab": "filming",
+    "name": "Three across",
+    "line": "Three versions of one flow play at once, then the winner takes the frame.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "product-demo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Run three recordings of one flow side by side on one clock, each with one clear action, and let the winner widen to the full frame over 0.6 s at the end.",
+      "when": "Fits three plans, three templates or three ways to do one job.",
+      "avoid": "Not in square or vertical sizes, where each recording is too small."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.015,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 4.9,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "stage-split-three"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-three-across.mp4"
+    }
+  },
+  {
+    "id": "film-screen-grid",
+    "tab": "filming",
+    "name": "Grid of screens",
+    "line": "Many screens play at once in a grid, then the camera dives into one.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Fill a grid with screens all playing on one clock, each a stretch of a real recording; a new tile lights up every 0.5 to 0.8 s, and the grid closes in on one tile for the final beat.",
+      "when": "Fits everything-you-can-do montages.",
+      "avoid": "Beats where one thing needs reading, and tiles so small the product is unrecognisable."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.6,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "stage-grid"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-screen-grid.mp4"
+    }
+  },
+  {
+    "id": "film-screen-wall",
+    "tab": "filming",
+    "name": "Wall of screens",
+    "line": "A wall of product screens drifts in depth, then the camera moves into one.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Build a wall of screens turned slightly in depth, columns drifting up and down at different speeds, each tile a still from the real product; let it drift for about 1 s, then snap into one tile in 0.3 s to start the story.",
+      "when": "Fits openers and all-in-one-place beats.",
+      "avoid": "Anything that must be read, and holding the wall so long the drift becomes the story."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.9,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 4.8,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "stage-wall"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-screen-wall.mp4"
+    }
+  },
+  {
+    "id": "film-before-after-wipe",
+    "tab": "filming",
+    "name": "Before and after wipe",
+    "line": "A line wipes across the same screen from before to after.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A line with a handle wipes across the same screen from before to after over about 1 s, with plain Before and After labels, and holds on the after so the change sinks in.",
+      "when": "Fits redesigns, a setting switched on, or light and dark.",
+      "avoid": "Two recordings with different layouts, which show a mismatch under the wipe."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-before-after"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-before-after-wipe.mp4"
+    }
+  },
+  {
+    "id": "film-mail-window",
+    "tab": "filming",
+    "name": "The email it sends",
+    "line": "A neutral mail window shows the real email your product sends.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Show an email the product sends inside a neutral mail window with only the real subject and sender, then ease in over 0.8 s to the one line that matters and hold it there.",
+      "when": "Fits notifications, receipts, reports and reminders the product sends.",
+      "avoid": "Made-up subjects or senders, and zooming on the whole email when one line carries the point."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "stage-email"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-mail-window.mp4"
+    }
+  },
+  {
+    "id": "film-terminal-window",
+    "tab": "filming",
+    "name": "Terminal window",
+    "line": "A plain terminal on a dark stage, for command-line tools.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Put the command line in a neutral terminal window on the dark stage, type at a human pace, and close in so the output is at least 4% of frame height when it lands.",
+      "when": "Fits developer tools, APIs and command-line products.",
+      "avoid": "Web products, and output that flashes past faster than a developer could read it."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "stage-terminal"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-terminal-window.mp4"
+    }
+  },
+  {
+    "id": "film-vertical-montage",
+    "tab": "filming",
+    "name": "Stacked vertical montage",
+    "line": "Two parts of the product stacked in the tall frame, changing fast.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Stack two stretches of the product in the tall frame, each with its own following camera, and change them every 0.6 to 0.9 s; never three, which would be too small to read.",
+      "when": "Fits many features in one vertical beat.",
+      "avoid": "One feature that needs reading, and a third stacked strip, which shrinks everything below readable size."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.75,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.3,
+        "motion": 5.3,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "relayout-vertical-montage"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-vertical-montage.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-vertical-two-people",
+    "tab": "filming",
+    "name": "Two people, stacked",
+    "line": "Two people's screens stacked top and bottom in a vertical cut.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Stack two recordings top and bottom on one clock with named pointers, so one person's action and the other's reaction line up across the frame.",
+      "when": "Fits collaboration features in vertical cuts.",
+      "avoid": "A single user's flow, and two strips whose action and reaction land at different moments."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "relayout-vertical-two-people"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-vertical-two-people.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-patient-tutorial",
+    "tab": "filming",
+    "name": "Patient step-by-step staging",
+    "line": "A big pointer, numbered steps and long holds, so nobody gets lost.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Stage each step in a browser window with a numbered badge, a large pointer, a ring on every click and each key shown as a cap; the camera closes in steadily on every click with no follow and holds 1.5 to 2 s.",
+      "when": "Fits tutorials, help videos and how-tos.",
+      "avoid": "Short promos, and skipping a step to save time, which loses the viewer at exactly that step."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 2,
+        "motion": 0.5,
+        "still_pct": 15
+      }
+    },
+    "engine": [
+      "look-tutorial"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-patient-tutorial.mp4"
+    },
+    "settles": {
+      "kind": "tutorial"
+    }
+  },
+  {
+    "id": "film-clear-demo-staging",
+    "tab": "filming",
+    "name": "Clear demo staging",
+    "line": "The studio's everyday demo: clear pointer, ring clicks and a close-in on each action.",
+    "family": "Staging and blocking",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A classic pointer with a slight pull toward targets, a ring on each click, a close-in on every action with a gentle follow, and real waits sped up; shots join by zooming through, matching shapes or pushing.",
+      "when": "Fits most product demos.",
+      "avoid": "Not when the film needs a cinematic or raw feel."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.015,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "look-product-demo"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-clear-demo-staging.mp4"
+    }
+  },
+  {
+    "id": "film-zoom-blur-punch",
+    "tab": "filming",
+    "name": "Zoom blur between beats",
+    "line": "The frame rushes forward in a blur and the next shot snaps out of it.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Between beats the frame zooms with an outward streaking blur over about 0.2 s, and the next shot arrives out of the blur and settles within five frames; the blur clears completely before anything is read.",
+      "when": "Fits hype edits and launch sizzles on strong beats.",
+      "avoid": "Not in calm films, and never over text that is being read."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.65,
+        "ease": "speeds up then snaps to rest",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 6.1,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "zoom-blur"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-zoom-blur-punch.mp4"
+    }
+  },
+  {
+    "id": "film-exposure-bloom",
+    "tab": "filming",
+    "name": "Flooded with light",
+    "line": "The frame brightens to soft white like an open lens, and the next shot comes out of it.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The frame overexposes to a soft white over about 0.3 s, as if the lens is flooded with light, and the next shot rises out of the brightness over 0.4 s.",
+      "when": "Fits reveals, launches and moments of relief.",
+      "avoid": "Harsh pure-white flashes, more than two blooms in a film, and blooming over text being read."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "exposure-bloom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-exposure-bloom.mp4"
+    }
+  },
+  {
+    "id": "film-light-across-glass",
+    "tab": "filming",
+    "name": "Light across glass",
+    "line": "One soft band of light passes over the surface, like light catching glass.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A single soft band of light crosses the surface once over 0.6 to 0.8 s, as if light is catching glass, and never returns in the same shot.",
+      "when": "Fits logo moments, cards and premium product reveals.",
+      "avoid": "Repeated sweeps, which look like a loading shimmer."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "light-sweep"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-light-across-glass.mp4"
+    }
+  },
+  {
+    "id": "film-iris-open",
+    "tab": "filming",
+    "name": "Iris opens on the subject",
+    "line": "The scene opens from a circle centred on the thing that matters.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "promo",
+        "animated-short"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Open the scene from a circle centred on the subject, widening over 0.6 to 0.8 s like a lens opening, so the eye starts on the thing that matters.",
+      "when": "Fits openings and chapter starts that need a clear point to look at.",
+      "avoid": "Centring the circle anywhere but on the subject."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.55,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "iris-wipe"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-iris-open.mp4"
+    }
+  },
+  {
+    "id": "film-punch-in-open",
+    "tab": "filming",
+    "name": "Punch-in opening",
+    "line": "A hard punch from wide to close on the subject in the very first beat.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "ugc",
+        "launch-reel"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Open with a hard punch from wide to close on the subject in about 0.15 s with a 4 to 5% settle, and have the first readable line on screen by 0.5 s.",
+      "when": "Fits vertical ads and hooks.",
+      "avoid": "Punching into a subject that is not ready to read."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.6,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.35,
+        "motion": 5.9,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "opener-punch-in"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-punch-in-open.mp4"
+    }
+  },
+  {
+    "id": "film-fill-the-frame",
+    "tab": "filming",
+    "name": "Fill the frame",
+    "line": "One bold shape grows until it fills the frame, and the story starts inside it.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "9:16",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The subject grows until it fills the frame edge to edge within the first 0.6 s, then the next layer is revealed inside it; one bold shape, no small detail.",
+      "when": "Fits loud openings and logo hits.",
+      "avoid": "Filling the frame with fine text, and growing a shape that has nothing to reveal inside it."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.4,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "opener-fill-frame"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-fill-the-frame.mp4"
+    }
+  },
+  {
+    "id": "film-sudden-stop",
+    "tab": "filming",
+    "name": "Rush and stop dead",
+    "line": "The camera rushes toward the subject and stops dead on it.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Rush toward the subject and stop dead on it with a 4 to 6% overshoot that settles within five frames, then hold 0.5 s so the stop lands.",
+      "when": "Fits hooks and big reveals.",
+      "avoid": "Soft, slow stops; the contrast between the rush and the stop is the point."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.8,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.06,
+        "hold_s": 0.5,
+        "motion": 5,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "opener-sudden-stop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-sudden-stop.mp4"
+    }
+  },
+  {
+    "id": "film-spotlight-open",
+    "tab": "filming",
+    "name": "Light finds the subject",
+    "line": "A dark frame, then a soft pool of light finds the subject.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Start on a dark frame, let a soft pool of light find the subject over 0.6 s, then widen it to the full scene over the next second.",
+      "when": "Fits dramatic openings and premium launches.",
+      "avoid": "A hard-edged spotlight, and more than one per film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.25,
+        "still_pct": 9
+      }
+    },
+    "engine": [
+      "opener-spotlight"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-spotlight-open.mp4"
+    }
+  },
+  {
+    "id": "film-warm-light-leak",
+    "tab": "filming",
+    "name": "Warm light leak",
+    "line": "Warm light washes across the frame like old film, softening a change.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "footage-edit",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Let a warm wash of light drift in from one edge over about 0.8 s, peak softly as the shot changes underneath, and fade over the next 0.6 s, so the change feels like film rather than a cut.",
+      "when": "Fits warm brand stories, customer films and footage edits.",
+      "avoid": "Not on every change, and keep it off text that is being read."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "light-leak"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-warm-light-leak.mp4"
+    }
+  },
+  {
+    "id": "film-cinematic-launch-lens",
+    "tab": "filming",
+    "name": "Cinematic launch lens",
+    "line": "Big, polished camera work: soft-landing zooms and a slow float on wides.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Zooms land with a soft spring, wides float slowly in depth, hover gets a gentle glow and clicks a soft pulse; shots join by carrying one element, pushing into depth or whipping across.",
+      "when": "Fits launches and big announcements.",
+      "avoid": "Tutorials, and floating or turning any screen while it is being read."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "firm spring with one small bounce",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      },
+      "hype": {
+        "beat_s": 0.9,
+        "ease": "firm spring with one small bounce",
+        "overshoot": 0.04,
+        "hold_s": 0.35,
+        "motion": 4.7,
+        "still_pct": 6
+      }
+    },
+    "engine": [
+      "look-launch"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-cinematic-launch-lens.mp4"
+    },
+    "avoid_with": [
+      "film-honest-screen"
+    ]
+  },
+  {
+    "id": "film-tight-social-lens",
+    "tab": "filming",
+    "name": "Tight social lens",
+    "line": "Tight, springy zooms that follow the action, made for sound-off feeds.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Tight following zooms snap in with a spring, the pointer is large, clicks get a line burst and typing is sped up early; shots join with snap cuts and whips every 0.5 to 0.8 s.",
+      "when": "Fits sound-off social cuts.",
+      "avoid": "Desktop demos watched at full size, and snapping in on something that has not changed."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.65,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.05,
+        "hold_s": 0.3,
+        "motion": 5.7,
+        "still_pct": 4
+      }
+    },
+    "engine": [
+      "look-social-vertical"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-tight-social-lens.mp4"
+    }
+  },
+  {
+    "id": "film-refocus-dissolve",
+    "tab": "filming",
+    "name": "Refocus between shots",
+    "line": "One shot drifts out of focus as the next comes into focus.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The outgoing shot drifts out of focus while the next one comes into focus over 0.6 to 0.8 s, so the change feels like a lens refocusing rather than a cut.",
+      "when": "Fits calm films, between closely related steps.",
+      "avoid": "Not between unrelated scenes, because it tells the viewer they are connected."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "join-blur-dissolve"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-refocus-dissolve.mp4"
+    }
+  },
+  {
+    "id": "film-whip-into-open",
+    "tab": "filming",
+    "name": "Whip into the opening",
+    "line": "The film starts mid-swing and settles on the first subject.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "promo",
+        "launch-reel",
+        "ugc"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The film starts in the middle of a blurred swing that settles on the first subject in 0.25 s with a small overshoot, so the viewer arrives already moving.",
+      "when": "Fits fast hooks.",
+      "avoid": "Opening a calm film with it, and a second whip in the same direction straight after."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "speeds up then snaps to rest",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.8,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "opener-whip-in"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-whip-into-open.mp4"
+    }
+  },
+  {
+    "id": "film-wide-angle-bulge",
+    "tab": "filming",
+    "name": "Wide-angle bulge",
+    "line": "A very wide lens curves the edges and makes the centre feel close.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "hype"
+      ],
+      "kinds": [
+        "ugc",
+        "promo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Bend the frame as a very wide lens would, edges curving and the centre swelling slightly toward the viewer, and push the subject close to the lens on the beat with a 0.2 s move.",
+      "when": "Fits playful creator-style ads and skate or street-style energy.",
+      "avoid": "Not on readable interface, which the curve distorts."
+    },
+    "timing": {
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5,
+        "still_pct": 6
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "film-straight-at-lens"
+  },
+  {
+    "id": "film-lens-flare-streak",
+    "tab": "filming",
+    "name": "Lens flare streak",
+    "line": "A thin horizontal streak of light crosses the frame like a film lens.",
+    "family": "Lens feel",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Pass one thin horizontal streak of cool light across the frame over 0.5 s at the moment of a reveal, peaking on the subject and fading as it leaves.",
+      "when": "Fits cinematic launches and title moments.",
+      "avoid": "More than one streak in a shot, and coloured rainbows of flare."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "film-light-across-glass"
+  },
+  {
+    "id": "film-zoom-through-click",
+    "tab": "filming",
+    "name": "Zoom through the click",
+    "line": "Every change of screen happens by diving through what was clicked, so the film is one move.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Every change of screen happens through a click: the camera pushes into the pressed control and comes out in the next screen, and inside each screen it eases in on each action. The film plays as one unbroken move.",
+      "when": "Fits product demos and launch films that should feel like a single take.",
+      "avoid": "A hard cut anywhere in the flow; if a change has no click, plan one."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "speeds up and lands soft",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "join-zoom-through",
+      "camera-auto-zoom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-zoom-through-click.mp4"
+    },
+    "pairs_with": [
+      "film-zoom-to-action"
+    ]
+  },
+  {
+    "id": "film-carry-the-element",
+    "tab": "filming",
+    "name": "Carry one element across",
+    "line": "One card travels from one screen into the next while everything changes around it.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "One element, a card, an avatar or a button, travels from its place in one screen to its place in the next over 0.5 to 0.65 s, changing size and corners on the way, while the rest of the screen changes around it.",
+      "when": "Fits flows where the same thing moves from a list to its detail.",
+      "avoid": "Stretching the text inside the moving element, and carrying something the viewer has not noticed yet."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "join-shared-element"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-carry-the-element.mp4"
+    }
+  },
+  {
+    "id": "film-match-cut-flow",
+    "tab": "filming",
+    "name": "Matching shapes",
+    "line": "A shape in the same place joins two screens, so the eye never moves.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Cut between two screens where a shape sits at the same place and size in both, so the eye stays still while the world changes around it.",
+      "when": "Fits fast feature tours and before-and-after moments.",
+      "avoid": "Matches where the shapes are not truly aligned; a near miss looks like a mistake."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.45,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.3,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "join-match-cut"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-match-cut-flow.mp4"
+    }
+  },
+  {
+    "id": "film-card-grows",
+    "tab": "filming",
+    "name": "The card grows into the screen",
+    "line": "A small card grows until it becomes the whole next screen.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial",
+        "promo"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A small card grows over 0.5 to 0.7 s until it is the whole next screen, with its new contents appearing only in the last third of the growth.",
+      "when": "Fits opening a detail from a list, or a step from a menu.",
+      "avoid": "Showing stretched content while the card grows, and growing a card the viewer did not see chosen."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "join-container-grow"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-card-grows.mp4"
+    }
+  },
+  {
+    "id": "film-one-long-scroll",
+    "tab": "filming",
+    "name": "One long scroll",
+    "line": "Screens are joined by one steady scroll, as if the product were one long page.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Join screens with one continuous scroll, the bottom of one screen handing over to the top of the next, scrolling at a steady speed with an eased stop of about 0.8 s on each feature.",
+      "when": "Fits vertical tours of long pages and feeds.",
+      "avoid": "Scrolling so fast that headings cannot be read, and stopping between features without an eased landing."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "join-scroll-relay"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-one-long-scroll.mp4"
+    }
+  },
+  {
+    "id": "film-drag-next-screen",
+    "tab": "filming",
+    "name": "Drag in the next screen",
+    "line": "The pointer grabs the edge and pulls the next screen into view.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The pointer grabs the edge of the current screen and drags the next one in; the new screen trails slightly behind the pointer and settles with a 1 to 2% overshoot.",
+      "when": "Fits playful demos and steps the user causes, like turning a page.",
+      "avoid": "Not on every change; save it for steps that feel like turning a page."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.9,
+        "ease": "firm spring with one small bounce",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "join-cursor-drag"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-drag-next-screen.mp4"
+    }
+  },
+  {
+    "id": "film-carried-object",
+    "tab": "filming",
+    "name": "One object carries the story",
+    "line": "One shape travels through every scene and becomes part of each new one.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "launch-reel",
+        "motion-graphics",
+        "animated-short"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "One object, a shape, a card or the brand's mark, travels through every scene and becomes part of each new layout, so the whole film reads as a single move. Each handover takes 0.5 to 0.7 s.",
+      "when": "Fits launch films and explainers that should feel like one take.",
+      "avoid": "Switching which object carries the story partway through."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "carrier"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-carried-object.mp4"
+    }
+  },
+  {
+    "id": "film-shape-crosses-scenes",
+    "tab": "filming",
+    "name": "Shape that crosses scenes",
+    "line": "A graphic keeps its place while the scene rebuilds around it, then moves on.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "launch-reel",
+        "animated-short"
+      ],
+      "sizes": [
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A graphic element holds its place in frame while the scene around it rebuilds, then moves to its new position over about 0.5 s, so two designed scenes share one thread.",
+      "when": "Fits motion graphics and title sequences.",
+      "avoid": "Moving the shared element and the scene at the same moment."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.015,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "shared-element"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-shape-crosses-scenes.mp4"
+    }
+  },
+  {
+    "id": "film-button-becomes-screen",
+    "tab": "filming",
+    "name": "Button becomes the screen",
+    "line": "A small button expands to become the whole next scene.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "motion-graphics",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "A small button or tile expands over 0.5 to 0.7 s to become the whole next scene, its new content appearing only in the last third of the growth.",
+      "when": "Fits app promos and designed explainers.",
+      "avoid": "Showing distorted content while it grows, and growing from a button nobody pressed."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.9,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "container-transform"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-button-becomes-screen.mp4"
+    }
+  },
+  {
+    "id": "film-slide-away-reveal",
+    "tab": "filming",
+    "name": "Slide away to reveal",
+    "line": "The current scene slides off and the next one is already waiting underneath.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "promo",
+        "motion-graphics",
+        "product-demo"
+      ],
+      "sizes": [
+        "4:5",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "The current scene slides off one edge over 0.45 s, speeding up as it goes, to reveal the next scene already in place beneath it, so the frame is never empty.",
+      "when": "Fits feed posts made of a run of short beats.",
+      "avoid": "Changing direction each time; keep one direction per film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "speeds up and goes",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.45,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "slide-off-reveal"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-slide-away-reveal.mp4"
+    }
+  },
+  {
+    "id": "film-seamless-loop",
+    "tab": "filming",
+    "name": "Seamless loop",
+    "line": "The last frame flows back into the first, so the clip plays forever.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "motion-graphics"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "In the last 1 to 1.5 s the picture dissolves back to its first frame while the camera and pointer return to where they began, so the clip loops with no visible join.",
+      "when": "Fits website heroes and social loops.",
+      "avoid": "Films that end with a call to action, and a last frame whose pointer or camera sits far from the first."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "time-loop"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-seamless-loop.mp4"
+    }
+  },
+  {
+    "id": "film-vertical-click-join",
+    "tab": "filming",
+    "name": "Vertical zoom through the click",
+    "line": "Vertical shots joined by diving through what was clicked.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "ugc"
+      ],
+      "sizes": [
+        "9:16"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Join vertical shots by zooming through the click, each shot planned so the clicked thing and the pointer sit in the same place on both sides of the join.",
+      "when": "Fits vertical demos that should feel like one take.",
+      "avoid": "Joins where the clicked thing jumps position, which breaks the illusion."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.9,
+        "ease": "speeds up and lands soft",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.5,
+        "still_pct": 7
+      }
+    },
+    "engine": [
+      "relayout-vertical-join"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-vertical-click-join.mp4"
+    },
+    "settles": {
+      "size": "9:16"
+    }
+  },
+  {
+    "id": "film-push-screen-to-screen",
+    "tab": "filming",
+    "name": "Push from screen to screen",
+    "line": "Each new screen pushes the old one out, like a row moving past a still camera.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident",
+        "hype"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Each new screen pushes the old one out of frame in one direction over 0.45 to 0.6 s, so the film reads as a row of screens moving past a fixed camera.",
+      "when": "Fits step-by-step tours with a clear forward direction.",
+      "avoid": "Changing direction more than once; direction tells the viewer forward or back."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.8,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      },
+      "hype": {
+        "beat_s": 0.7,
+        "ease": "snap in and settle fast",
+        "overshoot": 0.04,
+        "hold_s": 0.3,
+        "motion": 5.1,
+        "still_pct": 5
+      }
+    },
+    "engine": [
+      "join-push"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-push-screen-to-screen.mp4"
+    }
+  },
+  {
+    "id": "film-circle-from-click",
+    "tab": "filming",
+    "name": "Opens from the click",
+    "line": "The next screen opens in a circle from the exact point that was clicked.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "1:1",
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "At the click, the next screen opens in a circle from the pressed point, widening over 0.5 s until it fills the frame.",
+      "when": "Fits demos where a click opens something new.",
+      "avoid": "Starting the circle anywhere but the click, and opening circles on every change in the film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 1.9,
+        "ease": "fast in with a soft landing",
+        "overshoot": 0.01,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "join-circle-reveal"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-circle-from-click.mp4"
+    }
+  },
+  {
+    "id": "film-clicks-on-the-words",
+    "tab": "filming",
+    "name": "Clicks land on the words",
+    "line": "Every click lands exactly on the word of the voice-over that names it.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "tutorial"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Place every click and result on the word of the voice that names it by stretching or squeezing the pauses between actions, never the actions themselves, and let the camera ease in on each one.",
+      "when": "Fits narrated demos and explainers.",
+      "avoid": "Timings that would need the pauses to play more than eight times faster or four times slower than recorded."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2.2,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "time-pin",
+      "camera-auto-zoom"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-clicks-on-the-words.mp4"
+    },
+    "settles": {
+      "voice": "voice-over"
+    }
+  },
+  {
+    "id": "film-same-moment-new-device",
+    "tab": "filming",
+    "name": "Same moment, new device",
+    "line": "The scene hops from laptop to phone without breaking the moment.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "confident"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo",
+        "launch-reel"
+      ],
+      "sizes": [
+        "16:9"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Keep the same moment on screen while the device around it changes, laptop to phone or back, over about 0.6 s, so the viewer sees the product follow them.",
+      "when": "Fits products that sync across devices.",
+      "avoid": "Swapping devices more than once or twice per film."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2.1,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 0.9,
+        "motion": 1.3,
+        "still_pct": 8
+      }
+    },
+    "engine": [
+      "join-device-swap"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/film-same-moment-new-device.mp4"
+    }
+  },
+  {
+    "id": "film-one-take-real-place",
+    "tab": "filming",
+    "name": "One take through a real place",
+    "line": "A single unbroken camera move through filmed space, ending on the screen.",
+    "family": "One continuous camera",
+    "filters": {
+      "energy": [
+        "calm",
+        "confident"
+      ],
+      "kinds": [
+        "footage-edit",
+        "launch-reel",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "9:16"
+      ],
+      "ready": false
+    },
+    "prompt": {
+      "what": "Move the camera without a cut through a real room, past a person, onto a desk and into the screen over 6 to 10 s, each stop on the way holding for one short line.",
+      "when": "Fits brand films and launches with filmed footage.",
+      "avoid": "Hiding cuts that the viewer can spot; a visible cheat breaks the spell."
+    },
+    "timing": {
+      "calm": {
+        "beat_s": 4,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.8,
+        "motion": 0.5,
+        "still_pct": 15
+      },
+      "confident": {
+        "beat_s": 2.5,
+        "ease": "even in and out",
+        "overshoot": 0,
+        "hold_s": 1,
+        "motion": 1.2,
+        "still_pct": 9
+      }
+    },
+    "engine": [],
+    "preview": {
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "film-carried-object"
+  }
+]
