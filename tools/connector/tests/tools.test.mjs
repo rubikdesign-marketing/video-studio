@@ -190,3 +190,16 @@ test('tools: brief_reopen refuses an item that comes from the saved style, with 
   assert.equal(loadJob(jobDir(r, s.job)).brief.look, 'paper');
   assert.ok(!(loadJob(jobDir(r, s.job)).brief.decisions || []).some((d) => d.what === 'reopened look'));
 });
+
+test('tools: brief_reopen refuses a confirmed brief, whose video has started', () => {
+  const r = scratchStudio();
+  const hr = makeHandlers(r);
+  const s = hr.brief_start({ words: 'A vertical demo of the export button for acme' });
+  saveBrief(jobDir(r, s.job), { ...completeBrief(), in_their_words: 'A vertical demo of the export button for acme' });
+  hr.brief_plan({ job: s.job });
+  assert.equal(hr.brief_confirm({ job: s.job }).stage, 'idea');
+  const before = loadJob(jobDir(r, s.job)).brief;
+  assert.throws(() => hr.brief_reopen({ job: s.job, item: 'delivery' }), /^Error: This brief is confirmed and its video has started\. To change it, say so in a chat in the studio folder\.$/);
+  const after = loadJob(jobDir(r, s.job)).brief;
+  assert.deepEqual(after, before);
+});

@@ -140,6 +140,7 @@ const STARTERS = [
 ];
 const ASSUMED_LABEL = { brand: 'Brand', size: 'Size', kind: 'Video type', length: 'Length', voice: 'Voice', look: 'Look' };
 const BRAND_STEP = 'Start a new chat in the studio folder and say "set up my brand".';
+const CONFIRMED_NOTE = 'This brief is confirmed and its video has started. To change it, say so in a chat in the studio folder.';
 
 const state = {
   view: 'start',          // start | questions | plan | handoff | parked
@@ -311,7 +312,7 @@ async function reopenItem(item) {
   state.busy = `reopen:${item}`; clearReopenNotes(); render();
   try {
     const reply = await write(() => connector.reopen(state.job, item));
-    state.plan = null; state.changing = false; state.confirmedOn = null;
+    state.plan = null; state.changing = false;
     applyCheck(reply);
     window.scrollTo(0, 0);
   } catch (e) { await failed(e, `reopen:${item}`, { isWrite: true }); } // a refusal (a saved style's item) shows by that item
@@ -662,12 +663,13 @@ function renderPlan() {
         h('span', { class: 'n', text: String(s.n) }), h('span', { text: s.name }), h('span', { class: 'secs', text: `${s.from}–${s.to} s` }),
         (s.shows || []).length ? h('span', { class: 'shows', text: `Shows: ${s.shows.join('; ')}` }) : null)))) : null,
     kept.length ? h('details', {}, h('summary', { text: 'Kept in your own words' }), h('ul', { class: 'plan-lines small' }, kept.map((l) => h('li', { text: l })))) : null,
-    h('section', {},
+    state.confirmedOn ? h('section', {},
+      h('p', { class: 'note', 'data-tone': 'good', text: `${CONFIRMED_NOTE} Confirmed on ${dateLabel(state.confirmedOn)}.` })) : h('section', {},
       h('div', { class: 'row' },
         h('button', { type: 'button', class: 'primary', id: 'confirm', disabled: state.busy === 'confirm' || null, text: busyLabel('confirm', 'Confirm this plan', 'Confirming…'), onclick: confirmPlan }),
         h('button', { type: 'button', class: 'secondary', id: 'change', 'aria-expanded': String(state.changing), text: 'Change something', onclick: () => { state.changing = !state.changing; clearReopenNotes(); render(); } })),
       noteEl('confirm')),
-    state.changing ? changeList() : null,
+    state.changing && !state.confirmedOn ? changeList() : null,
   ];
 }
 

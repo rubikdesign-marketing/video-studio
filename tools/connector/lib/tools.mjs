@@ -10,6 +10,7 @@ import { safePath, studioMemory } from './memory.mjs';
 const JOB = /^[a-z0-9][a-z0-9-]{0,80}$/;
 const STYLE = /^[a-z0-9][a-z0-9-]{0,80}\/[a-z0-9][a-z0-9-]{0,80}$/;
 const BRAND_FIRST = 'Set up your brand first: start a new chat in the studio folder and say "set up my brand".';
+const CONFIRMED = 'This brief is confirmed and its video has started. To change it, say so in a chat in the studio folder.';
 const CONTINUE = 'Start a new chat in the studio folder and say "continue the video".';
 const cut = (v, n = 120) => (typeof v === 'string' && v.length > n ? `${v.slice(0, n - 1)}…` : v);
 const given = (v) => (Array.isArray(v) ? v.some((x) => String(x).trim()) : v != null && String(v).trim() !== '');
@@ -120,6 +121,8 @@ export function makeHandlers(root) {
       const dir = jobDirOf(root, job);
       const { brief } = loadJob(dir);
       if (!brief) throw new Error(`Not a brief: ${job}`);
+      // A confirmed brief already has its job.json at the Idea stage, which confirming again leaves as it is.
+      if ((brief.decisions || []).some((d) => d?.what === 'plan confirmed')) throw new Error(CONFIRMED);
       saveBrief(dir, reopen(brief, item));
       decide(dir, `reopened ${item}`, { by: 'owner' });
       return checkReply(root, job, dir);
