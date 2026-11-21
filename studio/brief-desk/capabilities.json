@@ -1,0 +1,5 @@
+{
+  "mcp": { "servers": [{ "server": "host:damex-engine", "tools": ["studio_context", "brief_start", "brief_check", "brief_answer", "brief_plan", "brief_confirm"] }] },
+  "sample": {},
+  "db": { "rules": [{ "path": "briefs", "read": "admin", "write": "admin" }] }
+}

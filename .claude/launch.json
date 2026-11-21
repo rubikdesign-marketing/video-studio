@@ -6,6 +6,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["studio/server.mjs", "4317"],
       "port": 4317
+    },
+    {
+      "name": "brief-desk-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/connector/preview.mjs", "--port", "4417"],
+      "port": 4417
     }
   ]
 }

@@ -1,0 +1,695 @@
+<title>Video brief</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500&display=swap">
+<style>
+  /* One column, read top to bottom: what you want, what the studio still needs, the plan, the next step.
+     Dark only for now; every colour is a token so a light set can be added beside it. */
+  :root {
+    --page: #010B24;
+    --raised: #061A4D;
+    --ink: #FFFFFF;
+    --second: #FFFFFF9E;
+    --soft: #FFFFFF0F;
+    --line: #FFFFFF29;
+    --accent: #BBFC9E;
+    --on-accent: #050B14;
+    --warm: #FFA724;
+    --font: "Chakra Petch", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --step--1: 0.8125rem;
+    --step-0: 1rem;
+    --step-1: 1.1875rem;
+    --step-2: clamp(1.75rem, 1.2rem + 2.4vw, 2.5rem);
+    --radius: 4px;
+    color-scheme: dark;
+  }
+  body { background: var(--page); color: var(--ink); font-family: var(--font); font-size: var(--step-0); line-height: 1.5; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  header.top { border-bottom: 1px solid var(--line); }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 14px; }
+  .brand { display: block; }
+  .mark { display: block; width: 168px; max-width: 100%; height: auto; }
+  .top-side { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-size: var(--step--1); color: var(--second); }
+  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .status[data-host="ready"]::before { background: var(--accent); }
+  .status[data-host="none"]::before { background: var(--warm); }
+  main .wrap { display: grid; gap: 32px; padding-block: 32px 56px; }
+  section { display: grid; gap: 14px; min-width: 0; }
+  h1, h2, h3 { font-weight: 500; text-wrap: balance; margin: 0; }
+  h1 { font-size: var(--step-2); line-height: 1.15; letter-spacing: 0.01em; }
+  h2 { font-size: var(--step-1); }
+  h3 { font-size: var(--step-0); line-height: 1.4; }
+  p { margin: 0; max-width: 65ch; }
+  .eyebrow { font-size: var(--step--1); color: var(--second); letter-spacing: 0.06em; text-transform: uppercase; }
+  .muted { color: var(--second); }
+  .small { font-size: var(--step--1); }
+  textarea, input[type="text"] { width: 100%; box-sizing: border-box; font: inherit; color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; resize: vertical; }
+  textarea#brief-words { min-height: 9.5rem; font-size: var(--step-1); line-height: 1.45; }
+  textarea::placeholder { color: var(--second); }
+  textarea:focus, input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  button { font: inherit; cursor: pointer; border-radius: var(--radius); }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button:disabled { cursor: progress; opacity: 0.6; }
+  .primary { background: var(--accent); color: var(--on-accent); border: 1px solid var(--accent); padding: 11px 20px; font-weight: 500; }
+  .secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 10px 18px; }
+  .secondary:hover { border-color: var(--second); }
+  .link { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .note { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; background: var(--soft); }
+  .note[data-tone="warm"] { border-color: var(--warm); }
+  .note[data-tone="good"] { border-color: var(--accent); }
+  .note strong { font-weight: 500; }
+  .chip-on { display: inline-flex; align-items: center; gap: 10px; font-size: var(--step--1); border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 4px 6px 4px 12px; }
+  .chip-on button { background: none; border: 0; color: var(--accent); padding: 2px 6px; }
+  .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 10px; }
+  .idea { text-align: left; background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 12px 14px; line-height: 1.4; }
+  .idea:hover { border-color: var(--accent); }
+  .idea .muted { display: block; font-size: var(--step--1); margin-top: 2px; }
+  .briefs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .briefs li { border-bottom: 1px solid var(--line); }
+  .brief-row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; text-align: left; background: none; color: var(--ink); border: 0; border-radius: 0; padding: 14px 2px; }
+  .brief-row:hover .open { color: var(--accent); }
+  .brief-row .words { min-width: 0; overflow-wrap: anywhere; }
+  .brief-row .meta { grid-column: 1; font-size: var(--step--1); color: var(--second); }
+  .brief-row .open { grid-row: 1 / span 2; grid-column: 2; font-size: var(--step--1); color: var(--second); }
+  .tag { display: inline-block; font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .tag.warm { color: var(--warm); }
+  .quote { border-left: 2px solid var(--line); padding-left: 14px; color: var(--second); overflow-wrap: anywhere; }
+  .understood { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .understood li { border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: var(--step--1); }
+  .understood b { font-weight: 500; color: var(--accent); }
+  .strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 8px; }
+  @media (min-width: 640px) { .strip { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+  .strip li { display: grid; gap: 6px; align-content: start; font-size: 0.75rem; line-height: 1.3; color: var(--second); min-width: 0; overflow-wrap: anywhere; }
+  .strip li::before { content: ""; height: 4px; border-radius: 2px; background: var(--line); }
+  .strip li[data-done="true"] { color: var(--ink); }
+  .strip li[data-done="true"]::before { background: var(--accent); }
+  details { border-top: 1px solid var(--line); padding-top: 10px; }
+  summary { cursor: pointer; color: var(--second); font-size: var(--step--1); }
+  .known { display: grid; grid-template-columns: minmax(7rem, auto) minmax(0, 1fr); gap: 6px 16px; margin: 12px 0 0; font-size: var(--step--1); }
+  .known dt { color: var(--second); }
+  .known dd { margin: 0; overflow-wrap: anywhere; }
+  .cards { display: grid; gap: 16px; }
+  .card { display: grid; gap: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--soft); padding: 18px; min-width: 0; }
+  .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); gap: 8px; }
+  .choice { display: grid; gap: 2px; text-align: left; background: var(--page); color: var(--ink); border: 1px solid var(--line); padding: 10px 12px; line-height: 1.3; }
+  .choice:hover { border-color: var(--second); }
+  .choice[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .pick { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); min-height: 1em; }
+  label.field { display: grid; gap: 6px; font-size: var(--step--1); color: var(--second); }
+  .plan-lines { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 65ch; }
+  .outline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .outline li { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .outline .n { color: var(--accent); font-variant-numeric: tabular-nums; }
+  .outline .secs { color: var(--second); font-size: var(--step--1); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .outline .shows { grid-column: 2 / span 2; font-size: var(--step--1); color: var(--second); }
+  .next { border: 1px solid var(--accent); border-radius: var(--radius); padding: 18px; display: grid; gap: 8px; }
+  .next p.say { font-size: var(--step-1); }
+  .copybox { display: grid; gap: 10px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .card, .note, .next { animation: rise 160ms ease-out; }
+    @keyframes rise { from { transform: translateY(4px); } to { transform: none; } }
+  }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <!-- The Damex Video Engine wordmark, from brands/damex-engine/logo/wordmark-on-dark.svg. Its subset face is named
+         apart from the page's Chakra Petch so the two never mix. -->
+    <span class="brand" role="img" aria-label="Damex Video Engine"><svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 102" width="540" height="102" aria-hidden="true" focusable="false"><defs><style>@font-face{font-family:"Damex Wordmark";font-weight:500;src:url(data:font/woff2;base64,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) format("woff2")}.mark text{font-family:"Damex Wordmark","Chakra Petch",sans-serif;font-weight:500;text-transform:uppercase}</style></defs><g transform="scale(3)"><rect width="34" height="34" rx="2" fill="#BBFC9E"/><g transform="translate(5 5)" fill="none" stroke="#04090E" stroke-width="1.8" stroke-linecap="round"><path d="M12 8.4L19.56 6.09"/><path d="M15.12 10.2L20.9 15.6"/><path d="M15.12 13.8L13.34 21.51"/><path d="M12 15.6L4.44 17.91"/><path d="M8.88 13.8L3.1 8.4"/><path d="M8.88 10.2L10.66 2.49"/><circle cx="12" cy="12" r="0.9" fill="#04090E" stroke="none"/></g><text x="44" y="13" font-size="10" letter-spacing="1" fill="#FFFFFF" fill-opacity="0.7">Damex</text><text x="44" y="30" font-size="15" letter-spacing="1.2" fill="#FFFFFF">Video Engine</text></g></svg></span>
+    <div class="top-side">
+      <span class="status" id="status" data-host="pending">Connecting to your studio</span>
+      <button type="button" class="secondary" id="home" hidden>Your briefs</button>
+    </div>
+  </div>
+</header>
+<main id="main"><div class="wrap" id="view"></div></main>
+
+<script>
+/* ---------- State ---------- */
+
+const HOST = 'host:damex-engine';
+const STARTERS = [
+  { text: 'A 20 second vertical demo of one feature, for people who already use the product' },
+  { text: 'A launch teaser for a new feature, 16:9, with a voice-over' },
+  { text: 'A short how-to that shows one task in three steps, for new customers' },
+];
+const ASSUMED_LABEL = { brand: 'Brand', size: 'Size', kind: 'Video type', length: 'Length', voice: 'Voice', look: 'Look' };
+const BRAND_STEP = 'Start a new chat in the studio folder and say "set up my brand".';
+
+const state = {
+  view: 'start',          // start | questions | plan | handoff | parked
+  host: 'pending',        // pending | ready | none
+  mcp: null, sample: null, db: null,
+  ctx: null,              // studio_context reply
+  ideas: null,            // [{ text, fill, style, job }]
+  words: '', style: null, // the start box and a saved style picked from an idea
+  briefWords: '', confirmedOn: null,
+  job: null, check: null, plan: null, done: null, parkedNext: null,
+  drafts: {},             // question id -> { value, picked, words }
+  notes: {},              // area -> { tone, text }
+  busy: null,             // the action running, so its button shows it
+  saved: [], copyText: null, watchingDb: false,
+};
+let mcpReady = null;
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const codeOf = (e) => (e && typeof e.code === 'string' ? e.code : 'upstream_error');
+const payloadOf = (r) => (r && typeof r === 'object' && 'payload' in r ? r.payload : r);
+const cut = (s, n) => (String(s).length > n ? `${String(s).slice(0, n - 1)}…` : String(s));
+const setNote = (area, note) => { if (note) state.notes[area] = note; else delete state.notes[area]; };
+const visibleQuestions = (check) => (check?.questions || []).filter((q) => !(Array.isArray(q.choices) && q.choices.length === 0));
+const stageLabel = (s) => { const t = String(s || 'brief').replace(/[_-]+/g, ' '); return t.charAt(0).toUpperCase() + t.slice(1); };
+const dateLabel = (d) => { const t = new Date(`${d}T12:00:00`); return Number.isNaN(t.getTime()) ? String(d) : t.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); };
+
+/* ---------- Connector calls ---------- */
+
+// One call site per tool. Each returns the raw result; read() and write() unwrap the payload.
+const connector = {
+  context: () => state.mcp.callTool(HOST, 'studio_context', {}),
+  start: (words, style) => state.mcp.callTool(HOST, 'brief_start', style ? { words, style } : { words }),
+  check: (job) => state.mcp.callTool(HOST, 'brief_check', { job }),
+  answer: (input) => state.mcp.callTool(HOST, 'brief_answer', input),
+  plan: (job) => state.mcp.callTool(HOST, 'brief_plan', { job }),
+  confirm: (job) => state.mcp.callTool(HOST, 'brief_confirm', { job }),
+};
+
+/** A read: retried once after a short random delay when the studio did not answer. */
+async function read(call) {
+  try { return payloadOf(await call()); } catch (e) {
+    if (codeOf(e) !== 'server_unavailable') throw e;
+    await wait(Math.min(Number(e.retryAfterMs) || 0, 60000) + 300 + Math.random() * 700);
+    return payloadOf(await call());
+  }
+}
+/** A write: runs once, only from a click, never retried by the page. */
+async function write(call) { return payloadOf(await call()); }
+
+/** What to tell the customer for each error code. `fallback` switches the page to the no-studio mode. */
+function explain(e, { isWrite = false } = {}) {
+  switch (codeOf(e)) {
+    case 'server_not_connected': case 'not_granted': case 'capability_disabled': case 'capability_removed':
+      return { fallback: true };
+    case 'cancelled':
+      return { tone: 'warm', text: 'You said no in the Claude app, so nothing was saved. Click again and choose Allow to go ahead.' };
+    case 'approval_required':
+      return { tone: 'warm', text: 'The Claude app needs your OK for this step. Click again and choose Allow when it asks.' };
+    case 'tool_error':
+      return { tone: 'warm', text: String(e.message || 'The studio could not do that.') };
+    case 'server_unavailable':
+      return isWrite
+        ? { tone: 'warm', text: 'The studio did not answer in time, so this may or may not have gone through. The page has checked again: look at what it shows before you click a second time.' }
+        : { tone: 'warm', text: 'The studio did not answer. Wait a moment, then try again.' };
+    case 'not_in_manifest': case 'blocked_by_policy':
+      return { tone: 'warm', text: 'This page is not allowed to reach your studio in this view. Open it in the Claude desktop app with the studio folder open.' };
+    case 'needs_reauth':
+      return { tone: 'warm', text: 'The link to your studio needs setting up again. Restart the Claude desktop app with the studio folder open.' };
+    case 'rate_limited':
+      return { tone: 'warm', text: 'Too many requests at once. Wait a few seconds, then try again.' };
+    default:
+      return { tone: 'warm', text: 'Something went wrong reaching your studio. Try again in a moment.' };
+  }
+}
+
+async function failed(e, area, { isWrite = false } = {}) {
+  const x = explain(e, { isWrite });
+  if (x.fallback) { enterNoHost(); return; }
+  setNote(area, x);
+  if (isWrite && codeOf(e) === 'server_unavailable') await recheck();
+}
+
+/** After a write the studio may or may not have done: read the current state again. */
+async function recheck() {
+  try {
+    if (state.job) applyCheck(await read(() => connector.check(state.job)), { keepView: true });
+    else state.ctx = await read(() => connector.context());
+  } catch { /* the note already says to look before trying again */ }
+}
+
+/* ---------- Actions (writes run only from these click handlers) ---------- */
+
+async function startBrief() {
+  const words = state.words.trim();
+  if (!words) { setNote('start', { tone: 'warm', text: 'Write a sentence or two about the video first.' }); render(); return; }
+  setNote('start', null);
+  state.busy = 'start'; render();
+  if (state.host === 'pending' && mcpReady) await mcpReady;
+  if (state.host !== 'ready') { state.busy = null; await saveWithoutStudio(words); return; }
+  try {
+    const reply = await write(() => connector.start(words, state.style));
+    state.briefWords = words; state.confirmedOn = null; state.words = ''; state.style = null; state.drafts = {};
+    applyCheck(reply);
+  } catch (e) { await failed(e, 'start', { isWrite: true }); }
+  state.busy = null; render();
+}
+
+async function openBrief(item) {
+  state.busy = `open:${item.job}`; setNote('briefs', null); render();
+  try {
+    const reply = await read(() => connector.check(item.job));
+    state.briefWords = item.words || ''; state.confirmedOn = item.confirmed || null; state.drafts = {}; state.plan = null;
+    applyCheck(reply);
+  } catch (e) { await failed(e, 'briefs'); }
+  state.busy = null; render(); window.scrollTo(0, 0);
+}
+
+async function answerCard(q) {
+  const area = `card:${q.id}`;
+  const d = draftOf(q);
+  const words = d.words.trim();
+  const input = { job: state.job, question: q.id };
+  if (!q.choices) {
+    if (!words) { setNote(area, { tone: 'warm', text: 'Write your answer in the box first.' }); render(); return; }
+    input.words = words;
+  } else if (words && !d.picked) {
+    // Their own words and no card picked by them: Claude proposes the card when it can, the connector checks it.
+    state.busy = area; render();
+    const value = await proposeChoice(q, words);
+    if (value != null) input.value = q.many ? [value] : value;
+    input.words = words;
+  } else {
+    const value = q.many ? d.value : d.value?.[0];
+    if (value == null || (Array.isArray(value) && value.length === 0)) { setNote(area, { tone: 'warm', text: 'Pick one of the cards, or say it in your own words.' }); render(); return; }
+    input.value = value;
+    if (words) input.words = words;
+  }
+  setNote(area, null);
+  state.busy = area; render();
+  try {
+    const reply = await write(() => connector.answer(input));
+    if (reply.recorded) delete state.drafts[q.id];
+    else setNote(area, { tone: 'warm', text: reply.reason || 'That answer was not saved. Pick one of the cards.' });
+    applyCheck(reply, { keepView: true });
+  } catch (e) { await failed(e, area, { isWrite: true }); }
+  state.busy = null; render();
+}
+
+async function showPlan() {
+  state.busy = 'plan'; setNote('plan', null); render();
+  try { state.plan = await write(() => connector.plan(state.job)); state.view = 'plan'; window.scrollTo(0, 0); }
+  catch (e) { await failed(e, 'plan', { isWrite: true }); }
+  state.busy = null; render();
+}
+
+async function confirmPlan() {
+  state.busy = 'confirm'; setNote('confirm', null); render();
+  try {
+    const reply = await write(() => connector.confirm(state.job));
+    if (reply.stage == null) { state.parkedNext = reply.next; state.view = 'parked'; } else { state.done = reply; state.view = 'handoff'; }
+    window.scrollTo(0, 0);
+  } catch (e) { await failed(e, 'confirm', { isWrite: true }); }
+  state.busy = null; render();
+}
+
+function applyCheck(reply, { keepView = false } = {}) {
+  state.job = reply.job; state.check = reply;
+  const ids = new Set((reply.questions || []).map((q) => q.id));
+  for (const id of Object.keys(state.drafts)) if (!ids.has(id)) delete state.drafts[id];
+  for (const area of Object.keys(state.notes)) if (area.startsWith('card:') && !ids.has(area.slice(5))) delete state.notes[area];
+  if (!keepView || state.view === 'questions') state.view = reply.parked && visibleQuestions(reply).length === 0 ? 'parked' : 'questions';
+}
+
+async function goHome() {
+  state.view = 'start'; state.job = null; state.check = null; state.plan = null; state.done = null; state.parkedNext = null;
+  state.notes = {}; render(); window.scrollTo(0, 0);
+  if (state.host === 'ready') await loadContext();
+}
+
+function useIdea(idea) {
+  if (idea.job) { openBrief({ job: idea.job, words: idea.words }); return; }
+  state.words = idea.fill || idea.text; state.style = idea.style || null;
+  render();
+  const box = document.getElementById('brief-words');
+  if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
+}
+
+/* ---------- The studio's memory and ideas ---------- */
+
+async function loadContext() {
+  try {
+    state.ctx = await read(() => connector.context());
+    state.ideas = buildIdeas(state.ctx);
+    setNote('briefs', null);
+    render();
+    rewordIdeas();
+  } catch (e) { await failed(e, 'briefs'); render(); }
+}
+
+/** Up to four plain ideas from what the studio remembers. */
+function buildIdeas(ctx) {
+  const ideas = [];
+  const style = (ctx.styles || [])[0];
+  if (style) {
+    const name = String(style.ref).split('/')[1].replace(/-/g, ' ');
+    ideas.push({ text: `Next episode in your saved ${name} style`, fill: `The next episode in our saved ${name} style, about `, style: style.ref });
+  }
+  const withFilm = (ctx.brands || []).find((b) => (b.last_films || []).length);
+  const film = withFilm?.last_films[0];
+  if (film?.look) ideas.push({ text: `A different look from your last film (${film.look})`, fill: `A new video for ${withFilm.name} in a different look from our last film, which used the ${film.look} look` });
+  if (film?.name) ideas.push({ text: `A follow-up to ${cut(film.name, 60)}`, fill: `A follow-up to ${film.name} for ${withFilm.name}, showing ` });
+  const open = (ctx.briefs || []).find((b) => !b.confirmed && b.open > 0 && !b.parked);
+  if (open) ideas.push({ text: `Finish your brief: ${cut(open.words || open.job, 70)}`, job: open.job, words: open.words });
+  return ideas.slice(0, 4);
+}
+
+/** With Claude available, reword the idea lines in one call; any problem keeps the plain lines. */
+async function rewordIdeas() {
+  const ideas = state.ideas;
+  if (!state.sample || !ideas || !ideas.length) return;
+  try {
+    const out = await state.sample.json([
+      'Reword each idea below as one short, friendly suggestion for a marketer starting a new video.',
+      'Keep every fact (names, looks, styles). Plain words, sentence case, at most 80 characters each, same order.',
+      `Ideas: ${JSON.stringify(ideas.map((i) => i.text))}`,
+      'Answer as JSON: {"ideas": ["<idea 1>", "<idea 2>", ...]} with exactly the same number of ideas.',
+    ].join('\n'));
+    const lines = out && Array.isArray(out.ideas) ? out.ideas : null;
+    if (state.ideas !== ideas || !lines || lines.length !== ideas.length || !lines.every((l) => typeof l === 'string' && l.trim() && l.length <= 100)) return;
+    state.ideas = ideas.map((idea, i) => ({ ...idea, text: lines[i].trim() }));
+    render();
+  } catch (e) { sampleFailed(e); }
+}
+
+/** Claude picks one of the card's values for the customer's words, or null. */
+async function proposeChoice(q, words) {
+  if (!state.sample) return null;
+  try {
+    const out = await state.sample.json([
+      'A customer is answering one question about a video they want made. Pick the one choice that matches what they wrote, or null if none clearly fits.',
+      `Question: ${q.question}`,
+      `Choices: ${JSON.stringify(q.choices.map((c) => ({ value: c.value, label: c.label })))}`,
+      `Customer's words: ${JSON.stringify(words)}`,
+      'Answer as JSON: {"value": "<one of the choice values, or null>"}',
+    ].join('\n'));
+    const v = out && typeof out.value === 'string' ? out.value : null;
+    return q.choices.some((c) => c.value === v) ? v : null;
+  } catch (e) { sampleFailed(e); return null; }
+}
+
+function sampleFailed(e) {
+  // Codes that mean Claude is not available in this view hide its uses for good; anything else skips this one time.
+  if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(codeOf(e))) state.sample = null;
+}
+
+/* ---------- Without the studio: save the words to the page's own store ---------- */
+
+function enterNoHost() {
+  state.host = 'none'; state.mcp = null;
+  if (state.view !== 'start') { state.words = state.words || state.briefWords; state.view = 'start'; }
+  watchSaved();
+  render();
+}
+
+function watchSaved() {
+  if (!state.db || state.watchingDb) return;
+  state.watchingDb = true;
+  try {
+    state.db.collection('briefs').onSnapshot((snap) => {
+      state.saved = snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => String(b.at).localeCompare(String(a.at)));
+      render();
+    }, () => { state.watchingDb = false; });
+  } catch { state.watchingDb = false; }
+}
+
+async function saveWithoutStudio(words) {
+  if (!state.db) { state.copyText = words; setNote('start', { tone: 'warm', text: 'This page cannot keep your brief here. Copy it and paste it into a new chat in the studio folder.' }); render(); return; }
+  state.busy = 'start'; render();
+  const id = `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const doc = { words, at: new Date().toISOString(), status: 'waiting' };
+  const save = () => state.db.collection('briefs').doc(id).set(doc);
+  try {
+    try { await save(); } catch (e) { if (codeOf(e) !== 'unavailable') throw e; await wait(300 + Math.random() * 700); await save(); }
+    state.words = ''; state.copyText = null;
+    setNote('start', { tone: 'good', text: 'Saved. Next time you open a chat in the studio folder and say "make a video", Claude finds this brief and carries on from it.' });
+    watchSaved();
+  } catch (e) {
+    state.copyText = words;
+    const full = ['quota_exceeded', 'resource_exhausted'].includes(codeOf(e));
+    setNote('start', { tone: 'warm', text: full ? 'The page\'s store is full, so your brief was not saved here. Copy it and paste it into a new chat in the studio folder.' : 'Your brief could not be saved here. Copy it and paste it into a new chat in the studio folder.' });
+  }
+  state.busy = null; render();
+}
+
+async function copyWords(text, box) {
+  try { await navigator.clipboard.writeText(text); setNote('copy', { tone: 'good', text: 'Copied.' }); }
+  catch { box.focus(); box.select(); setNote('copy', { tone: 'warm', text: 'Copying was blocked here. The text is selected: copy it with your keyboard.' }); }
+  render();
+}
+
+/* ---------- Render ---------- */
+
+function h(tag, props, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : String(kid));
+  return el;
+}
+const noteEl = (area) => { const n = state.notes[area]; return n ? h('p', { class: 'note', 'data-tone': n.tone || null, role: 'status', text: n.text }) : null; };
+const busyLabel = (key, idle, busy) => (state.busy === key ? busy : idle);
+
+function render() {
+  const active = document.activeElement;
+  const focusId = active && active.id;
+  const sel = focusId && 'selectionStart' in active ? [active.selectionStart, active.selectionEnd] : null;
+
+  const status = document.getElementById('status');
+  status.dataset.host = state.host;
+  status.textContent = { pending: 'Connecting to your studio', ready: 'Connected to your studio', none: 'Not connected to your studio' }[state.host];
+  document.getElementById('home').hidden = state.view === 'start';
+
+  const view = document.getElementById('view');
+  const build = { start: renderStart, questions: renderQuestions, plan: renderPlan, handoff: renderHandoff, parked: renderParked }[state.view];
+  view.replaceChildren(...build());
+
+  if (focusId) {
+    const el = document.getElementById(focusId);
+    if (el) { el.focus({ preventScroll: true }); if (sel && 'setSelectionRange' in el) try { el.setSelectionRange(sel[0], sel[1]); } catch { /* not a text field */ } }
+  }
+}
+
+function renderStart() {
+  const ctx = state.ctx;
+  const names = (ctx?.brands || []).map((b) => b.name);
+  let welcome = 'Welcome to your video studio.';
+  if (state.host === 'ready' && ctx) welcome = names.length ? `Welcome back. Your studio has ${names.join(', ')} set up.` : 'Welcome to your video studio. Write your brief now; setting up your brand comes next.';
+
+  const box = h('textarea', { id: 'brief-words', rows: '5', 'aria-label': 'What video do you want to make?', placeholder: 'For example: a 20 second vertical demo of our new export button, for agency owners who still send reports by hand',
+    oninput: (e) => { state.words = e.target.value; } });
+  box.value = state.words;
+
+  const noHost = state.host === 'none';
+  const form = h('form', { class: 'start', onsubmit: (e) => { e.preventDefault(); startBrief(); } },
+    h('section', {},
+      h('p', { class: 'eyebrow', text: welcome }),
+      h('h1', { text: 'What video do you want to make?' }),
+      noHost ? h('div', { class: 'note', 'data-tone': 'warm' },
+        h('p', {}, h('strong', { text: 'This page works in the Claude desktop app with your studio folder open.' })),
+        h('p', { class: 'muted', text: state.db ? 'You can still write your brief here. It is saved with this page, and your next chat in the studio folder picks it up.' : 'You can still write your brief here, then copy it into a new chat in the studio folder.' })) : null,
+      box,
+      state.style ? h('span', { class: 'chip-on' }, `Using your saved ${String(state.style).split('/')[1].replace(/-/g, ' ')} style`,
+        h('button', { type: 'button', 'aria-label': 'Stop using the saved style', text: 'Remove', onclick: () => { state.style = null; render(); } })) : null,
+      h('div', { class: 'row' },
+        h('button', { type: 'submit', class: 'primary', id: 'start-brief', disabled: state.busy === 'start' || null,
+          text: busyLabel('start', noHost ? (state.db ? 'Save my brief' : 'Get my brief to copy') : 'Start the brief', noHost ? 'Saving…' : 'Starting…') }),
+        h('p', { class: 'muted small', text: 'Links to films you like can go right in here. Files and footage are added in chat: say "I have a file to add".' })),
+      noteEl('start'),
+      state.copyText ? copyBox(state.copyText) : null));
+
+  const ideas = !noHost && state.ideas && state.ideas.length ? state.ideas : STARTERS;
+  const ideaList = h('section', { 'aria-labelledby': 'ideas-h' },
+    h('h2', { id: 'ideas-h', text: ideas === STARTERS ? 'Not sure where to start? Try one of these' : 'Ideas from your studio' }),
+    h('div', { class: 'ideas' }, ideas.map((idea, i) => h('button', { type: 'button', class: 'idea', id: `idea-${i}`, onclick: () => useIdea(idea) },
+      idea.text, idea.job ? h('span', { class: 'muted', text: 'Opens the brief where you left it' }) : null))));
+
+  return [form, ideaList, noHost ? savedList() : briefList()];
+}
+
+function copyBox(text) {
+  const area = h('textarea', { id: 'copy-words', rows: '4', readonly: true, 'aria-label': 'Your brief, to copy' });
+  area.value = text;
+  return h('div', { class: 'copybox' }, area,
+    h('div', { class: 'row' }, h('button', { type: 'button', class: 'secondary', id: 'copy-btn', text: 'Copy my brief', onclick: () => copyWords(text, area) })),
+    noteEl('copy'));
+}
+
+function briefList() {
+  const briefs = state.ctx?.briefs || [];
+  if (state.host !== 'ready' || (!briefs.length && !state.notes.briefs)) return null;
+  return h('section', { 'aria-labelledby': 'briefs-h' },
+    h('h2', { id: 'briefs-h', text: 'Your briefs' }),
+    noteEl('briefs'),
+    briefs.length ? h('ul', { class: 'briefs' }, briefs.map((b) => {
+      let meta = `${stageLabel(b.stage)} stage`;
+      if (b.confirmed) meta += `, confirmed ${dateLabel(b.confirmed)}`;
+      else if (b.parked) meta = 'Waiting for your brand to be set up';
+      else if (b.open) meta += `, ${b.open} ${b.open === 1 ? 'question' : 'questions'} open`;
+      return h('li', {}, h('button', { type: 'button', class: 'brief-row', id: `brief-${b.job}`, disabled: state.busy === `open:${b.job}` || null, onclick: () => openBrief(b) },
+        h('span', { class: 'words', text: b.words || b.job }),
+        h('span', { class: 'meta', text: meta }),
+        h('span', { class: 'open', text: state.busy === `open:${b.job}` ? 'Opening…' : 'Open' })));
+    })) : null);
+}
+
+function savedList() {
+  if (!state.saved.length) return null;
+  return h('section', { 'aria-labelledby': 'saved-h' },
+    h('h2', { id: 'saved-h', text: 'Saved on this page' }),
+    h('ul', { class: 'briefs' }, state.saved.map((b) => h('li', {}, h('div', { class: 'brief-row' },
+      h('span', { class: 'words', text: cut(b.words || '', 160) }),
+      h('span', { class: 'meta', text: b.status === 'taken' ? 'Picked up in chat' : 'Waiting for your next chat in the studio folder' }))))));
+}
+
+function draftOf(q) {
+  if (!state.drafts[q.id]) {
+    const rec = (q.choices || []).filter((c) => c.recommended).map((c) => c.value);
+    state.drafts[q.id] = { value: q.many ? rec : rec.slice(0, 1), picked: false, words: '' };
+  }
+  return state.drafts[q.id];
+}
+
+function renderQuestions() {
+  const c = state.check;
+  const qs = visibleQuestions(c);
+  const done = (c.preflight || []).filter((p) => p.done).length;
+  const brand = c.preflight?.find((p) => p.id === 'brand')?.known || c.assumed?.find((a) => a.id === 'brand')?.value || 'Your brand';
+  const out = [];
+
+  out.push(h('section', {},
+    h('p', { class: 'eyebrow', text: `${done} of ${(c.preflight || []).length} known` }),
+    h('h1', { text: c.ready_for_plan ? 'The studio has everything it needs' : 'A few questions first' }),
+    state.briefWords ? h('p', { class: 'quote', text: cut(state.briefWords, 400) }) : null,
+    state.confirmedOn ? h('p', { class: 'note', 'data-tone': 'good', text: `This brief was confirmed on ${dateLabel(state.confirmedOn)}. To carry on, start a new chat in the studio folder and say "continue the video".` }) : null,
+    strip(c)));
+
+  if ((c.assumed || []).length) {
+    out.push(h('section', { 'aria-labelledby': 'got-h' },
+      h('h2', { id: 'got-h', text: 'What the studio understood' }),
+      h('ul', { class: 'understood' }, c.assumed.map((a) => {
+        const label = ASSUMED_LABEL[a.id] || stageLabel(a.id);
+        const from = a.because && String(a.because) !== String(a.value) ? ` (you said "${a.because}")` : '';
+        return h('li', {}, `${label} `, h('b', { text: String(a.value) }), from);
+      }))));
+  }
+
+  if (c.brand_status === 'none') out.push(h('p', { class: 'note', 'data-tone': 'warm', text: 'There is no brand set up in your studio yet. Answer what you can: the brief is kept, and setting up your brand comes next.' }));
+  if (c.brand_status === 'needs-setup') out.push(h('p', { class: 'note', 'data-tone': 'warm', text: `${brand} still needs setting up before the plan. ${BRAND_STEP} Your answers here are kept.` }));
+  if (c.brand_status === 'needs-discovery') out.push(h('p', { class: 'note', 'data-tone': 'warm', text: 'Before the plan, the studio needs to learn your product. Start a new chat in the studio folder and ask for product discovery. Your answers here are kept.' }));
+
+  if (qs.length) {
+    out.push(h('section', { 'aria-label': 'Questions' }, h('div', { class: 'cards' }, qs.map(card)),
+      c.more ? h('p', { class: 'muted small', text: `After these, ${c.more} more ${c.more === 1 ? 'question' : 'questions'}.` }) : null));
+  } else if (!c.ready_for_plan && c.brand_status === 'ready') {
+    out.push(h('p', { class: 'note', text: 'Every question is answered. To change an answer, start a new chat in the studio folder and say what to change, or start a new brief.' }));
+  }
+
+  if (c.ready_for_plan) {
+    out.push(h('section', {},
+      h('div', { class: 'row' }, h('button', { type: 'button', class: 'primary', id: 'show-plan', disabled: state.busy === 'plan' || null, text: busyLabel('plan', 'Show the plan', 'Writing the plan…'), onclick: showPlan })),
+      noteEl('plan'),
+      state.plan ? h('p', { class: 'muted small', text: 'To change an answer that is already saved, start a new chat in the studio folder and say what to change.' }) : null));
+  } else if (state.notes.plan) out.push(noteEl('plan'));
+  return out;
+}
+
+function strip(c) {
+  const items = c.preflight || [];
+  return h('div', {},
+    h('ol', { class: 'strip', 'aria-label': 'The eight things the studio needs' }, items.map((p) => h('li', { 'data-done': String(!!p.done), title: p.done ? String(p.known ?? '') : 'Still open' }, p.label))),
+    h('details', {}, h('summary', { text: 'What the studio knows so far' }),
+      h('dl', { class: 'known' }, items.flatMap((p) => [h('dt', { text: p.label }), h('dd', { text: p.done ? String(p.known ?? 'Known') : 'Still open' })]))));
+}
+
+const pickLabel = (recommended, picked) => (picked ? (recommended ? 'Recommended, picked' : 'Picked') : (recommended ? 'Recommended' : ''));
+
+function card(q) {
+  const d = draftOf(q);
+  const area = `card:${q.id}`;
+  const isRef = q.id === 'reference' || String(q.field || '').startsWith('references');
+  const toggle = (value) => {
+    if (q.many) d.value = d.value.includes(value) ? d.value.filter((v) => v !== value) : [...d.value, value];
+    else d.value = [value];
+    d.picked = true; setNote(area, null); render();
+  };
+  const words = h('textarea', { id: `words-${q.id}`, rows: q.choices ? '2' : '3', oninput: (e) => { d.words = e.target.value; } });
+  words.value = d.words;
+  return h('article', { class: 'card', 'aria-labelledby': `q-${q.id}` },
+    h('h3', { id: `q-${q.id}`, text: q.question }),
+    q.why ? h('p', { class: 'muted small', text: q.why }) : null,
+    q.choices ? h('div', { class: 'choices', role: 'group', 'aria-label': q.many ? 'Pick one or more' : 'Pick one' },
+      q.choices.map((ch) => h('button', { type: 'button', class: 'choice', id: `choice-${q.id}-${ch.value}`, 'aria-pressed': String(d.value.includes(ch.value)), onclick: () => toggle(ch.value) },
+        h('span', { class: 'pick', text: pickLabel(ch.recommended, d.value.includes(ch.value)) }),
+        h('span', { text: ch.label })))) : null,
+    !q.choices && q.recommended ? h('p', { class: 'small' }, h('span', { class: 'tag', text: 'Suggested' }), ` ${q.recommended}`) : null,
+    h('label', { class: 'field', for: `words-${q.id}` }, q.choices ? 'Or say it in your own words' : 'Your answer', words),
+    isRef ? h('p', { class: 'muted small', text: 'Paste a link or the title of a film from your library. Files are added in chat: say "I have a file to add".' }) : null,
+    h('div', { class: 'row' }, h('button', { type: 'button', class: 'secondary', id: `save-${q.id}`, disabled: state.busy === area || null, text: busyLabel(area, 'Save this answer', 'Saving…'), onclick: () => answerCard(q) })),
+    noteEl(area));
+}
+
+function renderPlan() {
+  const p = state.plan;
+  const lines = (p.lines || []).filter((l) => !/^Decided: /.test(l));
+  const kept = (p.lines || []).filter((l) => /^Decided: /.test(l)).map((l) => l.replace(/^Decided: /, ''));
+  return [
+    h('section', {}, h('p', { class: 'eyebrow', text: 'The plan' }), h('h1', { text: 'Here is the video we will make' }),
+      h('ul', { class: 'plan-lines' }, lines.map((l) => h('li', { text: l })))),
+    (p.outline || []).length ? h('section', { 'aria-labelledby': 'outline-h' }, h('h2', { id: 'outline-h', text: 'Scene by scene' }),
+      h('ol', { class: 'outline' }, p.outline.map((s) => h('li', {},
+        h('span', { class: 'n', text: String(s.n) }), h('span', { text: s.name }), h('span', { class: 'secs', text: `${s.from}–${s.to} s` }),
+        (s.shows || []).length ? h('span', { class: 'shows', text: `Shows: ${s.shows.join('; ')}` }) : null)))) : null,
+    kept.length ? h('details', {}, h('summary', { text: 'Kept in your own words' }), h('ul', { class: 'plan-lines small' }, kept.map((l) => h('li', { text: l })))) : null,
+    h('section', {},
+      h('div', { class: 'row' },
+        h('button', { type: 'button', class: 'primary', id: 'confirm', disabled: state.busy === 'confirm' || null, text: busyLabel('confirm', 'Confirm this plan', 'Confirming…'), onclick: confirmPlan }),
+        h('button', { type: 'button', class: 'secondary', id: 'change', text: 'Change something', onclick: () => { state.view = 'questions'; render(); window.scrollTo(0, 0); } })),
+      noteEl('confirm')),
+  ];
+}
+
+function renderHandoff() {
+  const r = state.done;
+  return [h('section', {},
+    h('p', { class: 'eyebrow', text: 'Confirmed' }),
+    h('h1', { text: 'Your brief is confirmed' }),
+    h('p', { class: 'muted', text: `The job starts at the ${stageLabel(r.stage)} stage.` }),
+    h('div', { class: 'next' }, h('span', { class: 'tag', text: 'Next step' }), h('p', { class: 'say', text: r.next }),
+      h('p', { class: 'muted small', text: 'The new chat picks up this brief and goes straight to three concepts.' })),
+    h('div', { class: 'row' }, h('button', { type: 'button', class: 'secondary', id: 'back-done', text: 'Back to your briefs', onclick: goHome })))];
+}
+
+function renderParked() {
+  return [h('section', {},
+    h('p', { class: 'eyebrow', text: 'Brief kept' }),
+    h('h1', { text: 'Your brief is saved' }),
+    state.briefWords ? h('p', { class: 'quote', text: cut(state.briefWords, 400) }) : null,
+    h('p', { text: 'The studio needs your brand before it can plan this video.' }),
+    h('div', { class: 'next' }, h('span', { class: 'tag warm', text: 'Next step' }), h('p', { class: 'say', text: state.parkedNext || BRAND_STEP })),
+    h('p', { class: 'muted', text: 'When your brand is set up, the studio picks this brief up where it stopped.' }),
+    h('div', { class: 'row' }, h('button', { type: 'button', class: 'secondary', id: 'back-parked', text: 'Back to your briefs', onclick: goHome })))];
+}
+
+/* ---------- Start: render first, then light up what this view can use ---------- */
+
+document.getElementById('home').addEventListener('click', goHome);
+render();
+
+const claudeApi = window.claude && typeof window.claude.use === 'function' ? window.claude : null;
+if (!claudeApi) enterNoHost();
+else {
+  claudeApi.use('db').then((db) => { state.db = db || null; if (state.host === 'none') { watchSaved(); render(); } }).catch(() => {});
+  claudeApi.use('sample').then((s) => { state.sample = s || null; rewordIdeas(); }).catch(() => {});
+  mcpReady = claudeApi.use('mcp').then(async (mcp) => {
+    if (!mcp) { enterNoHost(); return; }
+    state.mcp = mcp; state.host = 'ready'; render();
+    await loadContext();
+  }).catch(() => enterNoHost());
+}
+</script>
