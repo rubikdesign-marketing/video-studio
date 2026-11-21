@@ -1,18 +1,27 @@
 // The brief page's local connector (tools/connector/server.mjs) is registered in the studio's .mcp.json by the start
-// step, with the absolute path of the Node that ran it (so the portable .runtime/node works) and the absolute path of
-// the server. The health check starts it the same way and asks for its tools. A moved studio folder leaves the old
+// step, with a Node that survives an upgrade (connectorNode: the studio's portable .runtime/node, else `node` as found
+// on PATH, never a versioned folder it links to, else the Node running now) and the absolute path of the server. The health check starts it the same way and asks for its tools. A moved studio folder leaves the old
 // paths in .mcp.json: the probe fails, and running the start step again rewrites them.
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { STUDIO } from './resolve.mjs';
+import { STUDIO, which } from './resolve.mjs';
 
 export const CONNECTOR_NAME = 'damex-engine';
 
 const readJson = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 
+/** The Node the connector is started with: the studio's own .runtime/node when present, else `node` on PATH (the PATH
+ *  entry itself, which an upgrade keeps, not the versioned folder it may link to), else the Node running now. */
+export function connectorNode(root = STUDIO, { platform = process.platform, env = process.env, exists = fs.existsSync, execPath = process.execPath } = {}) {
+  const p = platform === 'win32' ? path.win32 : path.posix;
+  const own = platform === 'win32' ? p.join(root, '.runtime', 'node', 'node.exe') : p.join(root, '.runtime', 'node', 'bin', 'node');
+  if (exists(own)) return own;
+  return which('node', { env, platform, exists }) || execPath;
+}
+
 /** Writes the connector's entry into <root>/.mcp.json, keeping every other server and key. */
-export function registerConnector(root = STUDIO, nodePath = process.execPath) {
+export function registerConnector(root = STUDIO, nodePath = connectorNode(root)) {
   const file = path.join(root, '.mcp.json');
   let config = {};
   if (fs.existsSync(file)) config = readJson(file);

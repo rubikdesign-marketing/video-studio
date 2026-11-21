@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { registerConnector, probeConnector } from './connector.mjs';
+import { connectorNode, registerConnector, probeConnector } from './connector.mjs';
 import { buildReport } from './doctor.mjs';
 import { STUDIO } from './resolve.mjs';
 
@@ -54,6 +54,7 @@ test('connector: a moved folder is caught by the probe and fixed by registering 
   const stale = report.checks.find((c) => c.id === 'brief-page');
   assert.equal(stale.tier, 'capability'); assert.equal(stale.status, 'skip');
   assert.match(stale.fix, /start step again/);
+  assert.match(stale.fix, /powershell -ExecutionPolicy Bypass -File setup\\start\.ps1/);
   assert.equal(registerConnector(root, process.execPath), 'updated');
   const p = await probeConnector(root);
   assert.equal(p.ok, true); assert.equal(p.tools.length, 7);
@@ -77,4 +78,22 @@ test('connector: probe resolves with ok false for a missing entry, bad command, 
   write(root, '.mcp.json', JSON.stringify({ mcpServers: { 'damex-engine': { type: 'stdio', command: process.execPath, args: [path.join(root, 'slow.mjs')] } } }));
   const t = await probeConnector(root, { timeoutMs: 400 });
   assert.equal(t.ok, false); assert.match(t.error, /time/i);
+});
+
+test('connector: the Node it registers is the studio\'s own, else the one on PATH (as found there), else this one', () => {
+  const has = (...hits) => (p) => hits.includes(p);
+  const mac = { platform: 'darwin', execPath: '/run/node' };
+  assert.equal(connectorNode('/studio', { ...mac, env: { PATH: '/usr/local/bin' }, exists: has('/studio/.runtime/node/bin/node', '/usr/local/bin/node') }), '/studio/.runtime/node/bin/node');
+  assert.equal(connectorNode('/studio', { ...mac, env: { PATH: '/nope:/opt/homebrew/bin' }, exists: has('/opt/homebrew/bin/node') }), '/opt/homebrew/bin/node');
+  assert.equal(connectorNode('/studio', { ...mac, env: { PATH: '/nope' }, exists: has() }), '/run/node');
+  const win = { platform: 'win32', execPath: 'C:\\run\\node.exe' };
+  assert.equal(connectorNode('C:\\studio', { ...win, env: { PATH: 'C:\\nodejs', PATHEXT: '.EXE' }, exists: has('C:\\studio\\.runtime\\node\\node.exe', 'C:\\nodejs\\node.EXE') }), 'C:\\studio\\.runtime\\node\\node.exe');
+  assert.equal(connectorNode('C:\\studio', { ...win, env: { PATH: 'C:\\nodejs', PATHEXT: '.EXE' }, exists: has('C:\\nodejs\\node.EXE') }), 'C:\\nodejs\\node.EXE');
+});
+
+test('connector: register with no Node given uses the studio\'s own Node when it is there', { skip: process.platform === 'win32' }, () => {
+  const root = scratch();
+  write(root, '.runtime/node/bin/node', '#!/bin/sh\n');
+  registerConnector(root);
+  assert.equal(readMcp(root).mcpServers['damex-engine'].command, path.join(root, '.runtime', 'node', 'bin', 'node'));
 });

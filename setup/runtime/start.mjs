@@ -105,7 +105,7 @@ async function main() {
   }
 
   try {
-    const state = registerConnector(STUDIO, process.execPath);
+    const state = registerConnector(STUDIO); // the studio's own Node, else node on PATH: see connectorNode
     console.log(`Brief page connector: ${state === 'unchanged' ? 'already set' : state}`);
   } catch {
     console.log('The brief page connector could not be set up. Running the start step again will retry. Carrying on.');

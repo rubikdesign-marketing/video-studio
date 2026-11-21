@@ -133,7 +133,7 @@ export async function buildReport({ root = STUDIO, env = process.env, platform =
   const brief = await probeConnector(root);
   brief.ok
     ? cap('brief-page', 'ready', `the brief page's connector starts (${brief.tools.length} tools)`)
-    : cap('brief-page', 'missing', brief.error, 'run the start step again: bash setup/start.sh (Windows: setup\\start.ps1)');
+    : cap('brief-page', 'missing', brief.error, 'run the start step again: bash setup/start.sh (Windows: powershell -ExecutionPolicy Bypass -File setup\\start.ps1)');
 
   const scriptBin = platform === 'darwin' ? (fs.existsSync('/usr/bin/script') ? '/usr/bin/script' : null) : platform === 'linux' ? which('script', { env, platform }) : null;
   scriptBin
