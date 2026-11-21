@@ -24,7 +24,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "A warm lo-fi bed at its own 92.9 bpm, with picture changes on bar starts, one every 2.58 s or every second bar. The music dips 12 dB under each spoken line and comes back up in the gaps, and about 14% of the film rests on the bed alone with no new sound.",
+      "what": "A warm lo-fi bed at its own 92.9 bpm, with picture changes on bar starts, one bar apart, every 2.58 s. The music dips 12 dB under each spoken line and comes back up in the gaps, and about 14% of the film rests on the bed alone with no new sound.",
       "when": "Fits quiet explainers, onboarding and how-to films where the voice leads and nothing should feel rushed.",
       "avoid": "Cutting on single beats, because this beat drifts a little, so cut on bar starts and check by ear; and hard hits or booms, which the bed cannot carry."
     },
@@ -472,7 +472,7 @@
     "id": "snd-mu-acoustic-claps",
     "tab": "sound",
     "name": "Acoustic guitar and claps",
-    "line": "Strummed guitar with hand claps and a stomp, bright and human.",
+    "line": "Strummed steel-string guitar, foot stomps and hand claps, earthy, like a band on a porch.",
     "family": "Music mood and tempo",
     "filters": {
       "energy": [
@@ -492,7 +492,7 @@
       "ready": false
     },
     "prompt": {
-      "what": "A new strummed acoustic piece at 104 bpm with claps on beats two and four and a foot stomp on the one; cut once a bar, 2.31 s, and let the claps drop out for one bar before the payoff. It dips 9 dB under each line.",
+      "what": "A new full-band acoustic piece at 104 bpm: strummed steel-string guitar, a stomp on every beat and claps on two and four, and a chorus that lifts with a second guitar; cut once a bar, 2.31 s, and let the claps drop out for one bar before the payoff. It dips 9 dB under each line.",
       "when": "Fits small businesses, food, travel and maker brands that want to feel handmade.",
       "avoid": "Tech launches that should feel precise, and a whistled hook, which wears out fast."
     },
@@ -893,7 +893,7 @@
     "id": "snd-mu-ukulele",
     "tab": "sound",
     "name": "Sunny ukulele",
-    "line": "Plucked ukulele, glockenspiel and light claps, cheerful and simple.",
+    "line": "A small, toy-like tune of plucked ukulele and glockenspiel with finger snaps and no drums.",
     "family": "Music mood and tempo",
     "filters": {
       "energy": [
@@ -913,7 +913,7 @@
       "ready": false
     },
     "prompt": {
-      "what": "A new ukulele piece at 108 bpm with glockenspiel on the top line and claps on two and four; cut once a bar, 2.22 s, and let the glockenspiel answer each on-screen tick with one note; it dips 9 dB under each line.",
+      "what": "A new light piece at 108 bpm with no drums at all: plucked ukulele, a glockenspiel tune and soft finger snaps on two and four; cut once a bar, 2.22 s, and let the glockenspiel answer each on-screen tick with one note; it dips 9 dB under each line.",
       "when": "Fits family, pet, kids and everyday-app films that should feel kind and easy.",
       "avoid": "Anything premium or technical, and running it longer than 30 s, where its cheer wears thin."
     },
@@ -1123,6 +1123,7 @@
       "pop/wood-pop-01",
       "interface/select-wood-01",
       "chime/success-zen-01",
+      "interface/success-organic-01",
       "swish/paper-soft-01"
     ],
     "preview": {
@@ -1176,6 +1177,7 @@
     "engine": [
       "click/mechanical-press-01",
       "click/mechanical-release-01",
+      "click/mechanical-double-01",
       "interface/type-key-mechanical-01",
       "interface/delete-mechanical-01",
       "interface/toggle-click-02",
@@ -1231,7 +1233,7 @@
       "swish/quick-hand-01"
     ],
     "preview": {
-      "sound": "pop/rubber-pop-01",
+      "sound": "interface/confirm-bright-01",
       "from_s": 0
     }
   },
@@ -1285,7 +1287,7 @@
       "click/micro-tick-02"
     ],
     "preview": {
-      "sound": "pop/arcade-pop-01",
+      "sound": "interface/question-01",
       "from_s": 0
     }
   },
@@ -1443,7 +1445,8 @@
       "foley/page-turn-01",
       "foley/pen-click-01",
       "swish/paper-soft-02",
-      "foley/book-close-01"
+      "foley/book-close-01",
+      "foley/book-flip-01"
     ],
     "preview": {
       "sound": "foley/book-flip-01",
@@ -1741,7 +1744,7 @@
       "swish/cloth-01"
     ],
     "preview": {
-      "sound": "click/studio-press-01",
+      "sound": "interface/send-studio-01",
       "from_s": 0
     }
   },
@@ -1801,7 +1804,6 @@
     "family": "Sound effect kits",
     "filters": {
       "energy": [
-        "confident",
         "hype"
       ],
       "kinds": [
@@ -1818,17 +1820,11 @@
       "ready": true
     },
     "prompt": {
-      "what": "Big moments land on a deep boom on the exact frame, scene changes rush past on a heavy dark whoosh, and a long build runs under the opening. Booms are rare, one every two bars at most, 4.8 s at 100 bpm (4 s at 120 bpm when hype), and effects dip 9 dB under a line (6 dB at hype).",
+      "what": "Big moments land on a deep boom on the exact frame, scene changes rush past on a heavy dark whoosh, and a long build runs under the opening. Booms are rare, one every two bars at most, 4 s at 120 bpm, and effects dip 6 dB under a line.",
       "when": "Fits big launches, keynote openers, games and title sequences.",
       "avoid": "Calm films and small talking-head edits, and a boom on more than three moments in a film."
     },
     "timing": {
-      "confident": {
-        "bpm": 100,
-        "hit_s": 4.8,
-        "duck_db": -9,
-        "still_pct": 8
-      },
       "hype": {
         "bpm": 120,
         "hit_s": 4,
@@ -2006,8 +2002,8 @@
   {
     "id": "snd-mix-rain",
     "tab": "sound",
-    "name": "Rain instead of music",
-    "line": "Steady light rain fills the background where music would be.",
+    "name": "Rain outside, then shelter",
+    "line": "Open rain fills the problem part, then turns to the cosy patter of rain on a roof once the product arrives.",
     "family": "Mix shape",
     "filters": {
       "energy": [
@@ -2027,8 +2023,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Steady light rain replaces the music for the whole film, dipping 10 dB under each spoken line and rising back over 0.45 s in the gaps. Cuts ride a slow count of 84 bpm, about every 2.86 s, and 15% of the film is left to the rain alone.",
-      "when": "Fits reflective stories, cosy products, books, coffee and slow lifestyle films.",
+      "what": "No music; wide, open rain plays under the problem, then crossfades over 1 s at the turn into close rain drumming on a roof, so the product feels like shelter. Both dip 10 dB under each line and rise back over 0.45 s in the gaps; cuts ride a slow count of 84 bpm, about every 2.86 s, and 15% of the film is left to the rain alone.",
+      "when": "Fits cosy products, home, insurance, coffee and books, where the product is the shelter from a grey day.",
       "avoid": "Bright, sunny pictures, and stacking music on top, which turns the rain into hiss."
     },
     "timing": {
@@ -2040,7 +2036,8 @@
       }
     },
     "engine": [
-      "ambience/rain-terrace-01"
+      "ambience/rain-terrace-01",
+      "ambience/rain-car-roof-01"
     ],
     "preview": {
       "sound": "ambience/rain-terrace-01",
@@ -2051,7 +2048,7 @@
     "id": "snd-mix-sea",
     "tab": "sound",
     "name": "Sea air, no music",
-    "line": "Waves rolling onto a beach carry the film instead of music.",
+    "line": "Waves on a beach set the pace: each new shot arrives as a wave breaks.",
     "family": "Mix shape",
     "filters": {
       "energy": [
@@ -2095,7 +2092,7 @@
     "id": "snd-mix-forest",
     "tab": "sound",
     "name": "Forest morning",
-    "line": "A quiet forest with birds and leaves takes the place of music.",
+    "line": "The film opens on a quiet forest alone before anyone speaks, and closes on it again.",
     "family": "Mix shape",
     "filters": {
       "energy": [
@@ -2115,7 +2112,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "A soft forest bed runs under the whole film in place of music, with picture changes on a slow count of 84 bpm, about every 2.86 s. It dips 10 dB under each line, and 15% of the film is left to the forest.",
+      "what": "No music; the film opens on the forest alone for 2 s before the first word, sinks 10 dB under the voice, and rises back to full for the last 2 s after the final line. Picture changes ride a slow count of 84 bpm, about every 2.86 s, and 15% of the film is left to the forest.",
       "when": "Fits nature, outdoor, sustainability and morning-routine films.",
       "avoid": "City or office pictures, and fast edits that fight its calm."
     },
@@ -2183,50 +2180,6 @@
     ],
     "preview": {
       "sound": "ambience/city-night-01",
-      "from_s": 4
-    }
-  },
-  {
-    "id": "snd-mix-breeze",
-    "tab": "sound",
-    "name": "Light breeze over a field",
-    "line": "A soft summer breeze moves through tall grass under the film.",
-    "family": "Mix shape",
-    "filters": {
-      "energy": [
-        "calm"
-      ],
-      "kinds": [
-        "footage-edit",
-        "animated-short",
-        "motion-graphics"
-      ],
-      "sizes": [
-        "9:16",
-        "1:1",
-        "4:5",
-        "16:9"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "A light breeze over grass carries the film with no music, swelling naturally so the slow cuts, about every 3 s on a count of 80 bpm, can ride its gusts. It dips 10 dB under each line and 15% of the film is open air.",
-      "when": "Fits open, airy brand films, farming and food origin stories, and calm outdoor scenes.",
-      "avoid": "Busy cities or interiors, and pairing it with the sea or forest bed in one film."
-    },
-    "timing": {
-      "calm": {
-        "bpm": 80,
-        "hit_s": 3,
-        "duck_db": -10,
-        "still_pct": 15
-      }
-    },
-    "engine": [
-      "ambience/wind-grass-01"
-    ],
-    "preview": {
-      "sound": "ambience/wind-grass-01",
       "from_s": 4
     }
   },
@@ -2342,10 +2295,10 @@
     ]
   },
   {
-    "id": "snd-mix-step-up",
+    "id": "snd-mix-seamless-loop",
     "tab": "sound",
-    "name": "One step up for the payoff",
-    "line": "The music lifts one level exactly when the film shows its best moment.",
+    "name": "Loops without a seam",
+    "line": "The film has no ending: the last beat flows straight back into the first, so it plays on repeat.",
     "family": "Mix shape",
     "filters": {
       "energy": [
@@ -2353,8 +2306,8 @@
       ],
       "kinds": [
         "promo",
-        "product-demo",
-        "animated-short"
+        "motion-graphics",
+        "ugc"
       ],
       "sizes": [
         "9:16",
@@ -2365,9 +2318,9 @@
       "ready": true
     },
     "prompt": {
-      "what": "Plan the music so it lifts one clear step, a fuller section or a new layer, on the frame the payoff appears, as the playful bed does 32.5 s in at 120 bpm. Keep the bars before it a touch thinner, cut once a bar, 2 s, and dip 9 dB under each line.",
-      "when": "Fits demos and promos with one result worth celebrating.",
-      "avoid": "Lifting the music more than once in a film under 45 s, which flattens every lift."
+      "what": "Make the film a whole number of bars long, for example eight bars, 16 s at 120 bpm, and cut once a bar, 2 s, so the last bar runs straight back into the first with no fade, no logo sting and no gap. The music dips 9 dB under any line, and the picture's last frame matches its first so the join cannot be heard or seen.",
+      "when": "Fits feed posts and website loops that autoplay on repeat, and interface loops cut to music.",
+      "avoid": "A logo end card or a fade at the end, which breaks the loop, and voice lines that run across the join."
     },
     "timing": {
       "confident": {
@@ -2378,12 +2331,21 @@
       }
     },
     "engine": [
-      "music/playful-chiptune-01"
+      "music/minimal-pulse-01"
     ],
     "preview": {
-      "sound": "music/playful-chiptune-01",
-      "from_s": 30.507
-    }
+      "sound": "music/minimal-pulse-01",
+      "from_s": 16.252
+    },
+    "avoid_with": [
+      "snd-st-warm",
+      "snd-st-open",
+      "snd-st-deep",
+      "snd-st-bright",
+      "snd-st-short",
+      "snd-mix-bookends",
+      "snd-mix-ease-off"
+    ]
   },
   {
     "id": "snd-mix-ease-off",
@@ -2511,13 +2473,13 @@
       }
     },
     "engine": [
-      "interface/scroll-tick-02",
+      "interface/toggle-click-01",
       "click/micro-tick-01",
       "pop/pluck-soft-01",
-      "interface/toggle-click-01"
+      "interface/select-pop-01"
     ],
     "preview": {
-      "sound": "interface/scroll-tick-02",
+      "sound": "interface/toggle-click-01",
       "from_s": 0
     }
   },
@@ -3276,7 +3238,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "The music slows and drops in pitch until it stops, over 1.6 s, so start it 1.6 s before the frame where everything freezes. Then hold the frozen picture in silence for half a beat at 110 bpm before the next line, dipping 9 dB under it.",
+      "what": "Cut the music on the frame the tape-stop sound starts; the sound itself carries the slowing, falling halt over 1.6 s, so start it 1.6 s before the frame where everything freezes. Hold the frozen picture in silence for half a beat at 110 bpm before the next line, and keep effects 9 dB under that line.",
       "when": "Fits a joke, a wrong turn in the story, or the \"but wait\" before the fix.",
       "avoid": "Serious brands, and using it more than once per film."
     },
@@ -4191,7 +4153,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "A quick 1.1 s rising run that peaks 0.42 s in, placed so the peak meets the upgrade, unlock or next tier appearing. The music drops 8 dB (6 dB at hype) under it, on a cut grid of 110 bpm (128 bpm at hype).",
+      "what": "A quick 1.1 s rising run that peaks 0.42 s in, placed so the peak meets the upgrade, unlock or next tier appearing. Hold the new tier for one bar of the 110 bpm (128 bpm at hype) cut after it, with the music 8 dB (6 dB at hype) down for the run.",
       "when": "Fits upgrades, plan changes, unlocked features and progress moments.",
       "avoid": "Serious subjects, and stacking it with the logo sting."
     },
@@ -4367,7 +4329,7 @@
     "id": "snd-st-counter-bell",
     "tab": "sound",
     "name": "Service counter bell",
-    "line": "A ding of the bell on a shop counter, as an order comes in.",
+    "line": "A ding of the bell on a service counter, as an order comes in.",
     "family": "Signature stings",
     "filters": {
       "energy": [
@@ -4388,7 +4350,7 @@
     },
     "prompt": {
       "what": "A service-counter bell that strikes at once, 0.02 s in, placed on the frame a new order, booking or sale appears. The music drops 8 dB under its ring, on a 110 bpm grid.",
-      "when": "Fits shop, restaurant, booking and shop till products.",
+      "when": "Fits retail, restaurant, booking and till products.",
       "avoid": "Using it as the logo sting, and more than one ring per order shown."
     },
     "timing": {
@@ -4432,7 +4394,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "A typewriter bell for the end of a line that strikes 0.03 s in, placed on the frame the headline or quote finishes typing. The music drops 10 dB (8 dB when confident) under it, on a cut grid of 90 bpm (110 bpm when confident).",
+      "what": "A typewriter bell for the end of a line that strikes 0.03 s in, placed on the frame the headline or quote finishes typing, after the last key sound. Under the ding the music sits 10 dB (8 dB when confident) lower, and the next line starts typing one bar later at 90 bpm (110 bpm when confident).",
       "when": "Fits writing tools, editorial brands and quote cards.",
       "avoid": "Modern glassy pictures, where a mechanical bell feels like a costume."
     },
@@ -4483,7 +4445,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "One warm clock strike, 0.02 s to full tone, on the frame a date, a year or a milestone lands, its 2.6 s ring carried under the next shot. The music drops 10 dB (8 dB when confident) under it, on a cut grid of 90 bpm (110 bpm when confident).",
+      "what": "One warm clock strike, 0.02 s to full tone, on the frame a date, a year or a milestone lands, its 2.6 s ring carried under the next shot. Let the strike sit alone, the music 10 dB (8 dB when confident) down, and cut to the next date on the following 90 bpm (110 bpm when confident) bar.",
       "when": "Fits anniversaries, timelines, deadlines and \"years in business\" films.",
       "avoid": "Striking it on every date of a timeline; keep it for the one that matters."
     },
@@ -4623,7 +4585,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "A deep cinematic boom whose hit is in its first frame (0 s run-up), so start it on the exact frame the logo or title slams in and let its 2.5 s tail ring out. Everything else steps back under it, the music dropping 8 dB (6 dB at hype), and the last cut lands on a bar of the cut grid, 110 bpm (128 bpm at hype).",
+      "what": "A deep cinematic boom whose hit is in its first frame (0 s run-up), so start it on the exact frame the logo or title slams in, the film's one hero moment, and let its 2.5 s tail ring out. Everything else steps back under it, the music dropping 8 dB (6 dB at hype), and the last cut lands on a bar of the cut grid, 110 bpm (128 bpm at hype).",
       "when": "Fits launch films, trailers and big reveals.",
       "avoid": "More than one boom per film, and calm voice-led films."
     },
@@ -4674,7 +4636,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "A ringing metal hit with its strike in the first frame (0 s run-up), placed on the exact frame a badge, panel or logo locks; its 1.5 s ring carries the hold. The music drops 8 dB (6 dB at hype) under it, on a cut grid of 110 bpm (128 bpm at hype).",
+      "what": "A ringing metal hit with its strike in the first frame (0 s run-up), placed on the exact frame a badge, panel or logo locks; its 1.5 s ring carries the hold, so cut nothing for that long. Pull the music 8 dB (6 dB at hype) back on the strike and bring it up on the next 110 bpm (128 bpm at hype) bar.",
       "when": "Fits hardware, security, industrial and engineering brands.",
       "avoid": "Soft or friendly brands, and pairing it with glass chimes."
     },
@@ -4756,8 +4718,8 @@
   {
     "id": "snd-st-phone-buzz",
     "tab": "sound",
-    "name": "Opens on a phone buzz",
-    "line": "The film starts with a phone buzzing on a table, before anything else is heard.",
+    "name": "Phone buzz as the opening signature",
+    "line": "Every film in a series opens on the same phone buzz on a table, before anything else is heard.",
     "family": "Signature stings",
     "filters": {
       "energy": [
@@ -4778,7 +4740,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Frame one plays a phone buzzing three times on a table, its first pulse at 0 s, with the notification on screen by 0.3 s; music comes in on the third pulse, sitting 8 dB (6 dB at hype) under the buzz until it ends. Cuts after it keep a grid of 110 bpm (128 bpm at hype).",
+      "what": "The same signature opener on every film in a series: frame one plays a phone buzzing three times on a table, its first pulse at 0 s, with the notification on screen by 0.3 s; music comes in on the third pulse, sitting 8 dB (6 dB at hype) under the buzz until it ends. Cuts after it keep a grid of 110 bpm (128 bpm at hype).",
       "when": "Fits notification hooks, messaging and alert products, and \"you have a new...\" openers.",
       "avoid": "Using a buzz with no phone or notification on screen."
     },
