@@ -88,7 +88,7 @@ export const sceneFrame = (scene: Pick<CaptureScene, 'size' | 'fit'>, width: num
  * A capture move: its gallery scene, drawn at a frame of its own size (scaled down to the clip) with the move's name
  * left off, on the named capture. A missing capture or scene fails the render, so the plan reports the entry.
  */
-const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energies: Energy[]; frames: number }> = ({ name, capture, page, energies, frames }) => {
+const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energy: Energy; frames: number }> = ({ name, capture, page, energy, frames }) => {
   const scene = captureSceneOf(name);
   if (!scene) throw new Error(`${name} plays on a capture, and no capture scene in the motion library plays it`);
   // An empty name would mean "the newest capture", which may be anyone's: only a named demo capture is played.
@@ -98,8 +98,8 @@ const CaptureMove: FC<{ name: string; capture?: string; page: StageName; energie
   if (loaded === null) throw new Error(`${name}: the capture ${capture} is not in engine/public (record it, or run: node tools/capture/capture.mjs relist)`);
   if (!loaded) return null;
   const [w, h] = sceneFrame(scene, width, height);
-  // The gallery's own energy when the style allows it (a whip is a hype move), else the style's.
-  const preset = (energies.includes(scene.preset as Energy) ? scene.preset : energies[0] ?? 'confident') as PresetName;
+  // The style's first listed energy always wins, as for every other preview.
+  const preset = energy as PresetName;
   return (
     <Sequence width={w} height={h} durationInFrames={frames} style={{ transform: `scale(${width / w})`, transformOrigin: '0 0' }}>
       <MoveCaptions.Provider value={false}>
@@ -127,7 +127,7 @@ const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({
           const frames = i === moves.length - 1 ? FRAMES - slot * i : slot;
           return (
             <Series.Sequence key={`${name}-${i}`} durationInFrames={frames}>
-              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} page={page} energies={entry.filters.energy} frames={frames} />}
+              {known ? <known.Scene page={page} format={format} /> : <CaptureMove name={name} capture={capture} page={page} energy={energyOf(entry)} frames={frames} />}
             </Series.Sequence>
           );
         })}
