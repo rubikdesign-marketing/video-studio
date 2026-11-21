@@ -72,8 +72,8 @@
         "product-demo"
       ],
       "sizes": [
-        "16:9",
-        "9:16"
+        "9:16",
+        "16:9"
       ],
       "ready": true
     },
@@ -108,9 +108,6 @@
     ],
     "preview": {
       "clip": "library/styles/previews/pui-walk-numbered-steps.mp4"
-    },
-    "settles": {
-      "kind": "tutorial"
     },
     "pairs_with": [
       "pui-click-ring-the-button"
@@ -169,8 +166,8 @@
     "family": "Cursor walk-through",
     "filters": {
       "energy": [
-        "confident",
-        "calm"
+        "calm",
+        "confident"
       ],
       "kinds": [
         "launch-reel",
@@ -182,19 +179,11 @@
       "ready": true
     },
     "prompt": {
-      "what": "Hide the pointer so the screen changes on its own, and when the product's own confirmation appears give it a gentle extra pop of at most 5.5% over 0.3 s with a 2% overshoot (0.5 s with none when calm). Hold each new state 0.8 s (1.6 s when calm) before the next change.",
+      "what": "Hide the pointer so the screen changes on its own, and when the product's own confirmation appears give it a gentle extra pop of at most 5.5% over 0.5 s with no overshoot (0.3 s with a 2% overshoot at confident). Hold each new state 1.6 s (0.8 s at confident) before the next change.",
       "when": "Fits launch films and hero moments that sell the result rather than teach the steps.",
       "avoid": "Tutorials, where people need to see where to click, and popping messages the product already animates strongly."
     },
     "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "quick start with a small spring",
-        "overshoot": 0.02,
-        "hold_s": 0.8,
-        "motion": 1.3,
-        "still_pct": 8
-      },
       "calm": {
         "beat_s": 3.6,
         "ease": "slow in and out",
@@ -202,6 +191,14 @@
         "hold_s": 1.6,
         "motion": 0.6,
         "still_pct": 14
+      },
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick start with a small spring",
+        "overshoot": 0.02,
+        "hold_s": 0.8,
+        "motion": 1.3,
+        "still_pct": 8
       }
     },
     "engine": [
@@ -287,8 +284,8 @@
         "promo"
       ],
       "sizes": [
-        "16:9",
-        "1:1"
+        "1:1",
+        "16:9"
       ],
       "ready": true
     },
@@ -529,6 +526,9 @@
     ],
     "preview": {
       "clip": "library/styles/previews/pui-walk-tall-big-pointer.mp4"
+    },
+    "settles": {
+      "size": "9:16"
     },
     "pairs_with": [
       "pui-click-line-burst"
@@ -844,7 +844,7 @@
       "sketch": "collage-layers",
       "params": {}
     },
-    "nearest": "pui-stage-teammate-corner"
+    "nearest": "pui-walk-teammate-points"
   },
   {
     "id": "pui-walk-checklist-ticks",
@@ -1205,8 +1205,8 @@
   {
     "id": "pui-data-dashboard-tour",
     "tab": "product-ui",
-    "name": "Three-tile dashboard tour",
-    "line": "See the whole dashboard briefly, visit one tile at a time with a sideways glide, then pull back to it all.",
+    "name": "Dashboard tour, one tile at a time",
+    "line": "See the whole dashboard briefly, then each tile in turn stays sharp while the rest dims, with a sideways glide between them.",
     "family": "Dashboard and data build",
     "filters": {
       "energy": [
@@ -1223,9 +1223,9 @@
       "ready": true
     },
     "prompt": {
-      "what": "Show the whole dashboard for at most 1.5 s (1 s at confident), then dim the rest to about 38% so one tile stays sharp, and glide sideways to the next tile in 1.2 s (0.8 s at confident), three tiles at most. End by pulling back to the whole dashboard over 1.4 s (1.0 s at confident) with no overshoot and hold it 1.6 s (0.9 s at confident).",
+      "what": "Show the whole dashboard for at most 1.5 s (1 s at confident), then give each tile one beat: dim the rest to about 38% over 0.4 s (0.3 s at confident) and hold the tile 1.6 s (0.9 s at confident). Glide sideways to the next tile in 1.2 s (0.8 s at confident) with no overshoot, three tiles at most, and end held on the last.",
       "when": "Fits dashboards and reports, where the whole screen is too much to read at once.",
-      "avoid": "Cutting between tiles, and more than three stops before the pull back."
+      "avoid": "Cutting between tiles, and more than three tiles in one tour."
     },
     "timing": {
       "calm": {
@@ -1248,7 +1248,6 @@
     "engine": [
       "product-focus",
       "camera-pan-across",
-      "camera-pull-out",
       "Screen",
       "RestFade"
     ],
@@ -1627,7 +1626,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Land one figure per beat: the bars grow in 0.3 s, the ring sweeps in 0.35 s, then the number counts with its bar in 0.4 s, each with a firm stop and no overshoot (twice as long at confident). Hold each 0.3 s (0.8 s at confident) and cut on the beat to the next.",
+      "what": "Land one figure per beat: the bars grow in 0.3 s (0.6 s at confident), the ring sweeps in 0.35 s (0.7 s at confident), then the number counts with its bar in 0.4 s (0.8 s at confident), each with a firm stop and no overshoot. Hold each 0.3 s (0.8 s at confident) and cut on the beat to the next.",
       "when": "Fits social cuts and launch teasers that list results quickly.",
       "avoid": "More than three figures, and any figure without a short label saying what it counts."
     },
@@ -1794,7 +1793,7 @@
       "sketch": "liquid-morph",
       "params": {}
     },
-    "nearest": "pui-data-dashboard-tour"
+    "nearest": "pui-ba-figure-updates"
   },
   {
     "id": "pui-data-map-arrivals",
@@ -1845,7 +1844,7 @@
       "sketch": "hand-drawn-line",
       "params": {}
     },
-    "nearest": "pui-data-trend-line"
+    "nearest": "pui-data-orders-to-total"
   },
   {
     "id": "pui-data-funnel-narrows",
@@ -1948,6 +1947,60 @@
       "params": {}
     },
     "nearest": "pui-data-tiles-then-one"
+  },
+  {
+    "id": "pui-data-hover-value",
+    "tab": "product-ui",
+    "name": "Hover the chart, the value comes up",
+    "line": "The pointer rests on one point of a chart, it glows, and its value comes up large with its bar.",
+    "family": "Dashboard and data build",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "1:1"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Rest the pointer on the point that matters and raise a soft glow round it in 0.15 s, then on the next beat set its value large and count it up with its bar in 0.8 s (0.9 s when calm), landing with no overshoot. Hold 0.8 s (1.6 s when calm) on the value.",
+      "when": "Fits analytics and reporting tools where reading one value off a chart is the point.",
+      "avoid": "Hovering several points in a row, and a large value that differs from what the chart shows."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick start and soft landing",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.35,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.65,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "hover-glow",
+      "count-with-bar",
+      "ThingGlow",
+      "Count"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/pui-data-hover-value.mp4"
+    }
   },
   {
     "id": "pui-click-ring",
@@ -2803,13 +2856,67 @@
       "sketch": "paper-cutout",
       "params": {}
     },
-    "nearest": "pui-walk-large-arrow"
+    "nearest": "pui-data-tile-to-figure"
+  },
+  {
+    "id": "pui-click-done-next",
+    "tab": "product-ui",
+    "name": "Mark it done, the next one is waiting",
+    "line": "Done is pressed on one item, it slides away, and the next item is already underneath.",
+    "family": "Click and hover beats",
+    "filters": {
+      "energy": [
+        "confident",
+        "calm"
+      ],
+      "kinds": [
+        "product-demo",
+        "promo"
+      ],
+      "sizes": [
+        "16:9",
+        "4:5"
+      ],
+      "ready": true
+    },
+    "prompt": {
+      "what": "Pulse a soft accent fill over the Done button as it goes down, rising in 0.1 s and fading by 0.4 s, then on the next beat slide the finished item off to the left in 0.5 s (0.7 s when calm) with no overshoot, the next item already in place beneath it. Hold 0.8 s (1.6 s when calm) on the next item.",
+      "when": "Fits inboxes, task lists, support queues and review tools, where clearing work one item at a time is the feature.",
+      "avoid": "Fading the item out instead of moving it, and clearing more than three items in a row."
+    },
+    "timing": {
+      "confident": {
+        "beat_s": 2,
+        "ease": "quick start and soft landing",
+        "overshoot": 0,
+        "hold_s": 0.8,
+        "motion": 1.4,
+        "still_pct": 8
+      },
+      "calm": {
+        "beat_s": 3.6,
+        "ease": "slow in and out",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.7,
+        "still_pct": 14
+      }
+    },
+    "engine": [
+      "click-pulse",
+      "slide-off-reveal",
+      "PulseEffect",
+      "Button"
+    ],
+    "preview": {
+      "clip": "library/styles/previews/pui-click-done-next.mp4"
+    }
   },
   {
     "id": "pui-layout-one-control",
     "tab": "product-ui",
     "name": "One control, a change a second",
-    "line": "A single box turns from a search into results into a sent badge, each change caused by a click, and loops.",
+    "line": "A single box changes shape on each click, a ring marking every press, through an order's states and back to the start.",
     "family": "Layout changes",
     "filters": {
       "energy": [
@@ -2827,7 +2934,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Keep one box on screen and change it on each click: the old contents blur out in 0.12 s, the box resizes in 0.15 s and the new contents are sharp by 0.3 s, settling on a spring of 1.5%. About one change a second, and the last state returns to the first so the loop cannot be seen; hold each state 0.7 s.",
+      "what": "Keep one box on screen and change it on each click, marked by a thin ring: the old contents blur out in 0.12 s, the box resizes in 0.15 s and the new contents are sharp by 0.3 s, settling on a spring of 1.5%. About one change a second, and the last state returns to the first so the loop cannot be seen; hold each state 0.7 s.",
       "when": "Fits product ideas told through one interface element, and looping square posts.",
       "avoid": "Two changes in the same second, and a box left small in a big empty frame."
     },
@@ -2843,7 +2950,9 @@
     },
     "engine": [
       "morph-chain",
-      "Cursor"
+      "click-ring",
+      "Cursor",
+      "RingEffect"
     ],
     "preview": {
       "clip": "library/styles/previews/pui-layout-one-control.mp4"
@@ -2916,7 +3025,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Type the query at a human rhythm, about 0.06 s a letter, then on the click let the same box become the result: contents blur out in 0.12 s, the box resizes in 0.15 s and the answer is sharp by 0.3 s on a 1.5% spring. Hold 0.7 s on the answer.",
+      "what": "Type a short query of up to ten letters in about 0.6 s at a human rhythm, then on the click let the same box become the result: contents blur out in 0.12 s, the box resizes in 0.15 s and the answer is sharp by 0.3 s on a 1.5% spring. Hold 0.7 s on the answer.",
       "when": "Fits search and lookup features told in one square loop.",
       "avoid": "Cutting to a separate results page, and typing more than a short phrase."
     },
@@ -3021,57 +3130,9 @@
     ],
     "preview": {
       "clip": "library/styles/previews/pui-layout-tall-card-label.mp4"
-    }
-  },
-  {
-    "id": "pui-layout-square-ring",
-    "tab": "product-ui",
-    "name": "Square feed cut, the button ringed",
-    "line": "A square cut for feeds that follows the action and rings the one button to press.",
-    "family": "Layout changes",
-    "filters": {
-      "energy": [
-        "confident",
-        "calm"
-      ],
-      "kinds": [
-        "product-demo",
-        "promo"
-      ],
-      "sizes": [
-        "1:1"
-      ],
-      "ready": true
     },
-    "prompt": {
-      "what": "Follow the action inside the square in 0.5 s moves (0.8 s when calm), and on the beat that matters draw an ellipse round the button in 0.35 s (0.5 s when calm) with no overshoot. Hold 0.8 s (1.6 s when calm).",
-      "when": "Fits LinkedIn, Instagram and Facebook feed posts of a product demo.",
-      "avoid": "Rings on large panels, and following so tightly that the viewer loses where they are on the screen."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "quick start and soft landing",
-        "overshoot": 0,
-        "hold_s": 0.8,
-        "motion": 1.35,
-        "still_pct": 8
-      },
-      "calm": {
-        "beat_s": 3.6,
-        "ease": "slow in and out",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.7,
-        "still_pct": 14
-      }
-    },
-    "engine": [
-      "relayout-square",
-      "product-ring"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/pui-layout-square-ring.mp4"
+    "settles": {
+      "size": "9:16"
     }
   },
   {
@@ -3156,55 +3217,16 @@
     ],
     "preview": {
       "clip": "library/styles/previews/pui-layout-tall-launch-check.mp4"
-    }
-  },
-  {
-    "id": "pui-layout-tall-calm-underline",
-    "tab": "product-ui",
-    "name": "Slow tall explainer, labels underlined",
-    "line": "An unhurried vertical cut with slow follows, and a line drawn under each label the voice says.",
-    "family": "Layout changes",
-    "filters": {
-      "energy": [
-        "calm"
-      ],
-      "kinds": [
-        "tutorial",
-        "product-demo"
-      ],
-      "sizes": [
-        "9:16"
-      ],
-      "ready": true
     },
-    "prompt": {
-      "what": "Follow the action slowly inside the tall frame, each move taking about 1.0 s with no overshoot, and underline the label the voice names from left to right in 0.5 s. Hold 1.6 s on each underlined label.",
-      "when": "Fits calm vertical explainers and help-centre clips.",
-      "avoid": "Hype pacing, and underlining words that wrap onto two lines."
-    },
-    "timing": {
-      "calm": {
-        "beat_s": 3.6,
-        "ease": "slow in and out",
-        "overshoot": 0,
-        "hold_s": 1.6,
-        "motion": 0.6,
-        "still_pct": 15
-      }
-    },
-    "engine": [
-      "relayout-vertical-calm",
-      "product-underline"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/pui-layout-tall-calm-underline.mp4"
+    "settles": {
+      "size": "9:16"
     }
   },
   {
     "id": "pui-layout-tall-brand-beat",
     "tab": "product-ui",
-    "name": "Branded tall cut on the beat",
-    "line": "A tall follow of the screen with your accent-coloured pointer, and lines bursting from every click on the beat.",
+    "name": "Tall follow, clicks bursting on the beat",
+    "line": "A tall full-bleed follow of the screen, with short lines bursting from every click on the beat.",
     "family": "Layout changes",
     "filters": {
       "energy": [
@@ -3221,7 +3243,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Follow the action full bleed in the tall frame with 0.3 s moves that spring 4% past and back, show the pointer in the brand accent, and burst eight short lines from each click over 0.25 s on the beat. Hold 0.3 s on each result.",
+      "what": "Follow the action full bleed in the tall frame with 0.3 s moves that spring 4% past and back, and burst eight short lines from each click over 0.25 s, landing on the beat. Hold 0.3 s on each result.",
       "when": "Fits TikTok, Reels and Shorts ads where every click should hit the music.",
       "avoid": "Calm films, and more than one burst a beat."
     },
@@ -3236,12 +3258,15 @@
       }
     },
     "engine": [
-      "cursor-brand",
       "relayout-vertical-follow",
-      "click-burst"
+      "click-burst",
+      "BurstEffect"
     ],
     "preview": {
       "clip": "library/styles/previews/pui-layout-tall-brand-beat.mp4"
+    },
+    "settles": {
+      "size": "9:16"
     }
   },
   {
@@ -3292,7 +3317,7 @@
       "sketch": "paper-cutout",
       "params": {}
     },
-    "nearest": "pui-layout-view-switch"
+    "nearest": "pui-layout-one-control"
   },
   {
     "id": "pui-layout-rows-sort",
@@ -3392,7 +3417,7 @@
       "sketch": "paper-cutout",
       "params": {}
     },
-    "nearest": "pui-layout-view-switch"
+    "nearest": "pui-click-proof-forward"
   },
   {
     "id": "pui-stage-laptop-typing",
@@ -3499,48 +3524,6 @@
     }
   },
   {
-    "id": "pui-stage-tablet-ring",
-    "tab": "product-ui",
-    "name": "Tablet app, the control ringed",
-    "line": "The recording sits in a plain landscape tablet, and the control being used gets a clean ring.",
-    "family": "Screen staging",
-    "filters": {
-      "energy": [
-        "confident"
-      ],
-      "kinds": [
-        "product-demo",
-        "promo"
-      ],
-      "sizes": [
-        "16:9"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Set the recording in a plain landscape tablet with no notch or logo, and draw an ellipse round the control being used in 0.35 s with no overshoot, just before it is pressed. Hold 0.8 s on what it opens.",
-      "when": "Fits products used on tablets: shop tills, field work, classrooms.",
-      "avoid": "Desktop-only products, which a tablet would misrepresent."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "quick start and soft landing",
-        "overshoot": 0,
-        "hold_s": 0.8,
-        "motion": 1.3,
-        "still_pct": 8
-      }
-    },
-    "engine": [
-      "stage-tablet",
-      "product-ring"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/pui-stage-tablet-ring.mp4"
-    }
-  },
-  {
     "id": "pui-stage-floating-light",
     "tab": "product-ui",
     "name": "Floating hero screen, light across it",
@@ -3636,11 +3619,11 @@
     }
   },
   {
-    "id": "pui-stage-stacked-label",
+    "id": "pui-walk-teammate-points",
     "tab": "product-ui",
-    "name": "More behind, one named",
-    "line": "The live screen sits in front of two more behind it, and one short label names what is in front.",
-    "family": "Screen staging",
+    "name": "A teammate points out the change",
+    "line": "A second person's named pointer arrives, and a short label appears on the thing they are pointing at, like a comment.",
+    "family": "Cursor walk-through",
     "filters": {
       "energy": [
         "confident"
@@ -3655,52 +3638,9 @@
       "ready": true
     },
     "prompt": {
-      "what": "Stack the live recording in front with two stills of other screens behind, offset up and right, then set one short label with a straight leader on the front screen in 0.4 s with no overshoot. Hold 0.8 s.",
-      "when": "Fits showing there is more behind one screen: several boards, several projects.",
-      "avoid": "Busy screens, where three stacked windows become noise."
-    },
-    "timing": {
-      "confident": {
-        "beat_s": 2,
-        "ease": "quick start and soft landing",
-        "overshoot": 0,
-        "hold_s": 0.8,
-        "motion": 1.3,
-        "still_pct": 8
-      }
-    },
-    "engine": [
-      "stage-stacked",
-      "product-callout",
-      "CaptureStill"
-    ],
-    "preview": {
-      "clip": "library/styles/previews/pui-stage-stacked-label.mp4"
-    }
-  },
-  {
-    "id": "pui-stage-teammate-corner",
-    "tab": "product-ui",
-    "name": "Teammate in the corner",
-    "line": "Your screen fills the frame while a teammate's view plays in a small corner window, their pointer named.",
-    "family": "Screen staging",
-    "filters": {
-      "energy": [
-        "confident"
-      ],
-      "kinds": [
-        "product-demo",
-        "promo"
-      ],
-      "sizes": [
-        "16:9"
-      ],
-      "ready": true
-    },
-    "prompt": {
-      "what": "Play the main recording full size with the second person's view in a small corner window on the same clock, and give their pointer an accent arrow with a name tag. The corner window eases in over 0.4 s with no overshoot and stays; hold 0.8 s on each shared change.",
-      "when": "Fits collaboration features: comments, sharing, live editing.",
-      "avoid": "A corner window that covers the action, and a name tag in a film with only one person."
+      "what": "Bring in the teammate's pointer, an accent arrow with a name tag, on a shallow arc in 0.5 s with no overshoot, and when it rests set a label of up to six words with a straight leader on the thing it points at, in 0.3 s. Hold 0.8 s on the pointer and label together.",
+      "when": "Fits collaboration features: comments, reviews, mentions and approvals.",
+      "avoid": "A name tag in a film with only one person, and more than one teammate speaking per beat."
     },
     "timing": {
       "confident": {
@@ -3713,12 +3653,12 @@
       }
     },
     "engine": [
-      "stage-pip",
       "cursor-named",
-      "CaptureStill"
+      "product-callout",
+      "Label"
     ],
     "preview": {
-      "clip": "library/styles/previews/pui-stage-teammate-corner.mp4"
+      "clip": "library/styles/previews/pui-walk-teammate-points.mp4"
     }
   },
   {
@@ -3840,7 +3780,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Give the product's own sent message a gentle extra pop of at most 5.5% over 0.4 s (0.3 s with a 2% overshoot at confident, none when calm), then show the email in a neutral mail window with its real subject and sender. Hold the email 1.6 s (0.8 s at confident).",
+      "what": "Give the product's own sent message a gentle extra pop of at most 5.5%, over 0.4 s with no overshoot when calm and over 0.3 s with a 2% overshoot at confident, then show the email in a neutral mail window with its real subject and sender. Hold the email 1.6 s (0.8 s at confident).",
       "when": "Fits invoicing, booking and marketing tools whose result is an email.",
       "avoid": "Made-up subjects or senders, and showing the email before the send."
     },
@@ -3916,8 +3856,8 @@
   {
     "id": "pui-stage-browser-tutorial",
     "tab": "product-ui",
-    "name": "Browser tutorial, keys and clicks shown",
-    "line": "A web app in a clean light browser window, each shortcut shown as keys and each click ringed.",
+    "name": "Browser tutorial, shortcuts shown as keys",
+    "line": "A web app in a clean light browser window, with each shortcut shown as key caps as it is used.",
     "family": "Screen staging",
     "filters": {
       "energy": [
@@ -3932,7 +3872,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Frame the recording in a clean light browser window with the real address, show each shortcut as key caps rising in 0.25 s, and ring each click with a thin accent ring spreading over 0.5 s, no overshoot on either. Hold each step's result 1.6 s.",
+      "what": "Frame the recording in a clean light browser window with the real address, and show each shortcut as key caps near the bottom, rising in 0.25 s with no overshoot and pressing as each key goes down. Hold each step's result 1.6 s.",
       "when": "Fits help-centre tutorials for web apps, where people copy each step.",
       "avoid": "Promos, where the window bar eats room, and key caps for ordinary typing."
     },
@@ -3949,7 +3889,6 @@
     "engine": [
       "stage-browser",
       "typing-key-caps",
-      "click-ring",
       "KeyCaps"
     ],
     "preview": {
@@ -4051,11 +3990,11 @@
     "nearest": "pui-stage-floating-light"
   },
   {
-    "id": "pui-mobile-next-tap-ringed",
+    "id": "pui-stage-result-then-name",
     "tab": "product-ui",
-    "name": "Phone app, the next tap ringed",
-    "line": "A phone-size recording fills the tall frame, and the button about to be tapped gets a clean ring.",
-    "family": "Mobile app",
+    "name": "End on the result, then your name",
+    "line": "The finished result stands alone on the stage, then your wordmark takes its place for the last beat.",
+    "family": "Screen staging",
     "filters": {
       "energy": [
         "confident",
@@ -4063,17 +4002,19 @@
       ],
       "kinds": [
         "product-demo",
-        "promo"
+        "promo",
+        "launch-reel"
       ],
       "sizes": [
-        "9:16"
+        "16:9",
+        "1:1"
       ],
       "ready": true
     },
     "prompt": {
-      "what": "Place the phone-size recording full frame, following up and down without cropping its sides, and draw an ellipse round the button about to be tapped in 0.35 s (0.5 s when calm) with no overshoot. Hold 0.8 s (1.6 s when calm) on what the tap opens.",
-      "when": "Fits mobile app and mobile web flows recorded at phone size.",
-      "avoid": "Desktop recordings squeezed into the tall frame, and rings on large panels."
+      "what": "Fade everything but the finished result to the stage colour over 0.4 s (0.6 s when calm) with no overshoot and hold it 0.8 s (1.6 s when calm), then on the last beat let your wordmark replace it, fading up in 0.4 s and held to the end. Nothing else moves on the end card.",
+      "when": "Fits the last five seconds of any product film: proof first, then the name.",
+      "avoid": "Ending on the last click instead of the result, and adding a tagline that crowds the wordmark."
     },
     "timing": {
       "confident": {
@@ -4081,27 +4022,25 @@
         "ease": "quick start and soft landing",
         "overshoot": 0,
         "hold_s": 0.8,
-        "motion": 1.35,
-        "still_pct": 8
+        "motion": 1.25,
+        "still_pct": 9
       },
       "calm": {
         "beat_s": 3.6,
         "ease": "slow in and out",
         "overshoot": 0,
         "hold_s": 1.6,
-        "motion": 0.65,
-        "still_pct": 14
+        "motion": 0.55,
+        "still_pct": 15
       }
     },
     "engine": [
-      "relayout-phone-take",
-      "product-ring"
+      "product-isolate",
+      "Wordmark",
+      "RestFade"
     ],
     "preview": {
-      "clip": "library/styles/previews/pui-mobile-next-tap-ringed.mp4"
-    },
-    "settles": {
-      "size": "9:16"
+      "clip": "library/styles/previews/pui-stage-result-then-name.mp4"
     }
   },
   {
@@ -4123,7 +4062,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Place the phone-size recording full frame and drop a numbered badge on each thing tapped, popping in over 0.3 s with no overshoot and staying so the path builds up. Follow slowly, each move about 1.0 s, and hold each step's result 1.6 s.",
+      "what": "Place the phone-size recording full frame with no pointer shown, and let the numbered badges carry the tutorial: each tap drops one on the thing tapped, popping in over 0.3 s with no overshoot and staying so the path builds up. Follow slowly, each move about 1.0 s, and hold each step's result 1.6 s.",
       "when": "Fits app onboarding, help clips and \"how to\" posts for a phone app.",
       "avoid": "More than five badges on one screen, and following so fast the numbers cannot be read."
     },
@@ -4140,6 +4079,7 @@
     "engine": [
       "relayout-phone-take",
       "product-steps",
+      "cursor-hidden",
       "Label"
     ],
     "preview": {
@@ -4152,8 +4092,8 @@
   {
     "id": "pui-mobile-framed-confirmed",
     "tab": "product-ui",
-    "name": "The phone in view, the booking confirmed",
-    "line": "The phone-size recording inside a plain phone frame, ending on the app's own confirmation with a gentle pop.",
+    "name": "Booking confirmed on a framed phone",
+    "line": "A plain phone frame holds the app recording, and the app's own confirmation gets a gentle pop at the end.",
     "family": "Mobile app",
     "filters": {
       "energy": [
@@ -4170,7 +4110,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Show the phone-size recording in a plain phone frame as tall as the caption slot allows, and when the app's own confirmation appears give it an extra pop of at most 5.5% over 0.3 s with a 2% overshoot (0.4 s with none when calm). Hold 0.8 s (1.6 s when calm).",
+      "what": "Show the phone-size recording in a plain phone frame as tall as the caption slot allows, with no pointer shown, so each tap reads from the screen changing under it. When the app's own confirmation appears give it an extra pop of at most 5.5% over 0.3 s with a 2% overshoot (0.4 s with no overshoot when calm), and hold 0.8 s (1.6 s when calm).",
       "when": "Fits app promos that end on booked, paid or sent.",
       "avoid": "A phone frame so small the screen cannot be read, and popping messages the app already animates."
     },
@@ -4194,7 +4134,8 @@
     },
     "engine": [
       "relayout-phone-take-framed",
-      "product-toast"
+      "product-toast",
+      "cursor-hidden"
     ],
     "preview": {
       "clip": "library/styles/previews/pui-mobile-framed-confirmed.mp4"
@@ -4206,8 +4147,8 @@
   {
     "id": "pui-mobile-framed-loupe",
     "tab": "product-ui",
-    "name": "The phone in view, a loupe on the small print",
-    "line": "Inside a plain phone frame, a round loupe enlarges the one small detail on the app screen that matters.",
+    "name": "A loupe on the small print of a phone app",
+    "line": "The app sits in a plain phone frame, and a round loupe enlarges the one small detail that matters.",
     "family": "Mobile app",
     "filters": {
       "energy": [
@@ -4224,7 +4165,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Show the phone-size recording in a plain phone frame, then open a round loupe over the small detail in 0.4 s (0.6 s when calm) with no overshoot, enlarged only as far as the recording stays sharp. Hold the loupe 0.8 s (1.6 s when calm), then close it.",
+      "what": "Show the phone-size recording in a plain phone frame with no pointer shown, then open a round loupe over the small detail in 0.4 s (0.6 s when calm) with no overshoot, enlarged only as far as the recording stays sharp; the loupe marks the tap. Hold the loupe 0.8 s (1.6 s when calm), then close it.",
       "when": "Fits apps whose key detail is small on a phone: a price, a time, a status.",
       "avoid": "Opening the loupe on large areas, and more than one loupe a scene."
     },
@@ -4248,7 +4189,8 @@
     },
     "engine": [
       "relayout-phone-take-framed",
-      "product-magnifier"
+      "product-magnifier",
+      "cursor-hidden"
     ],
     "preview": {
       "clip": "library/styles/previews/pui-mobile-framed-loupe.mp4"
@@ -4278,7 +4220,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Follow the phone-size recording full frame in quick 0.3 s moves on the beat, then land the final result with a brand-coloured check that pops in 0.25 s with a 5% overshoot. Hold 0.4 s on the check, once per film.",
+      "what": "Follow the phone-size recording full frame in quick 0.3 s moves on the beat, with no pointer shown so each tap reads from the screen changing, then land the final result with a brand-coloured check that pops in 0.25 s with a 5% overshoot. Hold 0.4 s on the check, once per film.",
       "when": "Fits app store style promos and social ads that end on success.",
       "avoid": "Calm and confident films, where the check is not drawn, and a second check in the same film."
     },
@@ -4294,7 +4236,8 @@
     },
     "engine": [
       "relayout-phone-take",
-      "product-success"
+      "product-success",
+      "cursor-hidden"
     ],
     "preview": {
       "clip": "library/styles/previews/pui-mobile-check-on-beat.mp4"
@@ -4359,8 +4302,8 @@
   {
     "id": "pui-mobile-alert-into-app",
     "tab": "product-ui",
-    "name": "A message drops in, then the app it opens",
-    "line": "A notification slides down from the top, then the app it opens fills the screen with the button to tap ringed.",
+    "name": "Alert first, then the app it opens",
+    "line": "A notification slides down from the top of a phone, then the app it opens fills the tall frame.",
     "family": "Mobile app",
     "filters": {
       "energy": [
@@ -4377,7 +4320,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Drop the notification in from the top in 0.35 s with a 2% settle (0.25 s with 4% at hype) and hold it 0.8 s to be read (0.3 s at hype), then cut into the phone-size app it opens and ring the button to tap in 0.35 s. One job per beat.",
+      "what": "Drop the notification in from the top in 0.35 s with a 2% settle (0.25 s with 4% at hype) and hold it 0.8 s to be read (0.3 s at hype). On the next beat cut into the phone-size app it opens, no pointer shown, following up and down in 0.5 s moves (0.3 s at hype) so each tap reads from the screen changing.",
       "when": "Fits apps whose story starts with an alert: a booking, a payment, a message.",
       "avoid": "Made-up senders or messages, and a notification that covers the button it leads to."
     },
@@ -4402,7 +4345,7 @@
     "engine": [
       "opener-notification-drop",
       "relayout-phone-take",
-      "product-ring"
+      "cursor-hidden"
     ],
     "preview": {
       "clip": "library/styles/previews/pui-mobile-alert-into-app.mp4"
@@ -4459,7 +4402,7 @@
       "sketch": "card-tilt-3d",
       "params": {}
     },
-    "nearest": "pui-mobile-next-tap-ringed",
+    "nearest": "pui-mobile-numbered-taps",
     "settles": {
       "size": "9:16"
     }
@@ -4503,7 +4446,7 @@
       "sketch": "clay-squash",
       "params": {}
     },
-    "nearest": "pui-mobile-next-tap-ringed",
+    "nearest": "pui-mobile-framed-confirmed",
     "settles": {
       "size": "9:16"
     }
