@@ -655,8 +655,8 @@
   {
     "id": "mo-tr-relay-steps",
     "tab": "motion",
-    "name": "Next step scrolls in",
-    "line": "Each finished step speeds up and away, and the next rises from just below and slows to rest.",
+    "name": "Numbered steps scroll on",
+    "line": "Each finished step card, its number and words, speeds up and away, and the next step card rises from just below.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -665,8 +665,8 @@
       ],
       "kinds": [
         "tutorial",
-        "product-demo",
-        "motion-graphics"
+        "motion-graphics",
+        "promo"
       ],
       "sizes": [
         "9:16",
@@ -675,8 +675,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Speed the finished step up and off the top in about 0.5 s, 0.4 s in a confident film, swap in a single frame, and start the next step about 12% low so it slows into place. Every step leaves the same way, with no empty frame and no fade.",
-      "when": "Fits numbered steps, checklists and how-to sequences.",
+      "what": "Speed the finished step card, its number and its words, up and off the top in about 0.5 s, 0.4 s in a confident film, swap in a single frame, and start the next card about 12% low so it slows into place. Every card leaves the same way, with no empty frame and no fade.",
+      "when": "Fits numbered steps, checklists and how-to sequences built as designed cards. Not for product recordings; the Filming tab covers those.",
       "avoid": "Changing direction between steps, and joining scenes that are not part of one sequence."
     },
     "timing": {
@@ -707,8 +707,8 @@
   {
     "id": "mo-tr-pull-back-swap",
     "tab": "motion",
-    "name": "Pull back into new content",
-    "line": "The old content shrinks away as the new content arrives from large, like one long pull-back.",
+    "name": "Pull back to the next title set",
+    "line": "One group of words and graphics shrinks away as the next group arrives from large, like one long pull-back.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -727,8 +727,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Shrink the outgoing group to about 78% in 0.25 s, speeding up, while the next group arrives at about 150% and slows to its own size over 0.5 s, 0.3 s at hype. The two read as one pull-back, with no empty frame between them.",
-      "when": "Fits a full change of content inside one world: one feature to the next, one offer to the next.",
+      "what": "Shrink the outgoing group of words and graphics to about 78% in 0.25 s, speeding up, while the next group arrives at about 150% and slows to its own size over 0.5 s, 0.3 s at hype. The two read as one pull-back, with no empty frame between them.",
+      "when": "Fits a full change of designed content inside one look: one offer card to the next, one claim to the next. Not for product recordings; the Filming tab covers those.",
       "avoid": "Text that must be read during the swap, and placing it next to another zoom."
     },
     "timing": {
@@ -811,8 +811,8 @@
   {
     "id": "mo-tr-momentum-cut",
     "tab": "motion",
-    "name": "Cut on the move",
-    "line": "The shot starts to slide, a hard cut, and the next shot is already moving the same way.",
+    "name": "Cut on the move between graphics",
+    "line": "A graphic scene starts to slide, a hard cut, and the next scene of words or shapes is already moving the same way.",
     "family": "Transitions",
     "filters": {
       "energy": [
@@ -820,7 +820,7 @@
         "hype"
       ],
       "kinds": [
-        "product-demo",
+        "motion-graphics",
         "promo",
         "launch-reel"
       ],
@@ -831,8 +831,8 @@
       "ready": true
     },
     "prompt": {
-      "what": "Let the outgoing shot start sliding and speeding up for about 0.3 s, cut hard, and have the incoming shot already moving the same way at the same speed, settling in about 0.3 s. Both sides share one background colour, so the cut is felt rather than seen.",
-      "when": "Fits joining a wide view and a close-up of the same layout without zooming across small text.",
+      "what": "Let the outgoing graphic scene start sliding and speeding up for about 0.3 s, cut hard, and have the incoming scene of words or shapes already moving the same way at the same speed, settling in about 0.3 s. Both sides share one background colour, so the cut is felt rather than seen.",
+      "when": "Fits joining a wide graphic layout and a close-up of one of its words or numbers without zooming across small text. Not for product recordings; the Filming tab covers those.",
       "avoid": "Cutting between different page colours or different worlds, and calm passages where a carried move would do."
     },
     "timing": {
@@ -5026,8 +5026,8 @@
         "motion-graphics"
       ],
       "sizes": [
-        "16:9",
-        "9:16"
+        "1:1",
+        "16:9"
       ],
       "ready": true
     },
@@ -5055,8 +5055,8 @@
       }
     },
     "engine": [
-      "opener-sudden-stop",
-      "mark-word-bracket"
+      "mark-word-bracket",
+      "opener-sudden-stop"
     ],
     "preview": {
       "clip": "library/styles/previews/mo-ease-hard-brake.mp4"
