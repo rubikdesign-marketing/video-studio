@@ -66,7 +66,21 @@ export function assumptions(brief, ctx = {}) {
   return out;
 }
 
-const VOICES = ['voice-over', 'presenter', 'dialogue', 'none'];
+export const VOICES = ['voice-over', 'presenter', 'dialogue', 'none'];
+export const SIZES = ['9:16', '1:1', '4:5', '16:9'];
+// The hook family ids in library/hooks/index.json, plus "propose" (the studio brings three).
+export const HOOK_FAMILIES = ['question', 'contrarian', 'outcome', 'problem', 'curiosity-gap', 'proof', 'story', 'how-to', 'list', 'mistake-warning', 'callout', 'comparison', 'offer', 'demonstration', 'pattern-interrupt', 'propose'];
+
+// Plain words for every answer choice, in sentence case.
+export const LABELS = {
+  '9:16': 'Vertical 9:16', '1:1': 'Square 1:1', '4:5': 'Portrait 4:5', '16:9': 'Landscape 16:9',
+  'product-demo': 'Product demo', 'launch-reel': 'Launch reel', 'motion-graphics': 'Motion graphics', 'footage-edit': 'Edit of your footage', ugc: 'Person talking to camera', 'animated-short': 'Animated short', promo: 'Promo', tutorial: 'Tutorial',
+  camera: 'Camera', pacing: 'Pacing', edit: 'Editing', delivery: "Presenter's delivery", performance: 'Performance', look: 'Look', type: 'Type', sound: 'Sound', structure: 'Structure', story: 'Story', character: 'Character',
+  cold: 'Not aware of the problem', 'problem-aware': 'Aware of the problem', 'solution-aware': 'Comparing solutions', 'product-aware': 'Already knows the product',
+  paper: 'Paper', night: 'Night', glass: 'Glass', 'colour-field': 'Colour field', editorial: 'Editorial', blueprint: 'Blueprint', propose: 'Let the studio propose',
+  'voice-over': 'Voice-over', presenter: 'Person on camera', dialogue: 'Two people talking', none: 'Nobody, music and type',
+  question: 'Question', contrarian: 'Contrarian take', outcome: 'Outcome first', problem: 'Problem', 'curiosity-gap': 'Curiosity gap', proof: 'Proof', 'how-to': 'How to', list: 'List', 'mistake-warning': 'Mistake warning', callout: 'Callout', comparison: 'Comparison', offer: 'Offer', demonstration: 'Demonstration', 'pattern-interrupt': 'Pattern interrupt',
+};
 export const SETTABLE = ['kind', 'for', 'viewer_should', 'voice', 'length_cap_seconds', 'size'];
 
 /**
@@ -128,7 +142,99 @@ export function questions(brief, { job = {}, ctx = {} } = {}) {
   if (!Number(brief.length_cap_seconds)) ask('length', 'How long at most?', 'The cap sets how many beats fit and how long each product shot can hold.', job.length_cap_seconds ? `${job.length_cap_seconds} s (from job.json)` : null, 9);
   if (empty(brief.look) && !saved) ask('look', 'Which look: one of our six styles (paper, night, glass, colour field, editorial, blueprint), the look of your reference, or shall we propose it with the three concepts?', 'The look sets the palette, light and type treatment of every frame.', 'propose: we bring it with the concepts, different from the last five films', 10);
   if (empty(brief.hook?.family) && empty(brief.hook?.idea) && !saved) ask('hook', 'Do you have an opening in mind (the first thing the viewer sees and hears)? If not, we bring three, each from a different hook family.', 'The first three seconds decide whether anyone sees the rest; the family follows from the audience.', 'propose: three openings from three families', 11);
-  return q.sort((a, b) => a.rank - b.rank);
+  return q.sort((a, b) => a.rank - b.rank).map((x) => {
+    const s = specOf(brief, x.id);
+    const text = typeof x.recommended === 'string' ? x.recommended : '';
+    const pick = s.values?.find((v) => text.startsWith(v) && !/[a-z0-9-]/i.test(text[v.length] || ''));
+    return { ...x, field: s.field, choices: s.values ? s.values.map((value) => ({ value, label: LABELS[value] || value, recommended: value === pick })) : null, many: !!s.many };
+  });
+}
+
+// Where each question's answer goes, and which fixed choices it has (null: open-ended).
+const CHOSEN = {
+  size: { field: 'size', values: () => SIZES },
+  master: { field: 'size', values: (b) => [...new Set((b.deliver || []).filter((d) => !empty(d.size)).map((d) => d.size))] },
+  kind: { field: 'kind', values: () => KINDS },
+  audience: { field: 'awareness', values: () => AWARENESS },
+  voice: { field: 'voice', values: () => VOICES },
+  look: { field: 'look', values: () => LOOKS },
+  hook: { field: 'hook.family', values: () => HOOK_FAMILIES },
+};
+const OPEN = { brand: 'brand', reference: 'references', product: 'product', viewer: 'viewer_should', angle: 'angle', proof: 'must_show', length: 'length_cap_seconds' };
+
+function specOf(brief, id) {
+  const m = /^(ref|show)-(\d+)$/.exec(id);
+  if (m) return m[1] === 'ref' ? { field: `references.${m[2]}.liked_for`, values: QUALITIES, many: true, n: Number(m[2]) } : { field: `must_show.${m[2]}.evidence`, values: null, many: false, n: Number(m[2]) };
+  if (Object.hasOwn(CHOSEN, id)) return { field: CHOSEN[id].field, values: CHOSEN[id].values(brief), many: false };
+  if (Object.hasOwn(OPEN, id)) return { field: OPEN[id], values: null, many: false };
+  return null;
+}
+
+// "Problem aware", " Colour field " -> "problem-aware", "colour-field".
+const norm = (v) => String(v ?? '').trim().toLowerCase().replace(/\s+/g, '-');
+
+/** Is this a valid answer to the question? Plain words are matched to the choice they mean. Never throws. */
+export function checkAnswer(brief, questionId, value) {
+  const s = specOf(brief || {}, questionId);
+  if (!s) return { ok: false, field: '', value: null, reason: `No question ${questionId}` };
+  const bad = (reason) => ({ ok: false, field: s.field, value: null, reason });
+  if (s.values) {
+    const list = s.values.join(', ');
+    if (Array.isArray(value) && !s.many) return bad(`Pick one of: ${list}`);
+    const items = [].concat(value ?? []).map(norm).filter(Boolean);
+    if (!items.length) return bad(`${s.many ? 'Pick at least one of' : 'Pick one of'}: ${list}`);
+    if (items.some((i) => !s.values.includes(i))) return bad(`${s.many ? 'Pick any of' : 'Pick one of'}: ${list}`);
+    return { ok: true, field: s.field, value: s.many ? [...new Set(items)] : items[0], reason: null };
+  }
+  const text = Array.isArray(value) ? '' : String(value ?? '').trim();
+  if (!text) return bad('Say it in a few words.');
+  if (questionId === 'length' && !(Number(text.replace(/\s*(s|sec|secs|seconds)$/i, '')) > 0)) return bad('Give the length as a number of seconds, for example 30.');
+  return { ok: true, field: s.field, value: text, reason: null };
+}
+
+/**
+ * Put one answer into the brief, so the question is not asked again. Returns a new brief; throws a plain Error when the
+ * answer is not valid. For a choice, `value` is the choice (or several for ref-N); for an open question `words` (or value)
+ * is the text. `words` also goes to `for` (audience) and `hook.idea` (hook). Uses setField where the chat's `set` does.
+ */
+export function applyAnswer(brief, questionId, { value, words } = {}) {
+  const s = specOf(brief, questionId);
+  if (!s) throw new Error(`No question ${questionId}`);
+  const w = String(words ?? '').trim();
+  const given = s.values ? value : (w || value);
+  const r = checkAnswer(brief, questionId, given);
+  if (!r.ok) throw new Error(s.values && [].concat(given ?? []).some((g) => String(g).trim()) ? `${s.field.split('.').at(-1)} must be one of ${s.values.join(', ')}` : r.reason);
+  const v = r.value;
+  const b = { ...brief };
+  if (questionId.startsWith('ref-')) {
+    if (!(brief.references || [])[s.n]) throw new Error(`No reference ${s.n}`);
+    b.references = brief.references.map((x, i) => (i === s.n ? { ...x, liked_for: v } : x));
+    return b;
+  }
+  if (questionId.startsWith('show-')) {
+    if (!(brief.must_show || [])[s.n]) throw new Error(`No must-show ${s.n}`);
+    b.must_show = brief.must_show.map((x, i) => (i === s.n ? { ...x, evidence: v } : x));
+    return b;
+  }
+  switch (questionId) {
+    case 'size': case 'kind': case 'voice': return setField(brief, s.field, v);
+    case 'length': return setField(brief, 'length_cap_seconds', v);
+    case 'viewer': return setField(brief, 'viewer_should', v);
+    case 'master': {
+      // Mark the delivery that already has this size, rather than adding a second one.
+      const deliver = (brief.deliver || []).map((d) => ({ ...d }));
+      deliver.find((d) => d.size === v).master = true;
+      b.deliver = deliver; return b;
+    }
+    case 'audience': b.awareness = v; return w ? setField(b, 'for', w) : b;
+    case 'hook': b.hook = { ...brief.hook, family: v, ...(w && { idea: w }) }; return b;
+    case 'proof': b.must_show = [...(brief.must_show || []), { what: v, evidence: '' }]; return b;
+    case 'reference':
+      if (/^none(,\s*you choose)?$/i.test(v)) b.no_reference = true;
+      else b.references = [...(brief.references || []), { source: v, liked_for: [], use: 'study-only' }];
+      return b;
+    default: b[s.field] = v; return b; // brand, product, angle, look
+  }
 }
 
 /**
