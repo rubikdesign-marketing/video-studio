@@ -48,7 +48,7 @@ export function assumptions(brief, ctx = {}) {
   const w = ` ${String(brief.in_their_words || '').toLowerCase()} `;
   const out = [];
   if (empty(brief.brand)) {
-    const named = Object.keys(ctx.brands || {}).find((b) => new RegExp(`\\b${b.replace(/[-]/g, '[- ]?')}\\b`).test(w));
+    const named = Object.keys(ctx.brands || {}).find((b) => new RegExp(`\\b${b === 'demo' ? 'demo brand' : b.replace(/[-]/g, '[- ]?')}\\b`).test(w)); // the sample brand is named only as "demo brand"; "a demo of" asks for a product demo
     if (named) out.push({ id: 'brand', value: named, because: named });
     else if (ctx.jobBrand) out.push({ id: 'brand', value: ctx.jobBrand, because: 'job.json' });
     else if (ctx.defaultBrand) out.push({ id: 'brand', value: ctx.defaultBrand, because: 'the studio default' });

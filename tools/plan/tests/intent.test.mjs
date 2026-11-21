@@ -32,7 +32,10 @@ test('preflight: the eight items, with what is open and why', () => {
 
 test('preflight: the brand comes from their words, then job.json, then the studio default', () => {
   const ctx = { brands: { acme: {}, demo: {} }, defaultBrand: 'acme' };
-  assert.equal(assumptions({ in_their_words: 'a demo reel' }, ctx).find((a) => a.id === 'brand').value, 'demo');
+  assert.equal(assumptions({ in_their_words: 'a reel for the demo brand' }, ctx).find((a) => a.id === 'brand').value, 'demo');
+  const open = { brands: { acme: {}, demo: {} } };
+  assert.equal(assumptions({ in_their_words: 'a vertical demo of the export button' }, open).find((a) => a.id === 'brand'), undefined, 'a product demo is not the demo brand');
+  assert.equal(assumptions({ in_their_words: 'a demo reel' }, { brands: { demo: {} } }).find((a) => a.id === 'brand'), undefined);
   assert.equal(assumptions({ in_their_words: 'a reel' }, { ...ctx, jobBrand: 'demo' }).find((a) => a.id === 'brand').because, 'job.json');
   assert.equal(assumptions({ in_their_words: 'a reel' }, ctx).find((a) => a.id === 'brand').value, 'acme');
 });

@@ -48,6 +48,16 @@ test('tools: only the demo brand means parked, never demo by default', () => {
   assert.equal(again.recorded, true);
 });
 
+test('tools: the word demo asks for a product demo, it does not pick the demo brand', () => {
+  for (const r of [root, (() => { const x = scratchStudio(); fs.writeFileSync(path.join(x, 'studio.json'), JSON.stringify({ default_brand: 'demo' })); return x; })()]) {
+    const s = makeHandlers(r).brief_start({ words: 'a vertical demo of the export button' });
+    assert.ok(!s.assumed.some((a) => a.id === 'brand'));
+    assert.ok(s.assumed.some((a) => a.id === 'kind' && a.value === 'product-demo'));
+    assert.ok(s.questions.some((q) => q.id === 'brand' && q.choices.every((c) => c.value !== 'demo')));
+    assert.notEqual(loadJob(jobDir(r, s.job)).brief.brand, 'demo');
+  }
+});
+
 test('tools: a parked brief confirms without recording or making a job', () => {
   const d = makeHandlers(demoOnlyRoot);
   const r = d.brief_start({ words: 'a parked reel for acme friends' });
