@@ -49,3 +49,41 @@ test('answers: an invalid answer throws and leaves the brief untouched', () => {
   assert.throws(() => applyAnswer(b, 'nonsense', { value: 'x' }), /No question nonsense/);
   assert.equal(b.kind, undefined);
 });
+
+test('answers: the master is one of the sizes already asked for, and no second delivery is added', () => {
+  const b = { brand: 'acme', deliver: [{ platform: 'reels', size: '9:16' }, { platform: 'feed', size: '1:1' }] };
+  const q = questions(b).find((x) => x.id === 'master');
+  assert.deepEqual(q.choices.map((c) => c.value), ['9:16', '1:1']);
+  assert.equal(checkAnswer(b, 'master', '4:5').ok, false);
+  const out = applyAnswer(b, 'master', { value: '1:1' });
+  assert.deepEqual(out.deliver, [{ platform: 'reels', size: '9:16' }, { platform: 'feed', size: '1:1', master: true }]);
+  assert.equal(b.deliver[1].master, undefined);
+  assert.ok(!questions(out).some((x) => x.id === 'master'));
+});
+
+test('answers: length must be a number of seconds', () => {
+  const bad = checkAnswer({}, 'length', 'a while');
+  assert.equal(bad.ok, false);
+  assert.match(bad.reason, /seconds/);
+  assert.throws(() => applyAnswer({}, 'length', { words: 'a while' }), /seconds/);
+  assert.equal(applyAnswer({}, 'length', { words: '30 s' }).length_cap_seconds, 30);
+});
+
+test('answers: show-N sets what the viewer sees, and a missing target is refused', () => {
+  const b = { brand: 'acme', must_show: [{ what: 'export to PDF', evidence: '' }] };
+  const out = applyAnswer(b, 'show-0', { words: 'the PDF opens in the reader' });
+  assert.deepEqual(out.must_show, [{ what: 'export to PDF', evidence: 'the PDF opens in the reader' }]);
+  assert.equal(b.must_show[0].evidence, '');
+  assert.ok(!questions(out).some((x) => x.id === 'show-0'));
+  assert.throws(() => applyAnswer(b, 'show-3', { words: 'x' }), /No must-show 3/);
+  assert.throws(() => applyAnswer(base(), 'ref-5', { value: ['pacing'] }), /No reference 5/);
+  assert.deepEqual(applyAnswer(base(), 'ref-0', { value: 'sound' }).references[0].liked_for, ['sound']);
+});
+
+test('answers: the recommended choice is the one the recommendation starts with, on a word boundary', () => {
+  const voice = questions({ brand: 'demo', kind: 'launch-reel' }).find((x) => x.id === 'voice');
+  assert.deepEqual(voice.choices.filter((c) => c.recommended).map((c) => c.value), ['none']);
+  const other = questions({ brand: 'demo', kind: 'tutorial' }).find((x) => x.id === 'voice');
+  assert.deepEqual(other.choices.filter((c) => c.recommended).map((c) => c.value), ['voice-over']);
+  assert.equal(questions(base()).find((x) => x.id === 'kind').choices.some((c) => c.recommended), false);
+});
