@@ -440,3 +440,23 @@ test('render plan: previews play at the first listed energy', () => {
     assert.equal(planRender(lib, { root, force: true, only: 'demo-soft-arrive' }).render[0].entry.energy, 'hype');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('render: shader entries are rendered with --gl=angle, others without', async () => {
+  const root = scratch();
+  try {
+    const lib = loadLibrary(root);
+    lib.byId.get('demo-soft-arrive').engine = ['shader-god-rays'];
+    const plan = planRender(lib, { root, force: true, only: 'demo-soft-arrive' });
+    assert.equal(plan.render[0].gpu, true);
+    assert.equal(planRender(loadLibrary(root), { root, force: true, only: 'demo-paper-world' }).render[0].gpu, false);
+    const seen = {};
+    const run = async (cmd, args) => { if (cmd === process.execPath) seen[args[5] ? args[4].split(/[\\/]/).pop() : '?'] = args; return { code: 1, stdout: '', stderr: 'stop' }; };
+    writeFileSync(join(root, 'library', 'styles', 'motion.json'), JSON.stringify([...lib.tabs.motion.map((e) => (e.id === 'demo-soft-arrive' ? { ...e, engine: ['shader-god-rays'] } : e))]));
+    await main(['--root', root, '--force', '--only', 'demo-soft-arrive'], { run, log: () => {} });
+    assert.ok(seen['demo-soft-arrive.mp4'].includes('--gl=angle'));
+    for (const k of Object.keys(seen)) delete seen[k];
+    await main(['--root', root, '--force', '--only', 'demo-paper-world'], { run, log: () => {} });
+    const args = Object.values(seen)[0];
+    assert.ok(args && !args.includes('--gl=angle'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

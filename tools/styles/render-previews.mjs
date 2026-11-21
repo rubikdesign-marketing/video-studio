@@ -49,10 +49,13 @@ function engineKinds(studio = STUDIO) {
   const backgrounds = new Set();
   for (const b of tryJson(join(studio, 'library', 'backgrounds', 'index.json'))?.backgrounds ?? []) { backgrounds.add(b.name); if (b.component) backgrounds.add(b.component); }
   const capture = new Set();
+  const gpu = new Set();
   for (const m of tryJson(join(studio, 'library', 'motion', 'index.json'))?.moves ?? []) {
+    // As tools/library/registry.mjs decides: the shader family, or a move whose text says it needs WebGL.
+    if (m.family === 'shader' || /webgl|--gl=angle/i.test(m.does || '')) gpu.add(m.name);
     if (isCaptureMove(m.name, m.family)) capture.add(m.name);
   }
-  return { scenes, backgrounds, capture };
+  return { scenes, backgrounds, capture, gpu };
 }
 
 /** Which kind of engine item a name is: 'scene', 'background', 'capture', or null. Names may be kebab or component names. */
@@ -144,9 +147,10 @@ export function planRender(lib, { root, tab = null, only = null, force = false, 
       if (!hasMove && !onlyBackground) { out.attention.push({ id: e.id, reason: 'nothing in its engine list has a demo scene, so it has no clip' }); continue; }
       const { width, height } = previewSize(e.filters?.sizes?.[0]);
       const names = playable.map((i) => i.name);
+      const gpu = items.some((i) => kinds.gpu.has(i.name));
       const energy = e.filters.energy?.[0] ?? 'confident';
       const entry = { id: e.id, energy, filters: { energy: e.filters.energy, sizes: e.filters.sizes }, engine: names };
-      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: names, energy, capture: onCapture.length ? capture : null, entry });
+      out.render.push({ id: e.id, tab: t, width, height, out: join(root, clip), clip, moves: names, energy, gpu, capture: onCapture.length ? capture : null, entry });
     }
   }
   return out;
@@ -216,7 +220,7 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
       // Encode beside the clip and move it into place only when it is good, so a failed re-render keeps the old clip.
       const temp = join(dirname(job.out), `${job.id}.tmp.mp4`);
       try {
-        const r = await run(process.execPath, [cli, 'render', 'src/library/styles/entry.tsx', 'style-preview', raw, `--props=${props}`, '--codec=h264', '--muted', '--log=error'], { cwd: join(studio, 'engine') });
+        const r = await run(process.execPath, [cli, 'render', 'src/library/styles/entry.tsx', 'style-preview', raw, `--props=${props}`, '--codec=h264', '--muted', '--log=error', ...(job.gpu ? ['--gl=angle'] : [])], { cwd: join(studio, 'engine') });
         if (r.code !== 0) throw new Error(`remotion render failed: ${(r.stderr || r.stdout || '').trim().split('\n').pop()}`);
         const size = await compress(run, raw, temp);
         renameSync(temp, job.out);
