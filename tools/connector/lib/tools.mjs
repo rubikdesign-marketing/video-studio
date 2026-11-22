@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { applyAnswer, assumptions, checkAnswer, checkDirectorBrief, directorBriefOf, picksOf, preflight, questions, reopen, setPick, understood } from '../../plan/lib/brief.mjs';
+import { applyAnswer, assumptions, checkAnswer, checkDirectorBrief, directorBriefOf, ENERGIES, picksOf, preflight, questions, reopen, setPick, understood } from '../../plan/lib/brief.mjs';
 import { suggest } from '../../styles/lib/suggest.mjs';
 import { confirmPlan, customerBrands, decide, directorRules, jobFolderName, loadJob, saveBrief, startBrief, studioContext, writePlan } from '../../plan/lib/brief-store.mjs';
 import { loadLibrary, TABS } from '../../styles/lib/library.mjs';
@@ -112,11 +112,16 @@ function checkReply(root, job, dir) {
   else if (brand && !ctx.brands[brand]?.setUp) status = 'needs-setup';
   else if (checks.find((c) => c.id === 'product')?.todo?.includes('no approved product discovery')) status = 'needs-discovery';
   const parts = directorBriefOf(brief)?.parts ?? null;
+  // The energy and length the brief has now (answered, or taken from their words): the page checks the director's
+  // brief against these, as brief_direct does.
+  const rules = directorRules(brief, jobJson, ctx);
   return {
     job, brand_status: status,
     picks: picksOf(brief, ctx.styles),
     director_brief: parts && typeof parts === 'object' ? { ...parts, logline: cut(parts.logline) } : null,
-    understood: understood(brief.in_their_words),
+    understood: understood(brief.in_their_words, { brands: ctx.brands }),
+    energy: rules.energy || null,
+    length: rules.cap || null,
     library_notes: ctx.styleNotes || [],
     assumed: assumed.map((a) => ({ id: a.id, value: a.value, ...because(a) })),
     preflight: checks.map((c) => ({ id: c.id, label: c.label, done: c.done, known: cut(c.known), todo: c.todo })),
@@ -247,7 +252,8 @@ export function makeHandlers(root) {
       return { ...checkReply(root, job, dir), picked: (now.style_picks || []).some((p) => p.tab === tab && p.id === id), reason };
     },
 
-    brief_direct({ job, parts, engine } = {}) {
+    brief_direct({ job, parts, engine, energy: given } = {}) {
+      if (given != null && !ENERGIES.includes(given)) throw new Error(`energy must be one of ${ENERGIES.join(', ')}`);
       const dir = jobDirOf(root, job);
       const { brief, job: jobJson } = loadJob(dir);
       if (!brief) throw new Error(`Not a brief: ${job}`);
@@ -260,13 +266,18 @@ export function makeHandlers(root) {
         return { ...checkReply(root, job, dir), kept: false, reason: null, part: null };
       }
       const { ctx } = contextOf(root);
-      const { energy, names, allowed } = directorRules(brief, jobJson, ctx);
+      const rules = directorRules(brief, jobJson, ctx);
+      const { names, allowed, cap } = rules;
+      // The brief's own energy (answered, or from their words) first, then the one the page checked against; without
+      // either the beats cannot be checked, so it is refused as the CLI refuses it.
+      const energy = rules.energy || given || null;
+      if (!energy) return { ...checkReply(root, job, dir), kept: false, reason: 'The director did not say which energy the film runs at.', part: null };
       const { engine: inParts, ...words } = parts;
-      const r = checkDirectorBrief(parts, { energy, names, allowed });
+      const r = checkDirectorBrief(parts, { energy, names, allowed, cap });
       if (!r.ok) return { ...checkReply(root, job, dir), kept: false, reason: r.reason, part: r.part };
       const ok = new Set(allowed);
       const kept = [...(Array.isArray(engine) ? engine : []), ...(Array.isArray(inParts) ? inParts : [])].filter((n, i, a) => typeof n === 'string' && ok.has(n) && a.indexOf(n) === i);
-      saveBrief(dir, { ...brief, director_brief: { parts: words, engine: kept, energy: energy ?? null, at: new Date().toISOString() } });
+      saveBrief(dir, { ...brief, director_brief: { parts: words, engine: kept, energy, at: new Date().toISOString() } });
       decide(dir, "director's brief kept", { by: 'owner' });
       return { ...checkReply(root, job, dir), kept: true, reason: null, part: null };
     },
@@ -306,6 +317,6 @@ export const TOOLS = [
   { name: 'brief_plan', description: 'Write the plan in brief once the checklist is complete.', inputSchema: { type: 'object', properties: { job: jobProp }, required: ['job'], additionalProperties: false }, annotations: rw },
   { name: 'brief_confirm', description: 'Confirm the plan and start the job at the Idea stage.', inputSchema: { type: 'object', properties: { job: jobProp }, required: ['job'], additionalProperties: false }, annotations: rw },
   { name: 'brief_pick', description: 'Pick (on) or remove (off) one style from the style library for this brief. A pick that clashes with another is refused with the reason.', inputSchema: { type: 'object', properties: { job: jobProp, tab: { type: 'string', enum: TABS, description: 'The library tab.' }, id: { type: 'string', description: 'The style id.' }, on: { type: 'boolean', description: 'true to pick, false to remove.' } }, required: ['job', 'tab', 'id', 'on'], additionalProperties: false }, annotations: rw },
-  { name: 'brief_direct', description: 'Keep the director\'s brief: the eight parts in plain words, and the engine names the picked styles list. Empty parts clears it.', inputSchema: { type: 'object', properties: { job: jobProp, parts: { type: 'object', description: 'logline, first_three_seconds, beats [{ at_s, what }], camera, motion, type, sound, ending. {} clears.' }, engine: { type: 'array', items: { type: 'string' }, description: 'Engine names, only from the picked styles.' } }, required: ['job', 'parts'], additionalProperties: false }, annotations: rw },
+  { name: 'brief_direct', description: 'Keep the director\'s brief: the eight parts in plain words, and the engine names the picked styles list. Empty parts clears it.', inputSchema: { type: 'object', properties: { job: jobProp, parts: { type: 'object', description: 'logline, first_three_seconds, beats [{ at_s, what }], camera, motion, type, sound, ending. {} clears.' }, engine: { type: 'array', items: { type: 'string' }, description: 'Engine names, only from the picked styles.' }, energy: { type: 'string', enum: ['calm', 'confident', 'hype'], description: 'The energy the beats were checked against, used when the brief has none of its own.' } }, required: ['job', 'parts'], additionalProperties: false }, annotations: rw },
   { name: 'styles_suggest', description: 'Style suggestions from the library for the creator\'s words, with the reason for each. Changes nothing.', inputSchema: { type: 'object', properties: { job: { type: 'string', description: 'The job folder name, to leave out its own picks and use its words.' }, text: { type: 'string', description: 'The creator\'s words.' }, understood: { type: 'object', description: 'What the words say, as returned in a brief_check reply.' } }, required: ['text'], additionalProperties: false }, annotations: ro },
 ];

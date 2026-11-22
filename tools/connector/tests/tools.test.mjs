@@ -336,7 +336,7 @@ test('brief_pick refuses a clash with the plain reason and records nothing', () 
   const { r, hr, job } = styled();
   hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true });
   const x = hr.brief_pick({ job, tab: 'motion', id: 'demo-snappy', on: true });
-  assert.equal(x.picked, false); assert.match(x.reason, /does not go with|one per family/);
+  assert.equal(x.picked, false); assert.match(x.reason, /does not go with|each family takes one pick/);
   assert.deepEqual(briefOf(r, job).style_picks, [{ tab: 'motion', id: 'demo-soft-arrive' }]);
 });
 
@@ -497,4 +497,61 @@ test('brief_plan carries the engine groups for "What the engine will use"', () =
   assert.ok(p.engine.skills.includes('video-studio'));
   const named = [...p.engine.ui, ...p.engine.motion, ...p.engine.sound];
   assert.ok(named.length > 0, 'the pick\'s engine names are grouped');
+});
+
+/* ---------- final review fixes: the energy reaches the stored director's brief ---------- */
+
+test('brief_direct takes the energy the page checked against when the brief has none, and stores it', () => {
+  const r = scratchStudio();
+  fs.cpSync(FIXTURE, path.join(r, 'library'), { recursive: true });
+  const hr = makeHandlers(r);
+  const { job } = hr.brief_start({ words: 'A vertical demo of the export button for acme' });
+  const none = hr.brief_direct({ job, parts: PARTS });
+  assert.equal(none.kept, false); assert.equal(none.reason, 'The director did not say which energy the film runs at.');
+  assert.ok(!briefOf(r, job).director_brief);
+  const ok = hr.brief_direct({ job, parts: PARTS, energy: 'confident' });
+  assert.equal(ok.kept, true);
+  assert.equal(briefOf(r, job).director_brief.energy, 'confident');
+  const tight = { ...PARTS, beats: [{ at_s: 0, what: 'board' }, { at_s: 0.5, what: 'click' }] };
+  assert.equal(hr.brief_direct({ job, parts: tight, energy: 'calm' }).part, 'beats'); // checked against the given energy
+});
+
+test('brief_direct: the brief\'s own energy comes first, and the beats stay inside the length cap', () => {
+  const { r, hr, job } = styled(); // "A calm vertical demo …"
+  const tight = { ...PARTS, beats: [{ at_s: 0, what: 'board' }, { at_s: 0.5, what: 'click' }] };
+  const x = hr.brief_direct({ job, parts: tight, energy: 'hype' });
+  assert.equal(x.kept, false); assert.equal(x.part, 'beats'); assert.match(x.reason, /calm/);
+  assert.equal(hr.brief_direct({ job, parts: PARTS, energy: 'hype' }).kept, true);
+  assert.equal(briefOf(r, job).director_brief.energy, 'calm');
+  hr.brief_answer({ job, question: 'length', words: '2' });
+  const late = hr.brief_direct({ job, parts: PARTS });
+  assert.equal(late.kept, false); assert.equal(late.part, 'beats'); assert.match(late.reason, /2 s film/);
+});
+
+test('brief_direct declares an optional energy, one of calm, confident, hype', () => {
+  const t = TOOLS.find((x) => x.name === 'brief_direct');
+  assert.deepEqual(t.inputSchema.properties.energy.enum, ['calm', 'confident', 'hype']);
+  assert.ok(!t.inputSchema.required.includes('energy'));
+  const { hr, job } = styled();
+  assert.throws(() => hr.brief_direct({ job, parts: PARTS, energy: 'loud' }), /energy must be one of calm, confident, hype/);
+});
+
+test('brief_answer records an energy chip change on the brief, and the reply carries it', () => {
+  const { r, hr, job } = styled();
+  const a = hr.brief_answer({ job, question: 'energy', value: 'hype' });
+  assert.equal(a.recorded, true, a.reason);
+  assert.equal(briefOf(r, job).energy, 'hype');
+  assert.equal(a.energy, 'hype');
+  assert.equal(hr.brief_check({ job }).energy, 'hype');
+  const bad = hr.brief_answer({ job, question: 'energy', value: 'loud' });
+  assert.equal(bad.recorded, false); assert.match(bad.reason, /calm, confident, hype/);
+});
+
+test('checkReply: a brand name is not read as the audience, and the length known is in the reply', () => {
+  const r = scratchStudio();
+  const hr = makeHandlers(r);
+  const s = hr.brief_start({ words: 'A 20 second vertical demo for acme, for agency owners' });
+  assert.equal(s.understood.audience, 'agency owners');
+  assert.equal(s.length, 20);
+  assert.equal(s.energy, null);
 });
