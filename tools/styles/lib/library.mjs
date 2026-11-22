@@ -98,25 +98,8 @@ export function engineNames(root) {
   return { moves, registry, backgrounds, sounds, glitch, notes };
 }
 
-const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-const num = (n) => String(n);
-
-function energyLine(energy, t, isSound) {
-  if (!t) return `${cap(energy)}: no timing given.`;
-  if (isSound) return `${cap(energy)}: ${num(t.bpm)} bpm, hit ${num(t.hit_s)} s, duck ${num(t.duck_db)} dB, still ${num(t.still_pct)}%.`;
-  return `${cap(energy)}: one beat every ${num(t.beat_s)} s, ease ${t.ease}, overshoot ${num(t.overshoot)}, hold ${num(t.hold_s)} s, motion ${num(t.motion)}, still ${num(t.still_pct)}%.`;
-}
-
-// The expert prompt as a customer copies it: what, when, one energy line per supported energy, avoid.
-export function promptText(entry) {
-  const isSound = entry.tab === 'sound';
-  const lines = [`${entry.prompt.what} ${entry.prompt.when}`.trim()];
-  for (const e of ENERGIES) {
-    if ((entry.filters?.energy || []).includes(e)) lines.push(energyLine(e, entry.timing?.[e], isSound));
-  }
-  lines.push(`Avoid: ${entry.prompt.avoid}`);
-  return lines.join('\n');
-}
+// The expert prompt lives in an import-free module the brief page loads too.
+export { promptText } from './prompt.mjs';
 
 const words = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
 const RUN = 8;

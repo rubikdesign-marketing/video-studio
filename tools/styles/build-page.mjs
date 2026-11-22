@@ -47,6 +47,7 @@ export function buildPage(root, { out = join('studio', 'brief-desk', 'dist'), mi
   addFile('index.html', pageFile);
   addFile('lib/brief.mjs', join(root, 'tools', 'plan', 'lib', 'brief.mjs'));
   addFile('lib/suggest.mjs', join(root, 'tools', 'styles', 'lib', 'suggest.mjs'));
+  addFile('lib/prompt.mjs', join(root, 'tools', 'styles', 'lib', 'prompt.mjs'));
 
   const counts = {};
   for (const tab of TABS) {

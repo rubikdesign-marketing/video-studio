@@ -17,7 +17,7 @@ function studio({ version = 2, extraClips = 0 } = {}) {
   cpSync(FIX, root, { recursive: true });
   mkdirSync(join(root, 'studio', 'brief-desk'), { recursive: true });
   writeFileSync(join(root, 'studio', 'brief-desk', 'index.html'), `<title>Video brief</title>\n<meta name="brief-page-version" content="${version}">\n`);
-  for (const f of ['tools/plan/lib/brief.mjs', 'tools/styles/lib/suggest.mjs']) {
+  for (const f of ['tools/plan/lib/brief.mjs', 'tools/styles/lib/suggest.mjs', 'tools/styles/lib/prompt.mjs']) {
     mkdirSync(join(root, dirname(f)), { recursive: true });
     cpSync(join(REAL, f), join(root, f));
   }
@@ -30,10 +30,16 @@ function studio({ version = 2, extraClips = 0 } = {}) {
 }
 const build = (root, o = {}) => buildPage(root, { min: 2, ...o });
 
+test('build: the shared prompt module imports nothing, so the page can load it as it is', () => {
+  const src = readFileSync(join(REAL, 'tools', 'styles', 'lib', 'prompt.mjs'), 'utf8');
+  assert.doesNotMatch(src, /^\s*import\b|\bimport\s*\(|\brequire\(/m);
+  assert.match(src, /export function promptText\(/);
+});
+
 test('build: copies the modules byte for byte', () => {
   const root = studio();
   const r = build(root);
-  for (const [src, dest] of [['tools/plan/lib/brief.mjs', 'lib/brief.mjs'], ['tools/styles/lib/suggest.mjs', 'lib/suggest.mjs']]) {
+  for (const [src, dest] of [['tools/plan/lib/brief.mjs', 'lib/brief.mjs'], ['tools/styles/lib/suggest.mjs', 'lib/suggest.mjs'], ['tools/styles/lib/prompt.mjs', 'lib/prompt.mjs']]) {
     assert.ok(readFileSync(join(REAL, src)).equals(readFileSync(join(r.out, dest))));
   }
   assert.ok(readFileSync(join(root, 'studio/brief-desk/index.html')).equals(readFileSync(join(r.out, 'index.html'))));

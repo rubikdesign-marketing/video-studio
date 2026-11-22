@@ -568,7 +568,7 @@ dialog::backdrop { background: var(--color-scrim); }
 </header>
 
 <main class="desk" id="desk">
-  <div class="pane pane--write" id="brief" aria-label="Write and direct">
+  <div class="pane pane--write" id="brief" role="region" aria-label="Write and direct">
     <div id="view"></div>
     <section class="engine-uses" id="engine-uses" aria-labelledby="eu-h" hidden>
       <h2 class="h3" id="eu-h">What the engine will use</h2>
@@ -577,7 +577,7 @@ dialog::backdrop { background: var(--color-scrim); }
     </section>
   </div>
 
-  <div class="pane pane--library" id="library" aria-label="Style library">
+  <div class="pane pane--library" id="library" role="region" aria-label="Style library">
     <div class="lib-head">
       <h2 class="display-s">Style library</h2>
       <p class="lede">Point at what you like. Picks are a strong preference, never required: with none, the studio decides.</p>
@@ -607,7 +607,7 @@ dialog::backdrop { background: var(--color-scrim); }
 <dialog class="drawer" id="drawer" aria-labelledby="dr-name"></dialog>
 
 <dialog class="palette" id="palette" aria-label="Search styles">
-  <input class="search" id="pal-q" type="search" placeholder="Search every tab, for example zoom or calm" aria-controls="pal-list" aria-activedescendant="" autocomplete="off" role="combobox" aria-expanded="true">
+  <input class="search" id="pal-q" type="search" aria-label="Search every style" placeholder="Search every tab, for example zoom or calm" aria-controls="pal-list" aria-activedescendant="" autocomplete="off" role="combobox" aria-expanded="true">
   <ul class="plist" id="pal-list" role="listbox" aria-label="Styles"></ul>
   <p class="pfoot">Arrow keys to move, Enter to open, Esc to close</p>
 </dialog>
@@ -753,7 +753,7 @@ async function openBrief(item) {
     state.briefWords = item.words || ''; state.confirmedOn = item.confirmed || null; state.drafts = {}; state.plan = null;
     applyCheck(reply);
   } catch (e) { await failed(e, 'briefs'); }
-  state.busy = null; render(); window.scrollTo(0, 0);
+  state.busy = null; render(); toTop();
 }
 
 async function answerCard(q) {
@@ -790,7 +790,7 @@ async function answerCard(q) {
 
 async function showPlan() {
   state.busy = 'plan'; setNote('plan', null); render();
-  try { state.plan = await write(() => connector.plan(state.job)); state.view = 'plan'; state.changing = false; window.scrollTo(0, 0); }
+  try { state.plan = await write(() => connector.plan(state.job)); state.view = 'plan'; state.changing = false; toTop(); }
   catch (e) { await failed(e, 'plan', { isWrite: true }); }
   state.busy = null; render();
 }
@@ -800,7 +800,7 @@ async function confirmPlan() {
   try {
     const reply = await write(() => connector.confirm(state.job));
     if (reply.stage == null) { state.parkedNext = reply.next; state.view = 'parked'; } else { state.done = reply; state.view = 'handoff'; }
-    window.scrollTo(0, 0);
+    toTop();
   } catch (e) { await failed(e, 'confirm', { isWrite: true }); }
   state.busy = null; render();
 }
@@ -811,7 +811,7 @@ async function reopenItem(item) {
     const reply = await write(() => connector.reopen(state.job, item));
     state.plan = null; state.changing = false;
     applyCheck(reply);
-    window.scrollTo(0, 0);
+    toTop();
   } catch (e) { await failed(e, `reopen:${item}`, { isWrite: true }); } // a refusal (a saved style's item) shows by that item
   state.busy = null; render();
 }
@@ -820,7 +820,7 @@ const clearReopenNotes = () => { for (const area of Object.keys(state.notes)) if
 
 function applyCheck(reply, { keepView = false } = {}) {
   state.job = reply.job; state.check = reply;
-  if (Array.isArray(reply.picks)) state.picks = reply.picks.filter((p) => !p.stale).map((p) => ({ tab: p.tab, id: p.id }));
+  if (Array.isArray(reply.picks)) state.picks = reply.picks.map((p) => (p.stale ? { tab: p.tab, id: p.id, name: p.name, stale: true } : { tab: p.tab, id: p.id }));
   if (reply.understood && typeof reply.understood === 'object') state.understood = reply.understood;
   paintPicks();
   const ids = new Set((reply.questions || []).map((q) => q.id));
@@ -832,7 +832,7 @@ function applyCheck(reply, { keepView = false } = {}) {
 async function goHome() {
   if (state.job) { state.picks = []; state.libNote = null; paintPicks(); } // those picks belong to the brief just left
   state.view = 'start'; state.job = null; state.check = null; state.plan = null; state.done = null; state.parkedNext = null; state.changing = false;
-  state.notes = {}; render(); window.scrollTo(0, 0);
+  state.notes = {}; render(); toTop();
   if (state.host === 'ready') await loadContext();
 }
 
@@ -941,7 +941,7 @@ async function saveWithoutStudio(words) {
   const save = () => state.db.collection('briefs').doc(id).set(doc);
   try {
     try { await save(); } catch (e) { if (codeOf(e) !== 'unavailable') throw e; await wait(300 + Math.random() * 700); await save(); }
-    state.words = ''; state.copyText = null; state.savedId = id;
+    state.words = ''; state.copyText = null; state.savedId = id; state.savedDoc = doc;
     paintPicks();
     setNote('start', { tone: 'good', text: 'Saved. Next time you open a chat in the studio folder and say "make a video", Claude finds this brief and carries on from it.' });
     watchSaved();
@@ -1235,13 +1235,14 @@ const CHUNK = 24;
 const POSTER_AT = 0.5; // a clip's poster is its frame at 0.5 s: some clips build in from an empty first frame
 
 Object.assign(state, {
-  lib: { status: 'idle', tabs: {}, byId: new Map(), all: [], meta: null, brief: null, suggest: null },
+  lib: { status: 'idle', tabs: {}, byId: new Map(), all: [], meta: null, brief: null, suggest: null, prompt: null },
   picks: [],               // [{ tab, id }], as the brief holds them
   understood: {},          // what the brief's words say (brief.mjs understood())
   libView: { tab: 'filming', energy: [], ready: '', kind: '', size: '', family: '', query: '', shown: 0, list: [] },
   libNote: null,           // { id, tone: 'warm' | 'info', text, undo? }: a refused pick (amber) or a swap
   libBusy: null,           // the id whose pick is being saved
   savedId: null,           // the page-store document a brief was saved to without the studio
+  savedDoc: null,          // what was written there, so later picks never write it without its words
   reelOpen: false,
 });
 
@@ -1262,38 +1263,33 @@ const reduceMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-r
 const autoplayInDrawer = () => !reduceMotion();
 const understoodOf = (text) => (state.lib.brief ? state.lib.brief.understood(text) : {});
 
+/** Back to the top on a view change: the window, and the brief pane when it scrolls by itself (wide screens). */
+function toTop() {
+  window.scrollTo(0, 0);
+  const pane = document.getElementById('brief');
+  const cs = pane && typeof window.getComputedStyle === 'function' ? window.getComputedStyle(pane) : null;
+  if (cs && cs.overflowY === 'auto') pane.scrollTop = 0;
+}
+
 /** The library as read from the publish set: { tabs: { <tab>: [entries] }, meta, brief, suggest } (the two modules). */
-function libLoaded({ tabs, meta, brief = null, suggest = null }) {
+function libLoaded({ tabs, meta, brief = null, suggest = null, prompt = null }) {
   const byId = new Map();
   const all = [];
   for (const t of LIB_TABS) for (const e of tabs[t.id] || []) if (e && e.id && !byId.has(e.id)) { byId.set(e.id, e); all.push(e); }
-  state.lib = { status: 'ready', tabs, byId, all, meta: meta || null, brief, suggest };
+  state.lib = { status: 'ready', tabs, byId, all, meta: meta || null, brief, suggest, prompt };
   if (state.words) state.understood = understoodOf(state.words);
-  state.picks = state.picks.filter((p) => byId.has(p.id));
+  state.picks = state.picks.map((p) => (byId.has(p.id) || p.stale ? p : { ...p, stale: true })); // kept, shown as gone, still counted
 }
 
 /* ---------- Words: the expert prompt and the timing table ---------- */
 
-const num = (n) => String(n);
-function energyLine(energy, t, isSound) {
-  if (!t) return `${capFirst(energy)}: no timing given.`;
-  if (isSound) return `${capFirst(energy)}: ${num(t.bpm)} bpm, hit ${num(t.hit_s)} s, duck ${num(t.duck_db)} dB, still ${num(t.still_pct)}%.`;
-  return `${capFirst(energy)}: one beat every ${num(t.beat_s)} s, ease ${t.ease}, overshoot ${num(t.overshoot)}, hold ${num(t.hold_s)} s, motion ${num(t.motion)}, still ${num(t.still_pct)}%.`;
-}
-/** The expert prompt as the customer copies it (the library's promptText shape): what and when, one energy line per
- *  supported energy, then what to avoid. */
-function promptText(e) {
-  const isSound = e.tab === 'sound';
-  const lines = [`${e.prompt.what} ${e.prompt.when}`.trim()];
-  for (const en of LIB_ENERGIES) if (energiesOf(e).includes(en)) lines.push(energyLine(en, e.timing?.[en], isSound));
-  lines.push(`Avoid: ${e.prompt.avoid}`);
-  return lines.join('\n');
-}
+/** The expert prompt as the customer copies it, from the shared module (./lib/prompt.mjs); empty if it did not load. */
+const promptText = (e) => (state.lib.prompt && typeof state.lib.prompt.promptText === 'function' ? state.lib.prompt.promptText(e) : '');
 
 const secs = (v) => (v == null ? '' : `${v} s`);
 const VISUAL_COLS = [
   ['Beat every', (t) => secs(t.beat_s)], ['Easing', (t) => t.ease ?? ''], ['Overshoot', (t) => (Number(t.overshoot) ? String(t.overshoot) : 'None')],
-  ['Hold', (t) => secs(t.hold_s)], ['Motion', (t) => num(t.motion ?? '')], ['Still time', (t) => (t.still_pct == null ? '' : `${t.still_pct}%`)],
+  ['Hold', (t) => secs(t.hold_s)], ['Motion', (t) => String(t.motion ?? '')], ['Still time', (t) => (t.still_pct == null ? '' : `${t.still_pct}%`)],
 ];
 const SOUND_COLS = [
   ['Tempo', (t) => (t.bpm == null ? '' : `${t.bpm} bpm`)], ['Cut every', (t) => secs(t.hit_s)],
@@ -1350,7 +1346,7 @@ function previewHTML(e, mode = 'card') {
     return `<div class="pv pv--sound" data-snd="${esc(e.id)}"><div class="wave" aria-hidden="true">${waveBars(e.id)}</div><i class="play-progress"></i><span class="snd-meta">${len ? `${len < 1 ? 'A short hit' : `${Math.round(len)} s sample`}` : 'Sample'}</span>${play}</div>`;
   }
   if (!isReady(e) || !pv.clip) return `<div class="pv pv--sketch" aria-hidden="true">${sketchHTML(pv.sketch)}<span class="pv-tag">Sketch</span></div>`;
-  const src = mode === 'card' ? `data-src="${esc(clipSrc(e))}" preload="none"` : `src="${esc(clipSrc(e))}" preload="metadata"`;
+  const src = mode === 'drawer' ? `src="${esc(clipSrc(e))}" preload="metadata"` : `data-src="${esc(clipSrc(e))}" preload="none"${mode === 'thumb' ? ' data-thumb="1"' : ''}`;
   return `<div class="pv pv--clip"><video class="clip" ${src} muted playsinline loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video></div>`;
 }
 
@@ -1366,7 +1362,7 @@ function availHTML(e, { line = true } = {}) {
 function pickBtn(e, large = false) {
   const on = isPicked(e.id);
   const label = large ? (on ? 'Picked: remove' : 'Pick this style') : (on ? 'Picked' : 'Pick');
-  return `<button class="sc-pick${large ? ' btn pick-lg' : ''}" type="button" data-action="pick" data-id="${esc(e.id)}" aria-pressed="${on}" aria-label="${on ? 'Remove' : 'Pick'} ${esc(e.name)}"${state.libBusy === e.id ? ' data-state="loading"' : ''}>${label}</button>`;
+  return `<button class="sc-pick${large ? ' btn pick-lg' : ''}" type="button" data-action="pick" data-id="${esc(e.id)}" aria-pressed="${on}" aria-label="Pick ${esc(e.name)}"${state.libBusy === e.id ? ' data-state="loading"' : ''}>${label}</button>`;
 }
 function noteHTML(id) {
   const n = state.libNote && state.libNote.id === id ? state.libNote : null;
@@ -1409,17 +1405,23 @@ function drawerHTML(e) {
         <div class="fit"><h3>Avoid</h3><p>${esc(e.prompt?.avoid)}</p></div>
       </div>
       ${timingTable(e)}
-      <div class="prompt">
+      ${promptText(e) ? `<div class="prompt">
         <div class="row row--between"><h3 class="h3">Expert direction</h3><button class="btn btn--sm" type="button" data-action="copy" data-id="${esc(e.id)}"><span class="btn-label">Copy</span></button></div>
         <p class="prompt-text">${esc(promptText(e))}</p>
-      </div>
+      </div>` : ''}
       ${pairs.length ? `<div class="stack-xs"><h3 class="h3">Pairs well with</h3><div class="pairs">${pairs.map((p) => `<button class="pair" type="button" data-action="open" data-id="${esc(p.id)}">${previewHTML(p, 'thumb')}<span class="pname">${esc(p.name)}</span><span class="ptab">${esc(tabName(p.tab))}</span></button>`).join('')}</div></div>` : ''}
       <details class="engine-fold"><summary>Engine details</summary><ul>${(e.engine_names || []).length ? e.engine_names.map((n) => `<li>${esc(n)}</li>`).join('') : '<li>Nothing yet: made on request</li>'}</ul></details>
       <div class="drawer-pick">${noteHTML(e.id)}${pickBtn(e, true)}<span class="small muted">One per family, three per tab.</span></div>
     </div>`;
 }
 
+/** A pick whose style is no longer in the library, as an entry the reel and pickToggle can use (it can only be removed). */
+function stalePick(id) {
+  const p = state.picks.find((x) => x.id === id);
+  return p ? { id: p.id, tab: p.tab, name: p.name || p.id, family: null, stale: true, filters: {}, preview: {} } : null;
+}
 function reelFrameHTML(e) {
+  if (e.stale) return `<div class="frame" role="listitem"><div class="pv pv--words" aria-hidden="true"><div class="wave wave--none">${waveBars(e.id, true)}</div></div><span class="fname">${esc(e.name)}</span><span class="avail avail--mor">No longer in the library</span><button class="icon-btn" type="button" data-action="unpick" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>`;
   return `<div class="frame" role="listitem">${previewHTML(e, 'thumb')}<span class="fname">${esc(e.name)}</span>${availHTML(e, { line: false })}<button class="icon-btn" type="button" data-action="unpick" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>`;
 }
 function paletteItemHTML(e, i) {
@@ -1439,7 +1441,7 @@ function pickProblem(entry, kin) {
 /** Saves one pick through the connector; the reply is a full brief check, so the brief flow updates with it. */
 async function savePick(entry, on) {
   const reply = await write(() => connector.pick({ job: state.job, tab: entry.tab, id: entry.id, on }));
-  if (Array.isArray(reply.picks)) state.picks = reply.picks.filter((p) => !p.stale).map((p) => ({ tab: p.tab, id: p.id }));
+  if (Array.isArray(reply.picks)) state.picks = reply.picks.map((p) => (p.stale ? { tab: p.tab, id: p.id, name: p.name, stale: true } : { tab: p.tab, id: p.id }));
   applyCheck(reply, { keepView: true });
   return { ok: reply.picked === on, reason: reply.reason || null };
 }
@@ -1462,13 +1464,16 @@ async function pickToggle(entry) {
     if (reason) { refusePick(entry, reason); paintPicks(); return; }
   }
   state.libBusy = entry.id; paintPicks();
+  let kinOff = false; // the old pick of a swap is off and the new one not yet on
   try {
     if (state.host === 'ready' && state.mcp && state.job) {
       if (kinEntry) {
         const off = await savePick(kinEntry, false);
         if (!off.ok) { refusePick(entry, off.reason); return; }
+        kinOff = true;
       }
       const r = await savePick(entry, on);
+      kinOff = false;
       if (!r.ok) {
         if (kinEntry) await savePick(kinEntry, true).catch(() => {});
         refusePick(entry, r.reason);
@@ -1485,18 +1490,27 @@ async function pickToggle(entry) {
     } else announce(on ? `${entry.name} added to your reel.` : `${entry.name} removed from your reel.`);
   } catch (e) {
     const x = explain(e, { isWrite: true });
-    if (x.fallback) enterNoHost();
-    else refusePick(entry, x.text);
+    if (x.fallback) { enterNoHost(); return; }
+    if (kinOff) await savePick(kinEntry, true).catch(() => {}); // a swap never loses the earlier pick
+    if (state.host === 'ready' && state.mcp && state.job) await recheck(); // the note says the page has checked again
+    refusePick(entry, x.text);
   } finally {
     state.libBusy = null;
     paintPicks();
   }
 }
 
-/** Without the studio, a brief already saved on this page carries its picks: the same document is written again. */
+/** Without the studio, a brief already saved on this page carries its picks. Only the picks change: with a store that
+ *  can update one field, only style_picks is written; otherwise the document is written again from what was saved
+ *  (and from the latest snapshot, when one has come), so neither its words nor anything the chat added is lost. */
 async function savePicksWithBrief() {
-  const doc = state.saved.find((d) => d.id === state.savedId);
-  await state.db.collection('briefs').doc(state.savedId).set({ words: doc?.words || '', at: doc?.at || new Date().toISOString(), status: doc?.status || 'waiting', style_picks: state.picks });
+  const style_picks = state.picks.map((p) => ({ tab: p.tab, id: p.id }));
+  const ref = state.db.collection('briefs').doc(state.savedId);
+  if (typeof ref.update === 'function') { await ref.update({ style_picks }); return; }
+  const { id: _id, ...seen } = state.saved.find((d) => d.id === state.savedId) || {};
+  const doc = { ...(state.savedDoc || {}), ...seen, style_picks };
+  await ref.set(doc);
+  state.savedDoc = doc;
 }
 
 /** After the brief starts in the studio, picks made before it are saved to it, one by one. */
@@ -1504,7 +1518,8 @@ async function sendHeldPicks(held) {
   for (const p of held) {
     const e = entryOf(p.id);
     if (!e || state.picks.some((x) => x.id === p.id)) continue;
-    try { const r = await savePick(e, true); if (!r.ok) refusePick(e, r.reason); } catch (err) { refusePick(e, explain(err, { isWrite: true }).text); break; }
+    state.libBusy = e.id; paintPicks();
+    try { const r = await savePick(e, true); if (!r.ok) refusePick(e, r.reason); } catch (err) { refusePick(e, explain(err, { isWrite: true }).text); break; } finally { state.libBusy = null; }
   }
   paintPicks();
 }
@@ -1602,7 +1617,7 @@ function watchMore() {
   if (moreObserver) moreObserver.disconnect();
   if (!s) return;
   if (typeof IntersectionObserver !== 'function') { appendCards(Infinity); return; }
-  moreObserver = new IntersectionObserver((items) => { if (items.some((i) => i.isIntersecting)) appendCards(CHUNK); }, { rootMargin: '600px 0px' });
+  moreObserver = new IntersectionObserver((items) => { if (items.some((i) => i.isIntersecting)) appendCards(CHUNK); }, { root: libScrollRoot(), rootMargin: '600px 0px' });
   moreObserver.observe(s);
 }
 function appendCards(n) {
@@ -1619,9 +1634,13 @@ function appendCards(n) {
 /* Clips: loaded when near the view, played only on hover or focus, paused when out of view. */
 let clipObserver = null;
 let clipRoot;
-function clipObserverFor() {
+/** The library pane when it scrolls by itself (wide screens), else the window. */
+function libScrollRoot() {
   const pane = $('#library');
-  const root = pane && getComputedStyle(pane).overflowY === 'auto' ? pane : null;
+  return pane && getComputedStyle(pane).overflowY === 'auto' ? pane : null;
+}
+function clipObserverFor() {
+  const root = libScrollRoot();
   if (clipObserver && clipRoot === root) return clipObserver;
   if (clipObserver) clipObserver.disconnect();
   clipRoot = root;
@@ -1632,11 +1651,19 @@ function clipObserverFor() {
       else if (!v.paused) stopClip(v);
     }
   }, { root, rootMargin: '300px 0px' });
-  $$('video.clip[data-src]').forEach((v) => clipObserver.observe(v));
+  $$('#libpanel video.clip[data-src]:not([data-thumb])').forEach((v) => clipObserver.observe(v));
   return clipObserver;
 }
+/* Thumbnails (reel, pairs) sit outside the library pane, so they are watched against the window, and never play. */
+let thumbObserver = null;
+function watchThumbs(scope) {
+  const vids = $$('video.clip[data-thumb]:not([data-watched])', scope);
+  if (typeof IntersectionObserver !== 'function') { vids.forEach(loadClip); return; }
+  thumbObserver = thumbObserver || new IntersectionObserver((items) => { for (const it of items) if (it.isIntersecting) { loadClip(it.target); thumbObserver.unobserve(it.target); } }, { rootMargin: '200px' });
+  for (const v of vids) { v.dataset.watched = '1'; thumbObserver.observe(v); }
+}
 function watchClips(scope) {
-  const vids = $$('video.clip[data-src]:not([data-watched])', scope);
+  const vids = $$('video.clip[data-src]:not([data-watched]):not([data-thumb])', scope);
   if (typeof IntersectionObserver !== 'function') { vids.forEach(loadClip); return; }
   const o = clipObserverFor();
   for (const v of vids) { v.dataset.watched = '1'; o.observe(v); }
@@ -1685,7 +1712,7 @@ function stopSound() {
   clearTimeout(sound.timer);
   if (sound.id && canPaint) {
     $$(`.pv--sound[data-snd="${CSS.escape(sound.id)}"]`).forEach((p) => p.classList.remove('is-playing'));
-    $$(`.play[data-id="${CSS.escape(sound.id)}"]`).forEach((b) => { b.setAttribute('aria-pressed', 'false'); b.removeAttribute('data-state'); const e = entryOf(b.dataset.id); if (e) b.setAttribute('aria-label', `Play ${e.name}`); });
+    $$(`.play[data-id="${CSS.escape(sound.id)}"]`).forEach((b) => { b.setAttribute('aria-pressed', 'false'); b.removeAttribute('data-state'); });
   }
   sound.id = null;
 }
@@ -1700,7 +1727,7 @@ async function toggleSound(id) {
   if (sound.ctx.state === 'suspended') sound.ctx.resume().catch(() => {});
   sound.id = id;
   const buttons = $$(`.play[data-id="${CSS.escape(id)}"]`);
-  buttons.forEach((b) => { b.setAttribute('aria-pressed', 'true'); b.setAttribute('aria-label', `Stop ${e.name}`); });
+  buttons.forEach((b) => b.setAttribute('aria-pressed', 'true'));
   try {
     if (!sound.buf) { buttons.forEach((b) => b.setAttribute('data-state', 'loading')); await spriteReady(); }
   } catch { if (sound.id === id) stopSound(); announce('The sound samples could not be loaded.'); return; }
@@ -1733,7 +1760,6 @@ function paintPicks() {
     const on = isPicked(e.id);
     const large = b.classList.contains('pick-lg');
     b.setAttribute('aria-pressed', String(on));
-    b.setAttribute('aria-label', `${on ? 'Remove' : 'Pick'} ${e.name}`);
     b.textContent = large ? (on ? 'Picked: remove' : 'Pick this style') : (on ? 'Picked' : 'Pick');
     if (state.libBusy === e.id) b.setAttribute('data-state', 'loading');
     else if (state.libNote?.tone === 'warm' && state.libNote.id === e.id) b.setAttribute('data-state', 'error');
@@ -1747,7 +1773,7 @@ function paintPicks() {
 
 function renderReel() {
   if (!canPaint) return;
-  const picks = state.picks.map((p) => entryOf(p.id)).filter(Boolean);
+  const picks = state.picks.map((p) => entryOf(p.id) || stalePick(p.id)).filter(Boolean);
   const n = picks.length;
   const count = $('#reel-count');
   count.textContent = String(n);
@@ -1761,12 +1787,13 @@ function renderReel() {
     const held = state.host === 'ready' && !state.job ? ', saved with your brief when you start it' : state.host === 'none' && !state.savedId ? ', saved with your brief when you save it' : '';
     hint.textContent = n ? `${n} ${n === 1 ? 'pick' : 'picks'} across ${tabs} ${tabs === 1 ? 'tab' : 'tabs'}${held}` : 'No picks yet';
   }
-  $('#reel-peek').innerHTML = picks.slice(0, 6).map((e) => previewHTML(e, 'thumb')).join('');
+  $('#reel-peek').innerHTML = picks.filter((e) => !e.stale).slice(0, 6).map((e) => previewHTML(e, 'thumb')).join('');
   const body = $('#reel-body');
   const note = warm ? `<div class="clash" role="status"><span><b>${esc(entryOf(warm.id)?.name || 'That style')} was not picked.</b> ${esc(warm.text)}</span></div>` : '';
   if (!n) { body.innerHTML = `${note}<div class="empty"><strong>No picks yet</strong><span>Picking is optional. With no picks the studio chooses the styles; with picks, at least one of the three concepts uses each one as picked.</span></div>`; return; }
   body.innerHTML = note + LIB_TABS.filter((t) => picks.some((e) => e.tab === t.id)).map((t) => `
     <div class="reel-group"><p class="label">${t.name}</p><div class="film" role="list">${picks.filter((e) => e.tab === t.id).map(reelFrameHTML).join('')}</div></div>`).join('');
+  watchThumbs($('#reel'));
 }
 function setReel(open) {
   if (!canPaint) return;
@@ -1787,6 +1814,7 @@ function openDrawer(id) {
   const v0 = $('video', dlg); if (v0) v0.pause();
   dlg.innerHTML = drawerHTML(e);
   if (!dlg.open) dlg.showModal(); else $('.drawer-body', dlg).scrollTop = 0;
+  watchThumbs(dlg);
   const v = $('video.clip', dlg);
   const pv = $('.pv', dlg);
   if (autoplayInDrawer()) { if (v) playClip(v); else if (pv) pv.classList.add('is-live'); }
@@ -1882,8 +1910,8 @@ async function startLibrary() {
   try {
     const get = (p) => fetch(p).then((r) => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
     const [meta, ...lists] = await Promise.all([get('styles/meta.json'), ...LIB_TABS.map((t) => get(`styles/${t.id}.json`))]);
-    const [brief, suggest] = await Promise.all([import('./lib/brief.mjs').catch(() => null), import('./lib/suggest.mjs').catch(() => null)]);
-    libLoaded({ tabs: Object.fromEntries(LIB_TABS.map((t, i) => [t.id, Array.isArray(lists[i]) ? lists[i] : []])), meta, brief, suggest });
+    const [brief, suggest, prompt] = await Promise.all([import('./lib/brief.mjs').catch(() => null), import('./lib/suggest.mjs').catch(() => null), import('./lib/prompt.mjs').catch(() => null)]);
+    libLoaded({ tabs: Object.fromEntries(LIB_TABS.map((t, i) => [t.id, Array.isArray(lists[i]) ? lists[i] : []])), meta, brief, suggest, prompt });
   } catch {
     state.lib.status = 'error';
   }
@@ -1906,7 +1934,7 @@ function wireLibrary() {
       case 'lib-retry': startLibrary(); break;
       case 'open': openDrawer(id); break;
       case 'pick': pickToggle(entryOf(id)); break;
-      case 'unpick': pickToggle(entryOf(id)).then(() => { const nb = $('#reel-body [data-action="unpick"]') || $('#reel-toggle'); nb.focus(); }); break;
+      case 'unpick': pickToggle(entryOf(id) || stalePick(id)).then(() => { const nb = $('#reel-body [data-action="unpick"]') || $('#reel-toggle'); nb.focus(); }); break;
       case 'undo-swap': pickToggle(entryOf(id)); break;
       case 'play': toggleSound(id); break;
       case 'drawer-close': closeDrawer(); break;
@@ -1961,7 +1989,15 @@ function wireLibrary() {
   $('#drawer').addEventListener('cancel', (ev) => { ev.preventDefault(); closeDrawer(); });
   $('#drawer').addEventListener('click', (ev) => { if (ev.target === ev.currentTarget) closeDrawer(); });
   // The library pane scrolls by itself on wide screens and with the page on narrow ones: clips are watched against it.
-  if (window.matchMedia) window.matchMedia('(min-width: 64rem)').addEventListener('change', () => { if (clipObserver) { clipObserver.disconnect(); clipObserver = null; } $$('video.clip[data-watched]').forEach((v) => delete v.dataset.watched); watchClips($('#libpanel')); });
+  // When the width crosses that line, the clip and more-cards observers are made again against the right root.
+  const reroot = () => {
+    if (!clipObserver || clipRoot === libScrollRoot()) return;
+    clipObserver.disconnect(); clipObserver = null;
+    $$('#libpanel video.clip[data-watched]').forEach((v) => { v.removeAttribute('data-watched'); });
+    watchClips($('#libpanel')); watchMore();
+  };
+  if (window.matchMedia) window.matchMedia('(min-width: 64rem)').addEventListener('change', reroot);
+  window.addEventListener('resize', () => { clearTimeout(wireLibrary.r); wireLibrary.r = setTimeout(reroot, 150); });
   setReel(false);
 }
 

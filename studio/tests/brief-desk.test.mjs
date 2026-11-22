@@ -156,7 +156,7 @@ async function withLibrary(p) {
     counts[t] = { total: tabs[t].length, families };
   }
   const meta = { counts, sketches: JSON.parse(fs.readFileSync(SKETCHES_FILE, 'utf8')), notes: [], sound_slices: {} };
-  p.context.LIB_IN = { tabs, meta, brief: await import('../../tools/plan/lib/brief.mjs'), suggest: await import('../../tools/styles/lib/suggest.mjs') };
+  p.context.LIB_IN = { tabs, meta, brief: await import('../../tools/plan/lib/brief.mjs'), suggest: await import('../../tools/styles/lib/suggest.mjs'), prompt: await import('../../tools/styles/lib/prompt.mjs') };
   p.run('libLoaded(LIB_IN)');
   return Object.values(tabs).flat();
 }
@@ -260,8 +260,11 @@ test('page: no hex colour outside the token block', () => {
   assert.deepEqual(outside.match(/(?<![&\w])#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b/gi) || [], []);
 });
 
-test('page: the expert prompt reads as the library\'s promptText', async () => {
+test('page: the expert prompt reads as the library\'s promptText, from the shared module the page imports', async () => {
   const { promptText } = await import('../../tools/styles/lib/library.mjs');
+  const html = fs.readFileSync(PAGE, 'utf8');
+  assert.match(html, /import\('\.\/lib\/prompt\.mjs'\)/);
+  assert.doesNotMatch(html, /one beat every|function energyLine/); // no copy of its own
   const p = loadPage();
   const entries = await withLibrary(p);
   for (const e of entries) {
@@ -271,7 +274,7 @@ test('page: the expert prompt reads as the library\'s promptText', async () => {
 });
 
 /** A stand-in connector whose brief_pick runs the real pick rules (brief.mjs) on a list of picks it keeps. */
-async function pickingStudio(p, { refuse = null } = {}) {
+async function pickingStudio(p, { refuse = null, fail = null } = {}) {
   const { setPick, picksOf } = await import('../../tools/plan/lib/brief.mjs');
   const entries = await withLibrary(p);
   const styles = new Map(entries.map((e) => [e.id, e]));
@@ -279,7 +282,8 @@ async function pickingStudio(p, { refuse = null } = {}) {
   p.context.calls = [];
   p.context.studio = async (host, tool, input) => {
     p.context.calls.push({ tool, input: JSON.parse(JSON.stringify(input)) });
-    if (tool !== 'brief_pick') return { payload: { job: 'j', questions: [] } };
+    if (tool !== 'brief_pick') return { payload: { job: 'j', questions: [], picks: picksOf(brief, styles) } };
+    if (fail && fail(input)) throw Object.assign(new Error('The studio did not answer'), { code: 'server_unavailable' });
     let reason = refuse ? refuse(input) : null;
     if (!reason) {
       try { brief = setPick(brief, styles.get(input.id), input.on, styles); } catch (e) { reason = e.message; }
@@ -341,4 +345,108 @@ test('page: without the studio a pick is held, checked by the brief rules, and s
   await p.run("saveWithoutStudio('A calm demo for acme')");
   assert.deepEqual(JSON.parse(JSON.stringify(p.context.saved.at(-1).style_picks)), [{ tab: 'filming', id: b.id }]); // out of the page's realm
   assert.equal(p.context.saved.at(-1).words, 'A calm demo for acme');
+});
+
+test('page: a family swap whose new pick fails puts the old pick back and checks again', async () => {
+  const p = loadPage();
+  const s = await pickingStudio(p, { fail: (input) => input.on && input.id === p.context.FAILING });
+  const [a, b] = s.entries.filter((e) => e.tab === 'filming' && e.family === 'Camera move' && e.filters.energy.includes('confident'));
+  Object.assign(p.context, { A: a, B: b, FAILING: b.id });
+  await p.run('pickToggle(A)');
+  p.context.calls.length = 0;
+  await p.run('pickToggle(B)');
+  assert.deepEqual(s.picks(), [a.id]);
+  assert.deepEqual(p.context.calls.filter((c) => c.tool === 'brief_pick').map((c) => [c.input.id, c.input.on]), [[a.id, false], [b.id, true], [a.id, true]]);
+  assert.ok(p.context.calls.some((c) => c.tool === 'brief_check'), 'the page reads the brief again, as its note says');
+  assert.equal(p.run('state.libNote.tone'), 'warm');
+});
+
+/** A page store with no snapshot yet (the listener has not answered, or failed). */
+function quietStore(p, { update = false } = {}) {
+  p.context.saved = [];
+  p.context.updates = [];
+  p.run(`state.host = 'none'; state.mcp = null; state.db = { collection: () => ({ doc: (id) => ({
+    set: async (d) => { saved.push(JSON.parse(JSON.stringify(d))); },
+    ${update ? 'update: async (d) => { updates.push(JSON.parse(JSON.stringify(d))); },' : ''}
+  }), onSnapshot: () => {} }) };`);
+}
+
+test('page: a pick after a no-studio save keeps the words', async () => {
+  const p = loadPage();
+  const entries = await withLibrary(p);
+  quietStore(p);
+  const [a, b] = entries.filter((e) => e.tab === 'filming' && e.filters.ready && e.filters.energy.includes('calm') && e.family !== 'Camera move').slice(0, 1).concat(entries.filter((e) => e.tab === 'motion' && e.filters.ready && e.filters.energy.includes('calm')).slice(0, 1));
+  Object.assign(p.context, { A: a, B: b });
+  await p.run('pickToggle(A)');
+  await p.run("saveWithoutStudio('A calm demo for acme')");
+  await p.run('pickToggle(B)');
+  const last = JSON.parse(JSON.stringify(p.context.saved.at(-1)));
+  assert.equal(last.words, 'A calm demo for acme');
+  assert.equal(last.at, JSON.parse(JSON.stringify(p.context.saved[0])).at);
+  assert.deepEqual(last.style_picks.map((x) => x.id), [a.id, b.id]);
+  // With a store that can update one field, only the picks are written, so nothing the chat added is lost.
+  const q = loadPage();
+  await withLibrary(q);
+  quietStore(q, { update: true });
+  Object.assign(q.context, { A: a, B: b });
+  await q.run("saveWithoutStudio('A calm demo for acme')");
+  await q.run('pickToggle(B)');
+  assert.deepEqual(JSON.parse(JSON.stringify(q.context.updates)), [{ style_picks: [{ tab: 'motion', id: b.id }] }]);
+  assert.equal(q.context.saved.length, 1);
+});
+
+test('page: a pick that left the library stays in the reel, removable, and still counts', async () => {
+  const p = loadPage();
+  const s = await pickingStudio(p);
+  p.run("state.picks = [{ tab: 'motion', id: 'mo-gone', name: 'An old style', stale: true }];");
+  const html = p.run("reelFrameHTML(stalePick('mo-gone'))");
+  assert.match(html, /An old style/);
+  assert.match(html, /data-action="unpick" data-id="mo-gone"/);
+  assert.match(html, /no longer in the library/i);
+  assert.equal(p.run("state.picks.filter((x) => x.tab === 'motion').length"), 1);
+  await p.run("pickToggle(stalePick('mo-gone'))");
+  assert.deepEqual(p.context.calls.map((c) => [c.tool, c.input.id, c.input.on]), [['brief_pick', 'mo-gone', false]]);
+  assert.deepEqual(s.picks(), []);
+});
+
+test('page: picks made before the brief show as saving while they are sent', async () => {
+  const p = loadPage();
+  const s = await pickingStudio(p);
+  const e = s.entries.find((x) => x.tab === 'filming' && x.filters.ready);
+  p.context.E = e;
+  p.context.busyAt = [];
+  const inner = p.context.studio;
+  p.context.studio = async (...a) => { p.context.busyAt.push(p.run('state.libBusy')); return inner(...a); };
+  await p.run("sendHeldPicks([{ tab: E.tab, id: E.id }])");
+  assert.deepEqual(p.context.busyAt, [e.id]);
+  assert.equal(p.run('state.libBusy'), null);
+});
+
+test('page: one accessible state per toggle, labelled regions and search, lazy thumbnails', async () => {
+  const html = fs.readFileSync(PAGE, 'utf8');
+  assert.match(html, /<input[^>]*id="pal-q"[^>]*aria-label="[^"]+"/);
+  assert.match(html, /id="brief"[^>]*role="region"|role="region"[^>]*id="brief"/);
+  assert.match(html, /id="library"[^>]*role="region"|role="region"[^>]*id="library"/);
+  const p = loadPage();
+  const entries = await withLibrary(p);
+  const e = entries.find((x) => x.tab === 'filming' && x.filters.ready);
+  p.context.E = e;
+  const label = (h) => /class="sc-pick[^"]*"[^>]*aria-label="([^"]+)"/.exec(h)[1];
+  const off = p.run('cardHTML(E)');
+  p.run("state.picks = [{ tab: E.tab, id: E.id }]");
+  const on = p.run('cardHTML(E)');
+  assert.equal(label(off), label(on));
+  assert.match(off, /aria-pressed="false"/);
+  assert.match(on, /aria-pressed="true"/);
+  const thumb = p.run("previewHTML(E, 'thumb')");
+  assert.match(thumb, /data-src="previews\//);
+  assert.doesNotMatch(thumb, / src="/);
+});
+
+test('page: a view change scrolls the brief pane, not only the window, when the pane scrolls by itself', () => {
+  const p = loadPage();
+  p.context.pane = { scrollTop: 240 };
+  p.run("const byId = document.getElementById; document.getElementById = (id) => (id === 'brief' ? pane : byId(id)); window.getComputedStyle = () => ({ overflowY: 'auto' });");
+  p.run('toTop()');
+  assert.equal(p.context.pane.scrollTop, 0);
 });
