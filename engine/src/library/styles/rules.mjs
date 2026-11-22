@@ -168,11 +168,12 @@ export const PASS_THROUGH_NEAR_S = 0.2;
  *   in a transition-family scene (`transition`) or within PASS_THROUGH_NEAR_S of the cue.
  * - A window that would hold an empty frame moves to the nearest one that holds none (the first `grace` frames of
  *   the window do not count: the clip's own first 0.3 s); a scene with a cue keeps the cue inside its window.
- * - When no window is clear, the slot holds the scene's last content frame from `freeze` (the start of the blank it
- *   leaves on, or its end) to the slot's end: a still, not an empty frame.
+ * - When no window is clear, the slot holds the scene's last fully built frame from `freeze` (its measured exit, else
+ *   the start of the blank it leaves on, else its end) to the slot's end: a still, not an empty frame.
  * Returns `{ start, empty, safe, freeze, problem }`: `freeze` the scene frame the hold starts on, or null; `problem`
  * null, "change" (no clear window keeps the cue: a clear one without it is used), "empty" (every window holds an empty
- * frame; `empty` says how many at best) or "content" (the scene has nothing to show); `safe` when there was no timing
+ * frame; `empty` says how many at best), "content" (the scene has nothing to show) or "nocue" (a transition with no
+ * measured change point); `safe` when there was no timing
  * and SAFE_OFFSET_S was used.
  */
 export function slotStart({ timing, slot, fps, grace = 0, transition = false }) {
@@ -186,9 +187,10 @@ export function slotStart({ timing, slot, fps, grace = 0, transition = false }) 
   const real = spans.filter((sp) => !passes(sp));
   const blank = (f) => real.some(([a, b]) => f >= a && f < b);
   const lastBlank = blank(frames - 1);
-  // The hold starts where the scene leaves for good (a blank running to its end), or at its end.
+  // The hold starts where the scene stops being fully built before it leaves (its measured exit), else where it
+  // leaves for good (a blank running to its end), else at its end.
   const tail = spans.find(([, b]) => b >= frames);
-  const holdFrom = tail ? tail[0] : frames;
+  const holdFrom = typeof timing.exit === 'number' ? Math.round(timing.exit * fps) : tail ? tail[0] : frames;
   let hasContent = false;
   for (let f = 0; f < holdFrom && !hasContent; f++) if (!blank(f)) hasContent = true;
   if (!hasContent) return done(0, { problem: 'content' });
@@ -202,7 +204,9 @@ export function slotStart({ timing, slot, fps, grace = 0, transition = false }) 
   };
   const opening = spans.find(([a]) => a === 0);
   const content = opening ? opening[1] / fps : 0;
-  let want = timing.built - content > LONG_BUILD_S + 1e-6 ? Math.round((content - (grace ? LEAD_S : 0)) * fps) : Math.round((timing.built - LEAD_S) * fps);
+  // A long build starts where its action starts (measured; its content is on screen already), else as its content arrives.
+  const acted = typeof timing.action === 'number' && timing.action > content + 1e-6;
+  let want = timing.built - content > LONG_BUILD_S + 1e-6 ? Math.round((acted ? timing.action : content - (grace ? LEAD_S : 0)) * fps) : Math.round((timing.built - LEAD_S) * fps);
   if (cue !== null) want = Math.max(want, Math.min(cue - Math.round(LEAD_S * fps), cue + Math.round(CUE_AFTER_S * fps) - slot));
   const holds = (s, hold) => (hold && s + slot > holdFrom ? holdFrom : null);
   /** The clear window nearest `want` (later first on a tie), or the one with fewest empty frames. */
@@ -222,9 +226,11 @@ export function slotStart({ timing, slot, fps, grace = 0, transition = false }) 
     return best;
   };
   const keep = cue !== null && cue < frames;
+  // A transition with no measured change point cannot keep it: said so, never started anywhere silently.
+  const nocue = transition && cue === null ? { problem: 'nocue' } : {};
   for (const hold of [false, true]) {
     const r = search(hold, keep);
-    if (r && r.empty === 0) return done(r.start, { freeze: holds(r.start, hold) });
+    if (r && r.empty === 0) return done(r.start, { freeze: holds(r.start, hold), ...nocue });
   }
   if (keep) {
     for (const hold of [false, true]) {
@@ -254,4 +260,53 @@ export function fitFrame(clip, extent) {
   const fitted = Math.min(WIDE, Math.max(aspect, need));
   const height = fitted <= aspect + 1e-9 ? clip.height : Math.round(clip.width / fitted);
   return { width: clip.width, height, top: Math.round((clip.height - height) / 2) };
+}
+
+/** A slot keeps this long on the built moment (or after the cue's CUE_AFTER_S) for the eye to read it. */
+export const READ_S = 0.3;
+/** No slot is planned shorter than this. */
+export const MIN_SLOT_S = 0.6;
+/** What a scene with a cue needs after it: the change itself and a short read (slotStart still keeps CUE_AFTER_S when the slot allows). */
+export const CHANGE_S = 0.6;
+
+/**
+ * The frames a scene needs so its defining action completes in its slot, from its measured timing: a long build
+ * (LONG_BUILD_S) from where its action starts (measured `action`), else from the content's arrival (in the clip's `first` slot up to LEAD_S before) to the built moment, a
+ * short entrance from the built moment less LEAD_S, a scene with a cue from the cue less LEAD_S to CHANGE_S after
+ * it; each to at least READ_S past the built moment; at least MIN_SLOT_S, at most the scene. Null without timing.
+ */
+export function sceneNeed(timing, fps, { first = false } = {}) {
+  if (!timing) return null;
+  const opening = (timing.empty ?? []).find(([a]) => a <= 1e-6);
+  const content = opening ? opening[1] : 0;
+  const long = timing.built - content > LONG_BUILD_S + 1e-6;
+  const acted = typeof timing.action === 'number' && timing.action > content + 1e-6;
+  const from = typeof timing.cue === 'number' ? timing.cue - LEAD_S : Math.max(0, long ? (acted ? timing.action : content - (first ? LEAD_S : 0)) : timing.built - LEAD_S);
+  const to = Math.max(timing.built + READ_S, typeof timing.cue === 'number' ? timing.cue + CHANGE_S : 0);
+  const need = Math.min(timing.seconds, Math.max(MIN_SLOT_S, to - Math.max(0, from)));
+  return Math.round(need * fps);
+}
+
+/**
+ * Each slot's frames in the clip, weighed by what its scene needs (sceneNeed; null for a scene whose need is not
+ * known ahead, such as a capture scene: it counts as an equal share). Within PREVIEW_FRAMES, the time left over is
+ * shared equally (a frame more to the first slots for any remainder). When the needs come to more, they are scaled to
+ * fit and `over` says how many frames were needed (the plan reports it). Returns `{ frames, over }`.
+ */
+export function slotLengths(needs) {
+  const n = needs.length;
+  if (!n) return { frames: [], over: 0 };
+  const share = Math.floor(PREVIEW_FRAMES / n);
+  const base = needs.map((x) => (typeof x === 'number' ? x : share));
+  const total = base.reduce((a, b) => a + b, 0);
+  if (total <= PREVIEW_FRAMES) {
+    const extra = PREVIEW_FRAMES - total;
+    const each = Math.floor(extra / n);
+    const left = extra - each * n;
+    return { frames: base.map((b, i) => b + each + (i < left ? 1 : 0)), over: 0 };
+  }
+  const frames = base.map((b) => Math.floor((b * PREVIEW_FRAMES) / total));
+  let left = PREVIEW_FRAMES - frames.reduce((a, b) => a + b, 0);
+  for (let i = 0; left > 0; i = (i + 1) % n, left--) frames[i]++;
+  return { frames, over: total };
 }

@@ -693,3 +693,24 @@ test('render plan: a change that cannot fit its slot, and a scene with nothing t
     assert.deepEqual(content.attention.map((a) => a.reason), ['bar-grow has not enough content for its slot']);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('render plan: slots are weighed by what each scene needs; a transition with no change point, and needs past 3 s, are reported', () => {
+  const root = scratch();
+  try {
+    timingFile(root, {
+      'bar-grow': { seconds: 3.5, built: 1, cue: null, empty: [[0, 0.333]] },
+      'line-draw': { seconds: 3.5, built: 1.133, cue: null, empty: [[0, 0.8]] },
+      'feather-wipe': { seconds: 4.5, built: 0.6, cue: null, empty: [[0, 0.267]] },
+      'type-on': { seconds: 4.5, built: 2.5, cue: null, empty: [[0, 0.233]] },
+      'human-type': { seconds: 5.5, built: 3, cue: null, empty: [[0, 0.5]] },
+    });
+    const bars = deskPlan(root, ['bar-grow', 'line-draw']);
+    assert.deepEqual(bars.render[0].slots, [55, 35]);
+    assert.deepEqual(bars.attention, []);
+    const wipe = deskPlan(root, ['feather-wipe']);
+    assert.deepEqual(wipe.attention.map((a) => a.reason), ['feather-wipe is a transition with no measured change point']);
+    const long = deskPlan(root, ['type-on', 'human-type']);
+    assert.equal(long.attention.length, 1);
+    assert.match(long.attention[0].reason, /^its scenes need 5\.\d s together, more than the clip's 3 s$/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

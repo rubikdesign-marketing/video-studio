@@ -9,7 +9,7 @@
   "anagram": {
    "confident": {
     "seconds": 5.2,
-    "built": 0.433,
+    "built": 0.6,
     "cue": null,
     "empty": [
      [
@@ -21,11 +21,13 @@
       5.2
      ]
     ],
-    "extent": 0.533
+    "extent": 0.533,
+    "exit": 4.8,
+    "action": 0.467
    },
    "calm": {
     "seconds": 5.2,
-    "built": 0.433,
+    "built": 0.567,
     "cue": null,
     "empty": [
      [
@@ -37,11 +39,13 @@
       5.2
      ]
     ],
-    "extent": 0.533
+    "extent": 0.533,
+    "exit": 4.867,
+    "action": 0.467
    },
    "hype": {
     "seconds": 5.2,
-    "built": 0.433,
+    "built": 0.633,
     "cue": null,
     "empty": [
      [
@@ -53,13 +57,15 @@
       5.2
      ]
     ],
-    "extent": 0.533
+    "extent": 0.533,
+    "exit": 4.767,
+    "action": 0.467
    }
   },
   "arc-swing": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.633,
+    "built": 0.9,
     "cue": null,
     "empty": [
      [
@@ -71,11 +77,13 @@
       4.5
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 3.433,
+    "action": 0.5
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.667,
+    "built": 1,
     "cue": null,
     "empty": [
      [
@@ -87,11 +95,13 @@
       4.5
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 3.433,
+    "action": 0.5
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.633,
+    "built": 0.867,
     "cue": null,
     "empty": [
      [
@@ -103,13 +113,15 @@
       4.5
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 3.433,
+    "action": 0.5
    }
   },
   "bar-grow": {
    "confident": {
     "seconds": 3.5,
-    "built": 1,
+    "built": 1.2,
     "cue": null,
     "empty": [
      [
@@ -117,11 +129,13 @@
       0.333
      ]
     ],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.9
    },
    "calm": {
     "seconds": 3.5,
-    "built": 1.1,
+    "built": 1.3,
     "cue": null,
     "empty": [
      [
@@ -129,11 +143,13 @@
       0.333
      ]
     ],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.967
    },
    "hype": {
     "seconds": 3.5,
-    "built": 0.933,
+    "built": 1.133,
     "cue": null,
     "empty": [
      [
@@ -141,7 +157,9 @@
       0.333
      ]
     ],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.833
    }
   },
   "blinds": {
@@ -155,7 +173,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.233
    },
    "calm": {
     "seconds": 4.5,
@@ -167,7 +187,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.233
    },
    "hype": {
     "seconds": 4.5,
@@ -179,13 +201,15 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.233
    }
   },
   "block-reveal": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.9,
+    "built": 1.133,
     "cue": null,
     "empty": [
      [
@@ -197,11 +221,13 @@
       4.5
      ]
     ],
-    "extent": 0.533
+    "extent": 0.533,
+    "exit": 3.9,
+    "action": 0.6
    },
    "calm": {
     "seconds": 4.5,
-    "built": 1.033,
+    "built": 1.267,
     "cue": null,
     "empty": [
      [
@@ -213,11 +239,13 @@
       4.5
      ]
     ],
-    "extent": 0.533
+    "extent": 0.533,
+    "exit": 3.933,
+    "action": 0.633
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.833,
+    "built": 1.067,
     "cue": null,
     "empty": [
      [
@@ -229,13 +257,15 @@
       4.5
      ]
     ],
-    "extent": 0.533
+    "extent": 0.533,
+    "exit": 3.9,
+    "action": 0.6
    }
   },
   "blur-in": {
    "confident": {
     "seconds": 4,
-    "built": 0.733,
+    "built": 0.767,
     "cue": null,
     "empty": [
      [
@@ -247,11 +277,13 @@
       4
      ]
     ],
-    "extent": 0.444
+    "extent": 0.444,
+    "exit": 3.467,
+    "action": 0.533
    },
    "calm": {
     "seconds": 4,
-    "built": 0.8,
+    "built": 0.833,
     "cue": null,
     "empty": [
      [
@@ -263,7 +295,9 @@
       4
      ]
     ],
-    "extent": 0.444
+    "extent": 0.444,
+    "exit": 3.5,
+    "action": 0.533
    },
    "hype": {
     "seconds": 4,
@@ -279,13 +313,15 @@
       4
      ]
     ],
-    "extent": 0.444
+    "extent": 0.444,
+    "exit": 3.433,
+    "action": 0.5
    }
   },
   "blur-sweep": {
    "confident": {
     "seconds": 4,
-    "built": 0.767,
+    "built": 0.9,
     "cue": null,
     "empty": [
      [
@@ -297,11 +333,13 @@
       4
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.333,
+    "action": 0.633
    },
    "calm": {
     "seconds": 4,
-    "built": 0.867,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -313,11 +351,13 @@
       4
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.367,
+    "action": 0.667
    },
    "hype": {
     "seconds": 4,
-    "built": 0.733,
+    "built": 0.8,
     "cue": null,
     "empty": [
      [
@@ -329,14 +369,16 @@
       4
      ]
     ],
-    "extent": 0.8
+    "extent": 0.83,
+    "exit": 3.3,
+    "action": 0.6
    }
   },
   "blur-through": {
    "confident": {
     "seconds": 4,
-    "built": 0.333,
-    "cue": 1.9,
+    "built": 0.433,
+    "cue": 1.933,
     "empty": [
      [
       0,
@@ -347,12 +389,14 @@
       1.967
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
-    "built": 0.367,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.967,
     "empty": [
      [
       0,
@@ -363,11 +407,13 @@
       2
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4,
-    "built": 0.333,
+    "built": 0.4,
     "cue": 1.867,
     "empty": [
      [
@@ -379,7 +425,9 @@
       1.9
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.267
    }
   },
   "camera": {
@@ -393,7 +441,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.333
    },
    "calm": {
     "seconds": 4,
@@ -405,11 +455,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.367
    },
    "hype": {
     "seconds": 4,
-    "built": 1.533,
+    "built": 1.567,
     "cue": 1.567,
     "empty": [
      [
@@ -417,60 +469,128 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.333
    }
   },
   "caption-box": {
    "confident": {
     "seconds": 5,
-    "built": 1.267,
+    "built": 2.533,
     "cue": null,
-    "empty": [],
-    "extent": 0.889
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.3,
+      5
+     ]
+    ],
+    "extent": 0.889,
+    "exit": 3.267,
+    "action": 0.367
    },
    "calm": {
     "seconds": 5,
-    "built": 1.067,
+    "built": 2.533,
     "cue": null,
-    "empty": [],
-    "extent": 0.889
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.333,
+      5
+     ]
+    ],
+    "extent": 0.889,
+    "exit": 3.267,
+    "action": 0.367
    },
    "hype": {
     "seconds": 5,
-    "built": 1.033,
+    "built": 2.533,
     "cue": null,
-    "empty": [],
-    "extent": 0.889
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.267,
+      5
+     ]
+    ],
+    "extent": 0.889,
+    "exit": 3.233,
+    "action": 0.367
    }
   },
   "caption-pop": {
    "confident": {
     "seconds": 5,
-    "built": 1.233,
+    "built": 2.533,
     "cue": null,
-    "empty": [],
-    "extent": 0.889
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.3,
+      5
+     ]
+    ],
+    "extent": 0.889,
+    "exit": 3.267,
+    "action": 0.367
    },
    "calm": {
     "seconds": 5,
-    "built": 1.233,
+    "built": 2.6,
     "cue": null,
-    "empty": [],
-    "extent": 0.889
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.333,
+      5
+     ]
+    ],
+    "extent": 0.889,
+    "exit": 3.3,
+    "action": 0.367
    },
    "hype": {
     "seconds": 5,
-    "built": 1.233,
+    "built": 2.5,
     "cue": null,
-    "empty": [],
-    "extent": 0.889
+    "empty": [
+     [
+      0,
+      0.333
+     ],
+     [
+      3.267,
+      5
+     ]
+    ],
+    "extent": 0.889,
+    "exit": 3.233,
+    "action": 0.367
    }
   },
   "card-flip": {
    "confident": {
     "seconds": 4.2,
-    "built": 0.233,
-    "cue": 1.9,
+    "built": 0.4,
+    "cue": 1.933,
     "empty": [
      [
       0,
@@ -481,11 +601,13 @@
       2.033
      ]
     ],
-    "extent": 1.304
+    "extent": 1.393,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.2,
-    "built": 0.267,
+    "built": 0.367,
     "cue": 1.967,
     "empty": [
      [
@@ -497,11 +619,13 @@
       2.133
      ]
     ],
-    "extent": 1.481
+    "extent": 1.452,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.2,
-    "built": 0.233,
+    "built": 0.333,
     "cue": 1.867,
     "empty": [
      [
@@ -513,13 +637,15 @@
       2
      ]
     ],
-    "extent": 1.304
+    "extent": 1.304,
+    "exit": null,
+    "action": 0.267
    }
   },
   "carrier": {
    "confident": {
     "seconds": 6,
-    "built": 0.167,
+    "built": 0.467,
     "cue": 4.467,
     "empty": [
      [
@@ -539,11 +665,13 @@
       4.467
      ]
     ],
-    "extent": 1.333
+    "extent": 1.333,
+    "exit": null,
+    "action": 0.167
    },
    "calm": {
     "seconds": 6,
-    "built": 0.167,
+    "built": 0.267,
     "cue": 4.4,
     "empty": [
      [
@@ -563,11 +691,13 @@
       4.467
      ]
     ],
-    "extent": 1.333
+    "extent": 1.333,
+    "exit": null,
+    "action": 0.167
    },
    "hype": {
     "seconds": 6,
-    "built": 0.167,
+    "built": 0.467,
     "cue": 4.467,
     "empty": [
      [
@@ -583,13 +713,15 @@
       3.1
      ]
     ],
-    "extent": 1.333
+    "extent": 1.333,
+    "exit": null,
+    "action": 0.167
    }
   },
   "clock-wipe": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.633,
+    "built": 0.667,
     "cue": 2.567,
     "empty": [
      [
@@ -597,11 +729,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.633,
+    "built": 0.7,
     "cue": 2.667,
     "empty": [
      [
@@ -609,7 +743,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "hype": {
     "seconds": 4.5,
@@ -621,14 +757,16 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    }
   },
   "colour-front": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.3,
     "empty": [
      [
       0,
@@ -639,12 +777,14 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.3,
     "empty": [
      [
       0,
@@ -655,12 +795,14 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.3,
     "empty": [
      [
       0,
@@ -671,7 +813,9 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "container-transform": {
@@ -680,27 +824,38 @@
     "built": 2.167,
     "cue": 1.767,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.533
    },
    "calm": {
     "seconds": 4.5,
     "built": 2.267,
     "cue": 1.833,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.533
    },
    "hype": {
     "seconds": 4.5,
     "built": 2,
     "cue": 1.733,
-    "empty": [],
-    "extent": 1.778
+    "empty": [
+     [
+      2.133,
+      2.167
+     ]
+    ],
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.533
    }
   },
   "count-with-bar": {
    "confident": {
     "seconds": 3.5,
-    "built": 0.967,
+    "built": 1.333,
     "cue": null,
     "empty": [
      [
@@ -708,11 +863,13 @@
       0.433
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": null,
+    "action": 0.467
    },
    "calm": {
     "seconds": 3.5,
-    "built": 1.067,
+    "built": 1.567,
     "cue": null,
     "empty": [
      [
@@ -720,11 +877,13 @@
       0.433
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": null,
+    "action": 0.467
    },
    "hype": {
     "seconds": 3.5,
-    "built": 0.9,
+    "built": 1.2,
     "cue": null,
     "empty": [
      [
@@ -732,25 +891,29 @@
       0.433
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": null,
+    "action": 0.467
    }
   },
   "cube-turn": {
    "confident": {
     "seconds": 4,
-    "built": 0.267,
-    "cue": 1.767,
+    "built": 0.433,
+    "cue": 1.733,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
-    "built": 0.3,
+    "built": 0.367,
     "cue": 1.8,
     "empty": [
      [
@@ -758,11 +921,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4,
-    "built": 0.233,
+    "built": 0.433,
     "cue": 1.7,
     "empty": [
      [
@@ -770,7 +935,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    }
   },
   "cursor-lead": {
@@ -784,7 +951,9 @@
       0.233
      ]
     ],
-    "extent": 1.422
+    "extent": 1.422,
+    "exit": null,
+    "action": 1.733
    },
    "calm": {
     "seconds": 4.5,
@@ -796,11 +965,13 @@
       0.233
      ]
     ],
-    "extent": 1.422
+    "extent": 1.422,
+    "exit": null,
+    "action": 1.567
    },
    "hype": {
     "seconds": 4.5,
-    "built": 1.967,
+    "built": 2,
     "cue": 1.967,
     "empty": [
      [
@@ -808,13 +979,15 @@
       0.233
      ]
     ],
-    "extent": 1.422
+    "extent": 1.422,
+    "exit": null,
+    "action": 1.8
    }
   },
   "dip-to-colour": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.6,
+    "built": 0.633,
     "cue": 2.533,
     "empty": [
      [
@@ -822,7 +995,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "calm": {
     "seconds": 4.5,
@@ -834,11 +1009,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.567,
+    "built": 0.633,
     "cue": 2.5,
     "empty": [
      [
@@ -846,13 +1023,15 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    }
   },
   "door-split": {
    "confident": {
     "seconds": 4.5,
-    "built": 2.367,
+    "built": 2.4,
     "cue": 2.867,
     "empty": [
      [
@@ -860,7 +1039,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.2
    },
    "calm": {
     "seconds": 4.5,
@@ -872,11 +1053,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.2
    },
    "hype": {
     "seconds": 4.5,
-    "built": 2.4,
+    "built": 2.367,
     "cue": 2.767,
     "empty": [
      [
@@ -884,13 +1067,15 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.2
    }
   },
   "drawn-mark": {
    "confident": {
     "seconds": 4.5,
-    "built": 1.267,
+    "built": 1.3,
     "cue": null,
     "empty": [
      [
@@ -898,7 +1083,9 @@
       0.333
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": null,
+    "action": 0.333
    },
    "calm": {
     "seconds": 4.5,
@@ -910,7 +1097,9 @@
       0.333
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": null,
+    "action": 0.333
    },
    "hype": {
     "seconds": 4.5,
@@ -922,13 +1111,15 @@
       0.333
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": null,
+    "action": 0.333
    }
   },
   "drop-bounce": {
    "confident": {
     "seconds": 4.5,
-    "built": 1,
+    "built": 1.433,
     "cue": null,
     "empty": [
      [
@@ -940,11 +1131,13 @@
       4.5
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": 3.733,
+    "action": 0.633
    },
    "calm": {
     "seconds": 4.5,
-    "built": 1.233,
+    "built": 1.667,
     "cue": null,
     "empty": [
      [
@@ -956,11 +1149,13 @@
       4.5
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": 3.933,
+    "action": 0.7
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.867,
+    "built": 1.267,
     "cue": null,
     "empty": [
      [
@@ -972,13 +1167,15 @@
       4.5
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": 3.633,
+    "action": 0.6
    }
   },
   "drum-roll": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.433,
+    "built": 1.767,
     "cue": null,
     "empty": [
      [
@@ -990,11 +1187,13 @@
       4.5
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 4.2,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.467,
+    "built": 2.1,
     "cue": null,
     "empty": [
      [
@@ -1006,11 +1205,13 @@
       4.5
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 4.267,
+    "action": 0.467
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.433,
+    "built": 1.6,
     "cue": null,
     "empty": [
      [
@@ -1022,13 +1223,15 @@
       4.5
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 4.167,
+    "action": 0.467
    }
   },
   "exit-set": {
    "confident": {
     "seconds": 4,
-    "built": 0.533,
+    "built": 0.6,
     "cue": null,
     "empty": [
      [
@@ -1040,7 +1243,9 @@
       4
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 3.233,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
@@ -1056,11 +1261,13 @@
       4
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 3.267,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4,
-    "built": 0.533,
+    "built": 0.6,
     "cue": null,
     "empty": [
      [
@@ -1072,7 +1279,9 @@
       4
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 3.2,
+    "action": 0.267
    }
   },
   "exposure-bloom": {
@@ -1090,12 +1299,14 @@
       1.967
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 1.867
    },
    "calm": {
     "seconds": 4.2,
-    "built": 2.3,
-    "cue": null,
+    "built": 2.333,
+    "cue": 2.2,
     "empty": [
      [
       0,
@@ -1106,7 +1317,9 @@
       2.067
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 1.933
    },
    "hype": {
     "seconds": 4.2,
@@ -1122,13 +1335,15 @@
       1.9
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 1.6
    }
   },
   "fade-up": {
    "confident": {
     "seconds": 4,
-    "built": 0.667,
+    "built": 0.733,
     "cue": null,
     "empty": [
      [
@@ -1140,11 +1355,13 @@
       4
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": 3.567,
+    "action": 0.5
    },
    "calm": {
     "seconds": 4,
-    "built": 0.7,
+    "built": 0.767,
     "cue": null,
     "empty": [
      [
@@ -1156,11 +1373,13 @@
       4
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": 3.6,
+    "action": 0.5
    },
    "hype": {
     "seconds": 4,
-    "built": 0.633,
+    "built": 0.8,
     "cue": null,
     "empty": [
      [
@@ -1172,7 +1391,9 @@
       4
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": 3.533,
+    "action": 0.5
    }
   },
   "feather-wipe": {
@@ -1186,11 +1407,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.667,
+    "built": 0.633,
     "cue": 2.5,
     "empty": [
      [
@@ -1198,7 +1421,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "hype": {
     "seconds": 4.5,
@@ -1210,7 +1435,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    }
   },
   "film-burn": {
@@ -1224,7 +1451,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.667
    },
    "calm": {
     "seconds": 4.5,
@@ -1236,7 +1465,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.7
    },
    "hype": {
     "seconds": 4.5,
@@ -1248,13 +1479,15 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.633
    }
   },
   "flip-up": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.667,
+    "built": 0.8,
     "cue": null,
     "empty": [
      [
@@ -1266,11 +1499,13 @@
       4.5
      ]
     ],
-    "extent": 0.296
+    "extent": 0.296,
+    "exit": 3.667,
+    "action": 0.5
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.7,
+    "built": 0.8,
     "cue": null,
     "empty": [
      [
@@ -1282,11 +1517,13 @@
       4.5
      ]
     ],
-    "extent": 0.296
+    "extent": 0.296,
+    "exit": 3.7,
+    "action": 0.533
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.633,
+    "built": 0.733,
     "cue": null,
     "empty": [
      [
@@ -1298,7 +1535,9 @@
       4.5
      ]
     ],
-    "extent": 0.296
+    "extent": 0.296,
+    "exit": 3.667,
+    "action": 0.5
    }
   },
   "flood": {
@@ -1310,9 +1549,15 @@
      [
       0,
       0.167
+     ],
+     [
+      1.5,
+      1.8
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.2
    },
    "calm": {
     "seconds": 5,
@@ -1322,9 +1567,15 @@
      [
       0,
       0.167
+     ],
+     [
+      1.533,
+      1.9
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.167
    },
    "hype": {
     "seconds": 5,
@@ -1334,15 +1585,21 @@
      [
       0,
       0.167
+     ],
+     [
+      1.467,
+      1.767
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.2
    }
   },
   "focus-in": {
    "confident": {
     "seconds": 4,
-    "built": 0.8,
+    "built": 1.2,
     "cue": null,
     "empty": [
      [
@@ -1354,11 +1611,13 @@
       4
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 3.5,
+    "action": 0.5
    },
    "calm": {
     "seconds": 4,
-    "built": 0.867,
+    "built": 1.367,
     "cue": null,
     "empty": [
      [
@@ -1370,11 +1629,13 @@
       4
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 3.533,
+    "action": 0.567
    },
    "hype": {
     "seconds": 4,
-    "built": 0.733,
+    "built": 1.067,
     "cue": null,
     "empty": [
      [
@@ -1386,51 +1647,59 @@
       4
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 3.5,
+    "action": 0.5
    }
   },
   "focus-pull": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.267,
-    "cue": null,
+    "built": 0.367,
+    "cue": 1.3,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.267,
-    "cue": null,
+    "built": 0.367,
+    "cue": 1.3,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.267,
-    "cue": null,
+    "built": 0.333,
+    "cue": 1.3,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    }
   },
   "from-lens": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.733,
+    "built": 1.233,
     "cue": null,
     "empty": [
      [
@@ -1446,11 +1715,13 @@
       4.5
      ]
     ],
-    "extent": 0.948
+    "extent": 0.948,
+    "exit": 3.5,
+    "action": 0.433
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.767,
+    "built": 1.4,
     "cue": null,
     "empty": [
      [
@@ -1462,11 +1733,13 @@
       4.5
      ]
     ],
-    "extent": 1.096
+    "extent": 1.067,
+    "exit": 3.533,
+    "action": 0.433
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.7,
+    "built": 1.1,
     "cue": null,
     "empty": [
      [
@@ -1482,13 +1755,15 @@
       4.5
      ]
     ],
-    "extent": 0.889
+    "extent": 0.889,
+    "exit": 3.467,
+    "action": 0.4
    }
   },
   "giant-crop": {
    "confident": {
     "seconds": 5,
-    "built": 0.267,
+    "built": 1.967,
     "cue": null,
     "empty": [
      [
@@ -1500,11 +1775,13 @@
       5
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 4.533,
+    "action": 0.267
    },
    "calm": {
     "seconds": 5,
-    "built": 0.3,
+    "built": 2,
     "cue": null,
     "empty": [
      [
@@ -1516,11 +1793,13 @@
       5
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 4.6,
+    "action": 0.267
    },
    "hype": {
     "seconds": 5,
-    "built": 0.267,
+    "built": 1.833,
     "cue": null,
     "empty": [
      [
@@ -1532,7 +1811,9 @@
       5
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 4.5,
+    "action": 0.267
    }
   },
   "glitch-cut": {
@@ -1546,7 +1827,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    },
    "calm": {
     "seconds": 3.5,
@@ -1558,7 +1841,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    },
    "hype": {
     "seconds": 3.5,
@@ -1570,13 +1855,15 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    }
   },
   "glitch-in": {
    "confident": {
     "seconds": 4,
-    "built": 0.4,
+    "built": 0.767,
     "cue": null,
     "empty": [
      [
@@ -1588,11 +1875,13 @@
       4
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.767,
+    "action": 0.433
    },
    "calm": {
     "seconds": 4,
-    "built": 0.4,
+    "built": 0.833,
     "cue": null,
     "empty": [
      [
@@ -1604,11 +1893,13 @@
       4
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.8,
+    "action": 0.5
    },
    "hype": {
     "seconds": 4,
-    "built": 0.4,
+    "built": 0.7,
     "cue": null,
     "empty": [
      [
@@ -1620,14 +1911,16 @@
       4
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.733,
+    "action": 0.433
    }
   },
   "gradient-ink": {
    "confident": {
     "seconds": 4.8,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.2,
     "empty": [
      [
       0,
@@ -1638,12 +1931,14 @@
       4.8
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 4.5,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.8,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.2,
     "empty": [
      [
       0,
@@ -1654,12 +1949,14 @@
       4.8
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 4.533,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.8,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.2,
     "empty": [
      [
       0,
@@ -1670,14 +1967,16 @@
       4.8
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 4.5,
+    "action": 0.367
    }
   },
   "highlighter": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -1688,12 +1987,14 @@
       4.6
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -1704,12 +2005,14 @@
       4.6
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -1720,7 +2023,9 @@
       4.6
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "human-type": {
@@ -1738,11 +2043,13 @@
       5.5
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.767,
+    "action": 0.6
    },
    "calm": {
     "seconds": 5.5,
-    "built": 1.7,
+    "built": 1.833,
     "cue": null,
     "empty": [
      [
@@ -1754,11 +2061,13 @@
       5.5
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.8,
+    "action": 1.567
    },
    "hype": {
     "seconds": 5.5,
-    "built": 2.167,
+    "built": 2.5,
     "cue": null,
     "empty": [
      [
@@ -1770,7 +2079,9 @@
       5.5
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.733,
+    "action": 2.167
    }
   },
   "icon-door": {
@@ -1784,7 +2095,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.133
    },
    "calm": {
     "seconds": 5,
@@ -1796,11 +2109,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.133
    },
    "hype": {
     "seconds": 5,
-    "built": 1.1,
+    "built": 0.433,
     "cue": 1.4,
     "empty": [
      [
@@ -1808,7 +2123,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    }
   },
   "ink-bleed": {
@@ -1822,7 +2139,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.5
    },
    "calm": {
     "seconds": 4.5,
@@ -1834,7 +2153,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.5
    },
    "hype": {
     "seconds": 4.5,
@@ -1846,13 +2167,15 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.5
    }
   },
   "invert-flash": {
    "confident": {
     "seconds": 3.6,
-    "built": 0.367,
+    "built": 0.433,
     "cue": 1.667,
     "empty": [
      [
@@ -1860,11 +2183,13 @@
       0.233
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 3.6,
-    "built": 0.367,
+    "built": 0.4,
     "cue": 1.733,
     "empty": [
      [
@@ -1872,11 +2197,13 @@
       0.233
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 3.6,
-    "built": 0.367,
+    "built": 0.4,
     "cue": 1.633,
     "empty": [
      [
@@ -1884,7 +2211,9 @@
       0.233
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.267
    }
   },
   "iris-wipe": {
@@ -1898,7 +2227,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.3
    },
    "calm": {
     "seconds": 4.5,
@@ -1910,7 +2241,9 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.367
    },
    "hype": {
     "seconds": 4.5,
@@ -1922,13 +2255,15 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.3
    }
   },
   "letter-cascade": {
    "confident": {
     "seconds": 4,
-    "built": 0.567,
+    "built": 0.7,
     "cue": null,
     "empty": [
      [
@@ -1940,11 +2275,13 @@
       4
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.4,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4,
-    "built": 0.633,
+    "built": 0.767,
     "cue": null,
     "empty": [
      [
@@ -1956,11 +2293,13 @@
       4
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.433,
+    "action": 0.5
    },
    "hype": {
     "seconds": 4,
-    "built": 0.533,
+    "built": 0.633,
     "cue": null,
     "empty": [
      [
@@ -1972,14 +2311,16 @@
       4
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.367,
+    "action": 0.467
    }
   },
   "letter-wave": {
    "confident": {
     "seconds": 4.4,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.733,
     "empty": [
      [
       0,
@@ -1990,12 +2331,14 @@
       4.4
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.4,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.5,
+    "cue": 3.633,
     "empty": [
      [
       0,
@@ -2006,12 +2349,14 @@
       4.4
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.4,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.7,
     "empty": [
      [
       0,
@@ -2022,45 +2367,53 @@
       4.4
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "lift": {
    "confident": {
     "seconds": 4,
-    "built": 0.267,
-    "cue": null,
+    "built": 0.333,
+    "cue": 1.2,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
-    "built": 0.3,
-    "cue": null,
+    "built": 0.367,
+    "cue": 1.2,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4,
-    "built": 0.267,
-    "cue": null,
+    "built": 0.333,
+    "cue": 1.2,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    }
   },
   "light-leak": {
@@ -2074,11 +2427,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.533
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.367,
     "cue": 1.933,
     "empty": [
      [
@@ -2086,7 +2441,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.5,
@@ -2098,37 +2455,15 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.533
    }
   },
   "light-sweep": {
    "confident": {
     "seconds": 3.5,
-    "built": 0.267,
-    "cue": null,
-    "empty": [
-     [
-      0,
-      0.233
-     ]
-    ],
-    "extent": 0.978
-   },
-   "calm": {
-    "seconds": 3.5,
-    "built": 0.267,
-    "cue": null,
-    "empty": [
-     [
-      0,
-      0.233
-     ]
-    ],
-    "extent": 0.978
-   },
-   "hype": {
-    "seconds": 3.5,
-    "built": 0.233,
+    "built": 0.367,
     "cue": 1.133,
     "empty": [
      [
@@ -2136,13 +2471,43 @@
       0.233
      ]
     ],
-    "extent": 0.978
+    "extent": 0.978,
+    "exit": null,
+    "action": 0.267
+   },
+   "calm": {
+    "seconds": 3.5,
+    "built": 0.4,
+    "cue": 1.2,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.978,
+    "exit": null,
+    "action": 0.267
+   },
+   "hype": {
+    "seconds": 3.5,
+    "built": 0.433,
+    "cue": 1.167,
+    "empty": [
+     [
+      0,
+      0.233
+     ]
+    ],
+    "extent": 0.978,
+    "exit": null,
+    "action": 0.267
    }
   },
   "line-draw": {
    "confident": {
     "seconds": 3.5,
-    "built": 1.133,
+    "built": 1.167,
     "cue": null,
     "empty": [
      [
@@ -2150,7 +2515,9 @@
       0.8
      ]
     ],
-    "extent": 1.007
+    "extent": 1.007,
+    "exit": null,
+    "action": 0.8
    },
    "calm": {
     "seconds": 3.5,
@@ -2162,25 +2529,29 @@
       0.833
      ]
     ],
-    "extent": 1.007
+    "extent": 1.007,
+    "exit": null,
+    "action": 0.833
    },
    "hype": {
     "seconds": 3.5,
-    "built": 1.1,
+    "built": 1.067,
     "cue": null,
     "empty": [
      [
       0,
-      0.767
+      0.8
      ]
     ],
-    "extent": 1.007
+    "extent": 1.007,
+    "exit": null,
+    "action": 0.8
    }
   },
   "logo-mask-wipe": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.367,
     "cue": 1.567,
     "empty": [
      [
@@ -2188,11 +2559,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.367,
     "cue": 2.533,
     "empty": [
      [
@@ -2200,11 +2573,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.233,
+    "built": 0.933,
     "cue": 1.567,
     "empty": [
      [
@@ -2212,51 +2587,59 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    }
   },
   "luma-dissolve": {
    "confident": {
     "seconds": 4.2,
-    "built": 0.233,
-    "cue": null,
+    "built": 0.367,
+    "cue": 1.9,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 0.919
+    "extent": 0.919,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.2,
-    "built": 0.267,
-    "cue": null,
+    "built": 0.367,
+    "cue": 2.033,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 0.919
+    "extent": 0.919,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.2,
-    "built": 0.233,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.833,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 0.919
+    "extent": 0.919,
+    "exit": null,
+    "action": 0.267
    }
   },
   "make-room": {
    "confident": {
     "seconds": 4.5,
-    "built": 1.233,
+    "built": 1.733,
     "cue": null,
     "empty": [
      [
@@ -2268,11 +2651,13 @@
       4.5
      ]
     ],
-    "extent": 1.067
+    "extent": 1.067,
+    "exit": 3.8,
+    "action": 1.233
    },
    "calm": {
     "seconds": 4.5,
-    "built": 1.233,
+    "built": 1.8,
     "cue": null,
     "empty": [
      [
@@ -2284,11 +2669,13 @@
       4.5
      ]
     ],
-    "extent": 1.067
+    "extent": 1.067,
+    "exit": 3.833,
+    "action": 1.233
    },
    "hype": {
     "seconds": 4.5,
-    "built": 1.233,
+    "built": 1.667,
     "cue": null,
     "empty": [
      [
@@ -2300,14 +2687,16 @@
       4.5
      ]
     ],
-    "extent": 1.067
+    "extent": 1.067,
+    "exit": 3.767,
+    "action": 1.233
    }
   },
   "mark-word": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.367,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2318,12 +2707,14 @@
       4.6
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.367,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2334,12 +2725,14 @@
       4.6
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2350,14 +2743,16 @@
       4.6
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "mark-word-bracket": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2368,12 +2763,14 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.367,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2384,12 +2781,14 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2400,14 +2799,16 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "mark-word-strike": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2418,12 +2819,14 @@
       4.6
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2434,12 +2837,14 @@
       4.6
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2450,14 +2855,16 @@
       4.6
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "mark-word-underline": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2468,12 +2875,14 @@
       4.6
      ]
     ],
-    "extent": 0.859
+    "extent": 0.859,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.367,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2484,12 +2893,14 @@
       4.6
      ]
     ],
-    "extent": 0.859
+    "extent": 0.859,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.4,
     "empty": [
      [
       0,
@@ -2500,13 +2911,15 @@
       4.6
      ]
     ],
-    "extent": 0.859
+    "extent": 0.859,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "mask-rise": {
    "confident": {
     "seconds": 4,
-    "built": 0.633,
+    "built": 0.867,
     "cue": null,
     "empty": [
      [
@@ -2518,11 +2931,13 @@
       4
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.367,
+    "action": 0.5
    },
    "calm": {
     "seconds": 4,
-    "built": 0.667,
+    "built": 0.933,
     "cue": null,
     "empty": [
      [
@@ -2534,11 +2949,13 @@
       4
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.4,
+    "action": 0.5
    },
    "hype": {
     "seconds": 4,
-    "built": 0.6,
+    "built": 0.8,
     "cue": null,
     "empty": [
      [
@@ -2550,13 +2967,15 @@
       4
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.333,
+    "action": 0.467
    }
   },
   "mask-rise-letters": {
    "confident": {
     "seconds": 4,
-    "built": 0.567,
+    "built": 0.8,
     "cue": null,
     "empty": [
      [
@@ -2568,11 +2987,13 @@
       4
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 3.367,
+    "action": 0.533
    },
    "calm": {
     "seconds": 4,
-    "built": 0.6,
+    "built": 0.9,
     "cue": null,
     "empty": [
      [
@@ -2584,11 +3005,13 @@
       4
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 3.4,
+    "action": 0.533
    },
    "hype": {
     "seconds": 4,
-    "built": 0.533,
+    "built": 0.733,
     "cue": null,
     "empty": [
      [
@@ -2600,13 +3023,15 @@
       4
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 3.333,
+    "action": 0.5
    }
   },
   "mask-rise-lines": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.7,
+    "built": 0.933,
     "cue": null,
     "empty": [
      [
@@ -2618,11 +3043,13 @@
       4.5
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 3.767,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.7,
+    "built": 1,
     "cue": null,
     "empty": [
      [
@@ -2634,11 +3061,13 @@
       4.5
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 3.8,
+    "action": 0.467
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.7,
+    "built": 0.9,
     "cue": null,
     "empty": [
      [
@@ -2650,13 +3079,15 @@
       4.5
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 3.733,
+    "action": 0.467
    }
   },
   "match-cut": {
    "confident": {
     "seconds": 4,
-    "built": 0.367,
+    "built": 0.567,
     "cue": 1.833,
     "empty": [
      [
@@ -2664,7 +3095,9 @@
       0.233
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
@@ -2676,11 +3109,13 @@
       0.233
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4,
-    "built": 0.367,
+    "built": 0.567,
     "cue": 1.8,
     "empty": [
      [
@@ -2688,7 +3123,9 @@
       0.233
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": null,
+    "action": 0.267
    }
   },
   "momentum-cut": {
@@ -2702,7 +3139,9 @@
       0.233
      ]
     ],
-    "extent": 1.244
+    "extent": 1.274,
+    "exit": null,
+    "action": 1.633
    },
    "calm": {
     "seconds": 4,
@@ -2714,7 +3153,9 @@
       0.233
      ]
     ],
-    "extent": 1.244
+    "extent": 1.304,
+    "exit": null,
+    "action": 1.633
    },
    "hype": {
     "seconds": 4,
@@ -2726,13 +3167,15 @@
       0.233
      ]
     ],
-    "extent": 1.274
+    "extent": 1.274,
+    "exit": null,
+    "action": 1.633
    }
   },
   "morph-chain": {
    "confident": {
     "seconds": 5.2,
-    "built": 0.433,
+    "built": 0.567,
     "cue": 1.433,
     "empty": [
      [
@@ -2744,11 +3187,13 @@
       1.567
      ]
     ],
-    "extent": 1.452
+    "extent": 1.452,
+    "exit": null,
+    "action": 0.367
    },
    "calm": {
     "seconds": 5.2,
-    "built": 0.6,
+    "built": 0.633,
     "cue": 1.467,
     "empty": [
      [
@@ -2760,7 +3205,9 @@
       1.6
      ]
     ],
-    "extent": 1.452
+    "extent": 1.452,
+    "exit": null,
+    "action": 0.4
    },
    "hype": {
     "seconds": 5.2,
@@ -2776,13 +3223,15 @@
       1.533
      ]
     ],
-    "extent": 1.452
+    "extent": 1.452,
+    "exit": null,
+    "action": 0.367
    }
   },
   "number-roll": {
    "confident": {
     "seconds": 3.5,
-    "built": 0.767,
+    "built": 1.3,
     "cue": null,
     "empty": [
      [
@@ -2790,11 +3239,13 @@
       0.667
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": null,
+    "action": 0.7
    },
    "calm": {
     "seconds": 3.5,
-    "built": 0.833,
+    "built": 1.467,
     "cue": null,
     "empty": [
      [
@@ -2802,11 +3253,13 @@
       0.7
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": null,
+    "action": 0.733
    },
    "hype": {
     "seconds": 3.5,
-    "built": 0.733,
+    "built": 1.233,
     "cue": null,
     "empty": [
      [
@@ -2814,13 +3267,15 @@
       0.667
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": null,
+    "action": 0.7
    }
   },
   "on-path": {
    "confident": {
     "seconds": 4.5,
-    "built": 1,
+    "built": 1.167,
     "cue": null,
     "empty": [
      [
@@ -2828,11 +3283,13 @@
       0.733
      ]
     ],
-    "extent": 0.948
+    "extent": 0.948,
+    "exit": null,
+    "action": 0.767
    },
    "calm": {
     "seconds": 4.5,
-    "built": 1.2,
+    "built": 1.367,
     "cue": null,
     "empty": [
      [
@@ -2840,11 +3297,13 @@
       0.833
      ]
     ],
-    "extent": 0.948
+    "extent": 0.948,
+    "exit": null,
+    "action": 0.867
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.9,
+    "built": 1.033,
     "cue": null,
     "empty": [
      [
@@ -2852,13 +3311,15 @@
       0.667
      ]
     ],
-    "extent": 0.948
+    "extent": 0.948,
+    "exit": null,
+    "action": 0.7
    }
   },
   "one-word-stack": {
    "confident": {
     "seconds": 4,
-    "built": 0.833,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -2870,11 +3331,13 @@
       4
      ]
     ],
-    "extent": 0.326
+    "extent": 0.326,
+    "exit": 2.8,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4,
-    "built": 0.833,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -2886,11 +3349,13 @@
       4
      ]
     ],
-    "extent": 0.326
+    "extent": 0.326,
+    "exit": 2.867,
+    "action": 0.467
    },
    "hype": {
     "seconds": 4,
-    "built": 0.833,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -2898,293 +3363,367 @@
       0.433
      ],
      [
-      2.8,
+      2.833,
       4
      ]
     ],
-    "extent": 0.326
+    "extent": 0.326,
+    "exit": 2.8,
+    "action": 0.467
    }
   },
   "opener-at-the-lens": {
    "confident": {
     "seconds": 3.8,
-    "built": 1,
+    "built": 1.7,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 3.8,
-    "built": 1.233,
+    "built": 1.833,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.467
    },
    "hype": {
     "seconds": 3.8,
-    "built": 0.867,
+    "built": 1.467,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    }
   },
   "opener-fill-frame": {
    "confident": {
     "seconds": 3.8,
-    "built": 0.433,
+    "built": 1.867,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.1
    },
    "calm": {
     "seconds": 3.8,
-    "built": 0.533,
+    "built": 2.3,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.1
    },
    "hype": {
     "seconds": 3.8,
-    "built": 0.367,
+    "built": 1.8,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    }
   },
   "opener-glitch-cut": {
    "confident": {
     "seconds": 3.8,
-    "built": 0,
-    "cue": null,
-    "empty": [],
-    "extent": 1.778
-   },
-   "calm": {
-    "seconds": 3.8,
-    "built": 0,
-    "cue": null,
-    "empty": [],
-    "extent": 1.778
-   },
-   "hype": {
-    "seconds": 3.8,
-    "built": 0,
-    "cue": null,
-    "empty": [],
-    "extent": 1.778
-   }
-  },
-  "opener-notification-drop": {
-   "confident": {
-    "seconds": 3.8,
-    "built": 0,
-    "cue": null,
-    "empty": [],
-    "extent": 1.363
-   },
-   "calm": {
-    "seconds": 3.8,
-    "built": 0,
-    "cue": null,
-    "empty": [],
-    "extent": 1.363
-   },
-   "hype": {
-    "seconds": 3.8,
-    "built": 0,
-    "cue": null,
-    "empty": [],
-    "extent": 1.363
-   }
-  },
-  "opener-number-slam": {
-   "confident": {
-    "seconds": 3.8,
-    "built": 1.033,
-    "cue": null,
-    "empty": [],
-    "extent": 1.63
-   },
-   "calm": {
-    "seconds": 3.8,
-    "built": 1.3,
-    "cue": null,
-    "empty": [],
-    "extent": 1.57
-   },
-   "hype": {
-    "seconds": 3.8,
     "built": 0.867,
     "cue": null,
     "empty": [],
-    "extent": 1.778
-   }
-  },
-  "opener-punch-in": {
-   "confident": {
-    "seconds": 3.8,
-    "built": 0.367,
-    "cue": null,
-    "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 3.8,
-    "built": 0.467,
+    "built": 1.067,
     "cue": null,
     "empty": [],
-    "extent": 1.778
-   },
-   "hype": {
-    "seconds": 3.8,
-    "built": 0.333,
-    "cue": null,
-    "empty": [],
-    "extent": 1.778
-   }
-  },
-  "opener-question": {
-   "confident": {
-    "seconds": 3.8,
-    "built": 0.867,
-    "cue": null,
-    "empty": [],
-    "extent": 1.096
-   },
-   "calm": {
-    "seconds": 3.8,
-    "built": 1.1,
-    "cue": null,
-    "empty": [],
-    "extent": 1.096
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 3.8,
     "built": 0.733,
     "cue": null,
     "empty": [],
-    "extent": 1.067
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
+   }
+  },
+  "opener-notification-drop": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 1.067,
+    "cue": null,
+    "empty": [],
+    "extent": 1.304,
+    "exit": null,
+    "action": 0.033
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 1.233,
+    "cue": null,
+    "empty": [],
+    "extent": 1.363,
+    "exit": null,
+    "action": 0.033
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.933,
+    "cue": null,
+    "empty": [],
+    "extent": 1.363,
+    "exit": null,
+    "action": 0.033
+   }
+  },
+  "opener-number-slam": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 1.267,
+    "cue": null,
+    "empty": [],
+    "extent": 1.63,
+    "exit": null,
+    "action": 0.033
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 1.567,
+    "cue": null,
+    "empty": [],
+    "extent": 1.57,
+    "exit": null,
+    "action": 1.3
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 1.067,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.867
+   }
+  },
+  "opener-punch-in": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 1.733,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.067
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 2.133,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.1
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 1.667,
+    "cue": null,
+    "empty": [],
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
+   }
+  },
+  "opener-question": {
+   "confident": {
+    "seconds": 3.8,
+    "built": 0.967,
+    "cue": null,
+    "empty": [],
+    "extent": 1.096,
+    "exit": null,
+    "action": 0.033
+   },
+   "calm": {
+    "seconds": 3.8,
+    "built": 1.2,
+    "cue": null,
+    "empty": [],
+    "extent": 1.096,
+    "exit": null,
+    "action": 0.033
+   },
+   "hype": {
+    "seconds": 3.8,
+    "built": 0.833,
+    "cue": null,
+    "empty": [],
+    "extent": 1.067,
+    "exit": null,
+    "action": 0.033
    }
   },
   "opener-split-screen": {
    "confident": {
     "seconds": 3.8,
-    "built": 0.133,
+    "built": 0.633,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 3.8,
-    "built": 0.133,
+    "built": 0.667,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 3.8,
-    "built": 0.133,
+    "built": 0.467,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    }
   },
   "opener-spotlight": {
    "confident": {
     "seconds": 3.8,
-    "built": 0.267,
+    "built": 1.867,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 3.8,
-    "built": 0.367,
+    "built": 0.933,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 3.8,
-    "built": 0.233,
+    "built": 1.7,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    }
   },
   "opener-strike-out": {
    "confident": {
     "seconds": 3.8,
-    "built": 0.467,
+    "built": 0.7,
     "cue": null,
     "empty": [],
-    "extent": 1.185
+    "extent": 1.185,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 3.8,
-    "built": 0.533,
+    "built": 0.833,
     "cue": null,
     "empty": [],
-    "extent": 1.185
+    "extent": 1.185,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 3.8,
-    "built": 0.433,
+    "built": 0.633,
     "cue": null,
     "empty": [],
-    "extent": 1.185
+    "extent": 1.185,
+    "exit": null,
+    "action": 0.033
    }
   },
   "opener-sudden-stop": {
    "confident": {
     "seconds": 3.8,
-    "built": 0.333,
+    "built": 1.367,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 3.8,
-    "built": 0.4,
+    "built": 1.5,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 3.8,
-    "built": 0.3,
+    "built": 1.167,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    }
   },
   "opener-whip-in": {
    "confident": {
     "seconds": 3.8,
-    "built": 0.233,
+    "built": 0.767,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 3.8,
-    "built": 0.267,
+    "built": 0.933,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 3.8,
-    "built": 0.2,
+    "built": 0.633,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    }
   },
   "outline-fill": {
    "confident": {
     "seconds": 4.8,
-    "built": 0.867,
+    "built": 1.1,
     "cue": null,
     "empty": [
      [
@@ -3196,11 +3735,13 @@
       4.8
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.167,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4.8,
-    "built": 1.033,
+    "built": 1,
     "cue": null,
     "empty": [
      [
@@ -3212,11 +3753,13 @@
       4.8
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.2,
+    "action": 0.433
    },
    "hype": {
     "seconds": 4.8,
-    "built": 0.8,
+    "built": 1,
     "cue": null,
     "empty": [
      [
@@ -3228,13 +3771,15 @@
       4.8
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.167,
+    "action": 0.467
    }
   },
   "page-turn": {
    "confident": {
     "seconds": 4.2,
-    "built": 0.233,
+    "built": 0.367,
     "cue": 1.867,
     "empty": [
      [
@@ -3242,11 +3787,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.2,
-    "built": 0.233,
+    "built": 0.367,
     "cue": 1.967,
     "empty": [
      [
@@ -3254,11 +3801,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.2,
-    "built": 0.233,
+    "built": 0.333,
     "cue": 1.833,
     "empty": [
      [
@@ -3266,7 +3815,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    }
   },
   "panel-wipe": {
@@ -3280,11 +3831,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.667,
+    "built": 0.633,
     "cue": 2.467,
     "empty": [
      [
@@ -3292,11 +3845,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.633,
+    "built": 0.667,
     "cue": 2.4,
     "empty": [
      [
@@ -3304,13 +3859,15 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    }
   },
   "parallax-camera": {
    "confident": {
     "seconds": 4,
-    "built": 0.433,
+    "built": 0.6,
     "cue": 1.367,
     "empty": [
      [
@@ -3318,23 +3875,27 @@
       0.233
      ]
     ],
-    "extent": 1.541
+    "extent": 1.541,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
-    "built": 0.433,
-    "cue": 1.433,
+    "built": 0.567,
+    "cue": 1.4,
     "empty": [
      [
       0,
       0.233
      ]
     ],
-    "extent": 1.541
+    "extent": 1.541,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4,
-    "built": 0.433,
+    "built": 0.567,
     "cue": 1.333,
     "empty": [
      [
@@ -3342,37 +3903,51 @@
       0.233
      ]
     ],
-    "extent": 1.541
+    "extent": 1.541,
+    "exit": null,
+    "action": 0.267
    }
   },
   "parallax-push": {
    "confident": {
     "seconds": 4.2,
-    "built": 0.533,
+    "built": 0.633,
     "cue": 2,
     "empty": [
+     [
+      0.1,
+      0.133
+     ],
      [
       2.033,
       2.1
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    },
    "calm": {
     "seconds": 4.2,
-    "built": 0.533,
+    "built": 0.6,
     "cue": 2.067,
     "empty": [
+     [
+      0.033,
+      0.067
+     ],
      [
       2.067,
       2.167
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    },
    "hype": {
     "seconds": 4.2,
-    "built": 0.533,
+    "built": 0.6,
     "cue": 1.967,
     "empty": [
      [
@@ -3380,13 +3955,15 @@
       2.067
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    }
   },
   "particle-form": {
    "confident": {
     "seconds": 6.2,
-    "built": 0.333,
+    "built": 0.467,
     "cue": null,
     "empty": [
      [
@@ -3394,11 +3971,13 @@
       0.233
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 6.2,
-    "built": 0.367,
+    "built": 0.467,
     "cue": null,
     "empty": [
      [
@@ -3406,11 +3985,13 @@
       0.233
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 6.2,
-    "built": 0.333,
+    "built": 0.433,
     "cue": null,
     "empty": [
      [
@@ -3418,14 +3999,16 @@
       0.233
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.267
    }
   },
   "payoff-punch": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.567,
     "empty": [
      [
       0,
@@ -3436,12 +4019,14 @@
       4.6
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": 4.2,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.567,
     "empty": [
      [
       0,
@@ -3452,12 +4037,14 @@
       4.6
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": 4.233,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.567,
     "empty": [
      [
       0,
@@ -3468,13 +4055,15 @@
       4.6
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": 4.2,
+    "action": 0.367
    }
   },
   "pixel-decode": {
    "confident": {
     "seconds": 4,
-    "built": 0.867,
+    "built": 1.467,
     "cue": null,
     "empty": [
      [
@@ -3486,11 +4075,13 @@
       4
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 3.767,
+    "action": 0.433
    },
    "calm": {
     "seconds": 4,
-    "built": 0.967,
+    "built": 1.733,
     "cue": null,
     "empty": [
      [
@@ -3502,11 +4093,13 @@
       4
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 3.833,
+    "action": 0.433
    },
    "hype": {
     "seconds": 4,
-    "built": 0.8,
+    "built": 1.333,
     "cue": null,
     "empty": [
      [
@@ -3518,13 +4111,15 @@
       4
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 3.767,
+    "action": 0.433
    }
   },
   "pixelate-through": {
    "confident": {
     "seconds": 4,
-    "built": 0.233,
+    "built": 0.367,
     "cue": 1.867,
     "empty": [
      [
@@ -3532,11 +4127,13 @@
       0.233
      ]
     ],
-    "extent": 0.948
+    "extent": 0.948,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
-    "built": 0.233,
+    "built": 0.367,
     "cue": 1.933,
     "empty": [
      [
@@ -3544,11 +4141,13 @@
       0.233
      ]
     ],
-    "extent": 0.948
+    "extent": 0.948,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4,
-    "built": 0.233,
+    "built": 0.333,
     "cue": 1.8,
     "empty": [
      [
@@ -3556,33 +4155,47 @@
       0.233
      ]
     ],
-    "extent": 0.948
+    "extent": 0.948,
+    "exit": null,
+    "action": 0.267
    }
   },
   "push-through": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.367,
     "cue": 2.267,
     "empty": [
      [
       0,
       0.233
+     ],
+     [
+      2.467,
+      2.5
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.367,
     "cue": 2.4,
     "empty": [
      [
       0,
       0.233
+     ],
+     [
+      2.633,
+      2.667
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.5,
@@ -3592,15 +4205,21 @@
      [
       0,
       0.233
+     ],
+     [
+      2.333,
+      2.367
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.733
    }
   },
   "push-wipe": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.6,
+    "built": 0.667,
     "cue": 2.333,
     "empty": [
      [
@@ -3608,11 +4227,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.6,
+    "built": 0.667,
     "cue": 2.367,
     "empty": [
      [
@@ -3620,11 +4241,13 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.567,
+    "built": 0.667,
     "cue": 2.333,
     "empty": [
      [
@@ -3632,13 +4255,15 @@
       0.267
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.3
    }
   },
   "recentre-build": {
    "confident": {
     "seconds": 5,
-    "built": 1.9,
+    "built": 2.367,
     "cue": null,
     "empty": [
      [
@@ -3650,11 +4275,13 @@
       5
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 3.867,
+    "action": 0.433
    },
    "calm": {
     "seconds": 5,
-    "built": 1.567,
+    "built": 2.867,
     "cue": null,
     "empty": [
      [
@@ -3666,11 +4293,13 @@
       5
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 3.9,
+    "action": 1.833
    },
    "hype": {
     "seconds": 5,
-    "built": 1.667,
+    "built": 2.067,
     "cue": null,
     "empty": [
      [
@@ -3682,13 +4311,15 @@
       5
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 3.833,
+    "action": 0.433
    }
   },
   "relay-scroll": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.333,
+    "built": 0.467,
     "cue": 2.267,
     "empty": [
      [
@@ -3700,11 +4331,13 @@
       2.4
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.333,
+    "built": 0.467,
     "cue": 2.367,
     "empty": [
      [
@@ -3716,11 +4349,13 @@
       2.5
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.333,
+    "built": 0.433,
     "cue": 2.233,
     "empty": [
      [
@@ -3728,13 +4363,15 @@
       0.333
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 0.367
    }
   },
   "retype": {
    "confident": {
     "seconds": 6,
-    "built": 1.7,
+    "built": 1.967,
     "cue": null,
     "empty": [
      [
@@ -3746,11 +4383,13 @@
       6
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 5.5,
+    "action": 1.667
    },
    "calm": {
     "seconds": 6,
-    "built": 2.033,
+    "built": 2.333,
     "cue": null,
     "empty": [
      [
@@ -3762,11 +4401,13 @@
       6
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 5.533,
+    "action": 1.967
    },
    "hype": {
     "seconds": 6,
-    "built": 1.533,
+    "built": 1.733,
     "cue": null,
     "empty": [
      [
@@ -3778,30 +4419,38 @@
       6
      ]
     ],
-    "extent": 0.77
+    "extent": 0.77,
+    "exit": 5.467,
+    "action": 1.1
    }
   },
   "ring-sweep": {
    "confident": {
     "seconds": 3.5,
-    "built": 0.9,
+    "built": 1.333,
     "cue": null,
     "empty": [],
-    "extent": 0.444
+    "extent": 0.444,
+    "exit": null,
+    "action": 0.667
    },
    "calm": {
     "seconds": 3.5,
-    "built": 0.967,
+    "built": 1.5,
     "cue": null,
     "empty": [],
-    "extent": 0.444
+    "extent": 0.444,
+    "exit": null,
+    "action": 0.667
    },
    "hype": {
     "seconds": 3.5,
-    "built": 0.833,
+    "built": 1.233,
     "cue": null,
     "empty": [],
-    "extent": 0.444
+    "extent": 0.444,
+    "exit": null,
+    "action": 0.667
    }
   },
   "ripple": {
@@ -3815,7 +4464,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.8
    },
    "calm": {
     "seconds": 4.5,
@@ -3827,11 +4478,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.867
    },
    "hype": {
     "seconds": 4.5,
-    "built": 1.967,
+    "built": 2,
     "cue": 2.033,
     "empty": [
      [
@@ -3839,13 +4492,15 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.767
    }
   },
   "rotating-word": {
    "confident": {
     "seconds": 5,
-    "built": 0.467,
+    "built": 0.567,
     "cue": null,
     "empty": [
      [
@@ -3857,11 +4512,13 @@
       5
      ]
     ],
-    "extent": 0.859
+    "extent": 0.859,
+    "exit": 4.367,
+    "action": 0.467
    },
    "calm": {
     "seconds": 5,
-    "built": 0.5,
+    "built": 0.633,
     "cue": null,
     "empty": [
      [
@@ -3873,11 +4530,13 @@
       5
      ]
     ],
-    "extent": 0.859
+    "extent": 0.859,
+    "exit": 4.4,
+    "action": 0.467
    },
    "hype": {
     "seconds": 5,
-    "built": 0.467,
+    "built": 0.567,
     "cue": null,
     "empty": [
      [
@@ -3889,13 +4548,15 @@
       5
      ]
     ],
-    "extent": 0.859
+    "extent": 0.859,
+    "exit": 4.333,
+    "action": 0.467
    }
   },
   "scatter-assemble": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.8,
+    "built": 1.467,
     "cue": null,
     "empty": [
      [
@@ -3903,15 +4564,17 @@
       0.333
      ],
      [
-      4.067,
+      4.033,
       4.5
      ]
     ],
-    "extent": 1.363
+    "extent": 1.363,
+    "exit": 3.9,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.933,
+    "built": 1.667,
     "cue": null,
     "empty": [
      [
@@ -3923,11 +4586,13 @@
       4.5
      ]
     ],
-    "extent": 1.363
+    "extent": 1.363,
+    "exit": 4,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.733,
+    "built": 1.267,
     "cue": null,
     "empty": [
      [
@@ -3939,13 +4604,15 @@
       4.5
      ]
     ],
-    "extent": 1.363
+    "extent": 1.363,
+    "exit": 3.833,
+    "action": 0.367
    }
   },
   "scramble-lock": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.467,
+    "built": 1.3,
     "cue": null,
     "empty": [
      [
@@ -3957,11 +4624,13 @@
       4.5
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": 4.167,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.5,
+    "built": 1.5,
     "cue": null,
     "empty": [
      [
@@ -3973,11 +4642,13 @@
       4.5
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": 4.233,
+    "action": 0.467
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.467,
+    "built": 1.167,
     "cue": null,
     "empty": [
      [
@@ -3989,13 +4660,15 @@
       4.5
      ]
     ],
-    "extent": 0.504
+    "extent": 0.504,
+    "exit": 4.167,
+    "action": 0.467
    }
   },
   "shader-god-rays": {
    "confident": {
     "seconds": 5,
-    "built": 0.767,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -4007,11 +4680,13 @@
       5
      ]
     ],
-    "extent": 0.889
+    "extent": 0.889,
+    "exit": 4.3,
+    "action": 0.667
    },
    "calm": {
     "seconds": 5,
-    "built": 0.8,
+    "built": 1.033,
     "cue": null,
     "empty": [
      [
@@ -4023,11 +4698,13 @@
       5
      ]
     ],
-    "extent": 0.889
+    "extent": 0.889,
+    "exit": 4.333,
+    "action": 0.667
    },
    "hype": {
     "seconds": 5,
-    "built": 0.767,
+    "built": 0.933,
     "cue": null,
     "empty": [
      [
@@ -4039,151 +4716,189 @@
       5
      ]
     ],
-    "extent": 0.889
+    "extent": 0.889,
+    "exit": 4.267,
+    "action": 0.667
    }
   },
   "shader-grain-gradient": {
    "confident": {
     "seconds": 5,
-    "built": 0.8,
+    "built": 1,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    },
    "calm": {
     "seconds": 5,
-    "built": 0.8,
+    "built": 1,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.667
    },
    "hype": {
     "seconds": 5,
-    "built": 0.767,
+    "built": 0.867,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    }
   },
   "shader-mesh-gradient": {
    "confident": {
     "seconds": 5,
-    "built": 0.8,
+    "built": 1.8,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 5,
-    "built": 0.833,
+    "built": 1.967,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 5,
-    "built": 0.8,
+    "built": 1.967,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.033
    }
   },
   "shader-neuro-noise": {
    "confident": {
     "seconds": 5,
-    "built": 0.733,
+    "built": 0.9,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    },
    "calm": {
     "seconds": 5,
-    "built": 0.733,
+    "built": 0.967,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    },
    "hype": {
     "seconds": 5,
-    "built": 0.7,
+    "built": 0.867,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    }
   },
   "shader-simplex-noise": {
    "confident": {
     "seconds": 5,
-    "built": 0.767,
+    "built": 0.967,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    },
    "calm": {
     "seconds": 5,
-    "built": 0.8,
+    "built": 1.033,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.667
    },
    "hype": {
     "seconds": 5,
-    "built": 0.733,
+    "built": 0.933,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    }
   },
   "shader-smoke-ring": {
    "confident": {
     "seconds": 5,
-    "built": 0.667,
+    "built": 0.867,
     "cue": null,
     "empty": [],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.633
    },
    "calm": {
     "seconds": 5,
-    "built": 0.667,
+    "built": 0.933,
     "cue": null,
     "empty": [],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.633
    },
    "hype": {
     "seconds": 5,
-    "built": 0.667,
+    "built": 0.833,
     "cue": null,
     "empty": [],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.633
    }
   },
   "shader-swirl": {
    "confident": {
     "seconds": 5,
-    "built": 0.767,
+    "built": 0.967,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    },
    "calm": {
     "seconds": 5,
-    "built": 0.8,
+    "built": 1.033,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    },
    "hype": {
     "seconds": 5,
-    "built": 0.733,
+    "built": 0.933,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.633
    }
   },
   "shader-warp": {
    "confident": {
     "seconds": 5,
-    "built": 0.767,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -4195,11 +4910,13 @@
       5
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.3,
+    "action": 0.667
    },
    "calm": {
     "seconds": 5,
-    "built": 0.767,
+    "built": 1.033,
     "cue": null,
     "empty": [
      [
@@ -4211,11 +4928,13 @@
       5
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.333,
+    "action": 0.667
    },
    "hype": {
     "seconds": 5,
-    "built": 0.733,
+    "built": 0.933,
     "cue": null,
     "empty": [
      [
@@ -4227,45 +4946,53 @@
       5
      ]
     ],
-    "extent": 0.741
+    "extent": 0.741,
+    "exit": 4.267,
+    "action": 0.667
    }
   },
   "shape-morph": {
    "confident": {
     "seconds": 4.5,
-    "built": 1.2,
-    "cue": 1.133,
+    "built": 1.333,
+    "cue": 3.533,
     "empty": [
      [
       0,
       0.367
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": null,
+    "action": 1.133
    },
    "calm": {
     "seconds": 4.5,
     "built": 1.167,
-    "cue": 1.133,
+    "cue": 1.933,
     "empty": [
      [
       0,
       0.4
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": null,
+    "action": 1.133
    },
    "hype": {
     "seconds": 4.5,
-    "built": 1.2,
-    "cue": 1.133,
+    "built": 1.333,
+    "cue": 3.533,
     "empty": [
      [
       0,
       0.367
      ]
     ],
-    "extent": 0.711
+    "extent": 0.711,
+    "exit": null,
+    "action": 1.133
    }
   },
   "shared-element": {
@@ -4283,12 +5010,14 @@
       1.733
      ]
     ],
-    "extent": 1.63
+    "extent": 1.63,
+    "exit": null,
+    "action": 1.533
    },
    "calm": {
     "seconds": 4.5,
     "built": 1.967,
-    "cue": 1.867,
+    "cue": 1.833,
     "empty": [
      [
       0,
@@ -4299,7 +5028,9 @@
       1.8
      ]
     ],
-    "extent": 1.63
+    "extent": 1.63,
+    "exit": null,
+    "action": 1.567
    },
    "hype": {
     "seconds": 4.5,
@@ -4315,14 +5046,16 @@
       1.7
      ]
     ],
-    "extent": 1.63
+    "extent": 1.63,
+    "exit": null,
+    "action": 1.533
    }
   },
   "shimmer": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.3,
     "empty": [
      [
       0,
@@ -4333,12 +5066,14 @@
       4.6
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 4.4,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.5,
+    "cue": 1.3,
     "empty": [
      [
       0,
@@ -4349,12 +5084,14 @@
       4.6
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 4.433,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.3,
     "empty": [
      [
       0,
@@ -4365,13 +5102,15 @@
       4.6
      ]
     ],
-    "extent": 0.593
+    "extent": 0.593,
+    "exit": 4.4,
+    "action": 0.367
    }
   },
   "slam": {
    "confident": {
     "seconds": 3.5,
-    "built": 0.533,
+    "built": 0.667,
     "cue": null,
     "empty": [
      [
@@ -4383,11 +5122,13 @@
       3.5
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 2.867,
+    "action": 0.467
    },
    "calm": {
     "seconds": 3.5,
-    "built": 0.567,
+    "built": 0.733,
     "cue": null,
     "empty": [
      [
@@ -4399,11 +5140,13 @@
       3.5
      ]
     ],
-    "extent": 1.126
+    "extent": 1.096,
+    "exit": 2.9,
+    "action": 0.5
    },
    "hype": {
     "seconds": 3.5,
-    "built": 0.533,
+    "built": 0.633,
     "cue": null,
     "empty": [
      [
@@ -4419,7 +5162,9 @@
       3.5
      ]
     ],
-    "extent": 0.859
+    "extent": 0.83,
+    "exit": 2.833,
+    "action": 0.467
    }
   },
   "slide-off-reveal": {
@@ -4433,11 +5178,13 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.933
    },
    "calm": {
     "seconds": 4.5,
-    "built": 2.3,
+    "built": 2.267,
     "cue": 2.267,
     "empty": [
      [
@@ -4445,7 +5192,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.933
    },
    "hype": {
     "seconds": 4.5,
@@ -4457,51 +5206,59 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.933
    }
   },
   "slider-drag": {
    "confident": {
     "seconds": 4.2,
-    "built": 2.167,
-    "cue": null,
+    "built": 2.2,
+    "cue": 2.2,
     "empty": [
      [
       0,
       0.133
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2
    },
    "calm": {
     "seconds": 4.2,
     "built": 2.067,
-    "cue": null,
+    "cue": 2.067,
     "empty": [
      [
       0,
       0.133
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.833
    },
    "hype": {
     "seconds": 4.2,
     "built": 2.233,
-    "cue": null,
+    "cue": 2.267,
     "empty": [
      [
       0,
       0.133
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 2.1
    }
   },
   "smear-in": {
    "confident": {
     "seconds": 4,
-    "built": 0.767,
+    "built": 0.933,
     "cue": null,
     "empty": [
      [
@@ -4513,11 +5270,13 @@
       4
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 3.233,
+    "action": 0.567
    },
    "calm": {
     "seconds": 4,
-    "built": 0.833,
+    "built": 1,
     "cue": null,
     "empty": [
      [
@@ -4529,11 +5288,13 @@
       4
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 3.233,
+    "action": 0.567
    },
    "hype": {
     "seconds": 4,
-    "built": 0.733,
+    "built": 1.067,
     "cue": null,
     "empty": [
      [
@@ -4545,13 +5306,15 @@
       4
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 3.233,
+    "action": 0.567
    }
   },
   "soft-wipe": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.833,
+    "built": 0.867,
     "cue": null,
     "empty": [
      [
@@ -4563,7 +5326,9 @@
       4.5
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.733,
+    "action": 0.633
    },
    "calm": {
     "seconds": 4.5,
@@ -4579,11 +5344,13 @@
       4.5
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.767,
+    "action": 0.7
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.8,
+    "built": 0.867,
     "cue": null,
     "empty": [
      [
@@ -4595,13 +5362,15 @@
       4.5
      ]
     ],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": 3.733,
+    "action": 0.6
    }
   },
   "spin-whip": {
    "confident": {
     "seconds": 3.8,
-    "built": 2,
+    "built": 2.033,
     "cue": 1.7,
     "empty": [
      [
@@ -4609,7 +5378,9 @@
       1.9
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 1.5
    },
    "calm": {
     "seconds": 3.8,
@@ -4621,7 +5392,9 @@
       1.933
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 1.533
    },
    "hype": {
     "seconds": 3.8,
@@ -4633,13 +5406,15 @@
       1.867
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 1.5
    }
   },
   "split-flap": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.433,
+    "built": 1.567,
     "cue": null,
     "empty": [
      [
@@ -4651,11 +5426,13 @@
       4.5
      ]
     ],
-    "extent": 1.185
+    "extent": 1.185,
+    "exit": 4.167,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.467,
+    "built": 1.867,
     "cue": null,
     "empty": [
      [
@@ -4667,11 +5444,13 @@
       4.5
      ]
     ],
-    "extent": 1.185
+    "extent": 1.185,
+    "exit": 4.233,
+    "action": 0.467
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.433,
+    "built": 1.667,
     "cue": null,
     "empty": [
      [
@@ -4683,14 +5462,16 @@
       4.5
      ]
     ],
-    "extent": 1.185
+    "extent": 1.185,
+    "exit": 4.167,
+    "action": 0.467
    }
   },
   "stagger": {
    "confident": {
     "seconds": 4.2,
     "built": 0.7,
-    "cue": null,
+    "cue": 0.867,
     "empty": [
      [
       0,
@@ -4701,12 +5482,14 @@
       4.2
      ]
     ],
-    "extent": 1.333
+    "extent": 1.333,
+    "exit": 3.667,
+    "action": 0.6
    },
    "calm": {
     "seconds": 4.2,
     "built": 0.733,
-    "cue": null,
+    "cue": 0.9,
     "empty": [
      [
       0,
@@ -4717,12 +5500,14 @@
       4.2
      ]
     ],
-    "extent": 1.333
+    "extent": 1.333,
+    "exit": 3.667,
+    "action": 0.633
    },
    "hype": {
     "seconds": 4.2,
     "built": 0.633,
-    "cue": null,
+    "cue": 0.9,
     "empty": [
      [
       0,
@@ -4733,7 +5518,9 @@
       4.2
      ]
     ],
-    "extent": 1.333
+    "extent": 1.333,
+    "exit": 3.633,
+    "action": 0.6
    }
   },
   "stream-answer": {
@@ -4751,7 +5538,9 @@
       6
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": 5.533,
+    "action": 0.567
    },
    "calm": {
     "seconds": 6,
@@ -4767,29 +5556,33 @@
       6
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": 5.567,
+    "action": 1.7
    },
    "hype": {
     "seconds": 6,
-    "built": 2.033,
+    "built": 2.633,
     "cue": null,
     "empty": [
      [
       0,
-      0.567
+      0.533
      ],
      [
       5.633,
       6
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": 5.533,
+    "action": 0.567
    }
   },
   "swap-word": {
    "confident": {
     "seconds": 4,
-    "built": 0.6,
+    "built": 0.567,
     "cue": null,
     "empty": [
      [
@@ -4801,7 +5594,9 @@
       4
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 3.567,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4,
@@ -4817,11 +5612,13 @@
       4
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 3.633,
+    "action": 0.467
    },
    "hype": {
     "seconds": 4,
-    "built": 0.533,
+    "built": 0.567,
     "cue": null,
     "empty": [
      [
@@ -4833,13 +5630,15 @@
       4
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 3.567,
+    "action": 0.467
    }
   },
   "tab-indicator": {
    "confident": {
     "seconds": 4,
-    "built": 0.2,
+    "built": 0.333,
     "cue": 2.967,
     "empty": [
      [
@@ -4847,23 +5646,27 @@
       0.133
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.167
    },
    "calm": {
     "seconds": 4,
-    "built": 0.2,
-    "cue": 1.067,
+    "built": 0.267,
+    "cue": 2.967,
     "empty": [
      [
       0,
       0.133
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.167
    },
    "hype": {
     "seconds": 4,
-    "built": 0.167,
+    "built": 0.333,
     "cue": 1.033,
     "empty": [
      [
@@ -4871,36 +5674,44 @@
       0.133
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.167
    }
   },
   "text-window": {
    "confident": {
     "seconds": 5,
-    "built": 0,
+    "built": 0.467,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    },
    "calm": {
     "seconds": 5,
-    "built": 0,
+    "built": 0.5,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    },
    "hype": {
     "seconds": 5,
-    "built": 0,
+    "built": 0.433,
     "cue": null,
     "empty": [],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 0.233
    }
   },
   "ticker": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.567,
     "cue": null,
     "empty": [
      [
@@ -4912,11 +5723,13 @@
       4.5
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 3.9,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.6,
     "cue": null,
     "empty": [
      [
@@ -4928,11 +5741,13 @@
       4.5
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 3.933,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.267,
+    "built": 0.5,
     "cue": null,
     "empty": [
      [
@@ -4944,7 +5759,9 @@
       4.5
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": 3.867,
+    "action": 0.267
    }
   },
   "tile-reveal": {
@@ -4958,7 +5775,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.667
    },
    "calm": {
     "seconds": 4.2,
@@ -4970,7 +5789,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.7
    },
    "hype": {
     "seconds": 4.2,
@@ -4982,7 +5803,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.667
    }
   },
   "title-takeover": {
@@ -4996,7 +5819,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.433
    },
    "calm": {
     "seconds": 4.5,
@@ -5008,7 +5833,9 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.433
    },
    "hype": {
     "seconds": 4.5,
@@ -5020,51 +5847,59 @@
       0.233
      ]
     ],
-    "extent": 1.778
+    "extent": 1.778,
+    "exit": null,
+    "action": 1.433
    }
   },
   "toggle-flip": {
    "confident": {
     "seconds": 3.5,
     "built": 1.233,
-    "cue": 2.533,
+    "cue": 1.267,
     "empty": [
      [
       0,
       0.133
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.133
    },
    "calm": {
     "seconds": 3.5,
     "built": 1.233,
-    "cue": 2.533,
+    "cue": 1.267,
     "empty": [
      [
       0,
       0.133
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.133
    },
    "hype": {
     "seconds": 3.5,
     "built": 1.233,
-    "cue": 2.533,
+    "cue": 1.267,
     "empty": [
      [
       0,
       0.133
      ]
     ],
-    "extent": 1.244
+    "extent": 1.244,
+    "exit": null,
+    "action": 0.133
    }
   },
   "tracking-settle": {
    "confident": {
     "seconds": 4,
-    "built": 0.433,
+    "built": 0.933,
     "cue": null,
     "empty": [
      [
@@ -5076,11 +5911,13 @@
       4
      ]
     ],
-    "extent": 0.919
+    "extent": 0.919,
+    "exit": 3.5,
+    "action": 0.467
    },
    "calm": {
     "seconds": 4,
-    "built": 0.433,
+    "built": 1.033,
     "cue": null,
     "empty": [
      [
@@ -5092,11 +5929,13 @@
       4
      ]
     ],
-    "extent": 0.919
+    "extent": 0.919,
+    "exit": 3.533,
+    "action": 0.467
    },
    "hype": {
     "seconds": 4,
-    "built": 0.433,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -5108,13 +5947,15 @@
       4
      ]
     ],
-    "extent": 0.919
+    "extent": 0.919,
+    "exit": 3.467,
+    "action": 0.467
    }
   },
   "type-on": {
    "confident": {
     "seconds": 4.5,
-    "built": 2,
+    "built": 1.967,
     "cue": null,
     "empty": [
      [
@@ -5122,11 +5963,13 @@
       0.233
      ]
     ],
-    "extent": 1.067
+    "extent": 1.067,
+    "exit": null,
+    "action": 0.233
    },
    "calm": {
     "seconds": 4.5,
-    "built": 2,
+    "built": 1.967,
     "cue": null,
     "empty": [
      [
@@ -5134,7 +5977,9 @@
       0.233
      ]
     ],
-    "extent": 1.067
+    "extent": 1.067,
+    "exit": null,
+    "action": 0.233
    },
    "hype": {
     "seconds": 4.5,
@@ -5146,13 +5991,15 @@
       0.233
      ]
     ],
-    "extent": 1.067
+    "extent": 1.067,
+    "exit": null,
+    "action": 0.233
    }
   },
   "ugc-comment-reply": {
    "confident": {
     "seconds": 4.2,
-    "built": 0.167,
+    "built": 0.867,
     "cue": null,
     "empty": [
      [
@@ -5160,11 +6007,13 @@
       0.067
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": null,
+    "action": 0.1
    },
    "calm": {
     "seconds": 4.2,
-    "built": 0.2,
+    "built": 1.033,
     "cue": null,
     "empty": [
      [
@@ -5172,11 +6021,13 @@
       0.067
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": null,
+    "action": 0.1
    },
    "hype": {
     "seconds": 4.2,
-    "built": 0.133,
+    "built": 0.7,
     "cue": null,
     "empty": [
      [
@@ -5184,36 +6035,44 @@
       0.067
      ]
     ],
-    "extent": 0.859
+    "extent": 0.83,
+    "exit": null,
+    "action": 0.1
    }
   },
   "ugc-screen-rec-tell": {
    "confident": {
     "seconds": 4.2,
-    "built": 0,
+    "built": 0.3,
     "cue": null,
     "empty": [],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": null,
+    "action": 0.033
    },
    "calm": {
     "seconds": 4.2,
-    "built": 0,
+    "built": 0.333,
     "cue": null,
     "empty": [],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": null,
+    "action": 0.033
    },
    "hype": {
     "seconds": 4.2,
-    "built": 0,
+    "built": 0.333,
     "cue": null,
     "empty": [],
-    "extent": 0.474
+    "extent": 0.474,
+    "exit": null,
+    "action": 0.033
    }
   },
   "ugc-sticker-pop": {
    "confident": {
     "seconds": 4.2,
-    "built": 0.833,
+    "built": 1,
     "cue": null,
     "empty": [
      [
@@ -5221,11 +6080,13 @@
       0.067
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": null,
+    "action": 0.833
    },
    "calm": {
     "seconds": 4.2,
-    "built": 0.867,
+    "built": 1.033,
     "cue": null,
     "empty": [
      [
@@ -5233,11 +6094,13 @@
       0.1
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": null,
+    "action": 0.833
    },
    "hype": {
     "seconds": 4.2,
-    "built": 0.8,
+    "built": 0.967,
     "cue": null,
     "empty": [
      [
@@ -5245,14 +6108,16 @@
       0.067
      ]
     ],
-    "extent": 0.622
+    "extent": 0.622,
+    "exit": null,
+    "action": 0.8
    }
   },
   "voice-swap": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.5,
     "empty": [
      [
       0,
@@ -5263,12 +6128,14 @@
       4.6
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.3,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.5,
     "empty": [
      [
       0,
@@ -5279,12 +6146,14 @@
       4.6
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.333,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.333,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.5,
     "empty": [
      [
       0,
@@ -5295,14 +6164,16 @@
       4.6
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": 4.3,
+    "action": 0.367
    }
   },
   "weight-wave": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.4,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.467,
     "empty": [
      [
       0,
@@ -5313,12 +6184,14 @@
       4.6
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 4.167,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.433,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.467,
     "empty": [
      [
       0,
@@ -5329,12 +6202,14 @@
       4.6
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 4.2,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.4,
-    "cue": null,
+    "built": 0.533,
+    "cue": 1.467,
     "empty": [
      [
       0,
@@ -5345,14 +6220,16 @@
       4.6
      ]
     ],
-    "extent": 0.563
+    "extent": 0.563,
+    "exit": 4.133,
+    "action": 0.367
    }
   },
   "weight-wave-ripple": {
    "confident": {
     "seconds": 4.6,
-    "built": 0.4,
-    "cue": null,
+    "built": 0.433,
+    "cue": 1.767,
     "empty": [
      [
       0,
@@ -5363,12 +6240,14 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.167,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.6,
-    "built": 0.4,
-    "cue": null,
+    "built": 0.467,
+    "cue": 1.867,
     "empty": [
      [
       0,
@@ -5379,12 +6258,14 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.2,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.6,
-    "built": 0.367,
-    "cue": null,
+    "built": 0.4,
+    "cue": 1.733,
     "empty": [
      [
       0,
@@ -5395,7 +6276,9 @@
       4.6
      ]
     ],
-    "extent": 0.83
+    "extent": 0.83,
+    "exit": 4.167,
+    "action": 0.367
    }
   },
   "whip-pan": {
@@ -5413,7 +6296,9 @@
       1.833
      ]
     ],
-    "extent": 1.452
+    "extent": 1.481,
+    "exit": null,
+    "action": 1.533
    },
    "calm": {
     "seconds": 3.8,
@@ -5429,11 +6314,13 @@
       1.867
      ]
     ],
-    "extent": 1.393
+    "extent": 1.393,
+    "exit": null,
+    "action": 1.533
    },
    "hype": {
     "seconds": 3.8,
-    "built": 1.933,
+    "built": 1.967,
     "cue": 1.667,
     "empty": [
      [
@@ -5442,16 +6329,18 @@
      ],
      [
       1.667,
-      1.8
+      1.767
      ]
     ],
-    "extent": 1.422
+    "extent": 1.422,
+    "exit": null,
+    "action": 1.533
    }
   },
   "word-morph": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.333,
+    "built": 0.433,
     "cue": null,
     "empty": [
      [
@@ -5463,11 +6352,13 @@
       4.5
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.9,
+    "action": 0.367
    },
    "calm": {
     "seconds": 4.5,
-    "built": 0.333,
+    "built": 0.467,
     "cue": null,
     "empty": [
      [
@@ -5479,11 +6370,13 @@
       4.5
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.933,
+    "action": 0.367
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.333,
+    "built": 0.533,
     "cue": null,
     "empty": [
      [
@@ -5495,13 +6388,15 @@
       4.5
      ]
     ],
-    "extent": 0.8
+    "extent": 0.8,
+    "exit": 3.867,
+    "action": 0.367
    }
   },
   "word-pop": {
    "confident": {
     "seconds": 4,
-    "built": 0.567,
+    "built": 0.7,
     "cue": null,
     "empty": [
      [
@@ -5513,11 +6408,13 @@
       4
      ]
     ],
-    "extent": 0.296
+    "extent": 0.296,
+    "exit": 3.1,
+    "action": 0.5
    },
    "calm": {
     "seconds": 4,
-    "built": 0.6,
+    "built": 0.767,
     "cue": null,
     "empty": [
      [
@@ -5529,11 +6426,13 @@
       4
      ]
     ],
-    "extent": 0.296
+    "extent": 0.296,
+    "exit": 3.1,
+    "action": 0.5
    },
    "hype": {
     "seconds": 4,
-    "built": 0.533,
+    "built": 0.7,
     "cue": null,
     "empty": [
      [
@@ -5545,13 +6444,15 @@
       4
      ]
     ],
-    "extent": 0.296
+    "extent": 0.296,
+    "exit": 3.067,
+    "action": 0.467
    }
   },
   "zoom-blur": {
    "confident": {
     "seconds": 4,
-    "built": 0.433,
+    "built": 0.4,
     "cue": 1.8,
     "empty": [
      [
@@ -5559,11 +6460,13 @@
       0.233
      ]
     ],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4,
-    "built": 1.7,
+    "built": 1.733,
     "cue": 1.867,
     "empty": [
      [
@@ -5571,11 +6474,13 @@
       0.233
      ]
     ],
-    "extent": 0.652
+    "extent": 0.652,
+    "exit": null,
+    "action": 1.667
    },
    "hype": {
     "seconds": 4,
-    "built": 0.333,
+    "built": 0.4,
     "cue": 1.767,
     "empty": [
      [
@@ -5583,13 +6488,15 @@
       0.233
      ]
     ],
-    "extent": 0.681
+    "extent": 0.681,
+    "exit": null,
+    "action": 0.267
    }
   },
   "zoom-through-swap": {
    "confident": {
     "seconds": 4.5,
-    "built": 0.333,
+    "built": 0.367,
     "cue": 2.133,
     "empty": [
      [
@@ -5597,7 +6504,9 @@
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    },
    "calm": {
     "seconds": 4.5,
@@ -5609,11 +6518,13 @@
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    },
    "hype": {
     "seconds": 4.5,
-    "built": 0.3,
+    "built": 0.467,
     "cue": 2.067,
     "empty": [
      [
@@ -5621,7 +6532,9 @@
       0.233
      ]
     ],
-    "extent": 1.126
+    "extent": 1.126,
+    "exit": null,
+    "action": 0.267
    }
   }
  }

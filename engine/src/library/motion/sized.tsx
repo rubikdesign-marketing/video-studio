@@ -44,6 +44,11 @@ export type SizedDemo = {
   title: string;
   /** Seconds: 3 to 6. */
   seconds: number;
+  /**
+   * When its one change lands (its emphasis component's `at`), for a scene whose change the style previews' scan
+   * cannot see (a thin mark): tools/styles/scene-timing.mjs takes it over the measured one. Optional.
+   */
+  cue?: number;
   /** The scene. It is told the page and the frame size, for moves that lay out differently in a tall frame. */
   Scene: FC<{ page: StageName; format: FormatName }>;
   /** A move that draws its own full-frame background (a shader) is shown without the stage's own page under it. */

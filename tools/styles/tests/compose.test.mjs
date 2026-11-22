@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   previewSlots, composeMoves, composedMembers, COMPOSE_JOIN, COMPOSE_AS, MAX_MOVES,
-  slotStart, timingFor, SAFE_OFFSET_S, LEAD_S, CUE_AFTER_S, LONG_BUILD_S, fitFrame, FIT_MARGIN,
+  slotStart, timingFor, SAFE_OFFSET_S, LEAD_S, CUE_AFTER_S, LONG_BUILD_S, sceneNeed, slotLengths, READ_S, MIN_SLOT_S, CHANGE_S, fitFrame, FIT_MARGIN,
 } from '../../../engine/src/library/styles/rules.mjs';
 
 // Families as library/motion/index.json files them.
@@ -220,7 +220,8 @@ test('pass-through: only short (6 frames or fewer), with content both sides, nea
   // (every 90-frame window from the start holds frames 45 to 47, so the slot starts after them and holds the last frame)
   assert.deepEqual(slotStart({ timing: far, slot: 90, fps: FPS }), { start: 48, empty: 0, safe: false, freeze: 120, problem: null });
   // the same blank in a transition is a pass-through: the slot plays from its built moment, nothing held
-  assert.deepEqual(slotStart({ timing: far, slot: 90, fps: FPS, transition: true }), { start: 9, empty: 0, safe: false, freeze: null, problem: null });
+  // (and, being a transition with no measured change point, it is reported as such)
+  assert.deepEqual(slotStart({ timing: far, slot: 90, fps: FPS, transition: true }), { start: 9, empty: 0, safe: false, freeze: null, problem: 'nocue' });
 });
 
 test('cue: a change that cannot sit in any clear window is reported, never slid past silently', () => {
@@ -255,4 +256,57 @@ test('timing: a row measured at another length than the scene now has is no timi
   assert.equal(timingFor({ a: { confident: row } }, 'a', 'confident', 4), row);
   assert.equal(timingFor({ a: { confident: row } }, 'a', 'confident', 4.5), null);
   assert.equal(timingFor({ a: row }, 'a', 'calm', 3), null);
+});
+
+// ---------------------------------------------------------------- second visual check: slots weighed by build (R3), hold before the exit (R9), no silent start (R2)
+
+test('hold: the held frame is the last fully built one, before the exit begins (an-type-slam)', () => {
+  const slam = { ...ROW['slam (hype)'], exit: 2.6 };
+  assert.deepEqual(slotStart({ timing: slam, slot: 90, fps: FPS, grace: 9 }), { start: 7, empty: 0, safe: false, freeze: 78, problem: null });
+});
+
+test('cue: a transition with no measured change point is reported, not started anywhere silently', () => {
+  const luma = { seconds: 4.2, built: 0.267, cue: null, empty: [[0, 0.233]] };
+  assert.equal(slotStart({ timing: luma, slot: 45, fps: FPS, transition: true }).problem, 'nocue');
+  assert.equal(slotStart({ timing: luma, slot: 45, fps: FPS, transition: false }).problem, null);
+});
+
+test('need: a long build needs its build and a short read; a short entrance its lead and a read; a cue its lead and what follows', () => {
+  assert.equal(READ_S, 0.3);
+  // stat reel (hype): bars grow from 0.333 to 0.933 s, first slot (it may start in the clip's empty lead)
+  assert.equal(sceneNeed({ seconds: 3.5, built: 0.933, cue: null, empty: [[0, 0.333]] }, FPS, { first: true }), 36);
+  // the ring sweeps from its first frame to 0.833 s
+  assert.equal(sceneNeed({ seconds: 3.5, built: 0.833, cue: null, empty: [] }, FPS), 34);
+  // the count arrives in under 0.5 s: from built less the lead, plus the read, never below MIN_SLOT_S
+  assert.equal(sceneNeed({ seconds: 3.5, built: 0.9, cue: null, empty: [[0, 0.433]] }, FPS), Math.round(MIN_SLOT_S * FPS));
+  // a mark landing at 1.5 s: its lead, then the change and a short read (CHANGE_S), so three transitions fit in 3 s
+  assert.equal(CHANGE_S, 0.6);
+  assert.equal(sceneNeed({ seconds: 4.6, built: 0.367, cue: 1.5, empty: [[0, 0.333]] }, FPS), 27);
+  // a scene built after its cue (a whip into a denser scene) also needs its built moment and a read
+  assert.equal(sceneNeed({ seconds: 3.8, built: 2, cue: 1.7, empty: [[0, 0.233], [1.7, 1.833]] }, FPS), 27);
+  assert.equal(sceneNeed({ seconds: 3.8, built: 2.4, cue: 1.7, empty: [[0, 0.233]] }, FPS), 39);
+  assert.equal(sceneNeed(null, FPS), null);
+});
+
+test('slots: weighed by need within 3 s; the time left over is shared; unknown needs take an equal share', () => {
+  // pui-data-bars-then-target: bars need 38 frames, the line 18: 56, and 34 over to share
+  assert.deepEqual(slotLengths([38, 18]), { frames: [55, 35], over: 0 });
+  // pui-data-stat-reel: 36 + 34 + 18 = 88 of 90
+  assert.deepEqual(slotLengths([36, 34, 18]), { frames: [37, 35, 18], over: 0 });
+  // a capture scene's need is not known ahead: it counts as an equal share
+  assert.deepEqual(slotLengths([null, 20]), { frames: [58, 32], over: 0 });
+  // more than 3 s of need: scaled to fit, and `over` says how much was needed
+  const r = slotLengths([60, 50]);
+  assert.equal(r.frames.reduce((a, b) => a + b, 0), 90);
+  assert.equal(r.over, 110);
+  assert.deepEqual(slotLengths([]), { frames: [], over: 0 });
+});
+
+test('need and start: a long build counts from where its action starts, with no lead (its content is already on screen)', () => {
+  // the ring: track and label from 0 s, the sweep from 0.633 s, built (still) at 1.233 s
+  const ring = { seconds: 3.5, built: 1.233, cue: null, empty: [], action: 0.633 };
+  assert.equal(sceneNeed(ring, FPS), 27);
+  assert.equal(slotStart({ timing: ring, slot: 30, fps: FPS }).start, 19);
+  // with no action measured, as before: from the content's arrival
+  assert.equal(sceneNeed({ ...ring, action: undefined }, FPS), 46);
 });

@@ -32,7 +32,7 @@ import { productScenes } from '../motion/product';
 import { relayoutScenes } from '../motion/relayout';
 import type { FormatName, SizedDemo } from '../motion/sized';
 import { sizedFamilies } from '../motion/sized-families';
-import { CAPTURE_STANDS_IN, COMPOSE_JOIN, composedMembers, fitFrame, isCaptureMove, isPhoneMove, kebab, LEAD_S, MAX_MOVES, PREVIEW_FPS, PREVIEW_FRAMES, previewSlots, sceneStart, SIZES, slotFrames, slotStart, timingFor } from './rules.mjs';
+import { CAPTURE_STANDS_IN, COMPOSE_JOIN, composedMembers, fitFrame, isCaptureMove, isPhoneMove, kebab, LEAD_S, MAX_MOVES, PREVIEW_FPS, PREVIEW_FRAMES, previewSlots, sceneNeed, sceneStart, SIZES, slotLengths, slotStart, timingFor } from './rules.mjs';
 
 export const FPS = PREVIEW_FPS;
 export const FRAMES = PREVIEW_FRAMES;
@@ -191,14 +191,22 @@ const Moves: FC<{ entry: PreviewEntry; page: StageName; capture?: string }> = ({
   const pointer = entry.pointer ?? slots.pointer;
   const bg = entry.engine.map(backgroundOf).find(Boolean);
   const Backdrop = bg ? backdrops[bg.component] : null;
+  // Each slot as long as its scene needs for its action to complete (rules.mjs, the same as the plan).
+  const knownOf = (name: string) => (isComposed(name) ? undefined : sceneOf(name));
+  const { frames: lengths } = slotLengths(
+    moves.map((name, i) => {
+      const known = knownOf(name);
+      return known ? sceneNeed(timingFor(measured, known.name, energyOf(entry), known.seconds), FPS, { first: i === 0 }) : null;
+    }),
+  );
   return (
     <>
       {Backdrop ? <Backdrop energy={backdropEnergy[energyOf(entry)]} /> : null}
       {moves.length ? (
       <Series>
         {moves.map((name, i) => {
-          const known = isComposed(name) ? undefined : sceneOf(name);
-          const frames = slotFrames(moves.length, i);
+          const known = knownOf(name);
+          const frames = lengths[i];
           return (
             <Series.Sequence key={`${name}-${i}`} durationInFrames={frames}>
               {known ? (
@@ -246,13 +254,14 @@ export const StylePreviewComposition: FC = () => (
 
 /** One row of the measuring reel: a standalone scene and the seconds it plays. */
 export type ReelItem = { name: string; seconds: number };
-export type SceneReelProps = { items: ReelItem[]; lead: number; energy: Energy };
+export type SceneReelProps = { items: ReelItem[]; lead: number; dark?: number; energy: Energy };
 
 /**
- * Every standalone scene back to back at 16:9 on the light page, after `lead` seconds of empty page, for
+ * Every standalone scene back to back at 16:9 on the light page, after `lead` seconds of empty light page and `dark`
+ * seconds of empty dark page (so both empty pages can be recognised), for
  * tools/styles/scene-timing.mjs to measure when each is built, empty or changing, and how wide it draws.
  */
-export const SceneReel: FC<SceneReelProps> = ({ items, lead, energy }) => {
+export const SceneReel: FC<SceneReelProps> = ({ items, lead, dark = 0, energy }) => {
   const { fps } = useVideoConfig();
   return (
     <BrandProvider brand="demo">
@@ -260,6 +269,11 @@ export const SceneReel: FC<SceneReelProps> = ({ items, lead, energy }) => {
         <Stage name="light">
           <Series>
             <Series.Sequence durationInFrames={Math.max(1, Math.round(lead * fps))}>{null}</Series.Sequence>
+            {dark > 0 ? (
+              <Series.Sequence durationInFrames={Math.round(dark * fps)}>
+                <Stage name="dark">{null}</Stage>
+              </Series.Sequence>
+            ) : null}
             {items.map((item) => {
               const known = sceneOf(item.name);
               if (!known) throw new Error(`${item.name} has no standalone scene`);
@@ -285,6 +299,6 @@ export const SceneReelComposition: FC = () => (
     fps={FPS}
     durationInFrames={1}
     defaultProps={{ items: [], lead: 1, energy: 'confident' } satisfies SceneReelProps}
-    calculateMetadata={({ props }) => ({ durationInFrames: Math.max(1, Math.round(props.lead * FPS) + props.items.reduce((n, i) => n + Math.round(i.seconds * FPS), 0)) })}
+    calculateMetadata={({ props }) => ({ durationInFrames: Math.max(1, Math.round(props.lead * FPS) + Math.round((props.dark ?? 0) * FPS) + props.items.reduce((n, i) => n + Math.round(i.seconds * FPS), 0)) })}
   />
 );

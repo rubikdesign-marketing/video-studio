@@ -20,6 +20,8 @@ const STUDIO = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FPS = 30;
 const SIZE = [480, 270];
 const LEAD = 1;
+/** Then this long on the empty dark page, so a scene's empty dark page counts as empty too. */
+const DARK = 0.5;
 const EDGES = 'edgedetect=low=0.05:high=0.15';
 const COLUMNS = [120, 68];
 
@@ -34,11 +36,16 @@ async function ffmpegMeta(run, args) {
 /** Per-frame edge, difference from the empty page, change from the frame before, and the box of what has edges. */
 async function scan(run, video, work) {
   const base = join(work, 'page.png');
-  const b = await run('ffmpeg', ['-v', 'error', '-y', '-ss', String(LEAD / 2), '-i', video, '-frames:v', '1', base]);
-  if (b.code !== 0) throw new Error(`ffmpeg failed: ${(b.stderr || '').trim().split('\n').pop()}`);
+  const darkBase = join(work, 'page-dark.png');
+  for (const [at, file] of [[LEAD / 2, base], [LEAD + DARK / 2, darkBase]]) {
+    const b = await run('ffmpeg', ['-v', 'error', '-y', '-ss', String(at), '-i', video, '-frames:v', '1', file]);
+    if (b.code !== 0) throw new Error(`ffmpeg failed: ${(b.stderr || '').trim().split('\n').pop()}`);
+  }
   const print = 'metadata=print:file=-';
   const edges = parseMetadata(await ffmpegMeta(run, ['-i', video, '-vf', `${EDGES},signalstats,${print}`]), 'lavfi.signalstats.YAVG');
-  const page = parseMetadata(await ffmpegMeta(run, ['-i', video, '-loop', '1', '-i', base, '-filter_complex', `[0:v]format=yuv420p[a];[1:v]format=yuv420p[b];[a][b]blend=all_mode=difference:shortest=1,signalstats,${print}`]), 'lavfi.signalstats.YAVG');
+  const against = async (still) => parseMetadata(await ffmpegMeta(run, ['-i', video, '-loop', '1', '-i', still, '-filter_complex', `[0:v]format=yuv420p[a];[1:v]format=yuv420p[b];[a][b]blend=all_mode=difference:shortest=1,signalstats,${print}`]), 'lavfi.signalstats.YAVG');
+  const page = await against(base);
+  const dark = await against(darkBase);
   const change = parseMetadata(await ffmpegMeta(run, ['-i', video, '-vf', `tblend=all_mode=difference,signalstats,${print}`]), 'lavfi.signalstats.YAVG');
   // The box: the edge frames scaled down to 120 x 68 grey bytes; a column with edges in it is part of the content.
   const cols = join(work, 'columns.raw');
@@ -47,7 +54,7 @@ async function scan(run, video, work) {
   const boxes = boxesFromColumns(readFileSync(cols), { width: COLUMNS[0], height: COLUMNS[1], scale: SIZE[0] / COLUMNS[0], threshold: 40 });
   // tblend's first output is frames 0 and 1: change[f] is the change into frame f + 1.
   const motion = [0, ...change];
-  return { edges, page, motion, boxes };
+  return { edges, page, dark, motion, boxes };
 }
 
 export async function main(argv, { run = spawnRun, log = console.log, studio = STUDIO } = {}) {
@@ -68,7 +75,7 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
     for (const energy of energies) {
       const props = join(work, `reel-${energy}.json`);
       const video = join(work, `reel-${energy}.mp4`);
-      writeFileSync(props, JSON.stringify({ items: list.map(({ name, seconds }) => ({ name, seconds })), lead: LEAD, energy }));
+      writeFileSync(props, JSON.stringify({ items: list.map(({ name, seconds }) => ({ name, seconds })), lead: LEAD, dark: DARK, energy }));
       if (argv.includes('--reuse') && existsSync(video)) log(`reusing ${video}`);
       else {
       log(`rendering ${list.length} scenes at ${energy} ...`);
@@ -77,10 +84,10 @@ export async function main(argv, { run = spawnRun, log = console.log, studio = S
       }
       const frames = await scan(run, video, work);
       const measured = {};
-      for (const row of reelOffsets(list, FPS, LEAD)) {
+      for (const row of reelOffsets(list, FPS, LEAD + DARK)) {
         const cut = (a) => a.slice(row.from, row.from + row.frames);
         const scene = list.find((s) => s.name === row.name);
-        measured[row.name] = analyzeScene({ edges: cut(frames.edges), page: cut(frames.page), motion: cut(frames.motion), boxes: cut(frames.boxes), fps: FPS, seconds: scene.seconds, size: SIZE, cue: CUE_FAMILIES.has(families.get(row.name)) });
+        measured[row.name] = analyzeScene({ edges: cut(frames.edges), page: cut(frames.page), dark: cut(frames.dark), motion: cut(frames.motion), boxes: cut(frames.boxes), fps: FPS, seconds: scene.seconds, size: SIZE, cue: CUE_FAMILIES.has(families.get(row.name)), authored: scene.cue });
       }
       // Rows for scenes no longer in the library go; the other energies' rows stay.
       table.scenes = mergeTimings(table.scenes, list, energy, measured);

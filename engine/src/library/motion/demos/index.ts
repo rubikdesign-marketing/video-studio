@@ -32,6 +32,8 @@ export type Demo = {
   title: string;
   /** Length of the scene in seconds: 3 to 5, up to about 6 for a move that runs through several states. */
   seconds: number;
+  /** When its one change lands (as in sized.tsx's SizedDemo), for a scene whose change the previews' scan cannot see. Optional. */
+  cue?: number;
   /** The scene. It is told which page the gallery is on, for moves that go from one page to the other. */
   Scene: FC<{ page: StageName }>;
 };
@@ -46,8 +48,8 @@ export const demos: Demo[] = [
   { name: 'swap-word', title: 'Swap word', seconds: 4, Scene: SwapWordScene },
   { name: 'drawn-mark', title: 'Drawn mark', seconds: 4.5, Scene: DrawnMarkScene },
   // Emphasis on a product screen
-  { name: 'focus-pull', title: 'Focus pull', seconds: 4.5, Scene: FocusPullScene },
-  { name: 'lift', title: 'Lift', seconds: 4, Scene: LiftScene },
+  { name: 'focus-pull', title: 'Focus pull', seconds: 4.5, cue: 1.3, Scene: FocusPullScene },
+  { name: 'lift', title: 'Lift', seconds: 4, cue: 1.2, Scene: LiftScene },
   { name: 'stagger', title: 'Stagger with a source', seconds: 4.2, Scene: StaggerScene },
   // Data
   { name: 'count-with-bar', title: 'Count with its bar', seconds: 3.5, Scene: CountWithBarScene },

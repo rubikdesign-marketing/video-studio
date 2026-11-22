@@ -103,17 +103,17 @@ const VoiceSwapScene: FC = () => (
 );
 
 export const batch4: SizedDemo[] = [
-  { name: 'highlighter', title: 'Highlighter, marker sweep', seconds: 4.6, Scene: HighlighterScene },
-  { name: 'mark-word', title: 'Mark word, box', seconds: 4.6, Scene: MarkBoxScene },
-  { name: 'mark-word-strike', title: 'Mark word, strike', seconds: 4.6, Scene: MarkStrikeScene },
-  { name: 'mark-word-bracket', title: 'Mark word, brackets', seconds: 4.6, Scene: MarkBracketScene },
-  { name: 'mark-word-underline', title: 'Mark word, underline', seconds: 4.6, Scene: MarkUnderlineScene },
-  { name: 'shimmer', title: 'Shimmer, one pass', seconds: 4.6, Scene: ShimmerScene },
-  { name: 'colour-front', title: 'Colour front, letter wave', seconds: 4.6, Scene: ColourFrontScene },
-  { name: 'gradient-ink', title: 'Gradient ink, slow drift', seconds: 4.8, Scene: GradientInkScene },
+  { name: 'highlighter', title: 'Highlighter, marker sweep', seconds: 4.6, cue: 1.4, Scene: HighlighterScene },
+  { name: 'mark-word', title: 'Mark word, box', seconds: 4.6, cue: 1.4, Scene: MarkBoxScene },
+  { name: 'mark-word-strike', title: 'Mark word, strike', seconds: 4.6, cue: 1.4, Scene: MarkStrikeScene },
+  { name: 'mark-word-bracket', title: 'Mark word, brackets', seconds: 4.6, cue: 1.4, Scene: MarkBracketScene },
+  { name: 'mark-word-underline', title: 'Mark word, underline', seconds: 4.6, cue: 1.4, Scene: MarkUnderlineScene },
+  { name: 'shimmer', title: 'Shimmer, one pass', seconds: 4.6, cue: 1.3, Scene: ShimmerScene },
+  { name: 'colour-front', title: 'Colour front, letter wave', seconds: 4.6, cue: 1.3, Scene: ColourFrontScene },
+  { name: 'gradient-ink', title: 'Gradient ink, slow drift', seconds: 4.8, cue: 1.2, Scene: GradientInkScene },
   { name: 'payoff-punch', title: 'Payoff punch', seconds: 4.6, Scene: PayoffPunchScene },
   { name: 'weight-wave', title: 'Weight wave, shift to heavy', seconds: 4.6, Scene: WeightShiftScene },
   { name: 'weight-wave-ripple', title: 'Weight wave, ripple', seconds: 4.6, Scene: WeightRippleScene },
   { name: 'letter-wave', title: 'Letter wave, nudge', seconds: 4.4, Scene: LetterWaveScene },
-  { name: 'voice-swap', title: 'Voice swap', seconds: 4.6, Scene: VoiceSwapScene },
+  { name: 'voice-swap', title: 'Voice swap', seconds: 4.6, cue: 1.5, Scene: VoiceSwapScene },
 ];

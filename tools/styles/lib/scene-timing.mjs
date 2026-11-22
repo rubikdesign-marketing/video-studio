@@ -18,12 +18,23 @@ export const PAGE_SAME = 6;
 /** A scene is built at the first frame with this share of its peak edge (its peak over its first 2.5 s). */
 export const BUILT_SHARE = 0.8;
 const PEAK_WINDOW_S = 2.5;
-/** A change smaller than this (mean frame difference, 0 to 255) is no cue. */
+/** Built also waits until the frame stays within this of the scene's grain level (0 to 255 a frame) for SETTLE_S. */
+export const SETTLE_MARGIN = 0.15;
+export const SETTLE_S = 0.3;
+/** A build in steps (words lighting one by one) is one action across pauses of up to this long. */
+export const ACTION_GAP_S = 0.25;
+/** A scene's exit is measured against its look over this long before it leaves. */
+export const EXIT_WINDOW_S = 0.6;
+/**
+ * A change is a cue when the frame-to-frame difference above the scene's own grain level (its median), summed over
+ * CUE_WINDOW_S around it, reaches this (0 to 255 a frame): a slow dissolve counts, grain does not.
+ */
 export const CUE_MIN = 1.5;
-/** The families whose scene has one change worth landing on: a transition, a camera move, a control switching. */
-export const CUE_FAMILIES = new Set(['transition', 'camera', 'ui']);
+export const CUE_WINDOW_S = 0.3;
+/** The families whose scene has one change worth landing on: a transition, a camera move, a control switching, a mark landing on its line. */
+export const CUE_FAMILIES = new Set(['transition', 'camera', 'ui', 'emphasis']);
 
-/** The scenes: `{ name, seconds, sized }` in the order their lists give them (demos first, then the sized families). */
+/** The scenes: `{ name, seconds, sized, cue }` (cue: the authored one, or null) in the order their lists give them (demos first, then the sized families). */
 export function sceneList(motionDir = MOTION_DIR) {
   const out = [];
   const seen = new Set();
@@ -31,10 +42,10 @@ export function sceneList(motionDir = MOTION_DIR) {
     for (const f of readdirSync(join(motionDir, dir)).sort()) {
       if (!/\.tsx?$/.test(f)) continue;
       const text = readFileSync(join(motionDir, dir, f), 'utf8');
-      for (const m of text.matchAll(/\{\s*name:\s*'([a-z0-9-]+)',\s*title:\s*(?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"),\s*seconds:\s*([\d.]+)/g)) {
+      for (const m of text.matchAll(/\{\s*name:\s*'([a-z0-9-]+)',\s*title:\s*(?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"),\s*seconds:\s*([\d.]+)(?:,\s*cue:\s*([\d.]+))?/g)) {
         if (seen.has(m[1])) continue;
         seen.add(m[1]);
-        out.push({ name: m[1], seconds: Number(m[2]), sized });
+        out.push({ name: m[1], seconds: Number(m[2]), sized, cue: m[3] === undefined ? null : Number(m[3]) });
       }
     }
   };
@@ -90,27 +101,24 @@ export function boxesFromColumns(buf, { width, height, scale, threshold }) {
 const round = (x) => +x.toFixed(3);
 
 /**
- * One scene's timing from its frames: `edges` (edge per frame), `page` (difference from the empty page), `motion`
+ * One scene's timing from its frames: `edges` (edge per frame), `page` and `dark` (difference from the empty light and
+ * dark pages; `dark` optional), `motion`
  * (difference from the frame before), `boxes` (`{ x1, x2 }` of what has edges, or null), at `fps`, in a frame of
  * `size` [width, height]. `cue` says whether the scene's family has one change to land on: the biggest change from
  * 0.3 s after its content arrives. Returns
- * `{ seconds, built, cue, empty, extent }`: built and cue in seconds, empty as [from, to] spans in seconds, extent the
+ * `{ seconds, built, cue, empty, extent, exit, action }`: built, cue, action (where the build's change starts) and exit (where a scene that leaves stops being fully
+ * built; null for one that stays) in seconds, empty as [from, to] spans in seconds, extent the
  * content's width about the middle as a share of the frame height (null when nothing has edges).
  */
-export function analyzeScene({ edges, page, motion, boxes, fps, seconds, size, cue }) {
+export function analyzeScene({ edges, page, dark, motion, boxes, fps, seconds, size, cue, authored = null }) {
   const n = edges.length;
-  const empty = edges.map((e, i) => (e ?? 0) < EMPTY_EDGE && (page[i] ?? 0) < PAGE_SAME);
+  // Empty: no edges, and the light page or (when given) the dark page, not some other flat colour.
+  const empty = edges.map((e, i) => (e ?? 0) < EMPTY_EDGE && Math.min(page[i] ?? 0, dark ? dark[i] ?? Infinity : Infinity) < PAGE_SAME);
   const peakEnd = Math.min(n, Math.round(PEAK_WINDOW_S * fps));
   const peak = Math.max(0, ...edges.slice(0, peakEnd).map((e) => e ?? 0));
   const content = empty.findIndex((x) => !x);
   let built = content < 0 ? 0 : content;
   for (let f = Math.max(0, content); f < n; f++) if ((edges[f] ?? 0) >= BUILT_SHARE * peak) { built = f; break; }
-  let cueAt = null;
-  if (cue) {
-    let best = CUE_MIN;
-    // From 0.3 s after the content arrives: a whip or a dissolve can come before the built moment (the after-state may be the denser one).
-    for (let f = Math.max(0, content) + Math.round(0.3 * fps); f < n - Math.round(0.3 * fps); f++) if ((motion[f] ?? 0) > best) { best = motion[f]; cueAt = f; }
-  }
   const spans = [];
   for (let f = 0; f < n; f++) {
     if (!empty[f]) continue;
@@ -119,10 +127,68 @@ export function analyzeScene({ edges, page, motion, boxes, fps, seconds, size, c
     spans.push([round(f / fps), round((g + 1) / fps)]);
     f = g;
   }
+  // Exit: for a scene that leaves (a blank running to its end), where it stops being fully built before it goes.
+  let exit = null;
+  const last = spans[spans.length - 1];
+  if (last && last[1] >= round(n / fps) - 1e-6 && last[0] > 0) {
+    // Measured against its last look (its last EXIT_WINDOW_S before the blank), not its peak: later content can be smaller.
+    const tail = Math.round(last[0] * fps);
+    const level = Math.max(0, ...edges.slice(Math.max(built, tail - Math.round(EXIT_WINDOW_S * fps)), tail).map((x) => x ?? 0));
+    let f = tail - 1;
+    while (f > built && (edges[f] ?? 0) < BUILT_SHARE * level) f--;
+    exit = round((f + 1) / fps);
+  }
+  let cueAt = null;
+  if (cue) {
+    // From 0.3 s after the content arrives: a whip or a dissolve can come before the built moment (the after-state may be the denser one).
+    const lo = Math.max(0, content) + Math.round(0.3 * fps);
+    // ...and up to 0.3 s before it starts to leave: its exit is no cue.
+    const hi = (exit === null ? n : Math.round(exit * fps)) - Math.round(0.3 * fps);
+    const sorted = motion.map((m) => m ?? 0).slice().sort((a, b) => a - b);
+    const grain = sorted[Math.floor(sorted.length / 2)] ?? 0;
+    const k = Math.round((CUE_WINDOW_S / 2) * fps);
+    let best = CUE_MIN;
+    let centre = null;
+    for (let f = lo; f < hi; f++) {
+      let sum = 0;
+      for (let g = f - k; g <= Math.min(f + k, hi - 1); g++) sum += Math.max(0, (motion[g] ?? 0) - grain);
+      if (sum > best + 1e-9) { best = sum; centre = f; }
+    }
+    // The cue is the biggest single change inside the strongest stretch.
+    if (centre !== null) {
+      cueAt = centre;
+      for (let g = Math.max(lo, centre - k); g <= Math.min(hi - 1, centre + k); g++) if ((motion[g] ?? 0) > (motion[cueAt] ?? 0)) cueAt = g;
+    }
+  }
+  let action = Math.max(0, content);
+  // Built waits for the frame to go still: the build (a ring sweeping, a count rolling) can go on after its edges are
+  // in. The first SETTLE_S from the edge-built moment with no change above the grain, before the cue (less the lead)
+  // and the exit; if the frame never goes still there, the edge-built moment stands.
+  {
+    const sorted = motion.map((m) => m ?? 0).slice().sort((a, b) => a - b);
+    const grain = sorted[Math.floor(sorted.length / 2)] ?? 0;
+    const w = Math.max(1, Math.round(SETTLE_S * fps));
+    const limit = Math.min(n, cueAt === null ? n : cueAt - Math.round(0.3 * fps), exit === null ? n : Math.round(exit * fps));
+    for (let g = built; g + w <= limit; g++) {
+      let still = true;
+      for (let h = g; h < g + w; h++) if ((motion[h] ?? 0) > grain + SETTLE_MARGIN) { still = false; break; }
+      if (still) { built = g; break; }
+    }
+    // Action: where the run of change that ends at the built moment starts (pauses up to ACTION_GAP_S bridged); the
+    // content's arrival when that run is too quiet to see (typing barely changes the frame).
+    const gap = Math.round(ACTION_GAP_S * fps);
+    let first = -1;
+    for (let f = built - 1, quiet = 0; f > Math.max(0, content) && quiet <= gap; f--) {
+      if ((motion[f] ?? 0) > grain + SETTLE_MARGIN) { first = f; quiet = 0; } else quiet++;
+    }
+    action = first < 0 ? Math.max(0, content) : first;
+  }
   const mid = size[0] / 2;
   let half = -1;
   boxes.forEach((b, i) => { if (b && !empty[i]) half = Math.max(half, Math.abs(b.x1 - mid), Math.abs(b.x2 + 1 - mid)); });
-  return { seconds, built: round(built / fps), cue: cueAt === null ? null : round(cueAt / fps), empty: spans, extent: half < 0 ? null : round((2 * half) / size[1]) };
+  // A cue the scene states in its list (one the scan cannot see) wins.
+  const cueOut = typeof authored === 'number' ? authored : cueAt === null ? null : round(cueAt / fps);
+  return { seconds, built: round(built / fps), cue: cueOut, empty: spans, extent: half < 0 ? null : round((2 * half) / size[1]), exit, action: round(action / fps) };
 }
 
 /**
