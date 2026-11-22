@@ -232,3 +232,50 @@ A pick that clashes (section 9 rules) shows an amber note in the reel tray sayin
 - How clips are rendered in bulk, and the upload batching at publish.
 - Card layout and filter controls, within the studio's writing rules and the brief page's look.
 - Tests for the check, the brief logic and the connector tool; a browser walk-through of the library on the page.
+
+## Build check (22 Nov 2026)
+
+The whole branch, checked at de482d3 before this note was added.
+
+### What was checked
+
+- **Every test suite passes: 447 tests, none failing.** Plan 109, connector 58, setup 33, styles 130, studio 93, release 24.
+- **The library check passes.** `node tools/styles/check.mjs` against the motion study: 525 entries in five tabs, all checks pass. 413 entries are ready, with 327 clips and one sound sprite for the 86 ready sounds.
+- **A fresh install, as a customer would do it.** The release export came out at 4,282 files and 140 MB, with the banned-word scan clean (no hits, release 0.1.0-rc1). In that copy, `bash setup/start.sh` put the brief page connector in place, installed the engine, the render browser and the capture tool, and passed its 7 core checks. `node setup/runtime/doctor.mjs` then said core is ready, and its brief page line started the connector and found its 10 tools. The install needed the internet (npm and the render browser download); it wrote only inside the studio folder.
+- **The page build in that copy.** `node tools/styles/build-page.mjs` made 340 files in 3 batches, 9.3 MB, page version 3.
+- **A walk-through of the built page** in the local preview (the director stubbed with `?sample=1`; the browser pane was hidden, so the page was read and screenshotted rather than watched):
+  - All five tabs open with the right counts (Filming 111, Motion 102, Animation 101, Product UI 102, Sound 109). Clips load and play; the sound samples play from the sprite.
+  - A brief typed in plain words starts. The studio reads size, video type and energy from it, and suggestions appear for it.
+  - Picks from the suggestions and the Sound tab. A calm music bed went in; a hype track then was refused with the reason ("for hype films and your picks are calm"), shown on the card and in the reel.
+  - The director's brief: eight parts appear, one part swapped for another take, and the brief kept.
+  - All ten questions answered, the plan shown with its scene outline and "What the engine will use" (two UI moves, one music track, four skills), and the plan confirmed.
+  - At 1280 px and 320 px: no sideways scroll on the page (the tab strip scrolls on its own, as designed), the reel drawer and a style's detail drawer open and read well, and the console stayed clean.
+- **What Stage 1 reads.** On the confirmed brief, `node tools/plan/brief.mjs show` lists "plan confirmed", the three picks and the director's brief, and `node tools/styles/styles.mjs show` returns the words for each pick, and for a made-on-request style names the closest ready one. That is what Stage 1 needs to write its three concepts.
+
+### Found in the walk-through, not fixed here
+
+- **Library cards show a number in place of their one line.** In every tab, each card after the first shows "1", "2", "3" and so on where its one-line description should be, with a small tab label above the name. Suggestion cards are fine. The grid passes each card's position where the card expects a reason (`list.map(cardHTML)` in `studio/brief-desk/index.html`, since 0feb094). This needs fixing before release.
+- **A confirmed vertical brief makes a 16:9 job.** The plan said "9:16 master", but the `job.json` made on confirm says `"size": "16:9"` and `"voice": "Ray"` (the template's values), because the size and voice the studio read from the words are not carried into it (`confirmPlan` in `tools/plan/lib/brief-store.mjs` uses only a stated delivery). `brief.mjs show` also prints "Kind: ?" and "Deliver: ?" for that brief. Later stages read `job.json`, so the film would be framed wide. This needs fixing before release.
+- **"20 second" is not read as a length.** "A 20 second vertical demo", the page's own example, is not understood as 20 s ("20 seconds" and "20s" are), so the studio asks the length again. "20-second" is missed too. "for acme" was briefly read as the audience. These were noted in Task 14 and are still open.
+- Smaller things: suggestion reasons sometimes rest on a stray word ("because you said second", "because you said send"); a second pick clicked while the first is still saving is dropped without a word; the plan lists the music track under "Motion library"; the clash note stays in the reel after confirming; the audience answer is recorded twice when own words come before a card. In the preview, an answer in own words alone is refused for card questions because the stub has no Claude to propose a card; in the app, Claude proposes one.
+
+### What was not checked
+
+- The owner's connector test in the Claude desktop app on a Mac and on Windows.
+- A real claude.ai publish of the page: 340 files in three batches.
+- Stage 1 in a live chat: the three concepts were not generated, so whether they honour the picks and the director's brief in practice is not shown. Only the commands Stage 1 runs were checked.
+- Reduced motion in a real browser.
+- The install on Windows or Linux, and the start step's portable Node download (this Mac already had Node 22).
+
+### Known limits parked during the build
+
+Engine limits that content works around rather than fixes. Entries avoid these combinations today:
+
+- Some stagings crop the recording at one edge of the frame.
+- Film grain shows on flat colour fills.
+- Soft colour patches can render as hard-edged blocks.
+- A loupe (magnifier) inside a phone frame does not sit right.
+- A square colour flood can cover a wide band instead of filling the frame.
+- The click ring is faint.
+
+**Owner note on music.** The music beds are marked free to use (CC0) on the word of the Internet Archive uploader, not checked on the artists' own sites. Check that before release.
