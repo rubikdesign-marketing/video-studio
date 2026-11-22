@@ -1961,7 +1961,7 @@
         "9:16",
         "1:1"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Grow a circle from the pressed control to past the farthest corner in about 0.32 s, and start the next scene on the new colour 0.15 s after it covers the frame. Never flood faster than 0.2 s, and flood once per film, at the turn.",
@@ -1986,12 +1986,12 @@
         "still_pct": 4
       }
     },
-    "engine": [
-      "flood"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/mo-tr-flood.mp4"
+      "sketch": "liquid-morph",
+      "params": {}
     },
+    "nearest": "mo-tr-dip-colour",
     "avoid_with": [
       "mo-curve-two-act"
     ]
@@ -4024,7 +4024,7 @@
     "id": "mo-hold-quiet-beat",
     "tab": "motion",
     "name": "A beat of nothing",
-    "line": "One beat of near-empty frame and quiet just before the big reveal.",
+    "line": "One beat of flat brand colour and quiet just before the big reveal.",
     "family": "Holds and stillness",
     "filters": {
       "energy": [
@@ -4043,7 +4043,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Before the reveal, clear the frame to the page colour with only a slow drift for about 0.8 s, 0.6 s in a confident film, with the music thinned out, then bring the reveal in on the next downbeat. Never longer than a second, or it reads as a mistake.",
+      "what": "Before the reveal, dip the frame to one flat brand colour with nothing on it for about 0.8 s, 0.6 s in a confident film, with the music thinned out, then bring the reveal in on the next downbeat. Never longer than a second, or it reads as a mistake.",
       "when": "Fits the moment before a product reveal or the main offer.",
       "avoid": "Black frames, silences longer than a second, and using the trick twice."
     },
@@ -4321,7 +4321,6 @@
       }
     },
     "engine": [
-      "stagger",
       "zoom-blur",
       "exposure-bloom"
     ],
@@ -4375,7 +4374,6 @@
       }
     },
     "engine": [
-      "feather-wipe",
       "door-split"
     ],
     "preview": {
@@ -4890,7 +4888,6 @@
       }
     },
     "engine": [
-      "stagger",
       "shape-morph"
     ],
     "preview": {
@@ -5055,8 +5052,7 @@
       }
     },
     "engine": [
-      "mark-word-bracket",
-      "opener-sudden-stop"
+      "mark-word-bracket"
     ],
     "preview": {
       "clip": "library/styles/previews/mo-ease-hard-brake.mp4"

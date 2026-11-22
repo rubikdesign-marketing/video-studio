@@ -18,7 +18,7 @@
         "16:9",
         "1:1"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Walk one task with a pointer about 1.5 times real size that travels on a shallow arc in 0.7 s (0.5 s at confident), arrives 0.12 s before each press and dips to 90% as it clicks, with no overshoot. After the last click it rests still for 1.6 s (0.8 s at confident) on the result, then leaves the frame.",
@@ -43,15 +43,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "cursor-classic",
-      "Cursor",
-      "Pointer",
-      "Pressed"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-walk-large-arrow.mp4"
+      "sketch": "hand-drawn-line",
+      "params": {}
     },
+    "nearest": "pui-walk-brand-arrow",
     "pairs_with": [
       "pui-click-ring"
     ]
@@ -763,7 +760,7 @@
       "sizes": [
         "16:9"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Type one plain request at a human rhythm, about 0.06 s a letter, then let the finished screen sharpen from a soft blur in 0.5 s (0.8 s when calm) with no overshoot. Keep any wait under 0.6 s, and hold the answer 0.8 s (1.6 s when calm).",
@@ -788,13 +785,12 @@
         "still_pct": 14
       }
     },
-    "engine": [
-      "type-on",
-      "product-blur-reveal"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-walk-ask-in-words.mp4"
-    }
+      "sketch": "liquid-morph",
+      "params": {}
+    },
+    "nearest": "pui-walk-type-then-saved"
   },
   {
     "id": "pui-walk-many-cursors",
@@ -1177,7 +1173,7 @@
         "16:9",
         "1:1"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Grow the bars from the baseline, each in 0.45 s and 0.06 s after the one before, then on the next beat draw the target line across them in 0.8 s at an even pace with its value arriving last. Both settle with no overshoot, and the finished chart holds 0.8 s.",
@@ -1194,13 +1190,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "bar-grow",
-      "line-draw"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-data-bars-then-target.mp4"
-    }
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "pui-data-week-bars"
   },
   {
     "id": "pui-data-dashboard-tour",
@@ -2916,7 +2911,7 @@
     "id": "pui-layout-one-control",
     "tab": "product-ui",
     "name": "One control, a change a second",
-    "line": "A single box changes shape on each click, a ring marking every press, through an order's states and back to the start.",
+    "line": "A single box changes shape on each click, through an order's states and back to the start.",
     "family": "Layout changes",
     "filters": {
       "energy": [
@@ -2934,7 +2929,7 @@
       "ready": true
     },
     "prompt": {
-      "what": "Keep one box on screen and change it on each click, marked by a thin ring: the old contents blur out in 0.12 s, the box resizes in 0.15 s and the new contents are sharp by 0.3 s, settling on a spring of 1.5%. About one change a second, and the last state returns to the first so the loop cannot be seen; hold each state 0.7 s.",
+      "what": "Keep one box on screen and change it on each click: the old contents blur out in 0.12 s, the box resizes in 0.15 s and the new contents are sharp by 0.3 s, settling on a spring of 1.5%. About one change a second, and the last state returns to the first so the loop cannot be seen; hold each state 0.7 s.",
       "when": "Fits product ideas told through one interface element, and looping square posts.",
       "avoid": "Two changes in the same second, and a box left small in a big empty frame."
     },
@@ -2950,9 +2945,7 @@
     },
     "engine": [
       "morph-chain",
-      "click-ring",
-      "Cursor",
-      "RingEffect"
+      "Cursor"
     ],
     "preview": {
       "clip": "library/styles/previews/pui-layout-one-control.mp4"
@@ -3022,7 +3015,7 @@
         "1:1",
         "16:9"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Type a short query of up to ten letters in about 0.6 s at a human rhythm, then on the click let the same box become the result: contents blur out in 0.12 s, the box resizes in 0.15 s and the answer is sharp by 0.3 s on a 1.5% spring. Hold 0.7 s on the answer.",
@@ -3039,13 +3032,12 @@
         "still_pct": 7
       }
     },
-    "engine": [
-      "type-on",
-      "morph-chain"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-layout-search-becomes-answer.mp4"
-    }
+      "sketch": "liquid-morph",
+      "params": {}
+    },
+    "nearest": "pui-layout-one-control"
   },
   {
     "id": "pui-layout-view-switch",
@@ -3064,7 +3056,7 @@
       "sizes": [
         "16:9"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Slide the indicator to the new view, leading edge in 0.16 s and trailing edge in 0.32 s, then bring the items into the new layout from the left, 0.05 s apart and all landed within 0.4 s, easing to a stop with no overshoot. Hold 0.8 s on the new view.",
@@ -3081,13 +3073,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "tab-indicator",
-      "stagger"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-layout-view-switch.mp4"
-    }
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "pui-click-stretchy-tabs"
   },
   {
     "id": "pui-layout-tall-card-label",
@@ -3367,7 +3358,7 @@
       "sketch": "paper-cutout",
       "params": {}
     },
-    "nearest": "pui-layout-view-switch"
+    "nearest": "pui-layout-one-control"
   },
   {
     "id": "pui-layout-list-and-detail",
@@ -3724,7 +3715,7 @@
       "sizes": [
         "16:9"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Open on a slightly turned wall of screens with columns drifting, then cut to one screen and fade everything but the thing that matters to the stage colour over 0.35 s (0.25 s at hype) with no overshoot. Hold 0.8 s (0.3 s at hype) on it alone.",
@@ -3749,15 +3740,12 @@
         "still_pct": 5
       }
     },
-    "engine": [
-      "stage-wall",
-      "product-isolate",
-      "CaptureStill",
-      "RestFade"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-stage-wall-then-one.mp4"
-    }
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "pui-stage-result-then-name"
   },
   {
     "id": "pui-stage-sent-then-inbox",
@@ -4625,7 +4613,7 @@
       "sizes": [
         "16:9"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Wipe from Before to After with a handle line moving at an even pace over 1.2 s (0.8 s at confident) and no overshoot, labels in sentence case, then set one short label with a straight leader on the thing that changed in 0.4 s. Hold 1.6 s (0.8 s at confident).",
@@ -4650,14 +4638,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "stage-before-after",
-      "product-callout",
-      "Label"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-ba-wipe-labelled.mp4"
-    }
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "pui-ba-turn-to-new"
   },
   {
     "id": "pui-ba-side-by-side-ringed",
@@ -4676,7 +4662,7 @@
       "sizes": [
         "16:9"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Play the old and new recordings side by side on one clock so their clicks land on the same frame, and ring the one control that differs in 0.35 s with no overshoot. Hold 0.8 s on the ringed difference.",
@@ -4693,13 +4679,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "stage-split",
-      "product-ring"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/pui-ba-side-by-side-ringed.mp4"
-    }
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "pui-ba-problem-then-fixed"
   },
   {
     "id": "pui-ba-billing-switch",
@@ -5043,7 +5028,7 @@
       "sketch": "collage-layers",
       "params": {}
     },
-    "nearest": "pui-stage-wall-then-one"
+    "nearest": "pui-stage-result-then-name"
   },
   {
     "id": "pui-ba-race",
@@ -5093,6 +5078,6 @@
       "sketch": "paper-cutout",
       "params": {}
     },
-    "nearest": "pui-ba-side-by-side-ringed"
+    "nearest": "pui-ba-problem-then-fixed"
   }
 ]

@@ -2049,8 +2049,8 @@
   {
     "id": "an-flat-chapter-cards",
     "tab": "animation",
-    "name": "Numbered chapter cards",
-    "line": "A big chapter number rolls up, then a colour block wipes the chapter title on beside it.",
+    "name": "Big number, then the title wipes on",
+    "line": "A big number rolls up to its figure, then a colour block wipes a short title on.",
     "family": "Flat shapes and graphics",
     "filters": {
       "energy": [
@@ -2070,9 +2070,9 @@
       "ready": true
     },
     "prompt": {
-      "what": "Roll the chapter number up to its figure in about 0.5 s, 0.7 s in a calm film, then sweep an accent block across the title beside it in about 0.4 s, 0.6 s in a calm film, uncovering the words. Use the same layout for every chapter so viewers learn it.",
-      "when": "Fits tutorials, longer explainers and multi-part launch films with three to six chapters.",
-      "avoid": "More than six chapters, numbers in circles or followed by a dot, and a different layout for each chapter."
+      "what": "Roll the number up to its figure in about 0.5 s, 0.7 s in a calm film, then on the next beat sweep an accent block across a short title in about 0.4 s, 0.6 s in a calm film, uncovering the words. Keep the same layout each time so viewers learn it.",
+      "when": "Fits chapter breaks and results in tutorials, explainers and launch films: the figure first, then what it means.",
+      "avoid": "Numbers in circles or followed by a dot, a title longer than one line, and a different layout each time."
     },
     "timing": {
       "confident": {
@@ -2264,8 +2264,8 @@
   {
     "id": "an-ill-drawn-ring",
     "tab": "animation",
-    "name": "A hand-drawn ring round the key word",
-    "line": "A slightly uneven ring or underline is drawn round one word in the accent colour, as if by a pen, on a magazine-style page.",
+    "name": "A hand-drawn underline, then a ring",
+    "line": "An uneven pen line underlines the key words, then a ring is drawn round the one thing to press, in the accent colour on a magazine-style page.",
     "family": "Illustration",
     "filters": {
       "energy": [
@@ -2285,9 +2285,9 @@
       "ready": true
     },
     "prompt": {
-      "what": "Draw one ring or underline round the key word in the accent colour, a little square and a little uneven, its end passing just beyond its start, over about 0.7 s, 0.45 s at confident, starting as the word is spoken. One mark on screen at a time.",
+      "what": "Draw each mark in the accent colour as a pen would, a little square and a little uneven, a ring’s end passing just beyond its start: first an underline under the key words, then a ring round the button or result they point to, each over about 0.7 s, 0.45 s at confident, starting as the words are spoken. Two marks at most, both on the same idea.",
       "when": "Fits editorial films, customer stories and explainers that want a human, annotated feel.",
-      "avoid": "Perfect circles, two marks at once, and another emphasis on the same beat."
+      "avoid": "Perfect circles, marks on unrelated things, and another emphasis on the same beat."
     },
     "timing": {
       "calm": {
@@ -2746,7 +2746,7 @@
         "16:9",
         "1:1"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Draw the route as one clean line across a plain paper page, left to right with its end mark arriving last, over about 1 s, 0.6 s at confident, then list the stops beside it line by line, each rising in about 0.6 s, 0.4 s at confident.",
@@ -2771,14 +2771,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "line-draw",
-      "mask-rise-lines",
-      "paper"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/an-ill-route-line.mp4"
-    }
+      "sketch": "hand-drawn-line",
+      "params": {}
+    },
+    "nearest": "an-ill-stamp-curve"
   },
   {
     "id": "an-ill-day-to-night",
@@ -3900,7 +3898,7 @@
       "sizes": [
         "9:16"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Open on the comment card for the first second, arriving in about 0.35 s, 0.25 s at hype, carry the spoken answer in large captions with a box moving to each word as it is said, and close by drawing one ring round the result in about 0.4 s, 0.3 s at hype.",
@@ -3925,14 +3923,12 @@
         "still_pct": 4
       }
     },
-    "engine": [
-      "ugc-comment-reply",
-      "caption-box",
-      "drawn-mark"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/an-mix-reply-film.mp4"
+      "sketch": "collage-layers",
+      "params": {}
     },
+    "nearest": "an-mix-comment-card",
     "settles": {
       "kind": "ugc"
     }
@@ -4447,6 +4443,7 @@
       }
     },
     "engine": [
+      "fade-up",
       "paper"
     ],
     "preview": {
@@ -4507,6 +4504,7 @@
       }
     },
     "engine": [
+      "blur-in",
       "night"
     ],
     "preview": {
@@ -4930,7 +4928,7 @@
         "16:9",
         "1:1"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Light the dark page with one soft pool resting a little above the middle, its edges falling into shade, and move the pool to follow the subject when the subject moves, easing over about 0.6 s, 1 s in a calm film, so the eye is always led to one place.",
@@ -4955,12 +4953,12 @@
         "still_pct": 14
       }
     },
-    "engine": [
-      "spotlight"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/an-bg-pool-of-light.mp4"
-    }
+      "sketch": "collage-layers",
+      "params": {}
+    },
+    "nearest": "an-bg-light-beams"
   },
   {
     "id": "an-bg-floor-to-horizon",
@@ -4982,7 +4980,7 @@
         "16:9",
         "9:16"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Lay a quiet floor of solid lines running to one vanishing point, with cross lines travelling slowly towards the viewer and a haze of light at the horizon, so the frame always feels like forward motion. On the big beat the cross lines speed up for about 0.5 s, 0.3 s at hype, then return to their drift.",
@@ -5007,12 +5005,12 @@
         "still_pct": 5
       }
     },
-    "engine": [
-      "perspective-lines"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/an-bg-floor-to-horizon.mp4"
-    }
+      "sketch": "card-tilt-3d",
+      "params": {}
+    },
+    "nearest": "an-3d-title-from-behind"
   },
   {
     "id": "an-bg-light-beams",

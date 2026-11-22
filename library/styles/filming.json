@@ -2995,7 +2995,7 @@
       "sizes": [
         "9:16"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "In the first 0.4 s a brand-coloured card carrying the product's name or a result flies straight at the viewer and passes the lens, and the product is revealed behind it as the camera snaps in on its first change, settling within five frames. The first readable frame lands by 0.5 s.",
@@ -3012,13 +3012,12 @@
         "still_pct": 5
       }
     },
-    "engine": [
-      "opener-at-the-lens",
-      "camera-snap-zoom"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/film-straight-at-lens.mp4"
+      "sketch": "card-tilt-3d",
+      "params": {}
     },
+    "nearest": "film-snap-zoom-beat",
     "settles": {
       "size": "9:16"
     }
@@ -3084,7 +3083,7 @@
       "sizes": [
         "9:16"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Full-bleed 9:16 with the recorded pointer path untouched; hold one scale while it still reads, otherwise follow without springs, never faster than about 0.8 s per move.",
@@ -3109,12 +3108,12 @@
         "still_pct": 9
       }
     },
-    "engine": [
-      "relayout-vertical-documentary"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/film-raw-vertical.mp4"
+      "sketch": "stop-motion",
+      "params": {}
     },
+    "nearest": "film-vertical-follow",
     "settles": {
       "size": "9:16"
     }
@@ -3529,7 +3528,7 @@
       "sizes": [
         "16:9"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Place two recordings side by side on one clock, lined up so their shared moments land on the same frame; each side gets half the width and a plain label.",
@@ -3546,12 +3545,12 @@
         "still_pct": 8
       }
     },
-    "engine": [
-      "stage-split"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/film-side-by-side.mp4"
-    }
+      "sketch": "paper-cutout",
+      "params": {}
+    },
+    "nearest": "film-picture-in-picture"
   },
   {
     "id": "film-three-across",
@@ -4200,6 +4199,7 @@
     "family": "Lens feel",
     "filters": {
       "energy": [
+        "calm",
         "confident"
       ],
       "kinds": [
@@ -4214,11 +4214,19 @@
       "ready": true
     },
     "prompt": {
-      "what": "Start on a dark frame and let a soft pool of light travel in onto the product over about 0.6 s and widen until the frame is lit; then ease the camera in on the one panel that matters and keep it bright while the rest of the screen stays dimmed by about 40%.",
+      "what": "Start on a dark frame and let a soft pool of light travel in onto the product over about 0.6 s, 0.9 s in a calm film, and widen until the frame is lit; then ease the camera in on the one panel that matters and keep it bright while the rest of the screen stays dimmed by about 40%.",
       "when": "Fits curiosity hooks and premium launches that reveal one feature.",
       "avoid": "A hard-edged spotlight, and more than one per film."
     },
     "timing": {
+      "calm": {
+        "beat_s": 3.4,
+        "ease": "slow in with a soft landing",
+        "overshoot": 0,
+        "hold_s": 1.6,
+        "motion": 0.6,
+        "still_pct": 14
+      },
       "confident": {
         "beat_s": 2.2,
         "ease": "fast in with a soft landing",
@@ -4473,7 +4481,7 @@
       "sketch": "card-tilt-3d",
       "params": {}
     },
-    "nearest": "film-straight-at-lens",
+    "nearest": "film-snap-zoom-beat",
     "settles": {
       "size": "9:16"
     }
@@ -4627,7 +4635,7 @@
         "16:9",
         "9:16"
       ],
-      "ready": true
+      "ready": false
     },
     "prompt": {
       "what": "Cut between two screens where a shape sits at the same place and size in both, so the eye stays still while the world changes around it.",
@@ -4652,12 +4660,12 @@
         "still_pct": 5
       }
     },
-    "engine": [
-      "join-match-cut"
-    ],
+    "engine": [],
     "preview": {
-      "clip": "library/styles/previews/film-match-cut-flow.mp4"
-    }
+      "sketch": "liquid-morph",
+      "params": {}
+    },
+    "nearest": "film-carry-the-element"
   },
   {
     "id": "film-card-grows",
