@@ -40,16 +40,30 @@ export const PATHS = {
 const ACTION = /\b(click|clicks|tap|taps|drag|drags|drop|drops|typing into|types into|pick|picks|grab|grabs|press|presses|swipe|swipes|scroll|scrolls|copy|copies|paste|pastes|opens|connect|connects|sends|pour|pours|lift|lifts|place|places|hands?)\b/i;
 const empty = (v) => v == null || (typeof v === 'string' && !v.trim()) || (Array.isArray(v) && !v.length);
 
-const SIZE_WORDS = /\b(vertical|portrait|9:16|reels?|tiktok|shorts|stor(y|ies)|square|1:1|landscape|horizontal|16:9|youtube)\b/;
+// The size: a ratio or an orientation said outright comes first; a platform only when neither is said. A bare "story"
+// ("tell the story of our product") is not a platform.
+const SIZE_SAID = /(?<![\d:])(9:16|16:9|1:1|4:5)(?![\d:])|\b(vertical|portrait|square|landscape|horizontal)\b/;
+const SIZE_OF = { '9:16': '9:16', vertical: '9:16', portrait: '9:16', '16:9': '16:9', landscape: '16:9', horizontal: '16:9', '1:1': '1:1', square: '1:1', '4:5': '4:5' };
+const PLATFORM_TALL = /\b(reels?|tiktok|shorts|instagram stor(?:y|ies))\b/;
+const PLATFORM_WIDE = /\byoutube\b/;
 // "the demo brand" names the sample brand, not a product demo.
 const KIND_WORDS = /\b(demo(?!\s+brand)|walkthrough|how it works|kinetic|type reel|launch|announc\w*|my footage|our footage|talking to (the )?camera|testimonial|ugc|presenter|animated short|cartoon|character)\b/;
 const VOICE_WORDS = /\b(no voice|no voice-?over|music only|just music|silent)\b/;
 
+function sizeOf(w) {
+  const said = SIZE_SAID.exec(w);
+  if (said) { const word = said[1] || said[2]; return { value: SIZE_OF[word], because: word }; }
+  const tall = PLATFORM_TALL.exec(w);
+  if (tall) return { value: '9:16', because: tall[0] };
+  const wide = PLATFORM_WIDE.exec(w);
+  return wide ? { value: '16:9', because: wide[0] } : null;
+}
+
 // Size, kind and voice as the creator's words say them, each with the words it came from. w is lowercase.
 function readWords(w) {
   const out = {};
-  const size = SIZE_WORDS.exec(w);
-  if (size) out.size = { value: /\b(vertical|portrait|9:16|reel|reels|tiktok|shorts|story|stories)\b/.test(w) ? '9:16' : /\b(square|1:1)\b/.test(w) ? '1:1' : '16:9', because: size[0] };
+  const size = sizeOf(w);
+  if (size) out.size = size;
   const kind = KIND_WORDS.exec(w);
   if (kind) {
     const k = /\b(demo(?!\s+brand)|walkthrough|how it works)\b/.test(w) ? 'product-demo' : /\b(kinetic|type reel|launch|announc\w*)\b/.test(w) ? 'launch-reel' : /\b(my footage|our footage|clips? (i|we) shot|edit (my|our))\b/.test(w) ? 'footage-edit' : /\b(talking to (the )?camera|testimonial|ugc|presenter)\b/.test(w) ? 'ugc' : /\b(animated short|cartoon|character)\b/.test(w) ? 'animated-short' : null;
@@ -70,19 +84,50 @@ export const CHECKLIST_LABELS = ['Brand', 'Product', 'Audience', 'Message angle'
 const TAB_NAMES = { filming: 'Filming', motion: 'Motion', animation: 'Animation', 'product-ui': 'Product UI', sound: 'Sound' };
 const MAX_PICKS_PER_TAB = 3;
 
-/** What the creator's words say, plainly: { size?, kind?, voice?, length?, energy?, audience? }. Only clear words count. */
-export function understood(text) {
+// A length: "20 s", "20s", "20 sec", "20 second", "20-second". "the 90s", "a '90s feel" and "a 90s look" are decades.
+const LENGTH = /(^|[^\d'’.])(\d{1,3})([\s-]?)(s|sec|secs|second|seconds)\b/g;
+const DECADE_AFTER = /^\s*(look|looks|style|vibe|vibes|feel|aesthetic|era|retro|music|fashion|throwback|nostalgia|design|type|font|fonts|colou?rs?|palette|grain|tv|film|films|ad|ads)\b/;
+function lengthOf(t) {
+  for (const m of t.matchAll(LENGTH)) {
+    const n = Number(m[2]);
+    const at = m.index + m[1].length;
+    const bare = m[4] === 's' && !m[3];
+    if (bare && n % 10 === 0 && (/\bthe\s*$/.test(t.slice(0, at)) || DECADE_AFTER.test(t.slice(at + m[2].length + 1)))) continue;
+    if (n >= 5 && n <= 180) return n;
+  }
+  return null;
+}
+// An energy word with "not", "no", "never", "without" or "-n't" just before it does not count.
+const NEGATED = /(?:\bnot|\bno|\bnothing|\bnever|\bwithout|n['’]t)(?:\s+(?:too|so|very|overly|at all|that))?\s+$/;
+const ENERGY_WORDS = [['calm', /\b(calm|gentle|soft|quiet)\b/g], ['hype', /\b(punchy|hype|energetic|fast|bold)\b/g], ['confident', /\b(confident|clear|steady)\b/g]];
+function energyOf(t) {
+  for (const [energy, re] of ENERGY_WORDS) {
+    for (const m of t.matchAll(re)) if (!NEGATED.test(t.slice(0, m.index))) return energy;
+  }
+  return null;
+}
+// The audience: "for <who>". A brand's own name ("for acme") is not who it is for; "for <who> who ..." comes first.
+const AUDIENCE = /\bfor ([a-z][a-z -]{2,40}?)(?=[,.]|$| who| that| to| for)( who)?/g;
+function audienceOf(t, brands) {
+  const names = (Array.isArray(brands) ? brands : Object.keys(brands || {})).map((b) => String(b).toLowerCase().replace(/-/g, ' ')).filter(Boolean);
+  const isBrand = (a) => names.some((n) => a === n || a === `the ${n}` || a === `${n} brand` || a === `the ${n} brand`);
+  const found = [...t.matchAll(AUDIENCE)].map((m) => ({ who: m[1].trim(), clause: !!m[2] })).filter((a) => !isBrand(a.who.replace(/-/g, ' ')));
+  return (found.find((a) => a.clause) || found[0])?.who || null;
+}
+
+/** What the creator's words say, plainly: { size?, kind?, voice?, length?, energy?, audience? }. Only clear words count.
+ *  ctx.brands (a list of names, or the studio's brands object) keeps a brand's name from being read as the audience. */
+export function understood(text, { brands } = {}) {
   const t = String(text || '').toLowerCase().trim();
   const read = readWords(` ${t} `);
   const out = {};
   for (const f of ['size', 'kind', 'voice']) if (read[f]) out[f] = read[f].value;
-  const len = /\b(\d{1,3})\s?(s|sec|secs|seconds)\b/.exec(t);
-  if (len && Number(len[1]) >= 5 && Number(len[1]) <= 180) out.length = Number(len[1]);
-  if (/\b(calm|gentle|soft|quiet)\b/.test(t)) out.energy = 'calm';
-  else if (/\b(punchy|hype|energetic|fast|bold)\b/.test(t)) out.energy = 'hype';
-  else if (/\b(confident|clear|steady)\b/.test(t)) out.energy = 'confident';
-  const aud = /\bfor ([a-z][a-z -]{2,40}?)(?=[,.]|$| who| that| to)/.exec(t);
-  if (aud) out.audience = aud[1].trim();
+  const len = lengthOf(t);
+  if (len) out.length = len;
+  const energy = energyOf(t);
+  if (energy) out.energy = energy;
+  const aud = audienceOf(t, brands);
+  if (aud) out.audience = aud;
   return out;
 }
 
@@ -107,7 +152,7 @@ export function setPick(brief, entry, on, styles) {
   const held = picks.map((p) => ({ p, e: pickEntry(styles, p) })).filter((x) => x.e);
   const inTab = picks.filter((p) => p.tab === entry.tab);
   const kin = held.find((x) => x.p.tab === entry.tab && x.e.family === entry.family);
-  if (kin) throw new Error(`You already picked ${kin.e.name} from ${entry.family}: one per family`);
+  if (kin) throw new Error(`You already picked ${kin.e.name} in ${entry.family}, and each family takes one pick`);
   if (inTab.length >= MAX_PICKS_PER_TAB) throw new Error(`Three ${TAB_NAMES[entry.tab] || entry.tab} picks already: remove one first`);
   for (const { e } of held) {
     if ((entry.avoid_with || []).includes(e.id) || (e.avoid_with || []).includes(entry.id)) throw new Error(`${entry.name} does not go with ${e.name}`);
@@ -129,13 +174,14 @@ export function directorBriefOf(brief) {
   return { parts: d, engine: Array.isArray(d.engine) ? d.engine : [], energy: null, at: null };
 }
 
-const beatsOk = (b) => Array.isArray(b) && b.length > 0 && b.every((x) => x && typeof x.at_s === 'number' && x.at_s >= 0 && typeof x.what === 'string' && x.what.trim());
+const beatsOk = (b) => Array.isArray(b) && b.length > 0 && b.every((x) => x && typeof x.at_s === 'number' && Number.isFinite(x.at_s) && x.at_s >= 0 && typeof x.what === 'string' && x.what.trim());
 const MIN_GAP = { hype: 0.3, confident: 0.8, calm: 1.2 };
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-/** Is this director's brief usable? All eight parts, no engine names in the words, beats spaced to the energy.
- *  allowed (optional): the engine names the picks list; parts.engine may use only those. */
-export function checkDirectorBrief(parts, { energy, names, allowed } = {}) {
+/** Is this director's brief usable? All eight parts, no engine names in the words, beats spaced to the energy and
+ *  inside the length cap (cap, when known). allowed (optional): the engine names the picks list; parts.engine may use
+ *  only those. */
+export function checkDirectorBrief(parts, { energy, names, allowed, cap } = {}) {
   const p = parts && typeof parts === 'object' ? parts : {};
   const bad = (part, reason) => ({ ok: false, reason, part });
   for (const part of DIRECTOR_PARTS) {
@@ -143,6 +189,10 @@ export function checkDirectorBrief(parts, { energy, names, allowed } = {}) {
     if (part === 'beats') {
       if (!Array.isArray(p.beats) || !p.beats.length) return bad(part, `${label} are missing: give a list of { at_s, what }`);
       if (!beatsOk(p.beats)) return bad(part, `${label} must each have a time in seconds (at_s) and what happens (what)`);
+      if (p.beats.some((b) => b.what.length > 600)) return bad(part, `${label} need 1 to 600 characters of plain words each`);
+      const limit = Number(cap);
+      const late = limit > 0 ? p.beats.find((b) => b.at_s > limit) : null;
+      if (late) return bad(part, `${label} must all fall inside the ${limit} s film: one is at ${late.at_s} s`);
     } else {
       const v = p[part];
       if (v === undefined || v === null || (typeof v === 'string' && !v.trim())) return bad(part, `${label} is missing`);
@@ -182,7 +232,7 @@ export function assumptions(brief, ctx = {}) {
   const raw = [];
   const out = { push: (a) => { if (!again.has(a.id)) raw.push(a); } };
   const read = readWords(w);
-  const heard = understood(brief.in_their_words);
+  const heard = understood(brief.in_their_words, { brands: ctx.brands });
   if (empty(brief.brand)) {
     const named = Object.keys(ctx.brands || {}).find((b) => new RegExp(`\\b${b === 'demo' ? 'demo brand' : b.replace(/[-]/g, '[- ]?')}\\b`).test(w)); // the sample brand is named only as "demo brand"; "a demo of" asks for a product demo
     if (named) out.push({ id: 'brand', value: named, because: named });
@@ -306,6 +356,7 @@ const CHOSEN = {
   voice: { field: 'voice', values: () => VOICES },
   look: { field: 'look', values: () => LOOKS },
   hook: { field: 'hook.family', values: () => HOOK_FAMILIES },
+  energy: { field: 'energy', values: () => ENERGIES }, // never asked; the page's energy chip answers it
 };
 const OPEN = { brand: 'brand', reference: 'references', product: 'product', viewer: 'viewer_should', angle: 'angle', proof: 'must_show', length: 'length_cap_seconds' };
 
@@ -377,7 +428,7 @@ function applyOne(brief, questionId, { value, words } = {}) {
     return b;
   }
   switch (questionId) {
-    case 'size': case 'kind': case 'voice': return setField(brief, s.field, v);
+    case 'size': case 'kind': case 'voice': case 'energy': return setField(brief, s.field, v);
     case 'length': return setField(brief, 'length_cap_seconds', v);
     case 'viewer': return setField(brief, 'viewer_should', v);
     case 'master': {
@@ -597,8 +648,9 @@ export function summary(brief, { revisions = null, styles = null, ctx = {} } = {
   const d = (brief.deliver || []).filter((x) => x.size);
   lines.push(`Deliver: ${d.length ? d.map((x) => `${x.size}${x.platform ? ` ${x.platform}` : ''}${x.master ? ' (master)' : ''}`).join(', ') : '?'}. Cap: ${brief.length_cap_seconds ? `${brief.length_cap_seconds} s` : '?'}. Voice: ${brief.voice || '?'}.`);
   const lib = styles || ctx?.styles;
-  const shown = picksOf(brief, lib).filter((x) => !lib || !x.stale);
-  if (shown.length) lines.push(`Picked: ${shown.map((x) => `${TAB_NAMES[x.tab] || x.tab} ${x.name}`).join('; ')}.`);
+  // A pick whose style left the library is still shown, so it is not silently lost (it can be removed with pick --off).
+  const shown = picksOf(brief, lib);
+  if (shown.length) lines.push(`Picked: ${shown.map((x) => `${TAB_NAMES[x.tab] || x.tab} ${x.name}${lib && x.stale ? ' (no longer in the library)' : ''}`).join('; ')}.`);
   const director = directorBriefOf(brief);
   if (director?.parts?.logline) lines.push(`Director's brief: ${director.parts.logline}`);
   if ((brief.must_show || []).length) lines.push(`Must show: ${brief.must_show.map((m) => `${m.what}${m.evidence ? ` (seen as: ${m.evidence})` : ''}`).join('; ')}.`);

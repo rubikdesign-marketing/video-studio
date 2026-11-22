@@ -108,3 +108,41 @@ test('store: confirmPlan refuses a plan that changed since it was shown, and a c
   assert.equal(confirmPlan(root, jobDir).length_cap_seconds, 30);
   assert.equal(confirmPlan(root, jobDir).length_cap_seconds, 30);
 });
+
+test('store: confirming writes what was taken as given into the brief, and job.json from it (9:16, voice none, a real energy)', async () => {
+  const { summary } = await import('../lib/brief.mjs');
+  const { root, jobDir } = fresh();
+  startBrief(root, jobDir, 'a calm vertical demo with no voice, 20 seconds');
+  const b = { ...completeBrief(), in_their_words: 'a calm vertical demo with no voice, 20 seconds', deliver: [{ platform: '', size: '', master: true }] };
+  for (const f of ['kind', 'voice', 'length_cap_seconds']) delete b[f];
+  saveBrief(jobDir, b);
+  assert.ok(writePlan(root, jobDir));
+  const job = confirmPlan(root, jobDir);
+  assert.equal(job.size, '9:16'); assert.equal(job.voice, 'none'); assert.equal(job.energy_preset, 'calm');
+  assert.equal(job.type, 'demo'); assert.equal(job.length_cap_seconds, 20);
+  const saved = loadJob(jobDir).brief;
+  assert.equal(saved.kind, 'product-demo'); assert.equal(saved.voice, 'none'); assert.equal(saved.energy, 'calm'); assert.equal(saved.length_cap_seconds, 20);
+  assert.equal(saved.deliver.find((d) => d.master).size, '9:16');
+  assert.ok(saved.decisions.some((d) => /^taken as given when the plan was confirmed: /.test(d.what) && /size 9:16/.test(d.what) && /voice none/.test(d.what)));
+  const lines = summary(saved, {});
+  assert.ok(lines.some((l) => l.startsWith('Kind: product-demo.')));
+  assert.ok(lines.some((l) => l.startsWith('Deliver: 9:16 (master).') && /Voice: none\./.test(l)));
+  // confirming again changes nothing
+  confirmPlan(root, jobDir);
+  assert.equal(loadJob(jobDir).brief.decisions.filter((d) => /^taken as given/.test(d.what)).length, 1);
+});
+
+test('store: the energy job.json gets falls back to the kept director\'s brief, and stays the template\'s when unknown', () => {
+  const { root, jobDir } = fresh();
+  startBrief(root, jobDir, 'a demo');
+  saveBrief(jobDir, { ...completeBrief(), director_brief: { parts: {}, engine: [], energy: 'hype', at: null } });
+  writePlan(root, jobDir);
+  assert.equal(confirmPlan(root, jobDir).energy_preset, 'hype');
+  const two = fresh();
+  startBrief(two.root, two.jobDir, 'a demo'); saveBrief(two.jobDir, completeBrief()); writePlan(two.root, two.jobDir);
+  const job = confirmPlan(two.root, two.jobDir);
+  assert.equal(job.energy_preset, 'calm | confident | hype'); assert.equal(job.voice, 'none');
+  const voiced = fresh();
+  startBrief(voiced.root, voiced.jobDir, 'a demo'); saveBrief(voiced.jobDir, { ...completeBrief(), voice: 'voice-over' }); writePlan(voiced.root, voiced.jobDir);
+  assert.equal(confirmPlan(voiced.root, voiced.jobDir).voice, 'Ray'); // a voice name comes from the template, as before
+});

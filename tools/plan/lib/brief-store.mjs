@@ -2,7 +2,7 @@
 // context (brands, references), plan.md and the recorded decisions. Every function that needs the studio takes its root.
 import fs from 'node:fs';
 import path from 'node:path';
-import { assumptions, FRAMEWORK, isEngineName, picksOf, plan, preflight } from './brief.mjs';
+import { assumptions, directorBriefOf, ENERGIES, FRAMEWORK, isEngineName, picksOf, plan, preflight, setField } from './brief.mjs';
 import { loadFrameworks } from './frameworks.mjs';
 import { engineNames, loadLibrary } from '../../styles/lib/library.mjs';
 
@@ -27,15 +27,18 @@ export function studioContext(root) {
 }
 
 /** What checkDirectorBrief needs from the studio, the same for the CLI and the connector: the brief's energy (set, or
- *  assumed from their words), every engine name (so the words never use one) and the engine names the picked styles list. */
+ *  assumed from their words), every engine name (so the words never use one), the engine names the picked styles list
+ *  and the length cap (set, or from their words; null when not known). */
 export function directorRules(brief, job, ctx) {
   const e = ctx.engineNames;
   // Only names that read as engine names (kebab-case, paths, prefixed ids, CamelCase). Plain words that are also names
   // in a library ("camera", "Button", "slam") are how a director describes a film, so they are not refused.
   const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])].filter(isEngineName));
   const allowed = picksOf(brief, ctx.styles).filter((x) => !x.stale).flatMap((x) => ctx.styles.get(x.id).engine || []);
-  const energy = brief.energy || assumptions(brief, { jobBrand: job?.brand, ...ctx }).find((x) => x.id === 'energy')?.value;
-  return { energy, names, allowed };
+  const assumed = assumptions(brief, { jobBrand: job?.brand, ...ctx });
+  const energy = brief.energy || assumed.find((x) => x.id === 'energy')?.value;
+  const cap = Number(brief.length_cap_seconds) || assumed.find((x) => x.id === 'length_cap_seconds')?.value || null;
+  return { energy, names, allowed, cap };
 }
 
 /** The set-up brands other than the demo brand. */
@@ -115,9 +118,29 @@ export function decide(jobDir, what, { by = 'owner', applies = 'all' } = {}) {
 }
 
 const TYPE_OF = { 'product-demo': 'demo', tutorial: 'tutorial', 'footage-edit': 'edit', ugc: 'edit', 'animated-short': 'edit' };
+// What the customer confirms along with the plan when it was only taken as given: written into the brief as decided.
+const SETTLED_ON_CONFIRM = ['brand', 'size', 'kind', 'voice', 'length_cap_seconds', 'look', 'energy'];
+const SAID = { length_cap_seconds: 'length', look: 'look' };
 
-/** Records "plan confirmed" (once) and makes job.json at the Idea stage when there is none. Refuses when plan.md is
- *  not the plan of the brief as it is now. Safe to call again. */
+/** The brief with what was taken as given (their words, a pick, the studio default) written in as decided, and the
+ *  energy of a kept director's brief when the brief has none. Returns { brief, settled } (settled: plain words). */
+function settleAssumed(brief, job, ctx) {
+  const assumed = assumptions(brief, { jobBrand: job.brand, ...ctx }).filter((a) => SETTLED_ON_CONFIRM.includes(a.id));
+  let b = { ...brief };
+  const settled = [];
+  for (const a of assumed) {
+    if (['size', 'kind', 'voice', 'length_cap_seconds', 'energy'].includes(a.id)) b = setField(b, a.id, a.value);
+    else b[a.id] = a.value;
+    settled.push(`${SAID[a.id] || a.id} ${a.value}`);
+  }
+  const directed = directorBriefOf(b)?.energy;
+  if (!b.energy && ENERGIES.includes(directed)) { b.energy = directed; settled.push(`energy ${directed} (from the director's brief)`); }
+  return { brief: b, settled };
+}
+
+/** Records "plan confirmed" (once), writes what was taken as given into the brief as decided, and makes job.json at the
+ *  Idea stage from it when there is none. Refuses when plan.md is not the plan of the brief as it is now. Safe to call
+ *  again. */
 export function confirmPlan(root, jobDir, { ctx = studioContext(root) } = {}) {
   const { brief, job } = loadJob(jobDir);
   const name = path.basename(jobDir);
@@ -129,6 +152,13 @@ export function confirmPlan(root, jobDir, { ctx = studioContext(root) } = {}) {
   // plan gains a "plan confirmed" line, so confirming it again skips this check.
   const confirmed = (brief.decisions || []).some((d) => d?.what === 'plan confirmed');
   if (!confirmed && fs.readFileSync(path.join(jobDir, 'plan.md'), 'utf8') !== renderPlan(out)) throw new Error('The plan changed since it was shown; show it again.');
+  // What was only taken as given becomes decided, so `show` and every later stage read it from the brief itself.
+  const { brief: settledBrief, settled } = settleAssumed(brief, job, ctx);
+  if (settled.length) {
+    saveBrief(jobDir, settledBrief);
+    decide(jobDir, `taken as given when the plan was confirmed: ${settled.join(', ')}`);
+  }
+  const b = settledBrief;
   const file = path.join(jobDir, 'job.json');
   const exists = fs.existsSync(file);
   let made = job;
@@ -136,12 +166,18 @@ export function confirmPlan(root, jobDir, { ctx = studioContext(root) } = {}) {
     if (!(job.notes || []).some((n) => String(n).startsWith('Plan confirmed'))) made = { ...job, notes: [...(job.notes || []), `Plan confirmed ${today()}; job.json left as it was.`] };
   } else {
     const t = readJson(path.join(root, 'templates', 'job.json'));
-    const kind = brief.kind || assumptions(brief, ctx).find((x) => x.id === 'kind')?.value;
-    const brand = brief.brand || assumptions(brief, { jobBrand: job.brand, ...ctx }).find((x) => x.id === 'brand')?.value;
-    const master = (brief.deliver || []).find((d) => d.master) || (brief.deliver || []).find((d) => d.size);
-    made = { ...t, name, brand, type: TYPE_OF[kind] || 'promo', size: master?.size || t.size, length_cap_seconds: brief.length_cap_seconds ?? assumptions(brief, { jobBrand: job.brand, ...ctx }).find((x) => x.id === 'length_cap_seconds')?.value ?? null, created: today(), stage_next: 'idea', approval_mode: 'guided' };
+    const master = (b.deliver || []).find((d) => d.master && d.size) || (b.deliver || []).find((d) => d.size);
+    // voice: a film with no voice says "none" (tools/film/scaffold.mjs); otherwise the voice's name stays the template's.
+    // energy_preset: the brief's energy when known (tools/film/scaffold.mjs refuses the template's placeholder).
+    made = {
+      ...t, name, brand: b.brand || job.brand, type: TYPE_OF[b.kind] || 'promo', size: master?.size || t.size,
+      length_cap_seconds: Number(b.length_cap_seconds) || null,
+      ...(b.voice === 'none' && { voice: 'none' }),
+      ...(ENERGIES.includes(b.energy) && { energy_preset: b.energy }),
+      created: today(), stage_next: 'idea', approval_mode: 'guided',
+    };
   }
   if (made !== job || !exists) writeJson(file, made);
-  if (!(brief.decisions || []).some((d) => d.what === 'plan confirmed')) decide(jobDir, 'plan confirmed');
+  if (!(loadJob(jobDir).brief.decisions || []).some((d) => d.what === 'plan confirmed')) decide(jobDir, 'plan confirmed');
   return made;
 }

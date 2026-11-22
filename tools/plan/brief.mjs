@@ -157,10 +157,11 @@ if (cmd === 'decide') {
   // The customer's energy, else the one the director named; without either the beats cannot be checked.
   const energy = rules.energy || (['calm', 'confident', 'hype'].includes(read.energy) ? read.energy : null);
   if (!energy) { console.log('The director did not say which energy the film runs at.'); process.exit(1); }
-  const r = checkDirectorBrief(parts, { energy, names: rules.names, allowed: rules.allowed });
+  const r = checkDirectorBrief(parts, { energy, names: rules.names, allowed: rules.allowed, cap: rules.cap });
   if (!r.ok) { console.log(r.reason); process.exit(1); }
   const { engine } = parts;
   saveBrief(jobDir, { ...brief, director_brief: { parts: words, engine: Array.isArray(engine) ? engine : [], energy: energy ?? null, at: new Date().toISOString() } });
+  decide(jobDir, "director's brief kept", { by: 'owner' }); // the same line brief_direct records
   console.log(`Recorded the director's brief: ${parts.logline}`);
 } else if (cmd === 'show') {
   console.log(summary(brief, { revisions, styles: context().styles }).join('\n'));

@@ -28,7 +28,7 @@ test('setPick: second pick in one family refused with its reason', () => {
   const styles = lib(arrive, arrive2);
   const b = setPick({}, arrive, true, styles);
   assert.deepEqual(b.style_picks, [pick(arrive)]);
-  assert.throws(() => setPick(b, arrive2, true, styles), /^Error: You already picked Soft arrive from arrival: one per family$/);
+  assert.throws(() => setPick(b, arrive2, true, styles), /^Error: You already picked Soft arrive in arrival, and each family takes one pick$/);
 });
 
 test('setPick: fourth pick in a tab refused', () => {
@@ -161,7 +161,7 @@ test('CLI pick: a clash exits 1 with the reason', () => {
   assert.equal(first.status, 0, first.stdout);
   const second = run('pick', jobDir, 'motion', 'pop-arrive');
   assert.equal(second.status, 1);
-  assert.match(second.stdout, /You already picked Soft arrive from arrival: one per family/);
+  assert.match(second.stdout, /You already picked Soft arrive in arrival, and each family takes one pick/);
   assert.equal(run('pick', jobDir, 'motion', 'soft-arrive', '--off').status, 0);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).style_picks, []);
 });
@@ -254,4 +254,89 @@ test('CLI direct: a director\'s brief with no energy (the customer\'s or the dir
   fs.writeFileSync(canonical, JSON.stringify({ parts: parts(), engine: [], energy: 'calm', at: '2026-11-22T10:00:00.000Z' }));
   assert.equal(run('direct', jobDir, canonical).status, 0);
   assert.equal(JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).director_brief.energy, 'calm');
+});
+
+/* ---------- Final review fixes: reading the words, stale picks, beats inside the cap, the family wording ---------- */
+
+test('understood: size comes from explicit ratio or orientation words before platform words', () => {
+  assert.equal(understood('a 20-second square launch reel').size, '1:1');
+  assert.equal(understood('tell the story of our product in 45 seconds, landscape').size, '16:9');
+  assert.equal(understood('tell the story of our product').size, undefined); // a bare "story" is not a size
+  assert.equal(understood('an instagram story for the launch').size, '9:16');
+  assert.equal(understood('a reel for tiktok').size, '9:16');
+  assert.equal(understood('a youtube shorts cut').size, '9:16');
+  assert.equal(understood('a 4:5 feed post').size, '4:5');
+  // the reason given is the word the size came from
+  const square = assumptions({ in_their_words: 'a 20-second square launch reel' }, {}).find((a) => a.id === 'size');
+  assert.deepEqual(square, { id: 'size', value: '1:1', because: 'square' });
+});
+
+test('understood: length from "20 second", "20-second", "20 sec", not from a "90s look"', () => {
+  assert.equal(understood('A 20 second vertical demo of one feature').length, 20);
+  assert.equal(understood('a 20-second square launch reel').length, 20);
+  assert.equal(understood('a 30 sec teaser').length, 30);
+  assert.equal(understood('a 45s spot').length, 45);
+  assert.equal(understood('a 90s look with grain').length, undefined);
+  assert.equal(understood("a '90s feel, 30 seconds").length, 30);
+  assert.equal(understood('back to the 80s, 15 s').length, 15);
+});
+
+test('understood: a brand name is not the audience, and "for X who" wins', () => {
+  assert.equal(understood('a demo for acme for agency owners', { brands: { acme: {} } }).audience, 'agency owners');
+  assert.equal(understood('a demo for acme, for agency owners', { brands: ['acme'] }).audience, 'agency owners');
+  assert.equal(understood('a demo for acme for agency owners who send reports by hand').audience, 'agency owners');
+  assert.equal(understood('a demo for agency owners').audience, 'agency owners');
+});
+
+test('understood: a negated energy word does not set that energy', () => {
+  assert.equal(understood('Not calm, punchy').energy, 'hype');
+  assert.equal(understood('not too calm, but steady').energy, 'confident');
+  assert.equal(understood('nothing bold, keep it calm').energy, 'calm');
+  assert.equal(understood('not calm').energy, undefined);
+});
+
+test('summary: a stale pick shows as no longer in the library', () => {
+  const b = { kind: 'promo', style_picks: [pick(arrive), { tab: 'sound', id: 'gone-tap' }] };
+  assert.ok(summary(b, { styles: lib(arrive) }).includes('Picked: Motion Soft arrive; Sound gone-tap (no longer in the library).'));
+});
+
+test('checkDirectorBrief: beats past the length cap and beats over 600 characters are refused', () => {
+  const p = parts(); p.beats = [{ at_s: 0, what: 'a' }, { at_s: 25, what: 'b' }];
+  const r = checkDirectorBrief(p, { energy: 'confident', names: new Set(), cap: 20 });
+  assert.equal(r.ok, false); assert.equal(r.part, 'beats'); assert.match(r.reason, /20 s/);
+  assert.equal(checkDirectorBrief(p, { energy: 'confident', names: new Set(), cap: 30 }).ok, true);
+  assert.equal(checkDirectorBrief(p, { energy: 'confident', names: new Set() }).ok, true); // no cap known
+  const long = parts(); long.beats = [{ at_s: 0, what: 'x'.repeat(601) }];
+  const l = checkDirectorBrief(long, { energy: 'confident', names: new Set() });
+  assert.equal(l.ok, false); assert.equal(l.part, 'beats'); assert.match(l.reason, /600/);
+});
+
+test('directorRules: the cap is the brief\'s length, set or from their words', async () => {
+  const { directorRules } = await import('../lib/brief-store.mjs');
+  assert.equal(directorRules({ length_cap_seconds: 15 }, {}, { styles: new Map() }).cap, 15);
+  assert.equal(directorRules({ in_their_words: 'a 20 second demo' }, {}, { styles: new Map() }).cap, 20);
+  assert.equal(directorRules({}, {}, { styles: new Map() }).cap, null);
+});
+
+test('CLI direct records "director\'s brief kept", as brief_direct does', () => {
+  const root = scratchStudio();
+  const jobDir = path.join(root, 'jobs', 'j');
+  const run = (...a) => spawnSync(process.execPath, [CLI, ...a], { encoding: 'utf8', env: { ...process.env, BRIEF_STUDIO_ROOT: root } });
+  assert.equal(run('new', jobDir, 'a calm demo').status, 0);
+  const f = path.join(root, 'p.json');
+  fs.writeFileSync(f, JSON.stringify(parts()));
+  assert.equal(run('direct', jobDir, f).status, 0);
+  assert.ok(JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).decisions.some((d) => d.what === "director's brief kept"));
+});
+
+test('CLI show: a stale pick shows as no longer in the library', () => {
+  const root = scratchStudio();
+  fs.mkdirSync(path.join(root, 'library', 'styles'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'library', 'styles', 'motion.json'), JSON.stringify([arrive]));
+  const jobDir = path.join(root, 'jobs', 'j');
+  const run = (...a) => spawnSync(process.execPath, [CLI, ...a], { encoding: 'utf8', env: { ...process.env, BRIEF_STUDIO_ROOT: root } });
+  assert.equal(run('new', jobDir, 'a demo').status, 0);
+  const b = JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8'));
+  fs.writeFileSync(path.join(jobDir, 'brief.json'), JSON.stringify({ ...b, style_picks: [pick(arrive), { tab: 'motion', id: 'gone' }] }));
+  assert.match(run('show', jobDir).stdout, /Picked: Motion Soft arrive; Motion gone \(no longer in the library\)\./);
 });

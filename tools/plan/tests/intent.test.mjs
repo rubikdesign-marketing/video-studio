@@ -193,7 +193,8 @@ test('brief: "the demo brand" names a brand, not a product demo', () => {
 });
 
 test('brief: setField answers one question at a time, and check stops asking it', () => {
-  let b = { in_their_words: 'A 30 second 16:9 promo for the demo brand announcing saved replies.' };
+  // No length in the words: "30 second" now reads as one (final review, item 3), and this test answers it by hand.
+  let b = { in_their_words: 'A 16:9 promo for the demo brand announcing saved replies.' };
   const ids = () => questions(b).map((x) => x.id);
   const answered = ['viewer', 'voice', 'length'];
   for (const id of answered) assert.ok(ids().includes(id), `${id} is asked before it is answered`);
