@@ -30,7 +30,9 @@ export function studioContext(root) {
  *  assumed from their words), every engine name (so the words never use one) and the engine names the picked styles list. */
 export function directorRules(brief, job, ctx) {
   const e = ctx.engineNames;
-  const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])]);
+  // Only names that read as engine names (kebab-case, paths, prefixed ids, CamelCase). Plain words that are also names
+  // in a library ("camera", "Button", "slam") are how a director describes a film, so they are not refused.
+  const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])].filter((n) => /[-/:]|[a-z][A-Z]/.test(String(n))));
   const allowed = picksOf(brief, ctx.styles).filter((x) => !x.stale).flatMap((x) => ctx.styles.get(x.id).engine || []);
   const energy = brief.energy || assumptions(brief, { jobBrand: job?.brand, ...ctx }).find((x) => x.id === 'energy')?.value;
   return { energy, names, allowed };

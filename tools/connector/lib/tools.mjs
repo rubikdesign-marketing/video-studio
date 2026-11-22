@@ -223,7 +223,9 @@ export function makeHandlers(root) {
         const open = preflight(brief, { job: jobJson, ctx }).filter((c) => !c.done).map((c) => `${c.label}: ${c.todo}`);
         throw new Error(`Not yet: ${open.join('; ')}`);
       }
-      return { job, lines: out.lines, outline: out.outline.map((s) => ({ n: s.n, name: s.name, from: s.from, to: s.to, shows: s.shows })) };
+      // engine: the picks' engine names grouped as ui, motion and sound, plus the stage skills ("What the engine will use").
+      const engine = out.engine || { ui: [], motion: [], sound: [], skills: [] };
+      return { job, lines: out.lines, outline: out.outline.map((s) => ({ n: s.n, name: s.name, from: s.from, to: s.to, shows: s.shows })), engine };
     },
 
     brief_pick({ job, tab, id, on } = {}) {

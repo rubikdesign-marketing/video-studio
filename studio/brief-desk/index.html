@@ -23,6 +23,7 @@
   --color-accent-ink: oklch(14.8% 0.023 255.1);  /* on-accent #050B14 */
   --color-warm: oklch(79.7% 0.164 69.8);         /* amber #FFA724: clashes and made on request only */
   --color-azure: oklch(58.0% 0.229 263.7);       /* #2E6BFF: one bloom only */
+  --color-notice: oklch(80.0% 0.090 250.0);      /* a light azure: the brief's notes and "not connected", never amber */
   --color-focus: oklch(92.6% 0.139 136.5);
   --color-scrim: oklch(10% 0.04 260 / 0.72);
   --color-shadow: oklch(8% 0.05 262 / 0.55);
@@ -117,7 +118,7 @@ button { cursor: pointer; }
 .status { display: none; align-items: center; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--color-ink-2); white-space: nowrap; }
 .status::before { content: ""; width: 0.75rem; height: 2px; background: var(--color-rule-strong); }
 .status[data-host="ready"]::before { background: var(--color-accent); }
-.status[data-host="none"]::before { background: var(--color-warm); }
+.status[data-host="none"]::before { background: var(--color-notice); }
 @media (min-width: 60rem) { .status { display: inline-flex; } }
 
 /* ---------- Buttons ---------- */
@@ -178,7 +179,8 @@ button { cursor: pointer; }
 @media (hover: hover) { #view textarea:hover { border-color: var(--color-ink-2); } }
 #view textarea:focus-visible, #view input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; border-color: transparent; background: var(--color-paper-3); }
 #view .note { display: grid; gap: var(--space-2xs); padding: var(--space-sm); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-paper-2); font-size: var(--text-sm); }
-#view .note[data-tone="warm"] { border-color: var(--color-warm); }
+#view .note[data-tone="warm"] { border-color: var(--color-notice); }
+#view .note[data-tone="warm"] strong { color: var(--color-notice); }
 #view .note[data-tone="good"] { border-color: var(--color-accent); }
 #view .note strong { font-weight: 500; font-size: var(--text-base); }
 #view .chip-on { display: inline-flex; align-items: center; gap: var(--space-xs); justify-self: start; font-size: var(--text-sm); border: var(--rule-w) solid var(--color-accent); color: var(--color-accent); border-radius: var(--radius-pill); padding: var(--space-3xs) var(--space-2xs) var(--space-3xs) var(--space-xs); }
@@ -197,7 +199,7 @@ button { cursor: pointer; }
 #view .brief-row .meta { grid-column: 1; font-size: var(--text-sm); color: var(--color-ink-2); }
 #view .brief-row .open { grid-row: 1 / span 2; grid-column: 2; font-size: var(--text-sm); color: var(--color-ink-2); }
 #view .tag { display: inline-block; font-size: var(--text-sm); font-weight: 500; color: var(--color-accent); }
-#view .tag.warm { color: var(--color-warm); }
+#view .tag.warm { color: var(--color-notice); }
 #view .quote { border-left: 2px solid var(--color-rule-strong); padding-left: var(--space-sm); color: var(--color-ink-2); overflow-wrap: anywhere; }
 #view .understood { display: flex; flex-wrap: wrap; gap: var(--space-2xs); list-style: none; margin: 0; padding: 0; }
 #view .understood li { border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius-pill); padding: var(--space-3xs) var(--space-xs); font-size: var(--text-sm); }
@@ -232,6 +234,94 @@ button { cursor: pointer; }
 #view .next { border: var(--rule-w) solid var(--color-accent); border-radius: var(--radius); padding: var(--space-md); display: grid; gap: var(--space-2xs); }
 #view .next p.say { font-size: var(--text-md); }
 #view .copybox { display: grid; gap: var(--space-xs); }
+#view form.start { display: grid; gap: var(--space-lg); min-width: 0; }
+
+/* The opening */
+#view .intro { display: grid; gap: var(--space-sm); }
+#view h1.display { font-size: var(--text-display); }
+.swash { font-family: var(--font-swash); font-weight: 400; font-size: 1.32em; line-height: 0; letter-spacing: 0; text-transform: none; color: var(--color-accent); vertical-align: -0.04em; margin-inline-end: 0.02em; }
+#view .field { display: grid; gap: var(--space-2xs); }
+#view .field-label { font-size: var(--text-md); font-weight: 500; }
+#view .helper { font-size: var(--text-sm); color: var(--color-ink-2); }
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+@media (hover: hover) { .btn--primary:hover { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-accent-ink); } }
+.btn--direct { border-color: var(--color-accent); color: var(--color-accent); }
+@media (hover: hover) { .btn--direct:hover { background: var(--color-paper-2); border-color: var(--color-ink); color: var(--color-ink); } }
+
+/* What the studio understood */
+.understood-head { display: flex; align-items: baseline; gap: var(--space-xs); flex-wrap: wrap; }
+.reading { font-size: var(--text-sm); color: var(--color-ink-2); opacity: 0; transition: opacity var(--dur-short) var(--ease-out); }
+.reading.is-on { opacity: 1; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2xs); list-style: none; padding: 0; margin: 0; }
+.chip-u {
+  display: inline-flex; align-items: baseline; gap: var(--space-2xs); min-height: 2.25rem; padding: var(--space-3xs) var(--space-xs);
+  border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius-pill); background: transparent; color: var(--color-ink);
+  font-size: var(--text-sm); white-space: nowrap; animation: rise var(--dur-short) var(--ease-out) both;
+  transition: border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+button.chip-u { cursor: pointer; }
+@media (hover: hover) { button.chip-u:hover { border-color: var(--color-accent); } }
+button.chip-u:active { transform: translateY(1px); }
+.chip-u[aria-expanded="true"] { border-color: var(--color-accent); }
+.chip-u b { font-weight: 500; color: var(--color-accent); }
+.chip-u .k { color: var(--color-ink-2); }
+.chip-u[data-changed="true"] { border-style: dashed; }
+.chip-edit { display: grid; gap: var(--space-2xs); padding: var(--space-sm); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-paper-2); }
+.chip-edit .row { gap: var(--space-2xs); }
+.chip-edit input { max-width: 16rem; }
+#view .understood li { display: inline-flex; align-items: baseline; gap: var(--space-2xs); flex-wrap: wrap; }
+#view .understood .link { font-size: var(--text-sm); }
+
+/* The director's brief */
+.direct-row { display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: center; }
+.thinking { display: grid; gap: var(--space-xs); padding: var(--space-md); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-raised); }
+.thinking ol { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2xs); }
+.thinking li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: var(--space-2xs); align-items: center; color: var(--color-ink); font-size: var(--text-sm); }
+.thinking li::before { content: ""; height: 2px; background: var(--color-accent); transform-origin: left; animation: think 900ms var(--ease-in-out) infinite alternate; }
+.thinking li:nth-child(2)::before { animation-delay: 150ms; }
+.thinking li:nth-child(3)::before { animation-delay: 300ms; }
+.thinking li:nth-child(4)::before { animation-delay: 450ms; }
+@keyframes think { from { transform: scaleX(0.25); } to { transform: scaleX(1); } }
+.dbrief { display: grid; border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-raised); animation: reveal var(--dur-long) var(--ease-out) both; min-width: 0; }
+.dbrief.is-settled { animation: none; }
+@keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.dbrief-head, .dbrief-foot { display: grid; gap: var(--space-xs); padding: var(--space-md); }
+.dbrief-head { border-bottom: var(--rule-w) solid var(--color-rule); }
+.yours { padding-left: var(--space-sm); border-left: 2px solid var(--color-rule-strong); color: var(--color-ink-2); overflow-wrap: anywhere; }
+.dpart { display: grid; gap: var(--space-2xs); padding: var(--space-sm) var(--space-md) var(--space-md); border-bottom: var(--rule-w) solid var(--color-rule); min-width: 0; }
+.dpart-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2xs); }
+.dpart-title { display: flex; align-items: baseline; gap: var(--space-2xs); flex-wrap: wrap; }
+.dpart-title h3 { font-size: var(--text-base); font-weight: 500; }
+.pstate { font-size: var(--text-sm); color: var(--color-ink-2); }
+.pstate[data-s="kept"] { color: var(--color-accent); }
+.pstate[data-s="changed"], .pstate[data-s="swapped"] { color: var(--color-ink); }
+.ptext { max-width: 68ch; overflow-wrap: anywhere; }
+.dpart-acts { display: flex; gap: var(--space-3xs); }
+.seg {
+  min-height: 2rem; padding: 0 var(--space-xs); border-radius: var(--radius); border: var(--rule-w) solid var(--color-rule); background: transparent;
+  color: var(--color-ink-2); font-size: var(--text-sm); font-weight: 500; white-space: nowrap;
+  transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+@media (hover: hover) { .seg:hover { color: var(--color-ink); border-color: var(--color-ink-2); } }
+.seg:active { transform: translateY(1px); }
+.seg[aria-pressed="true"] { color: var(--color-accent-ink); background: var(--color-accent); border-color: var(--color-accent); }
+.seg:disabled { opacity: 0.5; cursor: progress; }
+.beats { list-style: none; padding: 0; margin: 0; display: grid; }
+.beats li { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 0 var(--space-sm); padding: var(--space-2xs) 0; border-top: var(--rule-w) solid var(--color-rule); }
+.beats li:first-child { border-top: 0; }
+.beats .t { color: var(--color-accent); font-size: var(--text-sm); font-weight: 500; white-space: nowrap; }
+.edit-box { display: grid; gap: var(--space-2xs); }
+#view .edit-box textarea { min-height: 6rem; font-size: var(--text-sm); line-height: 1.5; }
+
+/* The eight things the studio needs */
+#view .strip-wrap { display: grid; gap: var(--space-sm); }
+
+/* What the engine will use */
+.eng { display: grid; gap: var(--space-xs); align-content: start; padding: var(--space-md); border-radius: var(--radius); background: var(--color-raised); border: var(--rule-w) solid var(--color-rule); }
+.eng h3 { font-size: var(--text-base); font-weight: 500; display: flex; justify-content: space-between; gap: var(--space-xs); }
+.eng h3 span { color: var(--color-ink-2); font-size: var(--text-sm); font-weight: 400; }
+.eng ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2xs); font-size: var(--text-xs); color: var(--color-ink-2); }
+.eng li { padding: 0 var(--space-2xs); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); overflow-wrap: anywhere; }
 
 /* What the engine will use (the plan view's block; filled with the brief flow) */
 .engine-uses { display: grid; gap: var(--space-sm); }
@@ -239,6 +329,10 @@ button { cursor: pointer; }
 
 /* ---------- Library (right pane) ---------- */
 .lib-head { display: grid; gap: var(--space-xs); }
+.suggest { display: grid; gap: var(--space-sm); min-width: 0; }
+.suggest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 12.5rem), 1fr)); gap: var(--space-sm); }
+.card-tab { font-size: var(--text-xs); color: var(--color-ink-2); font-weight: 500; }
+.reason { font-size: var(--text-sm); line-height: 1.4; }
 .lib-browse { display: grid; gap: var(--space-sm); min-width: 0; }
 .tabs { display: flex; gap: var(--space-3xs); overflow-x: auto; scrollbar-width: none; border-bottom: var(--rule-w) solid var(--color-rule); scroll-snap-type: x proximity; margin-inline: calc(var(--space-sm) * -1); padding-inline: var(--space-sm); }
 .tabs::-webkit-scrollbar { display: none; }
@@ -294,8 +388,8 @@ select.select:focus-visible, input.search:focus-visible { outline: 2px solid var
 .grid-more { height: 1px; }
 .empty { display: grid; gap: var(--space-2xs); justify-items: start; padding: var(--space-md); border: var(--rule-w) dashed var(--color-rule-strong); border-radius: var(--radius); color: var(--color-ink-2); font-size: var(--text-sm); }
 .empty strong { color: var(--color-ink); font-size: var(--text-base); font-weight: 500; }
-.lib-note { display: grid; gap: var(--space-2xs); padding: var(--space-sm); border: var(--rule-w) solid var(--color-warm); border-radius: var(--radius); background: var(--color-paper-2); font-size: var(--text-sm); }
-.lib-note strong { color: var(--color-warm); font-weight: 500; font-size: var(--text-base); }
+.lib-note { display: grid; gap: var(--space-2xs); padding: var(--space-sm); border: var(--rule-w) solid var(--color-notice); border-radius: var(--radius); background: var(--color-paper-2); font-size: var(--text-sm); }
+.lib-note strong { color: var(--color-notice); font-weight: 500; font-size: var(--text-base); }
 .skel-card { aspect-ratio: 16 / 13; border-radius: var(--radius); background: var(--color-raised); animation: breathe 1.4s var(--ease-in-out) infinite alternate; }
 @keyframes breathe { from { opacity: 0.45; } to { opacity: 1; } }
 
@@ -329,7 +423,7 @@ select.select:focus-visible, input.search:focus-visible { outline: 2px solid var
 .sc-pick::before { content: ""; position: absolute; inset: -6px; }
 @media (hover: hover) { .sc-pick:hover { border-color: var(--color-ink); } }
 .sc-pick:active { transform: translateY(1px); }
-.sc-pick[aria-pressed="true"] { background: var(--color-accent); color: var(--color-accent-ink); border-color: var(--color-accent); }
+.sc-pick[aria-pressed="true"], .sc-pick[data-on="true"] { background: var(--color-accent); color: var(--color-accent-ink); border-color: var(--color-accent); }
 .sc-pick[data-state="error"] { border-color: var(--color-warm); color: var(--color-warm); }
 .sc-pick[data-state="loading"] { cursor: progress; opacity: 0.7; }
 .sc .clash, .drawer .clash { position: relative; z-index: 2; }
@@ -552,6 +646,8 @@ dialog::backdrop { background: var(--color-scrim); }
   .drawer[open] { animation: fade-in 150ms linear; }
   .drawer.is-closing { animation: none; opacity: 0; }
   .skel-card { animation: none; opacity: 0.7; }
+  .chip-u, .dbrief { animation: fade-in 150ms linear both; }
+  .thinking li::before { animation: none; }
 }
 </style>
 
@@ -582,7 +678,7 @@ dialog::backdrop { background: var(--color-scrim); }
       <h2 class="display-s">Style library</h2>
       <p class="lede">Point at what you like. Picks are a strong preference, never required: with none, the studio decides.</p>
     </div>
-    <div id="suggest" hidden></div>
+    <section class="suggest" id="suggest" aria-labelledby="sug-h" hidden></section>
     <section class="lib-browse" aria-label="Browse the library">
       <div class="tabs" role="tablist" id="tabs" aria-label="Style library tabs"></div>
       <div class="filters" id="filters"></div>
@@ -623,7 +719,7 @@ const STARTERS = [
   { text: 'A launch teaser for a new feature, 16:9, with a voice-over' },
   { text: 'A short how-to that shows one task in three steps, for new customers' },
 ];
-const ASSUMED_LABEL = { brand: 'Brand', size: 'Size', kind: 'Video type', length: 'Length', voice: 'Voice', look: 'Look' };
+const ASSUMED_LABEL = { brand: 'Brand', size: 'Size', kind: 'Video type', length: 'Length', length_cap_seconds: 'Length', energy: 'Energy', voice: 'Voice', look: 'Look' };
 const BRAND_STEP = 'Start a new chat in the studio folder and say "set up my brand".';
 const CONFIRMED_NOTE = 'This brief is confirmed and its video has started. To change it, say so in a chat in the studio folder.';
 
@@ -666,6 +762,8 @@ const connector = {
   confirm: (job) => state.mcp.callTool(HOST, 'brief_confirm', { job }),
   reopen: (job, item) => state.mcp.callTool(HOST, 'brief_reopen', { job, item }),
   pick: (input) => state.mcp.callTool(HOST, 'brief_pick', input),
+  direct: (input) => state.mcp.callTool(HOST, 'brief_direct', input),
+  suggest: (input) => state.mcp.callTool(HOST, 'styles_suggest', input),
 };
 
 /** A read: retried once after a short random delay when the studio did not answer. */
@@ -742,6 +840,9 @@ async function startBrief() {
     state.briefWords = words; state.confirmedOn = null; state.words = ''; state.style = null; state.drafts = {};
     applyCheck(reply);
     if (held.length) await sendHeldPicks(held);
+    await sendHeldChips();
+    if (state.dir.kept === 'held') await keepDirectorBrief();
+    refreshSuggestionsSoon();
   } catch (e) { await failed(e, 'start', { isWrite: true }); }
   state.busy = null; render();
 }
@@ -839,7 +940,7 @@ async function goHome() {
 function useIdea(idea) {
   if (idea.job) { openBrief({ job: idea.job, words: idea.words }); return; }
   state.words = idea.fill || idea.text; state.style = idea.style || null;
-  render();
+  hearWords(); render();
   const box = document.getElementById('brief-words');
   if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
 }
@@ -938,6 +1039,7 @@ async function saveWithoutStudio(words) {
   state.busy = 'start'; render();
   const id = `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
   const doc = { words, at: new Date().toISOString(), status: 'waiting', style_picks: state.picks.map((p) => ({ tab: p.tab, id: p.id })) };
+  if (state.dir.kept === 'held') doc.director_brief = { parts: state.dir.parts, engine: state.dir.keptEngine || [] };
   const save = () => state.db.collection('briefs').doc(id).set(doc);
   try {
     try { await save(); } catch (e) { if (codeOf(e) !== 'unavailable') throw e; await wait(300 + Math.random() * 700); await save(); }
@@ -985,8 +1087,6 @@ function render() {
   status.dataset.host = state.host;
   status.textContent = { pending: 'Connecting to your studio', ready: 'Connected to your studio', none: 'Not connected to your studio' }[state.host];
   document.getElementById('home').hidden = state.view === 'start';
-  const uses = document.getElementById('engine-uses'); // filled in the plan view with the brief flow
-  if (uses) uses.hidden = !(state.view === 'plan' && Array.isArray(state.engineUses) && state.engineUses.length);
 
   const view = document.getElementById('view');
   const build = { start: renderStart, questions: renderQuestions, plan: renderPlan, handoff: renderHandoff, parked: renderParked }[state.view];
@@ -1004,26 +1104,28 @@ function renderStart() {
   let welcome = 'Welcome to your video studio.';
   if (state.host === 'ready' && ctx) welcome = names.length ? `Welcome back. Your studio has ${names.join(', ')} set up.` : 'Welcome to your video studio. Write your brief now; setting up your brand comes next.';
 
-  const box = h('textarea', { id: 'brief-words', rows: '5', 'aria-label': 'What video do you want to make?', placeholder: 'For example: a 20 second vertical demo of our new export button, for agency owners who still send reports by hand',
-    oninput: (e) => { state.words = e.target.value; } });
+  const box = h('textarea', { id: 'brief-words', rows: '4', 'aria-describedby': 'brief-help', placeholder: 'For example: a 20 second vertical demo of our new export button, for agency owners who still send reports by hand',
+    oninput: (e) => { state.words = e.target.value; scheduleRead(); } });
   box.value = state.words;
 
   const noHost = state.host === 'none';
   const form = h('form', { class: 'start', onsubmit: (e) => { e.preventDefault(); startBrief(); } },
-    h('section', {},
+    h('section', { class: 'intro' },
       h('p', { class: 'eyebrow', text: welcome }),
-      h('h1', { text: 'What video do you want to make?' }),
+      h('h1', { class: 'display' }, 'Start with a ', h('span', { class: 'swash', 'aria-hidden': 'true', text: 'S' }), h('span', { class: 'sr-only', text: 'S' }), 'entence'),
+      h('p', { class: 'lede', text: 'Say it rough. The director turns it into shots, timing and sound, and the library shows you the looks.' })),
+    h('section', {},
       noHost ? h('div', { class: 'note', 'data-tone': 'warm' },
         h('p', {}, h('strong', { text: 'This page works in the Claude desktop app with your studio folder open.' })),
         h('p', { class: 'muted', text: 'In the app, approve "damex-engine" when it asks. If it never asks, or the page still does not connect, run the start step again.' }),
         h('p', { class: 'muted', text: state.db ? 'You can still write your brief here. It is saved with this page, and your next chat in the studio folder picks it up.' : 'You can still write your brief here, then copy it into a new chat in the studio folder.' })) : null,
-      box,
+      h('div', { class: 'field' }, h('label', { class: 'field-label', for: 'brief-words', text: 'What video do you want to make?' }), box,
+        h('p', { class: 'helper', id: 'brief-help', text: 'Links to films you like can go right in here. Files and footage are added in chat: say "I have a file to add".' })),
       state.style ? h('span', { class: 'chip-on' }, `Using your saved ${String(state.style).split('/')[1].replace(/-/g, ' ')} style`,
         h('button', { type: 'button', 'aria-label': 'Stop using the saved style', text: 'Remove', onclick: () => { state.style = null; render(); } })) : null,
       h('div', { class: 'row' },
         h('button', { type: 'submit', class: 'primary', id: 'start-brief', disabled: state.busy === 'start' || null,
-          text: busyLabel('start', noHost ? (state.db ? 'Save my brief' : 'Get my brief to copy') : 'Start the brief', noHost ? 'Saving…' : 'Starting…') }),
-        h('p', { class: 'muted small', text: 'Links to films you like can go right in here. Files and footage are added in chat: say "I have a file to add".' })),
+          text: busyLabel('start', noHost ? (state.db ? 'Save my brief' : 'Get my brief to copy') : 'Start the brief', noHost ? 'Saving…' : 'Starting…') })),
       noteEl('start'),
       state.copyText ? copyBox(state.copyText) : null));
 
@@ -1033,7 +1135,7 @@ function renderStart() {
     h('div', { class: 'ideas' }, ideas.map((idea, i) => h('button', { type: 'button', class: 'idea', id: `idea-${i}`, onclick: () => useIdea(idea) },
       idea.text, idea.job ? h('span', { class: 'muted', text: 'Opens the brief where you left it' }) : null))));
 
-  return [form, ideaList, noHost ? savedList() : briefList()];
+  return [form, understoodSection(), directorSection(), stripEl(null), ideaList, noHost ? savedList() : briefList()];
 }
 
 function copyBox(text) {
@@ -1091,18 +1193,24 @@ function renderQuestions() {
     h('h1', { text: c.ready_for_plan ? 'The studio has everything it needs' : 'A few questions first' }),
     state.briefWords ? h('p', { class: 'quote', text: cut(state.briefWords, 400) }) : null,
     state.confirmedOn ? h('p', { class: 'note', 'data-tone': 'good', text: `This brief was confirmed on ${dateLabel(state.confirmedOn)}. To carry on, start a new chat in the studio folder and say "continue the video".` }) : null,
-    strip(c)));
+    stripEl(c)));
 
   if ((c.assumed || []).length) {
+    const locked = !!state.confirmedOn;
     out.push(h('section', { 'aria-labelledby': 'got-h' },
       h('h2', { id: 'got-h', text: 'What the studio understood' }),
       h('ul', { class: 'understood' }, c.assumed.map((a) => {
         const label = ASSUMED_LABEL[a.id] || stageLabel(a.id);
         let from = '';
         if (a.because && String(a.because) !== String(a.value)) from = a.said === false ? ` (${a.because})` : ` (you said "${a.because}")`;
-        return h('li', {}, `${label} `, h('b', { text: String(a.value) }), from);
-      }))));
+        const field = a.id === 'length_cap_seconds' ? 'length' : a.id;
+        const change = !locked && ANSWERABLE[field] ? h('button', { type: 'button', class: 'link', id: `chip-${field}`, 'aria-expanded': String(state.chipOpen === field), 'aria-label': `Change ${label.toLowerCase()}`, text: 'Change', onclick: () => { state.chipOpen = state.chipOpen === field ? null : field; render(); } }) : null;
+        return h('li', {}, `${label} `, h('b', { text: chipText(field, a.value) }), from, change);
+      })),
+      state.chipOpen && ANSWERABLE[state.chipOpen] ? chipEditor(state.chipOpen, (c.assumed.find((a) => (a.id === 'length_cap_seconds' ? 'length' : a.id) === state.chipOpen) || {}).value) : null,
+      noteEl('chips')));
   }
+  out.push(directorSection());
 
   if (c.brand_status === 'none') out.push(h('p', { class: 'note', 'data-tone': 'warm', text: 'There is no brand set up in your studio yet. Answer what you can: the brief is kept, and setting up your brand comes next.' }));
   if (c.brand_status === 'needs-setup') out.push(h('p', { class: 'note', 'data-tone': 'warm', text: `${brand} still needs setting up before the plan. ${BRAND_STEP} Your answers here are kept.` }));
@@ -1123,12 +1231,19 @@ function renderQuestions() {
   return out;
 }
 
-function strip(c) {
-  const items = c.preflight || [];
-  return h('div', {},
-    h('ol', { class: 'strip', 'aria-label': 'The eight things the studio needs' }, items.map((p) => h('li', { 'data-done': String(!!p.done), title: p.done ? String(p.known ?? '') : 'Still open' }, p.label))),
-    h('details', {}, h('summary', { text: 'What the studio knows so far' }),
-      h('dl', { class: 'known' }, items.flatMap((p) => [h('dt', { text: p.label }), h('dd', { text: p.done ? String(p.known ?? 'Known') : 'Still open' })]))));
+/** The eight things the studio needs, in the engine's own words (CHECKLIST_LABELS), done as brief_check says. */
+function stripEl(c) {
+  const items = c?.preflight || [];
+  const labels = state.lib.brief?.CHECKLIST_LABELS || items.map((p) => p.label);
+  return h('section', { class: 'strip-wrap', 'aria-labelledby': 'strip-h' },
+    h('h2', { id: 'strip-h', text: 'The eight things the studio needs' }),
+    h('ol', { class: 'strip', id: 'strip', role: 'list' }, labels.map((label, i) => {
+      const p = items[i];
+      const done = !!p?.done;
+      return h('li', { 'data-done': String(done), title: done ? String(p.known ?? '') : 'Still open' }, label, h('span', { class: 'sr-only', text: done ? ', known' : ', still open' }));
+    })),
+    c ? h('details', {}, h('summary', { text: 'What the studio knows so far' }),
+      h('dl', { class: 'known' }, items.flatMap((p, i) => [h('dt', { text: labels[i] || p.label }), h('dd', { text: p.done ? String(p.known ?? 'Known') : 'Still open' })]))) : null);
 }
 
 const pickLabel = (recommended, picked) => (picked ? (recommended ? 'Recommended, picked' : 'Picked') : (recommended ? 'Recommended' : ''));
@@ -1173,6 +1288,7 @@ function renderPlan() {
       h('ol', { class: 'outline' }, p.outline.map((s) => h('li', {},
         h('span', { class: 'n', text: String(s.n) }), h('span', { text: s.name }), h('span', { class: 'secs', text: `${s.from}–${s.to} s` }),
         (s.shows || []).length ? h('span', { class: 'shows', text: `Shows: ${s.shows.join('; ')}` }) : null)))) : null,
+    engineUsesEl(p.engine),
     kept.length ? h('details', {}, h('summary', { text: 'Kept in your own words' }), h('ul', { class: 'plan-lines small' }, kept.map((l) => h('li', { text: l })))) : null,
     state.confirmedOn ? h('section', {},
       h('p', { class: 'note', 'data-tone': 'good', text: `${CONFIRMED_NOTE} Confirmed on ${dateLabel(state.confirmedOn)}.` })) : h('section', {},
@@ -1361,8 +1477,11 @@ function availHTML(e, { line = true } = {}) {
 }
 function pickBtn(e, large = false) {
   const on = isPicked(e.id);
-  const label = large ? (on ? 'Picked: remove' : 'Pick this style') : (on ? 'Picked' : 'Pick');
-  return `<button class="sc-pick${large ? ' btn pick-lg' : ''}" type="button" data-action="pick" data-id="${esc(e.id)}" aria-pressed="${on}" aria-label="Pick ${esc(e.name)}"${state.libBusy === e.id ? ' data-state="loading"' : ''}>${label}</button>`;
+  const busy = state.libBusy === e.id ? ' data-state="loading"' : '';
+  // The drawer's big button says what it does ("Pick this style", "Picked: remove"), so its words are its name; the
+  // small card button keeps one name and carries its state in aria-pressed.
+  if (large) return `<button class="sc-pick btn pick-lg" type="button" data-action="pick" data-id="${esc(e.id)}" data-on="${on}"${busy}>${on ? 'Picked: remove' : 'Pick this style'}</button>`;
+  return `<button class="sc-pick" type="button" data-action="pick" data-id="${esc(e.id)}" aria-pressed="${on}" aria-label="Pick ${esc(e.name)}"${busy}>${on ? 'Picked' : 'Pick'}</button>`;
 }
 function noteHTML(id) {
   const n = state.libNote && state.libNote.id === id ? state.libNote : null;
@@ -1371,12 +1490,13 @@ function noteHTML(id) {
   return `<div class="clash" data-note="${esc(id)}" data-tone="${n.tone}" role="status"><span>${n.tone === 'warm' ? '<b>Not picked.</b> ' : ''}${esc(n.text)}</span>${undo}</div>`;
 }
 
-function cardHTML(e) {
+function cardHTML(e, reason = null) {
   return `<article class="sc" data-card="${esc(e.id)}" data-picked="${isPicked(e.id)}">
     <div class="sc-pv">${previewHTML(e, 'card')}</div>
     <div class="sc-body">
+      ${reason ? `<span class="card-tab">${esc(tabName(e.tab))}</span>` : ''}
       <h3 class="sc-name"><button class="sc-open" type="button" data-action="open" data-id="${esc(e.id)}">${esc(e.name)}</button></h3>
-      <p class="sc-line">${esc(e.line)}</p>
+      ${reason ? `<p class="reason">${esc(capFirst(String(reason)))}</p>` : `<p class="sc-line">${esc(e.line)}</p>`}
       <div class="meta">${marks(e)}</div>
       ${availHTML(e)}
     </div>
@@ -1420,7 +1540,15 @@ function stalePick(id) {
   const p = state.picks.find((x) => x.id === id);
   return p ? { id: p.id, tab: p.tab, name: p.name || p.id, family: null, stale: true, filters: {}, preview: {} } : null;
 }
+/** The reel's picks: a style that is not in the library shows as gone only when the studio said so or the library has
+ *  loaded; while it loads (or did not load) the pick is shown as it was saved. */
+function reelItems() {
+  return state.picks.map((p) => entryOf(p.id) || (p.stale || state.lib.status === 'ready'
+    ? stalePick(p.id)
+    : { id: p.id, tab: p.tab, name: p.name || 'A picked style', pending: true, stale: false, filters: {}, preview: {} })).filter(Boolean);
+}
 function reelFrameHTML(e) {
+  if (e.pending) return `<div class="frame" role="listitem"><div class="pv" aria-hidden="true"></div><span class="fname">${esc(e.name)}</span><button class="icon-btn" type="button" data-action="unpick" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>`;
   if (e.stale) return `<div class="frame" role="listitem"><div class="pv pv--words" aria-hidden="true"><div class="wave wave--none">${waveBars(e.id, true)}</div></div><span class="fname">${esc(e.name)}</span><span class="avail avail--mor">No longer in the library</span><button class="icon-btn" type="button" data-action="unpick" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>`;
   return `<div class="frame" role="listitem">${previewHTML(e, 'thumb')}<span class="fname">${esc(e.name)}</span>${availHTML(e, { line: false })}<button class="icon-btn" type="button" data-action="unpick" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>`;
 }
@@ -1490,8 +1618,11 @@ async function pickToggle(entry) {
     } else announce(on ? `${entry.name} added to your reel.` : `${entry.name} removed from your reel.`);
   } catch (e) {
     const x = explain(e, { isWrite: true });
+    if (kinOff) { // a swap never loses the earlier pick: put it back, here at least when the studio cannot be reached
+      const back = await savePick(kinEntry, true).then((r) => r.ok, () => false);
+      if (!back && !isPicked(kinEntry.id)) state.picks = [...state.picks, { tab: kinEntry.tab, id: kinEntry.id }];
+    }
     if (x.fallback) { enterNoHost(); return; }
-    if (kinOff) await savePick(kinEntry, true).catch(() => {}); // a swap never loses the earlier pick
     if (state.host === 'ready' && state.mcp && state.job) await recheck(); // the note says the page has checked again
     refusePick(entry, x.text);
   } finally {
@@ -1612,12 +1743,14 @@ function renderGrid(swap = true) {
 
 /** More cards as the end of the grid comes into view: a tab's cards are made on demand, not all at once. */
 let moreObserver = null;
+let moreRoot;
 function watchMore() {
   const s = $('#grid-more');
   if (moreObserver) moreObserver.disconnect();
   if (!s) return;
   if (typeof IntersectionObserver !== 'function') { appendCards(Infinity); return; }
-  moreObserver = new IntersectionObserver((items) => { if (items.some((i) => i.isIntersecting)) appendCards(CHUNK); }, { root: libScrollRoot(), rootMargin: '600px 0px' });
+  moreRoot = libScrollRoot();
+  moreObserver = new IntersectionObserver((items) => { if (items.some((i) => i.isIntersecting)) appendCards(CHUNK); }, { root: moreRoot, rootMargin: '600px 0px' });
   moreObserver.observe(s);
 }
 function appendCards(n) {
@@ -1651,7 +1784,7 @@ function clipObserverFor() {
       else if (!v.paused) stopClip(v);
     }
   }, { root, rootMargin: '300px 0px' });
-  $$('#libpanel video.clip[data-src]:not([data-thumb])').forEach((v) => clipObserver.observe(v));
+  $$('#library video.clip[data-src]:not([data-thumb])').forEach((v) => clipObserver.observe(v));
   return clipObserver;
 }
 /* Thumbnails (reel, pairs) sit outside the library pane, so they are watched against the window, and never play. */
@@ -1759,7 +1892,7 @@ function paintPicks() {
     if (!e) return;
     const on = isPicked(e.id);
     const large = b.classList.contains('pick-lg');
-    b.setAttribute('aria-pressed', String(on));
+    if (large) b.dataset.on = String(on); else b.setAttribute('aria-pressed', String(on));
     b.textContent = large ? (on ? 'Picked: remove' : 'Pick this style') : (on ? 'Picked' : 'Pick');
     if (state.libBusy === e.id) b.setAttribute('data-state', 'loading');
     else if (state.libNote?.tone === 'warm' && state.libNote.id === e.id) b.setAttribute('data-state', 'error');
@@ -1773,7 +1906,7 @@ function paintPicks() {
 
 function renderReel() {
   if (!canPaint) return;
-  const picks = state.picks.map((p) => entryOf(p.id) || stalePick(p.id)).filter(Boolean);
+  const picks = reelItems();
   const n = picks.length;
   const count = $('#reel-count');
   count.textContent = String(n);
@@ -1787,7 +1920,7 @@ function renderReel() {
     const held = state.host === 'ready' && !state.job ? ', saved with your brief when you start it' : state.host === 'none' && !state.savedId ? ', saved with your brief when you save it' : '';
     hint.textContent = n ? `${n} ${n === 1 ? 'pick' : 'picks'} across ${tabs} ${tabs === 1 ? 'tab' : 'tabs'}${held}` : 'No picks yet';
   }
-  $('#reel-peek').innerHTML = picks.filter((e) => !e.stale).slice(0, 6).map((e) => previewHTML(e, 'thumb')).join('');
+  $('#reel-peek').innerHTML = picks.filter((e) => !e.stale && !e.pending).slice(0, 6).map((e) => previewHTML(e, 'thumb')).join('');
   const body = $('#reel-body');
   const note = warm ? `<div class="clash" role="status"><span><b>${esc(entryOf(warm.id)?.name || 'That style')} was not picked.</b> ${esc(warm.text)}</span></div>` : '';
   if (!n) { body.innerHTML = `${note}<div class="empty"><strong>No picks yet</strong><span>Picking is optional. With no picks the studio chooses the styles; with picks, at least one of the three concepts uses each one as picked.</span></div>`; return; }
@@ -1916,6 +2049,8 @@ async function startLibrary() {
     state.lib.status = 'error';
   }
   paintLibrary();
+  render(); // the chips, the strip and the director need brief.mjs
+  refreshSuggestions();
 }
 
 function wireLibrary() {
@@ -1955,7 +2090,6 @@ function wireLibrary() {
   document.addEventListener('input', (ev) => {
     if (ev.target.id === 'lib-q') { state.libView.query = ev.target.value; clearTimeout(wireLibrary.q); wireLibrary.q = setTimeout(() => renderGrid(false), 200); }
     if (ev.target.id === 'pal-q') { pal.idx = 0; renderPalette(); }
-    if (ev.target.id === 'brief-words') state.understood = understoodOf(ev.target.value);
   });
   document.addEventListener('change', (ev) => {
     const f = ev.target.dataset && ev.target.dataset.filter;
@@ -1981,9 +2115,9 @@ function wireLibrary() {
     if (ev.key === 'Escape' && state.reelOpen && !$('#drawer').open && !$('#palette').open) setReel(false);
   });
   // Previews play on hover or keyboard focus, one card at a time.
-  document.addEventListener('mouseover', (ev) => { const c = ev.target.closest ? ev.target.closest('#libpanel .sc') : null; if (c !== liveCard) { if (c) cardEnter(c); else cardLeave(liveCard); } });
-  document.addEventListener('focusin', (ev) => { const c = ev.target.closest ? ev.target.closest('#libpanel .sc') : null; if (c) cardEnter(c); });
-  document.addEventListener('focusout', (ev) => { const c = ev.target.closest ? ev.target.closest('#libpanel .sc') : null; if (c && !c.contains(ev.relatedTarget)) cardLeave(c); });
+  document.addEventListener('mouseover', (ev) => { const c = ev.target.closest ? ev.target.closest('#library .sc') : null; if (c !== liveCard) { if (c) cardEnter(c); else cardLeave(liveCard); } });
+  document.addEventListener('focusin', (ev) => { const c = ev.target.closest ? ev.target.closest('#library .sc') : null; if (c) cardEnter(c); });
+  document.addEventListener('focusout', (ev) => { const c = ev.target.closest ? ev.target.closest('#library .sc') : null; if (c && !c.contains(ev.relatedTarget)) cardLeave(c); });
   $('#pal-list').addEventListener('click', (ev) => { const li = ev.target.closest('li[data-id]'); if (li) palPick(li.dataset.id); });
   $('#palette').addEventListener('click', (ev) => { if (ev.target === ev.currentTarget) ev.currentTarget.close(); });
   $('#drawer').addEventListener('cancel', (ev) => { ev.preventDefault(); closeDrawer(); });
@@ -1991,10 +2125,15 @@ function wireLibrary() {
   // The library pane scrolls by itself on wide screens and with the page on narrow ones: clips are watched against it.
   // When the width crosses that line, the clip and more-cards observers are made again against the right root.
   const reroot = () => {
-    if (!clipObserver || clipRoot === libScrollRoot()) return;
-    clipObserver.disconnect(); clipObserver = null;
-    $$('#libpanel video.clip[data-watched]').forEach((v) => { v.removeAttribute('data-watched'); });
-    watchClips($('#libpanel')); watchMore();
+    const root = libScrollRoot();
+    const clipsOff = clipObserver && clipRoot !== root;
+    const moreOff = moreObserver && moreRoot !== root;
+    if (clipsOff) {
+      clipObserver.disconnect(); clipObserver = null;
+      $$('#library video.clip[data-watched]:not([data-thumb])').forEach((v) => { v.removeAttribute('data-watched'); });
+      watchClips($('#library'));
+    }
+    if (moreOff) watchMore();
   };
   if (window.matchMedia) window.matchMedia('(min-width: 64rem)').addEventListener('change', reroot);
   window.addEventListener('resize', () => { clearTimeout(wireLibrary.r); wireLibrary.r = setTimeout(reroot, 150); });
@@ -2002,6 +2141,383 @@ function wireLibrary() {
 }
 
 if (canPaint) { wireLibrary(); startLibrary(); }
+
+/* ---------- The brief, part 2: chips as you type, the director's brief, suggestions and the engine block ---------- */
+// Reading the words is brief.mjs understood(); the director's brief is checked by brief.mjs checkDirectorBrief();
+// suggestions are suggest.mjs suggest() or the connector's styles_suggest. None of that is re-made here.
+
+const ENGINE_USES = document.getElementById('engine-uses');
+const CHIP_FIELDS = ['size', 'kind', 'length', 'energy', 'voice', 'audience'];
+const CHIP_LABEL = { size: 'Size', kind: 'Video type', length: 'Length', energy: 'Energy', voice: 'Voice', audience: 'For' };
+const ANSWERABLE = { size: 'size', kind: 'kind', voice: 'voice', length: 'length' }; // brief_answer question ids
+const ENGINE_GROUPS = [['ui', 'UI library'], ['motion', 'Motion library'], ['sound', 'Sound kit'], ['skills', 'Built-in skills']];
+const STATE_LABEL = { proposed: 'To review', kept: 'Kept', changed: 'Changed by you', swapped: 'Swapped' };
+const TAKE_FAILED = 'That take did not come out right. Try again.';
+const freshDir = () => ({ status: 'idle', words: '', parts: {}, engine: [], states: {}, partNotes: {}, editing: null, busyPart: null, saving: false, kept: false, keptEngine: [], settled: false });
+
+Object.assign(state, {
+  heard: {},               // understood(words), as typed
+  chipEdits: {},           // chips the customer changed before the brief existed
+  chipOpen: null,          // the chip being changed
+  dir: freshDir(),         // the director's brief
+  directorNotes: null,     // styles/director.md, read once
+  suggestions: [],         // [{ id, reason }]
+});
+
+const wordCount = (t) => String(t || '').trim().split(/\s+/).filter(Boolean).length;
+const labelOf = (v) => (state.lib.brief?.LABELS?.[v] ?? String(v));
+const currentWords = () => (state.job ? (state.briefWords || state.words) : state.words);
+const directorParts = () => state.lib.brief?.DIRECTOR_PARTS || [];
+const partLabel = (part) => state.lib.brief?.LABELS?.[part] || capFirst(part.replace(/_/g, ' '));
+const chipText = (f, v) => (f === 'length' ? `${v} s` : f === 'energy' ? capFirst(String(v)) : f === 'audience' ? String(v) : labelOf(v));
+
+/* Chips */
+
+let readTimer = null;
+function scheduleRead() {
+  clearTimeout(readTimer);
+  const r = document.getElementById('reading'); if (r && r.classList) r.classList.add('is-on');
+  readTimer = setTimeout(hearWords, 250);
+}
+/** What the words say (brief.mjs understood), with the chips the customer changed laid over it. */
+function hearWords() {
+  state.heard = understoodOf(state.words);
+  state.understood = { ...state.heard, ...state.chipEdits };
+  repaintUnderstood();
+  refreshSuggestionsSoon();
+}
+function repaintUnderstood() {
+  const wrap = document.getElementById('understood-wrap');
+  if (wrap && typeof wrap.replaceWith === 'function') wrap.replaceWith(understoodSection());
+}
+function chipValues(field) {
+  const b = state.lib.brief || {};
+  return { size: b.SIZES, kind: b.KINDS, energy: b.ENERGIES, voice: b.VOICES }[field] || null;
+}
+function understoodSection() {
+  const u = state.understood || {};
+  const fields = CHIP_FIELDS.filter((f) => u[f] !== undefined && u[f] !== null && u[f] !== '');
+  return h('section', { id: 'understood-wrap', 'aria-labelledby': 'und-h', hidden: !wordCount(state.words) || null },
+    h('div', { class: 'understood-head' }, h('h2', { id: 'und-h', text: 'What the studio understood' }), h('span', { class: 'reading', id: 'reading', 'aria-hidden': 'true', text: 'Reading…' })),
+    fields.length
+      ? h('ul', { class: 'chips', id: 'understood', role: 'list', 'aria-live': 'polite' }, fields.map((f) => h('li', {},
+        h('button', { type: 'button', class: 'chip-u', id: `chip-${f}`, 'data-changed': String(Object.hasOwn(state.chipEdits, f)), 'aria-expanded': String(state.chipOpen === f), 'aria-label': `${CHIP_LABEL[f]}: ${chipText(f, u[f])}. Change it`, onclick: () => { state.chipOpen = state.chipOpen === f ? null : f; repaintUnderstood(); } },
+          h('span', { class: 'k', text: CHIP_LABEL[f] }), h('b', { text: chipText(f, u[f]) })))))
+      : h('p', { class: 'small muted', id: 'understood', text: 'Say the size, the kind of film, how long, the energy or who it is for, and it shows here.' }),
+    state.chipOpen && fields.includes(state.chipOpen) ? chipEditor(state.chipOpen, u[state.chipOpen]) : null);
+}
+/** Change one chip: a choice for size, kind, energy and voice; a box for length and audience. */
+function chipEditor(field, current) {
+  const values = chipValues(field);
+  const close = h('button', { type: 'button', class: 'btn btn--sm btn--quiet', text: 'Cancel', onclick: () => { state.chipOpen = null; state.job ? render() : repaintUnderstood(); } });
+  if (values) {
+    return h('div', { class: 'chip-edit', role: 'group', 'aria-label': `Change ${CHIP_LABEL[field].toLowerCase()}` },
+      h('div', { class: 'row' }, values.filter((v) => !(field === 'kind' && v === 'propose')).map((v) => h('button', { type: 'button', class: 'seg', 'aria-pressed': String(v === current), text: field === 'energy' ? capFirst(v) : labelOf(v), onclick: () => changeChip(field, v) }))),
+      h('div', { class: 'row' }, close));
+  }
+  const input = h('input', { type: field === 'length' ? 'number' : 'text', id: `chip-edit-${field}`, min: field === 'length' ? '5' : null, max: field === 'length' ? '180' : null, 'aria-label': `New ${CHIP_LABEL[field].toLowerCase()}`, class: 'text' });
+  input.value = current == null ? '' : String(current);
+  return h('div', { class: 'chip-edit' },
+    h('label', { class: 'label', for: `chip-edit-${field}`, text: field === 'length' ? 'Length in seconds' : 'Who it is for' }), input,
+    h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn btn--sm btn--primary', text: 'Save change', onclick: () => { if (String(input.value).trim()) changeChip(field, input.value); } }), close));
+}
+/** A changed chip. Before the brief exists it steers the suggestions and the director, and is saved when the brief
+ *  starts; after, size, kind, voice and length are answers to the brief (brief_answer). */
+async function changeChip(field, value) {
+  state.chipOpen = null;
+  const v = field === 'length' ? Number(String(value).replace(/\D+$/, '')) : String(value).trim();
+  if (state.job && state.host === 'ready' && state.mcp && ANSWERABLE[field]) {
+    setNote('chips', null);
+    try {
+      const reply = await write(() => connector.answer({ job: state.job, question: ANSWERABLE[field], value: field === 'length' ? String(v) : v }));
+      if (!reply.recorded) setNote('chips', { tone: 'warm', text: reply.reason || 'That change was not saved.' });
+      applyCheck(reply, { keepView: true });
+    } catch (e) { await failed(e, 'chips', { isWrite: true }); }
+    render(); refreshSuggestionsSoon();
+    return;
+  }
+  state.chipEdits = { ...state.chipEdits, [field]: v };
+  state.understood = { ...state.heard, ...state.chipEdits };
+  repaintUnderstood(); refreshSuggestionsSoon();
+}
+/** Changed chips go to the new brief as answers, where the brief has a question for them. */
+async function sendHeldChips() {
+  const edits = Object.entries(state.chipEdits).filter(([f]) => ANSWERABLE[f]);
+  for (const [f, v] of edits) {
+    try { await write(() => connector.answer({ job: state.job, question: ANSWERABLE[f], value: f === 'length' ? String(v) : v })); } catch { /* the question is asked again below */ }
+  }
+  state.chipEdits = {};
+  if (edits.length) await recheck();
+}
+
+/* The director's brief, made with the page's sample capability */
+
+async function directorNotes() {
+  if (state.directorNotes) return state.directorNotes;
+  const r = await fetch('styles/director.md');
+  if (!r.ok) throw new Error('The director notes could not be read');
+  state.directorNotes = await r.text();
+  return state.directorNotes;
+}
+async function askClaude(prompt) {
+  const sm = state.sample;
+  if (!sm) throw Object.assign(new Error('No sample'), { code: 'not_granted' });
+  if (typeof sm.json === 'function') return sm.json(prompt);
+  const text = await sm.text(prompt);
+  const m = /\{[\s\S]*\}/.exec(String(text || ''));
+  return JSON.parse(m ? m[0] : 'null');
+}
+const pickedEntries = () => state.picks.map((p) => entryOf(p.id)).filter(Boolean);
+const pickedEngine = () => [...new Set(pickedEntries().flatMap((e) => e.engine_names || []))];
+// The names the library's styles use that read as engine names (kebab-case, paths, prefixed ids, CamelCase). Plain
+// words such as "camera" or "Button" are also names in the registry, but in a director's brief they are just words.
+const libraryEngine = () => [...new Set(state.lib.all.flatMap((e) => e.engine_names || []))].filter((n) => /[-/:]|[a-z][A-Z]/.test(n));
+function energyNow() {
+  return state.understood?.energy || state.check?.assumed?.find((a) => a.id === 'energy')?.value || null;
+}
+function studioSummary() {
+  const c = state.ctx || {};
+  return { brands: (c.brands || []).map((b) => ({ name: b.name, last_films: (b.last_films || []).slice(0, 3).map((f) => ({ name: f.name, look: f.look })) })), saved_styles: (c.styles || []).map((x) => x.ref) };
+}
+function directorPrompt(notes, words) {
+  const picks = pickedEntries();
+  return [
+    notes, '', '## This film',
+    `The customer's words: ${JSON.stringify(words)}`,
+    `What the studio understood: ${JSON.stringify(state.understood || {})}`,
+    `Energy: ${energyNow() || 'not said: choose from the words'}`,
+    `Picked styles:${picks.length ? '' : ' none'}`,
+    ...picks.map((e) => `- ${e.name} (${tabName(e.tab)}):\n${promptText(e)}\n  engine: ${(e.engine_names || []).join(', ') || 'none'}`),
+    `The studio: ${JSON.stringify(studioSummary())}`,
+  ].join('\n');
+}
+const cleanBeats = (b) => (Array.isArray(b) ? b.map((x) => ({ at_s: Number(x?.at_s), what: String(x?.what ?? '') })) : b);
+function partsOf(out) {
+  const o = out && typeof out === 'object' && !Array.isArray(out) ? out : {};
+  return Object.fromEntries(directorParts().filter((k) => Object.hasOwn(o, k)).map((k) => [k, k === 'beats' ? cleanBeats(o[k]) : o[k]]));
+}
+/** brief.mjs checkDirectorBrief, with the energy, the names the library uses, and the picks' names. */
+function checkParts(parts) {
+  const rules = state.lib.brief;
+  if (!rules || typeof rules.checkDirectorBrief !== 'function') return { ok: false, reason: 'The page cannot check the brief here.', part: null };
+  return rules.checkDirectorBrief(parts, { energy: energyNow(), names: libraryEngine(), allowed: pickedEngine() });
+}
+
+async function sharpen() {
+  const words = currentWords().trim();
+  if (wordCount(words) < 3) { setNote('sharpen', { tone: 'warm', text: 'Write a sentence or two about the video first.' }); render(); return; }
+  setNote('sharpen', null);
+  state.dir = { ...freshDir(), status: 'loading', words };
+  render();
+  try {
+    const out = await askClaude(directorPrompt(await directorNotes(), words));
+    const parts = partsOf(out);
+    const r = checkParts(parts);
+    if (!r.ok) throw new Error(r.reason);
+    const engine = Array.isArray(out.engine) ? out.engine.filter((n) => typeof n === 'string') : [];
+    state.dir = { ...freshDir(), status: 'ready', words, parts, engine, states: Object.fromEntries(directorParts().map((k) => [k, 'proposed'])) };
+    announce("The director's brief is ready.");
+  } catch (e) {
+    sampleFailed(e);
+    state.dir = { ...freshDir(), status: 'error', words };
+  }
+  render();
+}
+
+function partKeep(part) {
+  const d = state.dir;
+  d.states[part] = d.states[part] === 'kept' ? 'proposed' : 'kept';
+  d.editing = null; d.settled = true; render();
+}
+const beatsText = (beats) => (beats || []).map((b) => `${b.at_s} s: ${b.what}`).join('\n');
+function beatsFrom(text) {
+  const out = [];
+  for (const line of String(text).split('\n').map((l) => l.trim()).filter(Boolean)) {
+    const m = /^(\d+(?:\.\d+)?)\s*s?\s*[:,]\s*(.+)$/.exec(line);
+    if (!m) return null;
+    out.push({ at_s: Number(m[1]), what: m[2].trim() });
+  }
+  return out;
+}
+/** The customer's own wording for one part, checked like the rest before it is taken. */
+function partChange(part, text) {
+  const d = state.dir;
+  const value = part === 'beats' ? beatsFrom(text) : String(text).trim();
+  const next = { ...d.parts, [part]: value };
+  const r = value ? checkParts(next) : { ok: false, reason: part === 'beats' ? 'Write each beat on its own line, as "3 s: what happens"' : `${partLabel(part)} is missing` };
+  if (!r.ok) { d.partNotes = { ...d.partNotes, [part]: r.reason }; render(); return; }
+  d.parts = next; d.states[part] = 'changed'; d.editing = null; d.settled = true;
+  d.partNotes = { ...d.partNotes, [part]: null };
+  render();
+}
+/** Another take of one part only: a new sample call for that part, checked with the rest before it is shown. */
+async function swapPart(part) {
+  const d = state.dir;
+  if (d.status !== 'ready' || d.busyPart) return;
+  d.busyPart = part; d.editing = null; d.settled = true;
+  d.partNotes = { ...d.partNotes, [part]: null };
+  render();
+  try {
+    const prompt = [directorPrompt(await directorNotes(), d.words), '', '## Another take',
+      `The brief as it stands: ${JSON.stringify(d.parts)}`,
+      `Write one different take of the part "${part}" only. Keep the other parts as they are. Reply with JSON only: {"${part}": ...}`].join('\n');
+    const out = await askClaude(prompt);
+    const has = out && typeof out === 'object' && Object.hasOwn(out, part);
+    const next = { ...d.parts, [part]: has ? (part === 'beats' ? cleanBeats(out[part]) : out[part]) : undefined };
+    if (!has || !checkParts(next).ok) throw new Error('bad take');
+    d.parts = next; d.states[part] = 'swapped';
+  } catch (e) {
+    sampleFailed(e);
+    d.partNotes = { ...d.partNotes, [part]: TAKE_FAILED };
+  }
+  d.busyPart = null;
+  render();
+}
+/** "Keep this brief": saved through brief_direct with engine names only from the picks. Before the brief exists it is
+ *  held and saved when the brief starts; without the studio it is saved with the brief on this page. */
+async function keepDirectorBrief() {
+  const d = state.dir;
+  if (d.status !== 'ready') return;
+  const r = checkParts(d.parts);
+  if (!r.ok) { setNote('director-keep', { tone: 'warm', text: r.reason }); render(); return; }
+  const allowed = new Set(pickedEngine());
+  const engine = d.engine.filter((n) => allowed.has(n));
+  setNote('director-keep', null);
+  d.settled = true;
+  if (state.host === 'ready' && state.mcp && state.job) {
+    d.saving = true; render();
+    try {
+      const reply = await write(() => connector.direct({ job: state.job, parts: d.parts, engine }));
+      if (reply.kept) { d.kept = 'saved'; setNote('director-keep', { tone: 'good', text: 'Kept with your brief. The studio reads it as your direction for the three concepts.' }); }
+      else { d.kept = false; setNote('director-keep', { tone: 'warm', text: reply.reason || 'The studio did not keep it. Try again.' }); }
+      applyCheck(reply, { keepView: true });
+    } catch (e) { await failed(e, 'director-keep', { isWrite: true }); }
+    d.saving = false; render();
+    return;
+  }
+  d.kept = 'held'; d.keptEngine = engine;
+  if (state.host === 'none' && state.db && state.savedId) {
+    try { await updateSavedBrief({ director_brief: { parts: d.parts, engine } }); } catch { setNote('director-keep', { tone: 'warm', text: 'It could not be saved on this page. Copy your brief into a new chat in the studio folder.' }); render(); return; }
+  }
+  const where = state.host === 'none' ? (state.savedId ? 'Kept with the brief saved on this page.' : 'Kept. It is saved with your brief when you save it.') : 'Kept. It is saved with your brief when you start it.';
+  setNote('director-keep', { tone: 'good', text: where });
+  render();
+}
+
+function directorSection() {
+  if (!state.sample || !directorParts().length) return null;
+  const d = state.dir;
+  const label = d.status === 'loading' ? 'Directing…' : d.status === 'ready' ? 'Sharpen again' : d.status === 'error' ? 'Try again' : 'Sharpen with the director';
+  return h('section', { class: 'director', 'aria-labelledby': 'dir-h' },
+    h('div', { class: 'stack-xs' }, h('h2', { id: 'dir-h', text: "The director's brief" }),
+      h('p', { class: 'small muted', text: 'Your words stay as they are. The director writes a shot-by-shot brief beside them: keep, change or swap each part.' })),
+    state.confirmedOn ? null : h('div', { class: 'direct-row' }, h('button', { type: 'button', class: 'btn btn--direct', id: 'sharpen', disabled: d.status === 'loading' || null, text: label, onclick: sharpen })),
+    noteEl('sharpen'),
+    h('div', { id: 'director', 'aria-live': 'polite' }, directorBody()));
+}
+function directorBody() {
+  const d = state.dir;
+  if (d.status === 'loading') {
+    return h('div', { class: 'thinking', 'aria-busy': 'true' }, h('p', { class: 'label', text: 'The director is working through your brief' }),
+      h('ol', {}, ['Reading your words', 'Timing the beats to the energy', 'Following your picked styles', 'Writing camera, motion, type and sound'].map((t) => h('li', { text: t }))));
+  }
+  if (d.status === 'error') return h('div', { class: 'note', 'data-tone': 'warm', role: 'alert' }, h('strong', { text: TAKE_FAILED }), h('span', { text: 'Your words are kept as they are.' }));
+  if (d.status !== 'ready') {
+    const kept = state.check?.director_brief;
+    return kept ? h('p', { class: 'note', 'data-tone': 'good', text: `A director's brief is kept with this brief: ${kept.logline || ''}` }) : null;
+  }
+  const n = (s) => directorParts().filter((k) => d.states[k] === s).length;
+  const words = currentWords().trim();
+  return h('article', { class: `dbrief${d.settled ? ' is-settled' : ''}` },
+    h('div', { class: 'dbrief-head' },
+      h('p', { class: 'small muted', text: `${directorParts().length} parts: ${n('kept')} kept, ${n('changed')} changed, ${n('swapped')} swapped, ${n('proposed')} to review.` }),
+      h('p', { class: 'label', text: 'Your words' }), h('p', { class: 'yours', text: d.words }),
+      words && words !== d.words ? h('p', { class: 'note', 'data-tone': 'warm', text: 'Your words changed since this brief. Sharpen again to bring it in line with them.' }) : null),
+    directorParts().map((part) => partEl(part)),
+    state.confirmedOn ? null : h('div', { class: 'dbrief-foot' },
+      h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn btn--primary', id: 'keep-director', disabled: d.saving || null, text: d.saving ? 'Keeping…' : d.kept ? 'Keep this brief again' : 'Keep this brief', onclick: keepDirectorBrief })),
+      noteEl('director-keep')));
+}
+function partEl(part) {
+  const d = state.dir;
+  const title = partLabel(part);
+  const v = d.parts[part];
+  const busy = d.busyPart === part;
+  let body;
+  if (d.editing === part) {
+    const box = h('textarea', { id: `ed-${part}`, 'aria-label': `Change ${title.toLowerCase()}` });
+    box.value = part === 'beats' ? beatsText(v) : String(v ?? '');
+    body = h('div', { class: 'edit-box' }, box,
+      part === 'beats' ? h('p', { class: 'small muted', text: 'One beat per line, as "3 s: what happens".' }) : null,
+      h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn btn--sm btn--primary', text: 'Save change', onclick: () => partChange(part, box.value) }),
+        h('button', { type: 'button', class: 'btn btn--sm btn--quiet', text: 'Cancel', onclick: () => { d.editing = null; render(); } })));
+  } else if (part === 'beats') {
+    body = h('ol', { class: 'beats', role: 'list' }, (v || []).map((b) => h('li', {}, h('span', { class: 't', text: `${b.at_s} s` }), h('span', { text: b.what }))));
+  } else body = h('p', { class: 'ptext', text: String(v ?? '') });
+  return h('div', { class: 'dpart', 'data-part': part },
+    h('div', { class: 'dpart-head' },
+      h('div', { class: 'dpart-title' }, h('h3', { text: title }), h('span', { class: 'pstate', 'data-s': d.states[part], text: busy ? 'Writing another take…' : STATE_LABEL[d.states[part]] || '' })),
+      state.confirmedOn ? null : h('div', { class: 'dpart-acts', role: 'group', 'aria-label': title },
+        h('button', { type: 'button', class: 'seg', id: `keep-${part}`, 'aria-pressed': String(d.states[part] === 'kept'), text: 'Keep', onclick: () => partKeep(part) }),
+        h('button', { type: 'button', class: 'seg', id: `change-${part}`, 'aria-expanded': String(d.editing === part), text: 'Change', onclick: () => { d.editing = d.editing === part ? null : part; d.settled = true; render(); } }),
+        h('button', { type: 'button', class: 'seg', id: `swap-${part}`, disabled: !!d.busyPart || null, 'aria-label': `Swap ${title.toLowerCase()} for another take`, text: 'Swap', onclick: () => swapPart(part) }))),
+    body,
+    d.partNotes[part] ? h('p', { class: 'note', 'data-tone': 'warm', role: 'status', text: d.partNotes[part] }) : null);
+}
+
+/* What the engine will use: the plan's engine groups, the one place engine names are shown. */
+function engineUsesEl(engine) {
+  const groups = ENGINE_GROUPS.filter(([k]) => Array.isArray(engine?.[k]) && engine[k].length);
+  if (!groups.length) return null;
+  const el = ENGINE_USES || h('section', { class: 'engine-uses', id: 'engine-uses', 'aria-labelledby': 'eu-h' });
+  el.hidden = false;
+  el.replaceChildren(
+    h('h2', { class: 'h3', id: 'eu-h', text: 'What the engine will use' }),
+    h('p', { class: 'small muted', text: "Every name below already exists in your studio's libraries." }),
+    h('div', { class: 'engine' }, groups.map(([k, label]) => h('div', { class: 'eng' },
+      h('h3', {}, label, h('span', { text: String(engine[k].length) })),
+      h('ul', {}, engine[k].map((n) => h('li', { text: String(n) })))))));
+  return el;
+}
+
+/* Suggested for this brief: styles_suggest when connected (it adds the studio's memory), else suggest() here. */
+let sugTimer = null;
+let sugSeq = 0;
+function refreshSuggestionsSoon() {
+  if (!canPaint) return;
+  clearTimeout(sugTimer);
+  sugTimer = setTimeout(() => { refreshSuggestions(); }, 400);
+}
+async function refreshSuggestions() {
+  const text = currentWords().trim();
+  const understood = state.understood || {};
+  const seq = ++sugSeq;
+  let list = null;
+  if (text) {
+    if (state.host === 'ready' && state.mcp) {
+      try {
+        const r = await read(() => connector.suggest({ text, understood, ...(state.job ? { job: state.job } : {}) }));
+        if (Array.isArray(r?.suggestions)) list = r.suggestions.map((x) => ({ id: x.id, reason: x.reason }));
+      } catch { list = null; }
+    }
+    if (!list && state.lib.status === 'ready' && state.lib.suggest) {
+      list = state.lib.suggest.suggest(state.lib.all, { text, understood, picked: state.picks.map((p) => p.id), n: 6 }).map((x) => ({ id: x.id, reason: x.reason }));
+    }
+  }
+  if (seq !== sugSeq) return;
+  state.suggestions = list || [];
+  paintSuggest();
+}
+function paintSuggest() {
+  if (!canPaint) return;
+  const el = $('#suggest');
+  el.hidden = false;
+  const list = state.suggestions.map((x) => ({ e: entryOf(x.id), reason: x.reason })).filter((x) => x.e);
+  el.innerHTML = `<h3 class="h3" id="sug-h">Suggested for this brief</h3>${list.length
+    ? `<div class="suggest-grid">${list.map((x) => cardHTML(x.e, x.reason)).join('')}</div>`
+    : `<div class="empty"><strong>Nothing to suggest yet</strong><span>${state.lib.status === 'ready' ? 'Write a line about your video and the studio points at styles that fit it.' : 'The suggestions come once the library has loaded.'}</span></div>`}`;
+  watchClips(el);
+}
 
 /* ---------- Start: render first, then light up what this view can use ---------- */
 

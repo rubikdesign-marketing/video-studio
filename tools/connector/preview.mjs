@@ -5,7 +5,8 @@
 // The page comes from the dist folder when it has one (else studio/brief-desk/index.html), and the page's supporting
 // files (styles/, previews/, lib/) are served from the dist folder by relative path, as the published page loads them.
 // It never picks a studio by itself: the handlers write briefs, so the studio is named or it is a scratch one.
-// use('mcp') posts to /call, which runs the real connector handlers for that studio; use('sample') is null; use('db')
+// use('mcp') posts to /call, which runs the real connector handlers for that studio; use('sample') is null, or with
+// ?sample=1 a stand-in that answers the director's brief with a canned take (and one part when asked); use('db')
 // keeps documents in memory. Open with ?nohost=1 to see the page as it is outside the app (every call:
 // server_not_connected). Binds 127.0.0.1 only, and answers only its own Host (127.0.0.1 or localhost with its port),
 // JSON posts to /call, and no foreign Origin. --port 0 picks a free port. node: modules only.
@@ -29,7 +30,7 @@ const DIST = path.resolve(argOf('--dist', path.join(STUDIO, 'studio', 'brief-des
 /** A throwaway studio: the brief and job templates, the frameworks, and one brand (acme) with an approved discovery. */
 function scratchStudio() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'brief-preview-'));
-  for (const rel of ['templates/brief.json', 'templates/job.json', 'library/structure/frameworks.json']) {
+  for (const rel of ['templates/brief.json', 'templates/job.json', 'library/structure/frameworks.json', 'library/motion/index.json', 'library/registry.json'].filter((f) => fs.existsSync(path.join(STUDIO, f)))) {
     fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
     fs.copyFileSync(path.join(STUDIO, rel), path.join(dir, rel));
   }
@@ -62,6 +63,40 @@ const handlers = makeHandlers(root);
 const STUB = `<script>
 (() => {
   const nohost = new URLSearchParams(location.search).has('nohost');
+  const withSample = new URLSearchParams(location.search).has('sample');
+  // A canned director: a full take in plain words, or another take of the one part a prompt asks for. Engine names
+  // come only from the picks' "engine:" lines in the prompt.
+  let takes = 0;
+  const sample = {
+    async json(prompt) {
+      await new Promise((r) => setTimeout(r, 600));
+      takes += 1;
+      const one = /Write one different take of the part "([a-z_]+)" only/.exec(prompt);
+      const alt = {
+        logline: 'One click turns a messy week of numbers into a report the client opens first',
+        first_three_seconds: 'A cluttered desk of numbers, then everything clears to one bright button',
+        camera: 'A locked wide view of the whole screen, then one gentle move in on the click',
+        motion: 'Panels slide in from the right and settle, one at a time',
+        type: 'Two short lines, each held long enough to read twice',
+        sound: 'A quiet bed with one soft tap on the click',
+        ending: 'The client report sits on screen with the logo and one line to try it',
+        beats: [{ at_s: 0, what: 'The desk of numbers' }, { at_s: 4, what: 'Everything clears' }, { at_s: 9, what: 'The report opens' }, { at_s: 15, what: 'Logo and line' }],
+      };
+      if (one) return { [one[1]]: takes % 3 === 0 ? '' : alt[one[1]] };
+      const engine = [...prompt.matchAll(/^\\s+engine: (.+)$/gm)].flatMap((m) => m[1].split(', ')).filter((n) => n !== 'none').slice(0, 4);
+      return {
+        logline: 'A calm look at how one click sends the client report, for agency owners',
+        first_three_seconds: 'The dashboard is already on screen and the export button glows softly',
+        beats: [{ at_s: 0, what: 'The dashboard settles' }, { at_s: 3, what: 'The pointer moves to export' }, { at_s: 7, what: 'One click, the report builds' }, { at_s: 12, what: 'The report lands in the inbox' }, { at_s: 17, what: 'Logo and one line' }],
+        camera: 'One continuous view of the product, easing in before each click so the part in use fills most of the frame',
+        motion: 'Soft arrivals that settle without a bounce, with a short rest after each step',
+        type: 'One plain line at a time, at the top, held for two seconds',
+        sound: 'A warm, quiet bed with a soft tap on each click',
+        ending: 'The finished report rests on screen with the logo, held still for a beat',
+        engine,
+      };
+    },
+  };
   const later = (v) => new Promise((r) => setTimeout(() => r(v), 150));
   const fail = (code, message) => Object.assign(new Error(message), { code });
   const mcp = {
@@ -104,7 +139,7 @@ const STUB = `<script>
     },
   };
   window.__previewDocs = docs;
-  window.claude = { use: (name) => later(name === 'mcp' ? mcp : name === 'db' ? db : null) };
+  window.claude = { use: (name) => later(name === 'mcp' ? mcp : name === 'db' ? db : name === 'sample' && withSample ? sample : null) };
 })();
 </script>
 `;

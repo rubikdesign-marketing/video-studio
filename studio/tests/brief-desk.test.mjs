@@ -17,9 +17,7 @@ test('brief page: calls only the connector tools that exist, and declares them a
   const html = fs.readFileSync(PAGE, 'utf8');
   const caps = JSON.parse(fs.readFileSync(CAPS, 'utf8'));
   const called = [...html.matchAll(/callTool\(\s*HOST\s*,\s*'([a-z_]+)'/g)].map((m) => m[1]);
-  // Task 14 restores exact equality here once the page calls brief_pick, brief_direct and styles_suggest.
-  const names = new Set(TOOLS.map((t) => t.name));
-  assert.deepEqual([...new Set(called)].filter((n) => !names.has(n)), []);
+  assert.deepEqual([...new Set(called)].sort(), TOOLS.map((t) => t.name).sort());
   assert.deepEqual(caps.mcp.servers[0].tools.sort(), TOOLS.map((t) => t.name).sort());
   assert.match(html, /const HOST = 'host:damex-engine'/);
 });
@@ -449,4 +447,212 @@ test('page: a view change scrolls the brief pane, not only the window, when the 
   p.run("const byId = document.getElementById; document.getElementById = (id) => (id === 'brief' ? pane : byId(id)); window.getComputedStyle = () => ({ overflowY: 'auto' });");
   p.run('toTop()');
   assert.equal(p.context.pane.scrollTop, 0);
+});
+
+/* ---------- Part 2: the opening, the director's brief, suggestions and the engine block ---------- */
+
+const GOOD_TAKE = {
+  logline: 'A calm look at one export click for agency owners',
+  first_three_seconds: 'The board fades in and the export button glows softly',
+  beats: [{ at_s: 0, what: 'The board settles' }, { at_s: 3, what: 'The pointer clicks export' }, { at_s: 6, what: 'The report lands' }],
+  camera: 'A slow push toward the button, then it holds',
+  motion: 'Soft arrivals that settle without a bounce',
+  type: 'One plain line at a time, held for two seconds',
+  sound: 'A soft tap on the click over a quiet bed',
+  ending: 'The finished report rests on screen with the logo',
+};
+
+test('page: imports understood and suggest from ./lib/ and defines no copy of them', () => {
+  const html = fs.readFileSync(PAGE, 'utf8');
+  assert.match(html, /import\('\.\/lib\/brief\.mjs'\)/);
+  assert.match(html, /import\('\.\/lib\/suggest\.mjs'\)/);
+  assert.match(html, /\.understood\(/);
+  assert.match(html, /\.suggest\(/);
+  assert.match(html, /\.checkDirectorBrief\(/);
+  assert.doesNotMatch(html, /function (understood|suggest|rank|reasonFor|readWords|checkDirectorBrief)\(/);
+  assert.doesNotMatch(html, /calm\|gentle\|soft\|quiet|punchy\|hype/); // no copy of the reading of words
+});
+
+test('page: the checklist strip uses CHECKLIST_LABELS', async () => {
+  const { CHECKLIST_LABELS } = await import('../../tools/plan/lib/brief.mjs');
+  const p = loadPage();
+  await withLibrary(p);
+  const items = (n) => { const strip = find(p.view, 'strip'); assert.ok(strip, 'a strip'); return strip.children.map((li) => [textOf(li).replace(/, (known|still open)$/, ''), li.attrs['data-done']]); };
+  p.run("state.view = 'start'; render();");
+  assert.deepEqual(items(), CHECKLIST_LABELS.map((l) => [l, 'false']));
+  p.run(`state.check = { job: 'j', questions: [], assumed: [], preflight: ['brand','product','audience','angle','look','hook','type','delivery'].map((id, i) => ({ id, label: 'x' + i, done: i < 2, known: 'k' })) };
+    state.view = 'questions'; state.host = 'ready'; render();`);
+  assert.deepEqual(items(), CHECKLIST_LABELS.map((l, i) => [l, String(i < 2)]));
+});
+
+test('page: sharpen is hidden without sample', async () => {
+  const p = loadPage();
+  await withLibrary(p);
+  p.run("state.sample = null; state.words = 'A calm demo of the export button'; render();");
+  assert.equal(find(p.view, 'sharpen'), null);
+  p.run('state.sample = { json: async () => ({}) }; render();');
+  assert.ok(find(p.view, 'sharpen'));
+});
+
+/** The page with the library, a stubbed sample that answers from a queue, and a spy on checkDirectorBrief. */
+async function directing(p, takes) {
+  await withLibrary(p);
+  const real = p.context.LIB_IN.brief;
+  p.context.checked = [];
+  p.context.LIB_IN = { ...p.context.LIB_IN, brief: { ...real, checkDirectorBrief: (parts, o) => { p.context.checked.push(JSON.parse(JSON.stringify(parts))); return real.checkDirectorBrief(parts, o); } } };
+  p.run('libLoaded(LIB_IN)');
+  p.context.asks = [];
+  p.context.takes = takes.slice();
+  p.run("state.directorNotes = '# The director'; state.sample = { json: async (prompt) => { asks.push(prompt); const t = takes.shift(); if (t instanceof Error) throw t; return JSON.parse(JSON.stringify(t)); } };");
+  p.run("state.words = 'A calm 20 second demo of the export button for acme'; state.understood = understoodOf(state.words); render();");
+}
+
+test('page: director reply is checked with checkDirectorBrief before showing', async () => {
+  const p = loadPage();
+  const { beats, ...noBeats } = GOOD_TAKE;
+  await directing(p, [noBeats, GOOD_TAKE]);
+  await p.run('sharpen()');
+  assert.equal(p.context.checked.length, 1);
+  assert.equal(p.run('state.dir.status'), 'error');
+  assert.match(textOf(p.view), /That take did not come out right\. Try again/);
+  assert.equal(p.run('state.words'), 'A calm 20 second demo of the export button for acme'); // the words stay
+  assert.doesNotMatch(textOf(p.view), /The board settles/);
+  await p.run('sharpen()');
+  assert.equal(p.run('state.dir.status'), 'ready');
+  assert.match(textOf(p.view), /A calm look at one export click for agency owners/);
+  assert.match(textOf(p.view), /A calm 20 second demo of the export button for acme/); // beside the customer's words
+  assert.match(p.context.asks[0], /# The director/); // director.md goes with every ask
+  assert.match(p.context.asks[0], /A calm 20 second demo of the export button for acme/);
+});
+
+test('page: a part can be kept, changed or swapped for another take of that part only', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE, { camera: 'A locked-off wide shot, no moves at all' }, { camera: '' }]);
+  await p.run('sharpen()');
+  p.run("partKeep('logline')");
+  assert.equal(p.run("state.dir.states.logline"), 'kept');
+  await p.run("swapPart('camera')");
+  assert.match(p.context.asks[1], /"camera"/);
+  assert.equal(p.run('state.dir.parts.camera'), 'A locked-off wide shot, no moves at all');
+  assert.equal(p.run("state.dir.states.camera"), 'swapped');
+  assert.equal(p.run('state.dir.parts.logline'), GOOD_TAKE.logline); // the other parts stay
+  await p.run("swapPart('camera')"); // a malformed take for one part keeps the part as it was
+  assert.equal(p.run('state.dir.parts.camera'), 'A locked-off wide shot, no moves at all');
+  assert.match(p.run("state.dir.partNotes.camera"), /That take did not come out right\. Try again/);
+  p.run("partChange('ending', 'The report rests and the logo fades in')");
+  assert.equal(p.run("state.dir.states.ending"), 'changed');
+});
+
+test('page: "Keep this brief" saves through brief_direct, with engine names only from the picks', async () => {
+  const p = loadPage();
+  await directing(p, [{ ...GOOD_TAKE, engine: ['camera-auto-zoom', 'not-picked-name'] }]);
+  const s = await pickingStudio(p);
+  const film = s.entries.find((e) => e.filters.ready && (e.engine_names || []).includes('camera-auto-zoom') && e.filters.energy.includes('calm'));
+  p.context.F = film;
+  await p.run('pickToggle(F)');
+  await p.run('sharpen()');
+  p.context.calls.length = 0;
+  await p.run('keepDirectorBrief()');
+  const call = p.context.calls.find((c) => c.tool === 'brief_direct');
+  assert.ok(call, 'brief_direct called');
+  assert.deepEqual(Object.keys(call.input.parts).sort(), Object.keys(GOOD_TAKE).sort());
+  assert.deepEqual(call.input.engine, ['camera-auto-zoom']);
+  assert.equal(call.input.job, 'j');
+});
+
+test('page: suggestions come from styles_suggest when connected, otherwise from suggest on the built-in library', async () => {
+  const { suggest } = await import('../../tools/styles/lib/suggest.mjs');
+  const p = loadPage();
+  const entries = await withLibrary(p);
+  p.run("state.host = 'none'; state.words = 'a punchy vertical launch reel'; state.understood = understoodOf(state.words);");
+  await p.run('refreshSuggestions()');
+  const local = suggest(entries, { text: 'a punchy vertical launch reel', understood: JSON.parse(p.run('JSON.stringify(state.understood)')), picked: [] });
+  assert.deepEqual(JSON.parse(p.run('JSON.stringify(state.suggestions.map((x) => x.id))')), local.map((x) => x.id));
+  assert.equal(local.length, 6);
+  p.context.calls = [];
+  p.run("state.host = 'ready'; state.mcp = { callTool: async (h, tool, input) => { calls.push({ tool, input }); return { payload: { suggestions: [{ id: 'film-wide-then-working-shot', tab: 'filming', name: 'Wide', reason: 'you used this on acme-launch' }], notes: [] } }; } };");
+  await p.run('refreshSuggestions()');
+  assert.equal(p.context.calls[0].tool, 'styles_suggest');
+  assert.equal(p.context.calls[0].input.text, 'a punchy vertical launch reel');
+  assert.deepEqual(JSON.parse(p.run('JSON.stringify(state.suggestions)')), [{ id: 'film-wide-then-working-shot', reason: 'you used this on acme-launch' }]);
+});
+
+test('page: the chips come from understood as the words are typed, and each can be changed', async () => {
+  const p = loadPage();
+  await withLibrary(p);
+  p.run("state.words = 'A vertical demo, 20 s, punchy, for agency owners'; hearWords();");
+  assert.deepEqual(JSON.parse(p.run('JSON.stringify(state.understood)')), { size: '9:16', kind: 'product-demo', length: 20, energy: 'hype', audience: 'agency owners' });
+  p.run("changeChip('size', '1:1')");
+  assert.equal(p.run('state.understood.size'), '1:1');
+  p.run("state.words = 'A vertical demo, 20 s, punchy, for agency owners, and more'; hearWords();");
+  assert.equal(p.run('state.understood.size'), '1:1'); // a change outlives new typing
+  // Once a brief exists, a change is an answer to the brief.
+  answering(p, { job: 'j', questions: [], recorded: true, reason: null });
+  await p.run("changeChip('size', '16:9')");
+  assert.deepEqual(sent(p, 0), { job: 'j', question: 'size', value: '16:9' });
+});
+
+test('page: the plan shows "What the engine will use" from the plan\'s engine groups', () => {
+  const p = loadPage();
+  p.run(`state.plan = { lines: ['Film: a 20 s demo'], outline: [], engine: { ui: ['cursor-presenter'], motion: ['camera-auto-zoom'], sound: [], skills: ['video-studio', 'zero-slop'] } };
+    state.view = 'plan'; state.host = 'ready'; state.job = 'j'; render();`);
+  const text = textOf(p.view);
+  assert.match(text, /What the engine will use/);
+  assert.match(text, /UI library[\s\S]*cursor-presenter/);
+  assert.match(text, /Motion library[\s\S]*camera-auto-zoom/);
+  assert.match(text, /Built-in skills[\s\S]*video-studio/);
+  assert.doesNotMatch(text, /Sound kit/); // an empty group is left out
+});
+
+test('page: the opening is one headline with the swash S, and one box', () => {
+  const p = loadPage();
+  p.run("state.view = 'start'; render();");
+  const text = textOf(p.view);
+  assert.match(text, /Start with a/);
+  assert.match(fs.readFileSync(PAGE, 'utf8'), /class: 'swash'/);
+  assert.ok(find(p.view, 'brief-words'));
+});
+
+test('page: a reel pick shows as gone only when flagged or once the library has loaded', async () => {
+  const p = loadPage();
+  p.run("state.lib.status = 'loading'; state.picks = [{ tab: 'motion', id: 'mo-x' }];");
+  assert.equal(p.run('reelItems()[0].stale'), false);
+  p.run("state.picks = [{ tab: 'motion', id: 'mo-x', stale: true, name: 'Old' }];");
+  assert.equal(p.run('reelItems()[0].stale'), true);
+  p.run("state.lib.status = 'error'; state.picks = [{ tab: 'motion', id: 'mo-x' }];");
+  assert.equal(p.run('reelItems()[0].stale'), false);
+  await withLibrary(p);
+  p.run("state.picks = [{ tab: 'motion', id: 'mo-x' }];");
+  assert.equal(p.run('reelItems()[0].stale'), true);
+});
+
+test('page: a swap whose new pick finds no studio keeps the earlier pick', async () => {
+  const p = loadPage();
+  const s = await pickingStudio(p);
+  const [a, b] = s.entries.filter((e) => e.tab === 'filming' && e.family === 'Camera move' && e.filters.energy.includes('confident'));
+  Object.assign(p.context, { A: a, B: b });
+  await p.run('pickToggle(A)');
+  const inner = p.context.studio;
+  p.context.studio = async (host, tool, input) => { if (tool === 'brief_pick' && input.on) throw Object.assign(new Error('gone'), { code: 'server_not_connected' }); return inner(host, tool, input); };
+  await p.run('pickToggle(B)');
+  assert.equal(p.run('state.host'), 'none');
+  assert.deepEqual(JSON.parse(p.run('JSON.stringify(state.picks.map((x) => x.id))')), [a.id]);
+});
+
+test('page: the big pick button is named by what it shows; amber stays for clashes and made on request', async () => {
+  const p = loadPage();
+  const entries = await withLibrary(p);
+  const e = entries.find((x) => x.filters.ready);
+  p.context.E = e;
+  p.run("state.picks = [{ tab: E.tab, id: E.id }];");
+  const big = /<button class="sc-pick btn pick-lg"[^>]*>([^<]+)</.exec(p.run('drawerHTML(E)'));
+  assert.ok(big);
+  assert.equal(big[1], 'Picked: remove');
+  assert.doesNotMatch(big[0], /aria-label|aria-pressed/);
+  const { rest } = cssOf(fs.readFileSync(PAGE, 'utf8'));
+  for (const sel of ['.status[data-host="none"]::before', '#view .note[data-tone="warm"]', '.lib-note']) {
+    const rule = new RegExp(`${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^{]*\\{([^}]*)\\}`).exec(rest);
+    assert.ok(rule, sel);
+    assert.doesNotMatch(rule[1], /--color-warm/, sel);
+  }
 });

@@ -120,3 +120,14 @@ test('preview: serves the page and its publish set from the dist folder, and not
   assert.equal((await call(p.port, { url: '/%2e%2e/outside.txt' })).status, 404);
   assert.equal((await call(p.port, { url: '/styles/missing.json' })).status, 404);
 });
+
+test('preview: ?sample=1 stands in for the sample capability with a canned director\'s take', async (t) => {
+  const blocked = await bindBlocked();
+  if (blocked) { t.skip(`binding a local port is blocked here (${blocked})`); return; }
+  const p = await start(['--root', scratchStudio(), '--port', '0']);
+  assert.ok(p.port, p.err);
+  t.after(() => p.child.kill());
+  const page = await call(p.port);
+  assert.match(page.text, /const withSample = new URLSearchParams\(location\.search\)\.has\('sample'\)/);
+  assert.match(page.text, /name === 'sample' && withSample \? sample/);
+});

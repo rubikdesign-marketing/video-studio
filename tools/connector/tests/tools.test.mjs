@@ -487,3 +487,14 @@ test('a stale pick in brief.json shows stale and can be removed', () => {
   assert.deepEqual(off.picks, []); assert.equal(off.picked, false); assert.equal(off.reason, null);
   assert.deepEqual(briefOf(r, job).style_picks, []);
 });
+
+test('brief_plan carries the engine groups for "What the engine will use"', () => {
+  const { r, hr, job } = styled();
+  hr.brief_pick({ job, tab: 'motion', id: 'demo-soft-arrive', on: true });
+  saveBrief(jobDir(r, job), { ...completeBrief(), in_their_words: WORDS, style_picks: briefOf(r, job).style_picks });
+  const p = hr.brief_plan({ job });
+  assert.deepEqual(Object.keys(p.engine).sort(), ['motion', 'skills', 'sound', 'ui']);
+  assert.ok(p.engine.skills.includes('video-studio'));
+  const named = [...p.engine.ui, ...p.engine.motion, ...p.engine.sound];
+  assert.ok(named.length > 0, 'the pick\'s engine names are grouped');
+});

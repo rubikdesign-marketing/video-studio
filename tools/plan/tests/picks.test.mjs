@@ -202,3 +202,14 @@ test('confirmPlan: job.json takes the length their words gave', () => {
   assert.equal(confirmPlan(root, jobDir).length_cap_seconds, 20);
   assert.equal(loadJob(jobDir).job.length_cap_seconds, 20);
 });
+
+test('directorRules: plain words that are also registry names (camera, Button) are not refused in a director\'s brief', async () => {
+  const { directorRules } = await import('../lib/brief-store.mjs');
+  const ctx = { engineNames: { moves: new Set(['camera-push-in', 'slam']), registry: new Set(['Button', 'DollyIn', 'component:card']), backgrounds: new Set(['Paper']), sounds: new Set(['music/calm-lofi-01']) }, styles: new Map() };
+  const { names } = directorRules({ energy: 'calm' }, {}, ctx);
+  assert.deepEqual([...names].sort(), ['DollyIn', 'camera-push-in', 'component:card', 'music/calm-lofi-01']);
+  const p = parts(); p.camera = 'The camera pushes toward the button';
+  assert.equal(checkDirectorBrief(p, { energy: 'confident', names }).ok, true);
+  p.camera = 'A DollyIn toward the button';
+  assert.equal(checkDirectorBrief(p, { energy: 'confident', names }).part, 'camera');
+});
