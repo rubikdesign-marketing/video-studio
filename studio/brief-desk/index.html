@@ -2336,12 +2336,15 @@ function checkParts(parts, energy = filmEnergy()) {
   return rules.checkDirectorBrief(parts, { energy, names: libraryEngine(), allowed: pickedEngine() });
 }
 /** A new director call: the one before it is aborted, and its reply will be dropped. */
-function directorCall() {
+function directorCall(words = '') {
   if (state.dirAbort) try { state.dirAbort.abort(); } catch { /* already done */ }
   state.dirAbort = typeof AbortController === 'function' ? new AbortController() : null;
-  return { seq: ++state.dirSeq, job: state.job, signal: state.dirAbort ? state.dirAbort.signal : undefined };
+  return { seq: ++state.dirSeq, job: state.job, words: String(words).trim(), signal: state.dirAbort ? state.dirAbort.signal : undefined };
 }
-const stillCurrent = (call) => call.seq === state.dirSeq && call.job === state.job;
+// Still current: no newer call, and the same brief. A call made before the brief existed stays current when the brief
+// just started is the one made from its words.
+const stillCurrent = (call) => call.seq === state.dirSeq
+  && (call.job === state.job || (call.job === null && !!state.job && String(state.briefWords || '').trim() === call.words));
 /** Another brief is shown: the director's brief, the changed chips and any call in flight belong to the one before. */
 function resetDirector() {
   if (state.dirAbort) try { state.dirAbort.abort(); } catch { /* already done */ }
@@ -2369,12 +2372,16 @@ async function sharpen() {
   const words = currentWords().trim();
   if (wordCount(words) < 3) { setNote('sharpen', { tone: 'warm', text: 'Write a sentence or two about the video first.' }); render(); return; }
   setNote('sharpen', null);
-  const call = directorCall();
-  state.dir = { ...freshDir(), status: 'loading', words };
+  const call = directorCall(words);
+  const mine = { ...freshDir(), status: 'loading', words };
+  state.dir = mine;
+  announce('The director is working on your brief.');
   render();
+  // A dropped reply never leaves the section busy: if this call's loading state is still shown, it is cleared.
+  const drop = () => { if (state.dir === mine) { state.dir = freshDir(); render(); } };
   try {
     const out = await askClaude(directorPrompt(await directorNotes(), words), call.signal);
-    if (!stillCurrent(call)) return; // a newer take was asked for, or another brief is open
+    if (!stillCurrent(call)) { drop(); return; } // a newer take was asked for, or another brief is open
     const parts = partsOf(out);
     const named = out && ENERGY_WORDS().includes(out.energy) ? out.energy : null;
     const energy = energyNow() || named;
@@ -2385,9 +2392,10 @@ async function sharpen() {
     state.dir = { ...freshDir(), status: 'ready', words, parts, engine, energy, states: Object.fromEntries(directorParts().map((k) => [k, 'proposed'])) };
     announce("The director's brief is ready.");
   } catch (e) {
-    if (!stillCurrent(call)) return;
+    if (!stillCurrent(call)) { drop(); return; }
     sampleFailed(e);
     state.dir = { ...freshDir(), status: 'error', words, reason: takeReason(e) };
+    announce(`${TAKE_FAILED} ${state.dir.reason || ''}`.trim());
   }
   render();
 }
@@ -2424,25 +2432,28 @@ async function swapPart(part) {
   if (d.status !== 'ready' || d.busyPart) return;
   d.busyPart = part; d.editing = null; d.settled = true;
   d.partNotes = { ...d.partNotes, [part]: null };
-  const call = directorCall();
+  const call = directorCall(d.words);
   render();
+  const drop = () => { if (state.dir === d) { d.busyPart = null; render(); } };
   try {
     const prompt = [directorPrompt(await directorNotes(), d.words), '', '## Another take',
       `The brief as it stands: ${JSON.stringify(d.parts)}`,
       `Energy: ${filmEnergy()}`,
       `Write one different take of the part "${part}" only. Keep the other parts as they are. Reply with JSON only: {"${part}": ...}`].join('\n');
     const out = await askClaude(prompt, call.signal);
-    if (!stillCurrent(call) || state.dir !== d) return;
+    if (!stillCurrent(call) || state.dir !== d) { drop(); return; }
     const has = out && typeof out === 'object' && Object.hasOwn(out, part);
     if (!has) throw plainError(`There was no new ${partLabel(part).toLowerCase()} in it.`);
     const next = { ...d.parts, [part]: part === 'beats' ? cleanBeats(out[part]) : out[part] };
     const r = checkParts(next);
     if (!r.ok) throw plainError(r.reason);
     d.parts = next; d.states[part] = 'swapped';
+    announce(`Another take of ${partLabel(part).toLowerCase()} is in.`);
   } catch (e) {
-    if (!stillCurrent(call) || state.dir !== d) return;
+    if (!stillCurrent(call) || state.dir !== d) { drop(); return; }
     sampleFailed(e);
     d.partNotes = { ...d.partNotes, [part]: `${TAKE_FAILED} ${takeReason(e)}`.trim() };
+    announce(d.partNotes[part]);
   }
   d.busyPart = null;
   render();
@@ -2469,12 +2480,20 @@ async function keepDirectorBrief() {
     d.saving = false; render();
     return;
   }
+  // Without the studio: it goes with the brief saved on this page only when it was made for that brief's words.
+  const forSaved = state.host === 'none' && state.db && state.savedId && String(state.savedDoc?.words || '').trim() === d.words.trim();
+  if (state.host === 'none' && state.savedId && !forSaved && String(state.words || '').trim() !== d.words.trim()) {
+    d.kept = false;
+    setNote('director-keep', { tone: 'warm', text: "This director's brief was made for other words than the brief saved on this page, so it was not kept. Sharpen again for the brief you want." });
+    render();
+    return;
+  }
   d.kept = 'held'; d.keptEngine = engine;
-  if (state.host === 'none' && state.db && state.savedId) {
+  if (forSaved) {
     try { await updateSavedBrief({ director_brief: canonicalDirector(d) }); } catch { setNote('director-keep', { tone: 'warm', text: 'It could not be saved on this page. Copy your brief into a new chat in the studio folder.' }); render(); return; }
   }
   const where = state.host === 'none'
-    ? (state.savedId ? 'Kept with the brief saved on this page.' : state.db ? 'Kept. It is saved with your brief when you save it.' : 'Kept. It goes in the copy box with your brief.')
+    ? (forSaved ? 'Kept with the brief saved on this page.' : state.db ? 'Kept. It is saved with your brief when you save it.' : 'Kept. It goes in the copy box with your brief.')
     : 'Kept. It is saved with your brief when you start it.';
   setNote('director-keep', { tone: 'good', text: where });
   render();
@@ -2489,7 +2508,7 @@ function directorSection() {
       h('p', { class: 'small muted', text: 'Your words stay as they are. The director writes a shot-by-shot brief beside them: keep, change or swap each part.' })),
     state.confirmedOn ? null : h('div', { class: 'direct-row' }, h('button', { type: 'button', class: 'btn btn--direct', id: 'sharpen', disabled: d.status === 'loading' || null, text: label, onclick: sharpen })),
     noteEl('sharpen'),
-    h('div', { id: 'director', 'aria-live': 'polite' }, directorBody()));
+    h('div', { id: 'director' }, directorBody())); // status is said through announce(), not a region rebuilt each render
 }
 function directorBody() {
   const d = state.dir;
@@ -2497,7 +2516,7 @@ function directorBody() {
     return h('div', { class: 'thinking', 'aria-busy': 'true' }, h('p', { class: 'label', text: 'The director is working through your brief' }),
       h('ol', {}, ['Reading your words', 'Timing the beats to the energy', 'Following your picked styles', 'Writing camera, motion, type and sound'].map((t) => h('li', { text: t }))));
   }
-  if (d.status === 'error') return h('div', { class: 'note', 'data-tone': 'warm', role: 'alert' }, h('strong', { text: TAKE_FAILED }), d.reason ? h('span', { text: d.reason }) : null, h('span', { text: 'Your words are kept as they are.' }));
+  if (d.status === 'error') return h('div', { class: 'note', 'data-tone': 'warm' }, h('strong', { text: TAKE_FAILED }), d.reason ? h('span', { text: d.reason }) : null, h('span', { text: 'Your words are kept as they are.' }));
   if (d.status !== 'ready') {
     const kept = state.job && state.check?.job === state.job ? state.check.director_brief : null; // this brief's own
     if (!kept) return null;

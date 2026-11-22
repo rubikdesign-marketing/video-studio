@@ -766,3 +766,81 @@ test('page: without the studio or a page store, the copy box carries the kept di
   assert.match(p.run('state.copyText'), /Logline: A calm look at one export click for agency owners/);
   assert.match(p.run('state.copyText'), /0 s: The board settles/);
 });
+
+/* ---------- Director calls survive a brief starting ---------- */
+
+test('page: a sharpen in flight when the brief starts from the same words still lands', async () => {
+  const p = loadPage();
+  await directing(p, []);
+  heldSample(p);
+  p.run(`state.host = 'ready'; state.mcp = { callTool: async (h, tool) => ({ payload: { job: 'n', questions: [], assumed: [], preflight: [], picks: [] } }) };`);
+  const sharpening = p.run('sharpen()');
+  await new Promise((r) => setTimeout(r, 0));
+  await p.run('startBrief()');
+  assert.equal(p.run('state.job'), 'n');
+  p.context.pending[0].resolve(GOOD_TAKE);
+  await sharpening;
+  assert.equal(p.run('state.dir.status'), 'ready');
+});
+
+test('page: a dropped sharpen or swap never leaves the buttons busy', async () => {
+  const p = loadPage();
+  await directing(p, []);
+  heldSample(p);
+  p.run(`state.host = 'ready'; state.mcp = { callTool: async () => ({ payload: { job: 'n', questions: [], assumed: [], preflight: [], picks: [] } }) };`);
+  const sharpening = p.run('sharpen()');
+  await new Promise((r) => setTimeout(r, 0));
+  p.run("state.words = 'Other words for another film entirely';");
+  await p.run('startBrief()');
+  p.context.pending[0].resolve(GOOD_TAKE);
+  await sharpening;
+  assert.notEqual(p.run('state.dir.status'), 'loading');
+  assert.ok(find(p.view, 'sharpen'));
+  assert.equal(find(p.view, 'sharpen').attrs.disabled, undefined);
+});
+
+test('page: a late swap reply is dropped, and the part is free again', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  await p.run('sharpen()');
+  heldSample(p);
+  const swapping = p.run("swapPart('camera')");
+  await new Promise((r) => setTimeout(r, 0));
+  p.run('directorCall()'); // a newer call moves the sequence on
+  p.context.pending[0].resolve({ camera: 'A late take of the camera' });
+  await swapping;
+  assert.equal(p.run('state.dir.parts.camera'), GOOD_TAKE.camera);
+  assert.equal(p.run('state.dir.busyPart'), null);
+});
+
+test('page: an opened brief with its own director\'s brief shows it', async () => {
+  const p = loadPage();
+  await withLibrary(p);
+  p.run('state.sample = { json: async () => ({}) };');
+  answering(p, { job: 'k', questions: [], assumed: [], preflight: [], director_brief: { ...GOOD_TAKE, logline: 'The opened brief\'s own logline' } });
+  await p.run("openBrief({ job: 'k', words: 'A calm demo' })");
+  const text = textOf(p.view);
+  assert.match(text, /A director's brief is kept with this brief/);
+  assert.match(text, /The opened brief's own logline/);
+  assert.match(text, /0 s: The board settles/);
+});
+
+test('page: "Keep this brief" without the studio attaches only to a saved brief with the same words', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  quietStore(p);
+  await p.run("saveWithoutStudio('A brief about something else')");
+  p.run("state.words = 'A calm 20 second demo of the export button for acme';");
+  await p.run('sharpen()');
+  p.run("state.words = '';");
+  await p.run('keepDirectorBrief()');
+  assert.equal(p.context.saved.length, 1);
+  assert.equal(p.run("state.notes['director-keep'].tone"), 'warm');
+  assert.match(p.run("state.notes['director-keep'].text"), /made for other words/);
+});
+
+test('page: the director section has no live region of its own; status goes through announce()', () => {
+  const html = fs.readFileSync(PAGE, 'utf8');
+  assert.doesNotMatch(html, /id: 'director', 'aria-live'/);
+  assert.match(html, /announce\(['"]The director is working on your brief\.['"]\)/);
+});

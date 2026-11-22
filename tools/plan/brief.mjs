@@ -153,8 +153,11 @@ if (cmd === 'decide') {
   const { engine: inParts, ...words } = read.parts;
   const parts = { ...words, engine: read.engine.length ? read.engine : (Array.isArray(inParts) ? inParts : []) };
   const ctx = context();
-  const { energy, names, allowed } = directorRules(brief, job, ctx);
-  const r = checkDirectorBrief(parts, { energy, names, allowed });
+  const rules = directorRules(brief, job, ctx);
+  // The customer's energy, else the one the director named; without either the beats cannot be checked.
+  const energy = rules.energy || (['calm', 'confident', 'hype'].includes(read.energy) ? read.energy : null);
+  if (!energy) { console.log('The director did not say which energy the film runs at.'); process.exit(1); }
+  const r = checkDirectorBrief(parts, { energy, names: rules.names, allowed: rules.allowed });
   if (!r.ok) { console.log(r.reason); process.exit(1); }
   const { engine } = parts;
   saveBrief(jobDir, { ...brief, director_brief: { parts: words, engine: Array.isArray(engine) ? engine : [], energy: energy ?? null, at: new Date().toISOString() } });

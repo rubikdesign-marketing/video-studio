@@ -239,3 +239,19 @@ test('CLI direct: takes the canonical { parts, engine, energy, at } as well as f
   assert.equal(run('direct', jobDir, flat).status, 0);
   assert.equal(JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).director_brief.parts.logline, 'A flat take of the same film.');
 });
+
+test('CLI direct: a director\'s brief with no energy (the customer\'s or the director\'s) is refused', () => {
+  const root = scratchStudio();
+  const jobDir = path.join(root, 'jobs', 'j');
+  const run = (...a) => spawnSync(process.execPath, [CLI, ...a], { encoding: 'utf8', env: { ...process.env, BRIEF_STUDIO_ROOT: root } });
+  assert.equal(run('new', jobDir, 'a demo of the export button').status, 0);
+  const flat = path.join(root, 'flat.json');
+  fs.writeFileSync(flat, JSON.stringify(parts()));
+  const r = run('direct', jobDir, flat);
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /The director did not say which energy the film runs at\./);
+  const canonical = path.join(root, 'canonical.json');
+  fs.writeFileSync(canonical, JSON.stringify({ parts: parts(), engine: [], energy: 'calm', at: '2026-11-22T10:00:00.000Z' }));
+  assert.equal(run('direct', jobDir, canonical).status, 0);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).director_brief.energy, 'calm');
+});
