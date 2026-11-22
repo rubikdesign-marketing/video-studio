@@ -70,8 +70,10 @@ Only after the plan is confirmed. All three keep the confirmed audience, angle, 
 ### Their style picks and director's brief
 
 `node tools/plan/brief.mjs show jobs/<job>` lists the creator's style picks and their director's brief, when they made any on the brief page. Treat both as the creator's own direction: a strong preference, to follow unless a rule or a fact stops it.
+
+**Order of precedence:** the creator's typed answer comes first, then a saved style, then a pick. A pick never overrides something they typed or a look they saved; where they disagree, follow the typed answer or the saved look, and say in one line which pick that left out.
 - **Each pick** is used as picked by at least one of the three concepts. Read it with `node tools/styles/styles.mjs show <id>` and put its `promptText` into that concept's direction, in its own words.
-- **A made-on-request pick** (the `show` output ends "made on request") has no ready version yet. Use the closest ready style it names, and say so in one line: "<their style> is made on request, so this concept uses <closest style>."
+- **A made-on-request pick** has no ready version yet. Run `node tools/styles/styles.mjs show <id>`: its last line, "made on request: closest ready style ...", names the closest ready style, and the text above it is the `promptText`. Use that closest style, and say so in one line: "<their style> is made on request, so this concept uses <closest style>."
 - **Where the studio recommends something else**, say why in one line next to that concept. Their pick stays in at least one concept either way.
 - **The director's brief** is the customer's direction under the same rule. Keep its logline, beats and energy unless a brand rule or the confirmed plan says otherwise, and say in one line what changed and why.
 

@@ -60,3 +60,9 @@ test("README and ONBOARDING each say the brief page holds a style library", () =
     assert.match(text, /style library/i, `${f} does not mention the style library`);
   }
 });
+
+test("Stage 1 states the order picks come in", () => {
+  const text = readFileSync(new URL("../../../.claude/skills/video-studio/stages/01-intake-and-idea.md", import.meta.url), "utf8");
+  assert.match(text, /typed answer comes first, then a saved style, then a pick/);
+  assert.match(text, /styles\.mjs show <id>/);
+});
