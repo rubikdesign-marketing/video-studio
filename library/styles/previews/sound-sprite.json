@@ -1,0 +1,346 @@
+{
+  "snd-mu-lofi-bed": [
+    0,
+    4
+  ],
+  "snd-mu-steady-pulse": [
+    4,
+    4
+  ],
+  "snd-mu-electro-full": [
+    8,
+    4
+  ],
+  "snd-mu-electro-climb": [
+    12,
+    4
+  ],
+  "snd-mu-build-drop": [
+    16,
+    4
+  ],
+  "snd-mu-drop-first": [
+    20,
+    4
+  ],
+  "snd-mu-build-only": [
+    24,
+    4
+  ],
+  "snd-mu-groove": [
+    28,
+    4
+  ],
+  "snd-mu-chiptune": [
+    32,
+    4
+  ],
+  "snd-kit-minimal-dry": [
+    36,
+    0.156
+  ],
+  "snd-kit-glass": [
+    36.156,
+    0.85
+  ],
+  "snd-kit-wood": [
+    37.006,
+    0.747
+  ],
+  "snd-kit-mechanical": [
+    37.753,
+    0.147
+  ],
+  "snd-kit-rubber": [
+    37.9,
+    0.49
+  ],
+  "snd-kit-arcade": [
+    38.39,
+    0.333
+  ],
+  "snd-kit-phone": [
+    38.723,
+    0.296
+  ],
+  "snd-kit-typing": [
+    39.019,
+    2.437
+  ],
+  "snd-kit-desk-paper": [
+    41.456,
+    0.394
+  ],
+  "snd-kit-chat": [
+    41.85,
+    0.361
+  ],
+  "snd-kit-data-ticks": [
+    42.211,
+    0.403
+  ],
+  "snd-kit-mouse": [
+    42.614,
+    0.057
+  ],
+  "snd-kit-bubble-wrap": [
+    42.671,
+    0.13
+  ],
+  "snd-kit-dreamy": [
+    42.801,
+    0.379
+  ],
+  "snd-kit-studio": [
+    43.18,
+    0.258
+  ],
+  "snd-kit-punch": [
+    43.438,
+    0.601
+  ],
+  "snd-kit-trailer": [
+    44.039,
+    1.788
+  ],
+  "snd-kit-error-fix": [
+    45.827,
+    0.201
+  ],
+  "snd-kit-fabric": [
+    46.028,
+    1.357
+  ],
+  "snd-mix-room-tone": [
+    47.385,
+    4
+  ],
+  "snd-mix-rain": [
+    51.385,
+    4
+  ],
+  "snd-mix-sea": [
+    55.385,
+    4
+  ],
+  "snd-mix-forest": [
+    59.385,
+    4
+  ],
+  "snd-mix-night-city": [
+    63.385,
+    4
+  ],
+  "snd-mix-gale": [
+    67.385,
+    4
+  ],
+  "snd-mix-music-only": [
+    71.385,
+    4
+  ],
+  "snd-mix-seamless-loop": [
+    75.385,
+    4
+  ],
+  "snd-mix-ease-off": [
+    79.385,
+    4
+  ],
+  "snd-mix-bookends": [
+    83.385,
+    3.747
+  ],
+  "snd-mix-product-beat": [
+    87.132,
+    0.119
+  ],
+  "snd-mix-cut-dead": [
+    87.251,
+    1.995
+  ],
+  "snd-mix-real-sounds": [
+    89.246,
+    1.706
+  ],
+  "snd-tr-air-soft": [
+    90.952,
+    0.607
+  ],
+  "snd-tr-bright-slide": [
+    91.559,
+    0.798
+  ],
+  "snd-tr-fast-pass": [
+    92.357,
+    0.444
+  ],
+  "snd-tr-whip": [
+    92.801,
+    0.237
+  ],
+  "snd-tr-deep-chapter": [
+    93.038,
+    1.654
+  ],
+  "snd-tr-slow-drift": [
+    94.692,
+    2.228
+  ],
+  "snd-tr-whistle": [
+    96.92,
+    0.836
+  ],
+  "snd-tr-flutter": [
+    97.756,
+    0.938
+  ],
+  "snd-tr-whoosh-punch": [
+    98.694,
+    1.126
+  ],
+  "snd-tr-whoosh-thud": [
+    99.82,
+    0.939
+  ],
+  "snd-tr-reverse-swell": [
+    100.759,
+    1.357
+  ],
+  "snd-tr-reverse-hit": [
+    102.116,
+    1.569
+  ],
+  "snd-tr-suck-in": [
+    103.685,
+    0.773
+  ],
+  "snd-tr-tape-stop": [
+    104.458,
+    1.6
+  ],
+  "snd-tr-spin": [
+    106.058,
+    1.182
+  ],
+  "snd-tr-paper-slide": [
+    107.24,
+    0.472
+  ],
+  "snd-tr-cloth": [
+    107.712,
+    0.38
+  ],
+  "snd-tr-quick-hand": [
+    108.092,
+    0.29
+  ],
+  "snd-tr-page-turn": [
+    108.382,
+    0.519
+  ],
+  "snd-tr-swell-lift": [
+    108.901,
+    2.494
+  ],
+  "snd-tr-tension-pulse": [
+    111.395,
+    3.996
+  ],
+  "snd-tr-noise-sweep": [
+    115.391,
+    0.935
+  ],
+  "snd-tr-long-build": [
+    116.326,
+    3.988
+  ],
+  "snd-tr-tonal-glide": [
+    120.314,
+    2.999
+  ],
+  "snd-tr-rise-hit": [
+    123.313,
+    2.492
+  ],
+  "snd-tr-downer": [
+    125.805,
+    1.189
+  ],
+  "snd-st-warm": [
+    126.994,
+    2.355
+  ],
+  "snd-st-open": [
+    129.349,
+    2.742
+  ],
+  "snd-st-deep": [
+    132.091,
+    2.133
+  ],
+  "snd-st-bright": [
+    134.224,
+    2.924
+  ],
+  "snd-st-short": [
+    137.148,
+    1.918
+  ],
+  "snd-st-win": [
+    139.066,
+    1.328
+  ],
+  "snd-st-level-up": [
+    140.394,
+    1.061
+  ],
+  "snd-st-price-ding": [
+    141.455,
+    0.722
+  ],
+  "snd-st-zen": [
+    142.177,
+    0.446
+  ],
+  "snd-st-hand-bell": [
+    142.623,
+    2.607
+  ],
+  "snd-st-counter-bell": [
+    145.23,
+    2.675
+  ],
+  "snd-st-typewriter": [
+    147.905,
+    1.893
+  ],
+  "snd-st-clock-chime": [
+    149.798,
+    2.568
+  ],
+  "snd-st-wind-chimes": [
+    152.366,
+    2.079
+  ],
+  "snd-st-sparkle-run": [
+    154.445,
+    1.902
+  ],
+  "snd-st-boom": [
+    156.347,
+    2.48
+  ],
+  "snd-st-steel-lock": [
+    158.827,
+    1.485
+  ],
+  "snd-st-soft-thud": [
+    160.312,
+    0.494
+  ],
+  "snd-st-phone-buzz": [
+    160.806,
+    0.722
+  ]
+}
