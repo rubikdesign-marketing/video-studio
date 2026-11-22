@@ -436,6 +436,8 @@ select.select:focus-visible, input.search:focus-visible { outline: 2px solid var
 .clash[data-tone="info"] { border-color: var(--color-rule-strong); }
 .clash b { color: var(--color-warm); font-weight: 500; }
 .clash[data-tone="info"] b { color: var(--color-ink); }
+.clash[data-tone="notice"] { border-color: var(--color-notice); }
+.clash[data-tone="notice"] b { color: var(--color-notice); }
 @keyframes rise { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 
 /* ---------- Previews: clips, sketches and sound ---------- */
@@ -632,6 +634,7 @@ dialog::backdrop { background: var(--color-scrim); }
 @media (min-width: 48rem) { .reel-peek { display: flex; } }
 .reel-hint { font-size: var(--text-sm); color: var(--color-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1 1 auto; }
 .reel-hint[data-tone="warm"] { color: var(--color-warm); }
+.reel-hint[data-tone="notice"] { color: var(--color-notice); }
 .reel-body { overflow-y: auto; padding: var(--space-sm) max(var(--space-sm), env(safe-area-inset-left)) var(--space-lg); display: grid; gap: var(--space-md); align-content: start; }
 .reel-group { display: grid; gap: var(--space-2xs); min-width: 0; }
 .film { display: flex; gap: var(--space-xs); overflow-x: auto; padding-bottom: var(--space-2xs); scrollbar-width: thin; scrollbar-color: var(--color-rule) transparent; }
@@ -908,6 +911,7 @@ async function confirmPlan() {
   try {
     const reply = await write(() => connector.confirm(state.job));
     if (reply.stage == null) { state.parkedNext = reply.next; state.view = 'parked'; } else { state.done = reply; state.view = 'handoff'; }
+    state.libNote = null; paintPicks(); // a note about a refused pick belongs to the brief before it was confirmed
     toTop();
   } catch (e) { await failed(e, 'confirm', { isWrite: true }); }
   state.busy = null; render();
@@ -1042,9 +1046,18 @@ function watchSaved() {
   } catch { state.watchingDb = false; }
 }
 
+/** What the copy box carries: the words, the picks by name, and the kept director's brief. */
+function copyTextOf(words, director) {
+  const picks = state.picks.map((p) => {
+    const e = entryOf(p.id);
+    return e ? `${tabName(e.tab)} ${e.name}` : `${tabName(p.tab)} ${p.name || p.id}${p.stale || state.lib.status === 'ready' ? ' (no longer in the library)' : ''}`;
+  });
+  return [words, picks.length ? `Picked styles: ${picks.join('; ')}` : null, director ? directorText(director) : null].filter(Boolean).join('\n\n');
+}
+
 async function saveWithoutStudio(words) {
   const director = state.dir.kept === 'held' && state.dir.words.trim() === words.trim() ? state.dir : null;
-  if (!state.db) { state.copyText = director ? `${words}\n\n${directorText(director)}` : words; setNote('start', { tone: 'warm', text: 'This page cannot keep your brief here. Copy it and paste it into a new chat in the studio folder.' }); render(); return; }
+  if (!state.db) { state.copyText = copyTextOf(words, director); setNote('start', { tone: 'warm', text: 'This page cannot keep your brief here. Copy it and paste it into a new chat in the studio folder.' }); render(); return; }
   state.busy = 'start'; render();
   const id = `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
   const doc = { words, at: new Date().toISOString(), status: 'waiting', style_picks: state.picks.map((p) => ({ tab: p.tab, id: p.id })) };
@@ -1057,7 +1070,7 @@ async function saveWithoutStudio(words) {
     setNote('start', { tone: 'good', text: 'Saved. Next time you open a chat in the studio folder and say "make a video", Claude finds this brief and carries on from it.' });
     watchSaved();
   } catch (e) {
-    state.copyText = director ? `${words}\n\n${directorText(director)}` : words;
+    state.copyText = copyTextOf(words, director);
     const full = ['quota_exceeded', 'resource_exhausted'].includes(codeOf(e));
     setNote('start', { tone: 'warm', text: full ? 'The page\'s store is full, so your brief was not saved here. Copy it and paste it into a new chat in the studio folder.' : 'Your brief could not be saved here. Copy it and paste it into a new chat in the studio folder.' });
   }
@@ -1204,11 +1217,14 @@ function renderQuestions() {
     state.confirmedOn ? h('p', { class: 'note', 'data-tone': 'good', text: `This brief was confirmed on ${dateLabel(state.confirmedOn)}. To carry on, start a new chat in the studio folder and say "continue the video".` }) : null,
     stripEl(c)));
 
-  if ((c.assumed || []).length) {
+  // What was taken as given, and the energy the customer chose (it has no checklist item, so it shows here).
+  const understoodRows = [...(c.assumed || [])];
+  if (c.energy && !understoodRows.some((a) => a.id === 'energy')) understoodRows.push({ id: 'energy', value: c.energy, because: 'you chose it', said: false });
+  if (understoodRows.length) {
     const locked = !!state.confirmedOn;
     out.push(h('section', { 'aria-labelledby': 'got-h' },
       h('h2', { id: 'got-h', text: 'What the studio understood' }),
-      h('ul', { class: 'understood' }, c.assumed.map((a) => {
+      h('ul', { class: 'understood' }, understoodRows.map((a) => {
         const label = ASSUMED_LABEL[a.id] || stageLabel(a.id);
         let from = '';
         if (a.because && String(a.because) !== String(a.value)) from = a.said === false ? ` (${a.because})` : ` (you said "${a.because}")`;
@@ -1216,7 +1232,7 @@ function renderQuestions() {
         const change = !locked && ANSWERABLE[field] ? h('button', { type: 'button', class: 'link', id: `chip-${field}`, 'aria-expanded': String(state.chipOpen === field), 'aria-label': `Change ${label.toLowerCase()}`, text: 'Change', onclick: () => { state.chipOpen = state.chipOpen === field ? null : field; render(); } }) : null;
         return h('li', {}, `${label} `, h('b', { text: chipText(field, a.value) }), from, change);
       })),
-      state.chipOpen && ANSWERABLE[state.chipOpen] ? chipEditor(state.chipOpen, (c.assumed.find((a) => (a.id === 'length_cap_seconds' ? 'length' : a.id) === state.chipOpen) || {}).value) : null,
+      state.chipOpen && ANSWERABLE[state.chipOpen] ? chipEditor(state.chipOpen, (understoodRows.find((a) => (a.id === 'length_cap_seconds' ? 'length' : a.id) === state.chipOpen) || {}).value) : null,
       noteEl('chips')));
   }
   out.push(directorSection());
@@ -1386,7 +1402,7 @@ const energiesOf = (e) => (Array.isArray(e?.filters?.energy) ? e.filters.energy 
 const isReady = (e) => e?.filters?.ready === true;
 const reduceMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 const autoplayInDrawer = () => !reduceMotion();
-const understoodOf = (text) => (state.lib.brief ? state.lib.brief.understood(text) : {});
+const understoodOf = (text) => (state.lib.brief ? state.lib.brief.understood(text, { brands: (state.ctx?.brands || []).map((b) => b.name) }) : {});
 
 /** Back to the top on a view change: the window, and the brief pane when it scrolls by itself (wide screens). */
 function toTop() {
@@ -1397,13 +1413,19 @@ function toTop() {
 }
 
 /** The library as read from the publish set: { tabs: { <tab>: [entries] }, meta, brief, suggest } (the two modules). */
-function libLoaded({ tabs, meta, brief = null, suggest = null, prompt = null }) {
+function libLoaded({ tabs, meta, brief = null, suggest = null, prompt = null, failed = [] }) {
   const byId = new Map();
   const all = [];
   for (const t of LIB_TABS) for (const e of tabs[t.id] || []) if (e && e.id && !byId.has(e.id)) { byId.set(e.id, e); all.push(e); }
-  state.lib = { status: 'ready', tabs, byId, all, meta: meta || null, brief, suggest, prompt };
+  state.lib = { status: 'ready', tabs, byId, all, meta: meta || null, brief, suggest, prompt, failed };
   if (state.words) state.understood = understoodOf(state.words);
   state.picks = state.picks.map((p) => (byId.has(p.id) || p.stale ? p : { ...p, stale: true })); // kept, shown as gone, still counted
+}
+
+/** A plain note for a tab whose styles did not load while the other tabs did; empty for a tab that loaded. */
+function libTabNote(tab) {
+  if (!(state.lib.failed || []).includes(tab)) return '';
+  return `<div class="lib-note" role="status"><strong>The ${esc(tabName(tab))} styles did not load</strong><span>The other tabs have loaded, and your brief and picks are kept. Try again, or reload the page.</span><div class="row"><button class="btn btn--sm" type="button" data-action="lib-retry">Try again</button></div></div>`;
 }
 
 /* ---------- Words: the expert prompt and the timing table ---------- */
@@ -1496,7 +1518,7 @@ function noteHTML(id) {
   const n = state.libNote && state.libNote.id === id ? state.libNote : null;
   if (!n) return `<div class="clash" data-note="${esc(id)}" role="status" hidden></div>`;
   const undo = n.undo ? `<div class="row"><button class="link" type="button" data-action="undo-swap" data-id="${esc(n.undo)}">Undo</button></div>` : '';
-  return `<div class="clash" data-note="${esc(id)}" data-tone="${n.tone}" role="status"><span>${n.tone === 'warm' ? '<b>Not picked.</b> ' : ''}${esc(n.text)}</span>${undo}</div>`;
+  return `<div class="clash" data-note="${esc(id)}" data-tone="${n.tone}" role="status"><span>${n.tone === 'warm' || n.tone === 'notice' ? '<b>Not picked.</b> ' : ''}${esc(n.text)}</span>${undo}</div>`;
 }
 
 function cardHTML(e, reason = null) {
@@ -1513,6 +1535,9 @@ function cardHTML(e, reason = null) {
     ${noteHTML(e.id)}
   </article>`;
 }
+
+/** Grid cards show each style's own line: cardHTML's second argument is a suggestion's reason, never a list index. */
+const gridCardsHTML = (list) => list.map((e) => cardHTML(e)).join('');
 
 function drawerHTML(e) {
   const pairs = (e.pairs_with || []).map(entryOf).filter(Boolean);
@@ -1583,15 +1608,25 @@ async function savePick(entry, on) {
   return { ok: reply.picked === on, reason: reply.reason || null };
 }
 
-function refusePick(entry, reason) {
-  state.libNote = { id: entry.id, tone: 'warm', text: reason || 'That style could not be picked.' };
+/** A pick that was not made. tone 'warm' (amber) is for a clash the rules or the studio refused; 'notice' for a pick
+ *  that could not be saved (the studio could not be reached, or did not answer). */
+function refusePick(entry, reason, tone = 'warm') {
+  state.libNote = { id: entry.id, tone, text: reason || 'That style could not be picked.' };
   announce(`${entry.name} was not picked. ${state.libNote.text}`);
 }
 
 /** Picks the entry, or removes it when picked. With the studio connected it saves through brief_pick; without it the
  *  pick is held with the brief and saved to the page's store with it, as the brief desk saves briefs. */
 async function pickToggle(entry) {
-  if (!entry || state.libBusy) return;
+  if (!entry) return;
+  if (state.libBusy) { // one pick saves at a time: a second click is told so, never dropped silently
+    if (state.libBusy !== entry.id) {
+      state.libNote = { id: entry.id, tone: 'info', text: `One moment: ${entryOf(state.libBusy)?.name || 'another pick'} is still saving. Click again when it is done.` };
+      announce(state.libNote.text);
+      paintPicks();
+    }
+    return;
+  }
   const on = !isPicked(entry.id);
   const kin = on ? state.picks.find((p) => p.tab === entry.tab && p.id !== entry.id && entryOf(p.id)?.family === entry.family) || null : null;
   const kinEntry = kin ? entryOf(kin.id) : null;
@@ -1606,7 +1641,7 @@ async function pickToggle(entry) {
     if (state.host === 'ready' && state.mcp && state.job) {
       if (kinEntry) {
         const off = await savePick(kinEntry, false);
-        if (!off.ok) { refusePick(entry, off.reason); return; }
+        if (!off.ok) { refusePick(entry, off.reason, 'notice'); return; }
         kinOff = true;
       }
       const r = await savePick(entry, on);
@@ -1633,7 +1668,7 @@ async function pickToggle(entry) {
     }
     if (x.fallback) { enterNoHost(); return; }
     if (state.host === 'ready' && state.mcp && state.job) await recheck(); // the note says the page has checked again
-    refusePick(entry, x.text);
+    refusePick(entry, x.text, 'notice');
   } finally {
     state.libBusy = null;
     paintPicks();
@@ -1663,7 +1698,7 @@ async function sendHeldPicks(held) {
     const e = entryOf(p.id);
     if (!e || state.picks.some((x) => x.id === p.id)) continue;
     state.libBusy = e.id; paintPicks();
-    try { const r = await savePick(e, true); if (!r.ok) refusePick(e, r.reason); } catch (err) { refusePick(e, explain(err, { isWrite: true }).text); break; } finally { state.libBusy = null; }
+    try { const r = await savePick(e, true); if (!r.ok) refusePick(e, r.reason); } catch (err) { refusePick(e, explain(err, { isWrite: true }).text, 'notice'); break; } finally { state.libBusy = null; }
   }
   paintPicks();
 }
@@ -1739,11 +1774,12 @@ function renderGrid(swap = true) {
     if (count) count.innerHTML = any ? `<b>${list.length}</b> of ${total} styles` : `<b>${total}</b> styles`;
     v.list = list;
     v.shown = Math.min(list.length, CHUNK);
+    if (!list.length && libTabNote(v.tab)) { panel.innerHTML = libTabNote(v.tab); return; }
     if (!list.length) {
       panel.innerHTML = `<div class="empty"><strong>No styles match these filters</strong><span>Try another energy or kind of film, or clear the filters to see every ${esc(tabWord(v.tab))} style.</span><button class="btn btn--sm" type="button" data-action="f-clear">Clear filters</button></div>`;
       return;
     }
-    panel.innerHTML = `<div class="grid" id="grid">${list.slice(0, v.shown).map(cardHTML).join('')}</div><div class="grid-more" id="grid-more"></div>`;
+    panel.innerHTML = `${libTabNote(v.tab)}<div class="grid" id="grid">${gridCardsHTML(list.slice(0, v.shown))}</div><div class="grid-more" id="grid-more"></div>`;
     watchClips(panel);
     watchMore();
   };
@@ -1772,7 +1808,7 @@ function appendCards(n) {
   if (!g || v.shown >= v.list.length) { if (moreObserver) moreObserver.disconnect(); return; }
   const next = v.list.slice(v.shown, v.shown + n);
   v.shown += next.length;
-  g.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
+  g.insertAdjacentHTML('beforeend', gridCardsHTML(next));
   watchClips(g);
   if (v.shown >= v.list.length && moreObserver) moreObserver.disconnect();
 }
@@ -1925,8 +1961,8 @@ function renderReel() {
   count.textContent = String(n);
   count.classList.toggle('has', n > 0);
   const hint = $('#reel-hint');
-  const warm = state.libNote && state.libNote.tone === 'warm' ? state.libNote : null;
-  if (warm) { hint.textContent = `${entryOf(warm.id)?.name || 'That style'} was not picked: ${warm.text}`; hint.dataset.tone = 'warm'; }
+  const warm = state.libNote && (state.libNote.tone === 'warm' || state.libNote.tone === 'notice') ? state.libNote : null;
+  if (warm) { hint.textContent = `${entryOf(warm.id)?.name || 'That style'} was not picked: ${warm.text}`; hint.dataset.tone = warm.tone; }
   else {
     delete hint.dataset.tone;
     const tabs = new Set(picks.map((e) => e.tab)).size;
@@ -1935,7 +1971,7 @@ function renderReel() {
   }
   $('#reel-peek').innerHTML = picks.filter((e) => !e.stale && !e.pending).slice(0, 6).map((e) => previewHTML(e, 'thumb')).join('');
   const body = $('#reel-body');
-  const note = warm ? `<div class="clash" role="status"><span><b>${esc(entryOf(warm.id)?.name || 'That style')} was not picked.</b> ${esc(warm.text)}</span></div>` : '';
+  const note = warm ? `<div class="clash" data-tone="${warm.tone}" role="status"><span><b>${esc(entryOf(warm.id)?.name || 'That style')} was not picked.</b> ${esc(warm.text)}</span></div>` : '';
   if (!n) { body.innerHTML = `${note}<div class="empty"><strong>No picks yet</strong><span>Picking is optional. With no picks the studio chooses the styles; with picks, at least one of the three concepts uses each one as picked.</span></div>`; return; }
   body.innerHTML = note + LIB_TABS.filter((t) => picks.some((e) => e.tab === t.id)).map((t) => `
     <div class="reel-group"><p class="label">${t.name}</p><div class="film" role="list">${picks.filter((e) => e.tab === t.id).map(reelFrameHTML).join('')}</div></div>`).join('');
@@ -2055,9 +2091,14 @@ async function startLibrary() {
   paintLibrary();
   try {
     const get = (p) => fetch(p).then((r) => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
-    const [meta, ...lists] = await Promise.all([get('styles/meta.json'), ...LIB_TABS.map((t) => get(`styles/${t.id}.json`))]);
+    // One tab that does not load leaves the others: it shows a plain note on its own tab. Only all five failing is
+    // the library not loading.
+    const [meta, ...lists] = await Promise.all([get('styles/meta.json').catch(() => null), ...LIB_TABS.map((t) => get(`styles/${t.id}.json`).then((l) => (Array.isArray(l) ? l : null), () => null))]);
+    if (lists.every((l) => l === null)) throw new Error('No tab of the library loaded');
     const [brief, suggest, prompt] = await Promise.all([import('./lib/brief.mjs').catch(() => null), import('./lib/suggest.mjs').catch(() => null), import('./lib/prompt.mjs').catch(() => null)]);
-    libLoaded({ tabs: Object.fromEntries(LIB_TABS.map((t, i) => [t.id, Array.isArray(lists[i]) ? lists[i] : []])), meta, brief, suggest, prompt });
+    const failed = LIB_TABS.filter((t, i) => lists[i] === null).map((t) => t.id);
+    const entries = (l) => (l || []).filter((e) => e && typeof e === 'object' && !Array.isArray(e));
+    libLoaded({ tabs: Object.fromEntries(LIB_TABS.map((t, i) => [t.id, entries(lists[i])])), meta, brief, suggest, prompt, failed });
   } catch {
     state.lib.status = 'error';
   }
@@ -2162,7 +2203,7 @@ if (canPaint) { wireLibrary(); startLibrary(); }
 const ENGINE_USES = document.getElementById('engine-uses');
 const CHIP_FIELDS = ['size', 'kind', 'length', 'energy', 'voice', 'audience'];
 const CHIP_LABEL = { size: 'Size', kind: 'Video type', length: 'Length', energy: 'Energy', voice: 'Voice', audience: 'For' };
-const ANSWERABLE = { size: 'size', kind: 'kind', voice: 'voice', length: 'length' }; // brief_answer question ids
+const ANSWERABLE = { size: 'size', kind: 'kind', voice: 'voice', length: 'length', energy: 'energy' }; // brief_answer question ids
 const ENGINE_GROUPS = [['ui', 'UI library'], ['motion', 'Motion library'], ['sound', 'Sound kit'], ['skills', 'Built-in skills']];
 const STATE_LABEL = { proposed: 'To review', kept: 'Kept', changed: 'Changed by you', swapped: 'Swapped' };
 const TAKE_FAILED = 'That take did not come out right. Try again.';
@@ -2247,7 +2288,7 @@ function chipEditor(field, current) {
     h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn btn--sm btn--primary', text: 'Save change', onclick: () => { if (String(input.value).trim()) changeChip(field, input.value); } }), close));
 }
 /** A changed chip. Before the brief exists it steers the suggestions and the director, and is saved when the brief
- *  starts; after, size, kind, voice and length are answers to the brief (brief_answer). */
+ *  starts; after, size, kind, voice, length and energy are answers to the brief (brief_answer). */
 async function changeChip(field, value) {
   state.chipOpen = null;
   const v = field === 'length' ? Number(String(value).replace(/\D+$/, '')) : String(value).trim();
@@ -2301,9 +2342,14 @@ const libraryEngine = () => {
   if (!rules || typeof rules.isEngineName !== 'function') return [];
   return [...new Set(state.lib.all.flatMap((e) => e.engine_names || []))].filter((n) => rules.isEngineName(n));
 };
-/** The energy the customer gave (the chips, or the brief's assumption), if any. */
+/** The energy the customer gave, if any: once the brief exists, the brief's own (answered, or from their words, as
+ *  brief_check says); before, the chips (their words with any chip they changed). */
 function energyNow() {
-  return state.understood?.energy || state.check?.assumed?.find((a) => a.id === 'energy')?.value || null;
+  return (state.job && state.check?.energy) || state.understood?.energy || state.check?.assumed?.find((a) => a.id === 'energy')?.value || null;
+}
+/** The length cap the beats must fit in, when known: the brief's own once it exists, else the chips. */
+function lengthNow() {
+  return (state.job && state.check?.length) || state.understood?.length || state.check?.assumed?.find((a) => a.id === 'length_cap_seconds')?.value || null;
 }
 /** The energy the beats are checked against: the customer's, else the one the director named for this take. */
 const filmEnergy = () => energyNow() || state.dir.energy || null;
@@ -2333,7 +2379,7 @@ function partsOf(out) {
 function checkParts(parts, energy = filmEnergy()) {
   const rules = state.lib.brief;
   if (!rules || typeof rules.checkDirectorBrief !== 'function') return { ok: false, reason: 'The page cannot check the brief here.', part: null };
-  return rules.checkDirectorBrief(parts, { energy, names: libraryEngine(), allowed: pickedEngine() });
+  return rules.checkDirectorBrief(parts, { energy, names: libraryEngine(), allowed: pickedEngine(), cap: lengthNow() });
 }
 /** A new director call: the one before it is aborted, and its reply will be dropped. */
 function directorCall(words = '') {
@@ -2472,7 +2518,8 @@ async function keepDirectorBrief() {
   if (state.host === 'ready' && state.mcp && state.job) {
     d.saving = true; render();
     try {
-      const reply = await write(() => connector.direct({ job: state.job, parts: d.parts, engine }));
+      const energy = filmEnergy(); // the energy the beats were just checked against; the brief's own wins in the studio
+      const reply = await write(() => connector.direct({ job: state.job, parts: d.parts, engine, ...(energy && { energy }) }));
       if (reply.kept) { d.kept = 'saved'; setNote('director-keep', { tone: 'good', text: 'Kept with your brief. The studio reads it as your direction for the three concepts.' }); }
       else { d.kept = false; setNote('director-keep', { tone: 'warm', text: reply.reason || 'The studio did not keep it. Try again.' }); }
       applyCheck(reply, { keepView: true });

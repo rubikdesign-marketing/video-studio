@@ -356,7 +356,7 @@ test('page: a family swap whose new pick fails puts the old pick back and checks
   assert.deepEqual(s.picks(), [a.id]);
   assert.deepEqual(p.context.calls.filter((c) => c.tool === 'brief_pick').map((c) => [c.input.id, c.input.on]), [[a.id, false], [b.id, true], [a.id, true]]);
   assert.ok(p.context.calls.some((c) => c.tool === 'brief_check'), 'the page reads the brief again, as its note says');
-  assert.equal(p.run('state.libNote.tone'), 'warm');
+  assert.equal(p.run('state.libNote.tone'), 'notice'); // the studio did not answer: a notice, not a clash
 });
 
 /** A page store with no snapshot yet (the listener has not answered, or failed). */
@@ -843,4 +843,136 @@ test('page: the director section has no live region of its own; status goes thro
   const html = fs.readFileSync(PAGE, 'utf8');
   assert.doesNotMatch(html, /id: 'director', 'aria-live'/);
   assert.match(html, /announce\(['"]The director is working on your brief\.['"]\)/);
+});
+
+/* ---------- Final review fixes ---------- */
+
+test('page: every grid card after the first shows its own line, not its place in the list', async () => {
+  const p = loadPage();
+  const entries = await withLibrary(p);
+  const two = entries.filter((e) => e.tab === 'motion').slice(0, 2);
+  p.context.TWO = two;
+  const html = p.run('gridCardsHTML(TWO)');
+  const lines = [...html.matchAll(/<p class="sc-line">([^<]*)<\/p>/g)].map((m) => m[1]);
+  assert.equal(lines.length, 2, html);
+  assert.equal(lines[1], two[1].line.replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;'));
+  assert.doesNotMatch(html, /class="reason"/);
+  const src = fs.readFileSync(PAGE, 'utf8');
+  assert.doesNotMatch(src, /\.map\(cardHTML\)/);
+});
+
+test('page: one tab that does not load leaves the others, with a plain note on that tab', async () => {
+  const p = loadPage();
+  const { loadLibrary } = await import('../../tools/styles/lib/library.mjs');
+  const lib = loadLibrary(ROOT);
+  p.context.LISTS = Object.fromEntries(TAB_IDS.map((t) => [t, lib.tabs[t].map(({ engine, ...rest }) => ({ ...rest, engine_names: engine || [] }))]));
+  p.run(`fetch = async (path) => {
+    if (path === 'styles/motion.json') return { ok: false, status: 404, json: async () => null };
+    if (path === 'styles/meta.json') return { ok: true, json: async () => ({ counts: {}, notes: [] }) };
+    const tab = path.slice('styles/'.length, -'.json'.length);
+    return { ok: true, json: async () => JSON.parse(JSON.stringify(LISTS[tab])) };
+  };`);
+  await p.run('startLibrary()');
+  assert.equal(p.run('state.lib.status'), 'ready');
+  assert.ok(p.run('state.lib.tabs.filming.length') > 0);
+  assert.equal(p.run('state.lib.tabs.motion.length'), 0);
+  assert.deepEqual(JSON.parse(p.run('JSON.stringify(state.lib.failed)')), ['motion']);
+  assert.match(p.run("libTabNote('motion')"), /The Motion styles did not load/);
+  assert.equal(p.run("libTabNote('filming')"), '');
+  // every tab failing is still the whole library not loading
+  p.run("fetch = async () => ({ ok: false, status: 500, json: async () => null });");
+  await p.run('startLibrary()');
+  assert.equal(p.run('state.lib.status'), 'error');
+});
+
+test('page: a refusal the studio could not answer is a notice, not amber; a clash stays amber', async () => {
+  const p = loadPage();
+  const entries = await withLibrary(p);
+  p.context.E = entries.find((e) => e.filters.ready);
+  p.run("refusePick(E, 'The studio did not answer.', 'notice')");
+  assert.equal(p.run('state.libNote.tone'), 'notice');
+  assert.match(p.run('noteHTML(E.id)'), /data-tone="notice"/);
+  p.run("refusePick(E, 'It does not go with your film.')");
+  assert.equal(p.run('state.libNote.tone'), 'warm');
+  const { rest } = cssOf(fs.readFileSync(PAGE, 'utf8'));
+  for (const sel of ['.clash[data-tone="notice"]', '.reel-hint[data-tone="notice"]']) {
+    const rule = new RegExp(`${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^{]*\\{([^}]*)\\}`).exec(rest);
+    assert.ok(rule, sel);
+    assert.match(rule[1], /--color-notice/, sel);
+  }
+});
+
+test('page: a second pick click while one saves says one moment, and is not sent', async () => {
+  const p = loadPage();
+  const s = await pickingStudio(p);
+  const [a, b] = s.entries.filter((e) => e.tab === 'motion' && e.filters.ready);
+  Object.assign(p.context, { A: a, B: b });
+  p.run('state.libBusy = A.id;');
+  await p.run('pickToggle(B)');
+  assert.equal(p.context.calls.length, 0);
+  assert.match(p.run('state.libNote.text'), /One moment/);
+  assert.equal(p.run('state.libNote.id'), b.id);
+  assert.notEqual(p.run('state.libNote.tone'), 'warm');
+});
+
+test('page: the clash note clears once the brief is confirmed', async () => {
+  const p = loadPage();
+  answering(p, { job: 'j', stage: 'idea', next: 'Start a new chat' });
+  p.run("state.libNote = { id: 'x', tone: 'warm', text: 'It does not go with your film.' };");
+  await p.run('confirmPlan()');
+  assert.equal(p.run('state.libNote'), null);
+});
+
+test('page: an energy chip change goes to the brief, before and after it starts', async () => {
+  const p = loadPage();
+  await withLibrary(p);
+  answering(p, { job: 'j', questions: [], recorded: true, reason: null, energy: 'hype' });
+  await p.run("changeChip('energy', 'hype')");
+  assert.deepEqual(sent(p, 0), { job: 'j', question: 'energy', value: 'hype' });
+  assert.equal(p.run('energyNow()'), 'hype');
+  // held before the brief existed, then sent with the others
+  p.context.calls.length = 0;
+  p.run("state.chipEdits = { energy: 'calm', size: '1:1' };");
+  await p.run('sendHeldChips()');
+  const sentIds = p.context.calls.filter((c) => c.tool === 'brief_answer').map((c) => c.input.question).sort();
+  assert.deepEqual(sentIds, ['energy', 'size']);
+});
+
+test('page: the brief\'s chosen energy shows with the rest of what was understood, and can be changed', async () => {
+  const p = loadPage();
+  await withLibrary(p);
+  p.run("state.host = 'ready'; state.job = 'j'; state.view = 'questions'; state.check = { job: 'j', questions: [], assumed: [], preflight: [], energy: 'hype' }; render();");
+  const text = textOf(p.view);
+  assert.match(text, /Energy Hype/);
+  assert.ok(find(p.view, 'chip-energy'));
+});
+
+test('page: "Keep this brief" sends the energy its beats were checked against', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  await pickingStudio(p);
+  await p.run('sharpen()');
+  p.context.calls.length = 0;
+  await p.run('keepDirectorBrief()');
+  const call = p.context.calls.find((c) => c.tool === 'brief_direct');
+  assert.equal(call.input.energy, 'calm');
+});
+
+test('page: the director\'s beats are checked against the length cap too', async () => {
+  const p = loadPage();
+  await directing(p, [{ ...GOOD_TAKE, beats: [{ at_s: 0, what: 'The board settles' }, { at_s: 25, what: 'Too late' }] }]);
+  await p.run('sharpen()');
+  assert.equal(p.run('state.dir.status'), 'error');
+  assert.match(p.run('state.dir.reason'), /20 s film/);
+});
+
+test('page: without the studio or a page store, the copy box carries the picks by name', async () => {
+  const p = loadPage();
+  const entries = await withLibrary(p);
+  const a = entries.find((e) => e.tab === 'motion' && e.filters.ready);
+  p.context.A = a;
+  p.run("state.host = 'none'; state.db = null; state.picks = [{ tab: A.tab, id: A.id }, { tab: 'sound', id: 'gone-sound', stale: true, name: 'gone-sound' }];");
+  await p.run("saveWithoutStudio('A calm 20 second demo of the export button for acme')");
+  assert.match(p.run('state.copyText'), /A calm 20 second demo of the export button for acme/);
+  assert.match(p.run('state.copyText'), new RegExp(`Picked styles: Motion ${a.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}; Sound gone-sound \\(no longer in the library\\)`));
 });
