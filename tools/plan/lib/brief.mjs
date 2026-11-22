@@ -61,6 +61,9 @@ function readWords(w) {
 }
 
 export const ENERGIES = ['calm', 'confident', 'hype'];
+/** Does this name read as an engine name (kebab-case, a path, a prefixed id, CamelCase)? Plain words that are also
+ *  names in a library ("camera", "Button", "slam") are how people describe a film, so they do not count. */
+export const isEngineName = (n) => /[-/:]|[a-z][A-Z]/.test(String(n));
 export const DIRECTOR_PARTS = ['logline', 'first_three_seconds', 'beats', 'camera', 'motion', 'type', 'sound', 'ending'];
 export const CHECKLIST_LABELS = ['Brand', 'Product', 'Audience', 'Message angle', 'Style and look', 'Hook', 'Video type and references', 'Size, length and voice'];
 // The tab labels, the same five as tools/styles/lib/library.mjs (this file imports nothing).

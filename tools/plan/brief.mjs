@@ -28,7 +28,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { assumptions, checkDirectorBrief, picksOf, preflight, questions, setField, setPick, SETTABLE, shotProblems, summary } from './lib/brief.mjs';
+import { assumptions, checkDirectorBrief, directorBriefOf, picksOf, preflight, questions, setField, setPick, SETTABLE, shotProblems, summary } from './lib/brief.mjs';
 import { decide, directorRules, loadBrief, loadJob, saveBrief, setDotted, startBrief, studioContext, writePlan } from './lib/brief-store.mjs';
 import { loadRecipes, matchRecipes } from './lib/recipes.mjs';
 
@@ -145,13 +145,18 @@ if (cmd === 'decide') {
 } else if (cmd === 'direct') {
   const [partsFile] = rest.filter((a) => !a.startsWith('--'));
   if (!partsFile) { console.log('Usage: brief.mjs direct <job_dir> <parts.json>'); process.exit(2); }
-  let parts;
-  try { parts = JSON.parse(fs.readFileSync(path.resolve(partsFile), 'utf8')); } catch { console.log(`${partsFile} cannot be read as JSON.`); process.exit(1); }
+  let given;
+  try { given = JSON.parse(fs.readFileSync(path.resolve(partsFile), 'utf8')); } catch { console.log(`${partsFile} cannot be read as JSON.`); process.exit(1); }
+  // Either the canonical { parts, engine, energy, at } (as brief_direct and the page store it) or the parts alone.
+  const read = directorBriefOf({ director_brief: given });
+  if (!read) { console.log(`${partsFile} holds no director's brief.`); process.exit(1); }
+  const { engine: inParts, ...words } = read.parts;
+  const parts = { ...words, engine: read.engine.length ? read.engine : (Array.isArray(inParts) ? inParts : []) };
   const ctx = context();
   const { energy, names, allowed } = directorRules(brief, job, ctx);
   const r = checkDirectorBrief(parts, { energy, names, allowed });
   if (!r.ok) { console.log(r.reason); process.exit(1); }
-  const { engine, ...words } = parts;
+  const { engine } = parts;
   saveBrief(jobDir, { ...brief, director_brief: { parts: words, engine: Array.isArray(engine) ? engine : [], energy: energy ?? null, at: new Date().toISOString() } });
   console.log(`Recorded the director's brief: ${parts.logline}`);
 } else if (cmd === 'show') {

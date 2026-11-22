@@ -2,7 +2,7 @@
 // context (brands, references), plan.md and the recorded decisions. Every function that needs the studio takes its root.
 import fs from 'node:fs';
 import path from 'node:path';
-import { assumptions, FRAMEWORK, picksOf, plan, preflight } from './brief.mjs';
+import { assumptions, FRAMEWORK, isEngineName, picksOf, plan, preflight } from './brief.mjs';
 import { loadFrameworks } from './frameworks.mjs';
 import { engineNames, loadLibrary } from '../../styles/lib/library.mjs';
 
@@ -32,7 +32,7 @@ export function directorRules(brief, job, ctx) {
   const e = ctx.engineNames;
   // Only names that read as engine names (kebab-case, paths, prefixed ids, CamelCase). Plain words that are also names
   // in a library ("camera", "Button", "slam") are how a director describes a film, so they are not refused.
-  const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])].filter((n) => /[-/:]|[a-z][A-Z]/.test(String(n))));
+  const names = new Set([...(e?.moves || []), ...(e?.registry || []), ...(e?.backgrounds || []), ...(e?.sounds || [])].filter(isEngineName));
   const allowed = picksOf(brief, ctx.styles).filter((x) => !x.stale).flatMap((x) => ctx.styles.get(x.id).engine || []);
   const energy = brief.energy || assumptions(brief, { jobBrand: job?.brand, ...ctx }).find((x) => x.id === 'energy')?.value;
   return { energy, names, allowed };

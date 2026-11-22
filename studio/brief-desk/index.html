@@ -273,6 +273,10 @@ button.chip-u:active { transform: translateY(1px); }
 #view .understood .link { font-size: var(--text-sm); }
 
 /* The director's brief */
+#view .director { display: grid; gap: var(--space-sm); min-width: 0; }
+.kept-parts { display: grid; gap: var(--space-2xs); margin: 0; font-size: var(--text-sm); }
+.kept-parts dt { color: var(--color-ink-2); }
+.kept-parts dd { margin: 0 0 var(--space-2xs); overflow-wrap: anywhere; }
 .direct-row { display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: center; }
 .thinking { display: grid; gap: var(--space-xs); padding: var(--space-md); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-raised); }
 .thinking ol { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2xs); }
@@ -838,16 +842,19 @@ async function startBrief() {
   try {
     const reply = await write(() => connector.start(words, state.style));
     state.briefWords = words; state.confirmedOn = null; state.words = ''; state.style = null; state.drafts = {};
+    const heldFor = state.dir.kept === 'held' ? state.dir.words.trim() : null;
     applyCheck(reply);
     if (held.length) await sendHeldPicks(held);
     await sendHeldChips();
-    if (state.dir.kept === 'held') await keepDirectorBrief();
+    if (heldFor !== null && heldFor === words) await keepDirectorBrief();
+    else if (heldFor !== null) { state.dir = freshDir(); state.dirSeq += 1; } // it was made for other words
     refreshSuggestionsSoon();
   } catch (e) { await failed(e, 'start', { isWrite: true }); }
   state.busy = null; render();
 }
 
 async function openBrief(item) {
+  resetDirector();
   state.busy = `open:${item.job}`; setNote('briefs', null); render();
   try {
     const reply = await read(() => connector.check(item.job));
@@ -932,6 +939,7 @@ function applyCheck(reply, { keepView = false } = {}) {
 
 async function goHome() {
   if (state.job) { state.picks = []; state.libNote = null; paintPicks(); } // those picks belong to the brief just left
+  resetDirector();
   state.view = 'start'; state.job = null; state.check = null; state.plan = null; state.done = null; state.parkedNext = null; state.changing = false;
   state.notes = {}; render(); toTop();
   if (state.host === 'ready') await loadContext();
@@ -1035,11 +1043,12 @@ function watchSaved() {
 }
 
 async function saveWithoutStudio(words) {
-  if (!state.db) { state.copyText = words; setNote('start', { tone: 'warm', text: 'This page cannot keep your brief here. Copy it and paste it into a new chat in the studio folder.' }); render(); return; }
+  const director = state.dir.kept === 'held' && state.dir.words.trim() === words.trim() ? state.dir : null;
+  if (!state.db) { state.copyText = director ? `${words}\n\n${directorText(director)}` : words; setNote('start', { tone: 'warm', text: 'This page cannot keep your brief here. Copy it and paste it into a new chat in the studio folder.' }); render(); return; }
   state.busy = 'start'; render();
   const id = `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
   const doc = { words, at: new Date().toISOString(), status: 'waiting', style_picks: state.picks.map((p) => ({ tab: p.tab, id: p.id })) };
-  if (state.dir.kept === 'held') doc.director_brief = { parts: state.dir.parts, engine: state.dir.keptEngine || [] };
+  if (director) doc.director_brief = canonicalDirector(director);
   const save = () => state.db.collection('briefs').doc(id).set(doc);
   try {
     try { await save(); } catch (e) { if (codeOf(e) !== 'unavailable') throw e; await wait(300 + Math.random() * 700); await save(); }
@@ -1048,7 +1057,7 @@ async function saveWithoutStudio(words) {
     setNote('start', { tone: 'good', text: 'Saved. Next time you open a chat in the studio folder and say "make a video", Claude finds this brief and carries on from it.' });
     watchSaved();
   } catch (e) {
-    state.copyText = words;
+    state.copyText = director ? `${words}\n\n${directorText(director)}` : words;
     const full = ['quota_exceeded', 'resource_exhausted'].includes(codeOf(e));
     setNote('start', { tone: 'warm', text: full ? 'The page\'s store is full, so your brief was not saved here. Copy it and paste it into a new chat in the studio folder.' : 'Your brief could not be saved here. Copy it and paste it into a new chat in the studio folder.' });
   }
@@ -1635,11 +1644,15 @@ async function pickToggle(entry) {
  *  can update one field, only style_picks is written; otherwise the document is written again from what was saved
  *  (and from the latest snapshot, when one has come), so neither its words nor anything the chat added is lost. */
 async function savePicksWithBrief() {
-  const style_picks = state.picks.map((p) => ({ tab: p.tab, id: p.id }));
+  await updateSavedBrief({ style_picks: state.picks.map((p) => ({ tab: p.tab, id: p.id })) });
+}
+/** Changes some fields of the brief saved on this page: update when the store can, else the saved document (with the
+ *  latest snapshot over it) written again with the fields, so its words and anything the chat added stay. */
+async function updateSavedBrief(fields) {
   const ref = state.db.collection('briefs').doc(state.savedId);
-  if (typeof ref.update === 'function') { await ref.update({ style_picks }); return; }
+  if (typeof ref.update === 'function') { await ref.update(fields); return; }
   const { id: _id, ...seen } = state.saved.find((d) => d.id === state.savedId) || {};
-  const doc = { ...(state.savedDoc || {}), ...seen, style_picks };
+  const doc = { ...(state.savedDoc || {}), ...seen, ...fields };
   await ref.set(doc);
   state.savedDoc = doc;
 }
@@ -2153,7 +2166,7 @@ const ANSWERABLE = { size: 'size', kind: 'kind', voice: 'voice', length: 'length
 const ENGINE_GROUPS = [['ui', 'UI library'], ['motion', 'Motion library'], ['sound', 'Sound kit'], ['skills', 'Built-in skills']];
 const STATE_LABEL = { proposed: 'To review', kept: 'Kept', changed: 'Changed by you', swapped: 'Swapped' };
 const TAKE_FAILED = 'That take did not come out right. Try again.';
-const freshDir = () => ({ status: 'idle', words: '', parts: {}, engine: [], states: {}, partNotes: {}, editing: null, busyPart: null, saving: false, kept: false, keptEngine: [], settled: false });
+const freshDir = () => ({ status: 'idle', words: '', parts: {}, engine: [], energy: null, states: {}, partNotes: {}, editing: null, editText: null, busyPart: null, saving: false, kept: false, keptEngine: [], settled: false, reason: null });
 
 Object.assign(state, {
   heard: {},               // understood(words), as typed
@@ -2161,6 +2174,8 @@ Object.assign(state, {
   chipOpen: null,          // the chip being changed
   dir: freshDir(),         // the director's brief
   directorNotes: null,     // styles/director.md, read once
+  dirSeq: 0,               // each sharpen or swap is stamped; a reply that no longer matches is dropped
+  dirAbort: null,          // the sample call in flight, aborted when a newer one starts or the brief changes
   suggestions: [],         // [{ id, reason }]
 });
 
@@ -2180,11 +2195,21 @@ function scheduleRead() {
   readTimer = setTimeout(hearWords, 250);
 }
 /** What the words say (brief.mjs understood), with the chips the customer changed laid over it. */
+let heardLine = '';
 function hearWords() {
   state.heard = understoodOf(state.words);
   state.understood = { ...state.heard, ...state.chipEdits };
   repaintUnderstood();
+  announceUnderstood();
   refreshSuggestionsSoon();
+}
+/** Says what the studio understood through the page's one live region, only when it changed. */
+function announceUnderstood() {
+  const u = state.understood || {};
+  const line = CHIP_FIELDS.filter((f) => u[f] !== undefined && u[f] !== null && u[f] !== '').map((f) => `${CHIP_LABEL[f]} ${chipText(f, u[f])}`).join(', ');
+  if (line === heardLine) return;
+  heardLine = line;
+  if (line) announce(`The studio understood: ${line}.`);
 }
 function repaintUnderstood() {
   const wrap = document.getElementById('understood-wrap');
@@ -2200,7 +2225,7 @@ function understoodSection() {
   return h('section', { id: 'understood-wrap', 'aria-labelledby': 'und-h', hidden: !wordCount(state.words) || null },
     h('div', { class: 'understood-head' }, h('h2', { id: 'und-h', text: 'What the studio understood' }), h('span', { class: 'reading', id: 'reading', 'aria-hidden': 'true', text: 'Reading…' })),
     fields.length
-      ? h('ul', { class: 'chips', id: 'understood', role: 'list', 'aria-live': 'polite' }, fields.map((f) => h('li', {},
+      ? h('ul', { class: 'chips', id: 'understood', role: 'list' }, fields.map((f) => h('li', {},
         h('button', { type: 'button', class: 'chip-u', id: `chip-${f}`, 'data-changed': String(Object.hasOwn(state.chipEdits, f)), 'aria-expanded': String(state.chipOpen === f), 'aria-label': `${CHIP_LABEL[f]}: ${chipText(f, u[f])}. Change it`, onclick: () => { state.chipOpen = state.chipOpen === f ? null : f; repaintUnderstood(); } },
           h('span', { class: 'k', text: CHIP_LABEL[f] }), h('b', { text: chipText(f, u[f]) })))))
       : h('p', { class: 'small muted', id: 'understood', text: 'Say the size, the kind of film, how long, the energy or who it is for, and it shows here.' }),
@@ -2238,7 +2263,7 @@ async function changeChip(field, value) {
   }
   state.chipEdits = { ...state.chipEdits, [field]: v };
   state.understood = { ...state.heard, ...state.chipEdits };
-  repaintUnderstood(); refreshSuggestionsSoon();
+  repaintUnderstood(); announceUnderstood(); refreshSuggestionsSoon();
 }
 /** Changed chips go to the new brief as answers, where the brief has a question for them. */
 async function sendHeldChips() {
@@ -2259,22 +2284,30 @@ async function directorNotes() {
   state.directorNotes = await r.text();
   return state.directorNotes;
 }
-async function askClaude(prompt) {
+async function askClaude(prompt, signal) {
   const sm = state.sample;
   if (!sm) throw Object.assign(new Error('No sample'), { code: 'not_granted' });
-  if (typeof sm.json === 'function') return sm.json(prompt);
-  const text = await sm.text(prompt);
+  if (typeof sm.json === 'function') return sm.json(prompt, signal ? { signal } : undefined);
+  const text = await sm.text(prompt, signal ? { signal } : undefined);
   const m = /\{[\s\S]*\}/.exec(String(text || ''));
   return JSON.parse(m ? m[0] : 'null');
 }
 const pickedEntries = () => state.picks.map((p) => entryOf(p.id)).filter(Boolean);
 const pickedEngine = () => [...new Set(pickedEntries().flatMap((e) => e.engine_names || []))];
-// The names the library's styles use that read as engine names (kebab-case, paths, prefixed ids, CamelCase). Plain
-// words such as "camera" or "Button" are also names in the registry, but in a director's brief they are just words.
-const libraryEngine = () => [...new Set(state.lib.all.flatMap((e) => e.engine_names || []))].filter((n) => /[-/:]|[a-z][A-Z]/.test(n));
+// The names the library's styles use that read as engine names (brief.mjs isEngineName). Plain words such as "camera"
+// or "Button" are also names in the registry, but in a director's brief they are just words.
+const libraryEngine = () => {
+  const rules = state.lib.brief;
+  if (!rules || typeof rules.isEngineName !== 'function') return [];
+  return [...new Set(state.lib.all.flatMap((e) => e.engine_names || []))].filter((n) => rules.isEngineName(n));
+};
+/** The energy the customer gave (the chips, or the brief's assumption), if any. */
 function energyNow() {
   return state.understood?.energy || state.check?.assumed?.find((a) => a.id === 'energy')?.value || null;
 }
+/** The energy the beats are checked against: the customer's, else the one the director named for this take. */
+const filmEnergy = () => energyNow() || state.dir.energy || null;
+const ENERGY_WORDS = () => state.lib.brief?.ENERGIES || [];
 function studioSummary() {
   const c = state.ctx || {};
   return { brands: (c.brands || []).map((b) => ({ name: b.name, last_films: (b.last_films || []).slice(0, 3).map((f) => ({ name: f.name, look: f.look })) })), saved_styles: (c.styles || []).map((x) => x.ref) };
@@ -2285,7 +2318,7 @@ function directorPrompt(notes, words) {
     notes, '', '## This film',
     `The customer's words: ${JSON.stringify(words)}`,
     `What the studio understood: ${JSON.stringify(state.understood || {})}`,
-    `Energy: ${energyNow() || 'not said: choose from the words'}`,
+    `Energy: ${energyNow() || 'not said: choose one from the words and the picks, and name it in "energy"'}`,
     `Picked styles:${picks.length ? '' : ' none'}`,
     ...picks.map((e) => `- ${e.name} (${tabName(e.tab)}):\n${promptText(e)}\n  engine: ${(e.engine_names || []).join(', ') || 'none'}`),
     `The studio: ${JSON.stringify(studioSummary())}`,
@@ -2297,29 +2330,64 @@ function partsOf(out) {
   return Object.fromEntries(directorParts().filter((k) => Object.hasOwn(o, k)).map((k) => [k, k === 'beats' ? cleanBeats(o[k]) : o[k]]));
 }
 /** brief.mjs checkDirectorBrief, with the energy, the names the library uses, and the picks' names. */
-function checkParts(parts) {
+function checkParts(parts, energy = filmEnergy()) {
   const rules = state.lib.brief;
   if (!rules || typeof rules.checkDirectorBrief !== 'function') return { ok: false, reason: 'The page cannot check the brief here.', part: null };
-  return rules.checkDirectorBrief(parts, { energy: energyNow(), names: libraryEngine(), allowed: pickedEngine() });
+  return rules.checkDirectorBrief(parts, { energy, names: libraryEngine(), allowed: pickedEngine() });
 }
+/** A new director call: the one before it is aborted, and its reply will be dropped. */
+function directorCall() {
+  if (state.dirAbort) try { state.dirAbort.abort(); } catch { /* already done */ }
+  state.dirAbort = typeof AbortController === 'function' ? new AbortController() : null;
+  return { seq: ++state.dirSeq, job: state.job, signal: state.dirAbort ? state.dirAbort.signal : undefined };
+}
+const stillCurrent = (call) => call.seq === state.dirSeq && call.job === state.job;
+/** Another brief is shown: the director's brief, the changed chips and any call in flight belong to the one before. */
+function resetDirector() {
+  if (state.dirAbort) try { state.dirAbort.abort(); } catch { /* already done */ }
+  state.dirAbort = null;
+  state.dirSeq += 1;
+  state.dir = freshDir();
+  state.chipEdits = {};
+  state.chipOpen = null;
+  setNote('sharpen', null); setNote('director-keep', null);
+}
+/** Why a take was not taken, in plain words. */
+function takeReason(e) {
+  if (codeOf(e) === 'rate_limited') return 'Claude is busy just now: wait a few seconds, then try again.';
+  return e && e.plain ? String(e.message) : '';
+}
+const plainError = (message) => Object.assign(new Error(message), { plain: true });
+/** The director's brief as plain text, for the copy box. */
+function directorText(d) {
+  return ["The director's brief", ...directorParts().map((k) => (k === 'beats' ? `${partLabel(k)}:\n${beatsText(d.parts.beats)}` : `${partLabel(k)}: ${d.parts[k]}`))].join('\n');
+}
+/** The director's brief as brief_direct stores it. */
+const canonicalDirector = (d) => ({ parts: d.parts, engine: d.keptEngine || [], energy: d.energy || energyNow() || null, at: new Date().toISOString() });
 
 async function sharpen() {
   const words = currentWords().trim();
   if (wordCount(words) < 3) { setNote('sharpen', { tone: 'warm', text: 'Write a sentence or two about the video first.' }); render(); return; }
   setNote('sharpen', null);
+  const call = directorCall();
   state.dir = { ...freshDir(), status: 'loading', words };
   render();
   try {
-    const out = await askClaude(directorPrompt(await directorNotes(), words));
+    const out = await askClaude(directorPrompt(await directorNotes(), words), call.signal);
+    if (!stillCurrent(call)) return; // a newer take was asked for, or another brief is open
     const parts = partsOf(out);
-    const r = checkParts(parts);
-    if (!r.ok) throw new Error(r.reason);
+    const named = out && ENERGY_WORDS().includes(out.energy) ? out.energy : null;
+    const energy = energyNow() || named;
+    if (!energy) throw plainError('The director did not say which energy the film runs at.');
+    const r = checkParts(parts, energy);
+    if (!r.ok) throw plainError(r.reason);
     const engine = Array.isArray(out.engine) ? out.engine.filter((n) => typeof n === 'string') : [];
-    state.dir = { ...freshDir(), status: 'ready', words, parts, engine, states: Object.fromEntries(directorParts().map((k) => [k, 'proposed'])) };
+    state.dir = { ...freshDir(), status: 'ready', words, parts, engine, energy, states: Object.fromEntries(directorParts().map((k) => [k, 'proposed'])) };
     announce("The director's brief is ready.");
   } catch (e) {
+    if (!stillCurrent(call)) return;
     sampleFailed(e);
-    state.dir = { ...freshDir(), status: 'error', words };
+    state.dir = { ...freshDir(), status: 'error', words, reason: takeReason(e) };
   }
   render();
 }
@@ -2346,7 +2414,7 @@ function partChange(part, text) {
   const next = { ...d.parts, [part]: value };
   const r = value ? checkParts(next) : { ok: false, reason: part === 'beats' ? 'Write each beat on its own line, as "3 s: what happens"' : `${partLabel(part)} is missing` };
   if (!r.ok) { d.partNotes = { ...d.partNotes, [part]: r.reason }; render(); return; }
-  d.parts = next; d.states[part] = 'changed'; d.editing = null; d.settled = true;
+  d.parts = next; d.states[part] = 'changed'; d.editing = null; d.editText = null; d.settled = true;
   d.partNotes = { ...d.partNotes, [part]: null };
   render();
 }
@@ -2356,19 +2424,25 @@ async function swapPart(part) {
   if (d.status !== 'ready' || d.busyPart) return;
   d.busyPart = part; d.editing = null; d.settled = true;
   d.partNotes = { ...d.partNotes, [part]: null };
+  const call = directorCall();
   render();
   try {
     const prompt = [directorPrompt(await directorNotes(), d.words), '', '## Another take',
       `The brief as it stands: ${JSON.stringify(d.parts)}`,
+      `Energy: ${filmEnergy()}`,
       `Write one different take of the part "${part}" only. Keep the other parts as they are. Reply with JSON only: {"${part}": ...}`].join('\n');
-    const out = await askClaude(prompt);
+    const out = await askClaude(prompt, call.signal);
+    if (!stillCurrent(call) || state.dir !== d) return;
     const has = out && typeof out === 'object' && Object.hasOwn(out, part);
-    const next = { ...d.parts, [part]: has ? (part === 'beats' ? cleanBeats(out[part]) : out[part]) : undefined };
-    if (!has || !checkParts(next).ok) throw new Error('bad take');
+    if (!has) throw plainError(`There was no new ${partLabel(part).toLowerCase()} in it.`);
+    const next = { ...d.parts, [part]: part === 'beats' ? cleanBeats(out[part]) : out[part] };
+    const r = checkParts(next);
+    if (!r.ok) throw plainError(r.reason);
     d.parts = next; d.states[part] = 'swapped';
   } catch (e) {
+    if (!stillCurrent(call) || state.dir !== d) return;
     sampleFailed(e);
-    d.partNotes = { ...d.partNotes, [part]: TAKE_FAILED };
+    d.partNotes = { ...d.partNotes, [part]: `${TAKE_FAILED} ${takeReason(e)}`.trim() };
   }
   d.busyPart = null;
   render();
@@ -2397,9 +2471,11 @@ async function keepDirectorBrief() {
   }
   d.kept = 'held'; d.keptEngine = engine;
   if (state.host === 'none' && state.db && state.savedId) {
-    try { await updateSavedBrief({ director_brief: { parts: d.parts, engine } }); } catch { setNote('director-keep', { tone: 'warm', text: 'It could not be saved on this page. Copy your brief into a new chat in the studio folder.' }); render(); return; }
+    try { await updateSavedBrief({ director_brief: canonicalDirector(d) }); } catch { setNote('director-keep', { tone: 'warm', text: 'It could not be saved on this page. Copy your brief into a new chat in the studio folder.' }); render(); return; }
   }
-  const where = state.host === 'none' ? (state.savedId ? 'Kept with the brief saved on this page.' : 'Kept. It is saved with your brief when you save it.') : 'Kept. It is saved with your brief when you start it.';
+  const where = state.host === 'none'
+    ? (state.savedId ? 'Kept with the brief saved on this page.' : state.db ? 'Kept. It is saved with your brief when you save it.' : 'Kept. It goes in the copy box with your brief.')
+    : 'Kept. It is saved with your brief when you start it.';
   setNote('director-keep', { tone: 'good', text: where });
   render();
 }
@@ -2421,10 +2497,13 @@ function directorBody() {
     return h('div', { class: 'thinking', 'aria-busy': 'true' }, h('p', { class: 'label', text: 'The director is working through your brief' }),
       h('ol', {}, ['Reading your words', 'Timing the beats to the energy', 'Following your picked styles', 'Writing camera, motion, type and sound'].map((t) => h('li', { text: t }))));
   }
-  if (d.status === 'error') return h('div', { class: 'note', 'data-tone': 'warm', role: 'alert' }, h('strong', { text: TAKE_FAILED }), h('span', { text: 'Your words are kept as they are.' }));
+  if (d.status === 'error') return h('div', { class: 'note', 'data-tone': 'warm', role: 'alert' }, h('strong', { text: TAKE_FAILED }), d.reason ? h('span', { text: d.reason }) : null, h('span', { text: 'Your words are kept as they are.' }));
   if (d.status !== 'ready') {
-    const kept = state.check?.director_brief;
-    return kept ? h('p', { class: 'note', 'data-tone': 'good', text: `A director's brief is kept with this brief: ${kept.logline || ''}` }) : null;
+    const kept = state.job && state.check?.job === state.job ? state.check.director_brief : null; // this brief's own
+    if (!kept) return null;
+    return h('div', { class: 'note', 'data-tone': 'good' }, h('strong', { text: "A director's brief is kept with this brief" }),
+      h('dl', { class: 'kept-parts' }, directorParts().filter((k) => kept[k] != null).flatMap((k) => [h('dt', { text: partLabel(k) }),
+        h('dd', { text: k === 'beats' && Array.isArray(kept.beats) ? kept.beats.map((b) => `${b.at_s} s: ${b.what}`).join('; ') : String(kept[k]) })])));
   }
   const n = (s) => directorParts().filter((k) => d.states[k] === s).length;
   const words = currentWords().trim();
@@ -2445,12 +2524,12 @@ function partEl(part) {
   const busy = d.busyPart === part;
   let body;
   if (d.editing === part) {
-    const box = h('textarea', { id: `ed-${part}`, 'aria-label': `Change ${title.toLowerCase()}` });
-    box.value = part === 'beats' ? beatsText(v) : String(v ?? '');
+    const box = h('textarea', { id: `ed-${part}`, 'aria-label': `Change ${title.toLowerCase()}`, oninput: (e) => { d.editText = e.target.value; } });
+    box.value = d.editText != null ? d.editText : part === 'beats' ? beatsText(v) : String(v ?? '');
     body = h('div', { class: 'edit-box' }, box,
       part === 'beats' ? h('p', { class: 'small muted', text: 'One beat per line, as "3 s: what happens".' }) : null,
       h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn btn--sm btn--primary', text: 'Save change', onclick: () => partChange(part, box.value) }),
-        h('button', { type: 'button', class: 'btn btn--sm btn--quiet', text: 'Cancel', onclick: () => { d.editing = null; render(); } })));
+        h('button', { type: 'button', class: 'btn btn--sm btn--quiet', text: 'Cancel', onclick: () => { d.editing = null; d.editText = null; render(); } })));
   } else if (part === 'beats') {
     body = h('ol', { class: 'beats', role: 'list' }, (v || []).map((b) => h('li', {}, h('span', { class: 't', text: `${b.at_s} s` }), h('span', { text: b.what }))));
   } else body = h('p', { class: 'ptext', text: String(v ?? '') });
@@ -2459,7 +2538,7 @@ function partEl(part) {
       h('div', { class: 'dpart-title' }, h('h3', { text: title }), h('span', { class: 'pstate', 'data-s': d.states[part], text: busy ? 'Writing another take…' : STATE_LABEL[d.states[part]] || '' })),
       state.confirmedOn ? null : h('div', { class: 'dpart-acts', role: 'group', 'aria-label': title },
         h('button', { type: 'button', class: 'seg', id: `keep-${part}`, 'aria-pressed': String(d.states[part] === 'kept'), text: 'Keep', onclick: () => partKeep(part) }),
-        h('button', { type: 'button', class: 'seg', id: `change-${part}`, 'aria-expanded': String(d.editing === part), text: 'Change', onclick: () => { d.editing = d.editing === part ? null : part; d.settled = true; render(); } }),
+        h('button', { type: 'button', class: 'seg', id: `change-${part}`, 'aria-expanded': String(d.editing === part), text: 'Change', onclick: () => { d.editing = d.editing === part ? null : part; d.editText = null; d.settled = true; render(); } }),
         h('button', { type: 'button', class: 'seg', id: `swap-${part}`, disabled: !!d.busyPart || null, 'aria-label': `Swap ${title.toLowerCase()} for another take`, text: 'Swap', onclick: () => swapPart(part) }))),
     body,
     d.partNotes[part] ? h('p', { class: 'note', 'data-tone': 'warm', role: 'status', text: d.partNotes[part] }) : null);

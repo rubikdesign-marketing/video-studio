@@ -93,6 +93,7 @@ const STUB = `<script>
         type: 'One plain line at a time, at the top, held for two seconds',
         sound: 'A warm, quiet bed with a soft tap on each click',
         ending: 'The finished report rests on screen with the logo, held still for a beat',
+        energy: (/^Energy: (calm|confident|hype)/m.exec(prompt) || [])[1] || 'confident',
         engine,
       };
     },

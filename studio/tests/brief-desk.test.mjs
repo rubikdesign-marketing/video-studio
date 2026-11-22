@@ -58,7 +58,7 @@ function loadPage() {
     getElementById: (id) => fixed[id] || find(fixed.view, id),
     addEventListener: (type, fn) => docListeners.push({ type, fn }),
   };
-  const context = vm.createContext({ document, window: { scrollTo() {} }, navigator: {}, console, setTimeout, Promise, URLSearchParams });
+  const context = vm.createContext({ document, window: { scrollTo() {} }, navigator: {}, console, setTimeout, Promise, URLSearchParams, AbortController });
   vm.runInContext(script, context);
   return { run: (code) => vm.runInContext(code, context), view: fixed.view, docListeners, context };
 }
@@ -655,4 +655,114 @@ test('page: the big pick button is named by what it shows; amber stays for clash
     assert.ok(rule, sel);
     assert.doesNotMatch(rule[1], /--color-warm/, sel);
   }
+});
+
+/* ---------- The director's brief stays with its own brief ---------- */
+
+/** A sample whose answers the test releases by hand, to see what happens to a reply that comes back late. */
+function heldSample(p) {
+  p.context.pending = [];
+  p.run('state.sample = { json: (prompt, opts) => new Promise((resolve) => { pending.push({ prompt, resolve, opts }); }) };');
+}
+
+test('page: "Keep this brief" after a page-only save saves the canonical director\'s brief with the words', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  quietStore(p);
+  await p.run("saveWithoutStudio('A calm 20 second demo of the export button for acme')");
+  p.run("state.words = 'A calm 20 second demo of the export button for acme';");
+  await p.run('sharpen()');
+  await p.run('keepDirectorBrief()');
+  assert.doesNotMatch(String(p.run("(state.notes['director-keep'] || {}).text")), /could not be saved/);
+  const last = JSON.parse(JSON.stringify(p.context.saved.at(-1)));
+  assert.equal(last.words, 'A calm 20 second demo of the export button for acme');
+  assert.deepEqual(Object.keys(last.director_brief).sort(), ['at', 'energy', 'engine', 'parts']);
+  assert.deepEqual(last.director_brief.parts, GOOD_TAKE);
+  assert.equal(last.director_brief.energy, 'calm');
+});
+
+test('page: opening another brief clears the director\'s brief and the changed chips', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  await p.run('sharpen()');
+  p.run("state.chipEdits = { size: '1:1' }; state.chipOpen = 'size';");
+  answering(p, { job: 'k', questions: [], assumed: [], preflight: [], director_brief: null });
+  await p.run("openBrief({ job: 'k', words: 'Another brief' })");
+  assert.equal(p.run('state.dir.status'), 'idle');
+  assert.deepEqual(JSON.parse(p.run('JSON.stringify(state.chipEdits)')), {});
+  assert.equal(p.run('state.chipOpen'), null);
+  assert.doesNotMatch(textOf(p.view), /A calm look at one export click/);
+  p.run("state.dir.status = 'ready'; state.dir.parts = { logline: 'stale' };");
+  await p.run('goHome()');
+  assert.equal(p.run('state.dir.status'), 'idle');
+});
+
+test('page: a sharpen reply that comes back after a newer one is dropped', async () => {
+  const p = loadPage();
+  await directing(p, []);
+  heldSample(p);
+  const first = p.run('sharpen()');
+  await new Promise((r) => setTimeout(r, 0));
+  const second = p.run('sharpen()');
+  await new Promise((r) => setTimeout(r, 0));
+  assert.equal(p.context.pending.length, 2);
+  assert.equal(p.context.pending[0].opts?.signal?.aborted, true); // the first call is aborted
+  p.context.pending[1].resolve({ ...GOOD_TAKE, logline: 'The newer take' });
+  await second;
+  p.context.pending[0].resolve({ ...GOOD_TAKE, logline: 'The older take' });
+  await first;
+  assert.equal(p.run('state.dir.parts.logline'), 'The newer take');
+});
+
+test('page: a held director\'s brief for other words is not saved to the brief started', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  await p.run('sharpen()');
+  await p.run('keepDirectorBrief()');
+  assert.equal(p.run('state.dir.kept'), 'held');
+  p.context.calls = [];
+  p.run(`state.host = 'ready'; state.mcp = { callTool: async (h, tool, input) => { calls.push({ tool, input }); return { payload: { job: 'n', questions: [], assumed: [], preflight: [], picks: [] } }; } };`);
+  p.run("state.words = 'A totally different film about the pricing page';");
+  await p.run('startBrief()');
+  assert.equal(p.context.calls.filter((c) => c.tool === 'brief_direct').length, 0);
+  assert.equal(p.run('state.dir.kept'), false);
+});
+
+test('page: with no energy known, the director names one and its beats are checked against it', async () => {
+  const p = loadPage();
+  const tight = { ...GOOD_TAKE, beats: [{ at_s: 0, what: 'a' }, { at_s: 0.5, what: 'b' }, { at_s: 1, what: 'c' }] };
+  await directing(p, [{ ...tight, energy: 'calm' }, { ...tight }, { ...tight, energy: 'hype' }]);
+  p.run("state.words = 'A demo of the export button for acme'; state.understood = understoodOf(state.words);");
+  await p.run('sharpen()');
+  assert.equal(p.run('state.dir.status'), 'error'); // calm beats must be 1.2 s apart
+  assert.match(textOf(p.view), /too tight for a calm film/);
+  await p.run('sharpen()');
+  assert.equal(p.run('state.dir.status'), 'error'); // no energy known and none named
+  await p.run('sharpen()');
+  assert.equal(p.run('state.dir.status'), 'ready');
+  assert.equal(p.run('state.dir.energy'), 'hype');
+  assert.match(fs.readFileSync(fileURLToPath(new URL('../../library/styles/director.md', import.meta.url)), 'utf8'), /"energy"/);
+});
+
+test('page: the engine-name test is brief.mjs isEngineName, and a part being changed survives a render', async () => {
+  const html = fs.readFileSync(PAGE, 'utf8');
+  assert.match(html, /\.isEngineName\(/);
+  assert.doesNotMatch(html, /\[-\/:\]\|\[a-z\]\[A-Z\]/);
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  await p.run('sharpen()');
+  p.run("state.dir.editing = 'camera'; state.dir.editText = 'Typed so far'; render();");
+  assert.equal(find(p.view, 'ed-camera').value, 'Typed so far');
+});
+
+test('page: without the studio or a page store, the copy box carries the kept director\'s brief', async () => {
+  const p = loadPage();
+  await directing(p, [GOOD_TAKE]);
+  await p.run('sharpen()');
+  p.run("state.host = 'none'; state.db = null;");
+  await p.run('keepDirectorBrief()');
+  await p.run("saveWithoutStudio('A calm 20 second demo of the export button for acme')");
+  assert.match(p.run('state.copyText'), /A calm 20 second demo of the export button for acme/);
+  assert.match(p.run('state.copyText'), /Logline: A calm look at one export click for agency owners/);
+  assert.match(p.run('state.copyText'), /0 s: The board settles/);
 });

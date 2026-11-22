@@ -213,3 +213,29 @@ test('directorRules: plain words that are also registry names (camera, Button) a
   p.camera = 'A DollyIn toward the button';
   assert.equal(checkDirectorBrief(p, { energy: 'confident', names }).part, 'camera');
 });
+
+test('isEngineName: one helper for what reads as an engine name, used by directorRules', async () => {
+  const { isEngineName } = await import('../lib/brief.mjs');
+  assert.deepEqual(['camera-push-in', 'music/calm-lofi-01', 'component:card', 'DollyIn', 'camera', 'Button', 'slam'].map(isEngineName), [true, true, true, true, false, false, false]);
+  const src = fs.readFileSync(new URL('../lib/brief-store.mjs', import.meta.url), 'utf8');
+  assert.match(src, /isEngineName/);
+  assert.doesNotMatch(src, /\[-\/:\]\|\[a-z\]\[A-Z\]/);
+});
+
+test('CLI direct: takes the canonical { parts, engine, energy, at } as well as flat parts', () => {
+  const root = scratchStudio();
+  const jobDir = path.join(root, 'jobs', 'j');
+  const run = (...a) => spawnSync(process.execPath, [CLI, ...a], { encoding: 'utf8', env: { ...process.env, BRIEF_STUDIO_ROOT: root } });
+  assert.equal(run('new', jobDir, 'a calm demo').status, 0);
+  const canonical = path.join(root, 'canonical.json');
+  fs.writeFileSync(canonical, JSON.stringify({ parts: parts(), engine: [], energy: 'calm', at: '2026-11-22T10:00:00.000Z' }));
+  const r = run('direct', jobDir, canonical);
+  assert.equal(r.status, 0, r.stdout);
+  const saved = JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).director_brief;
+  assert.deepEqual(saved.parts, parts());
+  assert.deepEqual(saved.engine, []);
+  const flat = path.join(root, 'flat.json');
+  fs.writeFileSync(flat, JSON.stringify({ ...parts(), logline: 'A flat take of the same film.' }));
+  assert.equal(run('direct', jobDir, flat).status, 0);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(jobDir, 'brief.json'), 'utf8')).director_brief.parts.logline, 'A flat take of the same film.');
+});
