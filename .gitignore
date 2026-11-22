@@ -75,3 +75,6 @@ library/sounds-local/
 .damex/motion-study/study/
 .damex/motion-study/posters/
 .damex/motion-study/frames/
+
+# The brief page publish set (tools/styles/build-page.mjs): rebuilt on demand, never committed.
+studio/brief-desk/dist/
