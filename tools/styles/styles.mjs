@@ -30,7 +30,8 @@ for (const [flag, allowed] of [['--energy', ENERGIES], ['--kind', KINDS], ['--si
 const [command, ...words] = rest;
 const lib = loadLibrary(flags['--root'] ? resolve(flags['--root']) : STUDIO);
 for (const n of lib.notes) console.error(n);
-const all = TABS.flatMap((t) => lib.tabs[t]);
+// Only real entries: a null or malformed line in a tab file is left out here (tools/styles/check.mjs names it).
+const all = TABS.flatMap((t) => lib.tabs[t]).filter((e) => e && typeof e === 'object' && !Array.isArray(e) && typeof e.id === 'string');
 const status = (e) => (e.filters?.ready === true ? 'ready now' : 'made on request');
 const line = (e) => `${e.id}  ${e.name}  ${e.line}  ${status(e)}`;
 
@@ -48,7 +49,7 @@ if (command === 'list') {
   if (!hits.length) console.log('No styles match those words.');
   for (const r of hits) console.log(line(r.entry));
 } else if (command === 'show') {
-  const e = lib.byId.get(words[0]);
+  const e = all.find((x) => x.id === words[0]);
   if (!e) { console.log(`No style with the id ${words[0] ?? ''}`.trim()); process.exit(1); }
   console.log(e.name);
   console.log(e.line);

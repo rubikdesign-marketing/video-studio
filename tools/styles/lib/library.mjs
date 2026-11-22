@@ -128,6 +128,8 @@ function soundFileExists(root, name) {
   return SOUND_EXT.some((ext) => { const f = join(root, 'library', 'sounds', name + ext); return extname(name + ext) !== '' && existsSync(f) && statSync(f).isFile(); });
 }
 const inRange = (v, [lo, hi], hiExclusive) => typeof v === 'number' && v >= lo && (hiExclusive ? v < hi : v <= hi);
+const isEntry = (e) => e !== null && typeof e === 'object' && !Array.isArray(e);
+const isObj = isEntry;
 
 export function checkLibrary(lib, { names, root, clips = true, corpus = null, banned = [], tab = null, min = 100 } = {}) {
   const problems = [];
@@ -137,23 +139,27 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
   const corpusRuns = corpus ? new Set(corpusTexts(corpus).flatMap((t) => [...runs(t)])) : null;
   const isGlitchSound = (n) => /^glitch\//i.test(n) || Boolean(names?.glitch?.has(n));
   const seen = new Map();
-  for (const t of TABS) for (const e of lib.tabs[t] || []) seen.set(e.id, (seen.get(e.id) || 0) + 1);
+  for (const t of TABS) for (const e of lib.tabs[t] || []) if (isEntry(e)) seen.set(e.id, (seen.get(e.id) || 0) + 1);
   const known = new Set(seen.keys());
 
   for (const t of tabs) {
     const list = lib.tabs[t] || [];
     if (list.length < min) problems.push(`${TAB_LABELS[t]}: ${list.length} entries, at least ${min} are needed`);
-    for (const e of list) {
+    for (const [i, e] of list.entries()) {
+      // null, a number or loose words in the list: named by its place, and nothing else about it is checked.
+      if (!isEntry(e)) { problems.push(`${TAB_LABELS[t]}: entry #${i + 1} is not an entry`); continue; }
       const id = e.id;
       const say = (m) => problems.push(`${id}: ${m}`);
       for (const f of REQUIRED) if (e[f] === undefined) say(`is missing ${f}`);
+      for (const f of ['filters', 'prompt', 'preview', 'timing', 'settles']) if (e[f] !== undefined && !isObj(e[f])) say(`${f} must be an object`);
+      for (const f of ['engine', 'pairs_with', 'avoid_with']) if (e[f] !== undefined && !Array.isArray(e[f])) say(`${f} must be a list`);
       if (seen.get(id) > 1) say(`id is used more than once`);
       if (e.tab !== undefined && e.tab !== t) say(`says tab ${e.tab} but is in the ${t} file`);
-      const energies = e.filters?.energy || [];
+      const f = isObj(e.filters) ? e.filters : {};
+      const energies = Array.isArray(f.energy) ? f.energy : [];
       for (const en of energies) if (!ENERGIES.includes(en)) say(`has an unknown energy ${en}`);
       const isSound = t === 'sound';
-      const ready = e.filters?.ready === true;
-      const f = e.filters || {};
+      const ready = f.ready === true;
       if (e.filters !== undefined) {
         if (typeof f.ready !== 'boolean') say('filters.ready must be true or false');
         for (const [key, allowed] of [['energy', ENERGIES], ['kinds', KINDS], ['sizes', SIZES]]) {
@@ -164,7 +170,7 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
 
       // timing per energy, inside the studio's targets
       for (const en of energies.filter((x) => ENERGIES.includes(x))) {
-        const tm = e.timing?.[en];
+        const tm = isObj(e.timing) ? e.timing[en] : undefined;
         if (!tm) { say(`has no timing for ${en}`); continue; }
         const tgt = ENERGY_TARGETS[en];
         if (!isSound) {
@@ -177,14 +183,14 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
       }
 
       // engine names
-      for (const n of e.engine || []) {
+      for (const n of Array.isArray(e.engine) ? e.engine : []) {
         if (/glitch|rgb-split/i.test(n)) say(`uses ${n}, which breaks the house rules`);
         else if (names?.glitch?.has(n)) say(`uses ${n}, a sound from library/sounds/glitch, which breaks the house rules`);
         if (ready && !allNames.has(n)) say(`ready entry uses ${n}, which the engine does not have`);
       }
 
       // previews
-      const pv = e.preview || {};
+      const pv = isObj(e.preview) ? e.preview : {};
       if (ready) {
         if (isSound) {
           if (!pv.sound) say('ready sound entry has no preview sound');
@@ -207,14 +213,14 @@ export function checkLibrary(lib, { names, root, clips = true, corpus = null, ba
       if (pv.sketch !== undefined && !SKETCHES.includes(pv.sketch)) say(`sketch ${pv.sketch} is not in sketches.json`);
 
       // settles
-      for (const [k, v] of Object.entries(e.settles || {})) {
+      for (const [k, v] of Object.entries(isObj(e.settles) ? e.settles : {})) {
         if (!SETTLES_VALUES[k]) say(`settles ${k}, which the brief does not have`);
         else if (!SETTLES_VALUES[k].includes(v)) say(`settles ${k}: ${v}, which the brief does not allow`);
       }
-      for (const k of ['pairs_with', 'avoid_with']) for (const other of e[k] || []) if (!known.has(other)) say(`${k} names ${other}, which does not exist`);
+      for (const k of ['pairs_with', 'avoid_with']) for (const other of Array.isArray(e[k]) ? e[k] : []) if (!known.has(other)) say(`${k} names ${other}, which does not exist`);
 
       // house rules and banned words
-      const p = e.prompt || {};
+      const p = isObj(e.prompt) ? e.prompt : {};
       if (/mesh[\s-]+blob/i.test(`${p.what || ''} ${p.when || ''} ${e.line || ''}`)) say('describes a mesh blob, which breaks the house rules');
       const flat = JSON.stringify(e);
       for (const re of bannedRes) if (re.test(flat)) say(`contains the banned word ${re.source}`);

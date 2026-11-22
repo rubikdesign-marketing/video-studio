@@ -10,9 +10,19 @@ const args = process.argv.slice(2);
 const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
 const tab = opt('--tab') ?? null;
 if (tab && !TABS.includes(tab)) { console.error(`Unknown tab ${tab}. Tabs: ${TABS.join(', ')}`); process.exit(2); }
-const min = opt('--min') !== undefined ? Number(opt('--min')) : 100;
-const corpusPath = opt('--corpus') ?? join(root, '.damex', 'motion-study', 'corpus.json');
-const corpus = existsSync(corpusPath) ? JSON.parse(readFileSync(corpusPath, 'utf8')) : null;
+const stop = (msg) => { console.error(msg); process.exit(2); };
+const minArg = opt('--min');
+if (minArg !== undefined && !/^\d+$/.test(minArg)) stop('--min needs a whole number, for example 100.');
+const min = minArg !== undefined ? Number(minArg) : 100;
+// The corpus: one named with --corpus must be there; the default one is used only when it is there.
+const named = opt('--corpus');
+if (args.includes('--corpus') && named === undefined) stop('--corpus needs the path of a corpus file.');
+const corpusPath = named !== undefined ? resolve(named) : join(root, '.damex', 'motion-study', 'corpus.json');
+if (named !== undefined && !existsSync(corpusPath)) stop(`There is no corpus file at ${corpusPath}. Check the path, or leave --corpus out.`);
+let corpus = null;
+if (existsSync(corpusPath)) {
+  try { corpus = JSON.parse(readFileSync(corpusPath, 'utf8')); } catch { stop(`The corpus file ${corpusPath} cannot be read as JSON.`); }
+}
 let banned = [];
 try { banned = JSON.parse(readFileSync(join(root, 'release', 'manifest.json'), 'utf8')).banned || []; } catch { /* no manifest: no banned words */ }
 

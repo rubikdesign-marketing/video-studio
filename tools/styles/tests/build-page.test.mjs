@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, cpSync, mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { mkdtempSync, cpSync, mkdirSync, writeFileSync, readFileSync, existsSync, openSync, ftruncateSync, closeSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -115,4 +116,57 @@ test('build: a stale file from a previous build is gone after a build', () => {
   writeFileSync(join(r.out, 'previews', 'gone.mp4'), '');
   build(root);
   assert.ok(!existsSync(join(r.out, 'stale.txt')) && !existsSync(join(r.out, 'previews', 'gone.mp4')));
+});
+
+/* ---------- final review fixes ---------- */
+
+test('build: a publish set over 40 MB is refused with a plain message, and nothing is built', () => {
+  const root = studio();
+  // A sparse stub: its size counts, no disk is spent.
+  const fd = openSync(join(root, 'library', 'styles', 'previews', 'sound-sprite.mp3'), 'w');
+  ftruncateSync(fd, 41 * 1024 * 1024);
+  closeSync(fd);
+  assert.throws(() => build(root), (e) => e.plain === true && /is 41\.\d MB and the limit is 40 MB\. Nothing was built\./.test(e.message));
+  assert.ok(!existsSync(join(root, 'studio', 'brief-desk', 'dist')));
+});
+
+test('build: a corpus that is not JSON is a plain message, not a stack trace', () => {
+  const root = studio();
+  mkdirSync(join(root, '.damex', 'motion-study'), { recursive: true });
+  writeFileSync(join(root, '.damex', 'motion-study', 'corpus.json'), '{ nope');
+  assert.throws(() => build(root), (e) => e.plain === true && /corpus/.test(e.message) && /cannot be read/.test(e.message));
+});
+
+test('build: a null library entry is a plain refusal naming it, not a crash', () => {
+  const root = studio();
+  const file = join(root, 'library', 'styles', 'motion.json');
+  writeFileSync(file, JSON.stringify([null, ...JSON.parse(readFileSync(file, 'utf8'))]));
+  assert.throws(() => build(root), (e) => e.plain === true && /Motion: entry #1 is not an entry/.test(e.message));
+});
+
+const CHECK = join(HERE, '..', 'check.mjs');
+const check = (...a) => spawnSync(process.execPath, [CHECK, ...a], { encoding: 'utf8' });
+
+test('check.mjs: a --corpus that does not exist fails with a plain message', () => {
+  const r = check('--corpus', join(tmpdir(), 'no-such-corpus-here.json'));
+  assert.equal(r.status, 2);
+  assert.match(r.stdout + r.stderr, /There is no corpus file at .*no-such-corpus-here\.json/);
+  assert.doesNotMatch(r.stderr, /at .*\.mjs:\d+/);
+});
+
+test('check.mjs: a corpus that is not JSON fails with a plain message', () => {
+  const f = join(mkdtempSync(join(tmpdir(), 'corpus-')), 'corpus.json');
+  writeFileSync(f, '{ nope');
+  const r = check('--corpus', f);
+  assert.equal(r.status, 2);
+  assert.match(r.stdout + r.stderr, /cannot be read as JSON/);
+  assert.doesNotMatch(r.stderr, /at .*\.mjs:\d+/);
+});
+
+test('check.mjs: --min that is not a whole number fails with a plain message', () => {
+  for (const v of ['abc', '2.5', '-1']) {
+    const r = check('--min', v);
+    assert.equal(r.status, 2, v);
+    assert.match(r.stdout + r.stderr, /--min needs a whole number/);
+  }
 });

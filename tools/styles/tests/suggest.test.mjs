@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { mkdtempSync, cpSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadLibrary, promptText } from '../lib/library.mjs';
@@ -144,4 +146,37 @@ test('styles.mjs: energy, kind and size are checked against the allowed values',
     const out = r.stdout + r.stderr;
     assert.ok(out.includes(bad) && out.includes(allowed), out);
   }
+});
+
+/* ---------- final review fixes ---------- */
+
+test('suggest: the reason quotes at most three words, and never numbers, time units or short words', () => {
+  const push = lib.byId.get('demo-slow-push');
+  const text = `${push.name} ${push.line} ${push.family} 20 s 9 seconds 30 sec 5 min ux`;
+  const out = suggest(all, { text });
+  const r = out.find((s) => s.id === 'demo-slow-push');
+  const said = /you said (.+?)(?: and it |$)/.exec(r.reason)[1].split(/, | and /);
+  assert.ok(said.length <= 3, r.reason);
+  for (const s of out) {
+    const m = /you said (.+?)(?: and it |$)/.exec(s.reason);
+    for (const w of m ? m[1].split(/, | and /) : []) assert.ok(w.length >= 3 && !/^\d+$/.test(w) && !['sec', 'min', 'secs', 'second', 'seconds'].includes(w), `${s.id}: ${s.reason}`);
+  }
+});
+
+test('styles.mjs list and show tolerate a null entry and an entry with no prompt', () => {
+  const root = mkdtempSync(join(tmpdir(), 'styles-bad-'));
+  cpSync(FIX, root, { recursive: true });
+  const file = join(root, 'library', 'styles', 'motion.json');
+  const list = JSON.parse(readFileSync(file, 'utf8'));
+  delete list[0].prompt;
+  writeFileSync(file, JSON.stringify([null, ...list]));
+  const run = (...a) => spawnSync('node', [CLI, ...a, '--root', root], { encoding: 'utf8' });
+  const l = run('list', '--tab', 'motion');
+  assert.equal(l.status, 0, l.stderr);
+  assert.equal(l.stdout.trim().split('\n').length, list.length);
+  const s = run('show', list[0].id);
+  assert.equal(s.status, 0, s.stderr);
+  assert.ok(s.stdout.includes(list[0].name));
+  assert.equal(run('find', 'push').status, 0);
+  assert.equal(run('suggest', 'calm').status, 0);
 });

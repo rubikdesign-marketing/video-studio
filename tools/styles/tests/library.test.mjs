@@ -230,3 +230,33 @@ test('engine names: a malformed synth-stings.json gives a note, never a crash; n
     assert.ok(engineNames(root).glitch.has('buzz-solo'));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+/* ---------- final review fixes: malformed entries never crash the tools ---------- */
+
+test('check: an entry that is not an entry (null, a number, a string) is a problem, never a crash', () => {
+  const lib = fresh();
+  lib.tabs.motion.splice(1, 0, null, 7, 'loose words');
+  const problems = run(lib);
+  assert.ok(problems.includes('Motion: entry #2 is not an entry'), problems.join('\n'));
+  assert.ok(problems.includes('Motion: entry #3 is not an entry'));
+  assert.ok(problems.includes('Motion: entry #4 is not an entry'));
+  assert.equal(problems.length, 3);
+});
+
+test('check: odd field shapes (engine a number, pairs_with a string) are problems, not crashes', () => {
+  const lib = fresh();
+  entry(lib, 'demo-snappy').engine = 5;
+  entry(lib, 'demo-soft-arrive').pairs_with = 'demo-snappy';
+  const problems = run(lib);
+  assert.ok(problems.some((p) => p.startsWith('demo-snappy:') && /engine/.test(p)), problems.join('\n'));
+  assert.ok(problems.some((p) => p.startsWith('demo-soft-arrive:') && /pairs_with/.test(p)));
+});
+
+test('promptText: an entry with no prompt gives what it has, never a crash', () => {
+  const e = { ...entry(fresh(), 'demo-snappy') };
+  delete e.prompt;
+  const text = promptText(e);
+  assert.match(text, /^Confident: /);
+  assert.doesNotMatch(text, /undefined|Avoid/);
+  assert.equal(promptText({ id: 'x', tab: 'motion' }), '');
+});

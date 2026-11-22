@@ -29,7 +29,10 @@ export function buildPage(root, { out = join('studio', 'brief-desk', 'dist'), mi
   let banned = [];
   try { banned = JSON.parse(readFileSync(join(root, 'release', 'manifest.json'), 'utf8')).banned || []; } catch { /* no manifest */ }
   const corpusPath = join(root, '.damex', 'motion-study', 'corpus.json');
-  const corpus = existsSync(corpusPath) ? JSON.parse(readFileSync(corpusPath, 'utf8')) : null;
+  let corpus = null;
+  if (existsSync(corpusPath)) {
+    try { corpus = JSON.parse(readFileSync(corpusPath, 'utf8')); } catch { throw fail(`The corpus file ${slash(relative(root, corpusPath))} cannot be read as JSON, so the library cannot be checked. Nothing was built.`); }
+  }
   const lib = loadLibrary(root);
   const names = engineNames(root);
   const { problems } = checkLibrary(lib, { names, root, clips: true, corpus, banned, min });

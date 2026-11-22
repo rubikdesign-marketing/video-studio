@@ -5,8 +5,11 @@ const STOP = new Set(('a an the and or but of for to in on at by with from into 
   'i me my we our you your they them their he she his her not no so if then than too very can will just want need like make made ' +
   'video videos please some any one about over under up down out off do does did have has had would should could get got').split(' '));
 
+// Time units and numbers say how long, not which style: they never match a style's words.
+const UNITS = new Set(['s', 'sec', 'secs', 'second', 'seconds', 'min', 'mins', 'minute', 'minutes']);
 const split = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
-const contentWords = (text) => [...new Set(split(text).filter((w) => w.length > 1 && !STOP.has(w)))];
+const contentWords = (text) => [...new Set(split(text).filter((w) => w.length >= 3 && !/^\d+$/.test(w) && !UNITS.has(w) && !STOP.has(w)))];
+const MAX_QUOTED = 3; // the reason quotes at most three of their words
 const list = (v) => (Array.isArray(v) ? v : v === undefined || v === null || v === '' ? [] : [v]);
 const readable = (kind) => String(kind).replace(/-/g, ' ');
 const joinWords = (ws) => (ws.length < 2 ? ws.join('') : `${ws.slice(0, -1).join(', ')} and ${ws[ws.length - 1]}`);
@@ -49,7 +52,7 @@ function reasonFor(parts) {
   const bits = [];
   if (parts.memory !== undefined) bits.push(`you used this on ${parts.memory}`);
   const because = [];
-  if (parts.words) because.push(`you said ${joinWords(parts.words)}`);
+  if (parts.words) because.push(`you said ${joinWords(parts.words.slice(0, MAX_QUOTED))}`);
   if (parts.kind) because.push(`it suits a ${readable(parts.kind)}`);
   if (parts.energy) because.push(`it has a ${parts.energy} feel`);
   if (parts.size) because.push(`it works at ${parts.size}`);
