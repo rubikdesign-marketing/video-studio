@@ -47,3 +47,16 @@ test("CLAUDE override covers opening the brief page and approving the connector"
   assert.match(text, /Open my brief page/);
   assert.match(text, /damex-engine/);
 });
+
+test("CLAUDE.md mentions the style library in plain words", () => {
+  const text = readFileSync(new URL("CLAUDE.md", dir), "utf8");
+  assert.match(text, /style library/i);
+  assert.match(text, /brief page/i);
+});
+
+test("README and ONBOARDING each say the brief page holds a style library", () => {
+  for (const f of ["README.md", "ONBOARDING.md"]) {
+    const text = readFileSync(new URL(f, dir), "utf8");
+    assert.match(text, /style library/i, `${f} does not mention the style library`);
+  }
+});

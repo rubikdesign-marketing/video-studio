@@ -19,6 +19,8 @@
     "library/references/**/*.jpg", "library/references/rubik", "library/fixtures",
     "library/motion/*.mp4", "library/motion/*.jpg",
     "library/backgrounds/*.mp4", "library/backgrounds/*.jpg",
+    "studio/brief-desk/dist",
+    "brands/demo/product/capture.json", "brands/demo/product/README.md",
     "docs", "DESIGN.md", "CAPTURE-PLAN.md", "FOOTAGE-PLAN.md", "LIBRARY-PLAN.md", "NEXT-SESSION.md", "LICENSE-DRAFT.md",
     ".claude/skills/remotion-*",
     "tools/release", "release", ".github",

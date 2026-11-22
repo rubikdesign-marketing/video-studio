@@ -67,6 +67,14 @@ Only after the plan is confirmed. All three keep the confirmed audience, angle, 
 - How its hook, look and signature move differ from the last five videos.
 - The hook family each idea would open with (`knowledge/craft/15-hooks.md` section 4; `node tools/hooks/hooks.mjs find --type <type> --platform <platform> --awareness <level> --brand <brand>` gives formulas the brand has not used lately). The three ideas open in three different families.
 
+### Their style picks and director's brief
+
+`node tools/plan/brief.mjs show jobs/<job>` lists the creator's style picks and their director's brief, when they made any on the brief page. Treat both as the creator's own direction: a strong preference, to follow unless a rule or a fact stops it.
+- **Each pick** is used as picked by at least one of the three concepts. Read it with `node tools/styles/styles.mjs show <id>` and put its `promptText` into that concept's direction, in its own words.
+- **A made-on-request pick** (the `show` output ends "made on request") has no ready version yet. Use the closest ready style it names, and say so in one line: "<their style> is made on request, so this concept uses <closest style>."
+- **Where the studio recommends something else**, say why in one line next to that concept. Their pick stays in at least one concept either way.
+- **The director's brief** is the customer's direction under the same rule. Keep its logline, beats and energy unless a brand rule or the confirmed plan says otherwise, and say in one line what changed and why.
+
 The three must differ from each other in idea, not only in styling. Recommend one.
 
 ## 4. Hand-over

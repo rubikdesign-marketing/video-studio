@@ -12,6 +12,8 @@ Follow `ONBOARDING.md`. Open this folder in the Claude desktop app's Code tab an
 
 Making a video starts on your brief page: after setup, your first chat opens it. Write the video you want there, then start a new chat and say **"continue the video"**.
 
+The brief page also holds a style library: browse the looks, moves and sounds with short previews, pick the ones you like, and the studio builds your video around them.
+
 ## What is where
 
 | Folder | What |
@@ -19,7 +21,7 @@ Making a video starts on your brief page: after setup, your first chat opens it.
 | `brands/` | Your brands: logo, colours, fonts, voices, rules and product notes. `demo` is a test brand. `_template` is the starting point for yours |
 | `jobs/` | One folder per video. `_sample` is a tiny test film |
 | `engine/` | The video engine, built on Remotion |
-| `library/` | Backgrounds, motion moves, sounds, hooks and study notes on reference films |
+| `library/` | Backgrounds, motion moves, sounds, hooks, the style library (`library/styles/`) and study notes on reference films |
 | `knowledge/` | Craft guides, playbooks and the studio's rules |
 | `tools/` | Voice, music, mix, captions, capture and quality checks |
 | `studio/` | The review page where you pin notes to moments in a film |
