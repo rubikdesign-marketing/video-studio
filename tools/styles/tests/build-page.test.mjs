@@ -83,3 +83,30 @@ test('build: version comes from the page\'s brief-page-version tag', () => {
   assert.equal(r.version, 7);
   assert.equal(JSON.parse(readFileSync(join(r.out, 'publish.json'), 'utf8')).version, 7);
 });
+
+test('build: refuses an out folder outside the root or the root itself, deleting nothing', () => {
+  const root = studio();
+  const outside = mkdtempSync(join(tmpdir(), 'build-outside-'));
+  writeFileSync(join(outside, 'keep.txt'), 'x');
+  for (const out of [outside, '.', '', join('..', 'elsewhere')]) {
+    assert.throws(() => build(root, { out }), (e) => e.plain === true && /folder/.test(e.message), `out=${out}`);
+  }
+  assert.ok(existsSync(join(outside, 'keep.txt')));
+  assert.ok(existsSync(join(root, 'studio', 'brief-desk', 'index.html')));
+});
+
+test('build: refuses a page version that is not an integer', () => {
+  for (const v of ['3.5', 'two', '', '-1', '1e2']) {
+    assert.throws(() => build(studio({ version: v })), (e) => e.plain === true && /version/.test(e.message), `v=${v}`);
+  }
+});
+
+test('build: a stale file from a previous build is gone after a build', () => {
+  const root = studio();
+  const r = build(root);
+  writeFileSync(join(r.out, 'stale.txt'), 'old');
+  mkdirSync(join(r.out, 'previews'), { recursive: true });
+  writeFileSync(join(r.out, 'previews', 'gone.mp4'), '');
+  build(root);
+  assert.ok(!existsSync(join(r.out, 'stale.txt')) && !existsSync(join(r.out, 'previews', 'gone.mp4')));
+});

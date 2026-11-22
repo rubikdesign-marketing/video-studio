@@ -2,7 +2,7 @@
 // Builds the brief page's publish set into studio/brief-desk/dist/ and writes dist/publish.json.
 // Usage: node tools/styles/build-page.mjs
 import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, existsSync, readdirSync, statSync } from 'node:fs';
-import { join, dirname, resolve, sep } from 'node:path';
+import { join, dirname, resolve, sep, relative, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { TABS, loadLibrary, engineNames, checkLibrary, SKETCHES } from './lib/library.mjs';
 
@@ -16,10 +16,13 @@ const slash = (p) => p.split(sep).join('/');
 
 export function buildPage(root, { out = join('studio', 'brief-desk', 'dist'), min = 100 } = {}) {
   const outDir = resolve(root, out);
+  const rel = relative(resolve(root), outDir);
+  if (!rel || rel.startsWith('..') || isAbsolute(rel)) throw fail('The out folder must be a folder inside the studio, and not the studio itself. Nothing was built or deleted.');
   const pageFile = join(root, 'studio', 'brief-desk', 'index.html');
   const html = readFileSync(pageFile, 'utf8');
   const m = html.match(/<meta\s+name="brief-page-version"\s+content="([^"]*)"/);
   if (!m) throw fail('The page has no brief-page-version tag, so the build cannot tell which version it is.');
+  if (!/^\d+$/.test(m[1])) throw fail(`The page's brief-page-version tag says "${m[1]}", which is not a whole number. Nothing was built.`);
   const version = Number(m[1]);
 
   // The library must pass its own check, clips included.
