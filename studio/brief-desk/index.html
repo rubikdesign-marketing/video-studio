@@ -1,135 +1,618 @@
 <title>Video brief</title>
-<meta name="brief-page-version" content="2">
+<meta name="brief-page-version" content="3">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500&family=My+Soul&family=Onest:wght@400;500;600&display=swap">
 <style>
-  /* One column, read top to bottom: what you want, what the studio still needs, the plan, the next step.
-     Dark only for now; every colour is a token so a light set can be added beside it. */
-  :root {
-    --page: #010B24;
-    --raised: #061A4D;
-    --ink: #FFFFFF;
-    --second: #FFFFFF9E;
-    --soft: #FFFFFF0F;
-    --line: #FFFFFF29;
-    --accent: #BBFC9E;
-    --on-accent: #050B14;
-    --warm: #FFA724;
-    --font: "Chakra Petch", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --step--1: 0.8125rem;
-    --step-0: 1rem;
-    --step-1: 1.1875rem;
-    --step-2: clamp(1.75rem, 1.2rem + 2.4vw, 2.5rem);
-    --radius: 4px;
-    color-scheme: dark;
-  }
-  body { background: var(--page); color: var(--ink); font-family: var(--font); font-size: var(--step-0); line-height: 1.5; }
-  .wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  header.top { border-bottom: 1px solid var(--line); }
-  header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 14px; }
-  .brand { display: block; }
-  .mark { display: block; width: 168px; max-width: 100%; height: auto; }
-  .top-side { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .status { display: inline-flex; align-items: center; gap: 8px; font-size: var(--step--1); color: var(--second); }
-  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
-  .status[data-host="ready"]::before { background: var(--accent); }
-  .status[data-host="none"]::before { background: var(--warm); }
-  main .wrap { display: grid; gap: 32px; padding-block: 32px 56px; }
-  section { display: grid; gap: 14px; min-width: 0; }
-  h1, h2, h3 { font-weight: 500; text-wrap: balance; margin: 0; }
-  h1 { font-size: var(--step-2); line-height: 1.15; letter-spacing: 0.01em; }
-  h2 { font-size: var(--step-1); }
-  h3 { font-size: var(--step-0); line-height: 1.4; }
-  p { margin: 0; max-width: 65ch; }
-  .eyebrow { font-size: var(--step--1); color: var(--second); }
-  .muted { color: var(--second); }
-  .small { font-size: var(--step--1); }
-  textarea, input[type="text"] { width: 100%; box-sizing: border-box; font: inherit; color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; resize: vertical; }
-  textarea#brief-words { min-height: 9.5rem; font-size: var(--step-1); line-height: 1.45; }
-  textarea::placeholder { color: var(--second); }
-  textarea:focus, input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
-  button { font: inherit; cursor: pointer; border-radius: var(--radius); }
-  button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  button:disabled { cursor: progress; opacity: 0.6; }
-  .primary { background: var(--accent); color: var(--on-accent); border: 1px solid var(--accent); padding: 11px 20px; font-weight: 500; }
-  .secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 10px 18px; }
-  .secondary:hover { border-color: var(--second); }
-  .link { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
-  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-  .note { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; background: var(--soft); }
-  .note[data-tone="warm"] { border-color: var(--warm); }
-  .note[data-tone="good"] { border-color: var(--accent); }
-  .note strong { font-weight: 500; }
-  .chip-on { display: inline-flex; align-items: center; gap: 10px; font-size: var(--step--1); border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 4px 6px 4px 12px; }
-  .chip-on button { background: none; border: 0; color: var(--accent); padding: 2px 6px; }
-  .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 10px; }
-  .idea { text-align: left; background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 12px 14px; line-height: 1.4; }
-  .idea:hover { border-color: var(--accent); }
-  .change-item { display: grid; gap: 8px; align-content: start; min-width: 0; }
-  .change-item .idea { width: 100%; }
-  .idea .muted { display: block; font-size: var(--step--1); margin-top: 2px; }
-  .briefs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .briefs li { border-bottom: 1px solid var(--line); }
-  .brief-row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; text-align: left; background: none; color: var(--ink); border: 0; border-radius: 0; padding: 14px 2px; }
-  .brief-row:hover .open { color: var(--accent); }
-  .brief-row .words { min-width: 0; overflow-wrap: anywhere; }
-  .brief-row .meta { grid-column: 1; font-size: var(--step--1); color: var(--second); }
-  .brief-row .open { grid-row: 1 / span 2; grid-column: 2; font-size: var(--step--1); color: var(--second); }
-  .tag { display: inline-block; font-size: var(--step--1); font-weight: 500; color: var(--accent); }
-  .tag.warm { color: var(--warm); }
-  .quote { border-left: 2px solid var(--line); padding-left: 14px; color: var(--second); overflow-wrap: anywhere; }
-  .understood { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
-  .understood li { border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: var(--step--1); }
-  .understood b { font-weight: 500; color: var(--accent); }
-  .strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 8px; }
-  @media (min-width: 640px) { .strip { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
-  .strip li { display: grid; gap: 6px; align-content: start; font-size: 0.75rem; line-height: 1.3; color: var(--second); min-width: 0; overflow-wrap: anywhere; }
-  .strip li::before { content: ""; height: 4px; border-radius: 2px; background: var(--line); }
-  .strip li[data-done="true"] { color: var(--ink); }
-  .strip li[data-done="true"]::before { background: var(--accent); }
-  details { border-top: 1px solid var(--line); padding-top: 10px; }
-  summary { cursor: pointer; color: var(--second); font-size: var(--step--1); }
-  .known { display: grid; grid-template-columns: minmax(7rem, auto) minmax(0, 1fr); gap: 6px 16px; margin: 12px 0 0; font-size: var(--step--1); }
-  .known dt { color: var(--second); }
-  .known dd { margin: 0; overflow-wrap: anywhere; }
-  .cards { display: grid; gap: 16px; }
-  .card { display: grid; gap: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--soft); padding: 18px; min-width: 0; }
-  .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); gap: 8px; }
-  .choice { display: grid; gap: 2px; text-align: left; background: var(--page); color: var(--ink); border: 1px solid var(--line); padding: 10px 12px; line-height: 1.3; }
-  .choice:hover { border-color: var(--second); }
-  .choice[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
-  .pick { font-size: 0.75rem; color: var(--accent); min-height: 1.3em; }
-  label.field { display: grid; gap: 6px; font-size: var(--step--1); color: var(--second); }
-  .plan-lines { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 65ch; }
-  .films { margin: 4px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
-  .outline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .outline li { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .outline .n { color: var(--accent); font-variant-numeric: tabular-nums; }
-  .outline .secs { color: var(--second); font-size: var(--step--1); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .outline .shows { grid-column: 2 / span 2; font-size: var(--step--1); color: var(--second); }
-  .next { border: 1px solid var(--accent); border-radius: var(--radius); padding: 18px; display: grid; gap: 8px; }
-  .next p.say { font-size: var(--step-1); }
-  .copybox { display: grid; gap: 10px; }
-  @media (prefers-reduced-motion: no-preference) {
-    .card, .note, .next { animation: rise 160ms ease-out; }
-    @keyframes rise { from { transform: translateY(4px); } to { transform: none; } }
-  }
+/* The director's desk: write and direct on the left, the style library on the right, the reel of picks at the bottom.
+   Every colour, face, size and easing is a token below; nothing outside this block names a colour or a face.
+   Brand tokens (DIRECTION.md) as opaque OKLCH, each measured over the page colour. */
+:root {
+  color-scheme: dark;
+  --color-paper: oklch(15.7% 0.056 259.9);       /* page #010B24 */
+  --color-paper-2: oklch(22.2% 0.047 265.0);     /* soft white 6% over the page */
+  --color-paper-3: oklch(26.0% 0.045 267.0);     /* soft white 10%: pressed and hover */
+  --color-raised: oklch(24.1% 0.098 263.8);      /* night deep #061A4D */
+  --color-raised-2: oklch(32.4% 0.141 263.7);    /* night mid #0A2A7A */
+  --color-ink: oklch(100% 0 89.9);               /* ink #FFFFFF */
+  --color-ink-2: oklch(71.2% 0.015 268.4);       /* second ink, white 62% */
+  --color-rule: oklch(31.9% 0.039 268.1);        /* line, white 16% */
+  --color-rule-strong: oklch(53.5% 0.025 268.2); /* control edges, white 40% */
+  --color-accent: oklch(92.6% 0.139 136.5);      /* lime #BBFC9E */
+  --color-accent-ink: oklch(14.8% 0.023 255.1);  /* on-accent #050B14 */
+  --color-warm: oklch(79.7% 0.164 69.8);         /* amber #FFA724: clashes and made on request only */
+  --color-azure: oklch(58.0% 0.229 263.7);       /* #2E6BFF: one bloom only */
+  --color-focus: oklch(92.6% 0.139 136.5);
+  --color-scrim: oklch(10% 0.04 260 / 0.72);
+  --color-shadow: oklch(8% 0.05 262 / 0.55);
+  --font-display: "Chakra Petch", "Onest", system-ui, sans-serif;
+  --font-body: "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-swash: "My Soul", "Chakra Petch", cursive;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-md: 1.1875rem;
+  --text-display-s: clamp(1.75rem, 1.25rem + 1.6vw, 2.5rem);
+  --text-display: clamp(2.5rem, 1.7rem + 3vw, 4rem);
+  --leading-display: 0.92;
+  --tracking-display: -0.03em;
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --radius: 4px;
+  --radius-pill: 999px;
+  --rule-w: 1px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-over: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+  --bar-h: 4rem;
+  --tray-h: 3.75rem;
+  --z-bar: 10;
+  --z-tray: 20;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; min-height: 100dvh; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.55; font-variant-numeric: tabular-nums; }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(42rem 30rem at 88% -6%, color-mix(in oklch, var(--color-azure) 22%, transparent), transparent 70%),
+    radial-gradient(36rem 28rem at -8% 108%, color-mix(in oklch, var(--color-raised-2) 55%, transparent), transparent 70%);
+}
+h1, h2, h3, h4, p, ul, ol, dl, figure { margin: 0; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+::selection { background: var(--color-accent); color: var(--color-accent-ink); }
+.display-s { font-family: var(--font-display); font-weight: 500; font-size: var(--text-display-s); line-height: var(--leading-display); letter-spacing: var(--tracking-display); text-transform: uppercase; overflow-wrap: anywhere; min-width: 0; }
+.h3 { font-size: var(--text-md); font-weight: 500; line-height: 1.3; }
+.label { font-size: var(--text-sm); font-weight: 500; color: var(--color-ink-2); }
+.muted { color: var(--color-ink-2); }
+.small { font-size: var(--text-sm); }
+.lede { color: var(--color-ink-2); max-width: 46ch; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); }
+
+/* ---------- Brand bar ---------- */
+.bar {
+  position: sticky; top: 0; z-index: var(--z-bar); height: var(--bar-h);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-xs);
+  padding-inline: max(var(--space-sm), env(safe-area-inset-left)) max(var(--space-sm), env(safe-area-inset-right));
+  background: var(--color-paper); border-bottom: var(--rule-w) solid var(--color-rule);
+}
+.brand { display: block; flex: 0 1 auto; min-width: 0; }
+.wordmark { display: block; width: 7.25rem; height: auto; }
+@media (min-width: 25rem) { .wordmark { width: 9.5rem; } }
+.wm-tile { fill: var(--color-accent); }
+.wm-glyph { stroke: var(--color-accent-ink); }
+.wm-hub { fill: var(--color-accent-ink); }
+.wordmark text { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; fill: var(--color-ink); }
+.wm-small { fill-opacity: 0.7; }
+.bar-side { display: flex; align-items: center; gap: var(--space-2xs); min-width: 0; }
+.kbar {
+  display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 2.5rem; padding: 0 var(--space-2xs);
+  border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius); background: var(--color-paper-2); color: var(--color-ink-2); white-space: nowrap;
+  transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+.kbar svg { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+.kbar .kbd { font-size: var(--text-xs); padding: 0 var(--space-2xs); border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius); color: var(--color-ink); }
+.kbar-text, .kbar .kbd { display: none; }
+@media (min-width: 30rem) { .kbar { padding-left: var(--space-xs); } .kbar-text, .kbar .kbd { display: inline; } }
+@media (hover: hover) { .kbar:hover { background: var(--color-paper-3); border-color: var(--color-ink-2); color: var(--color-ink); } }
+.kbar:active { transform: translateY(1px); }
+.status { display: none; align-items: center; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--color-ink-2); white-space: nowrap; }
+.status::before { content: ""; width: 0.75rem; height: 2px; background: var(--color-rule-strong); }
+.status[data-host="ready"]::before { background: var(--color-accent); }
+.status[data-host="none"]::before { background: var(--color-warm); }
+@media (min-width: 60rem) { .status { display: inline-flex; } }
+
+/* ---------- Buttons ---------- */
+.btn, #view .primary, #view .secondary {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs);
+  min-height: 2.75rem; padding: 0 var(--space-md); border-radius: var(--radius);
+  border: var(--rule-w) solid var(--color-rule-strong); background: transparent; color: var(--color-ink); font-weight: 500; white-space: nowrap;
+  transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+@media (hover: hover) { .btn:hover, #view .secondary:hover { background: var(--color-paper-2); border-color: var(--color-ink-2); } }
+.btn:active, #view .primary:active, #view .secondary:active { transform: translateY(1px); }
+.btn:disabled, #view button:disabled { opacity: 0.5; cursor: progress; transform: none; }
+#view .primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+@media (hover: hover) { #view .primary:hover { background: var(--color-ink); border-color: var(--color-ink); } }
+.btn--sm { min-height: 2.25rem; padding: 0 var(--space-sm); font-size: var(--text-sm); }
+.btn--quiet { border-color: transparent; color: var(--color-ink-2); }
+@media (hover: hover) { .btn--quiet:hover { color: var(--color-ink); border-color: transparent; } }
+.btn[data-state="success"] { border-color: var(--color-accent); color: var(--color-accent); }
+.btn[data-state="error"] { border-color: var(--color-warm); color: var(--color-warm); }
+.icon-btn {
+  position: relative; display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; flex: 0 0 auto;
+  border-radius: var(--radius); border: var(--rule-w) solid transparent; background: transparent; color: var(--color-ink-2);
+  transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+@media (hover: hover) { .icon-btn:hover { background: var(--color-paper-2); color: var(--color-ink); } }
+.icon-btn:active { transform: translateY(1px); }
+.icon-btn svg { width: 1.125rem; height: 1.125rem; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.link, #view .link { background: none; border: 0; padding: 0; color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; font-weight: 500; white-space: nowrap; }
+@media (hover: hover) { .link:hover { color: var(--color-ink); } }
+
+/* ---------- Desk ---------- */
+.desk { display: grid; grid-template-columns: minmax(0, 1fr); }
+.pane { min-width: 0; padding: var(--space-lg) max(var(--space-sm), env(safe-area-inset-left)) calc(var(--tray-h) + var(--space-xl)); }
+.pane--write { display: grid; gap: var(--space-xl); align-content: start; }
+.pane--library { border-top: var(--rule-w) solid var(--color-rule); display: grid; gap: var(--space-lg); align-content: start; }
+@media (min-width: 40rem) { .pane { padding-inline: var(--space-lg); } }
+@media (min-width: 64rem) {
+  .desk { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); height: calc(100dvh - var(--bar-h)); }
+  .pane { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--color-rule) transparent; }
+  .pane--library { border-top: 0; border-left: var(--rule-w) solid var(--color-rule); background: color-mix(in oklch, var(--color-raised) 30%, transparent); }
+}
+@media (min-width: 90rem) { .desk { grid-template-columns: minmax(0, 4.4fr) minmax(0, 7.6fr); } }
+
+/* ---------- The brief (left pane): the brief desk's own flow ---------- */
+#view { display: grid; gap: var(--space-xl); min-width: 0; }
+#view section { display: grid; gap: var(--space-sm); min-width: 0; }
+#view h1 { font-family: var(--font-display); font-weight: 500; font-size: var(--text-display-s); line-height: var(--leading-display); letter-spacing: var(--tracking-display); text-transform: uppercase; overflow-wrap: anywhere; text-wrap: balance; }
+#view h2 { font-size: var(--text-md); font-weight: 500; line-height: 1.3; }
+#view h3 { font-size: var(--text-base); font-weight: 500; line-height: 1.4; }
+#view p { max-width: 65ch; }
+#view .eyebrow { font-size: var(--text-sm); color: var(--color-ink-2); }
+#view textarea, #view input[type="text"] {
+  width: 100%; border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius); background: var(--color-paper-2); color: var(--color-ink);
+  padding: var(--space-xs) var(--space-sm); resize: vertical; transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+}
+#view textarea#brief-words { min-height: 8.5rem; font-size: var(--text-md); line-height: 1.45; }
+#view textarea::placeholder { color: var(--color-ink-2); }
+@media (hover: hover) { #view textarea:hover { border-color: var(--color-ink-2); } }
+#view textarea:focus-visible, #view input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; border-color: transparent; background: var(--color-paper-3); }
+#view .note { display: grid; gap: var(--space-2xs); padding: var(--space-sm); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-paper-2); font-size: var(--text-sm); }
+#view .note[data-tone="warm"] { border-color: var(--color-warm); }
+#view .note[data-tone="good"] { border-color: var(--color-accent); }
+#view .note strong { font-weight: 500; font-size: var(--text-base); }
+#view .chip-on { display: inline-flex; align-items: center; gap: var(--space-xs); justify-self: start; font-size: var(--text-sm); border: var(--rule-w) solid var(--color-accent); color: var(--color-accent); border-radius: var(--radius-pill); padding: var(--space-3xs) var(--space-2xs) var(--space-3xs) var(--space-xs); }
+#view .chip-on button { background: none; border: 0; color: var(--color-accent); padding: 0 var(--space-2xs); min-height: 2rem; }
+#view .ideas { display: grid; gap: var(--space-2xs); }
+#view .idea { text-align: left; padding: var(--space-xs) var(--space-sm); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: transparent; color: var(--color-ink); line-height: 1.4; transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out); }
+@media (hover: hover) { #view .idea:hover { border-color: var(--color-accent); background: var(--color-paper-2); } }
+#view .idea .muted { display: block; font-size: var(--text-sm); margin-top: 2px; }
+#view .change-item { display: grid; gap: var(--space-2xs); align-content: start; min-width: 0; }
+#view .change-item .idea { width: 100%; }
+#view .briefs { list-style: none; margin: 0; padding: 0; border-top: var(--rule-w) solid var(--color-rule); }
+#view .briefs li { border-bottom: var(--rule-w) solid var(--color-rule); }
+#view .brief-row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3xs) var(--space-sm); align-items: center; text-align: left; background: none; color: var(--color-ink); border: 0; padding: var(--space-sm) 2px; }
+@media (hover: hover) { #view .brief-row:hover .open { color: var(--color-accent); } }
+#view .brief-row .words { min-width: 0; overflow-wrap: anywhere; }
+#view .brief-row .meta { grid-column: 1; font-size: var(--text-sm); color: var(--color-ink-2); }
+#view .brief-row .open { grid-row: 1 / span 2; grid-column: 2; font-size: var(--text-sm); color: var(--color-ink-2); }
+#view .tag { display: inline-block; font-size: var(--text-sm); font-weight: 500; color: var(--color-accent); }
+#view .tag.warm { color: var(--color-warm); }
+#view .quote { border-left: 2px solid var(--color-rule-strong); padding-left: var(--space-sm); color: var(--color-ink-2); overflow-wrap: anywhere; }
+#view .understood { display: flex; flex-wrap: wrap; gap: var(--space-2xs); list-style: none; margin: 0; padding: 0; }
+#view .understood li { border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius-pill); padding: var(--space-3xs) var(--space-xs); font-size: var(--text-sm); }
+#view .understood b { font-weight: 500; color: var(--color-accent); }
+#view .strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-xs) var(--space-2xs); }
+@media (min-width: 40rem) and (max-width: 63.99rem) { #view .strip { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+#view .strip li { display: grid; gap: var(--space-2xs); align-content: start; font-size: var(--text-xs); line-height: 1.3; color: var(--color-ink-2); min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+#view .strip li::before { content: ""; height: 3px; border-radius: 2px; background: var(--color-rule); }
+#view .strip li[data-done="true"] { color: var(--color-ink); }
+#view .strip li[data-done="true"]::before { background: var(--color-accent); }
+#view details { border-top: var(--rule-w) solid var(--color-rule); padding-top: var(--space-xs); }
+#view summary { cursor: pointer; color: var(--color-ink-2); font-size: var(--text-sm); }
+#view .known { display: grid; grid-template-columns: minmax(7rem, auto) minmax(0, 1fr); gap: var(--space-2xs) var(--space-sm); margin: var(--space-xs) 0 0; font-size: var(--text-sm); }
+#view .known dt { color: var(--color-ink-2); }
+#view .known dd { margin: 0; overflow-wrap: anywhere; }
+#view .cards { display: grid; gap: var(--space-sm); }
+#view .card { display: grid; gap: var(--space-sm); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-paper-2); padding: var(--space-md); min-width: 0; }
+#view .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr)); gap: var(--space-2xs); }
+#view .choice { display: grid; gap: var(--space-3xs); text-align: left; padding: var(--space-xs); border-radius: var(--radius); border: var(--rule-w) solid var(--color-rule-strong); background: var(--color-paper); color: var(--color-ink); line-height: 1.3; transition: border-color var(--dur-short) var(--ease-out); }
+@media (hover: hover) { #view .choice:hover { border-color: var(--color-ink-2); } }
+#view .choice[aria-pressed="true"] { border-color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+#view .choice .pick { font-size: var(--text-xs); color: var(--color-accent); min-height: 1.3em; }
+#view label.field { display: grid; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--color-ink-2); }
+#view .plan-lines { margin: 0; padding-left: 1.1em; display: grid; gap: var(--space-2xs); max-width: 62ch; }
+#view .plan-lines li::marker { color: var(--color-accent); }
+#view .films { margin: var(--space-3xs) 0 0; padding-left: 1.2em; display: grid; gap: var(--space-3xs); }
+#view .outline { list-style: none; margin: 0; padding: 0; }
+#view .outline li { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: var(--space-3xs) var(--space-sm); padding: var(--space-xs) 0; border-top: var(--rule-w) solid var(--color-rule); }
+#view .outline .n { color: var(--color-accent); font-weight: 500; }
+#view .outline .secs { color: var(--color-ink-2); font-size: var(--text-sm); white-space: nowrap; }
+#view .outline .shows { grid-column: 2 / span 2; font-size: var(--text-sm); color: var(--color-ink-2); }
+#view .next { border: var(--rule-w) solid var(--color-accent); border-radius: var(--radius); padding: var(--space-md); display: grid; gap: var(--space-2xs); }
+#view .next p.say { font-size: var(--text-md); }
+#view .copybox { display: grid; gap: var(--space-xs); }
+
+/* What the engine will use (the plan view's block; filled with the brief flow) */
+.engine-uses { display: grid; gap: var(--space-sm); }
+.engine { display: grid; gap: var(--space-sm); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+
+/* ---------- Library (right pane) ---------- */
+.lib-head { display: grid; gap: var(--space-xs); }
+.lib-browse { display: grid; gap: var(--space-sm); min-width: 0; }
+.tabs { display: flex; gap: var(--space-3xs); overflow-x: auto; scrollbar-width: none; border-bottom: var(--rule-w) solid var(--color-rule); scroll-snap-type: x proximity; margin-inline: calc(var(--space-sm) * -1); padding-inline: var(--space-sm); }
+.tabs::-webkit-scrollbar { display: none; }
+@media (min-width: 40rem) { .tabs { margin-inline: 0; padding-inline: 0; } }
+.tab {
+  position: relative; flex: 0 0 auto; display: inline-flex; align-items: baseline; gap: var(--space-2xs); min-height: 2.75rem; padding: 0 var(--space-2xs);
+  border: 0; background: transparent; color: var(--color-ink-2); font-weight: 500; white-space: nowrap; scroll-snap-align: start; line-height: 2.75rem;
+  transition: color var(--dur-short) var(--ease-out);
+}
+.tab::after { content: ""; position: absolute; left: var(--space-2xs); right: var(--space-2xs); bottom: -1px; height: 2px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-short) var(--ease-out); }
+@media (hover: hover) { .tab:hover { color: var(--color-ink); } }
+.tab:focus-visible { outline-offset: -2px; }
+.tab[aria-selected="true"] { color: var(--color-ink); }
+.tab[aria-selected="true"]::after { transform: scaleX(1); }
+.tab .n { font-size: var(--text-sm); color: var(--color-ink-2); font-weight: 400; }
+.tab .pk { font-size: var(--text-sm); color: var(--color-accent); }
+
+.filters { display: grid; gap: var(--space-xs); }
+.frow { display: flex; flex-wrap: wrap; gap: var(--space-2xs); align-items: center; }
+.frow .label { min-width: 4.75rem; }
+.fchip {
+  min-height: 2.25rem; padding: 0 var(--space-sm); border-radius: var(--radius-pill); border: var(--rule-w) solid var(--color-rule-strong);
+  background: transparent; color: var(--color-ink-2); font-size: var(--text-sm); font-weight: 500; white-space: nowrap;
+  transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+@media (hover: hover) { .fchip:hover { color: var(--color-ink); border-color: var(--color-ink-2); } }
+.fchip:active { transform: translateY(1px); }
+.fchip[aria-pressed="true"] { background: var(--color-paper-3); color: var(--color-ink); border-color: var(--color-accent); }
+.fchip[data-tone="warm"][aria-pressed="true"] { border-color: var(--color-warm); }
+.fselects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2xs); }
+@media (max-width: 39.99rem) {
+  .frow { gap: var(--space-3xs) var(--space-2xs); }
+  .frow .label { flex-basis: 100%; }
+  .fselects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fsel--wide { grid-column: 1 / -1; }
+}
+.fsel { display: grid; gap: var(--space-3xs); min-width: 0; }
+select.select, input.search {
+  width: 100%; min-height: 2.75rem; padding: 0 var(--space-sm); border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius);
+  background: var(--color-paper-2); color: var(--color-ink); transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+}
+select.select { min-height: 2.5rem; padding-right: var(--space-xs); font-size: var(--text-sm); text-overflow: ellipsis; }
+input.search::placeholder { color: var(--color-ink-2); }
+@media (hover: hover) { select.select:hover, input.search:hover { border-color: var(--color-ink-2); } }
+select.select:focus-visible, input.search:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; border-color: transparent; background: var(--color-paper-3); }
+.fbar { display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: center; justify-content: space-between; }
+.fbar .search-wrap { flex: 1 1 14rem; min-width: 0; max-width: 24rem; }
+.count { font-size: var(--text-sm); color: var(--color-ink-2); white-space: nowrap; }
+.count b { color: var(--color-ink); font-weight: 500; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr)); gap: var(--space-sm); transition: opacity 140ms var(--ease-out); }
+.grid.is-swapping { opacity: 0; transition-duration: 90ms; transition-timing-function: var(--ease-in); }
+.grid-more { height: 1px; }
+.empty { display: grid; gap: var(--space-2xs); justify-items: start; padding: var(--space-md); border: var(--rule-w) dashed var(--color-rule-strong); border-radius: var(--radius); color: var(--color-ink-2); font-size: var(--text-sm); }
+.empty strong { color: var(--color-ink); font-size: var(--text-base); font-weight: 500; }
+.lib-note { display: grid; gap: var(--space-2xs); padding: var(--space-sm); border: var(--rule-w) solid var(--color-warm); border-radius: var(--radius); background: var(--color-paper-2); font-size: var(--text-sm); }
+.lib-note strong { color: var(--color-warm); font-weight: 500; font-size: var(--text-base); }
+.skel-card { aspect-ratio: 16 / 13; border-radius: var(--radius); background: var(--color-raised); animation: breathe 1.4s var(--ease-in-out) infinite alternate; }
+@keyframes breathe { from { opacity: 0.45; } to { opacity: 1; } }
+
+/* Style cards */
+.sc { position: relative; display: grid; grid-template-rows: auto 1fr; min-width: 0; border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); background: var(--color-paper-2); transition: border-color var(--dur-short) var(--ease-out); }
+@media (hover: hover) { .sc:hover { border-color: var(--color-ink-2); } }
+.sc[data-picked="true"] { border-color: var(--color-accent); }
+.sc-pv { padding: var(--space-2xs) var(--space-2xs) 0; }
+.sc-body { display: grid; gap: var(--space-2xs); align-content: start; padding: var(--space-xs) var(--space-sm) var(--space-sm); }
+.sc-name { font-size: var(--text-base); font-weight: 500; line-height: 1.3; }
+.sc-open { all: unset; cursor: pointer; }
+.sc-open::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+.sc-open:focus-visible::after { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.sc-line { font-size: var(--text-sm); color: var(--color-ink-2); line-height: 1.45; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2xs); margin-top: var(--space-3xs); }
+.energy { display: inline-flex; align-items: center; gap: var(--space-2xs); font-size: var(--text-xs); color: var(--color-ink-2); }
+.marks { display: inline-flex; gap: 2px; align-items: end; }
+.marks i { width: 0.6rem; height: 3px; border-radius: 1px; background: var(--color-rule-strong); }
+.marks i:nth-child(2) { height: 5px; }
+.marks i:nth-child(3) { height: 7px; }
+.marks i.on { background: var(--color-accent); }
+.avail { font-size: var(--text-xs); font-weight: 500; color: var(--color-accent); }
+.avail--mor { color: var(--color-warm); }
+.mor-line { font-size: var(--text-xs); color: var(--color-ink-2); line-height: 1.4; }
+.sc-pick {
+  position: absolute; z-index: 2; top: var(--space-sm); right: var(--space-sm); min-height: 2rem; padding: 0 var(--space-xs);
+  border-radius: var(--radius); border: var(--rule-w) solid var(--color-rule-strong); background: var(--color-paper); color: var(--color-ink);
+  font-size: var(--text-sm); font-weight: 500; white-space: nowrap;
+  transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+.sc-pick::before { content: ""; position: absolute; inset: -6px; }
+@media (hover: hover) { .sc-pick:hover { border-color: var(--color-ink); } }
+.sc-pick:active { transform: translateY(1px); }
+.sc-pick[aria-pressed="true"] { background: var(--color-accent); color: var(--color-accent-ink); border-color: var(--color-accent); }
+.sc-pick[data-state="error"] { border-color: var(--color-warm); color: var(--color-warm); }
+.sc-pick[data-state="loading"] { cursor: progress; opacity: 0.7; }
+.sc .clash, .drawer .clash { position: relative; z-index: 2; }
+.sc .clash { margin: 0 var(--space-sm) var(--space-sm); }
+.clash { display: grid; gap: var(--space-2xs); padding: var(--space-xs); border: var(--rule-w) solid var(--color-warm); border-radius: var(--radius); background: var(--color-paper); font-size: var(--text-sm); line-height: 1.45; animation: rise var(--dur-short) var(--ease-out) both; }
+.clash[data-tone="info"] { border-color: var(--color-rule-strong); }
+.clash b { color: var(--color-warm); font-weight: 500; }
+.clash[data-tone="info"] b { color: var(--color-ink); }
+@keyframes rise { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Previews: clips, sketches and sound ---------- */
+.pv { position: relative; aspect-ratio: 16 / 10; overflow: hidden; isolation: isolate; border-radius: var(--radius); background: var(--color-raised); container-type: inline-size; }
+.pv video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: var(--color-raised); }
+.pv-tag { position: absolute; left: 4%; bottom: 5%; z-index: 1; font-size: max(0.6875rem, 3.2cqw); font-weight: 500; color: var(--color-warm); }
+
+/* Sketches: one drawing per made-on-request template. Paused on a frame 60% into the loop until hover or focus. */
+.sk { --d: 3.2s; position: absolute; inset: 0; }
+.sk * { animation-duration: var(--d); animation-iteration-count: infinite; animation-timing-function: var(--ease-out); animation-fill-mode: both; animation-play-state: paused; animation-delay: calc(var(--s, 0s) - var(--d) * 1.6); }
+@media (hover: hover) { .sc:hover .sk * { animation-play-state: running; } }
+.sc:focus-within .sk *, .pv.is-live .sk * { animation-play-state: running; }
+.sk i, .sk span { position: absolute; display: block; }
+.sk-ground { left: 16%; right: 16%; bottom: 18%; height: 0.5cqw; background: var(--color-rule-strong); }
+
+.sk--character-bounce .sk-body { left: 41%; bottom: 18%; width: 18cqw; height: 18cqw; border-radius: 4cqw; background: var(--color-accent); transform-origin: 50% 100%; animation-name: sk-bounce; animation-timing-function: linear; }
+.sk--character-bounce .sk-eye { top: 30%; width: 1.6cqw; height: 4cqw; border-radius: 0.8cqw; background: var(--color-accent-ink); }
+.sk--character-bounce .sk-eye:first-child { left: 30%; }
+.sk--character-bounce .sk-eye:last-child { right: 30%; }
+@keyframes sk-bounce {
+  0% { transform: translateY(-110%) scale(0.92, 1.1); animation-timing-function: var(--ease-in); }
+  32% { transform: translateY(0) scale(1, 1); animation-timing-function: var(--ease-out); }
+  38% { transform: translateY(0) scale(1.3, 0.68); animation-timing-function: var(--ease-out); }
+  54% { transform: translateY(-58%) scale(0.9, 1.12); animation-timing-function: var(--ease-in); }
+  68% { transform: translateY(0) scale(1.14, 0.86); animation-timing-function: var(--ease-out); }
+  76%, 100% { transform: translateY(0) scale(1, 1); }
+}
+
+.sk--paper-cutout .sk-sheet { border-radius: 0.6cqw; box-shadow: 0 1.2cqw 2cqw var(--color-shadow); transform-origin: 0% 100%; }
+.sk--paper-cutout .s1 { left: 8%; bottom: 14%; width: 52%; height: 46%; background: var(--color-raised-2); clip-path: polygon(0 18%, 100% 0, 100% 100%, 0 100%); animation-name: sk-slide-a; }
+.sk--paper-cutout .s2 { left: 38%; bottom: 10%; width: 50%; height: 36%; background: var(--color-paper-3); clip-path: polygon(0 0, 100% 24%, 100% 100%, 0 100%); --s: calc(var(--d) * 0.08); animation-name: sk-slide-b; }
+.sk--paper-cutout .s3 { left: 58%; top: 14%; width: 20%; height: 30%; background: var(--color-accent); transform-origin: 50% 0%; --s: calc(var(--d) * 0.16); animation-name: sk-fold; }
+@keyframes sk-slide-a { 0% { transform: translateX(-70%) rotate(-6deg); opacity: 0; } 22% { transform: translateX(0) rotate(-2deg); opacity: 1; } 86% { transform: translateX(0) rotate(-2deg); opacity: 1; } 100% { transform: translateX(0) rotate(-2deg); opacity: 0; } }
+@keyframes sk-slide-b { 0%, 8% { transform: translateX(80%) rotate(5deg); opacity: 0; } 30% { transform: translateX(0) rotate(1deg); opacity: 1; } 86% { transform: translateX(0) rotate(1deg); opacity: 1; } 100% { opacity: 0; transform: translateX(0) rotate(1deg); } }
+@keyframes sk-fold { 0%, 30% { transform: scaleY(0); } 46% { transform: scaleY(1.06); } 54%, 86% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+
+.sk--card-tilt-3d .sk-persp { position: absolute; inset: 0; perspective: 70cqw; }
+.sk--card-tilt-3d .sk-card { left: 26%; top: 16%; width: 48%; height: 68%; border-radius: 2cqw; background: var(--color-paper-2); border: 0.4cqw solid var(--color-ink-2); transform-origin: 50% 50%; animation-name: sk-tilt; animation-timing-function: var(--ease-in-out); }
+.sk--card-tilt-3d .sk-card::before { content: ""; position: absolute; left: 12%; right: 12%; top: 12%; height: 34%; border-radius: 1cqw; background: var(--color-raised-2); }
+.sk--card-tilt-3d .sk-card::after { content: ""; position: absolute; left: 12%; right: 38%; top: 58%; height: 8%; border-radius: 1cqw; background: var(--color-accent); }
+@keyframes sk-tilt { 0% { transform: rotateY(-34deg) rotateX(16deg) scale(0.86); opacity: 0; } 8% { opacity: 1; } 18% { transform: rotateY(-34deg) rotateX(16deg) scale(0.86); } 56% { transform: rotateY(5deg) rotateX(-2deg) scale(1); } 68%, 88% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+
+.sk--hand-drawn-line svg { position: absolute; inset: 22% 8%; width: 84%; height: 56%; overflow: visible; }
+.sk--hand-drawn-line path { fill: none; stroke: var(--color-accent); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.sk--hand-drawn-line .sk-cover { top: 0; bottom: 0; left: 0; right: 0; background: var(--color-raised); transform-origin: 100% 50%; animation-name: sk-uncover; animation-timing-function: var(--ease-in-out); }
+.sk--hand-drawn-line .sk-pen { left: 6%; top: 34%; width: 2.4cqw; height: 14cqw; border-radius: 1.2cqw; background: var(--color-ink); transform-origin: 50% 100%; animation-name: sk-pen; animation-timing-function: var(--ease-in-out); }
+@keyframes sk-uncover { 0%, 10% { transform: translateX(0); } 70%, 90% { transform: translateX(100%); opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+@keyframes sk-pen { 0%, 10% { transform: translate(0, 0) rotate(24deg); } 25% { transform: translate(20cqw, -3cqw) rotate(20deg); } 40% { transform: translate(38cqw, 4cqw) rotate(26deg); } 55% { transform: translate(56cqw, -2cqw) rotate(22deg); } 70%, 90% { transform: translate(80cqw, 2cqw) rotate(24deg); opacity: 1; } 100% { transform: translate(80cqw, 2cqw) rotate(24deg); opacity: 0; } }
+
+.sk--liquid-morph .sk-m { left: 38%; top: 30%; width: 24%; height: 40%; background: var(--color-accent); transform-origin: 50% 50%; }
+.sk--liquid-morph .m1 { border-radius: 2.6cqw; animation-name: sk-m1; animation-timing-function: var(--ease-in-out); }
+.sk--liquid-morph .m2 { border-radius: var(--radius-pill); background: var(--color-raised-2); border: 0.4cqw solid var(--color-accent); animation-name: sk-m2; animation-timing-function: var(--ease-in-out); }
+@keyframes sk-m1 { 0%, 12% { transform: scale(1, 1); opacity: 1; } 42% { transform: scale(2.1, 0.5); opacity: 0; } 62% { transform: scale(2.1, 0.5); opacity: 0; } 88% { transform: scale(1, 1); opacity: 1; } 100% { transform: scale(1, 1); opacity: 1; } }
+@keyframes sk-m2 { 0%, 12% { transform: scale(0.5, 1.6); opacity: 0; } 42% { transform: scale(2.1, 0.5); opacity: 1; } 62% { transform: scale(2.1, 0.5); opacity: 1; } 88% { transform: scale(0.5, 1.6); opacity: 0; } 100% { opacity: 0; } }
+
+.sk--stop-motion .sk-b { width: 14cqw; height: 14cqw; border-radius: 1.6cqw; background: var(--color-paper-3); border: 0.4cqw solid var(--color-ink-2); animation-timing-function: steps(1, end); }
+.sk--stop-motion .b1 { left: 14%; bottom: 20%; animation-name: sk-stop-a; }
+.sk--stop-motion .b2 { left: 42%; bottom: 20%; background: var(--color-accent); border-color: var(--color-accent); animation-name: sk-stop-b; }
+.sk--stop-motion .b3 { left: 68%; bottom: 20%; background: var(--color-raised-2); animation-name: sk-stop-c; }
+@keyframes sk-stop-a { 0% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(4cqw, -10cqw) rotate(-12deg); } 50% { transform: translate(10cqw, -4cqw) rotate(8deg); } 75% { transform: translate(6cqw, 0) rotate(0deg); } }
+@keyframes sk-stop-b { 0% { transform: translate(0, -12cqw) rotate(10deg); } 25% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(-4cqw, -18cqw) rotate(-14deg); } 75% { transform: translate(0, -6cqw) rotate(4deg); } }
+@keyframes sk-stop-c { 0% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(-6cqw, 0) rotate(16deg); } 50% { transform: translate(-2cqw, -12cqw) rotate(-6deg); } 75% { transform: translate(-8cqw, -4cqw) rotate(10deg); } }
+
+.sk--clay-squash .sk-press { left: 34%; top: 0; width: 32%; height: 14%; border-radius: 0 0 1.4cqw 1.4cqw; background: var(--color-ink-2); animation-name: sk-press; animation-timing-function: var(--ease-in-out); }
+.sk--clay-squash .sk-clay { left: 38%; bottom: 18%; width: 24%; height: 38%; border-radius: 3cqw; background: var(--color-accent); transform-origin: 50% 100%; animation-name: sk-squash; animation-timing-function: linear; }
+@keyframes sk-press { 0%, 12% { transform: translateY(-100%); } 34% { transform: translateY(150%); } 46% { transform: translateY(150%); } 64%, 100% { transform: translateY(-100%); } }
+@keyframes sk-squash {
+  0%, 26% { transform: scale(1, 1); animation-timing-function: var(--ease-in); }
+  36% { transform: scale(1.36, 0.6); }
+  46% { transform: scale(1.36, 0.6); animation-timing-function: var(--ease-out); }
+  58% { transform: scale(0.9, 1.14); animation-timing-function: var(--ease-in-out); }
+  68% { transform: scale(1.05, 0.95); }
+  76%, 100% { transform: scale(1, 1); }
+}
+
+.sk--collage-layers .sk-piece { border-radius: 0.6cqw; box-shadow: 0 0.8cqw 1.6cqw var(--color-shadow); animation-name: sk-drift; animation-timing-function: var(--ease-in-out); }
+.sk--collage-layers .c1 { left: 6%; top: 18%; width: 44%; height: 58%; background: var(--color-raised-2); transform: rotate(-4deg); --x: -4cqw; --r: -4deg; }
+.sk--collage-layers .c2 { left: 34%; top: 30%; width: 38%; height: 44%; background: var(--color-paper-3); clip-path: polygon(4% 0, 100% 8%, 94% 100%, 0 90%); --x: -9cqw; --r: 3deg; }
+.sk--collage-layers .c3 { left: 60%; top: 14%; width: 26%; height: 34%; background: var(--color-accent); clip-path: polygon(0 10%, 92% 0, 100% 88%, 8% 100%); --x: -15cqw; --r: -6deg; }
+.sk--collage-layers .c4 { left: 22%; top: 62%; width: 30%; height: 18%; background: var(--color-ink-2); --x: -20cqw; --r: 2deg; }
+@keyframes sk-drift { 0% { transform: translateX(0) rotate(var(--r)); } 50% { transform: translateX(var(--x)) rotate(var(--r)); } 100% { transform: translateX(0) rotate(var(--r)); } }
+
+/* Sound previews */
+.pv--sound, .pv--words { background: var(--color-raised); }
+.wave { position: absolute; left: 6%; right: 6%; top: 20%; bottom: 32%; display: flex; align-items: center; gap: 0.9cqw; }
+.wave i { flex: 1 1 0; height: var(--h); border-radius: 0.6cqw; background: var(--color-ink-2); transform-origin: 50% 50%; }
+.pv--sound.is-playing .wave i { background: var(--color-accent); animation: wav 0.5s var(--ease-in-out) infinite alternate; animation-delay: var(--wd); }
+@keyframes wav { from { transform: scaleY(1); } to { transform: scaleY(0.45); } }
+.wave--none i { background: var(--color-rule-strong); }
+.play-progress { position: absolute; left: 6%; right: 6%; bottom: 22%; height: 0.8cqw; border-radius: 0.4cqw; background: var(--color-accent); transform-origin: 0 50%; transform: scaleX(0); }
+.pv--sound.is-playing .play-progress { animation: progress var(--len, 3s) linear forwards; }
+@keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.snd-meta { position: absolute; left: 6%; bottom: 6%; font-size: max(0.6875rem, 3.4cqw); color: var(--color-ink-2); font-weight: 500; }
+.pv--words .snd-meta { color: var(--color-warm); }
+.play {
+  position: absolute; z-index: 3; right: 4%; bottom: 5%; width: 2.75rem; height: 2.75rem; display: grid; place-items: center;
+  border-radius: 50%; border: 0; background: var(--color-ink); color: var(--color-paper);
+  transition: transform var(--dur-micro) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+}
+@media (hover: hover) { .play:hover { background: var(--color-accent); } }
+.play:active { transform: scale(0.95); }
+.play svg { width: 1rem; height: 1rem; fill: currentColor; }
+.play .i-stop { display: none; }
+.play[aria-pressed="true"] { background: var(--color-accent); color: var(--color-accent-ink); }
+.play[aria-pressed="true"] .i-play { display: none; }
+.play[aria-pressed="true"] .i-stop { display: block; }
+.play[data-state="loading"] { cursor: progress; opacity: 0.7; }
+.sc .pv--sound { z-index: 2; }
+
+/* ---------- Drawer ---------- */
+dialog { color: var(--color-ink); }
+dialog::backdrop { background: var(--color-scrim); }
+.drawer { margin: 0; padding: 0; border: 0; inset: 0 0 0 auto; width: min(36rem, 100%); height: 100dvh; max-height: 100dvh; max-width: 100%; background: var(--color-paper); border-left: var(--rule-w) solid var(--color-rule); overflow: hidden; }
+.drawer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr); animation: drawer-in var(--dur-long) var(--ease-out); }
+.drawer[open]::backdrop { animation: fade-in var(--dur-long) var(--ease-out); }
+.drawer.is-closing { animation: drawer-out calc(var(--dur-long) * 0.7) var(--ease-in) forwards; }
+@keyframes drawer-in { from { transform: translateX(32px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes drawer-out { to { transform: translateX(32px); opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 39.99rem) {
+  .drawer { inset: auto 0 0 0; width: 100%; height: 92dvh; max-height: 92dvh; border-left: 0; border-top: var(--rule-w) solid var(--color-rule); border-radius: 12px 12px 0 0; }
+  @keyframes drawer-in { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes drawer-out { to { transform: translateY(40px); opacity: 0; } }
+}
+.drawer-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-md); border-bottom: var(--rule-w) solid var(--color-rule); min-width: 0; }
+.drawer-top .label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drawer-body { overflow-y: auto; overscroll-behavior: contain; padding: var(--space-md) var(--space-md) 0; display: grid; gap: var(--space-lg); align-content: start; }
+.drawer-body > * { min-width: 0; }
+.drawer .pv { aspect-ratio: 16 / 9; }
+.pv-tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-xs); margin-top: var(--space-2xs); }
+.stack-xs { display: grid; gap: var(--space-2xs); }
+.fit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: var(--space-sm); }
+.fit { display: grid; gap: var(--space-3xs); align-content: start; padding: var(--space-sm); border-radius: var(--radius); background: var(--color-paper-2); font-size: var(--text-sm); line-height: 1.5; }
+.fit h3 { font-size: var(--text-base); font-weight: 500; }
+.ttable { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.ttable caption { text-align: left; font-weight: 500; font-size: var(--text-base); padding-bottom: var(--space-2xs); }
+.ttable th, .ttable td { text-align: left; padding: var(--space-2xs) var(--space-2xs) var(--space-2xs) 0; border-top: var(--rule-w) solid var(--color-rule); vertical-align: top; }
+.ttable thead th { color: var(--color-ink-2); font-weight: 500; border-top: 0; }
+.ttable tbody th { font-weight: 500; white-space: nowrap; }
+@media (max-width: 34rem) {
+  .ttable thead { display: none; }
+  .ttable tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-sm); padding: var(--space-2xs) 0; border-top: var(--rule-w) solid var(--color-rule); }
+  .ttable tbody th { grid-column: 1 / -1; color: var(--color-accent); }
+  .ttable th, .ttable td { border-top: 0; padding: var(--space-3xs) 0; }
+  .ttable td::before { content: attr(data-label) ": "; color: var(--color-ink-2); }
+}
+.prompt { display: grid; gap: var(--space-xs); }
+.row--between { justify-content: space-between; }
+.prompt-text { padding: var(--space-sm); border-radius: var(--radius); background: var(--color-raised); border: var(--rule-w) solid var(--color-rule); font-size: var(--text-sm); line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere; }
+.pairs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); gap: var(--space-2xs); }
+.pair { display: grid; gap: var(--space-3xs); align-content: start; text-align: left; padding: var(--space-2xs); border-radius: var(--radius); border: var(--rule-w) solid var(--color-rule); background: var(--color-paper-2); color: var(--color-ink); transition: border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+@media (hover: hover) { .pair:hover { border-color: var(--color-accent); } }
+.pair:active { transform: translateY(1px); }
+.pair .pname { font-size: var(--text-sm); font-weight: 500; line-height: 1.3; }
+.pair .ptab { font-size: var(--text-xs); color: var(--color-ink-2); }
+.engine-fold { border-top: var(--rule-w) solid var(--color-rule); padding-top: var(--space-xs); }
+.engine-fold summary { cursor: pointer; color: var(--color-ink-2); font-size: var(--text-sm); min-height: 2rem; display: flex; align-items: center; }
+.engine-fold ul { list-style: none; margin: var(--space-2xs) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2xs); font-size: var(--text-xs); color: var(--color-ink-2); }
+.engine-fold li { padding: 0 var(--space-2xs); border: var(--rule-w) solid var(--color-rule); border-radius: var(--radius); overflow-wrap: anywhere; }
+.drawer-pick { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: center; justify-content: space-between; padding: var(--space-sm) 0; background: var(--color-paper); border-top: var(--rule-w) solid var(--color-rule); }
+.drawer-pick .clash { flex-basis: 100%; }
+.drawer .pick-lg { position: static; min-width: 9rem; min-height: 2.75rem; padding: 0 var(--space-md); font-size: var(--text-base); }
+
+/* ---------- Search palette ---------- */
+.palette { margin: 10dvh auto auto; padding: 0; width: min(36rem, calc(100% - 2rem)); max-height: 76dvh; border: var(--rule-w) solid var(--color-rule-strong); border-radius: var(--radius); background: var(--color-paper); overflow: hidden; }
+.palette[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.palette input.search { border: 0; border-bottom: var(--rule-w) solid var(--color-rule); border-radius: 0; min-height: 3.5rem; background: var(--color-paper); font-size: var(--text-md); }
+.palette input.search:focus-visible { outline: none; background: var(--color-paper); }
+.plist { list-style: none; margin: 0; padding: var(--space-2xs); overflow-y: auto; }
+.plist li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 var(--space-sm); padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius); cursor: pointer; }
+.plist li[aria-selected="true"] { background: var(--color-paper-2); box-shadow: inset 2px 0 0 var(--color-accent); }
+.plist .pn { font-weight: 500; min-width: 0; }
+.plist .pt { font-size: var(--text-sm); color: var(--color-ink-2); white-space: nowrap; }
+.plist .pdesc { grid-column: 1 / -1; font-size: var(--text-sm); color: var(--color-ink-2); }
+.pfoot { padding: var(--space-2xs) var(--space-sm); border-top: var(--rule-w) solid var(--color-rule); font-size: var(--text-sm); color: var(--color-ink-2); }
+
+/* ---------- Reel tray ---------- */
+.reel-scrim { position: fixed; inset: 0; z-index: var(--z-tray); background: var(--color-scrim); opacity: 0; pointer-events: none; transition: opacity var(--dur-long) var(--ease-out); }
+.reel-scrim.is-on { opacity: 1; pointer-events: auto; }
+.reel {
+  position: fixed; z-index: var(--z-tray); left: 0; right: 0; bottom: 0; max-height: min(70dvh, 30rem);
+  display: grid; grid-template-rows: var(--tray-h) minmax(0, 1fr); background: var(--color-paper); border-top: var(--rule-w) solid var(--color-rule-strong);
+  transform: translateY(calc(100% - var(--tray-h) - env(safe-area-inset-bottom))); transition: transform var(--dur-long) var(--ease-out); padding-bottom: env(safe-area-inset-bottom);
+}
+.reel[data-open="true"] { transform: none; }
+.reel-head { display: flex; align-items: center; gap: var(--space-sm); padding-inline: max(var(--space-sm), env(safe-area-inset-left)) max(var(--space-sm), env(safe-area-inset-right)); min-width: 0; }
+.reel-toggle { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 2.75rem; padding: 0 var(--space-xs) 0 0; border: 0; background: transparent; color: var(--color-ink); font-weight: 500; white-space: nowrap; flex: 0 0 auto; }
+.reel-toggle .chev { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 2; transition: transform var(--dur-short) var(--ease-out); }
+.reel[data-open="true"] .reel-toggle .chev { transform: rotate(180deg); }
+.reel-count { min-width: 1.6rem; height: 1.6rem; padding: 0 var(--space-2xs); display: inline-grid; place-items: center; border-radius: var(--radius-pill); background: var(--color-paper-3); font-size: var(--text-sm); }
+.reel-count.has { background: var(--color-accent); color: var(--color-accent-ink); }
+.reel-peek { display: none; gap: var(--space-2xs); min-width: 0; overflow: hidden; flex: 0 1 auto; }
+.reel-peek .pv { width: 4.5rem; flex: 0 0 auto; }
+@media (min-width: 48rem) { .reel-peek { display: flex; } }
+.reel-hint { font-size: var(--text-sm); color: var(--color-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1 1 auto; }
+.reel-hint[data-tone="warm"] { color: var(--color-warm); }
+.reel-body { overflow-y: auto; padding: var(--space-sm) max(var(--space-sm), env(safe-area-inset-left)) var(--space-lg); display: grid; gap: var(--space-md); align-content: start; }
+.reel-group { display: grid; gap: var(--space-2xs); min-width: 0; }
+.film { display: flex; gap: var(--space-xs); overflow-x: auto; padding-bottom: var(--space-2xs); scrollbar-width: thin; scrollbar-color: var(--color-rule) transparent; }
+.frame { position: relative; flex: 0 0 11rem; display: grid; gap: var(--space-3xs); align-content: start; padding: var(--space-2xs); border-radius: var(--radius); background: var(--color-paper-2); border: var(--rule-w) solid var(--color-rule); animation: rise var(--dur-short) var(--ease-out) both; }
+.frame .fname { font-size: var(--text-sm); font-weight: 500; padding-right: var(--space-xl); line-height: 1.3; }
+.frame .icon-btn { position: absolute; right: 0.25rem; bottom: 0.25rem; width: 2.25rem; height: 2.25rem; }
+
+/* ---------- Reduced motion: still frames, nothing autoplays ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 150ms !important; scroll-behavior: auto !important; }
+  .sk *, .sc:hover .sk *, .sc:focus-within .sk *, .pv.is-live .sk * { animation-play-state: paused !important; }
+  .pv--sound.is-playing .wave i { animation: none; }
+  .clash, .frame { animation: fade-in 150ms linear both; }
+  .reel { transition-property: opacity; }
+  .reel:not([data-open="true"]) .reel-body { visibility: hidden; }
+  .drawer[open] { animation: fade-in 150ms linear; }
+  .drawer.is-closing { animation: none; opacity: 0; }
+  .skel-card { animation: none; opacity: 0.7; }
+}
 </style>
 
-<header class="top">
-  <div class="wrap">
-    <!-- The Damex Video Engine wordmark, from brands/damex-engine/logo/wordmark-on-dark.svg. Its subset face is named
-         apart from the page's Chakra Petch so the two never mix. -->
-    <span class="brand" role="img" aria-label="Damex Video Engine"><svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 102" width="540" height="102" aria-hidden="true" focusable="false"><defs><style>@font-face{font-family:"Damex Wordmark";font-weight:500;src:url(data:font/woff2;base64,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) format("woff2")}.mark text{font-family:"Damex Wordmark","Chakra Petch",sans-serif;font-weight:500;text-transform:uppercase}</style></defs><g transform="scale(3)"><rect width="34" height="34" rx="2" fill="#BBFC9E"/><g transform="translate(5 5)" fill="none" stroke="#04090E" stroke-width="1.8" stroke-linecap="round"><path d="M12 8.4L19.56 6.09"/><path d="M15.12 10.2L20.9 15.6"/><path d="M15.12 13.8L13.34 21.51"/><path d="M12 15.6L4.44 17.91"/><path d="M8.88 13.8L3.1 8.4"/><path d="M8.88 10.2L10.66 2.49"/><circle cx="12" cy="12" r="0.9" fill="#04090E" stroke="none"/></g><text x="44" y="13" font-size="10" letter-spacing="1" fill="#FFFFFF" fill-opacity="0.7">Damex</text><text x="44" y="30" font-size="15" letter-spacing="1.2" fill="#FFFFFF">Video Engine</text></g></svg></span>
-    <div class="top-side">
-      <span class="status" id="status" data-host="pending">Connecting to your studio</span>
-      <button type="button" class="secondary" id="home" hidden>Your briefs</button>
-    </div>
+<header class="bar">
+  <!-- The Damex Video Engine wordmark (docs/design/brief-desk-comp/wordmark-on-dark.svg), coloured by the tokens. -->
+  <a class="brand" href="#brief" aria-label="Damex Video Engine, video brief">
+    <svg class="wordmark" viewBox="0 0 540 102" role="img" aria-label="Damex Video Engine"><g transform="scale(3)"><rect width="34" height="34" rx="2" class="wm-tile"/><g transform="translate(5 5)" class="wm-glyph" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M12 8.4L19.56 6.09"/><path d="M15.12 10.2L20.9 15.6"/><path d="M15.12 13.8L13.34 21.51"/><path d="M12 15.6L4.44 17.91"/><path d="M8.88 13.8L3.1 8.4"/><path d="M8.88 10.2L10.66 2.49"/><circle cx="12" cy="12" r="0.9" class="wm-hub" stroke="none"/></g><text x="44" y="13" font-size="10" letter-spacing="1" class="wm-small">Damex</text><text x="44" y="30" font-size="15" letter-spacing="1.2">Video Engine</text></g></svg>
+  </a>
+  <div class="bar-side">
+    <span class="status" id="status" data-host="pending">Connecting to your studio</span>
+    <button class="kbar" type="button" id="kbar" data-action="palette" aria-keyshortcuts="Meta+K Control+K"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><span class="kbar-text">Search styles</span><span class="kbd" id="kbd" aria-hidden="true">⌘K</span><span class="sr-only">Search styles</span></button>
+    <button type="button" class="btn btn--sm btn--quiet" id="home" hidden>Your briefs</button>
   </div>
 </header>
-<main id="main"><div class="wrap" id="view"></div></main>
+
+<main class="desk" id="desk">
+  <div class="pane pane--write" id="brief" aria-label="Write and direct">
+    <div id="view"></div>
+    <section class="engine-uses" id="engine-uses" aria-labelledby="eu-h" hidden>
+      <h2 class="h3" id="eu-h">What the engine will use</h2>
+      <p class="small muted">Every name below already exists in your studio's libraries.</p>
+      <div class="engine" id="engine-list"></div>
+    </section>
+  </div>
+
+  <div class="pane pane--library" id="library" aria-label="Style library">
+    <div class="lib-head">
+      <h2 class="display-s">Style library</h2>
+      <p class="lede">Point at what you like. Picks are a strong preference, never required: with none, the studio decides.</p>
+    </div>
+    <div id="suggest" hidden></div>
+    <section class="lib-browse" aria-label="Browse the library">
+      <div class="tabs" role="tablist" id="tabs" aria-label="Style library tabs"></div>
+      <div class="filters" id="filters"></div>
+      <div id="libpanel" role="tabpanel" tabindex="-1"></div>
+    </section>
+  </div>
+</main>
+
+<div class="reel-scrim" id="reel-scrim" data-action="reel-close"></div>
+<aside class="reel" id="reel" data-open="false" aria-label="Your reel">
+  <div class="reel-head">
+    <button class="reel-toggle" type="button" id="reel-toggle" data-action="reel" aria-expanded="false" aria-controls="reel-body">
+      <span>Your reel</span><span class="reel-count" id="reel-count">0</span>
+      <svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+    </button>
+    <div class="reel-peek" id="reel-peek" aria-hidden="true"></div>
+    <span class="reel-hint" id="reel-hint" role="status">No picks yet</span>
+  </div>
+  <div class="reel-body" id="reel-body" inert></div>
+</aside>
+
+<dialog class="drawer" id="drawer" aria-labelledby="dr-name"></dialog>
+
+<dialog class="palette" id="palette" aria-label="Search styles">
+  <input class="search" id="pal-q" type="search" placeholder="Search every tab, for example zoom or calm" aria-controls="pal-list" aria-activedescendant="" autocomplete="off" role="combobox" aria-expanded="true">
+  <ul class="plist" id="pal-list" role="listbox" aria-label="Styles"></ul>
+  <p class="pfoot">Arrow keys to move, Enter to open, Esc to close</p>
+</dialog>
+
+<p class="sr-only" id="announce" aria-live="polite"></p>
 
 <script>
 /* ---------- State ---------- */
@@ -182,6 +665,7 @@ const connector = {
   plan: (job) => state.mcp.callTool(HOST, 'brief_plan', { job }),
   confirm: (job) => state.mcp.callTool(HOST, 'brief_confirm', { job }),
   reopen: (job, item) => state.mcp.callTool(HOST, 'brief_reopen', { job, item }),
+  pick: (input) => state.mcp.callTool(HOST, 'brief_pick', input),
 };
 
 /** A read: retried once after a short random delay when the studio did not answer. */
@@ -252,10 +736,12 @@ async function startBrief() {
   state.busy = 'start'; render();
   if (state.host === 'pending' && mcpReady) await mcpReady;
   if (state.host !== 'ready') { state.busy = null; await saveWithoutStudio(words); return; }
+  const held = state.picks.slice(); // picks made before the brief existed are saved to it once it starts
   try {
     const reply = await write(() => connector.start(words, state.style));
     state.briefWords = words; state.confirmedOn = null; state.words = ''; state.style = null; state.drafts = {};
     applyCheck(reply);
+    if (held.length) await sendHeldPicks(held);
   } catch (e) { await failed(e, 'start', { isWrite: true }); }
   state.busy = null; render();
 }
@@ -334,6 +820,9 @@ const clearReopenNotes = () => { for (const area of Object.keys(state.notes)) if
 
 function applyCheck(reply, { keepView = false } = {}) {
   state.job = reply.job; state.check = reply;
+  if (Array.isArray(reply.picks)) state.picks = reply.picks.filter((p) => !p.stale).map((p) => ({ tab: p.tab, id: p.id }));
+  if (reply.understood && typeof reply.understood === 'object') state.understood = reply.understood;
+  paintPicks();
   const ids = new Set((reply.questions || []).map((q) => q.id));
   for (const id of Object.keys(state.drafts)) if (!ids.has(id)) delete state.drafts[id];
   for (const area of Object.keys(state.notes)) if (area.startsWith('card:') && !ids.has(area.slice(5))) delete state.notes[area];
@@ -341,6 +830,7 @@ function applyCheck(reply, { keepView = false } = {}) {
 }
 
 async function goHome() {
+  if (state.job) { state.picks = []; state.libNote = null; paintPicks(); } // those picks belong to the brief just left
   state.view = 'start'; state.job = null; state.check = null; state.plan = null; state.done = null; state.parkedNext = null; state.changing = false;
   state.notes = {}; render(); window.scrollTo(0, 0);
   if (state.host === 'ready') await loadContext();
@@ -447,11 +937,12 @@ async function saveWithoutStudio(words) {
   if (!state.db) { state.copyText = words; setNote('start', { tone: 'warm', text: 'This page cannot keep your brief here. Copy it and paste it into a new chat in the studio folder.' }); render(); return; }
   state.busy = 'start'; render();
   const id = `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  const doc = { words, at: new Date().toISOString(), status: 'waiting' };
+  const doc = { words, at: new Date().toISOString(), status: 'waiting', style_picks: state.picks.map((p) => ({ tab: p.tab, id: p.id })) };
   const save = () => state.db.collection('briefs').doc(id).set(doc);
   try {
     try { await save(); } catch (e) { if (codeOf(e) !== 'unavailable') throw e; await wait(300 + Math.random() * 700); await save(); }
-    state.words = ''; state.copyText = null;
+    state.words = ''; state.copyText = null; state.savedId = id;
+    paintPicks();
     setNote('start', { tone: 'good', text: 'Saved. Next time you open a chat in the studio folder and say "make a video", Claude finds this brief and carries on from it.' });
     watchSaved();
   } catch (e) {
@@ -494,6 +985,8 @@ function render() {
   status.dataset.host = state.host;
   status.textContent = { pending: 'Connecting to your studio', ready: 'Connected to your studio', none: 'Not connected to your studio' }[state.host];
   document.getElementById('home').hidden = state.view === 'start';
+  const uses = document.getElementById('engine-uses'); // filled in the plan view with the brief flow
+  if (uses) uses.hidden = !(state.view === 'plan' && Array.isArray(state.engineUses) && state.engineUses.length);
 
   const view = document.getElementById('view');
   const build = { start: renderStart, questions: renderQuestions, plan: renderPlan, handoff: renderHandoff, parked: renderParked }[state.view];
@@ -723,6 +1216,756 @@ function renderParked() {
     h('p', { class: 'muted', text: 'When your brand is set up, the studio picks this brief up where it stopped.' }),
     h('div', { class: 'row' }, h('button', { type: 'button', class: 'secondary', id: 'back-parked', text: 'Back to your briefs', onclick: goHome })))];
 }
+
+/* ---------- The style library: data, cards, drawer, picks and the reel ---------- */
+// The library is the publish set's styles/<tab>.json and styles/meta.json, read by relative path. Pick rules, the
+// reading of the brief's words and suggestion scoring come from ./lib/brief.mjs and ./lib/suggest.mjs, never from here.
+
+const LIB_TABS = [
+  { id: 'filming', name: 'Filming' },
+  { id: 'motion', name: 'Motion' },
+  { id: 'animation', name: 'Animation' },
+  { id: 'product-ui', name: 'Product UI' },
+  { id: 'sound', name: 'Sound' },
+];
+const LIB_ENERGIES = ['calm', 'confident', 'hype'];
+const KIND_LABELS = { 'product-demo': 'Product demo', 'launch-reel': 'Launch reel', 'motion-graphics': 'Motion graphics', 'footage-edit': 'Edit of your footage', ugc: 'Creator style', 'animated-short': 'Animated short', promo: 'Promo', tutorial: 'Tutorial' };
+const SIZE_LABELS = { '16:9': 'Wide 16:9', '9:16': 'Vertical 9:16', '1:1': 'Square 1:1', '4:5': 'Portrait 4:5' };
+const CHUNK = 24;
+const POSTER_AT = 0.5; // a clip's poster is its frame at 0.5 s: some clips build in from an empty first frame
+
+Object.assign(state, {
+  lib: { status: 'idle', tabs: {}, byId: new Map(), all: [], meta: null, brief: null, suggest: null },
+  picks: [],               // [{ tab, id }], as the brief holds them
+  understood: {},          // what the brief's words say (brief.mjs understood())
+  libView: { tab: 'filming', energy: [], ready: '', kind: '', size: '', family: '', query: '', shown: 0, list: [] },
+  libNote: null,           // { id, tone: 'warm' | 'info', text, undo? }: a refused pick (amber) or a swap
+  libBusy: null,           // the id whose pick is being saved
+  savedId: null,           // the page-store document a brief was saved to without the studio
+  reelOpen: false,
+});
+
+const canPaint = typeof document.querySelector === 'function';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const lowerFirst = (s) => { const t = String(s || ''); return t.charAt(0).toLowerCase() + t.slice(1); };
+const capFirst = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : '');
+const andList = (a) => (a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`);
+const tabName = (id) => (LIB_TABS.find((t) => t.id === id) || { name: id }).name;
+const tabWord = (id) => (id === 'product-ui' ? 'Product UI' : tabName(id).toLowerCase()); // in the middle of a sentence
+const entryOf = (id) => state.lib.byId.get(id) || null;
+const isPicked = (id) => state.picks.some((p) => p.id === id);
+const energiesOf = (e) => (Array.isArray(e?.filters?.energy) ? e.filters.energy : []);
+const isReady = (e) => e?.filters?.ready === true;
+const reduceMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const autoplayInDrawer = () => !reduceMotion();
+const understoodOf = (text) => (state.lib.brief ? state.lib.brief.understood(text) : {});
+
+/** The library as read from the publish set: { tabs: { <tab>: [entries] }, meta, brief, suggest } (the two modules). */
+function libLoaded({ tabs, meta, brief = null, suggest = null }) {
+  const byId = new Map();
+  const all = [];
+  for (const t of LIB_TABS) for (const e of tabs[t.id] || []) if (e && e.id && !byId.has(e.id)) { byId.set(e.id, e); all.push(e); }
+  state.lib = { status: 'ready', tabs, byId, all, meta: meta || null, brief, suggest };
+  if (state.words) state.understood = understoodOf(state.words);
+  state.picks = state.picks.filter((p) => byId.has(p.id));
+}
+
+/* ---------- Words: the expert prompt and the timing table ---------- */
+
+const num = (n) => String(n);
+function energyLine(energy, t, isSound) {
+  if (!t) return `${capFirst(energy)}: no timing given.`;
+  if (isSound) return `${capFirst(energy)}: ${num(t.bpm)} bpm, hit ${num(t.hit_s)} s, duck ${num(t.duck_db)} dB, still ${num(t.still_pct)}%.`;
+  return `${capFirst(energy)}: one beat every ${num(t.beat_s)} s, ease ${t.ease}, overshoot ${num(t.overshoot)}, hold ${num(t.hold_s)} s, motion ${num(t.motion)}, still ${num(t.still_pct)}%.`;
+}
+/** The expert prompt as the customer copies it (the library's promptText shape): what and when, one energy line per
+ *  supported energy, then what to avoid. */
+function promptText(e) {
+  const isSound = e.tab === 'sound';
+  const lines = [`${e.prompt.what} ${e.prompt.when}`.trim()];
+  for (const en of LIB_ENERGIES) if (energiesOf(e).includes(en)) lines.push(energyLine(en, e.timing?.[en], isSound));
+  lines.push(`Avoid: ${e.prompt.avoid}`);
+  return lines.join('\n');
+}
+
+const secs = (v) => (v == null ? '' : `${v} s`);
+const VISUAL_COLS = [
+  ['Beat every', (t) => secs(t.beat_s)], ['Easing', (t) => t.ease ?? ''], ['Overshoot', (t) => (Number(t.overshoot) ? String(t.overshoot) : 'None')],
+  ['Hold', (t) => secs(t.hold_s)], ['Motion', (t) => num(t.motion ?? '')], ['Still time', (t) => (t.still_pct == null ? '' : `${t.still_pct}%`)],
+];
+const SOUND_COLS = [
+  ['Tempo', (t) => (t.bpm == null ? '' : `${t.bpm} bpm`)], ['Cut every', (t) => secs(t.hit_s)],
+  ['Music under the voice', (t) => (t.duck_db == null ? '' : `${String(t.duck_db).replace('-', '−')} dB`)], ['Still time', (t) => (t.still_pct == null ? '' : `${t.still_pct}%`)],
+];
+/** Timing for the energies the entry supports, and only those. */
+function timingTable(e) {
+  const cols = e.tab === 'sound' ? SOUND_COLS : VISUAL_COLS;
+  const rows = LIB_ENERGIES.filter((en) => energiesOf(e).includes(en) && e.timing?.[en]);
+  if (!rows.length) return '';
+  return `<table class="ttable"><caption>Timing for each energy</caption><thead><tr><th scope="col">Energy</th>${cols.map(([c]) => `<th scope="col">${c}</th>`).join('')}</tr></thead><tbody>${
+    rows.map((en) => `<tr><th scope="row">${capFirst(en)}</th>${cols.map(([c, f]) => `<td data-label="${c}">${esc(f(e.timing[en]))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+/* ---------- Previews ---------- */
+
+// One drawing per made-on-request sketch template (library/styles/sketches.json). Transform and opacity only.
+const SKETCH_ART = {
+  'character-bounce': () => '<i class="sk-ground"></i><span class="sk-body"><i class="sk-eye"></i><i class="sk-eye"></i></span>',
+  'paper-cutout': () => '<i class="sk-sheet s1"></i><i class="sk-sheet s2"></i><i class="sk-sheet s3"></i>',
+  'card-tilt-3d': () => '<div class="sk-persp"><i class="sk-card"></i></div>',
+  'hand-drawn-line': () => '<svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M2 30 C 14 12, 22 34, 34 20 S 52 6, 62 22 S 82 34, 98 10"/></svg><i class="sk-cover"></i><i class="sk-pen"></i>',
+  'liquid-morph': () => '<i class="sk-m m2"></i><i class="sk-m m1"></i>',
+  'stop-motion': () => '<i class="sk-ground"></i><i class="sk-b b1"></i><i class="sk-b b2"></i><i class="sk-b b3"></i>',
+  'clay-squash': () => '<i class="sk-ground"></i><i class="sk-clay"></i><i class="sk-press"></i>',
+  'collage-layers': () => '<i class="sk-piece c1"></i><i class="sk-piece c2"></i><i class="sk-piece c3"></i><i class="sk-piece c4"></i>',
+};
+function sketchHTML(id) {
+  const art = SKETCH_ART[id] || SKETCH_ART['collage-layers'];
+  return `<div class="sk sk--${esc(SKETCH_ART[id] ? id : 'collage-layers')}" aria-hidden="true">${art()}</div>`;
+}
+function hash(s) { let x = 2166136261; for (const c of String(s)) { x ^= c.charCodeAt(0); x = Math.imul(x, 16777619); } return x >>> 0; }
+function waveBars(id, flat = false) {
+  let seed = hash(id);
+  const out = [];
+  for (let i = 0; i < 32; i++) {
+    seed = (seed * 1103515245 + 12345) >>> 0;
+    const r = (seed % 1000) / 1000;
+    const h = flat ? 0.06 : Math.max(0.08, Math.min(1, 0.3 + r * 0.55 + (i % 4 === 0 ? 0.15 : 0)));
+    out.push(`<i style="--h:${(h * 100).toFixed(0)}%;--wd:-${(r * 0.5).toFixed(2)}s"></i>`);
+  }
+  return out.join('');
+}
+const sliceOf = (id) => Number(state.lib.meta?.sound_slices?.[id]) || 0;
+const clipSrc = (e) => `previews/${encodeURIComponent(e.id)}.mp4#t=${POSTER_AT}`;
+
+/** The moving preview of an entry. mode: card (lazy clip), drawer (clip loads at once), thumb (no controls). */
+function previewHTML(e, mode = 'card') {
+  const pv = e.preview || {};
+  if (e.tab === 'sound') {
+    if (!pv.sound) return `<div class="pv pv--words" aria-hidden="true"><div class="wave wave--none">${waveBars(e.id, true)}</div><span class="snd-meta">Described in words</span></div>`;
+    const len = sliceOf(e.id);
+    const play = mode === 'thumb' ? '' : `<button class="play" type="button" data-action="play" data-id="${esc(e.id)}" aria-pressed="false" aria-label="Play ${esc(e.name)}"><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg><svg class="i-stop" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg></button>`;
+    return `<div class="pv pv--sound" data-snd="${esc(e.id)}"><div class="wave" aria-hidden="true">${waveBars(e.id)}</div><i class="play-progress"></i><span class="snd-meta">${len ? `${len < 1 ? 'A short hit' : `${Math.round(len)} s sample`}` : 'Sample'}</span>${play}</div>`;
+  }
+  if (!isReady(e) || !pv.clip) return `<div class="pv pv--sketch" aria-hidden="true">${sketchHTML(pv.sketch)}<span class="pv-tag">Sketch</span></div>`;
+  const src = mode === 'card' ? `data-src="${esc(clipSrc(e))}" preload="none"` : `src="${esc(clipSrc(e))}" preload="metadata"`;
+  return `<div class="pv pv--clip"><video class="clip" ${src} muted playsinline loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video></div>`;
+}
+
+function marks(e) {
+  const en = energiesOf(e);
+  return `<span class="energy"><span class="marks" aria-hidden="true">${LIB_ENERGIES.map((x) => `<i class="${en.includes(x) ? 'on' : ''}"></i>`).join('')}</span>${esc(capFirst(andList(en)))}</span>`;
+}
+function availHTML(e, { line = true } = {}) {
+  if (isReady(e)) return '<span class="avail">Ready now</span>';
+  const near = entryOf(e.nearest);
+  return `<span class="avail avail--mor">Made on request</span>${line && near ? `<span class="mor-line">We use the closest style we make today, ${esc(near.name)}</span>` : ''}`;
+}
+function pickBtn(e, large = false) {
+  const on = isPicked(e.id);
+  const label = large ? (on ? 'Picked: remove' : 'Pick this style') : (on ? 'Picked' : 'Pick');
+  return `<button class="sc-pick${large ? ' btn pick-lg' : ''}" type="button" data-action="pick" data-id="${esc(e.id)}" aria-pressed="${on}" aria-label="${on ? 'Remove' : 'Pick'} ${esc(e.name)}"${state.libBusy === e.id ? ' data-state="loading"' : ''}>${label}</button>`;
+}
+function noteHTML(id) {
+  const n = state.libNote && state.libNote.id === id ? state.libNote : null;
+  if (!n) return `<div class="clash" data-note="${esc(id)}" role="status" hidden></div>`;
+  const undo = n.undo ? `<div class="row"><button class="link" type="button" data-action="undo-swap" data-id="${esc(n.undo)}">Undo</button></div>` : '';
+  return `<div class="clash" data-note="${esc(id)}" data-tone="${n.tone}" role="status"><span>${n.tone === 'warm' ? '<b>Not picked.</b> ' : ''}${esc(n.text)}</span>${undo}</div>`;
+}
+
+function cardHTML(e) {
+  return `<article class="sc" data-card="${esc(e.id)}" data-picked="${isPicked(e.id)}">
+    <div class="sc-pv">${previewHTML(e, 'card')}</div>
+    <div class="sc-body">
+      <h3 class="sc-name"><button class="sc-open" type="button" data-action="open" data-id="${esc(e.id)}">${esc(e.name)}</button></h3>
+      <p class="sc-line">${esc(e.line)}</p>
+      <div class="meta">${marks(e)}</div>
+      ${availHTML(e)}
+    </div>
+    ${pickBtn(e)}
+    ${noteHTML(e.id)}
+  </article>`;
+}
+
+function drawerHTML(e) {
+  const pairs = (e.pairs_with || []).map(entryOf).filter(Boolean);
+  const live = autoplayInDrawer();
+  const tool = e.tab === 'sound'
+    ? `<span class="small muted">${e.preview?.sound ? 'Press play to hear it.' : 'Described in words: there is no sample yet.'}</span>`
+    : `<button class="btn btn--sm" type="button" data-action="pv-toggle" aria-pressed="${live}">${live ? 'Pause preview' : 'Play preview'}</button>`;
+  return `
+    <div class="drawer-top"><span class="label">${esc(tabName(e.tab))}, ${esc(lowerFirst(e.family))}</span><button class="icon-btn" type="button" data-action="drawer-close" aria-label="Close"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
+    <div class="drawer-body">
+      <div>${previewHTML(e, 'drawer')}<div class="pv-tools">${tool}<span class="stack-xs">${availHTML(e)}</span></div></div>
+      <div class="stack-xs">
+        <h2 class="h3" id="dr-name">${esc(e.name)}</h2>
+        <p class="muted">${esc(e.line)}</p>
+        <div class="meta">${marks(e)}</div>
+      </div>
+      <div class="fit-grid">
+        <div class="fit"><h3>When it fits</h3><p>${esc(e.prompt?.when)}</p></div>
+        <div class="fit"><h3>Avoid</h3><p>${esc(e.prompt?.avoid)}</p></div>
+      </div>
+      ${timingTable(e)}
+      <div class="prompt">
+        <div class="row row--between"><h3 class="h3">Expert direction</h3><button class="btn btn--sm" type="button" data-action="copy" data-id="${esc(e.id)}"><span class="btn-label">Copy</span></button></div>
+        <p class="prompt-text">${esc(promptText(e))}</p>
+      </div>
+      ${pairs.length ? `<div class="stack-xs"><h3 class="h3">Pairs well with</h3><div class="pairs">${pairs.map((p) => `<button class="pair" type="button" data-action="open" data-id="${esc(p.id)}">${previewHTML(p, 'thumb')}<span class="pname">${esc(p.name)}</span><span class="ptab">${esc(tabName(p.tab))}</span></button>`).join('')}</div></div>` : ''}
+      <details class="engine-fold"><summary>Engine details</summary><ul>${(e.engine_names || []).length ? e.engine_names.map((n) => `<li>${esc(n)}</li>`).join('') : '<li>Nothing yet: made on request</li>'}</ul></details>
+      <div class="drawer-pick">${noteHTML(e.id)}${pickBtn(e, true)}<span class="small muted">One per family, three per tab.</span></div>
+    </div>`;
+}
+
+function reelFrameHTML(e) {
+  return `<div class="frame" role="listitem">${previewHTML(e, 'thumb')}<span class="fname">${esc(e.name)}</span>${availHTML(e, { line: false })}<button class="icon-btn" type="button" data-action="unpick" data-id="${esc(e.id)}" aria-label="Remove ${esc(e.name)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>`;
+}
+function paletteItemHTML(e, i) {
+  return `<li role="option" id="po-${esc(e.id)}" data-id="${esc(e.id)}" aria-selected="${i === pal.idx}"><span class="pn">${esc(e.name)}</span><span class="pt">${esc(tabName(e.tab))}</span><span class="pdesc">${esc(e.line)}</span></li>`;
+}
+
+/* ---------- Picks: one per family (a swap), three per tab, clashes refused ---------- */
+
+/** What the brief's own rules (brief.mjs setPick) say against picking this entry, with `kin` swapped out; or null. */
+function pickProblem(entry, kin) {
+  const rules = state.lib.brief;
+  if (!rules || typeof rules.setPick !== 'function') return null;
+  try { rules.setPick({ style_picks: state.picks.filter((p) => !kin || p.id !== kin.id) }, entry, true, state.lib.byId); return null; }
+  catch (e) { return String(e.message || e); }
+}
+
+/** Saves one pick through the connector; the reply is a full brief check, so the brief flow updates with it. */
+async function savePick(entry, on) {
+  const reply = await write(() => connector.pick({ job: state.job, tab: entry.tab, id: entry.id, on }));
+  if (Array.isArray(reply.picks)) state.picks = reply.picks.filter((p) => !p.stale).map((p) => ({ tab: p.tab, id: p.id }));
+  applyCheck(reply, { keepView: true });
+  return { ok: reply.picked === on, reason: reply.reason || null };
+}
+
+function refusePick(entry, reason) {
+  state.libNote = { id: entry.id, tone: 'warm', text: reason || 'That style could not be picked.' };
+  announce(`${entry.name} was not picked. ${state.libNote.text}`);
+}
+
+/** Picks the entry, or removes it when picked. With the studio connected it saves through brief_pick; without it the
+ *  pick is held with the brief and saved to the page's store with it, as the brief desk saves briefs. */
+async function pickToggle(entry) {
+  if (!entry || state.libBusy) return;
+  const on = !isPicked(entry.id);
+  const kin = on ? state.picks.find((p) => p.tab === entry.tab && p.id !== entry.id && entryOf(p.id)?.family === entry.family) || null : null;
+  const kinEntry = kin ? entryOf(kin.id) : null;
+  state.libNote = null;
+  if (on) {
+    const reason = pickProblem(entry, kin);
+    if (reason) { refusePick(entry, reason); paintPicks(); return; }
+  }
+  state.libBusy = entry.id; paintPicks();
+  try {
+    if (state.host === 'ready' && state.mcp && state.job) {
+      if (kinEntry) {
+        const off = await savePick(kinEntry, false);
+        if (!off.ok) { refusePick(entry, off.reason); return; }
+      }
+      const r = await savePick(entry, on);
+      if (!r.ok) {
+        if (kinEntry) await savePick(kinEntry, true).catch(() => {});
+        refusePick(entry, r.reason);
+        return;
+      }
+    } else {
+      const rest = state.picks.filter((p) => p.id !== entry.id && (!kin || p.id !== kin.id));
+      state.picks = on ? [...rest, { tab: entry.tab, id: entry.id }] : rest;
+      if (state.host === 'none' && state.db && state.savedId) await savePicksWithBrief();
+    }
+    if (kinEntry) {
+      state.libNote = { id: entry.id, tone: 'info', text: `Swapped ${kinEntry.name} for ${entry.name}. One pick per family, and both are ${lowerFirst(entry.family)} styles.`, undo: kinEntry.id };
+      announce(`Swapped ${kinEntry.name} for ${entry.name}.`);
+    } else announce(on ? `${entry.name} added to your reel.` : `${entry.name} removed from your reel.`);
+  } catch (e) {
+    const x = explain(e, { isWrite: true });
+    if (x.fallback) enterNoHost();
+    else refusePick(entry, x.text);
+  } finally {
+    state.libBusy = null;
+    paintPicks();
+  }
+}
+
+/** Without the studio, a brief already saved on this page carries its picks: the same document is written again. */
+async function savePicksWithBrief() {
+  const doc = state.saved.find((d) => d.id === state.savedId);
+  await state.db.collection('briefs').doc(state.savedId).set({ words: doc?.words || '', at: doc?.at || new Date().toISOString(), status: doc?.status || 'waiting', style_picks: state.picks });
+}
+
+/** After the brief starts in the studio, picks made before it are saved to it, one by one. */
+async function sendHeldPicks(held) {
+  for (const p of held) {
+    const e = entryOf(p.id);
+    if (!e || state.picks.some((x) => x.id === p.id)) continue;
+    try { const r = await savePick(e, true); if (!r.ok) refusePick(e, r.reason); } catch (err) { refusePick(e, explain(err, { isWrite: true }).text); break; }
+  }
+  paintPicks();
+}
+
+/* ---------- Painting (only with a real document) ---------- */
+
+function paintLibrary(swap = false) { if (!canPaint) return; renderTabs(); renderFilters(); renderGrid(swap); renderReel(); }
+
+function renderTabs() {
+  const counts = state.lib.meta?.counts || {};
+  $('#tabs').innerHTML = LIB_TABS.map((t) => {
+    const sel = t.id === state.libView.tab;
+    const n = state.picks.filter((p) => p.tab === t.id).length;
+    const total = counts[t.id]?.total ?? (state.lib.tabs[t.id] || []).length;
+    return `<button class="tab" role="tab" type="button" id="tab-${t.id}" aria-controls="libpanel" aria-selected="${sel}" tabindex="${sel ? 0 : -1}" data-action="tab" data-tab="${t.id}">${t.name}${state.lib.status === 'ready' ? `<span class="n">${total}</span>` : ''}${n ? `<span class="pk">${n} picked</span>` : ''}</button>`;
+  }).join('');
+  $('#libpanel').setAttribute('aria-labelledby', `tab-${state.libView.tab}`);
+}
+
+function renderFilters() {
+  const v = state.libView;
+  if (state.lib.status !== 'ready') { $('#filters').innerHTML = ''; return; }
+  const fam = state.lib.meta?.counts?.[v.tab]?.families || {};
+  const kinds = (state.lib.brief?.KINDS || Object.keys(KIND_LABELS)).filter((k) => KIND_LABELS[k]);
+  const sizes = (state.lib.brief?.SIZES || Object.keys(SIZE_LABELS)).filter((k) => SIZE_LABELS[k]);
+  const any = v.energy.length || v.ready || v.kind || v.size || v.family || v.query;
+  const opt = (val, label, cur) => `<option value="${esc(val)}"${val === cur ? ' selected' : ''}>${esc(label)}</option>`;
+  $('#filters').innerHTML = `
+    <div class="frow" role="group" aria-label="Energy"><span class="label">Energy</span>${LIB_ENERGIES.map((en) => `<button class="fchip" type="button" data-action="f-energy" data-v="${en}" aria-pressed="${v.energy.includes(en)}">${capFirst(en)}</button>`).join('')}</div>
+    <div class="frow" role="group" aria-label="Ready now or made on request"><span class="label">Made</span><button class="fchip" type="button" data-action="f-ready" data-v="ready" aria-pressed="${v.ready === 'ready'}">Ready now</button><button class="fchip" type="button" data-action="f-ready" data-v="mor" data-tone="warm" aria-pressed="${v.ready === 'mor'}">Made on request</button></div>
+    <div class="fselects">
+      <label class="fsel"><span class="label">Kind of film</span><select class="select" data-filter="kind">${opt('', 'Any kind', v.kind)}${kinds.map((k) => opt(k, KIND_LABELS[k], v.kind)).join('')}</select></label>
+      <label class="fsel"><span class="label">Size</span><select class="select" data-filter="size">${opt('', 'Any size', v.size)}${sizes.map((k) => opt(k, SIZE_LABELS[k], v.size)).join('')}</select></label>
+      <label class="fsel fsel--wide"><span class="label">Family</span><select class="select" data-filter="family">${opt('', 'Every family', v.family)}${Object.entries(fam).map(([f, n]) => opt(f, `${f} (${n})`, v.family)).join('')}</select></label>
+    </div>
+    <div class="fbar">
+      <div class="search-wrap"><label class="sr-only" for="lib-q">Search ${esc(tabWord(v.tab))} styles</label><input class="search" id="lib-q" type="search" placeholder="Search ${esc(tabWord(v.tab))} styles" value="${esc(v.query)}" autocomplete="off"></div>
+      <span class="count" id="count" aria-live="polite"></span>
+      ${any ? '<button class="link" type="button" data-action="f-clear">Clear filters</button>' : ''}
+    </div>`;
+}
+
+function filtered() {
+  const v = state.libView;
+  const q = v.query.trim().toLowerCase();
+  return (state.lib.tabs[v.tab] || []).filter((e) => {
+    const f = e.filters || {};
+    return (!v.energy.length || (f.energy || []).some((en) => v.energy.includes(en)))
+      && (!v.ready || (v.ready === 'ready' ? f.ready === true : f.ready !== true))
+      && (!v.kind || (f.kinds || []).includes(v.kind))
+      && (!v.size || (f.sizes || []).includes(v.size))
+      && (!v.family || e.family === v.family)
+      && (!q || `${e.name} ${e.line} ${e.family}`.toLowerCase().includes(q));
+  });
+}
+
+function renderGrid(swap = true) {
+  const panel = $('#libpanel');
+  const paint = () => {
+    if (state.lib.status === 'loading' || state.lib.status === 'idle') {
+      panel.innerHTML = `<p class="sr-only">Loading the style library</p><div class="grid" aria-hidden="true">${'<div class="skel-card"></div>'.repeat(6)}</div>`;
+      return;
+    }
+    if (state.lib.status === 'error') {
+      panel.innerHTML = '<div class="lib-note" role="alert"><strong>The style library did not load</strong><span>The styles could not be read from this page. Your brief is kept. Try again, or reload the page.</span><div class="row"><button class="btn btn--sm" type="button" data-action="lib-retry">Try again</button></div></div>';
+      return;
+    }
+    const list = filtered();
+    const v = state.libView;
+    const total = state.lib.meta?.counts?.[v.tab]?.total ?? (state.lib.tabs[v.tab] || []).length;
+    const any = v.energy.length || v.ready || v.kind || v.size || v.family || v.query;
+    const count = $('#count');
+    if (count) count.innerHTML = any ? `<b>${list.length}</b> of ${total} styles` : `<b>${total}</b> styles`;
+    v.list = list;
+    v.shown = Math.min(list.length, CHUNK);
+    if (!list.length) {
+      panel.innerHTML = `<div class="empty"><strong>No styles match these filters</strong><span>Try another energy or kind of film, or clear the filters to see every ${esc(tabWord(v.tab))} style.</span><button class="btn btn--sm" type="button" data-action="f-clear">Clear filters</button></div>`;
+      return;
+    }
+    panel.innerHTML = `<div class="grid" id="grid">${list.slice(0, v.shown).map(cardHTML).join('')}</div><div class="grid-more" id="grid-more"></div>`;
+    watchClips(panel);
+    watchMore();
+  };
+  const g = $('#grid');
+  if (swap && g && !reduceMotion()) {
+    g.classList.add('is-swapping');
+    setTimeout(() => { paint(); const ng = $('#grid'); if (ng) { ng.classList.add('is-swapping'); requestAnimationFrame(() => requestAnimationFrame(() => ng.classList.remove('is-swapping'))); } }, 90);
+  } else paint();
+}
+
+/** More cards as the end of the grid comes into view: a tab's cards are made on demand, not all at once. */
+let moreObserver = null;
+function watchMore() {
+  const s = $('#grid-more');
+  if (moreObserver) moreObserver.disconnect();
+  if (!s) return;
+  if (typeof IntersectionObserver !== 'function') { appendCards(Infinity); return; }
+  moreObserver = new IntersectionObserver((items) => { if (items.some((i) => i.isIntersecting)) appendCards(CHUNK); }, { rootMargin: '600px 0px' });
+  moreObserver.observe(s);
+}
+function appendCards(n) {
+  const v = state.libView;
+  const g = $('#grid');
+  if (!g || v.shown >= v.list.length) { if (moreObserver) moreObserver.disconnect(); return; }
+  const next = v.list.slice(v.shown, v.shown + n);
+  v.shown += next.length;
+  g.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
+  watchClips(g);
+  if (v.shown >= v.list.length && moreObserver) moreObserver.disconnect();
+}
+
+/* Clips: loaded when near the view, played only on hover or focus, paused when out of view. */
+let clipObserver = null;
+let clipRoot;
+function clipObserverFor() {
+  const pane = $('#library');
+  const root = pane && getComputedStyle(pane).overflowY === 'auto' ? pane : null;
+  if (clipObserver && clipRoot === root) return clipObserver;
+  if (clipObserver) clipObserver.disconnect();
+  clipRoot = root;
+  clipObserver = new IntersectionObserver((items) => {
+    for (const it of items) {
+      const v = it.target;
+      if (it.isIntersecting) loadClip(v);
+      else if (!v.paused) stopClip(v);
+    }
+  }, { root, rootMargin: '300px 0px' });
+  $$('video.clip[data-src]').forEach((v) => clipObserver.observe(v));
+  return clipObserver;
+}
+function watchClips(scope) {
+  const vids = $$('video.clip[data-src]:not([data-watched])', scope);
+  if (typeof IntersectionObserver !== 'function') { vids.forEach(loadClip); return; }
+  const o = clipObserverFor();
+  for (const v of vids) { v.dataset.watched = '1'; o.observe(v); }
+}
+function loadClip(v) {
+  if (!v.getAttribute('src') && v.dataset.src) { v.preload = 'metadata'; v.src = v.dataset.src; }
+}
+function playClip(v) {
+  if (!v || reduceMotion()) return;
+  if (typeof loadClip === 'function' && v.dataset) loadClip(v);
+  try { const p = v.play(); if (p && typeof p.catch === 'function') p.catch(() => {}); } catch { /* not playable here */ }
+}
+function stopClip(v) {
+  if (!v) return;
+  try { v.pause(); if (v.readyState > 0) v.currentTime = POSTER_AT; } catch { /* nothing to stop */ }
+}
+let liveCard = null;
+function cardEnter(card) {
+  if (liveCard === card) return;
+  cardLeave(liveCard);
+  liveCard = card;
+  if (card) playClip($('video.clip', card));
+}
+function cardLeave(card) {
+  if (!card) return;
+  stopClip($('video.clip', card));
+  if (liveCard === card) liveCard = null;
+}
+
+/* Sound: the shared sprite, decoded once; a slice under half a second plays two or three times so it can be heard. */
+const sound = { ctx: null, buf: null, map: null, loading: null, nodes: [], id: null, timer: null };
+async function spriteReady() {
+  if (sound.buf) return;
+  if (!sound.loading) {
+    sound.loading = (async () => {
+      const [map, data] = await Promise.all([fetch('previews/sound-sprite.json').then((r) => r.json()), fetch('previews/sound-sprite.mp3').then((r) => r.arrayBuffer())]);
+      sound.map = map;
+      sound.buf = await sound.ctx.decodeAudioData(data);
+    })();
+  }
+  try { await sound.loading; } catch (e) { sound.loading = null; throw e; }
+}
+function stopSound() {
+  for (const n of sound.nodes) try { n.stop(); } catch { /* already stopped */ }
+  sound.nodes = [];
+  clearTimeout(sound.timer);
+  if (sound.id && canPaint) {
+    $$(`.pv--sound[data-snd="${CSS.escape(sound.id)}"]`).forEach((p) => p.classList.remove('is-playing'));
+    $$(`.play[data-id="${CSS.escape(sound.id)}"]`).forEach((b) => { b.setAttribute('aria-pressed', 'false'); b.removeAttribute('data-state'); const e = entryOf(b.dataset.id); if (e) b.setAttribute('aria-label', `Play ${e.name}`); });
+  }
+  sound.id = null;
+}
+async function toggleSound(id) {
+  const was = sound.id === id;
+  stopSound();
+  if (was) return;
+  const e = entryOf(id);
+  const Ctx = window.AudioContext || window.webkitAudioContext;
+  if (!e || !Ctx) { announce('Sound cannot play in this browser.'); return; }
+  sound.ctx = sound.ctx || new Ctx(); // made inside the click, so the browser lets it play
+  if (sound.ctx.state === 'suspended') sound.ctx.resume().catch(() => {});
+  sound.id = id;
+  const buttons = $$(`.play[data-id="${CSS.escape(id)}"]`);
+  buttons.forEach((b) => { b.setAttribute('aria-pressed', 'true'); b.setAttribute('aria-label', `Stop ${e.name}`); });
+  try {
+    if (!sound.buf) { buttons.forEach((b) => b.setAttribute('data-state', 'loading')); await spriteReady(); }
+  } catch { if (sound.id === id) stopSound(); announce('The sound samples could not be loaded.'); return; }
+  if (sound.id !== id) return;
+  buttons.forEach((b) => b.removeAttribute('data-state'));
+  const slice = sound.map?.[id];
+  if (!Array.isArray(slice)) { stopSound(); announce(`There is no sample for ${e.name}.`); return; }
+  const [from, len] = slice;
+  const times = len < 0.25 ? 3 : len < 0.5 ? 2 : 1;
+  const gap = 0.22;
+  const t0 = sound.ctx.currentTime + 0.03;
+  for (let i = 0; i < times; i++) {
+    const src = sound.ctx.createBufferSource();
+    src.buffer = sound.buf;
+    src.connect(sound.ctx.destination);
+    src.start(t0 + i * (len + gap), from, len);
+    sound.nodes.push(src);
+  }
+  const total = times * len + (times - 1) * gap;
+  $$(`.pv--sound[data-snd="${CSS.escape(id)}"]`).forEach((p) => { p.style.setProperty('--len', `${total.toFixed(2)}s`); p.classList.remove('is-playing'); void p.offsetWidth; p.classList.add('is-playing'); });
+  sound.timer = setTimeout(() => { if (sound.id === id) stopSound(); }, total * 1000 + 150);
+}
+
+/* Picks on the page: cards, drawer, tabs and the reel follow state.picks and state.libNote. */
+function paintPicks() {
+  if (!canPaint) return;
+  $$('.sc-pick[data-id]').forEach((b) => {
+    const e = entryOf(b.dataset.id);
+    if (!e) return;
+    const on = isPicked(e.id);
+    const large = b.classList.contains('pick-lg');
+    b.setAttribute('aria-pressed', String(on));
+    b.setAttribute('aria-label', `${on ? 'Remove' : 'Pick'} ${e.name}`);
+    b.textContent = large ? (on ? 'Picked: remove' : 'Pick this style') : (on ? 'Picked' : 'Pick');
+    if (state.libBusy === e.id) b.setAttribute('data-state', 'loading');
+    else if (state.libNote?.tone === 'warm' && state.libNote.id === e.id) b.setAttribute('data-state', 'error');
+    else b.removeAttribute('data-state');
+  });
+  $$('[data-card]').forEach((c) => { c.dataset.picked = String(isPicked(c.dataset.card)); });
+  $$('[data-note]').forEach((n) => { n.outerHTML = noteHTML(n.dataset.note); });
+  if (state.lib.status === 'ready') renderTabs();
+  renderReel();
+}
+
+function renderReel() {
+  if (!canPaint) return;
+  const picks = state.picks.map((p) => entryOf(p.id)).filter(Boolean);
+  const n = picks.length;
+  const count = $('#reel-count');
+  count.textContent = String(n);
+  count.classList.toggle('has', n > 0);
+  const hint = $('#reel-hint');
+  const warm = state.libNote && state.libNote.tone === 'warm' ? state.libNote : null;
+  if (warm) { hint.textContent = `${entryOf(warm.id)?.name || 'That style'} was not picked: ${warm.text}`; hint.dataset.tone = 'warm'; }
+  else {
+    delete hint.dataset.tone;
+    const tabs = new Set(picks.map((e) => e.tab)).size;
+    const held = state.host === 'ready' && !state.job ? ', saved with your brief when you start it' : state.host === 'none' && !state.savedId ? ', saved with your brief when you save it' : '';
+    hint.textContent = n ? `${n} ${n === 1 ? 'pick' : 'picks'} across ${tabs} ${tabs === 1 ? 'tab' : 'tabs'}${held}` : 'No picks yet';
+  }
+  $('#reel-peek').innerHTML = picks.slice(0, 6).map((e) => previewHTML(e, 'thumb')).join('');
+  const body = $('#reel-body');
+  const note = warm ? `<div class="clash" role="status"><span><b>${esc(entryOf(warm.id)?.name || 'That style')} was not picked.</b> ${esc(warm.text)}</span></div>` : '';
+  if (!n) { body.innerHTML = `${note}<div class="empty"><strong>No picks yet</strong><span>Picking is optional. With no picks the studio chooses the styles; with picks, at least one of the three concepts uses each one as picked.</span></div>`; return; }
+  body.innerHTML = note + LIB_TABS.filter((t) => picks.some((e) => e.tab === t.id)).map((t) => `
+    <div class="reel-group"><p class="label">${t.name}</p><div class="film" role="list">${picks.filter((e) => e.tab === t.id).map(reelFrameHTML).join('')}</div></div>`).join('');
+}
+function setReel(open) {
+  if (!canPaint) return;
+  state.reelOpen = open;
+  $('#reel').dataset.open = String(open);
+  $('#reel-toggle').setAttribute('aria-expanded', String(open));
+  $('#reel-scrim').classList.toggle('is-on', open);
+  $('#reel-body').inert = !open;
+}
+
+/* Drawer */
+let drawerId = null;
+function openDrawer(id) {
+  const e = entryOf(id);
+  if (!e || !canPaint) return;
+  drawerId = id; stopSound(); cardLeave(liveCard);
+  const dlg = $('#drawer');
+  const v0 = $('video', dlg); if (v0) v0.pause();
+  dlg.innerHTML = drawerHTML(e);
+  if (!dlg.open) dlg.showModal(); else $('.drawer-body', dlg).scrollTop = 0;
+  const v = $('video.clip', dlg);
+  const pv = $('.pv', dlg);
+  if (autoplayInDrawer()) { if (v) playClip(v); else if (pv) pv.classList.add('is-live'); }
+  const first = $('[data-action="pv-toggle"]', dlg) || $('[data-action="drawer-close"]', dlg);
+  if (first) first.focus({ preventScroll: true });
+}
+function closeDrawer() {
+  const dlg = $('#drawer');
+  if (!dlg.open) return;
+  stopSound();
+  const v = $('video', dlg); if (v) v.pause();
+  const back = drawerId && $(`.sc-open[data-id="${CSS.escape(drawerId)}"]`);
+  const done = () => { dlg.classList.remove('is-closing'); dlg.close(); dlg.innerHTML = ''; if (back) back.focus({ preventScroll: true }); };
+  if (reduceMotion()) { done(); return; }
+  dlg.classList.add('is-closing');
+  setTimeout(done, 290);
+}
+
+/* Search palette (⌘K or Ctrl K) across every tab */
+const pal = { idx: 0, list: [] };
+function openPalette() {
+  if (!canPaint) return;
+  const d = $('#palette');
+  if (d.open) return;
+  d.showModal();
+  $('#pal-q').value = '';
+  pal.idx = 0;
+  renderPalette();
+  $('#pal-q').focus();
+}
+function renderPalette() {
+  const q = $('#pal-q').value.trim().toLowerCase();
+  const words = q.split(/\s+/).filter(Boolean);
+  const scored = [];
+  for (const e of state.lib.all) {
+    const hay = `${e.name} ${e.line} ${e.family} ${tabName(e.tab)} ${energiesOf(e).join(' ')} ${(e.filters?.kinds || []).map((k) => KIND_LABELS[k] || k).join(' ')}`.toLowerCase();
+    if (words.length && !words.every((w) => hay.includes(w))) continue;
+    const name = e.name.toLowerCase();
+    scored.push({ e, s: !q ? 0 : name.startsWith(q) ? 3 : name.includes(q) ? 2 : 1 });
+  }
+  pal.list = scored.sort((a, b) => b.s - a.s).slice(0, 30).map((x) => x.e);
+  pal.idx = Math.min(pal.idx, Math.max(0, pal.list.length - 1));
+  const out = $('#pal-list');
+  if (state.lib.status !== 'ready') out.innerHTML = '<li role="option" aria-disabled="true" aria-selected="false"><span class="pn">The library is still loading</span></li>';
+  else out.innerHTML = pal.list.length ? pal.list.map(paletteItemHTML).join('')
+    : '<li role="option" aria-disabled="true" aria-selected="false"><span class="pn">No styles match</span><span class="pdesc">Try a plainer word, such as zoom, type or click.</span></li>';
+  $('#pal-q').setAttribute('aria-activedescendant', pal.list[pal.idx] ? `po-${pal.list[pal.idx].id}` : '');
+}
+function palPick(id) {
+  $('#palette').close();
+  const e = entryOf(id);
+  if (!e) return;
+  if (state.libView.tab !== e.tab) selectTab(e.tab);
+  openDrawer(id);
+}
+
+function selectTab(tab, focus = false) {
+  if (tab === state.libView.tab) return;
+  cardLeave(liveCard);
+  Object.assign(state.libView, { tab, family: '', query: '' });
+  renderTabs(); renderFilters(); renderGrid();
+  if (focus) $(`#tab-${tab}`).focus();
+}
+function refilter(btn) {
+  const key = btn && btn.dataset.action ? `[data-action="${btn.dataset.action}"][data-v="${btn.dataset.v}"]` : null;
+  renderFilters(); renderGrid();
+  if (key) { const b = $(key); if (b) b.focus(); }
+}
+
+async function copyPrompt(btn, text) {
+  const label = $('.btn-label', btn);
+  const prev = label.textContent;
+  try { await navigator.clipboard.writeText(text); btn.dataset.state = 'success'; label.textContent = 'Copied'; }
+  catch {
+    const node = btn.closest('.prompt').querySelector('.prompt-text');
+    const r = document.createRange(); r.selectNodeContents(node);
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    btn.dataset.state = 'error'; label.textContent = 'Selected: copy with your keyboard';
+  }
+  setTimeout(() => { delete btn.dataset.state; label.textContent = prev; }, 2500);
+}
+function announce(msg) {
+  if (!canPaint) return;
+  const a = $('#announce');
+  a.textContent = '';
+  setTimeout(() => { a.textContent = msg; }, 30);
+}
+
+/* Loading: the five tabs, the counts and the two shared modules, by relative path. */
+async function startLibrary() {
+  state.lib.status = 'loading';
+  paintLibrary();
+  try {
+    const get = (p) => fetch(p).then((r) => { if (!r.ok) throw new Error(`${p}: ${r.status}`); return r.json(); });
+    const [meta, ...lists] = await Promise.all([get('styles/meta.json'), ...LIB_TABS.map((t) => get(`styles/${t.id}.json`))]);
+    const [brief, suggest] = await Promise.all([import('./lib/brief.mjs').catch(() => null), import('./lib/suggest.mjs').catch(() => null)]);
+    libLoaded({ tabs: Object.fromEntries(LIB_TABS.map((t, i) => [t.id, Array.isArray(lists[i]) ? lists[i] : []])), meta, brief, suggest });
+  } catch {
+    state.lib.status = 'error';
+  }
+  paintLibrary();
+}
+
+function wireLibrary() {
+  const isMac = /mac|iphone|ipad/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || '');
+  $('#kbd').textContent = isMac ? '⌘K' : 'Ctrl K';
+  document.addEventListener('click', (ev) => {
+    const t = ev && ev.target && ev.target.closest ? ev.target.closest('[data-action]') : null;
+    if (!t) return;
+    const id = t.dataset.id;
+    const v = state.libView;
+    switch (t.dataset.action) {
+      case 'tab': selectTab(t.dataset.tab); break;
+      case 'f-energy': v.energy = v.energy.includes(t.dataset.v) ? v.energy.filter((x) => x !== t.dataset.v) : [...v.energy, t.dataset.v]; refilter(t); break;
+      case 'f-ready': v.ready = v.ready === t.dataset.v ? '' : t.dataset.v; refilter(t); break;
+      case 'f-clear': Object.assign(v, { energy: [], ready: '', kind: '', size: '', family: '', query: '' }); renderFilters(); renderGrid(); { const q = $('#lib-q'); if (q) q.focus(); } break;
+      case 'lib-retry': startLibrary(); break;
+      case 'open': openDrawer(id); break;
+      case 'pick': pickToggle(entryOf(id)); break;
+      case 'unpick': pickToggle(entryOf(id)).then(() => { const nb = $('#reel-body [data-action="unpick"]') || $('#reel-toggle'); nb.focus(); }); break;
+      case 'undo-swap': pickToggle(entryOf(id)); break;
+      case 'play': toggleSound(id); break;
+      case 'drawer-close': closeDrawer(); break;
+      case 'pv-toggle': {
+        const dlg = $('#drawer'); const vid = $('video.clip', dlg); const pv = $('.pv', dlg);
+        const on = t.getAttribute('aria-pressed') !== 'true';
+        if (vid) { if (on) { vid.play().catch(() => {}); } else vid.pause(); } else if (pv) pv.classList.toggle('is-live', on);
+        t.setAttribute('aria-pressed', String(on)); t.textContent = on ? 'Pause preview' : 'Play preview';
+        break;
+      }
+      case 'copy': copyPrompt(t, promptText(entryOf(id))); break;
+      case 'palette': openPalette(); break;
+      case 'reel': setReel(!state.reelOpen); break;
+      case 'reel-close': setReel(false); break;
+      default: break;
+    }
+  });
+  document.addEventListener('input', (ev) => {
+    if (ev.target.id === 'lib-q') { state.libView.query = ev.target.value; clearTimeout(wireLibrary.q); wireLibrary.q = setTimeout(() => renderGrid(false), 200); }
+    if (ev.target.id === 'pal-q') { pal.idx = 0; renderPalette(); }
+    if (ev.target.id === 'brief-words') state.understood = understoodOf(ev.target.value);
+  });
+  document.addEventListener('change', (ev) => {
+    const f = ev.target.dataset && ev.target.dataset.filter;
+    if (f) { state.libView[f] = ev.target.value; renderGrid(); const c = $('#count'); if (c) c.focus?.(); }
+  });
+  document.addEventListener('keydown', (ev) => {
+    if ((ev.metaKey || ev.ctrlKey) && String(ev.key).toLowerCase() === 'k') { ev.preventDefault(); openPalette(); return; }
+    if (ev.target.classList && ev.target.classList.contains('tab') && ['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(ev.key)) {
+      ev.preventDefault();
+      const i = LIB_TABS.findIndex((t) => t.id === state.libView.tab);
+      const n = ev.key === 'Home' ? 0 : ev.key === 'End' ? LIB_TABS.length - 1 : (i + (ev.key === 'ArrowRight' ? 1 : -1) + LIB_TABS.length) % LIB_TABS.length;
+      selectTab(LIB_TABS[n].id, true);
+    }
+    if (ev.target.id === 'pal-q') {
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+        ev.preventDefault();
+        pal.idx = Math.max(0, Math.min(pal.list.length - 1, pal.idx + (ev.key === 'ArrowDown' ? 1 : -1)));
+        renderPalette();
+        const sel = $('#pal-list [aria-selected="true"]'); if (sel) sel.scrollIntoView({ block: 'nearest' });
+      }
+      if (ev.key === 'Enter' && pal.list[pal.idx]) { ev.preventDefault(); palPick(pal.list[pal.idx].id); }
+    }
+    if (ev.key === 'Escape' && state.reelOpen && !$('#drawer').open && !$('#palette').open) setReel(false);
+  });
+  // Previews play on hover or keyboard focus, one card at a time.
+  document.addEventListener('mouseover', (ev) => { const c = ev.target.closest ? ev.target.closest('#libpanel .sc') : null; if (c !== liveCard) { if (c) cardEnter(c); else cardLeave(liveCard); } });
+  document.addEventListener('focusin', (ev) => { const c = ev.target.closest ? ev.target.closest('#libpanel .sc') : null; if (c) cardEnter(c); });
+  document.addEventListener('focusout', (ev) => { const c = ev.target.closest ? ev.target.closest('#libpanel .sc') : null; if (c && !c.contains(ev.relatedTarget)) cardLeave(c); });
+  $('#pal-list').addEventListener('click', (ev) => { const li = ev.target.closest('li[data-id]'); if (li) palPick(li.dataset.id); });
+  $('#palette').addEventListener('click', (ev) => { if (ev.target === ev.currentTarget) ev.currentTarget.close(); });
+  $('#drawer').addEventListener('cancel', (ev) => { ev.preventDefault(); closeDrawer(); });
+  $('#drawer').addEventListener('click', (ev) => { if (ev.target === ev.currentTarget) closeDrawer(); });
+  // The library pane scrolls by itself on wide screens and with the page on narrow ones: clips are watched against it.
+  if (window.matchMedia) window.matchMedia('(min-width: 64rem)').addEventListener('change', () => { if (clipObserver) { clipObserver.disconnect(); clipObserver = null; } $$('video.clip[data-watched]').forEach((v) => delete v.dataset.watched); watchClips($('#libpanel')); });
+  setReel(false);
+}
+
+if (canPaint) { wireLibrary(); startLibrary(); }
 
 /* ---------- Start: render first, then light up what this view can use ---------- */
 

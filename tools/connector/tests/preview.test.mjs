@@ -91,3 +91,32 @@ test('preview: --scratch runs against a throwaway studio, never this one', async
   assert.match(JSON.parse(r.text).payload.job, /vertical-demo-acme/);
   assert.notEqual(path.resolve(p.root), path.resolve(fileURLToPath(new URL('../../..', import.meta.url))));
 });
+
+test('preview: serves the page and its publish set from the dist folder, and nothing outside it', async (t) => {
+  const blocked = await bindBlocked();
+  if (blocked) { t.skip(`binding a local port is blocked here (${blocked})`); return; }
+  const top = fs.mkdtempSync(path.join(os.tmpdir(), 'preview-dist-'));
+  const dist = path.join(top, 'dist');
+  fs.mkdirSync(path.join(dist, 'styles'), { recursive: true });
+  fs.mkdirSync(path.join(dist, 'previews'), { recursive: true });
+  fs.writeFileSync(path.join(dist, 'index.html'), '<title>Dist page</title>\n<script>const x = 1;</script>\n');
+  fs.writeFileSync(path.join(dist, 'styles', 'meta.json'), '{"counts":{}}');
+  fs.writeFileSync(path.join(dist, 'previews', 'a.mp4'), Buffer.from('0123456789'));
+  fs.writeFileSync(path.join(top, 'outside.txt'), 'secret');
+  const p = await start(['--root', scratchStudio(), '--dist', dist, '--port', '0']);
+  assert.ok(p.port, p.err);
+  t.after(() => p.child.kill());
+  const page = await call(p.port);
+  assert.equal(page.status, 200);
+  assert.match(page.text, /Dist page/);
+  assert.match(page.text, /window\.claude = /); // the stand-in is still put in front of the page's script
+  const meta = await call(p.port, { url: '/styles/meta.json' });
+  assert.equal(meta.status, 200);
+  assert.deepEqual(JSON.parse(meta.text), { counts: {} });
+  const part = await call(p.port, { url: '/previews/a.mp4', headers: { range: 'bytes=2-4' } });
+  assert.equal(part.status, 206);
+  assert.equal(part.text, '234');
+  assert.equal((await call(p.port, { url: '/styles/../../outside.txt' })).status, 404);
+  assert.equal((await call(p.port, { url: '/%2e%2e/outside.txt' })).status, 404);
+  assert.equal((await call(p.port, { url: '/styles/missing.json' })).status, 404);
+});

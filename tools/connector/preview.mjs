@@ -1,6 +1,9 @@
 // Serves the brief page for a look in a local browser, with a stand-in for the Claude app's window.claude.use():
 //   node tools/connector/preview.mjs --root <studio> [--port 4417]   a studio folder (or set DAMEX_STUDIO_ROOT)
 //   node tools/connector/preview.mjs --scratch [--port 4417]         a throwaway studio in the temp folder
+//   --dist <folder>   the publish set to serve (default studio/brief-desk/dist, built by node tools/styles/build-page.mjs)
+// The page comes from the dist folder when it has one (else studio/brief-desk/index.html), and the page's supporting
+// files (styles/, previews/, lib/) are served from the dist folder by relative path, as the published page loads them.
 // It never picks a studio by itself: the handlers write briefs, so the studio is named or it is a scratch one.
 // use('mcp') posts to /call, which runs the real connector handlers for that studio; use('sample') is null; use('db')
 // keeps documents in memory. Open with ?nohost=1 to see the page as it is outside the app (every call:
@@ -21,6 +24,7 @@ function argOf(name, fallback) {
   return i > -1 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
 }
 const STUDIO = path.resolve(here, '..', '..');
+const DIST = path.resolve(argOf('--dist', path.join(STUDIO, 'studio', 'brief-desk', 'dist')));
 
 /** A throwaway studio: the brief and job templates, the frameworks, and one brand (acme) with an approved discovery. */
 function scratchStudio() {
@@ -32,6 +36,12 @@ function scratchStudio() {
   fs.mkdirSync(path.join(dir, 'brands', 'acme', 'product'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'brands', 'acme', 'brand.json'), JSON.stringify({ name: 'acme' }));
   fs.writeFileSync(path.join(dir, 'brands', 'acme', 'product', 'discovery.md'), '# Product discovery: acme\n\nApproved by: Owner\n');
+  // The style library, so picks made on the page are checked against the real entries.
+  const styles = path.join(STUDIO, 'library', 'styles');
+  if (fs.existsSync(styles)) {
+    fs.mkdirSync(path.join(dir, 'library', 'styles'), { recursive: true });
+    for (const f of fs.readdirSync(styles)) if (f.endsWith('.json')) fs.copyFileSync(path.join(styles, f), path.join(dir, 'library', 'styles', f));
+  }
   return dir;
 }
 
@@ -106,10 +116,41 @@ const HEAD = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
   + 'body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>\n';
 
 function pageWithStub() {
-  const html = fs.readFileSync(PAGE, 'utf8');
+  const built = path.join(DIST, 'index.html');
+  const html = fs.readFileSync(fs.existsSync(built) ? built : PAGE, 'utf8');
   const at = html.indexOf('<script');
   const page = at < 0 ? html + STUB : html.slice(0, at) + STUB + html.slice(at);
   return `${HEAD}${page}\n</body></html>\n`;
+}
+
+const TYPES = { '.json': 'application/json', '.mjs': 'text/javascript; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.md': 'text/markdown; charset=utf-8',
+  '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.woff2': 'font/woff2' };
+
+/** One file of the publish set, by its published path; null when it is not a file inside the dist folder. */
+function distFile(pathname) {
+  let rel;
+  try { rel = decodeURIComponent(pathname).replace(/^\/+/, ''); } catch { return null; }
+  if (!rel || rel.split(/[\\/]/).includes('..')) return null;
+  const file = path.resolve(DIST, rel);
+  if (!file.startsWith(DIST + path.sep) || !Object.hasOwn(TYPES, path.extname(file).toLowerCase())) return null;
+  try { return fs.statSync(file).isFile() ? file : null; } catch { return null; }
+}
+
+/** Sends a file, with one byte range when asked (video and audio seek with ranges). */
+function sendFile(req, res, file) {
+  const size = fs.statSync(file).size;
+  const type = TYPES[path.extname(file).toLowerCase()];
+  const m = /^bytes=(\d*)-(\d*)$/.exec(String(req.headers.range || ''));
+  if (m && (m[1] || m[2])) {
+    const start = m[1] ? Number(m[1]) : Math.max(0, size - Number(m[2]));
+    const end = m[1] && m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+    if (start > end || start >= size) { res.writeHead(416, { 'content-range': `bytes */${size}` }); res.end(); return; }
+    res.writeHead(206, { 'content-type': type, 'content-length': end - start + 1, 'content-range': `bytes ${start}-${end}/${size}`, 'accept-ranges': 'bytes', 'cache-control': 'no-store' });
+    fs.createReadStream(file, { start, end }).pipe(res);
+    return;
+  }
+  res.writeHead(200, { 'content-type': type, 'content-length': size, 'accept-ranges': 'bytes', 'cache-control': 'no-store' });
+  fs.createReadStream(file).pipe(res);
 }
 
 function readBody(req, limit = 1 << 20) {
@@ -152,6 +193,10 @@ const server = http.createServer(async (req, res) => {
     process.stdout.write(`call ${reply.error ? 'error' : 'ok'}\n`);
     send(res, 200, 'application/json', JSON.stringify(reply));
     return;
+  }
+  if (req.method === 'GET') {
+    const file = distFile(url.pathname);
+    if (file) { sendFile(req, res, file); return; }
   }
   send(res, 404, 'text/plain; charset=utf-8', 'Not found');
 });

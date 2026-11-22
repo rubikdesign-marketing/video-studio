@@ -2956,7 +2956,7 @@
     },
     "prompt": {
       "what": "A rhythmic flutter for cards, pages or tiles flipping over, started 0.48 s before the flip is edge-on. Flips fall on a 110 bpm grid, and the flutter dips 9 dB under a line.",
-      "when": "Fits card-flip reveals, stat cards and paper-look films.",
+      "when": "Fits card flip reveals, stat cards and paper-look films.",
       "avoid": "Flat slides with no turn, and more than one flip on screen at once."
     },
     "timing": {
